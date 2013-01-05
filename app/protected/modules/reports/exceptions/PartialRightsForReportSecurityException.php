@@ -24,46 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportsTestModule extends SecurableModule
+    /**
+     * Exception thrown when a user attempts to run a report that has structural parts the user does not have rights
+     * to access.
+     */
+    class PartialRightsForReportSecurityException extends CException
     {
-        const RIGHT_ACCESS_REPORTS_TESTS = 'Access Reports Test Tab';
-
-        public function getDependencies()
-        {
-            return array(
-            );
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
-                ),
-                'designerMenuItems' => array(
-                ),
-                'a' => 1,
-                'b' => 2,
-                'c' => 3,
-                //globalSearchAttributeNames is used by A model.
-                'globalSearchAttributeNames' => array('a', 'name')
-            );
-            return $metadata;
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'ReportModelTestItem';
-        }
-
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'ReportModelTestItem';
-        }
-
-        public static function hasPermissions()
-        {
-            return true;
-        }
     }
 ?>

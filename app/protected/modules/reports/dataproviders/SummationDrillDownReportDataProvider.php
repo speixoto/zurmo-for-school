@@ -50,5 +50,15 @@
         {
             return null;
         }
+
+        protected function makeReadPermissionsAttributeIndexes()
+        {
+            $attributeIndexes = array();
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveDisplayAttributes());
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->report->getFilters());
+            return $attributeIndexes;
+        }
     }
 ?>

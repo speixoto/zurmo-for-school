@@ -32,9 +32,10 @@
             SecurityTestHelper::createSuperAdmin();
             $sally = UserTestHelper::createBasicUser('sally');
             $sally->setRight('AccountsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS);
-            $sally->setRight('MeetingsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS);
-            $sally->setRight('OpportunitiesModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
-            $sally->setRight('ReportsTestModule',   AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            $sally->setRight('ContactsModule',      ContactsModule::RIGHT_ACCESS_CONTACTS);
+            $sally->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS);
+            $sally->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES);
+            $sally->setRight('ReportsTestModule',   ReportsTestModule::RIGHT_ACCESS_REPORTS_TESTS);
             if(!$sally->save())
             {
                 throw new FailedToSaveModelException();

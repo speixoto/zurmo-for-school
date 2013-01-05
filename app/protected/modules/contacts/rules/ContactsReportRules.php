@@ -90,5 +90,12 @@
             }
             return false;
         }
+
+        public static function resolveStateAdapterUserHasAccessTo(User $user)
+        {
+            assert('$user->id > 0');
+            return ContactsUtil::resolveContactStateAdapterByModulesUserHasAccessTo('LeadsModule',
+                                                                                    'ContactsModule', $user);
+        }
     }
 ?>

@@ -24,7 +24,7 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class ReadPermissionsForReportUtil
+    class VariableStatesForReportUtil
     {
         public static function resolveAttributeIndexesByComponents(array & $attributeIndexes, Array $componentForms)
         {
@@ -54,20 +54,19 @@
             assert('is_string($modelClassName)');
             assert('is_string($attributeIndexPrefix) || $attributeIndexPrefix == null');
             $moduleClassName = $modelClassName::getModuleClassName();
-            if ($modelClassName::hasReadPermissionsOptimization() &&$moduleClassName != null &&
-                is_subclass_of($moduleClassName, 'SecurableModule'))
+            if(null != $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName())
             {
-                $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);
-                if ($permission == Permission::NONE || $permission == Permission::DENY)
+                $reportRules  = ReportRules::makeByModuleClassName($moduleClassName);
+                $stateAdapterClassName =  $reportRules->resolveStateAdapterUserHasAccessTo(Yii::app()->user->userModel);
+                if($stateAdapterClassName !== null && $stateAdapterClassName !== false)
                 {
-                    $indexes   = array();
-                    $indexes[] = 'owner__User';
-                    $mungeIds           = ReadPermissionsOptimizationUtil::getMungeIdsByUser(Yii::app()->user->userModel);
-                    if (count($mungeIds) > 0 && $permission == Permission::NONE)
-                    {
-                        $indexes[] = 'ReadOptimization';
-                    }
-                    $attributeIndexes[$attributeIndexPrefix] = $indexes;
+                    $stateAttributeName = $stateAdapterClassName::getStateAttributeName();
+                    $stateAdapter       = new $stateAdapterClassName(array());
+                    $attributeIndexes[$attributeIndexPrefix] = array($stateAttributeName, $stateAdapter->getStateIds());
+                }
+                elseif($stateAdapterClassName === false)
+                {
+                    throw new PartialRightsForReportSecurityException();
                 }
             }
         }
@@ -79,9 +78,9 @@
          */
         protected static function resolveAttributeIndexesByComponent(ComponentForReportForm $componentForm)
         {
-            $attributeIndexes     = array();
-            $modelClassName       = $componentForm->getModelClassName();
-            $moduleClassName      = $componentForm->getModuleClassName();
+            $attributeIndexes                 = array();
+            $modelClassName                   = $componentForm->getModelClassName();
+            $moduleClassName                  = $componentForm->getModuleClassName();
             if(!$componentForm->hasRelatedData())
             {
                 self::resolveAttributeIndexes($modelClassName, $attributeIndexes);

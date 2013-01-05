@@ -211,8 +211,12 @@
 
         protected function makeFiltersContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
-            $builder = new FiltersReportQueryBuilder($joinTablesAdapter, $this->report->getFiltersStructure());
-            return $builder->makeQueryContent($this->report->getFilters());
+            $filters          = $this->report->getFilters();
+            $filtersStructure = $this->report->getFiltersStructure();
+            $resolvedFilters  = $this->resolveFiltersForVariableStates($filters, $filtersStructure);
+            $resolvedFilters  = $this->resolveFiltersForReadPermissions($filters, $filtersStructure);
+            $builder = new FiltersReportQueryBuilder($joinTablesAdapter, $filtersStructure);
+            return $builder->makeQueryContent($resolvedFilters);
         }
 
         protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
@@ -233,6 +237,167 @@
                                                        RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
             return $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
+        }
+
+        /**
+         * Public for testing purposes only
+         * @param $filters
+         * @param $filtersStructure
+         * @return array
+         */
+        public function resolveFiltersForReadPermissions(array $filters, & $filtersStructure)
+        {
+            $attributeIndexes     = $this->makeReadPermissionsAttributeIndexes($filters);
+            $existingFiltersCount = count($filters);
+            $structurePosition    = $existingFiltersCount + 1;
+            $readStructure        = null;
+            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $attributeOrDerivedAttributeTypes)
+            {
+                $structure = null;
+                foreach($attributeOrDerivedAttributeTypes as $attributeOrDerivedAttributeType)
+                {
+                    if($structure != null)
+                    {
+                        $structure .= ' or ';
+                    }
+                    $structure .= $structurePosition;
+                    $structurePosition ++;
+                    $filters[]  = $this->resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix,
+                                                                                      $attributeOrDerivedAttributeType);
+                }
+                if($structure != null)
+                {
+                    if($readStructure != null)
+                    {
+                        $readStructure .= ' and ';
+                    }
+                    $readStructure .= '(' . $structure . ')';
+                }
+            }
+            if($readStructure != null)
+            {
+                if($filtersStructure != null)
+                {
+                    $filtersStructure .= ' and (' . $readStructure . ')';
+                }
+                else
+                {
+                    $filtersStructure .= $readStructure;
+                }
+            }
+            return $filters;
+        }
+
+        protected function resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix, $attributeOrDerivedAttributeType)
+        {
+            assert('is_string($attributeIndexOrDerivedTypePrefix) || $attributeIndexOrDerivedTypePrefix == null');
+            assert('is_string($attributeOrDerivedAttributeType)');
+            $moduleClassName = $this->report->getModuleClassName();
+            if($attributeOrDerivedAttributeType == 'ReadOptimization')
+            {
+                $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                       $this->report->getType());
+                $filter->attributeIndexOrDerivedType = $attributeIndexOrDerivedTypePrefix . $attributeOrDerivedAttributeType;
+            }
+            elseif($attributeOrDerivedAttributeType == 'owner__User')
+            {
+                $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                       $this->report->getType());
+                $filter->attributeIndexOrDerivedType = $attributeIndexOrDerivedTypePrefix. $attributeOrDerivedAttributeType;
+                $filter->operator                    = OperatorRules::TYPE_EQUALS;
+                $filter->value                       = Yii::app()->user->userModel->id;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $filter;
+        }
+
+        protected function makeReadPermissionsAttributeIndexes(array $filters)
+        {
+            $moduleClassName = $this->report->getModuleClassName();
+            $attributeIndexes = array();
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexes($moduleClassName::getPrimaryModelName(), $attributeIndexes);
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveDisplayAttributes());
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $filters);
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->report->getOrderBys());
+            ReadPermissionsForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveGroupBys());
+            return $attributeIndexes;
+        }
+
+        /**
+         * Public for testing purposes only
+         * @param $filters
+         * @param $filtersStructure
+         * @return array
+         */
+        public function resolveFiltersForVariableStates($filters, & $filtersStructure)
+        {
+            $attributeIndexes     = $this->makeVariableStatesAttributeIndexes($filters);
+            $existingFiltersCount = count($filters);
+            $structurePosition    = $existingFiltersCount + 1;
+            $readStructure        = null;
+            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $variableStateData)
+            {
+                $structure = $structurePosition;
+                $structurePosition ++;
+                $filters[]  = $this->resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix,
+                              $variableStateData);
+                if($readStructure != null)
+                {
+                    $readStructure .= ' and ';
+                }
+                $readStructure .= $structure;
+            }
+            if($readStructure != null)
+            {
+                if($filtersStructure != null)
+                {
+                    $filtersStructure .= ' and (' . $readStructure . ')';
+                }
+                else
+                {
+                    $filtersStructure .= $readStructure;
+                }
+            }
+            return $filters;
+        }
+
+        protected function resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix, $variableStateData)
+        {
+            assert('is_string($attributeIndexOrDerivedTypePrefix) || $attributeIndexOrDerivedTypePrefix == null');
+            assert('is_array($variableStateData) && count($variableStateData) == 2');
+            $moduleClassName                     = $this->report->getModuleClassName();
+            $filter                              = new FilterForReportForm($moduleClassName,
+                                                   $moduleClassName::getPrimaryModelName(),
+                                                   $this->report->getType());
+            $filter->attributeIndexOrDerivedType = $attributeIndexOrDerivedTypePrefix. $variableStateData[0];
+            $filter->operator                    = OperatorRules::TYPE_ONE_OF;
+            $filter->value                       = $variableStateData[1];
+            return $filter;
+        }
+
+        protected function makeVariableStatesAttributeIndexes(array $filters)
+        {
+            $moduleClassName = $this->report->getModuleClassName();
+            $attributeIndexes = array();
+            VariableStatesForReportUtil::
+                resolveAttributeIndexes($moduleClassName::getPrimaryModelName(), $attributeIndexes);
+            VariableStatesForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveDisplayAttributes());
+            VariableStatesForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $filters);
+            VariableStatesForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->report->getOrderBys());
+            VariableStatesForReportUtil::
+                resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveGroupBys());
+            return $attributeIndexes;
         }
     }
 ?>

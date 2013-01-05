@@ -275,5 +275,17 @@
             assert('$user->id > 0');
             throw new NotImplementedException();
         }
+
+        public static function resolveStateAdapterUserHasAccessTo(User $user)
+        {
+            assert('$user->id > 0');
+            throw new NotImplementedException();
+        }
+
+        public static function getVariableStateValuesForUser($modelClassName, User $user)
+        {
+            assert('is_string($modelClassName)');
+            assert('$user->id > 0');
+        }
     }
 ?>
