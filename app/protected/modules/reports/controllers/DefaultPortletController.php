@@ -29,6 +29,7 @@
         public function actionDetails($id, $runReport = false)
         {
             $savedReport             = SavedReport::getById((int)$id);
+            ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport, true);
             $report                  = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $portlet                 = Portlet::getById(intval($_GET['portletId']));

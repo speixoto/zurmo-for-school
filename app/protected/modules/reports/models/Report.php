@@ -117,23 +117,42 @@
             {
                 if($module::isReportable())
                 {
-                    $moduleClassName = get_class($module);
-                    if($moduleClassName::getStateMetadataAdapterClassName() != null)
-                    {
-                        $reportRules     = ReportRules::makeByModuleClassName($moduleClassName);
-                        $canAccessModule = $reportRules->canUserAccessModuleInAVariableState(Yii::app()->user->userModel);
-                    }
-                    else
-                    {
-                        $canAccessModule = RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel);
-                    }
-                    if ($canAccessModule)
+                    if (ReportSecurityUtil::canCurrentUserCanAccessModule(get_class($module)))
                     {
                         $moduleClassNames[] = get_class($module);
                     }
                 }
             }
             return $moduleClassNames;
+        }
+
+        public function canCurrentUserProperlyRenderResults()
+        {
+            if(!ReportSecurityUtil::canCurrentUserCanAccessModule($this->moduleClassName))
+            {
+                return false;
+            }
+            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->displayAttributes))
+            {
+                return false;
+            }
+            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->filters))
+            {
+                return false;
+            }
+            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->orderBys))
+            {
+                return false;
+            }
+            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->groupBys))
+            {
+                return false;
+            }
+            if(!ReportSecurityUtil::canCurrentUserAccessAllComponents($this->drillDownDisplayAttributes))
+            {
+                return false;
+            }
+            return true;
         }
 
         public function getModuleClassName()

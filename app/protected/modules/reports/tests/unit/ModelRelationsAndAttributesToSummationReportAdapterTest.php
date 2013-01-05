@@ -153,6 +153,8 @@
             $adapter = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
             $this->assertFalse ($adapter->isAttributeIndexOrDerivedTypeADisplayCalculation('string'));
             $this->assertTrue  ($adapter->isAttributeIndexOrDerivedTypeADisplayCalculation('float__Summation'));
+            $this->assertTrue  ($adapter->isAttributeIndexOrDerivedTypeADisplayCalculation(
+                                ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT));
         }
 
         /**

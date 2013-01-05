@@ -49,7 +49,14 @@
                 $this->params['dataProvider']->getReport()->getChart()->type != null)
             {
                 $dataProvider = $this->params['dataProvider'];
-                $view      = new ReportChartView('default', 'reports', $dataProvider, $this->uniqueLayoutId);
+                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
+                {
+                    $view      = new ReportChartView('default', 'reports', $dataProvider, $this->uniqueLayoutId);
+                }
+                else
+                {
+                    $view      = new UserCannotRenderReportProperlySplashView();
+                }
                 return $view->render();
             }
         }

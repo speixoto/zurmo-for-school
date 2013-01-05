@@ -49,7 +49,15 @@
             if(isset($this->params['dataProvider']))
             {
                 $dataProvider = $this->params['dataProvider'];
-                $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
+
+                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
+                {
+                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
+                }
+                else
+                {
+                    $view      = new UserCannotRenderReportProperlySplashView();
+                }
                 return $view->render();
             }
         }

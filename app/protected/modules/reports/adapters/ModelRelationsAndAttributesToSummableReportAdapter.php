@@ -279,6 +279,10 @@
             {
                 return true;
             }
+            elseif(count($parts) == 1 && $parts[0] == self::DISPLAY_CALCULATION_COUNT)
+            {
+                return true;
+            }
             return false;
         }
 

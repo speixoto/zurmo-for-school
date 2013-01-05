@@ -24,31 +24,8 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class VariableStatesForReportUtil
+    class VariableStatesForReportUtil extends ComponentTraversalUtil
     {
-        public static function resolveAttributeIndexesByComponents(array & $attributeIndexes, Array $componentForms)
-        {
-            foreach($componentForms as $componentForm)
-            {
-                $attributeIndexesToResolve = self::resolveAttributeIndexesByComponent($componentForm);
-                self::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
-            }
-        }
-
-        /**
-         * Public for testing purposes only
-         */
-        public static function resolveIndexesTogether(array & $attributeIndexes, array $attributeIndexesToResolve)
-        {
-            foreach($attributeIndexesToResolve as $key => $indexes)
-            {
-                if(!isset($attributeIndexes[$key]))
-                {
-                    $attributeIndexes[$key]= $indexes;
-                }
-            }
-        }
-
         public static function resolveAttributeIndexes($modelClassName, & $attributeIndexes, $attributeIndexPrefix = null)
         {
             assert('is_string($modelClassName)');
@@ -69,39 +46,6 @@
                     throw new PartialRightsForReportSecurityException();
                 }
             }
-        }
-
-        /**
-         * @see resolveAttributeIndexesByComponents
-         * @param ComponentForReportForm $componentForm
-         * @return array
-         */
-        protected static function resolveAttributeIndexesByComponent(ComponentForReportForm $componentForm)
-        {
-            $attributeIndexes                 = array();
-            $modelClassName                   = $componentForm->getModelClassName();
-            $moduleClassName                  = $componentForm->getModuleClassName();
-            if(!$componentForm->hasRelatedData())
-            {
-                self::resolveAttributeIndexes($modelClassName, $attributeIndexes);
-            }
-            else
-            {
-                $attributeIndexPrefix = null;
-                foreach($componentForm->attributeAndRelationData as $relationOrAttribute)
-                {
-                    self::resolveAttributeIndexes($modelClassName, $attributeIndexes, $attributeIndexPrefix);
-                    $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                            make($moduleClassName, $modelClassName, $componentForm->getReportType());
-                    if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
-                    {
-                        $modelClassName       = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
-                        $moduleClassName      = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                        $attributeIndexPrefix = $attributeIndexPrefix . $relationOrAttribute . FormModelUtil::RELATION_DELIMITER;
-                    }
-                }
-            }
-            return $attributeIndexes;
         }
     }
 ?>

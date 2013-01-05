@@ -25,43 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Reports module walkthrough tests for super users.
+     * If a user has access to run a report, but does not have all the required RIGHTS for related modules that are
+     * part of the report, then this message will appear instructing the user to have the admin either fix Rights
+     * or fix the report owner to fix the report.
      */
-    class ReportsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class UserCannotRenderReportProperlySplashView extends SplashView
     {
-        public static function setUpBeforeClass()
+        protected function getIconName()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
-            ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
+            return 'Account'; //todo: we should have an image for this. montage of something related to reports plus an exclamation or some error
         }
 
-        public function testSuperUserAllDefaultControllerActions()
+        protected function getMessageContent()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            //actionList
-            //actionCreate
-            //actionSelectList
-            //actionEdit
-            //actionSave
-
-            //test creating a report via walkthrough that has all the component parts.
-            //test for all 3 report types
-
-            //test actionDelete
+            return Yii::t('Default', '<h2>Someone messed with the flux capacitor!</h2><div class="large-icon"></div>' .
+            '<p>You cannot run this report because it contains data you do not have access to. ' .
+            'Speak to the report creator or CRM administrator about this issue.</p>');
         }
-
-        //actionRelationsAndAttributesTree - for different tree types and different report types
-
-        //actionAddAttributeFromTree - all various attribute types
-
-        //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
     }
 ?>

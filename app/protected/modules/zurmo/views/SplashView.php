@@ -25,43 +25,26 @@
      ********************************************************************************/
 
     /**
-     * Reports module walkthrough tests for super users.
+     * Base class for showing in the user interface a message and image about a problem or recommendation that needs
+     * to be handled
      */
-    class ReportsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    abstract class SplashView extends View
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+        public $cssClasses = array('splash-view');
 
-            //Setup test data owned by the super user.
-            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
-            AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
-            ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
+        abstract protected function getMessageContent();
+
+        protected function renderContent()
+        {
+            $content = '<div class="' . $this->getIconName() . '">';
+            $content .= $this->getMessageContent();
+            $content .= '</div>';
+            return $content;
         }
 
-        public function testSuperUserAllDefaultControllerActions()
+        protected function getIconName()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            //actionList
-            //actionCreate
-            //actionSelectList
-            //actionEdit
-            //actionSave
-
-            //test creating a report via walkthrough that has all the component parts.
-            //test for all 3 report types
-
-            //test actionDelete
+            return null;
         }
-
-        //actionRelationsAndAttributesTree - for different tree types and different report types
-
-        //actionAddAttributeFromTree - all various attribute types
-
-        //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
     }
 ?>
