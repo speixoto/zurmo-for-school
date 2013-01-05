@@ -573,6 +573,9 @@ footer, header, hgroup, menu, nav, section {
         right:2px;
     }
 }
+body > .ui-autocomplete{
+    width:335px;
+}
 
 #globalSearchInput{
     font-style:italic;
@@ -2629,7 +2632,7 @@ div.wide.form{
         }
     }
     .ui-autocomplete{
-        width:auto !important;
+        width:auto;
     }
     input[type="text"]{
         margin-bottom: 4px;
@@ -2674,11 +2677,11 @@ div.wide.form{
 }
 
 .has-model-select{
-	clear:left;
-	padding:0 !important;
-	input{
-		margin:0 !important;
-	}
+    clear:left;
+    padding:0 !important;
+    input{
+	margin:0 !important;
+    }
     a{
         background: url(../images/dropdown-general.png) left top no-repeat;
         width:28px;
@@ -2694,30 +2697,36 @@ div.wide.form{
                 color:#525252 !important;
             }
         }
-        span{
+        .model-select-icon{
             width:100%;
             height:100%;
             line-height:24px;
             display:block;
             text-align:center;
             vertical-align:center;
-             &:before{
-	            content:"Y";
-	            .symbly(24px);
-	            color:#8b8b8b;
-	            text-align:center;
-            	vertical-align:bottom;
-	        }
+            &:before{
+                content:"Y";
+                .symbly(26px);
+                color:#8b8b8b;
+                text-align:center;
+            }
         }
+    }
+    .z-spinner{
+        z-index:999999;
+        position:absolute;
+        top:3px;
+        left:5px;
+        display:block !important;
     }
 }
 
 .has-date-select{
-	clear:left;
-	padding:0 !important;
-	input{
-		margin:0 !important;
-	}
+    clear:left;
+    padding:0 !important;
+    input{
+            margin:0 !important;
+    }
     button{
         background: url(../images/dropdown-general.png) left top no-repeat;
         width:28px;
@@ -3709,8 +3718,15 @@ div.hasHalfs{
         #filter-latest-activities-link{
             ++.themeColor-important;
             margin-left:20px;
-            text-decoration: underline;
+            text-decoration: none;
             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
+            &:after{
+                content: "÷";
+                .symbly(14px);
+                position:relative;
+                top:1px;
+                margin-left:5px;
+            }
         }
     }
     .latest-activity-toolbar,
@@ -3887,13 +3903,13 @@ div.hasHalfs{
 /*=Auto Complete*/
 .ui-autocomplete{
     margin-top:2px;
-    width:335px;
+    width:auto;
     ++.flyout;
     padding-top:2px;
     padding-bottom:2px;
     text-align:left;
     z-index:9999999;
-    position:relative;
+    position:absolute;
     li{
         list-style:none;
         a{
@@ -4115,7 +4131,7 @@ div.hasHalfs{
     }
     #sequential-process-spinner + #progressBar-msg{
         display:block;
-        text-indent:30px;
+        //text-indent:30px;
     }
 }
 
@@ -4129,6 +4145,37 @@ div.hasHalfs{
         ++.z-button;
         margin-left:0;
     }
+}
+
+.progressbar-wrapper{
+    width:100%;
+    position: relative;
+    margin-top: 15px;
+}
+
+#progress-percent{
+    width:50px;
+    display: inline-block;
+    font-weight: bold;
+}
+
+.ui-progressbar{
+    ++.border-box;
+    padding-left:35px;
+    position: absolute;
+    top:0;
+    left: 0;
+    height:5px;
+    width:100%;
+}
+
+.ui-widget-header.ui-progressbar-value{
+    background-color: transparent !important;
+    height:5px;
+    background-image: -webkit-linear-gradient(0deg, rgb(150, 150, 150) 0%, rgb(175, 175, 175) 100%) !important;
+    .animateAll(0.2s);
+    margin:5px 0 0 0;
+    .radius(3px);
 }
 
 /*=About*/
