@@ -58,7 +58,7 @@
             $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
             $content .= '</div></div><div class="buffer"><div>';
-            $content .= $this->renderConversationDetailsOfRelatedAndAttachments();
+            $content .= $this->renderConversationRelatedToAndAttachmentsContent();
             $content .= '</div></div></div>';
             return $content;
         }
@@ -90,11 +90,10 @@
             return $content;
         }
 
-        protected function renderConversationDetailsOfRelatedAndAttachments()
+        protected function renderConversationRelatedToAndAttachmentsContent()
         {
             $element  = new ConversationStatusElement($this->model, 'isClosed');
             $content  = $element->render();
-            $content .= '<div><strong>' . Yii::t('Default', 'Related Info'). '</strong></div>';
             $element  = new ConversationItemsElement($this->model, 'null');
             $contentForTable = $element->render();
             if ($this->model->files->count() > 0)

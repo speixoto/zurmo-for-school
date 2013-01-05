@@ -106,8 +106,6 @@
                 $element->editableTemplate = '{content}{error}';
                 $content .= $element->render().'</div>';
             }
-            $element  = new ConversationStatusElement($this->model, 'isClosed');
-            $content .= $element->render();
             return $content;
         }
 

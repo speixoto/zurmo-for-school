@@ -68,7 +68,7 @@
             if ($conversation->isClosed)
             {
                 return self::renderAjaxStatusActionChangeLink(false, $conversation->id,
-                                                              Yii::t('Default', 'Open'), $updateDivId);
+                                                              Yii::t('Default', 'Re-open'), $updateDivId);
             }
             else
             {
@@ -109,13 +109,13 @@
             }
             else
             {
-                return 'action-open';
+                return 'action-reopen';
             }
         }
 
         protected function renderLabel()
         {
-            return Yii::t('Default', 'Status');
+            return null;
         }
 
         public static function getDisplayName()
