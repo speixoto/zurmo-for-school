@@ -30,6 +30,8 @@ class ReportTest extends ZurmoBaseTest
     {
         //todo: areRuntimeFiltersPresent()
         //todo: resolveGroupBysAsFilters(Array $getData)
+        //todO: test for variable state getReportableModulesAndLabelsForCurrentUser()
+        //todo: test for variable state getReportableModulesClassNamesCurrentUserHasAccessTo()
         $this->fail();
     }
 }

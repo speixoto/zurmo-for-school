@@ -98,7 +98,11 @@
             $childrenNodeData        = array();
             $selectableRelationsData = $modelToReportAdapter->
                                        getSelectableRelationsData($precedingModel, $precedingRelation);
-            foreach($selectableRelationsData as $relation => $relationData)
+            $resolvedSelectableRelationsData = $modelToReportAdapter->
+                                               getSelectableRelationsDataResolvedForUserAccess(
+                                               Yii::app()->user->userModel,
+                                               $selectableRelationsData);
+            foreach($resolvedSelectableRelationsData as $relation => $relationData)
             {
                 $relationModelClassName       = $modelToReportAdapter->getRelationModelClassName($relation);
                 $relationModuleClassName      = $relationModelClassName::getModuleClassName();

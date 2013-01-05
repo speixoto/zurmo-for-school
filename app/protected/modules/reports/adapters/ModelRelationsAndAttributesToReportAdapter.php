@@ -156,11 +156,11 @@
         {
             assert('is_string($relation)');
             $relationsData    = $this->getSelectableRelationsData();
-            if(!isset($relationsData[$attribute]))
+            if(!isset($relationsData[$relation]))
             {
                 throw new NotSupportedException();
             }
-            return $relationsData[$attribute]['label'];
+            return $relationsData[$relation]['label'];
         }
 
         /**
@@ -378,11 +378,45 @@
             }
             return $attributes;
         }
+
+        /**
+         * Resolves relations to only return relations that the user has access too. always returns user relations
+         * since this is ok for a user to see when creating or editing a report.
+         *
+         * @param User $user
+         * @param array $relations
+         * @throws NotSupportedException
+         */
+        public function getSelectableRelationsDataResolvedForUserAccess(User $user, Array $relations)
+        {
+            assert('$user->id > 0');
+            foreach($relations as $relation => $data)
+            {
+                if(null != $moduleClassName = $this->getRelationModuleClassName($relation))
+                {
+                    if($moduleClassName != 'UsersModule' && !RightsUtil::canUserAccessModule($moduleClassName , $user))
+                    {
+                        unset($relations[$relation]);
+                    }
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
+            return $relations;
+        }
+
         /**
          * Returns the array of selectable relations for creating a report.  Does not include relations that are
          * marked as nonReportable in the rules and also excludes relations that are marked as relations
-         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel
-         * @return array of relation name and data including the label
+         * reportedAsAttributes by the rules.  Includes relations marked as derivedRelationsViaCastedUpModel.
+         *
+         * Public for testing only
+         * @param RedBeanModel $precedingModel
+         * @param null $precedingRelation
+         * @return sorted
+         * @throws NotSupportedException
          */
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
