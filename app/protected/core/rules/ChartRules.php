@@ -53,13 +53,19 @@
 
         const TYPE_STACKED_COLUMN_3D     = 'StackedColumn3D';
 
+        const TYPE_STACKED_AREA          = 'StackedArea';
+
         /**
          * @return array of chart types that require a second series and range to render.
          */
         public static function getChartTypesRequiringSecondInputs()
         {
-            return array(self::TYPE_STACKED_BAR_2D, self::TYPE_STACKED_BAR_3D, self::TYPE_STACKED_COLUMN_2D,
-                         self::TYPE_STACKED_COLUMN_3D);
+            return array(self::TYPE_STACKED_BAR_2D,
+                         self::TYPE_STACKED_BAR_3D,
+                         self::TYPE_STACKED_COLUMN_2D,
+                         self::TYPE_STACKED_COLUMN_3D,
+                         self::TYPE_STACKED_AREA,
+            );
         }
 
             public static function getTranslatedTypeLabel($type)
@@ -87,6 +93,7 @@
                          ChartRules::TYPE_STACKED_BAR_3D     => Yii::t('Default', 'Stacked Bar 3D'),
                          ChartRules::TYPE_STACKED_COLUMN_2D  => Yii::t('Default', 'Stacked Column 2D'),
                          ChartRules::TYPE_STACKED_COLUMN_3D  => Yii::t('Default', 'Stacked Column 3D'),
+                         ChartRules::TYPE_STACKED_AREA       => Yii::t('Defailt', 'Stacked Area'),
             );
         }
 
@@ -104,6 +111,7 @@
                          ChartRules::TYPE_STACKED_BAR_3D,
                          ChartRules::TYPE_STACKED_COLUMN_2D,
                          ChartRules::TYPE_STACKED_COLUMN_3D,
+                         ChartRules::TYPE_STACKED_AREA,
             );
         }
 
