@@ -150,15 +150,13 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('contactInlineCreateCollapseActions', "
-                        $('.createContactCancel').each(function()
-                        {
-                                 $('.createContactCancel').live('click', function()
-                                 {
-                                 $(this).parentsUntil('.email-archive-item').find('.ContactInlineCreateForArchivedEmailCreateView').hide();
-                                $(this).parentsUntil('.email-archive-item').find('.contact-create-link').addClass('z-link');
-                                  });
-                        });
-            ");
+                        $('.createContactCancel').each(function(){
+                            $('.createContactCancel').live('click', function(){
+                                $(this).parentsUntil('.email-archive-item').find('.ContactInlineCreateForArchivedEmailCreateView').hide();
+                                $(this).closest('.email-archive-item').closest('td').removeClass('active-panel')
+                                .find('.z-action-link-active').removeClass('z-action-link-active');
+                            });
+                        });");
         }
         protected function doesLabelHaveOwnCell()
         {
