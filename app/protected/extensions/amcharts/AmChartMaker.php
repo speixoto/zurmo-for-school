@@ -79,7 +79,7 @@
             $this->addValueAxisProperties('axisColor',              '"#545454"');
             $this->addValueAxisProperties('gridColor',              '"#545454"');
             $this->addChartProperties('colors', $colorTheme[4]);
-            if ($this->type === "Column2D")
+            if ($this->type == ChartRules::TYPE_COLUMN_2D)
             {
                 //Chart
                 $this->addChartProperties('usePrefixes',            true);
@@ -100,7 +100,7 @@
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
             }
-            elseif ($this->type === "Column3D")
+            elseif ($this->type == ChartRules::TYPE_COLUMN_3D)
             {
                 $this->addGraphProperties('balloonText',            "'[[category]]:[[value]]'");
                 $this->addGraphProperties('lineAlpha',              0.5);
@@ -110,7 +110,7 @@
                 $this->resolveColumnAndBarGeneralProperties();
                 $this->makeChart3d();
             }
-            elseif ($this->type === "Bar2D")
+            elseif ($this->type == ChartRules::TYPE_BAR_2D)
             {
                 $this->addChartProperties('rotate',                 true);
                 $this->addChartProperties('usePrefixes',            true);
@@ -125,7 +125,7 @@
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
             }
-            elseif ($this->type === "Bar3D")
+            elseif ($this->type == ChartRules::TYPE_BAR_3D)
             {
                 $this->addChartProperties('rotate',                 true);
                 $this->addChartProperties('usePrefixes',            true);
@@ -141,7 +141,7 @@
                 $this->resolveColumnAndBarGeneralProperties();
                 $this->makeChart3d();
             }
-            elseif ($this->type === "Donut2D")
+            elseif ($this->type == ChartRules::TYPE_DONUT_2D)
             {
                 $this->addChartProperties('color',                  "'#A39595'");
                 $this->addChartProperties('sequencedAnimation',     true);
@@ -157,7 +157,7 @@
                 $this->addChartProperties('startDuration',          0);
                 $this->chartIsPie = true;
             }
-            elseif ($this->type === "Donut3D")
+            elseif ($this->type == ChartRules::TYPE_DONUT_3D)
             {
                 $this->addChartProperties('color',                  "'#A39595'");
                 $this->addChartProperties('sequencedAnimation',     true);
@@ -174,7 +174,7 @@
                 $this->chartIsPie = true;
                 $this->makeChart3d();
             }
-            elseif ($this->type === "Pie2D")
+            elseif ($this->type == ChartRules::TYPE_PIE_2D)
             {
                 $this->addChartProperties('color',                  "'#A39595'");
                 $this->addChartProperties('outlineColor',           "'#FFFFFF'");
@@ -189,7 +189,7 @@
                 $this->addChartProperties('startDuration',          0);
                 $this->chartIsPie = true;
             }
-            elseif ($this->type === "Pie3D")
+            elseif ($this->type == ChartRules::TYPE_PIE_3D)
             {
                 $this->addChartProperties('color',                  "'#A39595'");
                 $this->addChartProperties('outlineColor',           "'#FFFFFF'");
@@ -204,6 +204,95 @@
                 $this->addChartProperties('startDuration',          0);
                 $this->makeChart3d();
                 $this->chartIsPie = true;
+            }
+            elseif ($this->type == ChartRules::TYPE_STACKED_AREA)
+            {
+                //Chart
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('plotAreaBorderColor',    "'#000000'");
+                $this->addChartProperties('plotAreaBorderAlpha',    0);
+                //Graph
+                $this->addGraphProperties('type',                   "'line'");
+                $this->addGraphProperties('fillAlphas',             0.6);
+                $this->addGraphProperties('cornerRadiusTop',        0);
+                $this->addGraphProperties('cornerRadiusBottom',     0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                //Axis
+                $this->addCategoryAxisProperties('inside',          0);
+                $this->addCategoryAxisProperties('fillColors',      $colorTheme[5]);
+                //ValueAxis
+                $this->addValueAxisProperties('minimum',            0);
+                $this->addValueAxisProperties('dashLength',         2);
+                $this->addValueAxisProperties('stackType',          "'regular'");
+                //General properties
+                $this->resolveColumnAndBarGeneralProperties();
+            }
+            elseif ($this->type == ChartRules::TYPE_STACKED_COLUMN_2D)
+            {
+                //Chart
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addChartProperties('plotAreaBorderColor',    "'#000000'");
+                $this->addChartProperties('plotAreaBorderAlpha',    0);
+                //Graph
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('cornerRadiusTop',        0);
+                $this->addGraphProperties('cornerRadiusBottom',     0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                //Axis
+                $this->addCategoryAxisProperties('inside',          0);
+                $this->addCategoryAxisProperties('fillColors',      $colorTheme[5]);
+                //ValueAxis
+                $this->addValueAxisProperties('minimum',            0);
+                $this->addValueAxisProperties('dashLength',         2);
+                $this->addValueAxisProperties('stackType',          "'regular'");
+                //General properties
+                $this->resolveColumnAndBarGeneralProperties();
+            }
+            elseif ($this->type == ChartRules::TYPE_STACKED_COLUMN_3D)
+            {
+                $this->addValueAxisProperties('stackType',          "'3d'");
+                $this->addGraphProperties('balloonText',            "'[[category]]:[[value]]'");
+                $this->addGraphProperties('lineAlpha',              0.5);
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                //General properties
+                $this->resolveColumnAndBarGeneralProperties();
+                $this->makeChart3d();
+            }
+            elseif ($this->type == ChartRules::TYPE_STACKED_BAR_2D)
+            {
+                $this->addChartProperties('rotate',                 true);
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addGraphProperties('plotAreaBorderAlpha',    0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                $this->addGraphProperties('gradientOrientation',    "'vertical'");
+                $this->addGraphProperties('labelPosition',          "'right'");
+                $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                //General properties
+                $this->addValueAxisProperties('stackType',          "'regular'");
+                $this->resolveColumnAndBarGeneralProperties();
+            }
+            elseif ($this->type == ChartRules::TYPE_STACKED_BAR_3D)
+            {
+                $this->addValueAxisProperties('stackType',          "'3d'");
+                $this->addChartProperties('rotate',                 true);
+                $this->addChartProperties('usePrefixes',            true);
+                $this->addGraphProperties('plotAreaBorderAlpha',    0);
+                $this->addGraphProperties('lineAlpha',              0);
+                $this->addGraphProperties('fillAlphas',             1);
+                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                $this->addGraphProperties('gradientOrientation',    "'vertical'");
+                $this->addGraphProperties('labelPosition',          "'right'");
+                $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                //General properties
+                $this->resolveColumnAndBarGeneralProperties();
+                $this->makeChart3d();
             }
             else
             {
