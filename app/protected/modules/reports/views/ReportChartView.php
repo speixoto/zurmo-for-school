@@ -68,6 +68,7 @@
             $amChart->id        = $this->uniqueLayoutId;
             $amChart->type      = $this->dataProvider->getReport()->getChart()->type;
             $amChart->addSerialGraph('value', 'column');
+            $amChart->addSerialGraph('value2', 'column', array('title' => 'some title'));
             $amChart->xAxisName = $this->dataProvider->resolveFirstSeriesLabel();
             $amChart->yAxisName = $this->dataProvider->resolveFirstRangeLabel();
             $amChart->yAxisUnitContent = $this->resolveYAxisUnitContent();

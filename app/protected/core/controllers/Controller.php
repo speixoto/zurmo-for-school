@@ -90,6 +90,7 @@
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
                                                                               $dataCollection);
+            $this->resolveMetadataBeforeMakingDataProvider($metadata);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
@@ -99,6 +100,11 @@
                 $pageSize,
                 $stateMetadataAdapterClassName
             );
+        }
+
+        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
+        {
+
         }
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)

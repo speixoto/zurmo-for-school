@@ -140,7 +140,6 @@
                 });
                
                 $(".attribute-to-place").live("dblclick",function(event){
-                    //console.log( $(this).parentsUntil(".treeview").parent().attr("id") );
                     var treeType = "'.static::getTreeType().'";
                     if(treeType === "Filters"){
                         ' . $this->getAjaxForDoubleClickedAttribute() . '

@@ -49,33 +49,19 @@
             $this->actionList();
         }
 
+        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
+        {
+            $metadata = SavedReportUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
+                        Report::getReportableModulesClassNamesCurrentUserHasAccessTo());
+        }
+
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
-
-            $searchAttributes = array(
-                'moduleClassName'    => array('x','y','z'),
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                $savedReport,
-                Yii::app()->user->userModel->id,
-                $searchAttributes
-            );
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                SavedReportUtil::resolveSearchAttributeDataByModuleClassNames($metadataAdapter->getAdaptedMetadata(),
-                    Report::getReportableModulesClassNamesCurrentUserHasAccessTo()),
-                'Notification',
-                'RedBeanModelDataProvider',
-                'createdDateTime',
-                true,
-                $pageSize
-            );
-
-
-            $dataProvider = $this->resolveSearchDataProvider(
+            $dataProvider                   = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,

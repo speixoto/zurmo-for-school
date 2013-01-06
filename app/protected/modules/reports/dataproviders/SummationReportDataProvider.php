@@ -59,7 +59,8 @@
             foreach ($resultsData as $data)
             {
                 $chartData[] = array('value'        => $data->$firstRangeAttributeName,
-                                     'displayLabel' => strval($data->$firstSeriesAttributeName));
+                                     'displayLabel' => strval($data->$firstSeriesAttributeName),
+                                     'value2' => 50,000);
             }
             return $chartData;
         }

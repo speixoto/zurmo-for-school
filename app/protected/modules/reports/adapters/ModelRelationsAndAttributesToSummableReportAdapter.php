@@ -303,6 +303,10 @@
             assert('is_string($attribute)');
             if($this->isAttributeIndexOrDerivedTypeADisplayCalculation($attribute))
             {
+                if($attribute == self::DISPLAY_CALCULATION_COUNT)
+                {
+                    return 'Integer';
+                }
                 list($realAttribute, $notUsed) = explode(FormModelUtil::DELIMITER, $attribute);
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $realAttribute);
                 if ($attributeType == 'Decimal' || $attributeType == 'Integer')

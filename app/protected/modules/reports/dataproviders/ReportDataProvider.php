@@ -119,7 +119,7 @@
             echo $sql . "<BR>";
             $rows         = $this->getRowsData($sql);
             $resultsData  = array();
-            $idByOffset   = $offset;
+            $idByOffset   = self::resolveIdByOffset($offset);
             foreach ($rows as $key => $row)
             {
                 $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
@@ -141,6 +141,16 @@
                 $idByOffset ++;
             }
             return $resultsData;
+        }
+
+        protected static function resolveIdByOffset($offset)
+        {
+            assert('is_int($offset) || $offset == null');
+            if($offset == null)
+            {
+                return 0;
+            }
+            return $offset;
         }
 
         protected function getRowsData($sql)

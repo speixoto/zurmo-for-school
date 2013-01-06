@@ -31,21 +31,33 @@
             assert('is_array($searchAttributeData)');
             assert('is_array($moduleClassNames)');
             $clausesCount = count($searchAttributeData['clauses']);
-
             $clauseStructure = null;
-            foreach ($moduleClassNames as $moduleClassName)
+
+            if(count($moduleClassNames) == 0)
             {
                 $searchAttributeData['clauses'][$clausesCount + 1] = array(
+                    'attributeName'        => 'moduleClassName',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                );
+                $clauseStructure =  ($clausesCount + 1);
+            }
+            else
+            {
+                foreach ($moduleClassNames as $moduleClassName)
+                {
+                    $searchAttributeData['clauses'][$clausesCount + 1] = array(
                         'attributeName'        => 'moduleClassName',
                         'operatorType'         => 'equals',
                         'value'                => $moduleClassName
-                );
-                if ($clauseStructure != null)
-                {
-                    $clauseStructure .= ' and ';
+                    );
+                    if ($clauseStructure != null)
+                    {
+                        $clauseStructure .= ' or ';
+                    }
+                    $clauseStructure .=  ($clausesCount + 1);
+                    $clausesCount ++;
                 }
-                $clauseStructure .=  ($clausesCount + 1);
-                $clausesCount ++;
             }
 
             if ($searchAttributeData['structure'] != null)
