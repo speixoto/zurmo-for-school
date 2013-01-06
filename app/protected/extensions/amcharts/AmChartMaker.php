@@ -58,6 +58,8 @@
 
         private $categoryAxisProperties = array();
 
+        private $legendProperties = array();
+
         /**
          * Returns the type of chart to be used in AmChart
          */
@@ -217,14 +219,16 @@
                 $this->addGraphProperties('cornerRadiusTop',        0);
                 $this->addGraphProperties('cornerRadiusBottom',     0);
                 $this->addGraphProperties('lineAlpha',              0);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 //Axis
                 $this->addCategoryAxisProperties('inside',          0);
-                $this->addCategoryAxisProperties('fillColors',      $colorTheme[5]);
                 //ValueAxis
                 $this->addValueAxisProperties('minimum',            0);
                 $this->addValueAxisProperties('dashLength',         2);
                 $this->addValueAxisProperties('stackType',          "'regular'");
+                //Legend
+                $this->addLegendProperties('borderAlpha',           0.2);
+                $this->addLegendProperties('valueWidth',            0);
+                $this->addLegendProperties('horizontalGap',         10);
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
             }
@@ -235,31 +239,39 @@
                 $this->addChartProperties('plotAreaBorderColor',    "'#000000'");
                 $this->addChartProperties('plotAreaBorderAlpha',    0);
                 //Graph
+                $this->addGraphProperties('balloonText',            "'[[title]]:[[value]]'");
                 $this->addGraphProperties('fillAlphas',             1);
                 $this->addGraphProperties('cornerRadiusTop',        0);
                 $this->addGraphProperties('cornerRadiusBottom',     0);
                 $this->addGraphProperties('lineAlpha',              0);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 //Axis
                 $this->addCategoryAxisProperties('inside',          0);
-                $this->addCategoryAxisProperties('fillColors',      $colorTheme[5]);
                 //ValueAxis
                 $this->addValueAxisProperties('minimum',            0);
                 $this->addValueAxisProperties('dashLength',         2);
                 $this->addValueAxisProperties('stackType',          "'regular'");
+                //Legend
+                $this->addLegendProperties('borderAlpha',           0.2);
+                $this->addLegendProperties('valueWidth',            0);
+                $this->addLegendProperties('horizontalGap',         10);
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
             }
             elseif ($this->type == ChartRules::TYPE_STACKED_COLUMN_3D)
             {
                 $this->addValueAxisProperties('stackType',          "'3d'");
-                $this->addGraphProperties('balloonText',            "'[[category]]:[[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[title]]:[[value]]'");
                 $this->addGraphProperties('lineAlpha',              0.5);
                 $this->addGraphProperties('fillAlphas',             1);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                //Legend
+                $this->addLegendProperties('borderAlpha',           0.2);
+                $this->addLegendProperties('valueWidth',            0);
+                $this->addLegendProperties('horizontalGap',         10);
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
-                $this->makeChart3d();
+                $this->addChartProperties('depth3D',                40);
+                $this->addChartProperties('angle',                  30);
+                $this->chartIs3d = true;
             }
             elseif ($this->type == ChartRules::TYPE_STACKED_BAR_2D)
             {
@@ -268,11 +280,13 @@
                 $this->addGraphProperties('plotAreaBorderAlpha',    0);
                 $this->addGraphProperties('lineAlpha',              0);
                 $this->addGraphProperties('fillAlphas',             1);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 $this->addGraphProperties('gradientOrientation',    "'vertical'");
                 $this->addGraphProperties('labelPosition',          "'right'");
-                $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
-                $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[title]]: [[value]]'");
+                //Legend
+                $this->addLegendProperties('borderAlpha',           0.2);
+                $this->addLegendProperties('valueWidth',            0);
+                $this->addLegendProperties('horizontalGap',         10);
                 //General properties
                 $this->addValueAxisProperties('stackType',          "'regular'");
                 $this->resolveColumnAndBarGeneralProperties();
@@ -285,14 +299,18 @@
                 $this->addGraphProperties('plotAreaBorderAlpha',    0);
                 $this->addGraphProperties('lineAlpha',              0);
                 $this->addGraphProperties('fillAlphas',             1);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 $this->addGraphProperties('gradientOrientation',    "'vertical'");
                 $this->addGraphProperties('labelPosition',          "'right'");
-                $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
-                $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                $this->addGraphProperties('balloonText',            "'[[title]]: [[value]]'");
+                //Legend
+                $this->addLegendProperties('borderAlpha',           0.2);
+                $this->addLegendProperties('valueWidth',            0);
+                $this->addLegendProperties('horizontalGap',         10);
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
-                $this->makeChart3d();
+                $this->addChartProperties('depth3D',                40);
+                $this->addChartProperties('angle',                      30);
+                $this->chartIs3d = true;
             }
             else
             {
@@ -361,6 +379,15 @@
            $this->graphProperties[$tag]         = $value;
         }
 
+        /**
+         * Add properties to legend
+         * Info on http://docs.amcharts.com/javascriptcharts/AmLegend
+         */
+        public function addLegendProperties($tag, $value)
+        {
+           $this->legendProperties[$tag]         = $value;
+        }
+
         public function javascriptChart()
         {
             //Init AmCharts
@@ -400,15 +427,12 @@
                                      window.g1              = graph{$key};
                                      graph{$key}.valueField = '". $serial['valueField'] ."';
                                      graph{$key}.type       = '" . $serial['type'] .  "';";
-                    if(count($serial['options']) == 0)
+                    //Add graph properties from GraphType
+                    foreach($this->graphProperties as $graphTag => $graphOption)
                     {
-                        //Add graph properties from GraphType
-                        foreach($this->graphProperties as $graphTag => $graphOption)
-                        {
-                            $javascript .= "graph{$key}." . $graphTag . " = " . $graphOption . ";";
-                        }
+                        $javascript .= "graph{$key}." . $graphTag . " = " . $graphOption . ";";
                     }
-                    else
+                    if(count($serial['options']) > 0)
                     {
                         //Add graph properties from option passed
                         foreach($serial['options'] as $graphTag => $graphOption)
@@ -431,6 +455,17 @@
                     $javascript .= "valueAxis." . $tag . " = " . $option . ";";
                 }
                 $javascript .= "chart.addValueAxis(valueAxis);";
+                //Add legend to graph
+                if (count($this->legendProperties) > 0)
+                {
+                    //Add legend properties from GraphType
+                    $javascript .= "var legend = new AmCharts.AmLegend();";
+                    foreach($this->legendProperties as $tag => $option)
+                    {
+                        $javascript .= "legend." . $tag . " = " . $option . ";";
+                    }
+                    $javascript .= "chart.addLegend(legend);";
+                }
             }
             //Write chart
             $javascript .= "chart.write('chartContainer{$this->id}');
