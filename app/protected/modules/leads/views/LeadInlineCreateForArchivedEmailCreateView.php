@@ -164,7 +164,7 @@
                     $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
                     $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
-                                          text: '" . Yii::t('Default', 'Created LeadsModulePluralLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
+                                          text: '" . Yii::t('Default', 'Created LeadsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
                                           permanent: false,
                                           showIcon: true,
                                        })}"
