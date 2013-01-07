@@ -34,6 +34,7 @@
         public $bindRegisteredDomain;
         public $bindPassword;
         public $baseDomain;
+        public $testConnection;
 
         public function rules()
         {
@@ -44,10 +45,13 @@
                 array('port',                              'required'),
                 array('port',                              'type',      'type' => 'integer'),
                 array('port',                              'numerical', 'min'  => 1),
+                array('bindRegisteredDomain',              'required'),
                 array('bindRegisteredDomain',              'type',      'type' => 'string'),
                 array('bindRegisteredDomain',              'length',    'min'  => 1, 'max' => 64),
+                array('bindPassword',                      'required'),
                 array('bindPassword',                      'type',      'type' => 'string'),
                 array('bindPassword',                      'length',    'min'  => 1, 'max' => 64),
+                array('baseDomain',                        'required'),
                 array('baseDomain',                        'type',      'type' => 'string'),
                 array('baseDomain',                        'length',    'min'  => 1, 'max' => 64),
             );
@@ -60,7 +64,7 @@
                 'port'                                 => Yii::t('Default', 'Port'),
                 'bindRegisteredDomain'                 => Yii::t('Default', 'Username'),
                 'bindPassword'                         => Yii::t('Default', 'Password'),
-                'baseDomain'                           => Yii::t('Default', 'Domain')
+                'baseDomain'                           => Yii::t('Default', 'Base Domain')
             );
         }
     }

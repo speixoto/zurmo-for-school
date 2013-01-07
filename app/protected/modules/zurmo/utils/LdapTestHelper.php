@@ -24,36 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LdapConfigurationMenuView extends ConfigureModulesMenuView
+    class LdapTestHelper
     {
-        public function getTitle()
-        {
-            return Yii::t('Default', 'Authentication Configuration');
-        }
 
-        protected function getCategoryData()
-        {
-            $categories = array();
-            $module = new ZurmoModule('ZurmoModule', false);            
-            $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser('ZurmoModule');
-            if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
-            {
-                foreach ($moduleSubMenuItems as $subMenuItem)
-                    {
-                        if (!empty($subMenuItem['category']))
-                        {
-                            assert('isset($subMenuItem["titleLabel"])');
-                            assert('isset($subMenuItem["descriptionLabel"])');
-                            assert('isset($subMenuItem["route"])');
-                            $categories[$subMenuItem['category']][] = $subMenuItem;
-                        }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-                    }
-            }
-            return $categories;
+        /**
+         * Send a connection Request.  Can use to determine if the Ldap settings are configured correctly.
+         * @param ZurmoAuthenticationHelper $zurmoAuthenticationHelper
+         * @param server $host
+         * @param username $bindRegisteredDomain
+		 * @param password $bindPassword, 
+		 * @param base domain $baseDomain		 
+         */
+        public static function testConnectionLdap(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
+        {			
+			$server = $host;
+			$admin  = $bindRegisteredDomain;
+			$passwd = $bindPassword;
+			$ldap_conn=ldap_connect($server);  // assuming the LDAP server is on this host
+			ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+            ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
+			if ($ldap_conn) {
+			// bind with appropriate dn to give update access
+			$r=ldap_bind($ldap_conn, $admin, $passwd);
+			if(!$r) die("ldap_bind failed<br>");
+				echo "ldap_bind success";
+			ldap_close($ldap_conn);
+			} else {
+				echo "Unable to connect to LDAP server"; 
+				}					
         }
     }
-?>

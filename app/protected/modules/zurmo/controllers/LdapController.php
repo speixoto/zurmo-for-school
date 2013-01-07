@@ -35,13 +35,6 @@
             echo 'LDAP TEST';
         } 
         
-        public function actionConfigurationEdit()
-        {
-            $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
-                                                  makeStandardViewForCurrentUser($this, new LdapConfigurationListView()));
-            echo $view->render();
-        }
-        
         public function actionConfigurationEditLdap()
         {
             $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
@@ -58,7 +51,7 @@
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
-            $editView = new EmailSmtpConfigurationEditAndDetailsView(
+            $editView = new LdapConfigurationEditAndDetailsView(
                                     'Edit',
                                     $this->getId(),
                                     $this->getModule()->getId(),
@@ -68,5 +61,57 @@
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
+        
+        public function actionTestConnection()
+        {
+            $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $postVariableName   = get_class($configurationForm);
+            if (isset($_POST[$postVariableName]) || (isset($_POST['LdapConfigurationForm'])))
+            {
+                if (isset($_POST[$postVariableName]))
+                {
+                    $configurationForm->setAttributes($_POST[$postVariableName]);
+                }
+                else
+                {
+                    $configurationForm->host                  = $_POST['LdapConfigurationForm']['ldapHost'];
+                    $configurationForm->port                  = $_POST['LdapConfigurationForm']['ldapPort'];
+                    $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['ldapBindRegisteredDomain'];
+                    $configurationForm->bindPassword          = $_POST['LdapConfigurationForm']['ldapBindPassword'];
+                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapBaseDomain'];                    
+                }
+                if ($configurationForm->port != null)
+                {
+                    $authenticationHelper = new ZurmoAuthenticationHelper;
+                    $authenticationHelper->ldapHost     = $configurationForm->host;
+                    $authenticationHelper->ldapPort     = $configurationForm->port;
+                    $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
+                    $authenticationHelper->ldapBindPassword = $configurationForm->bindPassword;
+                    $authenticationHelper->ldapBaseDomain = $configurationForm->baseDomain;
+                    
+                    $host = $configurationForm->host;             
+                    $port = $configurationForm->port;                
+                    $bindRegisteredDomain = $configurationForm->bindRegisteredDomain;
+                    $bindPassword = $configurationForm->bindPassword;         
+                    $baseDomain = $configurationForm->baseDomain;           
+                    $testConnection = LdapTestHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                                                                      $bindRegisteredDomain,$bindPassword,$baseDomain);  
+                    $messageContent = Yii::t('Default', 'A test email address must be entered before you can send a test email.') . "\n";                                                                      
+                }
+                else
+                {
+                    $messageContent = Yii::t('Default', 'A test email address must be entered before you can send a test email.') . "\n";
+                }
+                Yii::app()->getClientScript()->setToAjaxMode();
+                $messageView = new TestEmailMessageView($messageContent);
+                $view = new ModalView($this, $messageView);
+                echo $view->render();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
+	
 ?>

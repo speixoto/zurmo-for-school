@@ -36,12 +36,11 @@
         public static function makeFormFromGlobalConfiguration()
         {
             $form                                    = new LdapConfigurationForm();
-            $form->host                              = Yii::app()->zurmoLdapHelper->ldapHost;
-            $form->port                              = Yii::app()->zurmoLdapHelper->ldapPort;
-            $form->bindRegisteredDomain              = Yii::app()->zurmoLdapHelper
-                                                       ->ldapBindRegisteredDomain;
-            $form->bindPassword                      = Yii::app()->zurmoLdapHelper->ldapBindPassword;
-            $form->baseDomain                        = Yii::app()->zurmoLdapHelper->ldapBaseDomain;            
+            $form->host                              = Yii::app()->authenticationHelper->ldapHost;
+            $form->port                              = Yii::app()->authenticationHelper->ldapPort;
+            $form->bindRegisteredDomain              = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;            
+            $form->bindPassword                      = Yii::app()->authenticationHelper->ldapBindPassword;
+            $form->baseDomain                        = Yii::app()->authenticationHelper->ldapBaseDomain;  
             return $form;
         }
 
@@ -50,11 +49,11 @@
          */
         public static function setConfigurationFromForm(LdapConfigurationForm $form)
         {
-            Yii::app()->LdapHelper->outboundHost      = $form->host;
-            Yii::app()->LdapHelper->outboundPort      = $form->port;
-            Yii::app()->LdapHelper->outboundUsername  = $form->bindRegisteredDomain;
-            Yii::app()->LdapHelper->outboundPassword  = $form->bindPassword;
-            Yii::app()->LdapHelper->outboundSecurity  = $form->baseDomain;
+            Yii::app()->authenticationHelper->ldapHost      = $form->host;
+            Yii::app()->authenticationHelper->ldapPort      = $form->port;
+            Yii::app()->authenticationHelper->ldapBindRegisteredDomain  = $form->bindRegisteredDomain;
+            Yii::app()->authenticationHelper->ldapBindPassword  = $form->bindPassword;
+            Yii::app()->authenticationHelper->ldapBaseDomain  = $form->baseDomain;
        }
     }
 ?>

@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Component for working with Ldap Connection
+     * Component for working with authentication configuration
      */
-    class LdapHelper extends CApplicationComponent
+    class ZurmoAuthenticationHelper extends CApplicationComponent
     {
         /**
          * Ldap server host name. Example someDomain.com
@@ -42,19 +42,19 @@
         public $ldapPort = 389;
 
         /**
-         * Outbound mail server username. Not always required, depends on the setup.
+         * Ldap server username. 
          * @var string
          */
         public $ldapBindRegisteredDomain;
 
         /**
-         * Outbound mail server password. Not always required, depends on the setup.
+         * Ldap server password. 
          * @var string
          */
         public $ldapBindPassword;
 
         /**
-         * Outbound mail server security. Options: null, 'ssl', 'tls'
+         * Ldap server domain name. Options: null, 'ssl', 'tls'
          * @var string
          */
         public $ldapBaseDomain;
@@ -62,7 +62,7 @@
 
         /**
          * Contains array of settings to load during initialization from the configuration table.
-         * @see loadOutboundSettings
+         * @see loadLdapSettings
          * @var array
          */
         protected $settingsToLoad = array(
@@ -75,7 +75,7 @@
 
 
         /**
-         * Called once per page load, will load up outbound settings from the database if available.
+         * Called once per page load, will load up ldap settings from the database if available.
          * (non-PHPdoc)
          * @see CApplicationComponent::init()
          */
@@ -86,7 +86,10 @@
 
         protected function loadLdapSettings()
         {
-            echo 'Ldap Settings';
+            foreach ($this->settingsToLoad as $keyName)
+            {
+                ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+            }           
         }  
     }
 ?>
