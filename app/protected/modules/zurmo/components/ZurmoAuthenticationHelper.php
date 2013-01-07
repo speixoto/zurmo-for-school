@@ -54,7 +54,7 @@
         public $ldapBindPassword;
 
         /**
-         * Ldap server domain name. Options: null, 'ssl', 'tls'
+         * Ldap server domain name. 
          * @var string
          */
         public $ldapBaseDomain;
@@ -88,8 +88,22 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
-            }           
-        }  
+                if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $keyName))
+                {
+                    $this->$keyName = $keyValue;
+                }
+            }
+        }
+
+        /**
+         * Set ldap settings into the database.
+         */
+        public function setLdapSettings()
+        {
+            foreach ($this->settingsToLoad as $keyName)
+            {                
+                ZurmoConfigurationUtil::setByModuleName('ZurmoModule', $keyName, $this->$keyName);
+            }
+        }        
     }
 ?>

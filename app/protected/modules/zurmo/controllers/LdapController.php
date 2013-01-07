@@ -29,19 +29,14 @@
      *
      */
     class ZurmoLdapController extends ZurmoModuleController
-    {
-        public function actionIndex()
-        {
-            echo 'LDAP TEST';
-        } 
-        
+    {       
         public function actionConfigurationEditLdap()
         {
             $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
-            $postVariableName   = get_class($configurationForm);
+            $postVariableName   = get_class($configurationForm);            
             if (isset($_POST[$postVariableName]))
-            {
-                $configurationForm->setAttributes($_POST[$postVariableName]);
+            {                                  
+                $configurationForm->setAttributes($_POST[$postVariableName]);                
                 if ($configurationForm->validate())
                 {
                     LdapConfigurationFormAdapter::setConfigurationFromForm($configurationForm);

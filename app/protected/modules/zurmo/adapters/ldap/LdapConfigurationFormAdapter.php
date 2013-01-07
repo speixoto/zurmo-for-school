@@ -45,15 +45,17 @@
         }
 
         /**
-         * Given a EmailSmtpConfigurationForm, save the configuration global values.
+         * Given a LdapConfigurationForm, save the configuration global values.
          */
         public static function setConfigurationFromForm(LdapConfigurationForm $form)
         {
+             
             Yii::app()->authenticationHelper->ldapHost      = $form->host;
             Yii::app()->authenticationHelper->ldapPort      = $form->port;
             Yii::app()->authenticationHelper->ldapBindRegisteredDomain  = $form->bindRegisteredDomain;
             Yii::app()->authenticationHelper->ldapBindPassword  = $form->bindPassword;
             Yii::app()->authenticationHelper->ldapBaseDomain  = $form->baseDomain;
+            Yii::app()->authenticationHelper->setLdapSettings();
        }
     }
 ?>

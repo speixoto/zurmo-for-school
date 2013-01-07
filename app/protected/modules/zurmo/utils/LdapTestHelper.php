@@ -40,18 +40,18 @@
 			$server = $host;
 			$user  = $bindRegisteredDomain;
 			$passwd = $bindPassword;
-			// checking the LDAP server is on this host
 			
-			
-			
-			
-			$username = 'cn='.$user.','.$baseDomain; //for admin access			
-			//$username = 'uid='.$user.','.'ou=People'.','.$baseDomain; //for user access
-
-			if (@ldap_connect($server,$port)) {
-			    $ldap_conn = ldap_connect($server,$port);
-			    ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
-                ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);				
+            // checking the LDAP server is on this host
+            $ldap_conn = ldap_connect($server,$port)  or die("Could not connect to $server");
+            ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+            ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
+                
+            //checking user type
+            $username = 'cn='.$user.','.$baseDomain; //for admin access
+            //$username = 'uid='.$user.','.'ou=People'.','.$baseDomain; //for user access
+            
+			if ($ldap_conn) {
+			    				
 				// bind with appropriate dn to give update access
 				if (@ldap_bind($ldap_conn, $username, $passwd))  
 				{
