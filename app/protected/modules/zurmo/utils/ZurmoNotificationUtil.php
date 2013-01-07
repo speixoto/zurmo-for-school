@@ -48,7 +48,25 @@
                     }
                 },
                 requestAutorization:function() {
-                    window.webkitNotifications.requestPermission();
+                    if (this.isSupported)
+                    {
+                        if (window.webkitNotifications.checkPermission() == 1)
+                        {
+                            window.webkitNotifications.requestPermission();
+                        }
+                        else if (window.webkitNotifications.checkPermission() == 2)
+                        {
+                            alert('" . Yii::t('Default', 'You have denied desktop notifications. Check your browser settings to change it.') . "');
+                        }
+                        else
+                        {
+                            alert('" . Yii::t('Default', 'You have already enable desktop notifications.') . "');
+                        }
+                    }
+                    else
+                    {
+                        alert('" . Yii::t('Default', 'Sorry! Your browser does not support desktop notifications.') . "');
+                    }
                 }
             };
             ";
