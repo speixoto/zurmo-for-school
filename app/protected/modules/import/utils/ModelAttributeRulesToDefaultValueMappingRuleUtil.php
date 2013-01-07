@@ -66,6 +66,12 @@
                                 }
                                 $rule[0] = $ruleAttributeName;
                                 $applicableRules[] = $rule;
+                            case 'numerical':
+                                if (isset($rule['precision']))
+                                {
+                                    $rule[1] = 'RedBeanModelNumberValidator';
+                                }
+                                $applicableRules[] = $rule;
                             case 'default':
                             case 'safe':
                                 continue;
