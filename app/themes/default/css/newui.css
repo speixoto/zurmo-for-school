@@ -14542,11 +14542,25 @@ a.close-ModalGameNotification.simple-select {
 }
 .conversationStatusChangeArea {
   margin: 15px 0;
+  padding: 5px;
+  background: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
 }
 .conversationStatusChangeArea > span {
   float: left;
+  margin-right: 15px;
+  padding: 0 0;
+}
+.conversationStatusChangeArea label {
+  display: inline !important;
+  margin-right: 10px;
+}
+.conversationStatusChangeArea label input {
   margin-right: 5px;
-  padding: 3px 0;
 }
 .switch-state {
   line-height: 1 !important;

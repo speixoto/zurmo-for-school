@@ -53,7 +53,7 @@
         public static function renderStatusTextAndActionArea(Conversation $conversation)
         {
             $statusAction      = self::renderStatusActionContent($conversation, self::getStatusChangeDivId($conversation->id));
-            $content = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Set Conversation Status')) . $statusAction;
+            $content = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Status')) . $statusAction;
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
                                                'class' => 'conversationStatusChangeArea clearfix'),
                                                 $content);
@@ -67,8 +67,8 @@
         public static function renderStatusActionContent(Conversation $conversation, $updateDivId)
         {
             assert('is_string($updateDivId)');
-            return self::renderAjaxStatusActionChangeLink(false, $conversation->id, Yii::t('Default', 'Open'), $updateDivId) .
-                   self::renderAjaxStatusActionChangeLink(true, $conversation->id, Yii::t('Default', 'Closed'), $updateDivId);
+            return self::renderAjaxStatusActionChangeLink(false, $conversation->id, Yii::t('Default', 'Open'), $updateDivId); 
+                   //self::renderAjaxStatusActionChangeLink(true, $conversation->id, Yii::t('Default', 'Closed'), $updateDivId);
         }
 
         protected static function renderAjaxStatusActionChangeLink($newStatus, $conversationId, $label, $updateDivId)
@@ -93,7 +93,8 @@
                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
                                'namespace' => 'update',
                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit"); attachLoadingSpinner($(this).attr("id"), true);'));
-            return $link;
+            //return $link;
+            return '<label><input type="radio">Open</label><label><input type="radio">Close</label>';
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
