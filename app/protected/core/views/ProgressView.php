@@ -82,10 +82,10 @@
          */
         public function renderRefreshJSONScript()
         {
-            return CJSON::encode($this->renderRefresScript());
+            return CJSON::encode($this->renderRefreshScript());
         }
 
-        protected function renderRefresScript()
+        protected function renderRefreshScript()
         {
             $value = $this->getProgressValue();
             if ($value < 100)

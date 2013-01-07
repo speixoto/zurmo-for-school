@@ -591,6 +591,27 @@ table.configuration-list td:last-child a.loading .z-icon,
   color: #fff !important;
   text-decoration: underline;
 }
+.z-action-link {
+  font-size: 11px;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+  text-decoration: none;
+}
+.z-action-link:hover {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  text-decoration: none;
+}
+.z-action-link-active {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
 .unstyle-panel,
 #NoteInlineEditForPortletView .wide.form,
 #inline-edit-form {
@@ -701,7 +722,8 @@ body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
-body.blue #clear-search-linkmodal {
+body.blue #clear-search-linkmodal,
+body.blue .z-action-link {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1230,7 +1252,8 @@ body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
-body.brown #clear-search-linkmodal {
+body.brown #clear-search-linkmodal,
+body.brown .z-action-link {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1759,7 +1782,8 @@ body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
-body.lime #clear-search-linkmodal {
+body.lime #clear-search-linkmodal,
+body.lime .z-action-link {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -2288,7 +2312,8 @@ body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
-body.cherry #clear-search-linkmodal {
+body.cherry #clear-search-linkmodal,
+body.cherry .z-action-link {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2817,7 +2842,8 @@ body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
-body.turquoise #clear-search-linkmodal {
+body.turquoise #clear-search-linkmodal,
+body.turquoise .z-action-link {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -3346,7 +3372,8 @@ body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
-body.violet #clear-search-linkmodal {
+body.violet #clear-search-linkmodal,
+body.violet .z-action-link {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -3875,7 +3902,8 @@ body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
-body.honey #clear-search-linkmodal {
+body.honey #clear-search-linkmodal,
+body.honey .z-action-link {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -4974,6 +5002,9 @@ section {
   display: block !important;
   left: auto;
   right: 2px;
+}
+body > .ui-autocomplete {
+  width: 335px;
 }
 #globalSearchInput {
   font-style: italic;
@@ -7511,7 +7542,7 @@ div.wide.form label.hasCheckBox {
   z-index: 0;
 }
 #right-side-edit-view-panel .ui-autocomplete {
-  width: auto !important;
+  width: auto;
 }
 #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
@@ -7577,7 +7608,7 @@ div.wide.form label.hasCheckBox {
 .has-model-select a:hover:before {
   color: #525252 !important;
 }
-.has-model-select a span {
+.has-model-select a .model-select-icon {
   width: 100%;
   height: 100%;
   line-height: 24px;
@@ -7585,14 +7616,20 @@ div.wide.form label.hasCheckBox {
   text-align: center;
   vertical-align: center;
 }
-.has-model-select a span:before {
+.has-model-select a .model-select-icon:before {
   content: "Y";
   font-weight: normal;
-  font-size: 24px;
+  font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #8b8b8b;
   text-align: center;
-  vertical-align: bottom;
+}
+.has-model-select .z-spinner {
+  z-index: 999999;
+  position: absolute;
+  top: 3px;
+  left: 5px;
+  display: block !important;
 }
 .has-date-select {
   clear: left;
@@ -9117,12 +9154,12 @@ div.hasHalfs .twoThirds {
 /*=Auto Complete*/
 .ui-autocomplete {
   margin-top: 2px;
-  width: 335px;
+  width: auto;
   padding-top: 2px;
   padding-bottom: 2px;
   text-align: left;
   z-index: 9999999;
-  position: relative;
+  position: absolute;
 }
 .ui-autocomplete li {
   list-style: none;
@@ -14899,7 +14936,7 @@ a.user-link {
   -o-box-shadow: none !important;
   -ms-box-shadow: none !important;
   box-shadow: none !important;
-  padding-bottom: 15px;
+  padding-bottom: 0;
   margin-bottom: 0;
 }
 .email-archive-item .wide.form > form {
@@ -14910,6 +14947,9 @@ a.user-link {
 }
 .email-archive-item .overlay-label-field {
   padding-bottom: 0;
+}
+.email-archive-item .matching-actions-and-content > div {
+  margin-top: 15px;
 }
 .email-archive-item .matching-actions-and-content form {
   padding-bottom: 0;
@@ -14944,7 +14984,12 @@ a.user-link {
 .email-archive-item .email-from strong,
 .email-archive-item .email-to strong {
   font-weight: bold;
-  color: #999;
+}
+.email-archive-item .email-from,
+.email-archive-item .email-to,
+.email-archive-item .email-subject {
+  line-height: 140%;
+  margin-bottom: 2px;
 }
 .email-archive-item .beforeOptOutCheckBox + .hasCheckBox {
   left: 0 !important;
@@ -14958,18 +15003,10 @@ a.user-link {
   margin-right: 0;
 }
 .email-matching-actions {
-  margin: 15px 0 15px 0;
+  margin: 5px 0 0 0 !important;
   display: block;
 }
 .email-matching-actions a {
-  padding: 2px 4px;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  color: #fff !important;
-  font-size: 11px;
   text-decoration: none;
 }
 .email-matching-show-more,
@@ -14980,9 +15017,6 @@ a.user-link {
 .email-matching-show-less {
   padding-bottom: 10px;
   border-bottom: 1px solid #ccc;
-}
-.matching-actions-and-content {
-  border-top: 1px solid #fff;
 }
 .icon-down-arrow {
   font-weight: normal;
@@ -15028,6 +15062,22 @@ a.user-link {
   -o-box-shadow: inset 0 0 0 2px #ffffff;
   -ms-box-shadow: inset 0 0 0 2px #ffffff;
   box-shadow: inset 0 0 0 2px #ffffff;
+}
+.active-panel {
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff;
+  -moz-box-shadow: inset 0 0 0 2px #ffffff;
+  -o-box-shadow: inset 0 0 0 2px #ffffff;
+  -ms-box-shadow: inset 0 0 0 2px #ffffff;
+  box-shadow: inset 0 0 0 2px #ffffff;
+  background-color: #f5f5f5 ;
+  background-repeat: no-repeat ;
+  background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#ffffff), color-stop(80%, #f5f5f5), to(#f5f5f5)) ;
+  background-image: -webkit-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -ms-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: -o-linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
 /*Email Compose*/
 #CreateEmailMessageModalEditView .panel {

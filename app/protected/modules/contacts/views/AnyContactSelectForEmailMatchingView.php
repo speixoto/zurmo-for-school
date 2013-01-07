@@ -147,15 +147,13 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('anyContactSelectFormCollapseActions', "
-                        $('.anyContactCancel').each(function()
-                        {
-                                 $('.anyContactCancel').live('click', function()
-                                 {
-                                 $(this).parentsUntil('.email-archive-item').find('.AnyContactSelectForEmailMatchingView').hide();
-                                 $(this).parentsUntil('.email-archive-item').find('.select-contact-link').addClass('z-link');
-                                  });
-                        });
-            ");
+                        $('.anyContactCancel').each(function(){
+                            $('.anyContactCancel').live('click', function(){
+                                $(this).parentsUntil('.email-archive-item').find('.AnyContactSelectForEmailMatchingView').hide();
+                                $(this).closest('.email-archive-item').closest('td').removeClass('active-panel')
+                                .find('.z-action-link-active').removeClass('z-action-link-active');
+                            });
+                        });");
         }
         protected function getFormId()
         {
