@@ -176,7 +176,7 @@
                     $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
                     $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
-                                          text: '" . Yii::t('Default', 'Selected Contact successfully') . "',
+                                          text: '" . Yii::t('Default', 'Selected successfully') . "',
                                           permanent: false,
                                           showIcon: true,
                                        })}",
