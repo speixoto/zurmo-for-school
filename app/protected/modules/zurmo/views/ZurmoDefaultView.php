@@ -36,6 +36,7 @@
 
         protected function renderContent()
         {
+            ZurmoNotificationUtil::renderDesktopNotificationsScript();
             ZurmoNotificationUtil::renderAutoUpdaterScript();
             return $this->verticalGridView->render();
         }

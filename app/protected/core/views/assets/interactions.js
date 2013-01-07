@@ -711,23 +711,3 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
     };
 
 }(jQuery));
-
- var desktopNotifications = {
-    notify:function(image,title,body) {
-        if (window.webkitNotifications.checkPermission() == 0) {
-            window.webkitNotifications.createNotification(image, title, body).show();
-            return true;
-        }
-        return false;
-    },
-    isSupported:function() {
-        if (window.webkitNotifications != 'undefined') {
-            return true
-        } else {
-            return false
-        }
-    },
-    requestAutorization:function() {
-        window.webkitNotifications.requestPermission();
-    }
-};
