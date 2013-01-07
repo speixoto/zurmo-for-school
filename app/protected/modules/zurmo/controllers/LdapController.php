@@ -96,11 +96,11 @@
                     $baseDomain = $configurationForm->baseDomain;           
                     $testConnection = LdapTestHelper::testConnectionLdap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
-                    $messageContent = Yii::t('Default', 'A test email address must be entered before you can send a test email.') . "\n";                                                                      
+                    $messageContent = Yii::t('Default', $testConnection) . "\n";                                                                      
                 }
                 else
                 {
-                    $messageContent = Yii::t('Default', 'A test email address must be entered before you can send a test email.') . "\n";
+                    $messageContent = Yii::t('Default', 'Port no is required') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
                 $messageView = new TestEmailMessageView($messageContent);
