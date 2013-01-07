@@ -1,4 +1,5 @@
 <?php
+
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
@@ -26,7 +27,6 @@
 
     class LdapTestHelper
     {
-
         /**
          * Send a connection Request.  Can use to determine if the Ldap settings are configured correctly.
          * @param ZurmoAuthenticationHelper $zurmoAuthenticationHelper
@@ -38,19 +38,33 @@
         public static function testConnectionLdap(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
         {			
 			$server = $host;
-			$admin  = $bindRegisteredDomain;
+			$user  = $bindRegisteredDomain;
 			$passwd = $bindPassword;
-			$ldap_conn=ldap_connect($server);  // assuming the LDAP server is on this host
-			ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
-            ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
-			if ($ldap_conn) {
-			// bind with appropriate dn to give update access
-			$r=ldap_bind($ldap_conn, $admin, $passwd);
-			if(!$r) die("ldap_bind failed<br>");
-				echo "ldap_bind success";
-			ldap_close($ldap_conn);
-			} else {
+			// checking the LDAP server is on this host
+			
+			
+			
+			
+			$username = 'cn='.$user.','.$baseDomain; //for admin access			
+			//$username = 'uid='.$user.','.'ou=People'.','.$baseDomain; //for user access
+
+			if (@ldap_connect($server,$port)) {
+			    $ldap_conn = ldap_connect($server,$port);
+			    ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+                ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);				
+				// bind with appropriate dn to give update access
+				if (@ldap_bind($ldap_conn, $username, $passwd))  
+				{
+					echo 'Ldap bind Success';
+				} 
+				else 
+				{ 
+					echo "Error:" . ldap_error($ldap_conn); 
+				}                			   
+			}
+			else 
+			{ 
 				echo "Unable to connect to LDAP server"; 
-				}					
+	        }					
         }
     }
