@@ -25,33 +25,39 @@
      ********************************************************************************/
 
     /**
-    * Test model for ModelToArrayAdapter: ModelToArrayAdapterTestItem
-    */
-    class ModelToArrayAdapterTestItem2 extends OwnedSecurableItem
+     * Tests various scenarios to help with performance tuning
+     */
+    class AccountPerformanceTuningTest extends ZurmoBaseTest
     {
-        public static function getByName($name)
+        public static function setUpBeforeClass()
         {
-            return self::getByNameOrEquivalent('name', $name);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function getDefaultMetadata()
+        public function setUp()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name',
-                ),
-                'rules' => array(
-                    array('name',  'type',   'type' => 'string'),
-                    array('name',  'length', 'max' => 32),
-                ),
-            );
-            return $metadata;
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public static function isTypeDeletable()
+        public function testModelInstantiation()
         {
-            return true;
+            $allTime = 0;
+            for($j = 0; $j < 10; $j++)
+            {
+                $startTime = microtime(true);
+                for($i = 0; $i < 500; $i++)
+                {
+                    $account = new Account();
+                }
+                $endTime   = microtime(true);
+                $totalTime = round($endTime - $startTime, 4);
+                $allTime   = $allTime + $totalTime;
+                echo 'run #' . $j . ' total time : ' . $totalTime . "\n";
+            }
+            echo 'all time is: ' . $allTime . "\n";
         }
     }
-?>
+
+
