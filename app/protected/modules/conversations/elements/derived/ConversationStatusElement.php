@@ -53,9 +53,9 @@
         public static function renderStatusTextAndActionArea(Conversation $conversation)
         {
             $statusAction      = self::renderStatusActionContent($conversation, self::getStatusChangeDivId($conversation->id));
-            $content = $statusAction;
+            $content = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Set Conversation Status')) . $statusAction;
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
-                                               'class' => 'conversationStatusChangeArea clearfix switch-2-states'),
+                                               'class' => 'conversationStatusChangeArea clearfix'),
                                                 $content);
         }
 
@@ -67,16 +67,8 @@
         public static function renderStatusActionContent(Conversation $conversation, $updateDivId)
         {
             assert('is_string($updateDivId)');
-            if ($conversation->isClosed)
-            {
-                return self::renderAjaxStatusActionChangeLink(false, $conversation->id,
-                                                              Yii::t('Default', 'Re-open'), $updateDivId);
-            }
-            else
-            {
-                return self::renderAjaxStatusActionChangeLink(true, $conversation->id,
-                                                              Yii::t('Default', 'Close'), $updateDivId);
-            }
+            return self::renderAjaxStatusActionChangeLink(false, $conversation->id, Yii::t('Default', 'Open'), $updateDivId) .
+                   self::renderAjaxStatusActionChangeLink(true, $conversation->id, Yii::t('Default', 'Closed'), $updateDivId);
         }
 
         protected static function renderAjaxStatusActionChangeLink($newStatus, $conversationId, $label, $updateDivId)
@@ -89,25 +81,19 @@
             $aContent  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
             $aContent .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
+            $statusClass =  '';
+            if ($newStatus)
+            {
+                $statusClass =  'current-status';
+            }   
             $link = ZurmoHtml::ajaxLink($aContent, $url,
                         array('type'      => 'GET', 'success' => self::resolveOnSucessSctipt($updateDivId) ),
                         array('id'        => 'ConversationStatusChange',
-                               'class'     => 'conversation-change-status-link z-button attachLoading switch-state active clearfix ' .
+                               'class'     => 'conversation-change-status-link clearfix switch-state ' . $statusClass . ' ' . 
                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
                                'namespace' => 'update',
                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit"); attachLoadingSpinner($(this).attr("id"), true);'));
-            
-            $aContent2  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent2 .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent2 .= ZurmoHtml::tag('span', array('class' => 'z-label'), 'Open');
-            $link2 = ZurmoHtml::ajaxLink($aContent2, $url,
-                        array('type'      => 'GET', 'success' => self::resolveOnSucessSctipt($updateDivId) ),
-                        array('id'        => 'ConversationStatusChange',
-                               'class'     => 'conversation-change-status-link z-button attachLoading switch-state disabled clearfix -' .
-                                               self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
-                               'namespace' => 'update',
-                               'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit"); attachLoadingSpinner($(this).attr("id"), true);'));
-            return $link.$link2;
+            return $link;
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
@@ -119,7 +105,7 @@
             }
             else
             {
-                return 'action-reopen';
+                return 'action-open';
             }
         }
 
