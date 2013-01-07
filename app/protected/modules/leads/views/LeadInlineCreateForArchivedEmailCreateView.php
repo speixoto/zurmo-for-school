@@ -151,5 +151,25 @@
                             });
                         });");
         }
+
+        protected function renderConfigSaveAjax($formName)
+        {
+            // Begin Not Coding Standard
+            return ZurmoHtml::ajax(array(
+                    'type' => 'POST',
+                    'data' => 'js:$("#' . $formName . '").serialize()',
+                    'url'  =>  $this->getValidateAndSaveUrl(),
+                    'update' => '#' . $this->uniquePageId,
+                    'complete' => "function(XMLHttpRequest, textStatus){
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
+                    $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                       {
+                                          text: '" . Yii::t('Default', 'Created Lead successfully') . "',
+                                          permanent: false,
+                                          showIcon: true,
+                                       })}"
+                ));
+            // End Not Coding Standard
+        }
     }
 ?>
