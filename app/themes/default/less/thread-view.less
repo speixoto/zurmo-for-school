@@ -86,6 +86,116 @@
     }
 }
 
+/*Sidebar*/
+.thred-info{
+    h3{
+	border-top:1px solid #fff;
+	padding-top:10px;
+    }
+}
+
+.thred-details{
+    margin:15px 0 0 0 !important;
+    width: 100%;
+    padding-bottom: 5px;
+    
+    border-bottom:1px solid #ccc;
+    border-top:1px solid #ccc;
+    
+    tr:first-child{
+	td, th{
+	    padding-top:10px;
+	    border-top:1px solid #fff;
+	}
+    }
+    
+    td + th{
+	padding-left:0 !important;
+    }
+    th, td{
+	text-align: left;
+	padding:5px 0;
+    }
+    th{
+	color: #545454;
+    }
+    td{
+	font-weight: normal;
+	padding-left: 15px;
+    }
+    .attachments{
+	margin: 0;
+    }
+}
+
+.switch-states{
+    ++.border-box;
+    line-height: 1;
+    width:100%;
+    .radius(3px);
+    padding:3px;
+    background: #ddd;
+    //#gradient > .vertical( #fff, darken(#fff, 5%) ) !important;
+}
+
+.switch-2-states{
+    ++.switch-states;
+    .switch-state{
+	width:50%;
+    }
+}
+.switch-3-states{
+    ++.switch-states;
+    .switch-state{
+	width:33%;
+    }
+}
+.switch-4-states{
+    ++.switch-states;
+    .switch-state{
+	width:25%;
+    }
+}
+
+.switch-state{
+    line-height: 1 !important;
+    margin: 0 !important;
+    float: left;
+    .b-shadow(none) !important;
+    .z-label{
+	padding: 0;
+	width: 100%;
+	text-align: center;
+    }
+    &.disabled{
+	border: none;
+	span.z-label{
+	    //.opacity(25);
+	    color: #545454 !important;
+	    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 1) ) !important;
+	    background: #ddd !important;
+	    
+	    //#gradient > .vertical( darken(#ccc, 10%), #ccc ) !important;
+	    //#gradient > .vertical( #fff, darken(#fff, 5%) ) !important;
+	}
+    }
+}
+.switch-state:first-child,
+.switch-state:first-child .z-label{
+    .radius(3px 0 0 3px);
+    border-right:none !important;
+}
+.switch-state:last-child,
+.switch-state:last-child .z-label{
+    .radius(0 3px 3px 0);
+    border-left:none !important;
+}
+
+
+
+
+/*End sidebar*/
+
 #ModelDetailsSummaryView,
 #CommentList,
 .CommentList{
@@ -218,14 +328,17 @@
 .attachments{
     margin-top:5px;
     list-style: none;
+    line-height: 140%;
     li{
         margin-bottom:2px;
+	padding-left:15px;
     }
 }
 
 .icon-attachment{
     .symbly(18px);
-    margin-right:4px;
+    float: left;
+    margin-left: -15px;
     &:before{
         content:"H";
     }

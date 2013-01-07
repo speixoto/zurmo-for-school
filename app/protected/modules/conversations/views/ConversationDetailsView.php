@@ -54,11 +54,10 @@
         protected function renderRightSideContent($form = null)
         {
             assert('$form == null');
-            $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
+            $content  = '<div id="right-side-edit-view-panel" class="thred-info"><div class="buffer"><div>';
+            $content .= $this->renderConversationRelatedToAndAttachmentsContent();
             $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
-            $content .= '</div></div><div class="buffer"><div>';
-            $content .= $this->renderConversationRelatedToAndAttachmentsContent();
             $content .= '</div></div></div>';
             return $content;
         }
@@ -101,7 +100,7 @@
                 $element  = new FilesElement($this->model, 'null');
                 $contentForTable .= $element->render();
             }
-            $content .= ZurmoHtml::tag('table', array(), $contentForTable);
+            $content .= ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
             return $content;
         }
 

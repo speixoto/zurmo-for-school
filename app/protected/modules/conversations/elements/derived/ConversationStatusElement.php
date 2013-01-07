@@ -54,7 +54,9 @@
         {
             $statusAction      = self::renderStatusActionContent($conversation, self::getStatusChangeDivId($conversation->id));
             $content = $statusAction;
-            return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id), 'class' => 'conversationStatusChangeArea'), $content);
+            return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
+                                               'class' => 'conversationStatusChangeArea clearfix switch-2-states'),
+                                                $content);
         }
 
         public static function getStatusChangeDivId($conversationId)
@@ -83,21 +85,29 @@
             assert('is_int($conversationId)');
             assert('is_string($label)');
             assert('is_string($updateDivId)');
-            $url     =   Yii::app()->createUrl('conversations/default/ajaxChangeStatus',
-                                               array('id' => $conversationId));
-            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
-            return       ZurmoHtml::ajaxLink($aContent, $url,
-                         array('type'       => 'GET',
-                               'success'    => self::resolveOnSucessSctipt($updateDivId)
-                             ),
-                         array('id'        => 'ConversationStatusChange',
-                               'class'     => 'conversation-change-status-link attachLoading z-button ' .
+            $url       =   Yii::app()->createUrl('conversations/default/ajaxChangeStatus', array('id' => $conversationId));
+            $aContent  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
+            $link = ZurmoHtml::ajaxLink($aContent, $url,
+                        array('type'      => 'GET', 'success' => self::resolveOnSucessSctipt($updateDivId) ),
+                        array('id'        => 'ConversationStatusChange',
+                               'class'     => 'conversation-change-status-link z-button attachLoading switch-state active clearfix ' .
                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
                                'namespace' => 'update',
-                               'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        attachLoadingSpinner($(this).attr("id"), true);'));
+                               'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit"); attachLoadingSpinner($(this).attr("id"), true);'));
+            
+            $aContent2  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent2 .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent2 .= ZurmoHtml::tag('span', array('class' => 'z-label'), 'Open');
+            $link2 = ZurmoHtml::ajaxLink($aContent2, $url,
+                        array('type'      => 'GET', 'success' => self::resolveOnSucessSctipt($updateDivId) ),
+                        array('id'        => 'ConversationStatusChange',
+                               'class'     => 'conversation-change-status-link z-button attachLoading switch-state disabled clearfix -' .
+                                               self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
+                               'namespace' => 'update',
+                               'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit"); attachLoadingSpinner($(this).attr("id"), true);'));
+            return $link.$link2;
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)

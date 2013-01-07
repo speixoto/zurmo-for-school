@@ -159,7 +159,11 @@ a.ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton .ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton a.ModalGameNotification a,
 .addfileinput-button span .ModalGameNotification a,
-.addfileinput-button span a.ModalGameNotification a {
+.addfileinput-button span a.ModalGameNotification a,
+.switch-states,
+.switch-2-states,
+.switch-3-states,
+.switch-4-states {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -1124,6 +1128,7 @@ body.blue .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.blue .action-close .z-label,
 body.blue .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -1136,6 +1141,7 @@ body.blue .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.blue .action-close:hover .z-label,
 body.blue .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -1654,6 +1660,7 @@ body.brown .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.brown .action-close .z-label,
 body.brown .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -1666,6 +1673,7 @@ body.brown .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.brown .action-close:hover .z-label,
 body.brown .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -2184,6 +2192,7 @@ body.lime .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.lime .action-close .z-label,
 body.lime .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -2196,6 +2205,7 @@ body.lime .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.lime .action-close:hover .z-label,
 body.lime .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -2714,6 +2724,7 @@ body.cherry .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.cherry .action-close .z-label,
 body.cherry .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -2726,6 +2737,7 @@ body.cherry .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.cherry .action-close:hover .z-label,
 body.cherry .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -3244,6 +3256,7 @@ body.turquoise .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.turquoise .action-close .z-label,
 body.turquoise .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -3256,6 +3269,7 @@ body.turquoise .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.turquoise .action-close:hover .z-label,
 body.turquoise .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -3774,6 +3788,7 @@ body.violet .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.violet .action-close .z-label,
 body.violet .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -3786,6 +3801,7 @@ body.violet .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.violet .action-close:hover .z-label,
 body.violet .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -4304,6 +4320,7 @@ body.honey .action-accept:hover .z-label {
   -ms-text-shadow: 0px 1px 0 #b6d678 !important;
   text-shadow: 0px 1px 0 #b6d678 !important;
 }
+body.honey .action-close .z-label,
 body.honey .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
@@ -4316,6 +4333,7 @@ body.honey .action-reject .z-label {
   background-image: linear-gradient(top, #c43d53, #a82d31) !important;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#c43d53', endColorstr='#a82d31', GradientType=0) !important;
 }
+body.honey .action-close:hover .z-label,
 body.honey .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
@@ -7340,7 +7358,7 @@ div.wide.form label.hasCheckBox {
 }
 .buffer > div {
   float: left;
-  padding: 8px 10px;
+  padding: 10px 10px;
   background: #F4F4F4;
   width: 100%;
   -moz-box-sizing: border-box;
@@ -14510,6 +14528,110 @@ a.close-ModalGameNotification.simple-select {
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
+/*Sidebar*/
+.thred-info h3 {
+  border-top: 1px solid #fff;
+  padding-top: 10px;
+}
+.thred-details {
+  margin: 15px 0 0 0 !important;
+  width: 100%;
+  padding-bottom: 5px;
+  border-bottom: 1px solid #ccc;
+  border-top: 1px solid #ccc;
+}
+.thred-details tr:first-child td,
+.thred-details tr:first-child th {
+  padding-top: 10px;
+  border-top: 1px solid #fff;
+}
+.thred-details td + th {
+  padding-left: 0 !important;
+}
+.thred-details th,
+.thred-details td {
+  text-align: left;
+  padding: 5px 0;
+}
+.thred-details th {
+  color: #545454;
+}
+.thred-details td {
+  font-weight: normal;
+  padding-left: 15px;
+}
+.thred-details .attachments {
+  margin: 0;
+}
+.switch-states,
+.switch-2-states,
+.switch-3-states,
+.switch-4-states {
+  line-height: 1;
+  width: 100%;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 3px;
+  background: #ddd;
+}
+.switch-2-states .switch-state {
+  width: 50%;
+}
+.switch-3-states .switch-state {
+  width: 33%;
+}
+.switch-4-states .switch-state {
+  width: 25%;
+}
+.switch-state {
+  line-height: 1 !important;
+  margin: 0 !important;
+  float: left;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.switch-state .z-label {
+  padding: 0;
+  width: 100%;
+  text-align: center;
+}
+.switch-state.disabled {
+  border: none;
+}
+.switch-state.disabled span.z-label {
+  color: #545454 !important;
+  -webkit-text-shadow: 0px 1px 0 #ffffff !important;
+  -moz-text-shadow: 0px 1px 0 #ffffff !important;
+  -o-text-shadow: 0px 1px 0 #ffffff !important;
+  -ms-text-shadow: 0px 1px 0 #ffffff !important;
+  text-shadow: 0px 1px 0 #ffffff !important;
+  background: #ddd !important;
+}
+.switch-state:first-child,
+.switch-state:first-child .z-label {
+  -webkit-border-radius: 3px 0 0 3px;
+  -moz-border-radius: 3px 0 0 3px;
+  -ms-border-radius: 3px 0 0 3px;
+  -o-border-radius: 3px 0 0 3px;
+  border-radius: 3px 0 0 3px;
+  border-right: none !important;
+}
+.switch-state:last-child,
+.switch-state:last-child .z-label {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+  border-left: none !important;
+}
+/*End sidebar*/
 #ModelDetailsSummaryView h2,
 #CommentList h2,
 .CommentList h2 {
@@ -14660,15 +14782,18 @@ a.close-ModalGameNotification.simple-select {
 .attachments {
   margin-top: 5px;
   list-style: none;
+  line-height: 140%;
 }
 .attachments li {
   margin-bottom: 2px;
+  padding-left: 15px;
 }
 .icon-attachment {
   font-weight: normal;
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  margin-right: 4px;
+  float: left;
+  margin-left: -15px;
 }
 .icon-attachment:before {
   content: "H";
