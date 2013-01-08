@@ -1289,7 +1289,6 @@ form,
     top:-2px;
 }
 
-
 .icon-create:before{
     content: "Y";
     .view-toolbar-icons();
@@ -1675,9 +1674,7 @@ td.empty{
     position: absolute;
     top:-35px;
     right:8px;
-    .icon-create,
-    a {
-        padding:0 10px 0 10px;
+    a{
         line-height:25px;
         margin:0;
         font-weight:bold;
@@ -1690,9 +1687,10 @@ td.empty{
         color:#656565;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+        
         .z-label{
-           padding:0 0 0 5px; 
-           float:none;
+            padding:0 10px 0 10px;
+            float:none;
         }
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -1703,10 +1701,15 @@ td.empty{
         }
     }
     .icon-create:before{
+        content: "";
+        margin:0;
+        padding:0;
+        display: none;
+    }
+    .icon-create .z-label:before{
     	content: "Y";
         .view-toolbar-icons();
         top:-2px;
-        color:#fff;
         margin:0 5px 0 0 !important;
     }
     .icon-delete:before{

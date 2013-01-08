@@ -6389,9 +6389,7 @@ td.empty {
   top: -35px;
   right: 8px;
 }
-.portlet-toolbar .icon-create,
 .portlet-toolbar a {
-  padding: 0 10px 0 10px;
   line-height: 25px;
   margin: 0;
   font-weight: bold;
@@ -6417,16 +6415,13 @@ td.empty {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
-.portlet-toolbar .icon-create .z-label,
 .portlet-toolbar a .z-label {
-  padding: 0 0 0 5px;
+  padding: 0 10px 0 10px;
   float: none;
 }
-.portlet-toolbar .icon-create:not(.attachLoading),
 .portlet-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
-.portlet-toolbar .icon-create:active,
 .portlet-toolbar a:active {
   color: #656565;
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -6436,6 +6431,12 @@ td.empty {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
 .portlet-toolbar .icon-create:before {
+  content: "";
+  margin: 0;
+  padding: 0;
+  display: none;
+}
+.portlet-toolbar .icon-create .z-label:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
@@ -6448,7 +6449,6 @@ td.empty {
   vertical-align: middle;
   position: relative;
   top: -2px;
-  color: #fff;
   margin: 0 5px 0 0 !important;
 }
 .portlet-toolbar .icon-delete:before {
