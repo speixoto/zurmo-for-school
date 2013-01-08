@@ -65,8 +65,10 @@
          */
         public $ldapTurnOn;
         
-		
-		
+		/**
+		* ldap Settings Values
+		*/
+		public $ldapsettingsvalues;
 
         /**
          * Contains array of settings to load during initialization from the configuration table.
@@ -99,7 +101,7 @@
             {
                 if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $keyName))
                 {
-                    $this->$keyName = $keyValue;
+                    $this->$keyName = $keyValue;					
                 }
             }
         }
@@ -113,6 +115,44 @@
             {                
                 ZurmoConfigurationUtil::setByModuleName('ZurmoModule', $keyName, $this->$keyName);
             }
-        }        
+        }
+		
+		
+        public function getLdapSettingsValues()
+		{
+		    foreach ($this->settingsToLoad as $keyName)
+            {
+			    if ($this->ldapsettingsvalues == null)
+				{
+					$this->ldapsettingsvalues = array();
+				}			    
+				$ldapsettingsvalue = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $keyName);
+				if (!in_array($ldapsettingsvalue, $this->ldapsettingsvalues))
+				{
+					$this->ldapsettingsvalues[$keyName] = $ldapsettingsvalue;
+				}
+			}
+            return $this->ldapsettingsvalues;
+		}
+
+		
+        
+		
+		/**
+		* for Login authentication 
+		*/
+		public function makeIdentity($username, $password)
+		{
+		  //checking ldap option enable 
+		  $ldapEnableFlag = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'ldapTurnOn');
+		  if($ldapEnableFlag)
+		  {  		     
+			 return new UserLdapIdentity($username, $password);
+		  }
+          else
+		  {
+		     return new UserIdentity($username, $password);
+		  }			
+		}
     }
 ?>

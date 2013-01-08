@@ -52,7 +52,8 @@
 
         public function authenticate($attribute, $params)
         {
-            $this->_identity = new UserIdentity($this->username, $this->password);
+		    $this->_identity = Yii::app()->authenticationHelper->makeIdentity($this->username, $this->password);
+            //$this->_identity = new UserIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
             {
                 $this->addError('password', Yii::t('Default', 'Incorrect username or password.'));
@@ -62,8 +63,8 @@
         public function login()
         {
             if ($this->_identity === null)
-            {
-                $this->_identity = new UserIdentity($this->username, $this->password);
+            {			    
+                $this->_identity = Yii::app()->authenticationHelper->makeIdentity($this->username, $this->password);
                 $this->_identity->authenticate();
             }
             if ($this->_identity->errorCode == UserIdentity::ERROR_NONE)

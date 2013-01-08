@@ -93,9 +93,17 @@
                     $bindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $bindPassword = $configurationForm->bindPassword;         
                     $baseDomain = $configurationForm->baseDomain;           
-                    $testConnectionResults = LdapTestHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                    $testConnectionResults = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
-                    $messageContent = Yii::t('Default', $testConnectionResults) . "\n";                                                                      
+                    
+					if($testConnectionResults)
+					{
+					 $messageContent = Yii::t('Default', 'Successfully Connected to Ldap Server') . "\n";  
+					}
+					else
+					{
+					$messageContent = Yii::t('Default', 'Unable to connect to LDAP server') . "\n";
+					}                                                                   
                 }
                 else
                 {

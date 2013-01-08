@@ -25,7 +25,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LdapTestHelper
+    class LdapTestConnectionHelper
     {
         /**
          * Send a connection Request.  Can use to determine if the Ldap settings are configured correctly.
@@ -55,11 +55,11 @@
 				// bind with appropriate dn to give update access
 				if (@ldap_bind($ldap_conn, $username, $passwd))  
 				{
-					echo 'Ldap bind Success';
+					return true;
 				} 
 				else 
 				{ 
-					echo "Error:" . ldap_error($ldap_conn); 
+					return false;
 				}                			   
 			}
 			else 

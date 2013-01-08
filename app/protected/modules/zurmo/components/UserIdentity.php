@@ -36,7 +36,7 @@
          * @return boolean whether authentication succeeds.
          */
         public function authenticate()
-        {
+        {  
             try
             {
                 User::authenticate($this->username, $this->password);
