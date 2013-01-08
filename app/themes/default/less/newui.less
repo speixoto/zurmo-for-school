@@ -4170,12 +4170,12 @@ div.hasHalfs{
 }
 
 .ui-widget-header.ui-progressbar-value{
-    background-color: transparent !important;
-    height:5px;
-    background-image: -webkit-linear-gradient(0deg, rgb(150, 150, 150) 0%, rgb(175, 175, 175) 100%) !important;
-    .animateAll(0.2s);
-    margin:5px 0 0 0;
     .radius(3px);
+    height:5px;
+    margin:5px 0 0 0;
+    .animateAll(0.2s);
+    background-color: transparent !important;
+    #gradient > .directional( rgb(150, 150, 150), rgb(175, 175, 175), 0deg ) !important;
 }
 
 /*=About*/

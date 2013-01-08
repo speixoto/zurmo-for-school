@@ -9428,20 +9428,26 @@ div.hasHalfs .twoThirds {
   width: 100%;
 }
 .ui-widget-header.ui-progressbar-value {
-  background-color: transparent !important;
-  height: 5px;
-  background-image: -webkit-linear-gradient(0deg, #969696 0%, #afafaf 100%) !important;
-  -webkit-transition: all 0.2s ease-out;
-  -moz-transition: all 0.2s ease-out;
-  -o-transition: all 0.2s ease-out;
-  -ms-transition: all 0.2s ease-out;
-  transition: all 0.2s ease-out;
-  margin: 5px 0 0 0;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
+  height: 5px;
+  margin: 5px 0 0 0;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+  background-color: transparent !important;
+  background-color: #afafaf !important;
+  background-repeat: repeat-x !important;
+  background-image: -moz-linear-gradient(0deg, #969696, #afafaf) !important;
+  background-image: -ms-linear-gradient(0deg, #969696, #afafaf) !important;
+  background-image: -webkit-linear-gradient(0deg, #969696, #afafaf) !important;
+  background-image: -o-linear-gradient(0deg, #969696, #afafaf) !important;
+  background-image: linear-gradient(0deg, #969696, #afafaf) !important;
 }
 /*=About*/
 #AboutView {
