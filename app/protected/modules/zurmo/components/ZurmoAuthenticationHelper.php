@@ -58,7 +58,15 @@
          * @var string
          */
         public $ldapBaseDomain;
-
+				
+         /**
+         * Ldap server authentication feature turn on. 
+         * @var boolean
+         */
+        public $ldapTurnOn;
+        
+		
+		
 
         /**
          * Contains array of settings to load during initialization from the configuration table.
@@ -70,7 +78,8 @@
             'ldapPort',
             'ldapBindRegisteredDomain',
             'ldapBindPassword',
-            'ldapBaseDomain'
+            'ldapBaseDomain',
+			'ldapTurnOn'
         );
 
 

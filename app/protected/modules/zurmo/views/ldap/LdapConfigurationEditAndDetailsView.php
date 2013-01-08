@@ -98,6 +98,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'ldapTurnOn', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'testConnection',
                                                       'type' => 'SendARequestToLdapServerForConnection'),
                                             ),

@@ -73,9 +73,12 @@
                     $configurationForm->port                  = $_POST['LdapConfigurationForm']['ldapPort'];
                     $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['ldapBindRegisteredDomain'];
                     $configurationForm->bindPassword          = $_POST['LdapConfigurationForm']['ldapBindPassword'];
-                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapBaseDomain'];                    
+                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapBaseDomain'];
+                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapTurnOn'];                    
                 }
-                if ($configurationForm->port != null)
+                if ($configurationForm->host != null && $configurationForm->port != null && 
+                    $configurationForm->bindRegisteredDomain != null && $configurationForm->bindPassword != null &&
+      				$configurationForm->baseDomain != null	)
                 {
                     $authenticationHelper = new ZurmoAuthenticationHelper;
                     $authenticationHelper->ldapHost     = $configurationForm->host;
@@ -83,23 +86,24 @@
                     $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $authenticationHelper->ldapBindPassword = $configurationForm->bindPassword;
                     $authenticationHelper->ldapBaseDomain = $configurationForm->baseDomain;
+					$authenticationHelper->ldapTurnOn = $configurationForm->ldapTurnOn;
                     
                     $host = $configurationForm->host;             
                     $port = $configurationForm->port;                
                     $bindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $bindPassword = $configurationForm->bindPassword;         
                     $baseDomain = $configurationForm->baseDomain;           
-                    $testConnection = LdapTestHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                    $testConnectionResults = LdapTestHelper::testConnectionLdap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
-                    $messageContent = Yii::t('Default', $testConnection) . "\n";                                                                      
+                    $messageContent = Yii::t('Default', $testConnectionResults) . "\n";                                                                      
                 }
                 else
                 {
-                    $messageContent = Yii::t('Default', 'Port no is required') . "\n";
+                    $messageContent = Yii::t('Default', 'All fields are required') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestEmailMessageView($messageContent);
-                $view = new ModalView($this, $messageView);
+                $messageView = new TestLdapConnectionView($messageContent);
+                $view = new ModalView($this, $messageView);				
                 echo $view->render();
             }
             else
