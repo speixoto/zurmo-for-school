@@ -153,6 +153,13 @@
             return self::DRILL_DOWN_GROUP_BY_VALUE_PREFIX . $attributeIndexOrDerivedType;
         }
 
+        public function resolveRawValueByDisplayAttributeKey($displayAttributeKey)
+        {
+            assert('is_int($displayAttributeKey)');
+            $model = $this->resolveModel($displayAttributeKey);
+            return $this->resolveRawValueByModel($this->displayAttributes[$displayAttributeKey], $model);
+        }
+
         protected function shouldResolveValueFromModel($attributeAlias)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);

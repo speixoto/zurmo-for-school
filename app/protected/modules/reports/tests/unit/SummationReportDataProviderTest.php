@@ -24,14 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class IntegerListViewColumnAdapter extends TextListViewColumnAdapter
+    class SummationReportDataProviderTest extends ZurmoBaseTest
     {
-        public function renderGridViewData()
+        public static function setUpBeforeClass()
         {
-            return array(
-                'type' => 'Number',
-                'name'  => $this->attribute,
-            );
+            parent::setUpBeforeClass();
+            ContactsModule::loadStartingData();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function testMethods()
+        {
+            //especially making charts
+            $this->fail();
         }
     }
 ?>

@@ -61,18 +61,35 @@
 
         protected function renderChartContent()
         {
-            $chartData = $this->dataProvider->getChartData();
+            $reportDataProviderToAmChartMakerAdapter = $this->dataProvider->makeReportDataProviderToAmChartMakerAdapter();
             Yii::import('ext.amcharts.AmChartMaker');
             $amChart = new AmChartMaker();
-            $amChart->data      = $chartData;
-            $amChart->id        = $this->uniqueLayoutId;
-            $amChart->type      = $this->dataProvider->getReport()->getChart()->type;
-            $amChart->addSerialGraph('value', 'column');
-            $amChart->addSerialGraph('value2', 'column', array('title' => 'some title'));
-            $amChart->xAxisName = $this->dataProvider->resolveFirstSeriesLabel();
-            $amChart->yAxisName = $this->dataProvider->resolveFirstRangeLabel();
+            $amChart->categoryField    = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesDisplayLabelName(1);
+            $amChart->data             = $reportDataProviderToAmChartMakerAdapter->getData();
+            $amChart->id               = $this->uniqueLayoutId;
+            $amChart->type             = $reportDataProviderToAmChartMakerAdapter->getType();
+            $amChart->xAxisName        = $this->dataProvider->resolveFirstSeriesLabel();
+            $amChart->yAxisName        = $this->dataProvider->resolveFirstRangeLabel();
             $amChart->yAxisUnitContent = $this->resolveYAxisUnitContent();
-
+            if($reportDataProviderToAmChartMakerAdapter->isStacked())
+            {
+                for($i = 1; $i < ($reportDataProviderToAmChartMakerAdapter->getSecondSeriesValueCount() + 1); $i++)
+                {
+                    $title       = $reportDataProviderToAmChartMakerAdapter->getSecondSeriesDisplayLabelByKey($i);
+                    $balloonText = '"[[' . ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($i) .
+                                   ']] - [[' . ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName($i) .
+                                   ']] : [[' . ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesFormattedValueName($i) .
+                                   ']] - [[' . ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($i) .
+                                   ']] : [[' . ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesFormattedValueName($i) .
+                                   ']] "';
+                    $amChart->addSerialGraph(ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName($i), 'column',
+                                             array('title' => '"' . CJavaScript::quote($title) . '"', 'balloonText' => $balloonText));
+                }
+            }
+            else
+            {
+                $amChart->addSerialGraph(ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName(1), 'column');
+            }
             $scriptContent      = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->uniqueLayoutId, $scriptContent);
             $cClipWidget        = new CClipWidget();

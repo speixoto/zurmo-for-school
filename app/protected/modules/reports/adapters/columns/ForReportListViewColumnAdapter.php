@@ -46,7 +46,11 @@
 
         protected function getFromBaseToSpotRate()
         {
-            return 1 / Yii::app()->currencyHelper->getConversionRateToBase($this->getSpotConversionCurrencyCode());
+            if (isset($this->params['fromBaseToSpotRate']))
+            {
+                return $this->params['fromBaseToSpotRate'];
+            }
+            throw new NotSupportedException();
         }
     }
 ?>

@@ -74,13 +74,11 @@
         {
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
-            echo $sql . "<BR>";
             $count = R::getCell($sql);
             if ($count === null || empty($count))
             {
                 $count = 0;
             }
-            echo 'the count ' . $count . "<BR>";
             return $count;
         }
 
@@ -116,7 +114,6 @@
             assert('is_int($limit) || $limit == null');
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql          = $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
-            echo $sql . "<BR>";
             $rows         = $this->getRowsData($sql);
             $resultsData  = array();
             $idByOffset   = self::resolveIdByOffset($offset);
@@ -408,6 +405,29 @@
             VariableStatesForReportUtil::
                 resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveGroupBys());
             return $attributeIndexes;
+        }
+
+
+        protected function getDisplayAttributeByAttribute($attribute)
+        {
+            foreach($this->resolveDisplayAttributes() as $displayAttribute)
+            {
+                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                {
+                    return $displayAttribute;
+                }
+            }
+        }
+
+        protected function getDisplayAttributeKeyByAttribute($attribute)
+        {
+            foreach($this->resolveDisplayAttributes() as $key =>  $displayAttribute)
+            {
+                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                {
+                    return $key;
+                }
+            }
         }
     }
 ?>

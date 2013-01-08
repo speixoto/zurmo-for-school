@@ -247,6 +247,7 @@
             {
                 $params['currencyValueConversionType'] = $this->dataProvider->getReport()->getCurrencyConversionType();
                 $params['spotConversionCurrencyCode']  = $this->dataProvider->getReport()->getSpotConversionCurrencyCode();
+                $params['fromBaseToSpotRate']  = $this->dataProvider->getReport()->getFromBaseToSpotRate();
             }
             return $params;
         }

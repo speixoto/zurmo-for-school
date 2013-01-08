@@ -243,6 +243,11 @@
             $this->spotConversionCurrencyCode = $spotConversionCurrencyCode;
         }
 
+        public function getFromBaseToSpotRate()
+        {
+            return 1 / Yii::app()->currencyHelper->getConversionRateToBase($this->spotConversionCurrencyCode);
+        }
+
         public function isNew()
         {
             //todo:
@@ -388,6 +393,17 @@
                 }
             }
             return null;
+        }
+
+        public function getDisplayAttributeByAttribute($attribute)
+        {
+            foreach($this->getDisplayAttributes() as $displayAttribute)
+            {
+                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                {
+                    return $displayAttribute;
+                }
+            }
         }
 
         public function resolveGroupBysAsFilters(Array $getData)

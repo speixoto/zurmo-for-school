@@ -120,11 +120,11 @@
            $label        = $this->form->labelEx($this->model, 'secondRange',
                                                 array('for' => $this->getSecondRangeEditableInputId()));
            $content      = ZurmoHtml::dropDownList($this->getSecondRangeEditableInputName(),
-                                                   $this->model->firstRange,
+                                                   $this->model->secondRange,
                                                    $this->model->getAvailableSecondRangeDataAndLabels(),
                                                    $htmlOptions
                                                    );
-            $error       = $this->form->error($this->model, 'firstRange',
+            $error       = $this->form->error($this->model, 'secondRange',
                            array('inputID' => $this->getSecondRangeEditableInputId()));
             return $label . $content . $error;
         }

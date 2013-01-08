@@ -100,12 +100,19 @@
             return $attributes;
         }
 
-        public function getAttributesForChartSeries($existingGroupBys = array())
+        public function getAttributesForChartSeries($existingGroupBys = array(), $existingDisplayAttributes = array())
         {
             $attributes = array();
-            foreach($existingGroupBys as $groupBy)
+            foreach($existingDisplayAttributes as $displayAttribute)
             {
-                $attributes[$groupBy->getAttributeIndexOrDerivedType()] = array('label' => $groupBy->getDisplayLabel());
+                foreach($existingGroupBys as $groupBy)
+                {
+                    if($groupBy->attributeIndexOrDerivedType == $displayAttribute->attributeIndexOrDerivedType)
+                    {
+                        $attributes[$displayAttribute->attributeIndexOrDerivedType] =
+                            array('label' => $displayAttribute->getDisplayLabel());
+                    }
+                }
             }
             return $attributes;
         }
@@ -116,9 +123,9 @@
             foreach($existingDisplayAttributes as $displayAttribute)
             {
                 if(static::
-                   isAttributeIndexOrDerivedTypeADisplayCalculation($displayAttribute->getAttributeIndexOrDerivedType()))
+                   isAttributeIndexOrDerivedTypeADisplayCalculation($displayAttribute->attributeIndexOrDerivedType))
                 {
-                    $attributes[$displayAttribute->getAttributeIndexOrDerivedType()] =
+                    $attributes[$displayAttribute->attributeIndexOrDerivedType] =
                         array('label' => $displayAttribute->getDisplayLabel());
                 }
             }

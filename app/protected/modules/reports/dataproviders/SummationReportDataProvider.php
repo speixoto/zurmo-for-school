@@ -42,27 +42,21 @@
         {
         $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
         $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
-        echo $sql . "<BR>";
         $rows                   = R::getAll($sql);
         $count                  = count($rows);
-        echo 'the count ' . $count . "<BR>";
         return $count;
         }
 
-        public function getChartData()
+        public function makeReportDataProviderToAmChartMakerAdapter()
         {
-
-            $resultsData              = $this->fetchChartData();
-            $firstSeriesAttributeName = $this->resolveChartFirstSeriesAttributeNameForReportResultsRowData();
-            $firstRangeAttributeName  = $this->resolveChartFirstRangeAttributeNameForReportResultsRowData();
-            $chartData = array();
-            foreach ($resultsData as $data)
+            if(ChartRules::isStacked($this->report->getChart()->type))
             {
-                $chartData[] = array('value'        => $data->$firstRangeAttributeName,
-                                     'displayLabel' => strval($data->$firstSeriesAttributeName),
-                                     'value2' => 50,000);
+                return $this->makeStackedReportDataProviderToAmChartMakerAdapter();
             }
-            return $chartData;
+            else
+            {
+                return $this->makeNonStackedReportDataProviderToAmChartMakerAdapter();
+            }
         }
 
         public function resolveDisplayAttributesToUse()
@@ -139,6 +133,113 @@
                     return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 }
             }
+        }
+
+        protected function resolveChartSecondSeriesAttributeNameForReportResultsRowData()
+        {
+            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->secondSeries)
+                {
+                    return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                }
+            }
+        }
+
+        protected function resolveChartSecondRangeAttributeNameForReportResultsRowData()
+        {
+            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->secondRange)
+                {
+                    return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                }
+            }
+        }
+
+        protected function makeNonStackedReportDataProviderToAmChartMakerAdapter()
+        {
+            $resultsData              = $this->fetchChartData();
+            $firstSeriesAttributeName = $this->resolveChartFirstSeriesAttributeNameForReportResultsRowData();
+            $firstRangeAttributeName  = $this->resolveChartFirstRangeAttributeNameForReportResultsRowData();
+            $chartData                = array();
+            foreach ($resultsData as $data)
+            {
+                $chartData[] = array(ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName(1)
+                                        => $data->$firstRangeAttributeName,
+                                     ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesDisplayLabelName(1)
+                                        => strval($data->$firstSeriesAttributeName));
+            }
+            return new ReportDataProviderToAmChartMakerAdapter($this->report, $chartData);
+        }
+
+        protected function makeStackedReportDataProviderToAmChartMakerAdapter()
+        {
+            $resultsData                     = $this->fetchChartData();
+            $firstRangeAttributeName         = $this->resolveChartFirstRangeAttributeNameForReportResultsRowData();
+            $secondSeriesAttributeName       = $this->resolveChartSecondSeriesAttributeNameForReportResultsRowData();
+            $secondRangeAttributeName        = $this->resolveChartSecondRangeAttributeNameForReportResultsRowData();
+            $chartData                       = array();
+            $secondSeriesValueData           = array();
+            $secondSeriesDisplayLabels       = array();
+            $secondSeriesValueCount          = 1;
+            $firstSeriesDisplayAttributeKey  = $this->getDisplayAttributeKeyByAttribute($this->report->getChart()->firstSeries);
+            $secondSeriesDisplayAttributeKey = $this->getDisplayAttributeKeyByAttribute($this->report->getChart()->secondSeries);
+            foreach ($resultsData as $data)
+            {
+                $firstSeriesDataValue             = $data->resolveRawValueByDisplayAttributeKey($firstSeriesDisplayAttributeKey);
+                $chartData[$firstSeriesDataValue] = array(
+                                                    ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesDisplayLabelName(1) =>
+                                                    $this->getDisplayAttributeByAttribute($this->report->getChart()->firstSeries)->
+                                                    resolveValueAsLabelForHeaderCell($firstSeriesDataValue));
+                $secondSeriesDataValue            = $data->resolveRawValueByDisplayAttributeKey($secondSeriesDisplayAttributeKey);
+                if(!isset($secondSeriesValueData[$secondSeriesDataValue]))
+                {
+                    $secondSeriesValueData[$secondSeriesDataValue]      = $secondSeriesValueCount;
+                    $secondSeriesDisplayLabels[$secondSeriesValueCount] = $this->getDisplayAttributeByAttribute(
+                                                                          $this->report->getChart()->secondSeries)->
+                                                                          resolveValueAsLabelForHeaderCell($secondSeriesDataValue);
+                    $secondSeriesValueCount ++;
+                }
+            }
+            foreach ($resultsData as $data)
+            {
+                $firstSeriesDataValue  = $data->resolveRawValueByDisplayAttributeKey($firstSeriesDisplayAttributeKey);
+                $secondSeriesDataValue = $data->resolveRawValueByDisplayAttributeKey($secondSeriesDisplayAttributeKey);
+                $secondSeriesKey       = $secondSeriesValueData[$secondSeriesDataValue];
+                if(!isset($chartData[$firstSeriesDataValue]
+                          [ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName($secondSeriesKey)]))
+                {
+                    $chartData[$firstSeriesDataValue]
+                              [ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName($secondSeriesKey)] = 0;
+                }
+                $chartData[$firstSeriesDataValue]
+                          [ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName($secondSeriesKey)] +=
+                          $data->$firstRangeAttributeName;
+                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName($secondSeriesKey)]))
+                {
+                    $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName($secondSeriesKey)] =
+                        $this->getDisplayAttributeByAttribute($this->report->getChart()->firstRange)->label;
+                }
+                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)]))
+                {
+                    $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)] = 0;
+                }
+                $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)] += $data->$secondRangeAttributeName;
+                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)]))
+                {
+                    $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)] =
+                            $secondSeriesDisplayLabels[$secondSeriesKey];
+                }
+                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)]))
+                {
+                    $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)] =
+                        $this->getDisplayAttributeByAttribute($this->report->getChart()->secondRange)->label;
+                }
+            }
+            return new ReportDataProviderToAmChartMakerAdapter($this->report, array_values($chartData),
+                                                               $secondSeriesValueData, $secondSeriesDisplayLabels,
+                                                               $secondSeriesValueCount - 1);
         }
 
         private function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()

@@ -68,7 +68,18 @@
             );
         }
 
-            public static function getTranslatedTypeLabel($type)
+        public static function isStacked($type)
+        {
+            assert('is_string($type)');
+            if(in_array($type, self::getChartTypesRequiringSecondInputs()))
+            {
+                return true;
+            }
+            return false;
+        }
+
+
+        public static function getTranslatedTypeLabel($type)
         {
             assert('is_string($type)');
             $labels             = self::translatedTypeLabels();

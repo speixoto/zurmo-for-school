@@ -75,10 +75,10 @@
                     $modelClassName  = $moduleClassName::getPrimaryModelName();
                     $adapter         = ModelRelationsAndAttributesToSummationReportAdapter::
                                        make($moduleClassName, $modelClassName, $report->getType());
-                    $attributes      = $adapter->getAttributesForChartSeries($report->getGroupBys());
                     $chart           = new ChartForReportForm(
                                             ReportUtil::makeDataAndLabelsForSeriesOrRange(
-                                            $adapter->getAttributesForChartSeries($report->getGroupBys())),
+                                            $adapter->getAttributesForChartSeries($report->getGroupBys(),
+                                                $report->getDisplayAttriubtes())),
                                             ReportUtil::makeDataAndLabelsForSeriesOrRange(
                                             $adapter->getAttributesForChartRange($report->getDisplayAttributes())));
                     $chart->setAttributes($unserializedData['chart']);

@@ -230,7 +230,8 @@
                 $adapter             = ModelRelationsAndAttributesToSummationReportAdapter::
                                        make($moduleClassName, $modelClassName, $report->getType());
                 $seriesDataAndLabels = ReportUtil::makeDataAndLabelsForSeriesOrRange(
-                                       $adapter->getAttributesForChartSeries($report->getGroupBys()));
+                                       $adapter->getAttributesForChartSeries($report->getGroupBys(),
+                                                                             $report->getDisplayAttriubtes()));
                 $rangeDataAndLabels  = ReportUtil::makeDataAndLabelsForSeriesOrRange(
                                        $adapter->getAttributesForChartRange($report->getDisplayAttributes()));
             }

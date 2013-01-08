@@ -107,6 +107,7 @@
 
         public function getDisplayElementType()
         {
+            //todo: probably adding caching for this?
             if($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();

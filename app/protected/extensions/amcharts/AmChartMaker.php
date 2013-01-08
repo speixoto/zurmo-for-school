@@ -259,7 +259,7 @@
             }
             elseif ($this->type == ChartRules::TYPE_STACKED_COLUMN_3D)
             {
-                $this->addValueAxisProperties('stackType',          "'3d'");
+                $this->addValueAxisProperties('stackType',          "'regular'");
                 $this->addGraphProperties('balloonText',            "'[[title]]:[[value]]'");
                 $this->addGraphProperties('lineAlpha',              0.5);
                 $this->addGraphProperties('fillAlphas',             1);
@@ -293,7 +293,7 @@
             }
             elseif ($this->type == ChartRules::TYPE_STACKED_BAR_3D)
             {
-                $this->addValueAxisProperties('stackType',          "'3d'");
+                $this->addValueAxisProperties('stackType',          "'regular'");
                 $this->addChartProperties('rotate',                 true);
                 $this->addChartProperties('usePrefixes',            true);
                 $this->addGraphProperties('plotAreaBorderAlpha',    0);
@@ -309,7 +309,7 @@
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
                 $this->addChartProperties('depth3D',                40);
-                $this->addChartProperties('angle',                      30);
+                $this->addChartProperties('angle',                  30);
                 $this->chartIs3d = true;
             }
             else

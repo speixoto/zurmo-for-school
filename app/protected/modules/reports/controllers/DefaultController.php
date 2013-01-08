@@ -274,7 +274,8 @@
                 throw new NotSupportedException();
             }
             $seriesAttributesData                       = $modelToReportAdapter->
-                                                          getAttributesForChartSeries($report->getGroupBys());
+                                                          getAttributesForChartSeries($report->getGroupBys(),
+                                                          $report->getDisplayAttriubtes());
             $rangeAttributesData  =                       $modelToReportAdapter->
                                                           getAttributesForChartRange ($report->getDisplayAttributes());
             $dataAndLabels                              = array();

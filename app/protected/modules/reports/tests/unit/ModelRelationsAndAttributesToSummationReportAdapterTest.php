@@ -58,34 +58,51 @@
             $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys());
             $this->assertEquals(0, count($attributes));
 
-            //Add a group by
+            //Add a group by, but not as a display attribute
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'dropDown';
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
             $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys());
+            $this->assertEquals(0, count($attributes));
+
+            //Add a group by as a display attribute
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'dropDown';
+            $report->setModuleClassName('ReportsTestModule');
+            $report->addGroupBy($groupBy);
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'dropDown';
+            $report->addDisplayAttribute($displayAttribute);
+            $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys(), $report->getDisplayAttributes());
             $this->assertEquals(1, count($attributes));
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
 
-            //Add a second group by
+            //Add a second group by as a display attribute
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'radioDropDown';
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
-            $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys());
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'radioDropDown';
+            $report->addDisplayAttribute($displayAttribute);
+            $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys(), $report->getDisplayAttributes());
             $this->assertEquals(2, count($attributes));
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);
             $compareData        = array('label' => 'Radio Drop Down');
             $this->assertEquals($compareData, $attributes['radioDropDown']);
 
-            //Add a third group by that is likeContactState
+            //Add a third group by that is likeContactState as a display attribute
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'likeContactState';
             $report->setModuleClassName('ReportsTestModule');
             $report->addGroupBy($groupBy);
-            $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys());
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'likeContactState';
+            $report->addDisplayAttribute($displayAttribute);
+            $attributes         = $adapter->getAttributesForChartSeries($report->getGroupBys(), $report->getDisplayAttributes());
             $this->assertEquals(3, count($attributes));
             $compareData        = array('label' => 'Drop Down');
             $this->assertEquals($compareData, $attributes['dropDown']);

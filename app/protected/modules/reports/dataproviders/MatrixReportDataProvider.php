@@ -166,17 +166,6 @@
             return $headerData;
         }
 
-        public function getDisplayAttributeByAttribute($attribute)
-        {
-            foreach($this->resolveDisplayAttributes() as $displayAttribute)
-            {
-                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
-                {
-                    return $displayAttribute;
-                }
-            }
-        }
-
         protected function resolveXAxisGroupingsForColumnNames(& $data, $indexedXAxisGroupByDataValues, & $attributeKey,
                                                                $xAxisGroupBysCount, $startingIndex)
         {
