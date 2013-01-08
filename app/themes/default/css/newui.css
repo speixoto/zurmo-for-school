@@ -11765,10 +11765,7 @@ div.wide.form .errorMessage {
   font-style: italic;
   display: inline-block;
   color: #999;
-  margin-top: 0;
-  position: absolute;
-  bottom: 3px;
-  left: 100px;
+  margin: 9px 0 0 10px;
 }
 .ImportWizardView .files {
   margin-top: 15px;
