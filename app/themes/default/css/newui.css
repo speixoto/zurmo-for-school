@@ -5588,6 +5588,9 @@ section {
 #RecentlyViewedView li.type-MissionsModule em:before {
   content: "Q";
 }
+#RecentlyViewedView li.type-ReportsModule em:before {
+  content: "V";
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -7578,9 +7581,11 @@ div.wide.form label.hasCheckBox {
   position: relative;
   z-index: 0;
 }
+.right-side-edit-view-panel .ui-autocomplete,
 #right-side-edit-view-panel .ui-autocomplete {
   width: auto;
 }
+.right-side-edit-view-panel input[type="text"],
 #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
 }
