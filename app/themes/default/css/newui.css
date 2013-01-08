@@ -718,7 +718,7 @@ body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
-body.blue a.simple-select,
+body.blue a.simple-link,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
@@ -934,7 +934,7 @@ body.blue .z-button:not(.attachLoading):hover .z-label,
 body.blue .zButton:not(.attachLoading):active .z-label,
 body.blue .z-button:not(.attachLoading):active .z-label,
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
 body.blue .form-toolbar a:not(.z-button):hover .z-label,
 body.blue .configuration-list li a:hover .z-label {
@@ -1248,7 +1248,7 @@ body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
-body.brown a.simple-select,
+body.brown a.simple-link,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
@@ -1464,7 +1464,7 @@ body.brown .z-button:not(.attachLoading):hover .z-label,
 body.brown .zButton:not(.attachLoading):active .z-label,
 body.brown .z-button:not(.attachLoading):active .z-label,
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
 body.brown .form-toolbar a:not(.z-button):hover .z-label,
 body.brown .configuration-list li a:hover .z-label {
@@ -1778,7 +1778,7 @@ body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
-body.lime a.simple-select,
+body.lime a.simple-link,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
@@ -1994,7 +1994,7 @@ body.lime .z-button:not(.attachLoading):hover .z-label,
 body.lime .zButton:not(.attachLoading):active .z-label,
 body.lime .z-button:not(.attachLoading):active .z-label,
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
 body.lime .form-toolbar a:not(.z-button):hover .z-label,
 body.lime .configuration-list li a:hover .z-label {
@@ -2308,7 +2308,7 @@ body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
-body.cherry a.simple-select,
+body.cherry a.simple-link,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
@@ -2524,7 +2524,7 @@ body.cherry .z-button:not(.attachLoading):hover .z-label,
 body.cherry .zButton:not(.attachLoading):active .z-label,
 body.cherry .z-button:not(.attachLoading):active .z-label,
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
 body.cherry .form-toolbar a:not(.z-button):hover .z-label,
 body.cherry .configuration-list li a:hover .z-label {
@@ -2838,7 +2838,7 @@ body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
-body.turquoise a.simple-select,
+body.turquoise a.simple-link,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
@@ -3054,7 +3054,7 @@ body.turquoise .z-button:not(.attachLoading):hover .z-label,
 body.turquoise .zButton:not(.attachLoading):active .z-label,
 body.turquoise .z-button:not(.attachLoading):active .z-label,
 body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
 body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
 body.turquoise .configuration-list li a:hover .z-label {
@@ -3368,7 +3368,7 @@ body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
-body.violet a.simple-select,
+body.violet a.simple-link,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
@@ -3584,7 +3584,7 @@ body.violet .z-button:not(.attachLoading):hover .z-label,
 body.violet .zButton:not(.attachLoading):active .z-label,
 body.violet .z-button:not(.attachLoading):active .z-label,
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
 body.violet .form-toolbar a:not(.z-button):hover .z-label,
 body.violet .configuration-list li a:hover .z-label {
@@ -3898,7 +3898,7 @@ body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
-body.honey a.simple-select,
+body.honey a.simple-link,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
@@ -4114,7 +4114,7 @@ body.honey .z-button:not(.attachLoading):hover .z-label,
 body.honey .zButton:not(.attachLoading):active .z-label,
 body.honey .z-button:not(.attachLoading):active .z-label,
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
+body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
 body.honey .form-toolbar a:not(.z-button):hover .z-label,
 body.honey .configuration-list li a:hover .z-label {
@@ -6483,7 +6483,7 @@ td.empty {
   color: #fff;
   margin-left: 0;
 }
-a.simple-select {
+a.simple-link {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -6503,10 +6503,11 @@ a.simple-select {
   font-size: 11px;
   font-weight: normal;
 }
-a.simple-select:before {
+a.simple-link:before {
   content: "" !important;
 }
-.portlet-toolbar a.simple-select {
+/*needed for specifity*/
+.portlet-toolbar a.simple-link {
   background: none !important;
 }
 /*=Popup Modals*/
@@ -14109,7 +14110,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   width: 310px;
   height: 310px;
 }
-a.close-ModalGameNotification.simple-select {
+a.close-ModalGameNotification.simple-link {
   background: none !important;
   margin-right: 10px;
   margin-left: -5px;
