@@ -118,6 +118,16 @@
 
             ModulesSearchWithDataProviderTestHelper::createDateAttribute(new Account(), 'date');
             ModulesSearchWithDataProviderTestHelper::createDateTimeAttribute(new Account(), 'dateTime');
+            ModulesSearchWithDataProviderTestHelper::createCheckBoxAttribute(new Account(), 'checkbox');
+            ModulesSearchWithDataProviderTestHelper::createCurrencyValueAttribute(new Account(), 'currencyValue');
+        /*  ModulesSearchWithDataProviderTestHelper::createDecimalAttribute(new Account(), 'decimal');
+            ModulesSearchWithDataProviderTestHelper::createDropDownAttribute(new Account(), 'dropdown');
+            ModulesSearchWithDataProviderTestHelper::createIntegerAttribute(new Account(), 'integer');
+            ModulesSearchWithDataProviderTestHelper::createPhoneAttribute(new Account(), 'phone');
+            ModulesSearchWithDataProviderTestHelper::createRadioDropDownAttribute(new Account(), 'radioDropDown');
+            ModulesSearchWithDataProviderTestHelper::createTextAttribute(new Account(), 'text');
+            ModulesSearchWithDataProviderTestHelper::createTextAreaAttribute(new Account(), 'textArea');
+            ModulesSearchWithDataProviderTestHelper::createUrlAttribute(new Account(), 'url');*/
 
             //Test All custom created types since their rules could vary
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
@@ -129,6 +139,10 @@
             $compareData = array(array('defaultValue',  'TypeValidator', 'type' => 'datetime'));
             $this->assertEquals($compareData, $rules);
             //todo: add the rest of the custom field types that are importable
+            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
+                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'checkboxCstm', 'defaultValue');
+            $compareData = array(array('defaultValue',  'boolean'));
+            $this->assertEquals($compareData, $rules);
         }
     }
 ?>
