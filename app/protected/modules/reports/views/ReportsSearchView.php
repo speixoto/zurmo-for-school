@@ -59,16 +59,8 @@
                                             'elements' => array(
                                                 array('attributeName' => 'moduleClassName',
                                                       'type' => 'ModuleForReportStaticDropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'ReportTypeStaticDropDown',
-                                                      'addBlank' => true),
+                                                array('attributeName' => 'type',
+                                                      'type' => 'ReportTypeStaticDropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
