@@ -15606,6 +15606,13 @@ a.user-link {
   text-align: left !important;
   border-left: none !important;
 }
+.ReportResultsGridView tbody td:first-child {
+  border-left: none !important;
+}
+#UserCannotRenderReportProperlySplashView {
+  float: left;
+  margin-bottom: 30px;
+}
 @media screen and (min-width: 1600px) {
   .AppContainer {
     margin: 0 auto !important;
