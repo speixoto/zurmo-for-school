@@ -81,6 +81,11 @@
             return $csv;
         }
 
+        /*
+        Commented due to bug with reading in data that contains linebreaks inside fields.
+        This function is only used in tests so its fix is not critical.
+        */
+        /*
         public static function csvToArray($csv, $delimiter = ',', $enclosure = '"', $escape = '\\', $terminator = "\n") // Not Coding Standard
         {
             $result = array();
@@ -102,5 +107,6 @@
             }
             return $result;
         }
+        */
     }
 ?>

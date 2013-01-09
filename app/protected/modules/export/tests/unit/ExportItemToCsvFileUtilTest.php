@@ -60,6 +60,8 @@
 
         public function testGetDataWithHasOneRelatedModel()
         {
+            $this->markTestIncomplete('csvToArray() is not available anymore.');
+
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -165,5 +167,21 @@
 
             $this->assertEquals($compareData, $revertedData[0]);
         }
+
+        public function testExportItemToCsvWorksWithNormalData()
+        {
+            $this->markTestIncomplete('csvToArray() is not available anymore.');
+        }
+
+        public function testExportItemToCsvWorksWithDataContainingComma()
+        {
+            $this->markTestIncomplete('csvToArray() is not available anymore.');
+        }
+
+        public function testExportItemToCsvWorksWithDataContainingLineBreaks()
+        {
+            $this->markTestIncomplete('csvToArray() is not available anymore.');
+        }
+
     }
 ?>
