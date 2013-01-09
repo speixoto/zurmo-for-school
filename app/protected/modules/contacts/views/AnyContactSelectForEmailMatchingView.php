@@ -120,7 +120,7 @@
             }
             $params                 = array();
             $params['inputPrefix']  = array(get_class($this->model), $this->uniqueId);
-            $element  = new $elementClassName($this->model, 'null', $form, $params);
+            $element  = new $elementClassName($this->model, 'null', $form, $params); echo"<pre>" ;print_r($element);
             $content .= $element->render();
             $content .= '</tr>';
             $content .= '</tbody>';
@@ -198,5 +198,7 @@
         {
             return 'FlashMessageBar';
         }
+
+
     }
 ?>

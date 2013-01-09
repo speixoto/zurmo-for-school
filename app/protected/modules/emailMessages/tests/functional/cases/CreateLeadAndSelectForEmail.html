@@ -23,7 +23,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default</td>
+	<td>index.php/leads/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -38,7 +38,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default/create</td>
+	<td>index.php/leads/default/create</td>
 	<td></td>
 </tr>
 <tr>
@@ -53,7 +53,7 @@
 </tr>
 <tr>
 	<td>waitForTextPresent</td>
-	<td>Create Contact</td>
+	<td>Create Lead</td>
 	<td></td>
 </tr>
 <tr>
@@ -64,12 +64,7 @@
 <tr>
 	<td>type</td>
 	<td>Contact_lastName</td>
-	<td>Contact ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>Contact_state_id</td>
-	<td>label=Customer</td>
+	<td>Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
@@ -88,8 +83,8 @@
 </tr>
 <tr>
 	<td>assertText</td>
-	<td>//div[@id='ContactEditAndDetailsView']/div/div[2]/table/tbody/tr[1]/td[1]</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>//div[@id='LeadEditAndDetailsView']/div/div[2]/table/tbody/tr[1]/td[1]</td>
+	<td>Test Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>open</td>
@@ -134,7 +129,7 @@
 <tr>
 	<td>type</td>
 	<td>id=ContactsSearchForm_anyMixedAttributes</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>Test Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
@@ -149,7 +144,7 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-viewmodal']/table/tbody/tr/td/a</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>Test Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -164,7 +159,7 @@
 <tr>
 	<td>waitForValue</td>
 	<td>//div[@id='list-view']/table/tbody/tr/td/div/div/div/div[2]/div/form/table/tbody/tr/td/div/input</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>Test Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>click</td>
@@ -178,7 +173,7 @@
 </tr>
 <tr>
 	<td>open</td>
-	<td>index.php/contacts/default</td>
+	<td>index.php/leads/default</td>
 	<td></td>
 </tr>
 <tr>
@@ -193,17 +188,17 @@
 </tr>
 <tr>
 	<td>waitForElementPresent</td>
-	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td>LeadsSearchForm_anyMixedAttributes</td>
 	<td></td>
 </tr>
 <tr>
 	<td>type</td>
-	<td>id=ContactsSearchForm_anyMixedAttributes</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>id=LeadsSearchForm_anyMixedAttributes</td>
+	<td>Test Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>keyUp</td>
-	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td>LeadsSearchForm_anyMixedAttributes</td>
 	<td>\10</td>
 </tr>
 <tr>
@@ -214,11 +209,11 @@
 <tr>
 	<td>waitForText</td>
 	<td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>Test Lead ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>link=Test Contact ${randomSuffix}</td>
+	<td>link=Test Lead ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>
@@ -233,7 +228,7 @@
 </tr>
 <tr>
 	<td>verifyTextPresent</td>
-	<td>Test Contact ${randomSuffix}</td>
+	<td>Test Lead ${randomSuffix}</td>
 	<td></td>
 </tr>
 <tr>

@@ -17,49 +17,9 @@
 	<td></td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>index.php/home/default</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>link=Settings</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>link=Data Cleanup</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/emailMessages/demo/loadUnmatchedSampler</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
+	<td>storeGlobal</td>
+	<td>javascript{Math.floor(Math.random()*11000)}</td>
+	<td>randomSuffix</td>
 </tr>
 <tr>
 	<td>open</td>
@@ -77,10 +37,106 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>verifyTextPresent</td>
-	<td>Bobby Bobson</td>
+	<td>click</td>
+	<td>link=Create Contact</td>
 	<td></td>
 </tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Office Phone</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>//div[@id='list-view']/table/tbody/tr/td/div/div/div/div[3]/div/form/div[2]/table/tbody/tr/td/div/div[3]/input</td>
+	<td>${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='ArchivedEmailMatchingListView']/div/table/tbody/tr/td/div/div/div/div[3]/div/form/div[3]/div/a[2]/span[3]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForTextPresent</td>
+	<td>Created Contact successfully</td>
+	<td></td>
+</tr>
+<tr>
+	<td>open</td>
+	<td>index.php/contacts/default</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=ContactsSearchForm_anyMixedAttributes</td>
+	<td>Bobby ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>keyUp</td>
+	<td>ContactsSearchForm_anyMixedAttributes</td>
+	<td>\10</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
+	<td>Bobby ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
+	<td>link=Bobby ${randomSuffix}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>Bobby ${randomSuffix}</td>
+	<td></td>
+</tr>
+<tr>
+	<td>verifyTextPresent</td>
+	<td>A test unmatched archived</td>
+	<td></td>
+</tr>
+
 </tbody></table>
 </body>
 </html>
