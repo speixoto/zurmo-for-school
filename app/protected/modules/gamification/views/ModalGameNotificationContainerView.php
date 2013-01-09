@@ -99,7 +99,7 @@
             else
             {
                 $content = ZurmoHtml::link(Yii::t('Default', 'Skip'), '#',
-                                 array('class'   => 'close-ModalGameNotification simple-select',
+                                 array('class'   => 'close-ModalGameNotification simple-link',
                                        'onclick' => '$("#ModalGameNotification' . $index . '").dialog("close");'));
                 $content .= static::renderPostToProfileLinkContent($notification, $index);
                 return $content;

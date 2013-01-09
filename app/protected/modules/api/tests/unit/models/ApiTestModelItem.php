@@ -31,7 +31,7 @@
     {
         public static function getByName($name)
         {
-            return self::getByNameOrEquivalent('first', $name);
+            return self::getByNameOrEquivalent('firstName', $name);
         }
 
         protected function untranslatedAttributeLabels()
