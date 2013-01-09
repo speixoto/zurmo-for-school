@@ -48,48 +48,46 @@
                 {				 
                     $ldapConfigurationValues = Yii::app()->params['authenticationTestSettings']['ldapSettings'];				 				 
                 }				
-				$authenticationHelper =  new ZurmoAuthenticationHelper();
+                $authenticationHelper =  new ZurmoAuthenticationHelper();
                 $host = $ldapConfigurationValues['ldapHost'];
-				$port = $ldapConfigurationValues['ldapPort'];
-				$bindRegisteredDomain = $ldapConfigurationValues['ldapBindRegisteredDomain'];
-				$bindPassword = $ldapConfigurationValues['ldapBindPassword'];
-				$baseDomain = $ldapConfigurationValues['ldapBaseDomain'];
+                $port = $ldapConfigurationValues['ldapPort'];
+                $bindRegisteredDomain = $ldapConfigurationValues['ldapBindRegisteredDomain'];
+                $bindPassword = $ldapConfigurationValues['ldapBindPassword'];
+                $baseDomain = $ldapConfigurationValues['ldapBaseDomain'];
                 $ldapTestConnection  = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  			
-                
-				if($ldapTestConnection)
-				{
-				    $ldap_conn = ldap_connect($host,$port);
-					ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+                if($ldapTestConnection)
+                {
+                    $ldap_conn = ldap_connect($host,$port);
+                    ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
                     ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
-					$ldap_basedn = $baseDomain;	
+                    $ldap_basedn = $baseDomain;	
                     $ldap_filter = '(|(cn='.$this->username.')(&(uid='.$this->username.')))'; 
-					$ldap_results = ldap_search($ldap_conn, $ldap_basedn,$ldap_filter); 					
-                    $ldap_results_count        = ldap_count_entries($ldap_conn,$ldap_results); 
-					 
-				    if ($ldap_results_count > 0)
-					{					 
+                    $ldap_results = ldap_search($ldap_conn, $ldap_basedn,$ldap_filter); 					
+                    $ldap_results_count        = ldap_count_entries($ldap_conn,$ldap_results);  
+                    if ($ldap_results_count > 0)
+                    {				 
                         $result = @ldap_get_entries($ldap_conn, $ldap_results);                                                
-						if ($result[0] && @ldap_bind($ldap_conn, $result[0]['dn'], $this->password))
-                        {						 						    
-							$this->setState('username', $this->username);
-							$this->errorCode = self::ERROR_NONE;
-							return true;	
-						}
+                        if ($result[0] && @ldap_bind($ldap_conn, $result[0]['dn'], $this->password))
+                        {					 						    
+                            $this->setState('username', $this->username);
+                            $this->errorCode = self::ERROR_NONE;
+                            return true;
+                        }
                         else
-						{		
-                            $this->errorCode = self::ERROR_PASSWORD_INVALID;												    
-						}
-					}
-					else
-					{
-					 return parent::authenticate();	                     
-					}					
-				}
-				else
-				{
-				  echo 'Unable to connect to LDAP server';
-				}
+                        {
+                            $this->errorCode = self::ERROR_PASSWORD_INVALID;                            
+                        }
+                    }
+                    else
+                    {
+                        return parent::authenticate();	                     
+                    }					
+                }
+                else
+                {
+                    echo 'Unable to connect to LDAP server';
+                }
             }
             catch (NotFoundException $e)
             {
