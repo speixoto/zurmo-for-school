@@ -55,14 +55,12 @@
             $content .= '<tr><td><h3>' . "\n";
             if (count($this->model->dataAnalyzerMessagesData) == 0)
             {
-                $content .= Yii::t('Default',
-                                'Data Analysis is complete. Click "Next" to import your data.');
+                $content .= Yii::t('Default', 'Data Analysis is complete. Click "Next" to import your data.');
             }
             else
             {
-                $content .= Yii::t('Default',
-                                'Data Analysis is complete. There are some issues with your data, please review them below. ' .
-                                'When you are ready, click "Next" to import your data.');
+                $content .= Yii::t('Default', 'Data Analysis is complete. There are some issues with your data, please review them below. ' .
+                                              'When you are ready, click "Next" to import your data.');
             }
             $content .= '</h3></td></tr>'   . "\n";
             foreach ($this->model->dataAnalyzerMessagesData as $columnName => $messagesData)

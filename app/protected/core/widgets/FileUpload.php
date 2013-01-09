@@ -237,16 +237,17 @@ EOD;
         private function makeDownloadRowScriptContent()
         {
             $deleteLabel = 'Delete';
+            $removeLabel = Yii::t('Default', 'Remove');
 $scriptContent = <<<EOD
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
         {{if error}}
             <td class="error" colspan="4">\${error}</td>
         {{else}}
-            <td class="name" title="\${size}">
+            <td class="name">
                 \${name} <span class="file-size">(\${size})</span>
                 <span class="upload-actions delete">
-                    <button class="icon-delete" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
+                    <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
                 </span>
                 <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
             </td>
@@ -265,14 +266,14 @@ EOD;
 $scriptContent = <<<EOD
 <script id="template-upload" type="text/x-jquery-tmpl">
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">
-        <td class="name" title="\${size}">
+        <td class="name">
             <span class="z-spinner"></span>
             \${name} <span class="file-size">(\${size})</span>
             {{if error}}
                 <span class="upload-error">\${error}</span>
             {{else}}
                 <span class="upload-actions cancel">
-                    <button class="cancel"><span>{$cancelLabel}</span></button>
+                    <button class="cancel" title="{$cancelLabel}"><span>{$cancelLabel}</span></button>
                 </span>
             {{/if}}
         </td>

@@ -573,6 +573,9 @@ footer, header, hgroup, menu, nav, section {
         right:2px;
     }
 }
+body > .ui-autocomplete{
+    width:335px;
+}
 
 #globalSearchInput{
     font-style:italic;
@@ -1672,9 +1675,7 @@ td.empty{
     position: absolute;
     top:-35px;
     right:8px;
-    .icon-create,
-    a {
-        padding:0 10px 0 10px;
+    a{
         line-height:25px;
         margin:0;
         font-weight:bold;
@@ -1687,9 +1688,10 @@ td.empty{
         color:#656565;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
+        
         .z-label{
-           padding:0 0 0 5px; 
-           float:none;
+            padding:0 10px 0 10px;
+            float:none;
         }
         &:not(.attachLoading){
             background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
@@ -1700,10 +1702,15 @@ td.empty{
         }
     }
     .icon-create:before{
+        content: "";
+        margin:0;
+        padding:0;
+        display: none;
+    }
+    .icon-create .z-label:before{
     	content: "Y";
         .view-toolbar-icons();
         top:-2px;
-        color:#fff;
         margin:0 5px 0 0 !important;
     }
     .icon-delete:before{
@@ -1722,7 +1729,7 @@ td.empty{
     }
 }
 
-a.simple-select{
+a.simple-link{
     background:none !important;
     background-image:none !important;
     .b-shadow( ~"none  !important" );
@@ -1738,10 +1745,11 @@ a.simple-select{
     }
 }
 
+/*needed for specifity*/
 .portlet-toolbar{
-    a.simple-select{
+    a.simple-link{
         background:none !important;
-       }
+    }
 }
 
 /*=Popup Modals*/
@@ -2706,7 +2714,7 @@ div.wide.form{
             text-align:center;
             vertical-align:center;
             &:before{
-                content:"f";
+                content:"Y";
                 .symbly(26px);
                 color:#8b8b8b;
                 text-align:center;
@@ -3903,7 +3911,7 @@ div.hasHalfs{
 /*=Auto Complete*/
 .ui-autocomplete{
     margin-top:2px;
-    width:335px;
+    width:auto;
     ++.flyout;
     padding-top:2px;
     padding-bottom:2px;
@@ -4173,12 +4181,12 @@ div.hasHalfs{
 }
 
 .ui-widget-header.ui-progressbar-value{
-    background-color: transparent !important;
-    height:5px;
-    background-image: -webkit-linear-gradient(0deg, rgb(150, 150, 150) 0%, rgb(175, 175, 175) 100%) !important;
-    .animateAll(0.2s);
-    margin:5px 0 0 0;
     .radius(3px);
+    height:5px;
+    margin:5px 0 0 0;
+    .animateAll(0.2s);
+    background-color: transparent !important;
+    #gradient > .directional( rgb(150, 150, 150), rgb(175, 175, 175), 0deg ) !important;
 }
 
 /*=About*/
