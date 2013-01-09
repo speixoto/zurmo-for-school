@@ -86,7 +86,7 @@
                     $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $authenticationHelper->ldapBindPassword = $configurationForm->bindPassword;
                     $authenticationHelper->ldapBaseDomain = $configurationForm->baseDomain;
-					$authenticationHelper->ldapTurnOn = $configurationForm->ldapTurnOn;
+                    $authenticationHelper->ldapTurnOn = $configurationForm->ldapTurnOn;
                     
                     $host = $configurationForm->host;             
                     $port = $configurationForm->port;                

@@ -81,7 +81,7 @@
             'ldapBindRegisteredDomain',
             'ldapBindPassword',
             'ldapBaseDomain',
-			'ldapTurnOn'
+            'ldapTurnOn'
         );
 
 

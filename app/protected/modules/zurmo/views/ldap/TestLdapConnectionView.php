@@ -40,7 +40,7 @@
         protected function renderContent()
         {
             echo $this->message;die;
-			return nl2br($this->message);
+            return nl2br($this->message);
         }
     }
 ?>

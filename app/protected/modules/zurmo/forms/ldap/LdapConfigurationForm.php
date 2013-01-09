@@ -55,7 +55,7 @@
                 array('baseDomain',                        'required'),
                 array('baseDomain',                        'type',      'type' => 'string'),
                 array('baseDomain',                        'length',    'min'  => 1, 'max' => 64),
-				array('ldapTurnOn',                        'boolean'),
+                array('ldapTurnOn',                        'boolean'),
             );
         }
 
@@ -67,7 +67,7 @@
                 'bindRegisteredDomain'                 => Yii::t('Default', 'Username'),
                 'bindPassword'                         => Yii::t('Default', 'Password'),
                 'baseDomain'                           => Yii::t('Default', 'Base Domain'),
-				'ldapTurnOn'                           => Yii::t('Default', 'Turn On Ldap')
+                'ldapTurnOn'                           => Yii::t('Default', 'Turn On Ldap')
             );
         }
     }
