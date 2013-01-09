@@ -163,8 +163,8 @@
                 $groupByAxisElement                   = null;
             }
             $content                                  = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content);
-            self::resolveDivWrapperForContent($groupByAxisElement,             $content);
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
+            self::resolveDivWrapperForContent($groupByAxisElement,             $content, 'dynamic-attribute-field');
             return $content;
         }
 
