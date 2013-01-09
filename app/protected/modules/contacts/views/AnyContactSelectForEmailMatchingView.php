@@ -120,7 +120,7 @@
             }
             $params                 = array();
             $params['inputPrefix']  = array(get_class($this->model), $this->uniqueId);
-            $element  = new $elementClassName($this->model, 'null', $form, $params); echo"<pre>" ;print_r($element);
+            $element  = new $elementClassName($this->model, 'null', $form, $params);
             $content .= $element->render();
             $content .= '</tr>';
             $content .= '</tbody>';
