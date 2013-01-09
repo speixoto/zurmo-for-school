@@ -231,7 +231,7 @@
                                        make($moduleClassName, $modelClassName, $report->getType());
                 $seriesDataAndLabels = ReportUtil::makeDataAndLabelsForSeriesOrRange(
                                        $adapter->getAttributesForChartSeries($report->getGroupBys(),
-                                                                             $report->getDisplayAttriubtes()));
+                                                                             $report->getDisplayAttributes()));
                 $rangeDataAndLabels  = ReportUtil::makeDataAndLabelsForSeriesOrRange(
                                        $adapter->getAttributesForChartRange($report->getDisplayAttributes()));
             }
