@@ -33,7 +33,7 @@
     {
         protected function getIconName()
         {
-            return 'Account'; //todo: we should have an image for this. montage of something related to reports plus an exclamation or some error
+            return 'Report'; //todo: we should have an image for this. montage of something related to reports plus an exclamation or some error
         }
 
         protected function getMessageContent()

@@ -6469,6 +6469,7 @@ td.empty {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  font-size: 11px;
 }
 .portlet-toolbar a .z-label {
   padding: 0 10px 0 10px;
@@ -6503,6 +6504,7 @@ td.empty {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
+  font-size: 22px;
   top: -2px;
   margin: 0 5px 0 0 !important;
 }
@@ -6912,6 +6914,13 @@ div.wide.form label.hasCheckBox {
 }
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
+  font-weight: normal;
+  font-size: 250px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
+}
+.splash-view .Report .large-icon:after {
+  content: "j";
   font-weight: normal;
   font-size: 250px;
   font-family: "ZurmoGamificationSymblyReguRg";
