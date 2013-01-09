@@ -64,12 +64,10 @@
         /**
          * Convert array into csv string.
          * @param array $row
-         * @param boolean $isHeaderRow
          * @param string $delimiter
          * @param string $enclosure
-         * @param string $eol
          */
-        protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = ',', $enclosure = '"') // Not Coding Standard
+        protected static function arrayToCsv($row, $delimiter = ',', $enclosure = '"') // Not Coding Standard
         {
             $fp = fopen('php://temp', 'r+'); // Not Coding Standard
 
@@ -78,7 +76,8 @@
                 return false;
             }
             rewind($fp);
-            $csv = fgets($fp);
+            $csv = stream_get_contents($fp);
+            fclose($fp);
             return $csv;
         }
 
