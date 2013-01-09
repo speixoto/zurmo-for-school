@@ -66,14 +66,14 @@
             $content .= ZurmoHtml::ajaxLink(
                 ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Test Connection')),
                 Yii::app()->createUrl('zurmo/ldap/testConnection/', array()),
-                static::resolveAjaxOptionsForTestEmailSettings($this->form->getId()),
+                static::resolveAjaxOptionsForTestLdapConnection($this->form->getId()),
                 array('id' => 'SendARequestToLdapServerForConnectionButton', 'class' => 'LdapTestingButton z-button')
             );
             $content .= '</span>';
             return $content;
         }
 
-        protected static function resolveAjaxOptionsForTestEmailSettings($formId)
+        protected static function resolveAjaxOptionsForTestLdapConnection($formId)
         {
             assert('is_string($formId)');
             $title               = Yii::t('Default', 'Test Connection Results');

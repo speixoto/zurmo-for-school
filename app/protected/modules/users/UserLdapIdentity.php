@@ -31,16 +31,23 @@
     class UserLdapIdentity extends UserIdentity
     {
         
-
+        const ERROR_NO_RIGHT_WEB_LOGIN = 3;
         /**
          * Authenticates a user against ldap server.
          * @return boolean whether authentication succeeds.
          */
-        public function authenticate()
+        public function authenticate($ldapTestSettings=false)
         {
             try
             {
-                $ldapConfigurationValues = Yii::app()->authenticationHelper->getLdapSettingsValues();
+                if(!$ldapTestSettings)
+                {
+                    $ldapConfigurationValues = Yii::app()->authenticationHelper->getLdapSettingsValues();                		
+                }
+                else
+                {				 
+                    $ldapConfigurationValues = Yii::app()->params['authenticationTestSettings']['ldapSettings'];				 				 
+                }				
 				$authenticationHelper =  new ZurmoAuthenticationHelper();
                 $host = $ldapConfigurationValues['ldapHost'];
 				$port = $ldapConfigurationValues['ldapPort'];
@@ -71,14 +78,13 @@
 						}
                         else
 						{		
-                            echo 'Incorrect Pass';												    
+                            $this->errorCode = self::ERROR_PASSWORD_INVALID;												    
 						}
 					}
 					else
 					{
-					 parent::authenticate();				 
-					}
-					
+					 return parent::authenticate();	                     
+					}					
 				}
 				else
 				{

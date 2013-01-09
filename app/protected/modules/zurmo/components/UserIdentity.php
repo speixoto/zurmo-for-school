@@ -40,7 +40,7 @@
             try
             {
                 User::authenticate($this->username, $this->password);
-                $this->setState('username', $this->username);
+                $this->setState('username', $this->username);     
                 $this->errorCode = self::ERROR_NONE;
                 return true;
             }

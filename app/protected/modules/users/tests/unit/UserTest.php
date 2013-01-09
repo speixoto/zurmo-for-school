@@ -767,6 +767,27 @@
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
         }
+		
+        public function testLdapAndNormalLoginForUser()
+        {
+            //for ldap user
+            $username = 'admin';
+            $password = 'ldap123';
+            $identity = new UserLdapIdentity($username,$password);
+            $authenticated = $identity->authenticate(true);
+            $this->assertEquals(0, $identity->errorCode);
+            $this->assertTrue($authenticated);
+            //Now attempt to login as bill
+            $bill       = User::getByUsername('abcdefg');
+            $this->assertEquals(md5('abcdefgN4'), $bill->hash);
+            $bill->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
+            $this->assertTrue($bill->save());
+            //for normal user
+            $identity = new UserIdentity('abcdefg', 'abcdefgN4');
+            $authenticated = $identity->authenticate();
+            $this->assertEquals(0, $identity->errorCode);
+            $this->assertTrue($authenticated); 
+        }
 
         /**
          * @depends testPasswordUserNamePolicyChangesValidationAndLogin

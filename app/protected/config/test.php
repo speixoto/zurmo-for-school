@@ -74,7 +74,12 @@
     {
         $common_config['params']['emailTestAccounts'] = $emailTestAccounts;
     }
-
+	
+    if (isset($authenticationTestSettings) && !empty($authenticationTestSettings))
+    {
+        $common_config['params']['authenticationTestSettings'] = $authenticationTestSettings;
+    }
+	
     if (isset($testApiUrl))
     {
         $common_config['params']['testApiUrl'] = $testApiUrl;

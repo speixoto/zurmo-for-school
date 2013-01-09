@@ -52,10 +52,9 @@
 
         public function authenticate($attribute, $params)
         {
-		    $this->_identity = Yii::app()->authenticationHelper->makeIdentity($this->username, $this->password);
-            //$this->_identity = new UserIdentity($this->username, $this->password);
+            $this->_identity = Yii::app()->authenticationHelper->makeIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
-            {
+            {			    
                 $this->addError('password', Yii::t('Default', 'Incorrect username or password.'));
             }
         }
