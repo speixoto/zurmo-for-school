@@ -262,8 +262,8 @@
         {
             $label   = Yii::t('Default', '{found} record(s) will be updated ' .
                                          'and {unfound} record(s) will be skipped during import.',
-                                         array('{found}' => $this->messageCountData[static::FOUND],
-                                         '{unfound}' => $this->messageCountData[static::UNFOUND]));
+                                         array('{found}'   => $this->messageCountData[static::FOUND],
+                                               '{unfound}' => $this->messageCountData[static::UNFOUND]));
             $this->addMessage($label);
             $this->resolveMakeExternalSystemIdTooLargeMessage();
         }
