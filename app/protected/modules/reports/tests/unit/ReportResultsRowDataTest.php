@@ -186,5 +186,11 @@
             $this->assertEquals(ReportResultsRowData::DRILL_DOWN_GROUP_BY_VALUE_PREFIX . 'abc',
                                 ReportResultsRowData::resolveDataParamKeyForDrillDown('abc'));
         }
+
+        public function testWhenResolveValueFromModelHasNoModelAndReturnsProperDefaultModel()
+        {
+            $this->fail(); //todo: also we can modify the listAdapters for reporting for currency, and maybe others, so it returns null as a value since $0.00 is incorrect
+            //since there are no related items in this scenario.
+        }
     }
 ?>

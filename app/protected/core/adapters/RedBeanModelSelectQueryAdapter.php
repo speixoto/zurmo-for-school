@@ -53,6 +53,126 @@
 
         private $idTableAliasesAndModelClassNames = array();
 
+        public static function makeCountString($tableName, $columnName, $distinctPart = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($distinctPart) || $distinctPart == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$distinctPart}{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            return "count({$queryString})";
+        }
+
+        public static function makeSummationString($tableName, $columnName, $queryStringExtraPart = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}" . $queryStringExtraPart;
+            return "sum({$queryString})";
+        }
+
+        public static function makeAverageString($tableName, $columnName, $queryStringExtraPart = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}" . $queryStringExtraPart;
+            return "avg({$queryString})";
+        }
+
+        public static function makeMinimumString($tableName, $columnName, $queryStringExtraPart = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}" . $queryStringExtraPart;
+            return "min({$queryString})";
+        }
+
+        public static function makeMaximumString($tableName, $columnName, $queryStringExtraPart = null)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}" . $queryStringExtraPart;
+            return "max({$queryString})";
+        }
+
+        public static function makeDayModifierString($tableName, $columnName, $adjustForTimeZone = false)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_bool($adjustForTimeZone)');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
+            return "day({$queryString})";
+        }
+
+        public static function makeWeekModifierString($tableName, $columnName, $adjustForTimeZone = false)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_bool($adjustForTimeZone)');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
+            return "week({$queryString})";
+        }
+
+        public static function makeMonthModifierString($tableName, $columnName, $adjustForTimeZone = false)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_bool($adjustForTimeZone)');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
+            return "month({$queryString})";
+        }
+
+        public static function makeQuarterModifierString($tableName, $columnName, $adjustForTimeZone = false)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_bool($adjustForTimeZone)');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
+            return "quarter({$queryString})";
+        }
+
+        public static function makeYearModifierString($tableName, $columnName, $adjustForTimeZone = false)
+        {
+            assert('is_string($tableName)');
+            assert('is_string($columnName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            $quote           = DatabaseCompatibilityUtil::getQuote();
+            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
+            if($adjustForTimeZone)
+            {
+                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
+            }
+            return "year({$queryString})";
+        }
+
         public function __construct($distinct = false)
         {
             $this->distinct = $distinct;
@@ -130,8 +250,8 @@
             {
                 $distinctPart = 'distinct ';
             }
-            $clause = "count({$distinctPart}{$quote}$tableName{$quote}.{$quote}$columnName{$quote})";
-            $this->clauses[] = self::resolveForAliasName($clause, $aliasName);
+            $queryString     = self::makeCountString($tableName, $columnName, $distinctPart);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->countClausePresent = true;
             $this->increaseClausesCountByOne();
         }
@@ -174,9 +294,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}" . $queryStringExtraPart;
-            $this->clauses[] = self::resolveForAliasName("sum({$queryString})", $aliasName);
+            $queryString = self::makeSummationString($tableName, $columnName, $queryStringExtraPart);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -186,9 +305,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}". $queryStringExtraPart;
-            $this->clauses[] = self::resolveForAliasName("avg({$queryString})", $aliasName);
+            $queryString = self::makeAverageString($tableName, $columnName, $queryStringExtraPart);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -198,9 +316,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}". $queryStringExtraPart;
-            $this->clauses[] = self::resolveForAliasName("min({$queryString})", $aliasName);
+            $queryString     = self::makeMinimumString($tableName, $columnName, $queryStringExtraPart);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -210,9 +327,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}". $queryStringExtraPart;
-            $this->clauses[] = self::resolveForAliasName("max({$queryString})", $aliasName);
+            $queryString     = self::makeMaximumString($tableName, $columnName, $queryStringExtraPart);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -222,13 +338,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_bool($adjustForTimeZone)');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
-            {
-                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
-            }
-            $this->clauses[] = self::resolveForAliasName("day({$queryString})", $aliasName);
+            $queryString     = self::makeDayModifierString($tableName, $columnName, $adjustForTimeZone);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -238,13 +349,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_bool($adjustForTimeZone)');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
-            {
-                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
-            }
-            $this->clauses[] = self::resolveForAliasName("week({$queryString})", $aliasName);
+            $queryString     = self::makeWeekModifierString($tableName, $columnName, $adjustForTimeZone);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -254,13 +360,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_bool($adjustForTimeZone)');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
-            {
-                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
-            }
-            $this->clauses[] = self::resolveForAliasName("month({$queryString})", $aliasName);
+            $queryString     = self::makeMonthModifierString($tableName, $columnName, $adjustForTimeZone);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -270,13 +371,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_bool($adjustForTimeZone)');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
-            {
-                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
-            }
-            $this->clauses[] = self::resolveForAliasName("quarter({$queryString})", $aliasName);
+            $queryString     = self::makeQuarterModifierString($tableName, $columnName, $adjustForTimeZone);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 
@@ -286,13 +382,8 @@
             assert('is_string($columnName)');
             assert('is_string($aliasName) || $aliasName == null');
             assert('is_bool($adjustForTimeZone)');
-            $quote           = DatabaseCompatibilityUtil::getQuote();
-            $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
-            {
-                $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
-            }
-            $this->clauses[] = self::resolveForAliasName("year({$queryString})", $aliasName);
+            $queryString     = self::makeYearModifierString($tableName, $columnName, $adjustForTimeZone);
+            $this->clauses[] = self::resolveForAliasName($queryString, $aliasName);
             $this->increaseClausesCountByOne();
         }
 

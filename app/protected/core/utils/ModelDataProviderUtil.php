@@ -72,7 +72,7 @@
             return true;
         }
 
-        protected static function resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName)
+        public static function resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName)
         {
             assert('is_string($tableAliasName)');
             assert('is_string($resolvedSortColumnName)');

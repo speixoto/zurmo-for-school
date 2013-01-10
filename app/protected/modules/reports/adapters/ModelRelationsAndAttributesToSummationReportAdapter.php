@@ -84,8 +84,10 @@
                     if(!$displayAttribute->hasRelatedData() &&
                         $displayAttribute->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
+                        $realAttributeName = $this->resolveRealAttributeName($resolvedAttribute);
                         $attributes[$resolvedAttribute] = array('label' =>
-                            $this->model->getAttributeLabel($resolvedAttribute));
+                        $this->resolveDisplayCalculationLabel($realAttributeName,
+                                $this->getCalculationOrModifierType($resolvedAttribute)));
                     }
                 }
             }

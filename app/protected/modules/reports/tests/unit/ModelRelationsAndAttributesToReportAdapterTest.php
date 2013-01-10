@@ -922,6 +922,8 @@
             $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
             $this->assertEquals(1, count($attributes));
             $this->assertTrue(isset($attributes['createdDateTime__Minimum']));
+            $compareData        = array('label' => 'Created Date Time -(Min)');
+            $this->assertEquals($compareData, $attributes['createdDateTime__Minimum']);
 
             $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                 Report::TYPE_SUMMATION);
@@ -932,6 +934,8 @@
             $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes());
             $this->assertEquals(2, count($attributes));
             $this->assertTrue(isset($attributes['integer__Minimum']));
+            $compareData        = array('label' => 'Integer -(Min)');
+            $this->assertEquals($compareData, $attributes['integer__Minimum']);
 
             //This should not add because we are at the wrong point in the chain
             $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',

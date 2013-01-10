@@ -219,13 +219,13 @@
         /**
          * @depends testResolveRealAttributeName
          */
-        public function testGetGroupByCalculatedModifierAttributeType()
+        public function testGetCalculationOrModifierType()
         {
             $this->fail(); //todo:
         }
 
         /**
-         * @depends testGetGroupByCalculatedModifierAttributeType
+         * @depends testGetCalculationOrModifierType
          */
         public function testResolveDisplayAttributeTypeAndAddSelectClause()
         {

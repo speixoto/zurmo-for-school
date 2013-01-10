@@ -136,12 +136,20 @@
                     {
                         list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
                         $model = $this->resolveModel($displayAttributeKey);
-                        $value = $this->resolveRawValueByModel($displayAttribute, $model);
+                        if($model == null)
+                        {
+                            $value = null;
+                        }
+                        else
+                        {
+                            $value = $this->resolveRawValueByModel($displayAttribute, $model);
+                        }
                     }
                     else
                     {
                         $value = $this->selectedColumnNamesAndValues[$attributeAlias];
                     }
+
                     $dataParams[self::resolveDataParamKeyForDrillDown($displayAttribute->attributeIndexOrDerivedType)] = $value;
                 }
             }
@@ -193,12 +201,17 @@
             }
             $displayAttribute = $this->displayAttributes[$displayAttributeKey];
             $modelAlias       = $displayAttribute->getModelAliasUsingTableAliasName();
+            $attribute        = $displayAttribute->getResolvedAttributeRealAttributeName();
             if(!isset($this->modelsByAliases[$modelAlias]))
             {
-                return null;
+                $defaultModelClassName = $displayAttribute->getResolvedAttributeModelClassName();
+                $model = new $defaultModelClassName(false);
             }
-            $attribute           = $displayAttribute->getResolvedAttributeRealAttributeName();
-            $model               = $this->getModelByAlias($modelAlias);
+            else
+            {
+                $model = $this->getModelByAlias($modelAlias);
+            }
+
             return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
         }
 

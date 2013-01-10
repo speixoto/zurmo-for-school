@@ -38,6 +38,60 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testNonRelatedDisplayCalculationAsAttribute()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single sortable attribute
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $orderBy->attributeIndexOrDerivedType  = 'float__Average';
+            $content                               = $builder->makeQueryContent(array($orderBy));
+            $this->assertEquals("avg({$q}reportmodeltestitem{$q}.{$q}float{$q}) asc", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
+        public function testCurrencyValueAttributeWithDifferentConversionTypes()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //Test currencyValue using no conversion
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $orderBy->attributeIndexOrDerivedType  = 'currencyValue__Average';
+            $content                               = $builder->makeQueryContent(array($orderBy));
+            $this->assertEquals("avg({$q}currencyvalue{$q}.{$q}value{$q}) asc", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+
+            //Test currencyValue using base conversion
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter, Report::CURRENCY_CONVERSION_TYPE_BASE);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                     Report::TYPE_SUMMATION);
+            $orderBy->attributeIndexOrDerivedType  = 'currencyValue__Average';
+            $content                               = $builder->makeQueryContent(array($orderBy));
+            $this->assertEquals("avg({$q}currencyvalue{$q}.{$q}value{$q} * {$q}currencyvalue{$q}.{$q}ratetobase{$q}) asc", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+
+            //Test currencyValue using spot conversion
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
+            $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter, Report::CURRENCY_CONVERSION_TYPE_SPOT);
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_SUMMATION);
+            $orderBy->attributeIndexOrDerivedType  = 'currencyValue__Average';
+            $content                               = $builder->makeQueryContent(array($orderBy));
+            $this->assertEquals("avg({$q}currencyvalue{$q}.{$q}value{$q} * {$q}currencyvalue{$q}.{$q}ratetobase{$q}) asc", $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testNonRelatedNonDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();

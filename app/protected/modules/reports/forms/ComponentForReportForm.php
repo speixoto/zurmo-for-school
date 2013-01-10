@@ -238,6 +238,28 @@
             return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName, $this->reportType);
         }
 
+        public function getDisplayElementType()
+        {
+            //todo: probably adding caching for this?
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            return $modelToReportAdapter->getDisplayElementType($this->getResolvedAttribute());
+        }
+
+        public function isATypeOfCurrencyValue()
+        {
+            $displayElementType = $this->getDisplayElementType();
+            if($displayElementType == 'CalculatedCurrencyValue' ||
+                $displayElementType == 'CurrencyValue')
+            {
+                return true;
+            }
+            return false;
+        }
+
         /**
          * Passing in attributeIndexOrDerivedType, return an array representing the attribute and relation data or
          * if there is just a single attribute, then return a string representing the attribute

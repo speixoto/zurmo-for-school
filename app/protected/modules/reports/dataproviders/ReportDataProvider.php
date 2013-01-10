@@ -182,8 +182,8 @@
             $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $this->makeDisplayAttributes($joinTablesAdapter, $selectQueryAdapter);
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
-            $orderBy                = $this->makeOrderBysContent($joinTablesAdapter, $selectQueryAdapter);
-            $groupBy                = $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
+            $orderBy                = $this->makeOrderBysContent($joinTablesAdapter);
+            $groupBy                = $this->makeGroupBysContent($joinTablesAdapter);
 
             return                    SQLQueryUtil::makeQuery($modelClassName::getTableName($modelClassName),
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
@@ -196,8 +196,8 @@
             $joinTablesAdapter      = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $this->makeDisplayAttributes($joinTablesAdapter, $selectQueryAdapter);
             $where                  = $this->makeFiltersContent($joinTablesAdapter);
-            $orderBy                = $this->makeOrderBysContent($joinTablesAdapter, $selectQueryAdapter);
-            $groupBy                = $this->makeGroupBysContentForCount($joinTablesAdapter, $selectQueryAdapter);
+            $orderBy                = $this->makeOrderBysContent($joinTablesAdapter);
+            $groupBy                = $this->makeGroupBysContentForCount($joinTablesAdapter);
             //Make a fresh selectQueryAdapter that only has a count clause
             if($selectJustCount)
             {
@@ -212,7 +212,8 @@
         protected function makeDisplayAttributes(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                                  RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
-            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder                = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter,
+                                          $this->report->getCurrencyConversionType());
             $builder->makeQueryContent($this->resolveDisplayAttributes());
         }
 
@@ -226,24 +227,21 @@
             return $builder->makeQueryContent($resolvedFilters);
         }
 
-        protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
-            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $this->report->getCurrencyConversionType());
             return $builder->makeQueryContent($this->report->getOrderBys());
         }
 
-        protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
-            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->resolveGroupBys());
         }
 
-        protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                                       RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
-            return $this->makeGroupBysContent($joinTablesAdapter, $selectQueryAdapter);
+            return $this->makeGroupBysContent($joinTablesAdapter);
         }
 
         /**

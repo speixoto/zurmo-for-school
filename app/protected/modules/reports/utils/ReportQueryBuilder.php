@@ -34,14 +34,42 @@
          */
         protected $joinTablesAdapter;
 
-        public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
+        protected $currencyConversionType;
+
+        public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                    $currencyConversionType = null)
         {
-            $this->joinTablesAdapter = $joinTablesAdapter;
+            assert('is_int($currencyConversionType) || $currencyConversionType == null');
+            $this->joinTablesAdapter      = $joinTablesAdapter;
+            $this->currencyConversionType = $currencyConversionType;
         }
 
         abstract public function makeQueryContent(Array $components);
 
         abstract protected function resolveFinalContent($content, ComponentForReportForm $componentForm);
+
+        protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
+        {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
+            assert('is_string($attribute)');
+            if($modelToReportAdapter->relationIsReportedAsAttribute(
+                $modelToReportAdapter->resolveRealAttributeName($attribute)))
+            {
+                return 'value';
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected static function makeModelToReportAdapterByComponentForm(ComponentForReportForm $componentForm)
+        {
+            return ModelRelationsAndAttributesToReportAdapter::make(
+                $componentForm->getResolvedAttributeModuleClassName(),
+                $componentForm->getResolvedAttributeModelClassName(),
+                $componentForm->getReportType());
+        }
 
         protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
         {
@@ -216,6 +244,20 @@
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
             return false;
+        }
+
+        protected function getAttributeClauseQueryStringExtraPart(ComponentForReportForm $componentForm, $tableAliasName)
+        {
+            assert('is_string($tableAliasName)');
+            if($componentForm->isATypeOfCurrencyValue() &&
+                ($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_BASE ||
+                    $this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT))
+            {
+                $quote = DatabaseCompatibilityUtil::getQuote();
+                $currencyValue = new CurrencyValue();
+                return " * {$quote}{$tableAliasName}{$quote}." .
+                    "{$quote}" . $currencyValue->getColumnNameByAttribute('rateToBase') . "{$quote}";
+            }
         }
     }
 ?>

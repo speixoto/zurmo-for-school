@@ -203,6 +203,64 @@
                 $selectQueryAdapter->addClause($tableName, $columnName, $columnAliasName);
             }
         }
+
+        public function resolveOrderByStringForCalculationOrModifier($attribute, $tableName, $columnName, $queryStringExtraPart = null)
+        {
+            assert('is_string($attribute)');
+            assert('is_string($columnName)');
+            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            $type = $this->getDisplayAttributeForMakingViaSelectType($attribute);
+            if($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
+            {
+                return RedBeanModelSelectQueryAdapter::makeCountString($tableName, $columnName);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_SUMMMATION)
+            {
+                return RedBeanModelSelectQueryAdapter::makeSummationString($tableName, $columnName, $queryStringExtraPart);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_AVERAGE)
+            {
+                return RedBeanModelSelectQueryAdapter::makeAverageString($tableName, $columnName, $queryStringExtraPart);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MINIMUM)
+            {
+                return RedBeanModelSelectQueryAdapter::makeMinimumString($tableName, $columnName, $queryStringExtraPart);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_MAXIMUM)
+            {
+                return RedBeanModelSelectQueryAdapter::makeMaximumString($tableName, $columnName, $queryStringExtraPart);
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_DAY)
+            {
+                return RedBeanModelSelectQueryAdapter::makeDayModifierString($tableName, $columnName,
+                        $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_WEEK)
+            {
+                return RedBeanModelSelectQueryAdapter::makeWeekModifierString($tableName, $columnName,
+                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_MONTH)
+            {
+                return RedBeanModelSelectQueryAdapter::makeMonthModifierString($tableName, $columnName,
+                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_QUARTER)
+            {
+                return RedBeanModelSelectQueryAdapter::makeQuarterModifierString($tableName, $columnName,
+                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
+            }
+            elseif($type == ModelRelationsAndAttributesToSummableReportAdapter::GROUP_BY_CALCULATION_YEAR)
+            {
+                return RedBeanModelSelectQueryAdapter::makeYearModifierString($tableName, $columnName,
+                    $this->shouldDoTimeZoneAdjustmentOnModifierClause($attribute));
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
 //todo: should we really call resolveReal in here? or have that outside and then call this method? make it a bit cleaner
         private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
         {
@@ -212,6 +270,16 @@
                 return true;
             }
             return false;
+        }
+
+        public function relationIsReportedAsAttribute($relation)
+        {
+            assert('is_string($relation)');
+            if($this->isAttributeACalculationOrModifier($relation))
+            {
+                return false;
+            }
+            return parent::relationIsReportedAsAttribute($relation);
         }
 
 
@@ -248,7 +316,7 @@
             return parent::resolveRealAttributeName($attribute);
         }
 
-        public function getGroupByCalculatedModifierAttributeType($attribute)
+        public function getCalculationOrModifierType($attribute)
         {
             $parts = explode(FormModelUtil::DELIMITER, $attribute);
             if($parts > 1)
@@ -343,29 +411,34 @@
             $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
-                $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
-                if ($attributeType == 'Decimal' || $attributeType == 'Integer')
-                {
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_AVERAGE);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
-                }
-                elseif($attributeType == 'Date' || $attributeType == 'DateTime')
-                {
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
-                }
-                elseif($this->model->isRelation($attribute) &&
-                       $this->model->getRelationModelClassName($attribute) == 'CurrencyValue')
-                {
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_AVERAGE);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
-                    $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
-                }
+                $this->getDisplayCalculationAttribute($attributes, $attribute);
             }
             return $attributes;
+        }
+
+        protected function getDisplayCalculationAttribute(& $attributes, $attribute)
+        {
+            $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
+            if ($attributeType == 'Decimal' || $attributeType == 'Integer')
+            {
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_AVERAGE);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
+            }
+            elseif($attributeType == 'Date' || $attributeType == 'DateTime')
+            {
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
+            }
+            elseif($this->model->isRelation($attribute) &&
+                $this->model->getRelationModelClassName($attribute) == 'CurrencyValue')
+            {
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_SUMMMATION);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_AVERAGE);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MINIMUM);
+                $this->resolveDisplayCalculationAttributeData($attributes, $attribute, self::DISPLAY_CALCULATION_MAXIMUM);
+            }
         }
 
         protected function resolveGroupByAttributesForDisplayAttributes(RedBeanModel $precedingModel = null,

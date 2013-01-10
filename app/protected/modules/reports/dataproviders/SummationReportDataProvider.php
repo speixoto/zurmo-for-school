@@ -59,7 +59,7 @@
             }
         }
 
-        public function resolveDisplayAttributesToUse()
+        public function resolveDisplayAttributes()
         {
             if($this->resolvedDisplayAttributes != null)
             {
@@ -70,6 +70,7 @@
             {
                 $this->resolvedDisplayAttributes[] = $displayAttribute;
             }
+
             if(($this->report->getDrillDownDisplayAttributes()) > 0)
             {
                 $this->resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes();

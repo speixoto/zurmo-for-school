@@ -31,16 +31,12 @@
     {
         protected $selectQueryAdapter;
 
-        protected $currencyConversionType;
-
         public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                    RedBeanModelSelectQueryAdapter $selectQueryAdapter,
-                                    $currencyConversionType = null)
+                                    RedBeanModelSelectQueryAdapter $selectQueryAdapter, $currencyConversionType = null)
         {
             assert('is_int($currencyConversionType) || $currencyConversionType == null');
-            parent::__construct($joinTablesAdapter);
-            $this->selectQueryAdapter     = $selectQueryAdapter;
-            $this->currencyConversionType = $currencyConversionType;
+            parent::__construct($joinTablesAdapter, $currencyConversionType);
+            $this->selectQueryAdapter = $selectQueryAdapter;
         }
 
         public function makeQueryContent(Array $components)
@@ -127,7 +123,7 @@
                                   $tableAliasName,
                                   $this->resolveColumnName($modelAttributeToDataProviderAdapter),
                                   $componentForm->columnAliasName,
-                                  $this->getSelectClauseQueryStringExtraPart($componentForm, $tableAliasName));
+                                  $this->getAttributeClauseQueryStringExtraPart($componentForm, $tableAliasName));
                 //todo: actually make getSelectClauseQueryStringExtraPart here in this class. then in constructor need to pass the conversion info param in.
                 //todo: then we can do it all here and scrap that method in displayAttribute.
             }
@@ -192,21 +188,6 @@
                     $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
-        }
-
-        protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            if($modelToReportAdapter->relationIsReportedAsAttribute(
-                $modelToReportAdapter->resolveRealAttributeName($attribute)))
-            {
-                return 'value';
-            }
-            else
-            {
-                return null;
-            }
         }
 
         protected function shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
@@ -283,28 +264,6 @@
             }
         }
 
-        protected static function makeModelToReportAdapterByComponentForm(ComponentForReportForm $componentForm)
-        {
-            assert('$componentForm instanceof DisplayAttributeForReportForm');
-            return ModelRelationsAndAttributesToReportAdapter::make(
-                        $componentForm->getResolvedAttributeModuleClassName(),
-                        $componentForm->getResolvedAttributeModelClassName(),
-                        $componentForm->getReportType());
-        }
-
-        protected function getSelectClauseQueryStringExtraPart(DisplayAttributeForReportForm $componentForm, $tableAliasName)
-        {
-            assert('is_string($tableAliasName)');
-            if($componentForm->isATypeOfCurrencyValue() &&
-               ($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_BASE ||
-                $this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT))
-            {
-                $quote = DatabaseCompatibilityUtil::getQuote();
-                $currencyValue = new CurrencyValue();
-                return " * {$quote}{$tableAliasName}{$quote}." .
-                    "{$quote}" . $currencyValue->getColumnNameByAttribute('rateToBase') . "{$quote}";
-            }
-        }
 //todo: this is lame because it knows that madeViaSelectInsteadOfViaModel true, means it is a group by. try to decouple.
         protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
             $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)

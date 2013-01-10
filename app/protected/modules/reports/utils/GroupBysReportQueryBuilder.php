@@ -69,10 +69,10 @@
                 $componentForm->getResolvedAttributeModelClassName(),
                 $componentForm->getReportType());
             if($modelToReportAdapter->isAttributeACalculatedGroupByModifier($resolvedAttribute) &&
-               $modelToReportAdapter->getGroupByCalculatedModifierAttributeType($resolvedAttribute))
+               $modelToReportAdapter->getCalculationOrModifierType($resolvedAttribute))
             {
                 $sqlReadyType              = strtolower($modelToReportAdapter->
-                                             getGroupByCalculatedModifierAttributeType($resolvedAttribute));
+                                             getCalculationOrModifierType($resolvedAttribute));
                 $timeZoneAdjustmentContent = $this->resolveTimeZoneAdjustmentForACalculatedDateTimeModifier(
                                              $modelToReportAdapter, $resolvedAttribute);
                 return $sqlReadyType . '(' . $columnContent . $timeZoneAdjustmentContent . ')';

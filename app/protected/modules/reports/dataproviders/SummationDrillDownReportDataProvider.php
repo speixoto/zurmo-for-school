@@ -39,25 +39,23 @@
             }
         }
 
-        protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             return null;
         }
 
-        protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                               RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             return null;
         }
 
-        protected function makeReadPermissionsAttributeIndexes()
+        protected function makeReadPermissionsAttributeIndexes(array $filters)
         {
             $attributeIndexes = array();
             ReadPermissionsForReportUtil::
                 resolveAttributeIndexesByComponents($attributeIndexes, $this->resolveDisplayAttributes());
             ReadPermissionsForReportUtil::
-                resolveAttributeIndexesByComponents($attributeIndexes, $this->report->getFilters());
+                resolveAttributeIndexesByComponents($attributeIndexes, $filters);
             return $attributeIndexes;
         }
     }

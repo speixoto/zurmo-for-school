@@ -68,7 +68,7 @@ jQuery('.drillDownCollapseLink').live('click', function()
 });
 END;
             // End Not Coding Standard
-            Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->id, $script);
+            Yii::app()->getClientScript()->registerScript(__CLASS__ . 'SummationDrillDownToggleScript', $script);
         }
 
         /**

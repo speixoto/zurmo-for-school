@@ -418,8 +418,16 @@
                                                        $groupBy->getModelClassName(),
                                                        $this->type);
                 $filter->attributeIndexOrDerivedType = $groupBy->attributeIndexOrDerivedType;
-                $filter->operator                    = OperatorRules::TYPE_EQUALS;
-                $filter->value                       = $value;
+                //todo: resolve this into some other method, also make test
+                if($value != null)
+                {
+                    $filter->operator                    = OperatorRules::TYPE_EQUALS;
+                    $filter->value                       = $value;
+                }
+                else
+                {
+                    $filter->operator                    = OperatorRules::TYPE_IS_NULL;
+                }
                 $this->addFilter($filter);
                 if($structure != null)
                 {

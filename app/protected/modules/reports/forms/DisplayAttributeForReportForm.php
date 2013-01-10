@@ -105,16 +105,7 @@
             return $this->modelAliasUsingTableAliasName;
         }
 
-        public function getDisplayElementType()
-        {
-            //todo: probably adding caching for this?
-            if($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            return $modelToReportAdapter->getDisplayElementType($this->getResolvedAttribute());
-        }
+
 
         public function resolveAttributeNameForGridViewColumn($key)
         {
@@ -131,17 +122,6 @@
         {
             $resolvedAttribute = $this->getResolvedAttribute();
             if($resolvedAttribute == 'name' || $resolvedAttribute == 'FullName')
-            {
-                return true;
-            }
-            return false;
-        }
-
-        public function isATypeOfCurrencyValue()
-        {
-            $displayElementType = $this->getDisplayElementType();
-            if($displayElementType == 'CalculatedCurrencyValue' ||
-                $displayElementType == 'CurrencyValue')
             {
                 return true;
             }
