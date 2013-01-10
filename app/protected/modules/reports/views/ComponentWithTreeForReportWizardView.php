@@ -41,7 +41,7 @@
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
-            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area'), $this->renderRightSideContent());
+            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area activate-drop-zone'), $this->renderRightSideContent());
             return $content;
         }
 
@@ -138,19 +138,14 @@
                 $(".droppable-attributes-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-               
-                $(".attribute-to-place").live("dblclick",function(event){
-                    var treeType = "'.static::getTreeType().'";
-                    if(treeType === "Filters"){
-                        ' . $this->getAjaxForDoubleClickedAttribute() . '
-                    }
+                $(".attribute-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                    ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-attribute-row-link").live("click", function()
-                    {
-                        $(this).parent().parent().remove(); //removes the <li>
-                        ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                    }
-                );
+                $(".remove-dynamic-attribute-row-link").live("click", function(){
+                    $(this).parent().parent().remove(); //removes the <li>
+                    ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
+                    return false;
+                });
             ';
             Yii::app()->getClientScript()->registerScript(static::getTreeType() . 'ReportComponentForTreeScript', $script);
         }
