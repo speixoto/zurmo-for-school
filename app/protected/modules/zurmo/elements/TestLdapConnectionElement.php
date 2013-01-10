@@ -25,10 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Utilize this element to display a text input and button that can be used to send a test email while setting
-     * up the outbound email configuration.
+     * Utilize this element to display a  button that can be used to send a test ldap connection while setting
+     * up the ldap server configuration.
      */
-    class SendARequestToLdapServerForConnectionElement extends Element
+    class TestLdapConnectionElement extends Element
     {
         /**
          * Renders a button.
@@ -67,7 +67,7 @@
                 ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Test Connection')),
                 Yii::app()->createUrl('zurmo/ldap/testConnection/', array()),
                 static::resolveAjaxOptionsForTestLdapConnection($this->form->getId()),
-                array('id' => 'SendARequestToLdapServerForConnectionButton', 'class' => 'LdapTestingButton z-button')
+                array('id' => 'TestLdapConnectionButton', 'class' => 'LdapTestingButton z-button')
             );
             $content .= '</span>';
             return $content;

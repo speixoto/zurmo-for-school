@@ -98,7 +98,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'ldapTurnOn', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'ldapEnabled', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -108,7 +108,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'testConnection',
-                                                      'type' => 'SendARequestToLdapServerForConnection'),
+                                                      'type' => 'TestLdapConnection'),
                                             ),
                                         ),
                                     )

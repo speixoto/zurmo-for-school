@@ -74,31 +74,31 @@
                     $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['ldapBindRegisteredDomain'];
                     $configurationForm->bindPassword          = $_POST['LdapConfigurationForm']['ldapBindPassword'];
                     $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapBaseDomain'];
-                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapTurnOn'];                    
+                    $configurationForm->ldapEnabled           = $_POST['LdapConfigurationForm']['ldapEnabled'];                    
                 }
                 if ($configurationForm->host != null && $configurationForm->port != null && 
                     $configurationForm->bindRegisteredDomain != null && $configurationForm->bindPassword != null &&
       				$configurationForm->baseDomain != null	)
                 {
                     $authenticationHelper = new ZurmoAuthenticationHelper;
-                    $authenticationHelper->ldapHost     = $configurationForm->host;
-                    $authenticationHelper->ldapPort     = $configurationForm->port;
+                    $authenticationHelper->ldapHost                 = $configurationForm->host;
+                    $authenticationHelper->ldapPort                 = $configurationForm->port;
                     $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
-                    $authenticationHelper->ldapBindPassword = $configurationForm->bindPassword;
-                    $authenticationHelper->ldapBaseDomain = $configurationForm->baseDomain;
-                    $authenticationHelper->ldapTurnOn = $configurationForm->ldapTurnOn;
+                    $authenticationHelper->ldapBindPassword         = $configurationForm->bindPassword;
+                    $authenticationHelper->ldapBaseDomain           = $configurationForm->baseDomain;
+                    $authenticationHelper->ldapEnabled              = $configurationForm->ldapEnabled;
                     
-                    $host = $configurationForm->host;             
-                    $port = $configurationForm->port;                
-                    $bindRegisteredDomain = $configurationForm->bindRegisteredDomain;
-                    $bindPassword = $configurationForm->bindPassword;         
-                    $baseDomain = $configurationForm->baseDomain;           
-                    $testConnectionResults = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                    $host                      = $configurationForm->host;             
+                    $port                      = $configurationForm->port;                
+                    $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
+                    $bindPassword              = $configurationForm->bindPassword;         
+                    $baseDomain                = $configurationForm->baseDomain;           
+                    $testConnectionResults     = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
                     
 					if($testConnectionResults)
 					{
-					 $messageContent = Yii::t('Default', 'Successfully Connected to Ldap Server') . "\n";  
+					 $messageContent = Yii::t('Default', 'Successfully Connected to LDAP Server') . "\n";  
 					}
 					else
 					{

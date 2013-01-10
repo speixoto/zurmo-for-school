@@ -63,7 +63,7 @@
          * Ldap server authentication feature turn on. 
          * @var boolean
          */
-        public $ldapTurnOn;
+        public $ldapEnabled;
         
 		/**
 		* ldap Settings Values
@@ -81,7 +81,7 @@
             'ldapBindRegisteredDomain',
             'ldapBindPassword',
             'ldapBaseDomain',
-            'ldapTurnOn'
+            'ldapEnabled'
         );
 
 
@@ -144,8 +144,8 @@
 		public function makeIdentity($username, $password)
 		{
 		  //checking ldap option enable 
-		  $ldapEnableFlag = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'ldapTurnOn');
-		  if($ldapEnableFlag)
+		  $ldapEnabled = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'ldapEnabled');
+		  if($ldapEnabled)
 		  {  		     
 			 return new UserLdapIdentity($username, $password);
 		  }
