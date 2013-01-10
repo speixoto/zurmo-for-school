@@ -72,7 +72,7 @@
                                           'operatorType'         => $this->filter->getOperator(),
                                           'value'                => $this->filter->value,
                                           'modifierType'         => $this->modelRelationsAndAttributesToReportAdapter->
-                                                                    getGroupByCalculatedModifierAttributeType($attribute));
+                                                                    getCalculationOrModifierType($attribute));
                 $this->structure  = '1';
             }
             //likeContactState, a variation of dropDown, or currencyValue
