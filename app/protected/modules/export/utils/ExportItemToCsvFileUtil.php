@@ -43,7 +43,7 @@
                 {
                     $headerRow[] = $key;
                 }
-                $output = self::arraytoCsv($headerRow);
+                $output = self::arraytoCsv($headerRow, true);
 
                 foreach ($data as $row)
                 {
@@ -64,10 +64,11 @@
         /**
          * Convert array into csv string.
          * @param array $row
+         * @param boolean $isHeaderRow
          * @param string $delimiter
          * @param string $enclosure
          */
-        protected static function arrayToCsv($row, $delimiter = ',', $enclosure = '"') // Not Coding Standard
+        protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = ',', $enclosure = '"') // Not Coding Standard
         {
             $fp = fopen('php://temp', 'r+'); // Not Coding Standard
 
@@ -77,36 +78,18 @@
             }
             rewind($fp);
             $csv = stream_get_contents($fp);
+
+            if($isHeaderRow)
+            {
+                //ModelToExportAdapter->getData() does not add quotes to header rows so we have to do it here.
+                //why not just use implode instead of replacing enclosure? because fputcsv does more than just
+                // implode and we don't want to lose that.
+                $csv = str_replace( $enclosure, '', $csv );
+            }
+
             fclose($fp);
             return $csv;
         }
 
-        /*
-        Commented due to bug with reading in data that contains linebreaks inside fields.
-        This function is only used in tests so its fix is not critical.
-        */
-        /*
-        public static function csvToArray($csv, $delimiter = ',', $enclosure = '"', $escape = '\\', $terminator = "\n") // Not Coding Standard
-        {
-            $result = array();
-            $rows = explode($terminator, trim($csv));
-            $columnNames = array_shift($rows);
-            $columnNames = str_getcsv($columnNames, $delimiter, $enclosure, $escape);
-            $numberOfColumns = count($columnNames);
-            foreach ($rows as $row)
-            {
-                if (trim($row))
-                {
-                    $values = str_getcsv($row, $delimiter, $enclosure, $escape);
-                    if (!$values)
-                    {
-                        $values = array_fill(0, $numberOfColumns, null);
-                    }
-                    $result[] = array_combine($columnNames, $values);
-                }
-            }
-            return $result;
-        }
-        */
     }
 ?>
