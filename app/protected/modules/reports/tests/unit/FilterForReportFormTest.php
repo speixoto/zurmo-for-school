@@ -195,28 +195,6 @@
         /**
          * @depends testDynamicallyDerivedAttributeSetAndGet
          */
-        public function testStateAttributesWithModuleConnetionsDisplayLabels()
-        {
-            //test the likeContactState using base module
-            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem8',
-                                                                           Report::TYPE_ROWS_AND_COLUMNS);
-            $filter->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsTestModule___likeContactState';
-            $filter->operator                    = OperatorRules::TYPE_EQUALS;
-            $filter->value                       = 'Jason';
-            $this->assertEquals('ReportModelTestItems >> A name for a state', $filter->getDisplayLabel());
-
-            //test the likeContactState using alternate module
-            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem8',
-                                                                           Report::TYPE_ROWS_AND_COLUMNS);
-            $filter->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsAlternateStateTestModule___likeContactState';
-            $filter->operator                    = OperatorRules::TYPE_EQUALS;
-            $filter->value                       = 'Jason';
-            $this->assertEquals('Reports Alternate State Test >> A name for a state', $filter->getDisplayLabel());
-        }
-
-        /**
-         * @depends testStateAttributesWithModuleConnetionsDisplayLabels
-         */
         public function testValidateTextAttribute()
         {
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',

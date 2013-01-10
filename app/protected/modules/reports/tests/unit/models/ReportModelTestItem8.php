@@ -38,8 +38,6 @@
                                          RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDownX'),
                     'reportModelTestItems' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem'),
                 ),
-                'relationsModuleConnections' =>
-                    array('reportModelTestItems' => array('ReportsTestModule', 'ReportsAlternateStateTestModule')),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),
                     array('name',  'length', 'max' => 32),

@@ -315,22 +315,7 @@
             $this->assertFalse(strpos($content, 'Qualified')   === false);
             $this->assertTrue(strpos($content,  'In Progress') === false);
 
-            //Test a likeContactState directly on base model where model's module's is the alternative module
-            $model                              = new FilterForReportForm('ReportsAlternateStateTestModule',
-                                                                          $modelClassName, $reportType);
-            $model->attributeIndexOrDerivedType = 'likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertTrue(strpos($content,  'Qualified')    === false);
-            $this->assertFalse(strpos($content, 'In Progress')  === false);
-
-            //Test a likeContactState on a related model, where the relation is against the base module and
-            //there is no declaration of relationsModuleConnections
+            //Test a likeContactState on a related model, where the relation is against the base module
             $model                              = new FilterForReportForm($moduleClassName,
                                                                           'ReportModelTestItem2', $reportType);
             $model->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
@@ -344,40 +329,11 @@
             $this->assertFalse(strpos($content, 'Qualified')   === false);
             $this->assertTrue (strpos($content, 'In Progress') === false);
 
-            //Test a likeContactState on a related model, where the relation is against the base module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem8', $reportType);
-            $model->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsTestModule___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue (strpos($content, 'In Progress') === false);
-
-            //Test a likeContactState on a related model, where the relation is against the alternative module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem8', $reportType);
-            $model->attributeIndexOrDerivedType = 'reportModelTestItems__Via_ReportsAlternateStateTestModule___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertTrue (strpos($content, 'Qualified')   === false);
-            $this->assertFalse(strpos($content, 'In Progress') === false);
-
-
             //Test a likeContactState on an inferred related model, where the relation is against the base module
             $model                              = new FilterForReportForm($moduleClassName,
                                                                           'ReportModelTestItem5', $reportType);
             $model->attributeIndexOrDerivedType =
-                'ReportModelTestItem__reportItems__Inferred__Via_ReportsTestModule___likeContactState';
+                'ReportModelTestItem__reportItems__Inferred___likeContactState';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
@@ -387,21 +343,6 @@
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
             $this->assertFalse(strpos($content, 'Qualified')   === false);
             $this->assertTrue (strpos($content, 'In Progress') === false);
-
-            //Test a likeContactState on an inferred related model, where the relation is against the alternative module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem5', $reportType);
-            $model->attributeIndexOrDerivedType =
-                'ReportModelTestItem__reportItems__Inferred__Via_ReportsAlternateStateTestModule___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertTrue (strpos($content, 'Qualified')   === false);
-            $this->assertFalse(strpos($content, 'In Progress') === false);
         }
 
         /**

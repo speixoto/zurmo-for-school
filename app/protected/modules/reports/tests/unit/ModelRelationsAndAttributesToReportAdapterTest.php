@@ -308,37 +308,6 @@
 
         /**
          * @depends testGetInferredRelationsData
-         * Used to test when a relation is to a model that has state information.  An example is a model related to contacts
-         * Module connection information can be used to clarify if a relation is to the baseModule and another alternative module.
-         * Opportunities -> contacts for example only connects to ContactsModule so the RelationsModuleConnections information
-         * would not be populated.  However if you had a Ticket module that connected -> contacts and you wanted to have
-         * tickets connected to leads, then you would populate relationsModuleConnections information.
-         */
-        public function testGetRelationsWithModuleConnections()
-        {
-            $model              = new ReportModelTestItem8();
-            $rules              = new ReportsTestReportRules();
-            $report             = new Report();
-            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
-            $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
-            $relations = $adapter->getSelectableRelationsData();
-            $this->assertEquals(5, count($relations));
-            $compareData        = array('label' => 'Reports Test');
-            $this->assertEquals($compareData, $relations['reportModelTestItems__Via_ReportsTestModule']);
-            $compareData        = array('label' => 'Reports Alternate State Test');
-            $this->assertEquals($compareData, $relations['reportModelTestItems__Via_ReportsAlternateStateTestModule']);
-            //Add Dynamically Derived Attributes
-            $compareData        = array('label' => 'Owner');
-            $this->assertEquals($compareData, $relations['owner']);
-            $compareData        = array('label' => 'Created By User');
-            $this->assertEquals($compareData, $relations['createdByUser']);
-            $compareData        = array('label' => 'Modified By User');
-            $this->assertEquals($compareData, $relations['modifiedByUser']);
-        }
-
-        /**
-         * @depends testGetRelationsWithModuleConnections
          */
         public function testGetInferredRelationsDataWithPrecedingModel()
         {

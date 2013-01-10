@@ -177,20 +177,6 @@
             return null;
         }
 
-        public function getInferredModuleConnections(RedBeanModel $model, $attribute)
-        {
-            assert('is_string($attribute)');
-            $modelClassName = $model->getAttributeModelClassName($attribute);
-            $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['inferredModuleConnections']) &&
-               isset($attribute, $metadata[$modelClassName]['inferredModuleConnections'][$attribute]))
-            {
-                return $metadata[$modelClassName]['inferredModuleConnections'][$attribute];
-            }
-            return null;
-        }
-
-
         public function getSortAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
