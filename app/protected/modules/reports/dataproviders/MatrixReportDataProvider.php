@@ -507,10 +507,9 @@
          * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
          * @return null|string
          */
-        protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                                           RedBeanModelSelectQueryAdapter $selectQueryAdapter)
+        protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
             {
-                $builder = new GroupBysReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+                $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
                 return $builder->makeQueryContent($this->getYAxisGroupBys());
             }
     }

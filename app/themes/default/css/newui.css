@@ -15603,7 +15603,6 @@ a.user-link {
 }
 .ReportResultsGridView tbody th:first-child {
   padding-left: 5px !important;
-  text-align: left !important;
   border-left: none !important;
 }
 .ReportResultsGridView tbody td:first-child {
