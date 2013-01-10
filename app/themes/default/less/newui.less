@@ -1688,7 +1688,7 @@ td.empty{
         color:#656565;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-        
+        .smaller();
         .z-label{
             padding:0 10px 0 10px;
             float:none;
@@ -1710,6 +1710,7 @@ td.empty{
     .icon-create .z-label:before{
     	content: "Y";
         .view-toolbar-icons();
+        font-size:22px;
         top:-2px;
         margin:0 5px 0 0 !important;
     }
@@ -2063,6 +2064,11 @@ div.wide.form{
     }
     .EmailMessage .large-icon:after{
         content:"g";
+        .symbly(250px);
+        line-height: 60%;
+    }
+    .Report .large-icon:after{
+        content:"j";
         .symbly(250px);
         line-height: 60%;
     }

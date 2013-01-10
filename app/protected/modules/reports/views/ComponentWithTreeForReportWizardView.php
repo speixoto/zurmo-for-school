@@ -61,10 +61,10 @@
             $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
             $hiddenInputName      = static::getTreeType() . 'RowCounter';
             $attributeRows        = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
-            $dropZone             = ZurmoHtml::tag('div', array('class' => 'drop-zone'), 'Todo: Drop Here');
             $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content             .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
-                                                                           static::getTreeType()), $attributeRows . $dropZone);
+                                                                           static::getTreeType()), $attributeRows);
+            $content             .= ZurmoHtml::tag('div', array('class' => 'drop-zone'), 'Todo: Drop Here');
             return $content;
         }
 
