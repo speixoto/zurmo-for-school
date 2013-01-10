@@ -268,7 +268,7 @@ $scriptContent = <<<EOD
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">
         <td class="name">
             <span class="z-spinner"></span>
-            \${name} <span class="file-size">(\${size})</span>
+            \${name} <span class="file-size">(\${sizef})</span>
             {{if error}}
                 <span class="upload-error">\${error}</span>
             {{else}}
