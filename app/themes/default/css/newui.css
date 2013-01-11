@@ -11192,9 +11192,6 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 0;
   padding: 0;
 }
-#SequentialProcessView h3 {
-  text-indent: 30px;
-}
 #ImportErrorsListView {
   margin-bottom: 15px;
 }

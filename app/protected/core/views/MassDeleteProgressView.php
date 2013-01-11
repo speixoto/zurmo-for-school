@@ -100,7 +100,7 @@
                         ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
                     }',
                     'change' => 'js:function(event, ui){
-                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "%");
+                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "&#37;");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
@@ -114,7 +114,7 @@
             $content  = "<div><h1>" . Yii::t('Default', 'Mass Delete') . ' ' . $this->title . '</h1>';
             $content .= '<div class="progress-counter">';
             $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';
+            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0&#37;</span>' . $progressBarContent . '</div>';
             $content .= $this->renderFormLinks();
             $content .= '</div>';
             $content .= '</div>';
