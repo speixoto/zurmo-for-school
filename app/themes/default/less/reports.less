@@ -49,6 +49,9 @@
             .b-shadow(inset 0 1px 0 0 #ffffff);
         }
     }
+    .radio-input {
+        margin-bottom: 10px !important;
+    }
 }
 
 
@@ -62,9 +65,6 @@
         td{
             padding-left:0;
         }
-    }
-    .radio-input {
-        margin-bottom: 10px !important;
     }
 }
 
@@ -398,4 +398,36 @@
 #UserCannotRenderReportProperlySplashView{
     float: left;
     margin-bottom: 30px;
+}
+
+#ChartForReportWizardView{
+    .panel > label{
+        text-align: left;
+        display: block;
+        margin-bottom: 20px;
+    }
+    .right-side-edit-view-panel{
+        label{
+            float: none;
+        }
+    }
+}
+
+.hasDrillDownContent{
+    padding:5px !important;
+    .border-box();
+    #gradient > .vertical( #222, #555 );
+    //.b-shadow(inset 0 0 10px 2px #000);
+
+}
+
+.drillDownContent{
+    border: 1px solid #555;
+    background: #fff;
+    min-height: 40px;
+}
+
+.drilldown-link{
+    cursor: pointer;
+    display: block;
 }

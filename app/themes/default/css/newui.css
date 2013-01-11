@@ -15284,6 +15284,9 @@ a.user-link {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
 }
+.ComponentForReportWizardView .radio-input {
+  margin-bottom: 10px !important;
+}
 #ModuleForReportWizardView table span {
   text-align: left;
   display: block;
@@ -15291,9 +15294,6 @@ a.user-link {
 }
 #ModuleForReportWizardView table td {
   padding-left: 0;
-}
-#ModuleForReportWizardView .radio-input {
-  margin-bottom: 10px !important;
 }
 #GeneralDataForReportWizardView .panel {
   width: 70%;
@@ -15611,6 +15611,39 @@ a.user-link {
 #UserCannotRenderReportProperlySplashView {
   float: left;
   margin-bottom: 30px;
+}
+#ChartForReportWizardView .panel > label {
+  text-align: left;
+  display: block;
+  margin-bottom: 20px;
+}
+#ChartForReportWizardView .right-side-edit-view-panel label {
+  float: none;
+}
+.hasDrillDownContent {
+  padding: 5px !important;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  background-color: #555555;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#222222), to(#555555));
+  background-image: -moz-linear-gradient(top, #222222, #555555);
+  background-image: -ms-linear-gradient(top, #222222, #555555);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222222), color-stop(100%, #555555));
+  background-image: -webkit-linear-gradient(top, #222222, #555555);
+  background-image: -o-linear-gradient(top, #222222, #555555);
+  background-image: linear-gradient(top, #222222, #555555);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222222', endColorstr='#555555', GradientType=0);
+}
+.drillDownContent {
+  border: 1px solid #555;
+  background: #fff;
+  min-height: 40px;
+}
+.drilldown-link {
+  cursor: pointer;
+  display: block;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {

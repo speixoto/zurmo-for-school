@@ -83,7 +83,7 @@
 
         protected function renderExpandableRow($id)
         {
-            echo '<tr style="display:none;"><td></td><td colspan="' . (count($this->columns) - 1) . '">';
+            echo '<tr style="display:none;"><td class="hasDrillDownContent" colspan="' . (count($this->columns)) . '">';
             echo '<div class="drillDownContent" id="drillDownContentFor-' . $id . '"></div>';
             echo "</td></tr>\n";
         }
