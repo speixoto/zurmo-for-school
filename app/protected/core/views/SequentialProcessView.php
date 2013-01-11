@@ -107,7 +107,7 @@
                     'update' => '#' . $this->containerViewId,
             ));
             $script .= '$(\'#' . $this->getProgressBarId() . '\').progressbar({value: ' . $this->getProgressValue() . '});';
-            $script .= 'makeSmallLoadingSpinner("sequential-process-spinner", "dark");';
+            //$script .= 'makeSmallLoadingSpinner("sequential-process-spinner", "dark");';
             Yii::app()->clientScript->registerScript('sequentialProcess', $script);
         }
 
