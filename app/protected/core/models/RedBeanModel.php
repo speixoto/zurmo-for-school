@@ -469,7 +469,6 @@
                 }
                 $this->modelClassNameToBean = array_reverse($this->modelClassNameToBean);
             }
-
             $this->constructDerived($bean, $setDefaults);
             if ($forceTreatAsCreation)
             {
@@ -3033,7 +3032,7 @@
          *                        gets the wrong name.
          * @return An instance of the type of the extending model.
          */
-        public static function makeModel(RedBean_OODBBean $bean, $modelClassName = null, $forceTreatAsCreation = false)
+        public static function makeModel(RedBean_OODBBean $bean, $modelClassName = null)
         {
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
@@ -3049,7 +3048,8 @@
             }
             catch (NotFoundException $e)
             {
-                return new $modelClassName(true, $bean, $forceTreatAsCreation);
+                return new $modelClassName(false, $bean);
+                //return new $modelClassName(true, $bean, $forceTreatAsCreation); //no need to set defaults here and force creation since it is always false and the bean already exists
             }
         }
 

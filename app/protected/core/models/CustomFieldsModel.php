@@ -33,36 +33,85 @@
          */
         protected static $lastClassInBeanHeirarchy = 'CustomFieldsModel';
 
+        protected function unrestrictedGet($attributeName)
+        {
+            $x = parent::unrestrictedGet($attributeName);
+            if(is_object($x) && $x instanceof BaseCustomField && !($x->data->id > 0) ) //todo: imperfect since maybe a dropdown has no values. so need some php caching here.
+            {
+                /**
+                $backtrace = debug_backtrace();
+                foreach($backtrace as $back)
+                {
+                    if(isset($back['file']) && isset($back['line']))
+                    {
+                        echo $back['file'] . $back['line'] . "<BR>";
+                    }
+
+                }
+                echo '--------------' . "<BR>";
+                 * **/
+                $metadata = $this->getMetadata();
+                foreach ($metadata as $unused => $classMetadata)
+                {
+                    if (isset($classMetadata['customFields']))
+                    {
+                        foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
+                        {
+                            if($customFieldName == $attributeName)
+                            {
+                                //echo 'what is hapasd' . $attributeName . "<BR>";
+                                $customFieldData = CustomFieldData::getByName($customFieldDataName);
+                                $x->data = $customFieldData;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return $x;
+        }
+
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
             assert('is_bool($setDefaults)');
             parent::constructDerived($bean, $setDefaults);
-            $metadata = $this->getMetadata();
-            foreach ($metadata as $unused => $classMetadata)
+            if($setDefaults && $bean === null)
             {
-                if (isset($classMetadata['customFields']))
+/**
+                $backtrace = debug_backtrace();
+                foreach($backtrace as $back)
                 {
-                    foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
+                    if(isset($back['file']) && isset($back['line']))
                     {
-                        $customField     = $this->unrestrictedGet($customFieldName);
-                        $customFieldData = CustomFieldData::getByName($customFieldDataName);
-                        if ($bean === null)
+                        echo $back['file'] . $back['line'] . "<BR>";
+                    }
+
+                }
+                echo '--------------' . "<BR>";
+ * **/
+                $metadata = $this->getMetadata();
+                foreach ($metadata as $unused => $classMetadata)
+                {
+                    if (isset($classMetadata['customFields']))
+                    {
+                        foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
                         {
+                          //echo 'constructDerived' . $customFieldName;
+                            $customField     = $this->unrestrictedGet($customFieldName);
                             if ($customField instanceof CustomField &&
-                                ($customField->value === null || $customField->value === '') && $setDefaults)
+                                ($customField->value === null || $customField->value === ''))
                             {
-                                $customField->value = $customFieldData->defaultValue;
+                                $customField->value = $customField->data->defaultValue;
                             }
                             elseif ($customField instanceof MultipleValuesCustomField &&
-                                 $customField->values->count() == 0 && $setDefaults && isset($customFieldData->defaultValue))
+                                 $customField->values->count() == 0 && isset($customField->data->defaultValue))
                             {
                                 $customFieldValue = new CustomFieldValue();
-                                $customFieldValue->value = $customFieldData->defaultValue;
+                                $customFieldValue->value = $customField->data->defaultValue;
                                 $customField->values->add($customFieldValue);
                             }
                         }
-                        $customField->data = $customFieldData;
                     }
                 }
             }
@@ -80,6 +129,7 @@
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
             parent::constructIncomplete($bean);
+            /**
             $metadata = $this->getMetadata();
             foreach ($metadata as $unused => $classMetadata)
             {
@@ -99,6 +149,7 @@
                     }
                 }
             }
+             * **/
         }
     }
 ?>

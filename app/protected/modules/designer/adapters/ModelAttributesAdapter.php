@@ -58,7 +58,7 @@
                 $this->model->getAttributeLabel('id'),
                 'Text'
             );
-            foreach ($this->model->getAttributes() as $attributeName => $notUsed)
+            foreach ($this->model->attributeNames() as $attributeName)
             {
                 if (!$this->model->isRelation($attributeName) ||
                     $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)

@@ -45,7 +45,7 @@
             elseif ($this->modelClass !== null)
             {
                 $modelClass = $this->modelClass;
-                $model = new $modelClass();
+                $model = new $modelClass(false);
                 $attributes = $model->attributeNames();
             }
             else
@@ -66,7 +66,7 @@
                     if ($this->modelClass !== null)
                     {
                         $modelClass = $this->modelClass;
-                        $model = new $modelClass();
+                        $model = new $modelClass(false);
                         if ($model->hasAttribute($attribute))
                         {
                             return $attribute;
@@ -102,7 +102,7 @@
             if ($this->modelClass !== null)
             {
                 $modelClass                = $this->modelClass;
-                $model                     = new $modelClass();
+                $model                     = new $modelClass(false);
                 if ($model->getAbbreviatedAttributeLabel($attribute) != null)
                 {
                     return $model->getAbbreviatedAttributeLabel($attribute);
