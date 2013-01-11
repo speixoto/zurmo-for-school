@@ -48,13 +48,13 @@
                 {				 
                     $ldapConfigurationValues = Yii::app()->params['authenticationTestSettings']['ldapSettings'];				 				 
                 }				
-                $authenticationHelper =  new ZurmoAuthenticationHelper();
-                $host = $ldapConfigurationValues['ldapHost'];
-                $port = $ldapConfigurationValues['ldapPort'];
+                $authenticationHelper = new ZurmoAuthenticationHelper();
+                $host                 = $ldapConfigurationValues['ldapHost'];
+                $port                 = $ldapConfigurationValues['ldapPort'];
                 $bindRegisteredDomain = $ldapConfigurationValues['ldapBindRegisteredDomain'];
-                $bindPassword = $ldapConfigurationValues['ldapBindPassword'];
-                $baseDomain = $ldapConfigurationValues['ldapBaseDomain'];
-                $ldapTestConnection  = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                $bindPassword         = $ldapConfigurationValues['ldapBindPassword'];
+                $baseDomain           = $ldapConfigurationValues['ldapBaseDomain'];
+                $ldapTestConnection   = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  			
                 if($ldapTestConnection)
                 {
@@ -67,16 +67,25 @@
                     $ldap_results_count        = ldap_count_entries($ldap_conn,$ldap_results);  
                     if ($ldap_results_count > 0)
                     {				 
-                        $result = @ldap_get_entries($ldap_conn, $ldap_results);                                                
-                        if ($result[0] && @ldap_bind($ldap_conn, $result[0]['dn'], $this->password))
-                        {					 						    
+                        $result = @ldap_get_entries($ldap_conn, $ldap_results);                                                          					
+                        $zurmoLogin = parent::authenticate();                                           
+                        if(!$zurmoLogin)
+                        {
+                           if ($result[0] && @ldap_bind($ldap_conn, $result[0]['dn'], $this->password))
+                            {                                
+                              if($this->errorCode!=1)
+                              {
+                                 $this->setState('username', $this->username);
+                                 $this->errorCode = self::ERROR_NONE;
+                                 return true;
+                              }                              
+                            }                                                    
+                        }
+                        else
+                        {                             
                             $this->setState('username', $this->username);
                             $this->errorCode = self::ERROR_NONE;
                             return true;
-                        }
-                        else
-                        {
-                            $this->errorCode = self::ERROR_PASSWORD_INVALID;                            
                         }
                     }
                     else

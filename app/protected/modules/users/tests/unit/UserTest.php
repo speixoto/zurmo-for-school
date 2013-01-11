@@ -766,18 +766,14 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
-        }
-		
-        public function testLdapAndNormalLoginForUser()
-        {
-            //for ldap user
-            $username = 'admin';
-            $password = 'ldap123';
-            $identity = new UserLdapIdentity($username,$password);
-            $authenticated = $identity->authenticate(true);
-            $this->assertEquals(0, $identity->errorCode);
-            $this->assertTrue($authenticated);
-            //Now attempt to login as bill
+        }		
+        
+        /**
+        *user exists in zurmo but not on ldap
+        */
+        public function testUserExitsInZurmoButNotOnLdap()
+        {            
+            //Now attempt to login as bill a user in zurmo but not on ldap
             $bill       = User::getByUsername('abcdefg');
             $this->assertEquals(md5('abcdefgN4'), $bill->hash);
             $bill->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
@@ -786,8 +782,34 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $authenticated = $identity->authenticate();
             $this->assertEquals(0, $identity->errorCode);
-            $this->assertTrue($authenticated); 
+            $this->assertTrue($authenticated);
+            $bill->forget();            
         }
+        
+        /**
+        *one where it exists in both, but the pass is wrong for ldap, but ok for zurmo pass.
+        */
+        public function testUserExitsInBothButWrongPasswordForLdap()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            //creating user same as on ldap with different password
+            $admin = new User();
+            $admin->username           = 'admin';
+            $admin->title->value       = 'Mr.';
+            $admin->firstName          = 'admin';
+            $admin->lastName           = 'admin';
+            $admin->setPassword('test123');
+            $this->assertTrue($admin->save());
+            $admin->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
+            $this->assertTrue($admin->save());        
+            $identity = new UserLdapIdentity('admin','test123');                        
+            $authenticated = $identity->authenticate(true);
+            $this->assertEquals(0, $identity->errorCode);
+            $this->assertTrue($authenticated);     
+        }
+        
+
+
 
         /**
          * @depends testPasswordUserNamePolicyChangesValidationAndLogin
