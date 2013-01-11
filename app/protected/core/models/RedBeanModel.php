@@ -210,6 +210,8 @@
          * }
          * </pre>
          *
+         * This method will make a model that does not run construction
+         *
          * @param string $className active record class name.
          * @return CActiveRecord active record model instance.
          */
@@ -225,7 +227,7 @@
             }
             else
             {
-                $model = self::$_models[$className] = new $className(false);
+                $model = self::$_models[$className] = new $className(false, null, false, false);
                 return $model;
             }
         }
@@ -409,14 +411,22 @@
          *                      for objects.
          * @param $bean A bean. Never specified by an application.
          * @param $forceTreatAsCreation. Never specified by an application.
+         * @param $runConstruction.  Sometimes a model is needed to hook in events and the construction logic
+         *                           does not necessarily need to be run.
          * @see getById()
          * @see makeModel()
          * @see makeModels()
          */
-        public function __construct($setDefaults = true, RedBean_OODBBean $bean = null, $forceTreatAsCreation = false)
+        public function __construct($setDefaults = true, RedBean_OODBBean $bean = null, $forceTreatAsCreation = false,
+                                    $runConstruction = true)
         {
+
             $this->pseudoId = self::$nextPseudoId--;
             $this->init();
+            if(!$runConstruction)
+            {
+                return;
+            }
             if ($bean === null)
             {
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy(get_class($this), static::$lastClassInBeanHeirarchy)) as $modelClassName)

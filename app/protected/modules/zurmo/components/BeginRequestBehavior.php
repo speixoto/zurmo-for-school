@@ -443,13 +443,13 @@
         public function handleLoadActivitiesObserver($event)
         {
             $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
+            $activitiesObserver->init();
         }
 
         public function handleLoadConversationsObserver($event)
         {
             $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
+            $conversationsObserver->init();
         }
 
         public function handleLoadGamification($event)
