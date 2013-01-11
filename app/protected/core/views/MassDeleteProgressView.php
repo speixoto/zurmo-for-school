@@ -100,7 +100,7 @@
                         ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
                     }',
                     'change' => 'js:function(event, ui){
-                        $("#progress-percent").html( $(\'#' . $this->progressBarId . '\').progressbar("value") + "%");
+                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "%");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
