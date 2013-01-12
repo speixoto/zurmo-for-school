@@ -117,6 +117,12 @@
             }
         }
 
+        protected static function getMixedInModelClassNames()
+        {
+            return array('Person');
+        }
+
+
         protected function linkBeans()
         {
             // Link the beans up the inheritance hierarchy, skipping
@@ -408,7 +414,7 @@
             return true;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(

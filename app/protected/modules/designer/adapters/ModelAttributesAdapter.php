@@ -276,7 +276,8 @@
             {
                 throw new NotSupportedException();
             }
-            $modelClassName  = $this->model->getAttributeModelClassName($attributeName);
+            $modelClassName  = get_class($this->model);
+            $modelClassName  = $modelClassName::getAttributeModelClassName($attributeName);
             $metadata        = $modelClassName::getDefaultMetadata();
             if (isset($metadata[$modelClassName]['rules']))
             {

@@ -54,7 +54,7 @@
      * schema on the fly as opposed to Yii's getting attributes from an
      * already existing schema.
      */
-    abstract class RedBeanModel extends ObservableComponent implements Serializable
+    abstract class RedBeanModel extends BeanModel implements Serializable
     {
         /**
          * Models that have not been saved yet have no id as far
@@ -93,8 +93,6 @@
         // class.
         private $modelClassNameToBean                            = array();
         private $attributeNameToBeanAndClassName                 = array();
-        private $attributeNamesNotBelongsToOrManyMany            = array();
-        private $relationNameToRelationTypeModelClassNameAndOwns = array();
         private $relationNameToRelatedModel                      = array();
         private $unlinkedRelationNames                           = array();
         private $validators                                      = array();
@@ -143,59 +141,6 @@
          * @var boolean
          */
         private static $canHaveBean = true;
-
-        /**
-         * Used in an extending class's getDefaultMetadata() method to specify
-         * that a relation is 1:1 and that the class on the side of the relationship where this is not a column in that
-         * model's table.  Example: model X HAS_ONE Y.  There will be a y_id on the x table.  But in Y you would have
-         * HAS_ONE_BELONGS_TO X and there would be no column in the y table.
-         */
-        const HAS_ONE_BELONGS_TO = 0;
-
-        /**
-         * Used in an extending class's getDefaultMetadata() method to specify
-         * that a relation is 1:M and that the class on the M side of the
-         * relation.
-         * Note: Currently if you have a relation that is set to HAS_MANY_BELONGS_TO, then that relation name
-         * must be the strtolower() same as the related model class name.  This is the current support for this
-         * relation type.  If something different is set, an exception will be thrown.
-         */
-        const HAS_MANY_BELONGS_TO = 1;
-
-        /**
-         * Used in an extending class's getDefaultMetadata() method to specify
-         * that a relation is 1:1.
-         */
-        const HAS_ONE    = 2;
-
-        /**
-         * Used in an extending class's getDefaultMetadata() method to specify
-         * that a relation is 1:M and that the class is on the 1 side of the
-         * relation.
-         */
-        const HAS_MANY   = 3;
-
-        /**
-         * Used in an extending class's getDefaultMetadata() method to specify
-         * that a relation is M:N and that the class on the either side of the
-         * relation.
-         */
-        const MANY_MANY  = 4;
-
-        /**
-         * Used in an extending class's getDefaultMetadata() method to specify
-         * that a 1:1 or 1:M relation is one in which the left side of the relation
-         * owns the model or models on the right side, meaning that if the model
-         * is deleted it owns the related models and they are deleted along with it.
-         * If not specified the related model is independent and is not deleted.
-         */
-        const OWNED     = true;
-
-        /**
-         * @see const OWNED for more information.
-         * @var boolean
-         */
-        const NOT_OWNED = false;
 
         /**
          * Returns the static model of the specified AR class.
@@ -427,6 +372,19 @@
             {
                 return;
             }
+            /**
+            echo 'how many times we here' . get_called_class() . "<BR>";
+            $backtrace = debug_backtrace();
+            foreach($backtrace as $back)
+            {
+                if(isset($back['file']) && isset($back['line']))
+                {
+                    echo $back['file'] . $back['line'] . "<BR>";
+                }
+
+            }
+            echo '--------------' . "<BR>";
+             * **/
             if ($bean === null)
             {
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy(get_class($this), static::$lastClassInBeanHeirarchy)) as $modelClassName)
@@ -517,8 +475,6 @@
                 $this->pseudoId,
                 $this->modelClassNameToBean,
                 $this->attributeNameToBeanAndClassName,
-                $this->attributeNamesNotBelongsToOrManyMany,
-                $this->relationNameToRelationTypeModelClassNameAndOwns,
                 $this->validators,
             ));
         }
@@ -529,17 +485,14 @@
             {
                 $data = unserialize($data);
                 assert('is_array($data)');
-                if (count($data) != 6)
+                if (count($data) != 4)
                 {
                     return null;
                 }
-
                 $this->pseudoId                                        = $data[0];
                 $this->modelClassNameToBean                            = $data[1];
                 $this->attributeNameToBeanAndClassName                 = $data[2];
-                $this->attributeNamesNotBelongsToOrManyMany            = $data[3];
-                $this->relationNameToRelationTypeModelClassNameAndOwns = $data[4];
-                $this->validators                                      = $data[5];
+                $this->validators                                      = $data[3];
 
                 $this->relationNameToRelatedModel = array();
                 $this->unlinkedRelationNames      = array();
@@ -682,7 +635,7 @@
                     foreach ($metadata[$modelClassName]['members'] as $memberName)
                     {
                         $this->attributeNameToBeanAndClassName[$memberName] = array($bean, $modelClassName);
-                        $this->attributeNamesNotBelongsToOrManyMany[] = $memberName;
+                        //$this->attributeNamesNotBelongsToOrManyMany[] = $memberName;
                         if (substr($memberName, -2) == 'Id')
                         {
                             $columnName = strtolower($memberName);
@@ -732,13 +685,15 @@
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
+                        /**
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
                                                                                                 $relationModelClassName,
                                                                                                 $owns,
                                                                                                 $relationPolyOneToManyName);
+                         * **/
                         if (!in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, self::MANY_MANY)))
                         {
-                            $this->attributeNamesNotBelongsToOrManyMany[] = $relationName;
+                            //$this->attributeNamesNotBelongsToOrManyMany[] = $relationName;
                         }
                     }
                 }
@@ -790,7 +745,8 @@
                                 }
                                 else
                                 {
-                                    $relatedModelClassName = $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName][1];
+                                    $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                                    $relatedModelClassName = $relationAndOwns[$attributeName][1];
                                     $relatedModelTableName = self::getTableName($relatedModelClassName);
                                     $columnName = strtolower($attributeName);
                                     if ($columnName != $relatedModelTableName)
@@ -1229,8 +1185,9 @@
                 {
                     if (!array_key_exists($attributeName, $this->relationNameToRelatedModel))
                     {
+                        $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                         list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
-                             $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
+                             $relationAndOwns[$attributeName];
 
                         $tempRelatedModelClassName = $relatedModelClassName;
                         self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
@@ -1372,11 +1329,20 @@
             {
                 $this->$attributeName = $value;
             }
-            elseif ($this->isAttribute($attributeName))
+            elseif (static::isAnAttribute($attributeName))
             {
-                $bean = $this->attributeNameToBeanAndClassName[$attributeName][0];
-                if (!$this->isRelation($attributeName))
+                if (!static::isRelation($attributeName))
                 {
+                    if(!isset($this->attributeNameToBeanAndClassName[$attributeName]))
+                    {
+                        echo "<pre>";
+                        print_r(static::getAttributeNamesNotBelongsToOrManyManyForModel());
+                        print_r(array_keys($this->attributeNameToBeanAndClassName));
+                        echo "</pre>";
+exit;
+                    }
+
+                    $bean       = $this->attributeNameToBeanAndClassName[$attributeName][0];
                     $columnName = strtolower($attributeName);
                     if ($bean->$columnName !== $value)
                     {
@@ -1386,8 +1352,9 @@
                 }
                 else
                 {
+                    $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                     list($relationType, $relatedModelClassName, $owns, $relationPolyOneToManyName) =
-                        $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName];
+                         $relationAndOwns[$attributeName];
                     $relatedTableName = self::getTableName($relatedModelClassName);
                     $linkName = strtolower($attributeName);
                     if ($linkName == strtolower($relatedModelClassName))
@@ -1444,7 +1411,7 @@
             }
             else
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException($attributeName);
             }
             return false;
         }
@@ -1480,7 +1447,7 @@
          */
         public function attributeNames()
         {
-            return array_keys($this->attributeNameToBeanAndClassName);
+            return self::getAttributeNames();
         }
 
         /**
@@ -1526,98 +1493,6 @@
         }
 
         /**
-         * Given an attribute return the column name.
-         * @param string $attributeName
-         */
-        public function getColumnNameByAttribute($attributeName)
-        {
-            assert('is_string($attributeName)');
-            if ($this->isRelation($attributeName))
-            {
-                $modelClassName = get_class($this);
-                $columnName = $modelClassName::getForeignKeyName($modelClassName, $attributeName);
-            }
-            else
-            {
-                $columnName = strtolower($attributeName);
-            }
-            return $columnName;
-        }
-
-        /**
-         * This method is needed to interpret when the attributeName is 'id'.  Since id is not an attribute
-         * on the model, we manaully check for this and return the appropriate class name.
-         * @param string $attributeName
-         * @return the model class name for the attribute.  This could be a casted up model class name.
-         */
-        public function resolveAttributeModelClassName($attributeName)
-        {
-            assert('is_string($attributeName)');
-            if ($attributeName == 'id')
-            {
-                return get_class($this);
-            }
-            return $this->getAttributeModelClassName($attributeName);
-        }
-
-        /**
-         * Returns the model class name for an
-         * attribute name defined by the extending class's getMetadata() method.
-         * For use by RedBeanModelDataProvider. Is unlikely to be of any
-         * use to an application.
-         */
-        public function getAttributeModelClassName($attributeName)
-        {
-            assert("\$this->isAttribute(\"$attributeName\")");
-            return $this->attributeNameToBeanAndClassName[$attributeName][1];
-        }
-
-        /**
-         * Returns true if the named attribute is one of the
-         * relation names defined by the extending
-         * class's getMetadata() method.
-         */
-        public function isRelation($attributeName)
-        {
-            assert("\$this->isAttribute('$attributeName')");
-            return array_key_exists($attributeName, $this->relationNameToRelationTypeModelClassNameAndOwns);
-        }
-
-        /**
-         * Returns true if the named attribute is one of the
-         * relation names defined by the extending
-         * class's getMetadata() method, and specifies RedBeanModel::OWNED.
-         */
-        public function isOwnedRelation($attributeName)
-        {
-            assert("\$this->isAttribute('$attributeName')");
-            return array_key_exists($attributeName, $this->relationNameToRelationTypeModelClassNameAndOwns) &&
-                   $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName][2];
-        }
-
-        /**
-         * Returns the relation type
-         * relation name defined by the extending class's getMetadata() method.
-         */
-        public function getRelationType($relationName)
-        {
-            assert("\$this->isRelation('$relationName')");
-            return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][0];
-        }
-
-        /**
-         * Returns the model class name for a
-         * relation name defined by the extending class's getMetadata() method.
-         * For use by RedBeanModelDataProvider. Is unlikely to be of any
-         * use to an application.
-         */
-        public function getRelationModelClassName($relationName)
-        {
-            assert("\$this->isRelation('$relationName')");
-            return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
-        }
-
-        /**
          * See the yii documentation. Not used by RedBeanModel.
          * @see getMetadata()
          */
@@ -1642,7 +1517,7 @@
         public function attributeLabels()
         {
             $attributeLabels = array();
-            foreach ($this->untranslatedAttributeLabels() as $attributeName => $label)
+            foreach (static::untranslatedAttributeLabels() as $attributeName => $label)
             {
                 $attributeLabels[$attributeName] = Yii::t('Default', $label);
             }
@@ -1650,23 +1525,6 @@
         }
 
         /**
-         * Array of untranslated attribute labels.
-         */
-        protected function untranslatedAttributeLabels()
-        {
-            return array();
-        }
-
-        /**
-         * Public for message checker only.
-         */
-        public function getUntranslatedAttributeLabels()
-        {
-            return $this->untranslatedAttributeLabels();
-        }
-
-        /**
-         * See the yii documentation.
          * RedBeanModels utilize untranslatedAbbreviatedAttributeLabels to store any abbreviated attribute information, which
          * can then be translated in this method.
          */
@@ -1678,22 +1536,6 @@
                 $abbreviatedAttributeLabels[$attributeName] = Yii::t('Default', $label);
             }
             return $abbreviatedAttributeLabels;
-        }
-
-        /**
-         * Array of untranslated abbreviated attribute labels.
-         */
-        protected function untranslatedAbbreviatedAttributeLabels()
-        {
-            return array();
-        }
-
-        /**
-         * Public for message checker only.
-         */
-        public function getUntranslatedAbbreviatedAttributeLabels()
-        {
-            return $this->untranslatedAbbreviatedAttributeLabels();
         }
 
         /**
@@ -1725,7 +1567,7 @@
                     $hasErrors = false;
                     if ($attributeNames === null)
                     {
-                        $attributeNames = $this->attributeNamesNotBelongsToOrManyMany;
+                        $attributeNames = static::getAttributeNamesNotBelongsToOrManyManyForModel();
                     }
                     foreach ($this->getValidators() as $validator)
                     {
@@ -1875,7 +1717,8 @@
                 {
                     return true;
                 }
-                $modelClassName = $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName][1];
+                $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                $modelClassName = $relationAndOwns[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
                 $rows = R::getAll('select id from ' . $tableName . ' where id = ?', array($model->id));
                 return count($rows) == 0 || count($rows) == 1 && $rows[0]['id'] == $this->id;
@@ -1915,7 +1758,8 @@
                         foreach ($this->unlinkedRelationNames as $key => $relationName)
                         {
                             $bean                      = $this->attributeNameToBeanAndClassName                [$relationName][0];
-                            $relatedModelClassName     = $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
+                            $relationAndOwns           = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                            $relatedModelClassName     = $relationAndOwns[$relationName][1];
                             $tempRelatedModelClassName = $relatedModelClassName;
                             self::resolveModelClassNameForClassesWithoutBeans($tempRelatedModelClassName);
                             $relatedTableName          = self::getTableName($tempRelatedModelClassName);
@@ -1930,7 +1774,8 @@
                         assert('count($this->unlinkedRelationNames) == 0');
                         foreach ($this->relationNameToRelatedModel as $relationName => $relatedModel)
                         {
-                            $relationType = $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][0];
+                            $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                            $relationType = $relationAndOwns[$relationName][0];
                             if (!in_array($relationType, array(self::HAS_ONE_BELONGS_TO,
                                                                self::HAS_MANY_BELONGS_TO)))
                             {
@@ -1959,7 +1804,8 @@
                             if ($relatedModel instanceof RedBeanModel)
                             {
                                 $bean                  = $this->attributeNameToBeanAndClassName                [$relationName][0];
-                                $relatedModelClassName = $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][1];
+                                $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                                $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
                                 if (strtolower($linkName) == strtolower($relatedModelClassName))
                                 {
@@ -1987,7 +1833,7 @@
 
                                     if (!RedBeanDatabase::isFrozen())
                                     {
-                                        $tableName  = self::getTableName($this->getAttributeModelClassName($relationName));
+                                        $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
                                         $columnName = self::getForeignKeyName(get_class($this), $relationName);
                                         RedBeanColumnTypeOptimizer::optimize($tableName, $columnName, 'id');
                                     }
@@ -2154,7 +2000,8 @@
                     if ((!$this->$relationName instanceof RedBeanModel) ||
                         !$this->$relationName->isSame($this))
                     {
-                        if (!in_array($this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][0],
+                        $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                        if (!in_array($relationAndOwns[$relationName][0],
                                       array(self::HAS_ONE_BELONGS_TO,
                                             self::HAS_MANY_BELONGS_TO,
                                             self::MANY_MANY)))
@@ -2274,7 +2121,7 @@
 
         protected function deleteOwnedRelatedModels($modelClassName)
         {
-            foreach ($this->relationNameToRelationTypeModelClassNameAndOwns as $relationName => $relationTypeModelClassNameAndOwns)
+            foreach (static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel() as $relationName => $relationTypeModelClassNameAndOwns)
             {
                 assert('count($relationTypeModelClassNameAndOwns) == 3 || count($relationTypeModelClassNameAndOwns) == 4');
                 $relationType = $relationTypeModelClassNameAndOwns[0];
@@ -2465,39 +2312,17 @@
         /**
          * See the yii documentation.
          */
-        public function getAbbreviatedAttributeLabel($attributeName)
-        {
-            return $this->getAbbreviatedAttributeLabelByLanguage($attributeName, Yii::app()->language);
-        }
-
-        /**
-         * Given an attributeName and a language, retrieve the translated attribute label. Attempts to find a customized
-         * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
-         * @return string - translated attribute label
-         */
-        protected function getAbbreviatedAttributeLabelByLanguage($attributeName, $language)
-        {
-            assert('is_string($attributeName)');
-            assert('is_string($language)');
-            $labels = $this->untranslatedAbbreviatedAttributeLabels();
-            if (isset($labels[$attributeName]))
-            {
-                return ZurmoHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
-                                  Yii::t('Default', $labels[$attributeName],
-                                  LabelUtil::getTranslationParamsForAllModules(), null, $language));
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        /**
-         * See the yii documentation.
-         */
         public function getAttributeLabel($attributeName)
         {
-            return $this->getAttributeLabelByLanguage($attributeName, Yii::app()->language);
+            return static::getAnAttributeLabel($attributeName);
+        }
+
+        /**
+         * Static implementation of @see getAttributeLabel
+         */
+        public static function getAnAttributeLabel($attributeName)
+        {
+            return static::getAttributeLabelByLanguage($attributeName, Yii::app()->language);
         }
 
         /**
@@ -2505,12 +2330,12 @@
          * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
          * @return string - translated attribute label
          */
-        protected function getAttributeLabelByLanguage($attributeName, $language)
+        protected static function getAttributeLabelByLanguage($attributeName, $language)
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            $labels       = $this->untranslatedAttributeLabels();
-            $customLabel  = $this->getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
+            $labels       = static::untranslatedAttributeLabels();
+            $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
             if ($customLabel != null)
             {
                 return $customLabel;
@@ -2523,7 +2348,7 @@
             else
             {
                 //should do a T:: wrapper here too.
-                return Yii::t('Default', $this->generateAttributeLabel($attributeName), array(), null, $language);
+                return Yii::t('Default', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
         }
 
@@ -2531,12 +2356,12 @@
          * Given an attributeName, attempt to find in the metadata a custom attribute label for the given language.
          * @return string - translated attribute label, if not found return null.
          */
-        protected function getTranslatedCustomAttributeLabelByLanguage($attributeName, $language)
+        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $language)
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            $metadata = $this->getMetadata();
-            foreach ($metadata as $modelClassName => $modelClassMetadata)
+            $metadata = static::getMetadata();
+            foreach ($metadata as $notUsed => $modelClassMetadata)
             {
                 if (isset($modelClassMetadata['labels']) &&
                     isset($modelClassMetadata['labels'][$attributeName]) &&
@@ -2618,7 +2443,7 @@
                         if ((!$this->$relationName instanceof RedBeanModel) ||
                              !$this->$relationName->isSame($this))
                         {
-                            if (in_array($relationName, $this->attributeNamesNotBelongsToOrManyMany))
+                            if (in_array($relationName, static::getAttributeNamesNotBelongsToOrManyManyForModel()))
                             {
                                 if ($relatedModelOrModels->hasErrors($relatedAttributeNames))
                                 {
@@ -2640,7 +2465,7 @@
                     }
                     else
                     {
-                        if (in_array($attributeName, $this->attributeNamesNotBelongsToOrManyMany))
+                        if (in_array($attributeName, static::getAttributeNamesNotBelongsToOrManyManyForModel()))
                         {
                             $this->isInHasErrors = false;
                             return isset($this->relationNameToRelatedModel[$attributeName]) &&
@@ -2713,7 +2538,8 @@
                         if ((!$this->$relationName instanceof RedBeanModel) ||
                             !$this->$relationName->isSame($this))
                         {
-                            if (!in_array($this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][0],
+                            $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                            if (!in_array($relationAndOwns[$relationName][0],
                                           array(self::HAS_ONE_BELONGS_TO,
                                                 self::HAS_MANY_BELONGS_TO,
                                                 self::MANY_MANY)))
@@ -2738,7 +2564,8 @@
                     }
                     elseif (isset($this->relationNameToRelatedModel[$attributeName]))
                     {
-                        if (!in_array($this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName][0],
+                        $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                        if (!in_array($relationAndOwns[$attributeName][0],
                                       array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO)))
                         {
                             $this->isInGetErrors = false;
@@ -2824,8 +2651,8 @@
          */
         public function generateAttributeLabel($attributeName)
         {
-            assert("\$this->isAttribute('$attributeName')");
-            return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
+            $modelClassName = get_called_class();
+            return $modelClassName::generateAnAttributeLabel($attributeName);
         }
 
         /**
@@ -2895,7 +2722,8 @@
                                 }
                                 else
                                 {
-                                    $relatedModelClassName = $this->relationNameToRelationTypeModelClassNameAndOwns[$attributeName][1];
+                                    $relationAndOwns       = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+                                    $relatedModelClassName = $relationAndOwns[$attributeName][1];
                                     $this->$attributeName  = $relatedModelClassName::getById(intval($value['id']), $relatedModelClassName);
                                 }
                             }

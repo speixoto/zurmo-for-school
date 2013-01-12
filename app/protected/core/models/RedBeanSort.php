@@ -44,9 +44,8 @@
             }
             elseif ($this->modelClass !== null)
             {
-                $modelClass = $this->modelClass;
-                $model = new $modelClass(false);
-                $attributes = $model->attributeNames();
+                $modelClassName = $this->modelClass;
+                $attributes     = $modelClassName::getAttributeNames();
             }
             else
             {
@@ -65,9 +64,8 @@
                 {
                     if ($this->modelClass !== null)
                     {
-                        $modelClass = $this->modelClass;
-                        $model = new $modelClass(false);
-                        if ($model->hasAttribute($attribute))
+                        $modelClassName = $this->modelClass;
+                        if ($modelClassName::isAnAttribute($attribute))
                         {
                             return $attribute;
                         }
@@ -101,15 +99,14 @@
             }
             if ($this->modelClass !== null)
             {
-                $modelClass                = $this->modelClass;
-                $model                     = new $modelClass(false);
-                if ($model->getAbbreviatedAttributeLabel($attribute) != null)
+                $modelClassName  = $this->modelClass;
+                if ($modelClassName::getAbbreviatedAttributeLabel($attribute) != null)
                 {
-                    return $model->getAbbreviatedAttributeLabel($attribute);
+                    return $modelClassName::getAbbreviatedAttributeLabel($attribute);
                 }
                 else
                 {
-                    return $model->getAttributeLabel($attribute);
+                    return $modelClassName::getAnAttributeLabel($attribute);
                 }
             }
             else

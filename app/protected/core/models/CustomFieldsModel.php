@@ -137,7 +137,7 @@
                 {
                     foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
                     {
-                        $customFieldModelClassName = $this->getAttributeModelClassName($customFieldName);
+                        $customFieldModelClassName = static::getAttributeModelClassName($customFieldName);
                         $classBean                 = $this->getClassBean($customFieldModelClassName);
                         $columnName                = static::getForeignKeyName($customFieldModelClassName, $customFieldName);
                         if ($classBean->{$columnName} == null)
