@@ -31,7 +31,7 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index, changeIsClosed',
                         'controller' => $this,
                    ),
                )
@@ -253,7 +253,7 @@
             echo $view->render();
         }
 
-        public function actionAjaxChangeStatus($id)
+        public function actionChangeIsClosed($id)
         {
             $conversation    = Conversation::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($conversation);

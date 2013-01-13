@@ -65,15 +65,6 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'isClosed', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                         array(

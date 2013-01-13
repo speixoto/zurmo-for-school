@@ -99,7 +99,7 @@
                 $contentForTable .= $element->render();
             }
             $content  = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
-            $element  = new ConversationStatusElement($this->model, 'isClosed');
+            $element  = new ConversationOpenCloseElement($this->model, 'isClosed');
             $content  .= $element->render();
             return $content;
         }

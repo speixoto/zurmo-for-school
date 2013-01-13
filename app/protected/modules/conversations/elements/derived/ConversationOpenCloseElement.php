@@ -27,7 +27,7 @@
     /**
      * Display the conversation status with buttons to change it.
      */
-    class ConversationStatusElement extends Element implements DerivedElementInterface
+    class ConversationOpenCloseElement extends Element implements DerivedElementInterface
     {
         protected function renderEditable()
         {
@@ -70,33 +70,20 @@
         {
             return ZurmoHTML::radioButtonList(
                     self::getRadioButtonListName($conversation->id),
-                    self::getConversationStatus($conversation),
+                    $conversation->resolveIsClosedForNull(),
                     array("0"=>"Open", "1"=>"Closed"),
                     array('separator'=>''));
         }
 
-        public static function getConversationStatus(Conversation $conversation)
-        {
-            //TODO: Should i put this directly in the conversation model? I think it makes more sence!
-            if ($conversation->isClosed == true)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
         protected static function renderAjaxStatusChange($conversationId)
         {
-            $url    = Yii::app()->createUrl('conversations/default/ajaxChangeStatus', array('id' => $conversationId));
+            $url    = Yii::app()->createUrl('conversations/default/changeIsClosed', array('id' => $conversationId));
             $script = "
                     $('input[name=" . self::getRadioButtonListName($conversationId) . "]').change(function() {
                         $.ajax({
                             url: '{$url}',
                             type: 'GET',
-                            success: " . self::resolveOnSucessScript() . ",
+                            success: " . self::resolveOnSuccessScript() . ",
                         });
                     });
                 ";
@@ -125,7 +112,7 @@
             );
         }
 
-        protected static function resolveOnSucessScript()
+        protected static function resolveOnSuccessScript()
         {
             $script = "
                 function(data){

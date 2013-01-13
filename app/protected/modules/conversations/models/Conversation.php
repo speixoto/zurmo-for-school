@@ -53,6 +53,18 @@
             }
         }
 
+        public function resolveIsClosedForNull()
+        {
+            if ($this->isClosed == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
+            }
+        }
+
         /**
          * Given a user get the count of conversations that have unread comments.
          * @param object $user User
