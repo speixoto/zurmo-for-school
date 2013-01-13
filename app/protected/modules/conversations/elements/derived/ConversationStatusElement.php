@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Display the conversation status with the action button when applicable.
+     * Display the conversation status with buttons to change it.
      */
     class ConversationStatusElement extends Element implements DerivedElementInterface
     {
@@ -39,20 +39,17 @@
             throw NotSupportedException();
         }
 
-        /**
-         * Render the full name as a non-editable display
-         * @return The element's content.
-         */
         protected function renderControlNonEditable()
         {
             assert('$this->attribute == "isClosed"');
             assert('$this->model instanceof Conversation');
-            return self::renderStatusTextAndActionArea($this->model);
+            self::renderAjaxStatusChange($this->model->id);
+            return self::renderStatusChangeArea($this->model);
         }
 
-        public static function renderStatusTextAndActionArea(Conversation $conversation)
+        public static function renderStatusChangeArea(Conversation $conversation)
         {
-            $statusAction      = self::renderStatusActionContent($conversation, self::getStatusChangeDivId($conversation->id));
+            $statusAction      = self::renderStatusButtonsContent($conversation);
             $content = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Status')) . $statusAction;
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
                                                'class' => 'conversationStatusChangeArea clearfix'),
@@ -64,50 +61,46 @@
             return  'ConversationStatusChangeArea-' . $conversationId;
         }
 
-        public static function renderStatusActionContent(Conversation $conversation, $updateDivId)
+        private static function getRadioButtonListName($conversationId)
         {
-            assert('is_string($updateDivId)');
-            return self::renderAjaxStatusActionChangeLink(false, $conversation->id, Yii::t('Default', 'Open'), $updateDivId); 
-                   //self::renderAjaxStatusActionChangeLink(true, $conversation->id, Yii::t('Default', 'Closed'), $updateDivId);
+            return 'statusChange-' . $conversationId;
         }
 
-        protected static function renderAjaxStatusActionChangeLink($newStatus, $conversationId, $label, $updateDivId)
+        public static function renderStatusButtonsContent(Conversation $conversation)
         {
-            assert('is_bool($newStatus)');
-            assert('is_int($conversationId)');
-            assert('is_string($label)');
-            assert('is_string($updateDivId)');
-            $url       =   Yii::app()->createUrl('conversations/default/ajaxChangeStatus', array('id' => $conversationId));
-            $aContent  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
-            $statusClass =  '';
-            if ($newStatus)
-            {
-                $statusClass =  'current-status';
-            }   
-            $link = ZurmoHtml::ajaxLink($aContent, $url,
-                        array('type'      => 'GET', 'success' => self::resolveOnSucessSctipt($updateDivId) ),
-                        array('id'        => 'ConversationStatusChange',
-                               'class'     => 'conversation-change-status-link clearfix switch-state ' . $statusClass . ' ' . 
-                                               self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
-                               'namespace' => 'update',
-                               'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit"); attachLoadingSpinner($(this).attr("id"), true);'));
-            //return $link;
-            return '<label><input type="radio">Open</label><label><input type="radio">Close</label>';
+            return ZurmoHTML::radioButtonList(
+                    self::getRadioButtonListName($conversation->id),
+                    self::getConversationStatus($conversation),
+                    array("0"=>"Open", "1"=>"Closed"),
+                    array('separator'=>''));
         }
 
-        protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
+        public static function getConversationStatus(Conversation $conversation)
         {
-            assert('is_bool($status)');
-            if ($status)
+            //TODO: Should i put this directly in the conversation model? I think it makes more sence!
+            if ($conversation->isClosed == true)
             {
-                return 'action-close';
+                return 1;
             }
             else
             {
-                return 'action-open';
+                return 0;
             }
+        }
+
+        protected static function renderAjaxStatusChange($conversationId)
+        {
+            $url    = Yii::app()->createUrl('conversations/default/ajaxChangeStatus', array('id' => $conversationId));
+            $script = "
+                    $('input[name=" . self::getRadioButtonListName($conversationId) . "]').change(function() {
+                        $.ajax({
+                            url: '{$url}',
+                            type: 'GET',
+                            success: " . self::resolveOnSucessScript() . ",
+                        });
+                    });
+                ";
+            Yii::app()->clientScript->registerScript('ConversationStatusChange', $script);
         }
 
         protected function renderLabel()
@@ -132,13 +125,20 @@
             );
         }
 
-        protected static function resolveOnSucessSctipt($updateDivId)
+        protected static function resolveOnSucessScript()
         {
-            $script = '
+            $script = "
                 function(data){
-                    $("#' . $updateDivId . '").replaceWith(data);
-                    $("#CommentInlineEditForModelView").toggle();
-                 }';
+                    $('#FlashMessageBar').jnotifyAddMessage(
+                        {
+                            text: '" . CJavaScript::quote(Yii::t('Default', 'Conversation status was changed.')) . "',
+                            permanent: false,
+                            showIcon: true,
+                            type: 'ConversationsChangeStatusMessage'
+                        }
+                    );
+                    $('#CommentInlineEditForModelView').toggle();
+                 }";
             return $script;
         }
     }
