@@ -41,7 +41,7 @@
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
-            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area activate-drop-zone'), $this->renderRightSideContent());
+            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area activate-drop-zone'), $this->renderRightSideContent() . $this->renderRightSideDropZoneContent());
             return $content;
         }
 
@@ -64,9 +64,14 @@
             $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content             .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
                                                                            static::getTreeType()), $attributeRows);
-            $content             .= ZurmoHtml::tag('div', array('class' => 'drop-zone'), 'Todo: Drop Here');
             return $content;
         }
+
+        protected function renderRightSideDropZoneContent()
+        {
+            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), 'Todo: Drop Here');
+        }
+
 
         protected function renderItems(& $rowCount, $componentData, $trackableStructurePosition = false)
         {

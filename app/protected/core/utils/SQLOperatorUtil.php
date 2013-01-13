@@ -273,8 +273,8 @@
                         !(intval($argument) > 0) ||
                         !(preg_match("/\./", $argument) === 0) )
                     {
-                        $errorContent = Yii::t('Default', 'Please use only integers lesser than {max}.',
-                                                          array('{max}' => $clauseCount));
+                        $errorContent = Yii::t('Default', 'Please use only integers less than {max}.',
+                                                          array('{max}' => $clauseCount + 1));
                     }
                 }
             }
