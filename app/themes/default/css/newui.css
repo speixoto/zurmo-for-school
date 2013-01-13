@@ -14653,7 +14653,7 @@ a.close-ModalGameNotification.simple-select {
 }
 #CommentList:last-child,
 .CommentList:last-child {
-  margin-bottom: 8px;
+  margin-bottom: 25px;
 }
 .comment {
   line-height: 140%;
@@ -14746,7 +14746,7 @@ a.close-ModalGameNotification.simple-select {
   font-size: 15px;
 }
 #CommentInlineEditForModelView {
-  margin-top: 15px;
+  margin-top: 0;
   padding-left: 120px;
 }
 #CommentInlineEditForModelView td {
