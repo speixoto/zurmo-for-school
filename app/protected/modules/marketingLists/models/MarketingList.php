@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingList
+    class MarketingList extends OwnedSecurableItem
     {
 
         public static function getModuleClassName()
@@ -58,6 +58,9 @@
                 'members' => array(
                     'name',
                     'description',
+                ),
+                'relations' => array(
+                    'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember'),
                 ),
             );
             return $metadata;
