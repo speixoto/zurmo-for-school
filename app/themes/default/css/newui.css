@@ -15590,30 +15590,48 @@ a.user-link {
 .ReportResultsGridView #report-results-grid-view {
   overflow-x: auto;
 }
-.ReportResultsGridView .items {
-  overflow-x: hidden;
-}
-.ReportResultsGridView th,
-.ReportResultsGridView td {
+.ReportResultsGridView #report-results-grid-view > .items th,
+.ReportResultsGridView #report-results-grid-view > .items td {
   border-left: 1px solid #DFDFDF !important;
   text-align: center !important;
 }
-.ReportResultsGridView th {
+.ReportResultsGridView #report-results-grid-view > .items th {
   border-top: 1px solid #DFDFDF !important;
 }
-.ReportResultsGridView thead th:first-child {
+.ReportResultsGridView #report-results-grid-view > .items thead th:first-child {
   border-left: none !important;
 }
-.ReportResultsGridView thead tr:first-child th,
-.ReportResultsGridView thead tr:first-child td {
+.ReportResultsGridView #report-results-grid-view > .items thead tr:first-child th,
+.ReportResultsGridView #report-results-grid-view > .items thead tr:first-child td {
   border-top: none !important;
 }
-.ReportResultsGridView tbody th:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody th:first-child {
   padding-left: 5px !important;
   border-left: none !important;
 }
-.ReportResultsGridView tbody td:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
   border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected {
+  color: #333;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected td:first-child {
+  border-left: 2px solid #939393 !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected td:last-child {
+  border-right: 2px solid #939393 !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected > td,
+.ReportResultsGridView #report-results-grid-view > .items .selected > th {
+  border-top: 2px solid #939393 !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected + tr .hasDrillDownContent {
+  color: #333;
+  border-left: 2px solid #939393 !important;
+  border-right: 2px solid #939393 !important;
+}
+.ReportResultsGridView .items {
+  overflow-x: hidden;
 }
 #UserCannotRenderReportProperlySplashView {
   float: left;
@@ -15626,16 +15644,6 @@ a.user-link {
 }
 #ChartForReportWizardView .right-side-edit-view-panel label {
   float: none;
-}
-.selected-row td,
-.selected-row th {
-  border-top: 1px solid #333 !important;
-}
-.selected-row:first-child {
-  border-left: 1px solid #333 !important;
-}
-.selected-row:last-child {
-  border-right: 1px solid #333 !important;
 }
 .hasDrillDownContent {
   padding: 0 !important;
@@ -15650,7 +15658,7 @@ a.user-link {
   background: #fff;
   min-height: 60px;
   border-top: none;
-  border-bottom: 5px solid #d4d4d4;
+  border-bottom: 1px solid #939393 !important;
 }
 .drillDownContent tbody td,
 .drillDownContent tbody th {

@@ -366,32 +366,51 @@
 .ReportResultsGridView{
     #report-results-grid-view{
         overflow-x: auto;
+        > .items{
+            th, td{
+                border-left:1px solid #DFDFDF !important;
+                text-align: center !important;
+            }
+            th{
+                border-top:1px solid #DFDFDF !important;
+            }
+            thead th:first-child{
+                border-left:none !important;
+            }
+            thead tr:first-child{
+                th, td{
+                    border-top: none !important;
+                }
+            }
+            tbody th:first-child{
+                padding-left:5px !important;
+                border-left:none !important;
+            }
+            tbody td:first-child{
+                border-left:none !important;
+            }
+            .selected{
+                color:#333;
+                td:first-child{
+                    border-left:2px solid darken(#DFDFDF, 30%) !important;
+                }
+                td:last-child{
+                    border-right:2px solid darken(#DFDFDF, 30%) !important;
+                }
+                > td, > th{
+                    border-top:2px solid darken(#DFDFDF, 30%) !important;
+                }
+                + tr .hasDrillDownContent{
+                    color:#333;
+                    border-left:2px solid darken(#DFDFDF, 30%) !important;
+                    border-right:2px solid darken(#DFDFDF, 30%) !important;
+                }
+            }
+        }
     }
     .items{
         overflow-x: hidden;
     }
-    th, td{
-        border-left:1px solid #DFDFDF !important;
-        text-align: center !important;
-    }
-    th{
-        border-top:1px solid #DFDFDF !important;
-    }
-    thead th:first-child{
-        border-left:none !important;
-    }
-    thead tr:first-child{
-        th, td{
-            border-top: none !important;
-        }
-    }
-    tbody th:first-child{
-        padding-left:5px !important;
-        border-left:none !important;
-    }
-    tbody td:first-child{
-        border-left:none !important;
-    }    
 }
 
 #UserCannotRenderReportProperlySplashView{
@@ -412,18 +431,6 @@
     }
 }
 
-.selected-row{
-    td, th{
-        border-top:1px solid #333 !important;
-    }
-    &:first-child{
-        border-left:1px solid #333 !important;
-    }
-    &:last-child{
-        border-right:1px solid #333 !important;
-    }
-}
-
 .hasDrillDownContent{
     padding:0 !important;
     .border-box();
@@ -439,7 +446,7 @@
     background: #fff;
     min-height: 60px;
     border-top: none;
-    border-bottom: 5px solid #d4d4d4;
+    border-bottom:1px solid darken(#DFDFDF, 30%) !important;
     tbody{
         td, th{
             padding-top: 5px !important;
