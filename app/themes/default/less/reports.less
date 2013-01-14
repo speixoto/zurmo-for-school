@@ -412,20 +412,34 @@
     }
 }
 
+.selected-row{
+    td, th{
+        border-top:1px solid #333 !important;
+    }
+    &:first-child{
+        border-left:1px solid #333 !important;
+    }
+    &:last-child{
+        border-right:1px solid #333 !important;
+    }
+}
+
 .hasDrillDownContent{
-    padding:5px !important;
+    padding:0 !important;
     .border-box();
-    #gradient > .vertical( #222, #555 );
+    //#gradient > .vertical( #222, #555 );
     //.b-shadow(inset 0 0 10px 2px #000);
     .big-spinner{
-        margin-top:20px;
+        margin-top:10px;
     }
 }
 
 .drillDownContent{
-    border: 1px solid #555;
+    //border: 1px solid #555;
     background: #fff;
-    min-height: 80px;
+    min-height: 60px;
+    border-top: none;
+    border-bottom: 5px solid #d4d4d4;
     tbody{
         td, th{
             padding-top: 5px !important;
@@ -437,6 +451,11 @@
 .drilldown-link{
     cursor: pointer;
     display: block;
+    text-align: left;
+    &:before{
+        .symbly(14px);
+        margin-right:5px;
+    }
 }
 
 .ReportResultsComponentForPortletView{
@@ -448,3 +467,4 @@
     top:-28px;
     right:10px;
 }
+

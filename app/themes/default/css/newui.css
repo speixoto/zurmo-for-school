@@ -9769,6 +9769,13 @@ div.hasHalfs .twoThirds {
   position: relative;
   top: 1px;
 }
+.drillDownExpandLink:before,
+.drillDownExpandAndLoadLink:before {
+  content: 'G';
+}
+.drillDownCollapseLink:before {
+  content: '÷';
+}
 .juiportlet-columns .juiportlet-column {
   float: left;
   min-height: 400px;
@@ -15620,29 +15627,30 @@ a.user-link {
 #ChartForReportWizardView .right-side-edit-view-panel label {
   float: none;
 }
+.selected-row td,
+.selected-row th {
+  border-top: 1px solid #333 !important;
+}
+.selected-row:first-child {
+  border-left: 1px solid #333 !important;
+}
+.selected-row:last-child {
+  border-right: 1px solid #333 !important;
+}
 .hasDrillDownContent {
-  padding: 5px !important;
+  padding: 0 !important;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #555555;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#222222), to(#555555));
-  background-image: -moz-linear-gradient(top, #222222, #555555);
-  background-image: -ms-linear-gradient(top, #222222, #555555);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222222), color-stop(100%, #555555));
-  background-image: -webkit-linear-gradient(top, #222222, #555555);
-  background-image: -o-linear-gradient(top, #222222, #555555);
-  background-image: linear-gradient(top, #222222, #555555);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222222', endColorstr='#555555', GradientType=0);
 }
 .hasDrillDownContent .big-spinner {
-  margin-top: 20px;
+  margin-top: 10px;
 }
 .drillDownContent {
-  border: 1px solid #555;
   background: #fff;
-  min-height: 80px;
+  min-height: 60px;
+  border-top: none;
+  border-bottom: 5px solid #d4d4d4;
 }
 .drillDownContent tbody td,
 .drillDownContent tbody th {
@@ -15652,6 +15660,13 @@ a.user-link {
 .drilldown-link {
   cursor: pointer;
   display: block;
+  text-align: left;
+}
+.drilldown-link:before {
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 5px;
 }
 .ReportResultsComponentForPortletView {
   position: relative;
