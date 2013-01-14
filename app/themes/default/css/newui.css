@@ -15581,7 +15581,7 @@ a.user-link {
   margin: 30px 0 0 -21px;
 }
 .ReportResultsGridView #report-results-grid-view {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
 .ReportResultsGridView .items {
   overflow-x: hidden;
@@ -15589,10 +15589,10 @@ a.user-link {
 .ReportResultsGridView th,
 .ReportResultsGridView td {
   border-left: 1px solid #DFDFDF !important;
+  text-align: center !important;
 }
 .ReportResultsGridView th {
   border-top: 1px solid #DFDFDF !important;
-  text-align: center;
 }
 .ReportResultsGridView thead th:first-child {
   border-left: none !important;
@@ -15636,14 +15636,30 @@ a.user-link {
   background-image: linear-gradient(top, #222222, #555555);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222222', endColorstr='#555555', GradientType=0);
 }
+.hasDrillDownContent .big-spinner {
+  margin-top: 20px;
+}
 .drillDownContent {
   border: 1px solid #555;
   background: #fff;
-  min-height: 40px;
+  min-height: 80px;
+}
+.drillDownContent tbody td,
+.drillDownContent tbody th {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
 .drilldown-link {
   cursor: pointer;
   display: block;
+}
+.ReportResultsComponentForPortletView {
+  position: relative;
+}
+.refreshPortletLink {
+  position: absolute;
+  top: -28px;
+  right: 10px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
