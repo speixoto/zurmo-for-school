@@ -2119,7 +2119,7 @@ div.wide.form{
     position: relative;
     float: left;
     width: 100%;
-    z-index: 0;
+    z-index: 50;
     table{
         padding: 0;
         margin: 0;
@@ -2179,6 +2179,7 @@ div.wide.form{
 
 .search-form-tools{
     position: absolute;
+    z-index:100;
     top:16px;
     left:265px;
     line-height:25px;
@@ -2221,6 +2222,10 @@ div.wide.form{
     .list-view-items-summary-clone{
         margin:10px 10px 0 0;
     }
+    .SearchView{
+        position: relative;
+        z-index: 5;
+    }
     .search-view-0{
         margin:5px 0 0 10px !important;
         width:220px;
@@ -2228,7 +2233,7 @@ div.wide.form{
     }
     .search-view-1{
         ++.flyout;
-        z-index:100;
+        z-index:0;
         min-width:400px;
         max-width:75%;
         height:auto;
