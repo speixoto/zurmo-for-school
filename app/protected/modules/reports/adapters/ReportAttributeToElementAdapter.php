@@ -117,11 +117,17 @@
                 }
                 if($valueElement instanceof MixedNumberTypesElement)
                 {
-                    $valueElement->editableTemplate = '{content}{error}';
+                    $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
+                }
+                elseif($valueElement instanceof MixedDateTypesElement)
+                {
+                    $valueElement->editableTemplate = '<div class="dynamic-attribute-operator">{valueType}</div>' .
+                                                      '<div class="value-data has-date-inputs">' .
+                                                      '<div class="first-value-area">{content}{error}</div></div>';
                 }
                 else
                 {
-                    $valueElement->editableTemplate = '<div class="first-value-area">{content}{error}</div>';
+                    $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area">{content}{error}</div></div>';
                 }
                 $valueContent                   = $valueElement->render();
             }
@@ -132,7 +138,7 @@
             $content                                = $this->renderAttributeIndexOrDerivedType();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
             self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-attribute-operator');
-            self::resolveDivWrapperForContent($valueContent,                   $content, 'value-data');
+            $content                               .= $valueContent;
             if($this->showAvailableRuntimeFilter)
             {
                 $runTimeElement                         = new CheckBoxElement($this->model, 'availableAtRunTime',

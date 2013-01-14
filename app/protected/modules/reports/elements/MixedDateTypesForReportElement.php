@@ -29,6 +29,21 @@
      */
     class MixedDateTypesForReportElement extends MixedDateTypesElement
     {
+        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{valueType}{content}{error}</td>';
+
+        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{valueType}{content}</td>';
+
+        protected function renderEditable()
+        {
+            $data = array();
+            $data['label']     = $this->renderLabel();
+            $data['valueType'] = $this->renderEditableValueTypeContent();
+            $data['content']   = $this->renderControlEditable();
+            $data['error']     = $this->renderError();
+            $data['colspan']   = $this->getColumnSpan();
+            return $this->resolveContentTemplate($this->editableTemplate, $data);
+        }
+
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
             assert('$model instanceof FilterForReportForm');

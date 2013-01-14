@@ -48,6 +48,16 @@
 
         abstract protected function getValueType();
 
+        protected function renderEditable()
+        {
+            $data = array();
+            $data['label']     = $this->renderLabel();
+            $data['content']   = $this->renderEditableValueTypeContent() . $this->renderControlEditable();
+            $data['error']     = $this->renderError();
+            $data['colspan']   = $this->getColumnSpan();
+            return $this->resolveContentTemplate($this->editableTemplate, $data);
+        }
+
         /**
          * Render a date JUI widget
          * @return The element's content as a string.
@@ -55,9 +65,7 @@
         protected function renderControlEditable()
         {
             $valueTypeid                        = $this->getValueTypeEditableInputId();
-            $valueFirstDateId                   = $this->getValueFirstDateEditableInputId();
             $firstDateSpanAreaId                = $valueTypeid . '-first-date-area';
-            $valueSecondDateId                  = $this->getValueSecondDateEditableInputId();
             $secondDateSpanAreaId               = $valueTypeid . '-second-date-area';
             $valueTypesRequiringFirstDateInput  = MixedDateTypesSearchFormAttributeMappingRules::
                                                   getValueTypesRequiringFirstDateInput();
@@ -70,23 +78,23 @@
                         arr2 = " . CJSON::encode($valueTypesRequiringSecondDateInput) . ";
                         if ($.inArray($(this).val(), arr) != -1)
                         {
-                            $(this).parent().parent().find('.first-date-area').show();
-                            $(this).parent().parent().find('.first-date-area').find('.hasDatepicker').prop('disabled', false);
+                            $('#" . $firstDateSpanAreaId. "').show();
+                            $('#" . $firstDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', false);
                         }
                         else
                         {
-                            $(this).parent().parent().find('.first-date-area').hide();
-                            $(this).parent().parent().find('.first-date-area').find('.hasDatepicker').prop('disabled', true);
+                            $('#" . $firstDateSpanAreaId. "').hide();
+                            $('#" . $firstDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', true);
                         }
                         if ($.inArray($(this).val(), arr2) != -1)
                         {
-                            $(this).parent().parent().find('.second-date-area').show();
-                            $(this).parent().parent().find('.second-date-area').find('.hasDatepicker').prop('disabled', false);
+                            $('#" . $secondDateSpanAreaId. "').show();
+                            $('#" . $secondDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', false);
                         }
                         else
                         {
-                            $(this).parent().parent().find('.second-date-area').hide();
-                            $(this).parent().parent().find('.second-date-area').find('.hasDatepicker').prop('disabled', true);
+                            $('#" . $secondDateSpanAreaId. "').hide();
+                            $('#" . $secondDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', true);
                         }
                     }
                 );
@@ -101,8 +109,7 @@
             {
                 $startingDivStyleSecondDate = "display:none;";
             }
-            $content  = $this->renderEditableValueTypeContent();
-            $content .= ZurmoHtml::tag('span', array('id'    => $firstDateSpanAreaId,
+            $content  = ZurmoHtml::tag('span', array('id'    => $firstDateSpanAreaId,
                                                      'class' => 'first-date-area',
                                                      'style' => $startingDivStyleFirstDate),
                                                      $this->renderEditableFirstDateContent());
