@@ -67,7 +67,7 @@
                     {
                         $this->checkResultedInWarning = true;
                         $this->message  = $displayLabel . ' ' .
-                        Zurmo::t('InstallModule', 'is installed, but the version is unknown.');
+                                          Zurmo::t('InstallModule', 'is installed, but the version is unknown.');
                         return true;
                     }
                 }
