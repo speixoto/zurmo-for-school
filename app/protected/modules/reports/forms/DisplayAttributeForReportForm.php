@@ -187,6 +187,10 @@
                     $translatedValue = Yii::t('Default', 'No');
                 }
             }
+            if($translatedValue === null)
+            {
+                $translatedValue = '';
+            }
             return $translatedValue;
         }
     }

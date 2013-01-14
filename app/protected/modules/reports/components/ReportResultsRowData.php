@@ -92,7 +92,7 @@
 
         public function getLabel($columnName)
         {
-            assert('is_string($label)');
+            assert('is_string($columnName)');
             return $this->selectedColumnNamesAndLabels[$columnName];
         }
 

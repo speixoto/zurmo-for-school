@@ -52,7 +52,7 @@
 
         public static function resolveHeaderColumnAliasName($columnAliasName)
         {
-            assert('is_int($index)');
+            assert('is_int($columnAliasName) || is_string($columnAliasName)');
             return $columnAliasName . self::HEADER_COLUMN_ALIAS_SUFFIX;
         }
 
