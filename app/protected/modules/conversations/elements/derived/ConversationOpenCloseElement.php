@@ -71,7 +71,7 @@
             return ZurmoHTML::radioButtonList(
                     self::getRadioButtonListName($conversation->id),
                     $conversation->resolveIsClosedForNull(),
-                    array("0"=>"Open", "1"=>"Closed"),
+                    self::getDropDownArray(),
                     array('separator'=>''));
         }
 
@@ -127,6 +127,12 @@
                     $('#CommentInlineEditForModelView').toggle();
                  }";
             return $script;
+        }
+
+        public static function getDropDownArray()
+        {
+            return array('0' => Yii::t('Default', 'Open'),
+                         '1' => Yii::t('Default', 'Closed'));
         }
     }
 ?>

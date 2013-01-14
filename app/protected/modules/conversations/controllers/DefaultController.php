@@ -31,7 +31,7 @@
             return array_merge(parent::filters(),
                 array(
                     array(
-                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index, changeIsClosed',
+                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
                         'controller' => $this,
                    ),
                )
@@ -255,10 +255,10 @@
 
         public function actionChangeIsClosed($id)
         {
-            $conversation    = Conversation::GetById(intval($id));
+            $conversation           = Conversation::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($conversation);
             $conversation->isClosed = !($conversation->isClosed);
-            $saved           = $conversation->save();
+            $saved                  = $conversation->save();
             if (!$saved)
             {
                 throw new NotSupportedException();
