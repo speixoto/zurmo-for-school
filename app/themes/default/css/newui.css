@@ -9769,6 +9769,13 @@ div.hasHalfs .twoThirds {
   position: relative;
   top: 1px;
 }
+.drillDownExpandLink:before,
+.drillDownExpandAndLoadLink:before {
+  content: 'G';
+}
+.drillDownCollapseLink:before {
+  content: '÷';
+}
 .juiportlet-columns .juiportlet-column {
   float: left;
   min-height: 400px;
@@ -15581,32 +15588,50 @@ a.user-link {
   margin: 30px 0 0 -21px;
 }
 .ReportResultsGridView #report-results-grid-view {
-  overflow-x: scroll;
+  overflow-x: auto;
 }
-.ReportResultsGridView .items {
-  overflow-x: hidden;
-}
-.ReportResultsGridView th,
-.ReportResultsGridView td {
+.ReportResultsGridView #report-results-grid-view > .items th,
+.ReportResultsGridView #report-results-grid-view > .items td {
   border-left: 1px solid #DFDFDF !important;
+  text-align: center !important;
 }
-.ReportResultsGridView th {
+.ReportResultsGridView #report-results-grid-view > .items th {
   border-top: 1px solid #DFDFDF !important;
-  text-align: center;
 }
-.ReportResultsGridView thead th:first-child {
+.ReportResultsGridView #report-results-grid-view > .items thead th:first-child {
   border-left: none !important;
 }
-.ReportResultsGridView thead tr:first-child th,
-.ReportResultsGridView thead tr:first-child td {
+.ReportResultsGridView #report-results-grid-view > .items thead tr:first-child th,
+.ReportResultsGridView #report-results-grid-view > .items thead tr:first-child td {
   border-top: none !important;
 }
-.ReportResultsGridView tbody th:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody th:first-child {
   padding-left: 5px !important;
   border-left: none !important;
 }
-.ReportResultsGridView tbody td:first-child {
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
   border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected {
+  color: #333;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected td:first-child {
+  border-left: 2px solid #939393 !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected td:last-child {
+  border-right: 2px solid #939393 !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected > td,
+.ReportResultsGridView #report-results-grid-view > .items .selected > th {
+  border-top: 2px solid #939393 !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .selected + tr .hasDrillDownContent {
+  color: #333;
+  border-left: 2px solid #939393 !important;
+  border-right: 2px solid #939393 !important;
+}
+.ReportResultsGridView .items {
+  overflow-x: hidden;
 }
 #UserCannotRenderReportProperlySplashView {
   float: left;
@@ -15621,29 +15646,43 @@ a.user-link {
   float: none;
 }
 .hasDrillDownContent {
-  padding: 5px !important;
+  padding: 0 !important;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  background-color: #555555;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#222222), to(#555555));
-  background-image: -moz-linear-gradient(top, #222222, #555555);
-  background-image: -ms-linear-gradient(top, #222222, #555555);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222222), color-stop(100%, #555555));
-  background-image: -webkit-linear-gradient(top, #222222, #555555);
-  background-image: -o-linear-gradient(top, #222222, #555555);
-  background-image: linear-gradient(top, #222222, #555555);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222222', endColorstr='#555555', GradientType=0);
+}
+.hasDrillDownContent .big-spinner {
+  margin-top: 10px;
 }
 .drillDownContent {
-  border: 1px solid #555;
   background: #fff;
-  min-height: 40px;
+  min-height: 60px;
+  border-top: none;
+  border-bottom: 1px solid #939393 !important;
+}
+.drillDownContent tbody td,
+.drillDownContent tbody th {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
 }
 .drilldown-link {
   cursor: pointer;
   display: block;
+  text-align: left;
+}
+.drilldown-link:before {
+  font-weight: normal;
+  font-size: 14px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 5px;
+}
+.ReportResultsComponentForPortletView {
+  position: relative;
+}
+.refreshPortletLink {
+  position: absolute;
+  top: -28px;
+  right: 10px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
