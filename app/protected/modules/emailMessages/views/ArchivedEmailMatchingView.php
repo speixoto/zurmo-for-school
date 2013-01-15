@@ -170,17 +170,12 @@
                                         $this->urlParameters), $row, 0);
             }
             $selectLink            = $this->renderSelectLinkContent();
-            $selectContent         = $this->renderSelectContent();
             $createContactLink     = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Create ContactsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link contact-create-link z-action-link'));
-            $createContactContent  = Zurmo::t('EmailMessagesModule', 'Create ContactsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
             $createLeadLink        = ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link lead-create-link z-action-link'));
-            $createLeadContent     = Zurmo::t('EmailMessagesModule', 'Create LeadsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
             $deleteLink            = $this->renderDeleteLink();
             $rules    = new EmailMessageMashableActivityRules();
             $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
@@ -311,8 +306,8 @@
         protected function getAjaxOptionsForDelete()
         { 
             return array('type'     => 'GET',
-                         'success' => "function(){
-                                       window.location = '" . $this->getMatchingListUrl() . "';
+                         'success'  => "function(){
+                                       $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
                                        $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
                                           text: '" . Zurmo::t('EmailMessagesModule', 'Deleted successfully') . "',

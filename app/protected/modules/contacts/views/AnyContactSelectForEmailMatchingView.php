@@ -1,4 +1,4 @@
-<?php
+﻿<?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
@@ -173,7 +173,13 @@
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  =>  $this->getValidateAndSaveUrl(),
                     'complete' => "function(XMLHttpRequest, textStatus){
-                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();}"
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
+                    $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                       {
+                                          text: '" . Yii::t('Default', 'Selected successfully') . "',
+                                          permanent: false,
+                                          showIcon: true,
+                                       })}",
                 ));
             // End Not Coding Standard
         }
@@ -187,5 +193,12 @@
         {
             return " style=' display:none;'";
         }
+
+        protected static function getNotificationBarId()
+        {
+            return 'FlashMessageBar';
+        }
+
+
     }
 ?>

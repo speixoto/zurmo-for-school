@@ -530,9 +530,7 @@
                     else
                     {
                         throw new FailedFileUploadException(Zurmo::t('ImportModule', 'Failed to open the uploaded file.'));
-                    }
-                    $fileUploadData['humanReadableSize'] = FileModelDisplayUtil::convertSizeToHumanReadableAndGet(
-                                                           $fileUploadData['size']);
+                    }                    
                     $fileUploadData['id']                = $import->id;
                 }
                 catch (FailedFileUploadException $e)

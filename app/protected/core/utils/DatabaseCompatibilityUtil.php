@@ -273,7 +273,7 @@
             }
             elseif ($value !== null)
             {
-                return SQLOperatorUtil::getOperatorByType($operatorType) . " " . DatabaseCompatibilityUtil::escape($value);
+                return SQLOperatorUtil::getOperatorByType($operatorType) . " " . self::escape($value);
             }
             elseif ($value === null)
             {

@@ -137,7 +137,13 @@
                     'url'  =>  $this->getValidateAndSaveUrl(),
                     'update' => '#' . $this->uniquePageId,
                     'complete' => "function(XMLHttpRequest, textStatus){
-                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();}"
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
+                    $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                       {
+                                          text: '" . Yii::t('Default', 'Created ContactsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
+                                          permanent: false,
+                                          showIcon: true,
+                                       })}"
                 ));
             // End Not Coding Standard
         }
@@ -197,6 +203,11 @@
         public static function getDisplayDescription()
         {
             return Zurmo::t('ContactsModule', 'Matching Archived Emails');
+        }
+
+        protected static function getNotificationBarId()
+        {
+            return 'FlashMessageBar';
         }
     }
 ?>

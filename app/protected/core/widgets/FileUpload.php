@@ -245,7 +245,7 @@ $scriptContent = <<<EOD
             <td class="error" colspan="4">\${error}</td>
         {{else}}
             <td class="name">
-                \${name} <span class="file-size">(\${size})</span>
+                \${name} <span class="file-size">(\${sizef})</span>
                 <span class="upload-actions delete">
                     <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
                 </span>
@@ -268,7 +268,7 @@ $scriptContent = <<<EOD
     <tr class="template-upload{{if error}} ui-state-error{{/if}}">
         <td class="name">
             <span class="z-spinner"></span>
-            \${name} <span class="file-size">(\${size})</span>
+            \${name} <span class="file-size">(\${sizef})</span>
             {{if error}}
                 <span class="upload-error">\${error}</span>
             {{else}}

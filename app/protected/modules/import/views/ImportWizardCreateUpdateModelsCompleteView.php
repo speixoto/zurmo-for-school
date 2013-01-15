@@ -84,10 +84,7 @@
 
         protected function renderErrorListContent()
         {
-            $content  = null;
-            $content .= '<h3>' . "\n";
-            $content .= Zurmo::t('ImportModule', 'Information about the rows with errors');
-            $content .= '</h3>'   . "\n";
+            $content  = '<h3>' . Zurmo::t('ImportModule', 'Information about the rows with errors') . '</h3>';
             $content .= $this->importErrorsListView->render();
             return $content;
         }
