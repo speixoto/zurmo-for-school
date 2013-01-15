@@ -41,37 +41,48 @@
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
-            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area activate-drop-zone'), $this->renderRightSideContent() . $this->renderRightSideDropZoneContent());
+            $content             .= ZurmoHtml::tag('div', array('class' => 'dynamic-droppable-area'),
+                                                   $this->renderRightSideContent());
             return $content;
         }
 
         protected function renderRightSideContent()
         {
-            $rowCount             = 0;
-
-            $items                = $this->getItems($rowCount);
+            $rowCount                    = 0;
+            $items                       = $this->getItems($rowCount);
             if($this->isListContentSortable())
             {
-                $itemsContent         = $this->getSortableListContent($items);
+                $itemsContent            = $this->getSortableListContent($items);
             }
             else
             {
-                $itemsContent         = $this->getNonSortableListContent($items);
+                $itemsContent            = $this->getNonSortableListContent($items);
             }
-            $idInputHtmlOptions   = array('id' => $this->getRowCounterInputId());
-            $hiddenInputName      = static::getTreeType() . 'RowCounter';
-            $attributeRows        = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
-            $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $content             .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
-                                                                           static::getTreeType()), $attributeRows);
+            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId());
+            $hiddenInputName             = static::getTreeType() . 'RowCounter';
+            $splashContent               = $this->renderSplashArea();
+            $dropZone                    = $this->renderRightSideDropZoneContent();
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $splashContent . $itemsContent);
+            $droppableAttributesContent .= $this->renderExtraDroppableAttributesContent();
+            $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+                                                                           static::getTreeType()), $droppableAttributesContent . $dropZone);
             return $content;
         }
 
         protected function renderRightSideDropZoneContent()
         {
-            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), 'Todo: Drop Here');
+            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), ZurmoHtml::tag('div', array(), Yii::t('Default', 'Drop Here')));
         }
-
+        
+        protected function renderExtraDroppableAttributesContent()
+        {   
+        }
+        
+        protected function renderSplashArea()
+        {
+            //return ZurmoHtml::tag('div', array('class' => 'splash'), 'Splash');
+        }
 
         protected function renderItems(& $rowCount, $componentData, $trackableStructurePosition = false)
         {
