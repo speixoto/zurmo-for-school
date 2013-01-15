@@ -6945,7 +6945,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
   float: left;
   width: 100%;
-  z-index: 0;
+  z-index: 50;
 }
 .search-view-0 table {
   padding: 0;
@@ -7030,6 +7030,7 @@ div.wide.form label.hasCheckBox {
 }
 .search-form-tools {
   position: absolute;
+  z-index: 100;
   top: 16px;
   left: 265px;
   line-height: 25px;
@@ -7068,13 +7069,17 @@ div.wide.form label.hasCheckBox {
 #ModalView .list-view-items-summary-clone {
   margin: 10px 10px 0 0;
 }
+#ModalView .SearchView {
+  position: relative;
+  z-index: 5;
+}
 #ModalView .search-view-0 {
   margin: 5px 0 0 10px !important;
   width: 220px;
   float: left;
 }
 #ModalView .search-view-1 {
-  z-index: 100;
+  z-index: 0;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -11192,9 +11197,6 @@ table.configuration-list td:last-child a .z-label:before {
 #SequentialProcessView .process-container-view {
   margin: 0;
   padding: 0;
-}
-#SequentialProcessView h3 {
-  text-indent: 30px;
 }
 #ImportErrorsListView {
   margin-bottom: 15px;
