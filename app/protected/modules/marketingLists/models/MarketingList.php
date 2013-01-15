@@ -26,6 +26,10 @@
 
     class MarketingList extends OwnedSecurableItem
     {
+        public static function getByName($name)
+        {
+            return self::getByNameOrEquivalent('name', $name);
+        }
 
         public static function getModuleClassName()
         {
@@ -61,6 +65,12 @@
                 ),
                 'relations' => array(
                     'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember'),
+                ),
+                'rules' => array(
+                    array('name',          'required'),
+                    array('name',          'type',    'type' => 'string'),
+                    array('name',          'length',  'min'  => 3, 'max' => 64),
+                    array('description',   'type',    'type' => 'string'),
                 ),
             );
             return $metadata;

@@ -83,6 +83,12 @@
                 'relations' => array(
                     'contact',
                 ),
+                'rules' => array(
+                    array('createdDateTime',       'required'),
+                    array('createdDateTime',       'type', 'type' => 'datetime'),
+                    array('modifiedDateTime',      'type', 'type' => 'datetime'),
+                    array('unsubscribed',          'boolean'),
+                ),
             );
             return $metadata;
         }

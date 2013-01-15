@@ -297,6 +297,7 @@
             'install',
             'jobsManager',
             'leads',
+            'marketingLists',
             'meetings',
             'missions',
             'notes',

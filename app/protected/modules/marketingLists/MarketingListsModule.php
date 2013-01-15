@@ -30,9 +30,16 @@
         const RIGHT_DELETE_MARKETING_LISTS = 'Delete Lists';
         const RIGHT_ACCESS_MARKETING_LISTS = 'Access Lists';
 
+        public function getDependencies()
+        {
+            return array(
+                'activities',
+            );
+        }
+
         public function getRootModelNames()
         {
-            return array('MarketingList');
+            return array('MarketingList', 'MarketingListMember');
         }
 
         public static function getUntranslatedRightsLabels()
