@@ -49,10 +49,11 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $compareContent                        = "{$q}person1{$q}.{$q}lastname{$q}";
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(4, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            //todo: we are doing an extra join here, should be able to just group on item.createdbyuser_id
         }
 
         public function testModifierGroupBysWhenDate()
@@ -215,7 +216,7 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'likeContactState';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("{$q}reportmodeltestitem7{$q}.{$q}name{$q}", $content);
+            $this->assertEquals("{$q}reportmodeltestitem7{$q}.{$q}id{$q}", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -230,7 +231,7 @@
             Report::TYPE_SUMMATION);
         $groupBy->attributeIndexOrDerivedType  = 'hasMany2___likeContactState';
         $content                               = $builder->makeQueryContent(array($groupBy));
-        $this->assertEquals("{$q}reportmodeltestitem7{$q}.{$q}name{$q}", $content);
+        $this->assertEquals("{$q}reportmodeltestitem7{$q}.{$q}id{$q}", $content);
         $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
         $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -672,14 +673,14 @@
                 Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'modifiedByUser__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q}";
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}, " .
+                                                     "{$q}_user1{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
             $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('_user',   $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('item',   $leftTablesAndAliases[1]['onTableAliasName']);
             $this->assertEquals('_user1',  $leftTablesAndAliases[2]['tableAliasName']);
             $this->assertEquals('_user1',  $leftTablesAndAliases[3]['onTableAliasName']);
 
@@ -719,16 +720,17 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___createdByUser__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q}";
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}, " .
+                                                     "{$q}_user1{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            //todO: make sure below match
             $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('_user',   $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[6]['tableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[7]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem9',   $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[5]['onTableAliasName']);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereDifferentAttributes()
@@ -744,13 +746,14 @@
                 Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q}";
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}, " .
+                                                     "{$q}_user1{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
+            //todO: make sure below match
             $this->assertEquals('_user',                 $leftTablesAndAliases[0]['tableAliasName']);
             $this->assertEquals('item',                  $leftTablesAndAliases[0]['onTableAliasName']);
             $this->assertEquals('person',                $leftTablesAndAliases[1]['tableAliasName']);
@@ -778,13 +781,13 @@
                 Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q}";
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}, " .
+                                                     "{$q}_user1{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(8, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
             $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[0]['tableAliasName']);
             $this->assertEquals('reportmodeltestitem9', $leftTablesAndAliases[0]['onTableAliasName']);
             $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[1]['tableAliasName']);
@@ -795,7 +798,7 @@
             $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
             $this->assertEquals('_user',                $leftTablesAndAliases[4]['tableAliasName']);
             $this->assertEquals('item',                 $leftTablesAndAliases[4]['onTableAliasName']);
-            $this->assertEquals('person',               $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('_user1',               $leftTablesAndAliases[5]['tableAliasName']);
             $this->assertEquals('_user',                $leftTablesAndAliases[5]['onTableAliasName']);
             $this->assertEquals('_user1',               $leftTablesAndAliases[6]['tableAliasName']);
             $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[6]['onTableAliasName']);
@@ -1099,12 +1102,12 @@
                                                       Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___owner__User';
             $content                                = $builder->makeQueryContent(array($groupBy));
-            $compareContent                         = "{$q}person{$q}.{$q}lastname{$q}";
+            $compareContent                         = "{$q}_user{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
             //todo: validate the correct table information.
         }
 
