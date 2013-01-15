@@ -26,6 +26,10 @@
 
     class MarketingList extends OwnedSecurableItem
     {
+        public static function getByName($name)
+        {
+            return self::getByNameOrEquivalent('name', $name);
+        }
 
         public static function getModuleClassName()
         {
