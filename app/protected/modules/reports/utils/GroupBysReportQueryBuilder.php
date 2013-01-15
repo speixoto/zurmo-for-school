@@ -34,7 +34,10 @@
             $content = null;
             foreach($components as $groupBy)
             {
-                $groupByContent = $this->resolveComponentAttributeStringContent($groupBy);
+                $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($groupBy);
+                $itemBuilder          = new GroupByReportItemQueryBuilder($groupBy, $this->joinTablesAdapter,
+                                        $modelToReportAdapter, $this->currencyConversionType);
+                $groupByContent       = $itemBuilder->resolveComponentAttributeStringContent();
                 if($content != null)
                 {
                     $content .= ', ';
@@ -42,95 +45,6 @@
                 $content       .= $groupByContent;
             }
             return $content;
-        }
-
-        protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
-        {
-            assert('$componentForm instanceof GroupByForReportForm');
-            return parent::resolveComponentAttributeStringContent($componentForm);
-        }
-
-        protected function resolveFinalContent($modelAttributeToDataProviderAdapter,
-                                               ComponentForReportForm $componentForm, $onTableAliasName = null)
-        {
-
-
-            $columnContent = ModelDataProviderUtil::resolveGroupByAttributeColumnName(
-                             $modelAttributeToDataProviderAdapter, $this->joinTablesAdapter, $onTableAliasName);
-            return $this->resolveColumnContentForCalculatedModifier($componentForm, $columnContent);
-        }
-
-        protected function resolveColumnContentForCalculatedModifier(GroupByForReportForm $componentForm, $columnContent)
-        {
-            assert('is_string($columnContent)');
-            $resolvedAttribute              = $componentForm->getResolvedAttribute();
-            $modelToReportAdapter           = ModelRelationsAndAttributesToReportAdapter::make(
-                $componentForm->getResolvedAttributeModuleClassName(),
-                $componentForm->getResolvedAttributeModelClassName(),
-                $componentForm->getReportType());
-            if($modelToReportAdapter->isAttributeACalculatedGroupByModifier($resolvedAttribute) &&
-               $modelToReportAdapter->getCalculationOrModifierType($resolvedAttribute))
-            {
-                $sqlReadyType              = strtolower($modelToReportAdapter->
-                                             getCalculationOrModifierType($resolvedAttribute));
-                $timeZoneAdjustmentContent = $this->resolveTimeZoneAdjustmentForACalculatedDateTimeModifier(
-                                             $modelToReportAdapter, $resolvedAttribute);
-                return $sqlReadyType . '(' . $columnContent . $timeZoneAdjustmentContent . ')';
-            }
-            return $columnContent;
-        }
-
-        protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier($modelToReportAdapter, $attribute)
-        {
-            $resolvedAttribute = $modelToReportAdapter->resolveRealAttributeName($attribute);
-            if($modelToReportAdapter->getRealModelAttributeType($resolvedAttribute) == 'DateTime')
-            {
-                return DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
-            }
-        }
-
-
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
-                                                                   ComponentForReportForm $componentForm)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
-                $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
-            {
-                $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
-                return new RedBeanModelAttributeToDataProviderAdapter(
-                    $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
-            }
-            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
-        }
-
-        protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            if($modelToReportAdapter->relationIsReportedAsAttribute(
-                $modelToReportAdapter->resolveRealAttributeName($attribute)))
-            {
-                return 'value';
-            }
-            else
-            {
-                return null;
-            }
-        }
-
-        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            $groupByAttribute = $modelToReportAdapter->getRules()->
-                getGroupByRelatedAttributeForRelationReportedAsAttribute(
-                $modelToReportAdapter->getModel(), $attribute);
-            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
-                $attribute, $groupByAttribute);
         }
     }
 ?>

@@ -34,7 +34,10 @@
             $content = null;
             foreach($components as $orderBy)
             {
-                $orderByContent = $this->resolveComponentAttributeStringContent($orderBy);
+                $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($orderBy);
+                $itemBuilder          = new OrderByReportItemQueryBuilder($orderBy, $this->joinTablesAdapter,
+                                            $modelToReportAdapter, $this->currencyConversionType);
+                $orderByContent       = $itemBuilder->resolveComponentAttributeStringContent();
                 if($content != null)
                 {
                     $content .= ', ';
@@ -42,99 +45,6 @@
                 $content     .= $orderByContent;
             }
             return $content;
-        }
-
-        protected static function resolveSortColumnName(RedBeanModelAttributeToDataProviderAdapter
-                                                        $modelAttributeToDataProviderAdapter)
-        {
-            if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
-            {
-                return $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
-            }
-            else
-            {
-                return $modelAttributeToDataProviderAdapter->getColumnName();
-            }
-        }
-
-        protected static function resolveOrderByString(OrderByForReportForm $componentForm, $tableAliasName,
-                                                       $resolvedSortColumnName, $queryStringExtraPart)
-        {
-            $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($componentForm);
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
-                $modelToReportAdapter->isAttributeACalculationOrModifier($componentForm->getResolvedAttribute()))
-            {
-                return $modelToReportAdapter->resolveOrderByStringForCalculationOrModifier(
-                    $componentForm->getResolvedAttribute(), $tableAliasName, $resolvedSortColumnName, $queryStringExtraPart);
-            }
-            else
-            {
-                return ModelDataProviderUtil::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
-            }
-        }
-
-        protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
-        {
-            assert('$componentForm instanceof OrderByForReportForm');
-            return parent::resolveComponentAttributeStringContent($componentForm);
-        }
-
-        protected function resolveFinalContent($modelAttributeToDataProviderAdapter,
-                                               ComponentForReportForm $componentForm,
-                                               $onTableAliasName = null)
-        {
-            assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            $content = $this->resolveSortAttributeContent($componentForm, $modelAttributeToDataProviderAdapter, $onTableAliasName);
-            return $content . ' ' . $componentForm->order;
-        }
-
-        protected function resolveSortAttributeContent(ComponentForReportForm $componentForm,
-                                                    RedBeanModelAttributeToDataProviderAdapter
-                                                    $modelAttributeToDataProviderAdapter,
-                                                    $onTableAliasName = null)
-        {
-            assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            $builder                = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
-            $tableAliasName         = $builder->resolveJoins($onTableAliasName, ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
-            $resolvedSortColumnName = self::resolveSortColumnName($modelAttributeToDataProviderAdapter);
-            $queryStringExtraPart   = $this->getAttributeClauseQueryStringExtraPart($componentForm, $tableAliasName);
-            return self::resolveOrderByString($componentForm, $tableAliasName, $resolvedSortColumnName, $queryStringExtraPart);
-        }
-
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
-                                                                   ComponentForReportForm $componentForm)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
-                $modelToReportAdapter->isAttributeACalculationOrModifier($attribute))
-            {
-                $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
-                return new RedBeanModelAttributeToDataProviderAdapter(
-                    $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
-            }
-            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
-        }
-
-        protected static function makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
-            $modelToReportAdapter, $attribute)
-        {
-            return new RedBeanModelAttributeToDataProviderAdapter(
-                $modelToReportAdapter->getModelClassName(),
-                $modelToReportAdapter->resolveRealAttributeName($attribute), 'lastName');
-        }
-
-        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            $sortAttribute = $modelToReportAdapter->getRules()->
-                getSortAttributeForRelationReportedAsAttribute(
-                $modelToReportAdapter->getModel(), $attribute);
-            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
-                $attribute, $sortAttribute);
         }
     }
 ?>

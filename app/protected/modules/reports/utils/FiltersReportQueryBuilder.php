@@ -44,7 +44,10 @@
             $whereContent = array();
             foreach($components as $key => $filter)
             {
-                $whereContent[$key + 1] = $this->resolveComponentAttributeStringContent($filter);
+                $modelToReportAdapter   = static::makeModelToReportAdapterByComponentForm($filter);
+                $itemBuilder            = new FilterReportItemQueryBuilder($filter, $this->joinTablesAdapter,
+                                              $modelToReportAdapter, $this->currencyConversionType);
+                $whereContent[$key + 1] = $itemBuilder->resolveComponentAttributeStringContent();
             }
             $content = strtr(strtolower($this->filtersStructure), $whereContent);
             if(empty($content))
@@ -53,89 +56,5 @@
             }
             return $content;
         }
-
-        protected function resolveComponentAttributeStringContent(ComponentForReportForm $componentForm)
-        {
-            assert('$componentForm instanceof FilterForReportForm');
-            return parent::resolveComponentAttributeStringContent($componentForm);
-        }
-
-        protected function resolveFinalContent($modelAttributeToDataProviderAdapter,
-                                               ComponentForReportForm $componentForm, $onTableAliasName = null)
-        {
-            //todo: split if /else into 2 sub methods
-            if($modelAttributeToDataProviderAdapter instanceof ReadOptimizationDerivedAttributeToDataProviderAdapter)
-            {
-                $builder        = new ReadOptimizationModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
-                $clausePosition = 1;
-                $where          = null;
-                $builder->resolveJoinsAndBuildWhere(null, null, $clausePosition, $where, $onTableAliasName);
-                return $where[1];
-            }
-            else
-            {
-                $modelClassName  = $modelAttributeToDataProviderAdapter->getResolvedModelClassName();
-                $metadataAdapter = new FilterForReportFormToDataProviderMetadataAdapter($componentForm);
-                $attributeData   = $metadataAdapter->getAdaptedMetadata();
-                //todO: we need a way to not setDistinct from here. right now that just defaults to true in ModelDataProviderUtil::makeWhere, so maybe we need
-                //todo: override util that we then dont set it or something. also need test, that requires data  provider tests to work right. or we can test distinct is still false on all existing builder tests..
-                return ModelDataProviderUtil::makeWhere($modelClassName, $attributeData, $this->joinTablesAdapter,
-                                                        $onTableAliasName);
-            }
-        }
-
-        protected static function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
-            $modelToReportAdapter, $attribute, ComponentForReportForm $componentForm)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)'); //todo: why is this also using a sortAttribute from the rule. seems strange
-            $sortAttribute = $modelToReportAdapter->getRules()->getSortAttributeForRelationReportedAsAttribute(
-                             $modelToReportAdapter->getModel(), $attribute);
-            return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
-                $attribute, $sortAttribute);
-        }
-
-        protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute,
-                                                                   ComponentForReportForm $componentForm)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)');
-            if($modelToReportAdapter->isAttributeReadOptimization($attribute))
-            {
-                return new ReadOptimizationDerivedAttributeToDataProviderAdapter(
-                           $modelToReportAdapter->getModelClassName(), null);
-            }
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
-                $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
-            {
-                //todO: document that we dont have to do like displayAttributeBuilder where it resolves for related attribute, since really this can only be date/datetime coluumns. at least for now
-                return new RedBeanModelAttributeToDataProviderAdapter(
-                    $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute));
-            }
-            return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute, $componentForm);
-        }
-
-        protected function resolveCastingHintForAttribute($modelToReportAdapter, ComponentForReportForm  $componentForm,
-                                                          $modelAttributeToDataProviderAdapter,
-                                                          $modelClassName,
-                                                          $realAttributeName)
-        {
-            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            if($modelToReportAdapter->isAttributeReadOptimization($realAttributeName))
-            {
-                $hintAdapter        = new ReadOptimizationDerivedAttributeToDataProviderAdapter(
-                                      $modelToReportAdapter->getModelClassName(), null);
-                $hintModelClassName = $hintAdapter->getAttributeModelClassName();
-                $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
-            }
-            else
-            {
-                return parent::resolveCastingHintForAttribute($modelToReportAdapter, $componentForm,
-                                                              $modelAttributeToDataProviderAdapter,
-                                                              $modelClassName, $realAttributeName);
-            }
-        }
-        //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown.. multiples need to be sub-query
     }
 ?>
