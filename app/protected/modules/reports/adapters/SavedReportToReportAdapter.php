@@ -78,7 +78,7 @@
                     $chart           = new ChartForReportForm(
                                             ReportUtil::makeDataAndLabelsForSeriesOrRange(
                                             $adapter->getAttributesForChartSeries($report->getGroupBys(),
-                                                $report->getDisplayAttriubtes())),
+                                                $report->getDisplayAttributes())),
                                             ReportUtil::makeDataAndLabelsForSeriesOrRange(
                                             $adapter->getAttributesForChartRange($report->getDisplayAttributes())));
                     $chart->setAttributes($unserializedData['chart']);

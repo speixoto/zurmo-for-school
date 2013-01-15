@@ -191,16 +191,18 @@
             ),
             'pagination' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoPaginationHelper',
-                'listPageSize'               => 10,
-                'subListPageSize'            => 5,
-                'modalListPageSize'          => 5,
-                'massEditProgressPageSize'   => 5,
-                'autoCompleteListPageSize'   => 5,
-                'importPageSize'             => 50,
-                'dashboardListPageSize'      => 5,
-                'apiListPageSize'            => 10,
-                'massDeleteProgressPageSize' => 5,
-                'unlimitedPageSize'          => 1000000000
+                'listPageSize'                 => 10,
+                'subListPageSize'              => 5,
+                'modalListPageSize'            => 5,
+                'massEditProgressPageSize'     => 5,
+                'autoCompleteListPageSize'     => 5,
+                'importPageSize'               => 50,
+                'dashboardListPageSize'        => 5,
+                'apiListPageSize'              => 10,
+                'massDeleteProgressPageSize'   => 5,
+                'reportResultsListPageSize'    => 20,
+                'reportResultsSubListPageSize' => 5,
+                'unlimitedPageSize'            => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',

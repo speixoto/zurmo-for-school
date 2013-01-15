@@ -26,48 +26,41 @@
 
     class ReportDetailsView extends DetailsView
     {
+        protected function renderContent()
+        {
+            $content = $this->renderTitleContent(); //todo: retool what title shows
+            /**
+            $actionElementContent = $this->renderActionElementMenu();
+            if ($actionElementContent != null)
+            {
+                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
+                $content .= $actionElementContent;
+                $content .= '</div></div>';
+            }
+**/
+//todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
+            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= $this->renderActionElementBar(false);
+            $content .= '</div></div>';
+
+            return $content;
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'EditLink'),
-                            array('type' => 'ReportDeleteLink'),
-                        ),
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'ReportTypeStaticDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'moduleClassName', 'type' => 'ModuleForReportStaticDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'TextArea'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
+                            array('type'  => 'ReportDetailsLink',
+                                'htmlOptions' => array('class' => 'icon-details')),
+                            array('type'  => 'ReportOptionsLink',
+                                'htmlOptions' => array('class' => 'icon-edit')),
+                            array('type'  => 'ReportExportLink',
+                                'htmlOptions' => array('class' => 'icon-export')),
+                            array('type'  => 'ReportTogglePortletsLink',
+                                'htmlOptions' => array('class' => 'icon-delete')),
+                            //todo: add for the 4 checkbox div, need some resolution to know what to show
                         ),
                     ),
                 ),
@@ -79,7 +72,12 @@
         {
             if ($this->model->id > 0)
             {
-                return strval($this->model);
+                $moduleClassName = $this->model->moduleClassName;
+                $typesAndLabels  = Report::getTypeDropDownArray();
+                return strval($this->model) . ' - ' .
+                       Yii::t('Default', '{moduleLabel} {typeLabel} Report',
+                              array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
+                                    '{typeLabel}'   => $typesAndLabels[$this->model->type]));
             }
             else
             {

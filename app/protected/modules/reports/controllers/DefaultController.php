@@ -358,7 +358,7 @@
             $report       = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $report->resolveGroupBysAsFilters(GetUtil::getData());
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                'listPageSize', get_class($this->getModule()));
+                            'reportResultsSubListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeForSummationDrillDown($report, $pageSize);
             $dataProvider->setRunReport(true);
             $view         = new SummationDrillDownReportResultsGridView('default', 'reports', $dataProvider, $rowId);
