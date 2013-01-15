@@ -1,15 +1,20 @@
 $(window).ready(function(){
     $(".attribute-to-place").live("mousemove",function(){
         $(this).draggable({
-            helper: "clone",
+            helper: function(event){
+                var label = $(event.target).html();
+                var width = $('.wrapper').width() * 0.75 - 55;
+                var clone = $('<div class="dynamic-attribute-row clone">' + label + '</div>');
+                clone.width(width);
+                $('body').append(clone);
+                return clone;
+            },
             revert: "invalid",
             snap: ".droppable-attribute-container",
             snapMode: "inner",
             cursor: "pointer",
             start: function(event,ui){
                 $(ui.helper).attr("id", $(this).attr("id"));
-                //$(ui.helper).css("height", "20px");
-                //$(ui.helper).css("width", "260px");
             },
             stop: function(event, ui){
                 document.body.style.cursor = "auto";
@@ -23,16 +28,17 @@ $(window).ready(function(){
         cursor: "pointer",
         drop: function( event, ui ) {
             //todo: hide drop overlay
+            isDragging = false;
+            $('.dynamic-droppable-area').removeClass('activate-drop-zone');
         },
         activate: function(event,ui){
             isDragging = true;
             $('.dynamic-droppable-area').addClass('activate-drop-zone');
         },
         deactivate: function(event,ui){
-            isDragging = false;
-            $('.dynamic-droppable-area').removeClass('activate-drop-zone');
         }
     });
+    /*
     $(".hasTree").hover(
         function(){
             $('.dynamic-droppable-area').addClass('activate-drop-zone');
@@ -43,6 +49,7 @@ $(window).ready(function(){
             }
         }
     );
+    */
 });
 
 function rebuildReportFiltersAttributeRowNumbersAndStructureInput(divId){

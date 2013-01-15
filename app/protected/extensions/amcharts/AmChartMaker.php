@@ -391,6 +391,10 @@
         public function javascriptChart()
         {
             //Init AmCharts
+            if (empty($this->data))
+            {
+                return $this->renderOnEmptyDataMessage();
+            }
             $this->addChartPropertiesByType();
             $javascript  = "var chartData_{$this->id} = ". $this->convertDataArrayToJavascriptArray() . ";";
             $javascript .=" $(document).ready(function () {     ";
@@ -483,6 +487,16 @@
             $this->addValueAxisProperties('unitPosition',       "'left'");
             $this->addValueAxisProperties('unit',               "'{$this->yAxisUnitContent}'");
             $this->addValueAxisProperties('usePrefixes',        true);
+        }
+
+        private function renderOnEmptyDataMessage()
+        {
+            $errorMessage = Yii::t('Default', 'Not enough data to render chart');
+            $content      = ZurmoHtml::tag('span', array('class' => 'empty'), $errorMessage);
+            $javascript   = "
+                    $('#chartContainer{$this->id}').html('" . $content . "');
+                ";
+            return $javascript;
         }
     }
 ?>

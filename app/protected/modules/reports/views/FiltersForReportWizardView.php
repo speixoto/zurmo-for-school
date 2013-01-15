@@ -26,11 +26,9 @@
 
     class FiltersForReportWizardView extends ComponentWithTreeForReportWizardView
     {
-        protected function renderRightSideContent()
+        protected function renderExtraDroppableAttributesContent()
         {
-            $content  = parent::renderRightSideContent();
-            $content .= $this->renderStructureContent();
-            return $content;
+            return $this->renderStructureContent();
         }
 
         public static function getTreeType()
