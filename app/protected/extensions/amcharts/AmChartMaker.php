@@ -391,6 +391,10 @@
         public function javascriptChart()
         {
             //Init AmCharts
+            if (empty($this->data))
+            {
+                return $this->renderOnEmptyDataMessage();
+            }
             $this->addChartPropertiesByType();
             $javascript  = "var chartData_{$this->id} = ". $this->convertDataArrayToJavascriptArray() . ";";
             $javascript .=" $(document).ready(function () {     ";
@@ -483,6 +487,15 @@
             $this->addValueAxisProperties('unitPosition',       "'left'");
             $this->addValueAxisProperties('unit',               "'{$this->yAxisUnitContent}'");
             $this->addValueAxisProperties('usePrefixes',        true);
+        }
+
+        private function renderOnEmptyDataMessage()
+        {
+            $errorMessage = Yii::t('Default', 'Sorry, there is no data to make this chart.');
+            $javascript   = "
+                    $('#chartContainer{$this->id}').html('" . CJavaScript::quote($errorMessage) . "');
+                ";
+            return $javascript;
         }
     }
 ?>
