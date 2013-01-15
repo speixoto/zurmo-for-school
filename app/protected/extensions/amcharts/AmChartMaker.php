@@ -492,8 +492,9 @@
         private function renderOnEmptyDataMessage()
         {
             $errorMessage = Yii::t('Default', 'Sorry, there is no data to make this chart.');
+            $content      = ZurmoHtml::tag('span', array('class' => 'empty'), $errorMessage);
             $javascript   = "
-                    $('#chartContainer{$this->id}').html('" . CJavaScript::quote($errorMessage) . "');
+                    $('#chartContainer{$this->id}').html('" . $content . "');
                 ";
             return $javascript;
         }
