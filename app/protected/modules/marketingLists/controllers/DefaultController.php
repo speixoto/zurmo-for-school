@@ -30,7 +30,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $marketingList                        = new MarketingList(false);
+            $marketingList                  = new MarketingList(false);
             $searchForm                     = new MarketingListsSearchForm($marketingList);
             $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
@@ -60,6 +60,49 @@
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();
+
+            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                'listPageSize', get_class($this->getModule()));
+            $marketingList                  = new MarketingList(false);
+            $activeActionElementType = MissionsUtil::makeActiveActionElementType((int)$type);
+            $dataProvider            = MissionsUtil::makeDataProviderByType($mission, $type, $pageSize);
+            $actionBarAndListView = new ActionBarAndListView(
+                $this->getId(),
+                $this->getModule()->getId(),
+                $mission,
+                'Missions',
+                $dataProvider,
+                array(),
+                'MissionsActionBarForListView',
+                $activeActionElementType
+            );
+            $view = new MissionsPageView(ZurmoDefaultViewUtil::
+                                              makeStandardViewForCurrentUser($this, $actionBarAndListView));
+            echo $view->render();
+        }
+
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $marketingList = MarketingList::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
+            $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this,
+                                             $this->makeEditAndDetailsView(
+                                                 $this->attemptToSaveModelFromPost($marketingList, $redirectUrl), 'Edit')));
+            echo $view->render();
+        }
+
+        public function actionDelete($id)
+        {
+            $marketingList = MarketingList::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);
+            $marketingList->delete();
+            $this->redirect(array($this->getId() . '/index'));
+        }
+
+        protected static function getSearchFormClassName()
+        {
+            return 'AccountsSearchForm';
         }
     }
 ?>

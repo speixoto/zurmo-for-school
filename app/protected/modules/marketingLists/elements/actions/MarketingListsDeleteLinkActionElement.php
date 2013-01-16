@@ -24,31 +24,13 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListsListView extends SecuredListView
+    class MarketingListsDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        public static function getDefaultMetadata()
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            $metadata = array(
-                'global' => array(
-                    'elements' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            $htmlOptions['confirm'] = Yii::t('Default', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => MarketingListsModule::getModuleLabelByTypeAndLanguage(                                              'SingularLowerCase')));
+            return $htmlOptions;
         }
     }
 ?>

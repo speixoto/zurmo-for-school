@@ -24,31 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListsListView extends SecuredListView
+    /**
+     * Cancel conversion link.
+     */
+    class CancelMarketingListsLinkActionElement extends LinkActionElement
     {
-        public static function getDefaultMetadata()
+        public function getActionType()
         {
-            $metadata = array(
-                'global' => array(
-                    'elements' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return 'Details';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Yii::t('Default', 'Cancel');
+        }
+
+        protected function getDefaultRoute()
+        {
+            if (!empty($this->modelId))
+            {
+                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/', array('id' => $this->modelId));
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>
