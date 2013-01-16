@@ -225,9 +225,7 @@
                     }
                 }
             }
-
-            sort($editableViewsCollection);
-
+            $editableViewsCollection = ArrayUtil::subValueSort($editableViewsCollection, 'titleLabel', 'asort');
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
                                ': ' . Yii::t('Default', 'Layouts');
             $breadcrumbLinks = array($title);
