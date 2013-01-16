@@ -26,21 +26,26 @@
 
     class ExecutionTimeListener implements PHPUnit_Framework_TestListener
     {
-        private $__time;
-        private $__timeLimit = 30;
+        private $__timeLimit;
+        private $__precision;
+
+        public function __construct($timeLimit = 0, $precision = 2)
+        {
+            $this->__timeLimit = $timeLimit;
+            $this->__precision = $precision;
+
+        }
 
         public function startTest(PHPUnit_Framework_Test $test)
         {
-            $this->__time = time();
+
         }
 
-        public function endTest(PHPUnit_Framework_Test $test, $time)
+        public function endTest(PHPUnit_Framework_Test $test, $length)
         {
-            $current = time();
-            $took = $current - $this->__time;
-            if($took > $this->__timeLimit )
+            if($length > $this->__timeLimit)
             {
-                echo PHP_EOL."Name: ".$test->getName()." took ".$took . " second(s) (from: $this->__time, to: $current)".PHP_EOL;
+                echo PHP_EOL."Name: ".$test->getName()." took ".round($length, $this->__precision) . " second(s)".PHP_EOL;
             }
         }
 

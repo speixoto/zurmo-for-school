@@ -20,7 +20,12 @@
 
 
   <listeners>
-    <listener class="ExecutionTimeListener" file="listeners/ExecutionTimeListener.php" />
+    <listener class="ExecutionTimeListener" file="listeners/ExecutionTimeListener.php" >
+      <arguments>
+          <integer>0</integer>
+          <integer>2</integer>
+      </arguments>
+    </listener>
   </listeners>
 
 </phpunit>
