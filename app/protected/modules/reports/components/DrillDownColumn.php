@@ -75,11 +75,11 @@ END;
                                                     $data->getDataParamsForDrillDownAjaxCall());
             $expandAndLoadLinkContent = ZurmoHtml::tag('span', array('class' => 'drillDownExpandAndLoadLink drilldown-link',
                                                                      'data-url' => $this->getDrillDownLoadUrl($dataParams)),
-                                                                     'Drill Down & L');
+                                                                     'G');
             $expandLinkContent        = ZurmoHtml::tag('span', array('class' => 'drillDownExpandLink drilldown-link',
-                                                                     'style' => "display:none;"), 'Drill Down');
+                                                                     'style' => "display:none;"), 'G');
             $collapseLinkContent      = ZurmoHtml::tag('span', array('class' => 'drillDownCollapseLink drilldown-link',
-                                                                     'style' => "display:none;"), 'Hide');
+                                                                     'style' => "display:none;"), '&divide;');
             echo $expandAndLoadLinkContent . $expandLinkContent . $collapseLinkContent;
         }
 

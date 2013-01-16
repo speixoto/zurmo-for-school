@@ -160,7 +160,7 @@
             $applyElement          = new SaveButtonActionElement(null, null, null, $params);
             $resetElement          = new RefreshRuntimeFiltersAjaxLinkActionElement(null, null,
                                          $this->params['relationModel']->getId(), array());
-            return $resetElement->render() . $applyElement->render();
+            return $applyElement->render() . $resetElement->render();
         }
     }
 ?>

@@ -28,7 +28,7 @@
     {
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            $params['htmlOptions'] = array('id' => 'reset-runtime-filters', 'class'  => 'attachLoading z-button');
+            $params['htmlOptions'] = array('id' => 'reset-runtime-filters', 'class'  => 'attachLoading z-button white-button');
             parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
 

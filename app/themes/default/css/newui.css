@@ -13,6 +13,7 @@
 .z-button,
 a.zButton,
 a.z-button,
+.white-button,
 .default-btn .modal-view-toolbar a,
 .default-btn .modal-view-toolbar input[type="submit"],
 .default-btn .modal-view-toolbar input[type="button"],
@@ -23,6 +24,7 @@ a.z-button,
 .default-btn .z-button,
 .default-btn a.zButton,
 .default-btn a.z-button,
+.default-btn .white-button,
 .default-btn,
 .z-label,
 .search-form-tools input[type="submit"],
@@ -68,6 +70,7 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .z-button,
 .AppContent.ImportWizardView #addExtraColumnButton a.zButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.z-button,
+.AppContent.ImportWizardView #addExtraColumnButton .white-button,
 .AppContent.ImportWizardView #addExtraColumnButton .search-form-tools input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.search-form-tools input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton #progressBar-links a,
@@ -101,6 +104,7 @@ a.file-upload-box .ui-icon-plusthick,
 .addfileinput-button span .z-button,
 .addfileinput-button span a.zButton,
 .addfileinput-button span a.z-button,
+.addfileinput-button span .white-button,
 .addfileinput-button span .search-form-tools input[type="submit"],
 .addfileinput-button span a.search-form-tools input[type="submit"],
 .addfileinput-button span #progressBar-links a,
@@ -249,6 +253,7 @@ a.ModalGameNotification a,
 .z-button,
 a.zButton,
 a.z-button,
+.white-button,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 #progressBar-links a,
@@ -315,6 +320,7 @@ a.ModalGameNotification a {
 .z-button:before,
 a.zButton:before,
 a.z-button:before,
+.white-button:before,
 .search-form-tools input[type="submit"]:before,
 a.search-form-tools input[type="submit"]:before,
 #progressBar-links a:before,
@@ -356,6 +362,7 @@ a.ModalGameNotification a:before {
 .z-button:after,
 a.zButton:after,
 a.z-button:after,
+.white-button:after,
 .search-form-tools input[type="submit"]:after,
 a.search-form-tools input[type="submit"]:after,
 #progressBar-links a:after,
@@ -398,6 +405,7 @@ a.ModalGameNotification a:after {
 .z-button.attachLoading.z-button,
 a.zButton.attachLoading.z-button,
 a.z-button.attachLoading.z-button,
+.white-button.attachLoading.z-button,
 .search-form-tools input[type="submit"].attachLoading.z-button,
 a.search-form-tools input[type="submit"].attachLoading.z-button,
 #progressBar-links a.attachLoading.z-button,
@@ -438,6 +446,7 @@ a.ModalGameNotification a.attachLoading.z-button {
 .z-button:not(.attachLoading) span,
 a.zButton:not(.attachLoading) span,
 a.z-button:not(.attachLoading) span,
+.white-button:not(.attachLoading) span,
 .search-form-tools input[type="submit"]:not(.attachLoading) span,
 a.search-form-tools input[type="submit"]:not(.attachLoading) span,
 #progressBar-links a:not(.attachLoading) span,
@@ -466,6 +475,15 @@ a.designer-toolbar input[type="submit"]:not(.attachLoading) span,
 a#customFieldDataData_AddInputButton:not(.attachLoading) span,
 .ModalGameNotification a:not(.attachLoading) span,
 a.ModalGameNotification a:not(.attachLoading) span {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.white-button .z-label {
+  color: #666 !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .default-btn {
@@ -969,7 +987,9 @@ body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-la
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
 body.blue .form-toolbar a:not(.z-button):hover .z-label,
-body.blue .configuration-list li a:hover .z-label {
+body.blue .configuration-list li a:hover .z-label,
+body.blue .white-button:hover .z-label,
+body.blue .white-button:hover .z-label {
   color: #7cb830 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1505,7 +1525,9 @@ body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-l
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
 body.brown .form-toolbar a:not(.z-button):hover .z-label,
-body.brown .configuration-list li a:hover .z-label {
+body.brown .configuration-list li a:hover .z-label,
+body.brown .white-button:hover .z-label,
+body.brown .white-button:hover .z-label {
   color: #b88f30 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2041,7 +2063,9 @@ body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-la
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
 body.lime .form-toolbar a:not(.z-button):hover .z-label,
-body.lime .configuration-list li a:hover .z-label {
+body.lime .configuration-list li a:hover .z-label,
+body.lime .white-button:hover .z-label,
+body.lime .white-button:hover .z-label {
   color: #bcc98e !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2577,7 +2601,9 @@ body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
 body.cherry .form-toolbar a:not(.z-button):hover .z-label,
-body.cherry .configuration-list li a:hover .z-label {
+body.cherry .configuration-list li a:hover .z-label,
+body.cherry .white-button:hover .z-label,
+body.cherry .white-button:hover .z-label {
   color: #933140 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -3113,7 +3139,9 @@ body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover 
 body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
 body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
-body.turquoise .configuration-list li a:hover .z-label {
+body.turquoise .configuration-list li a:hover .z-label,
+body.turquoise .white-button:hover .z-label,
+body.turquoise .white-button:hover .z-label {
   color: #44bbcc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -3649,7 +3677,9 @@ body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
 body.violet .form-toolbar a:not(.z-button):hover .z-label,
-body.violet .configuration-list li a:hover .z-label {
+body.violet .configuration-list li a:hover .z-label,
+body.violet .white-button:hover .z-label,
+body.violet .white-button:hover .z-label {
   color: #91a1dc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -4185,7 +4215,9 @@ body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-l
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
 body.honey .form-toolbar a:not(.z-button):hover .z-label,
-body.honey .configuration-list li a:hover .z-label {
+body.honey .configuration-list li a:hover .z-label,
+body.honey .white-button:hover .z-label,
+body.honey .white-button:hover .z-label {
   color: #abbc42 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -9788,13 +9820,6 @@ div.hasHalfs .twoThirds {
   margin-right: 15px;
   position: relative;
   top: 1px;
-}
-.drillDownExpandLink:before,
-.drillDownExpandAndLoadLink:before {
-  content: 'G';
-}
-.drillDownCollapseLink:before {
-  content: '÷';
 }
 .juiportlet-columns .juiportlet-column {
   float: left;
@@ -15703,12 +15728,11 @@ a.user-link {
   cursor: pointer;
   display: block;
   text-align: left;
-}
-.drilldown-link:before {
   font-weight: normal;
-  font-size: 14px;
+  font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  margin-right: 5px;
+  position: relative;
+  left: 4px;
 }
 .ReportResultsComponentForPortletView {
   position: relative;
@@ -15767,6 +15791,15 @@ a.user-link {
   line-height: 23px;
   position: relative;
   top: -1px;
+}
+#reset-runtime-filters .z-label {
+  color: #666 !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
