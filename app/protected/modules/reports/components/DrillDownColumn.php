@@ -31,40 +31,34 @@
         {
             // Begin Not Coding Standard
             $script = <<<END
-jQuery('.drillDownExpandAndLoadLink').live('click', function()
-{
+jQuery('.drillDownExpandAndLoadLink').live('click', function(){
     $(this).hide();
     $(this).parent().find('.drillDownCollapseLink').first().show();
     $(this).parentsUntil('tr').parent().next().show();
-    var loadDivId = $(this).parentsUntil('tr').parent().next().find('.drillDownContent').attr('id');
+    var loadDivId = $(this).parentsUntil('tr').parent().addClass('expanded-row').next().find('.drillDownContent').attr('id');
     $.ajax({
         url      : $(this).data('url'),
         type     : 'GET',
-        beforeSend : function()
-        {
+        beforeSend : function(){
             makeLargeLoadingSpinner(loadDivId);
         },
-        success  : function(data)
-        {
+        success  : function(data){
             jQuery('#' + loadDivId).html(data)
         },
-        error : function()
-        {
+        error : function(){
             //todo: error call
         }
     });
 });
-jQuery('.drillDownExpandLink').live('click', function()
-{
+jQuery('.drillDownExpandLink').live('click', function(){
     $(this).hide();
     $(this).parent().find('.drillDownCollapseLink').first().show();
-    $(this).parentsUntil('tr').parent().next().show();
+    $(this).parentsUntil('tr').parent().addClass('expanded-row').next().show();
 });
-jQuery('.drillDownCollapseLink').live('click', function()
-{
+jQuery('.drillDownCollapseLink').live('click', function(){
     $(this).hide();
     $(this).parent().find('.drillDownExpandLink').first().show();
-    $(this).parentsUntil('tr').parent().next().hide();
+    $(this).parentsUntil('tr').parent().removeClass('expanded-row').next().hide();
 });
 END;
             // End Not Coding Standard

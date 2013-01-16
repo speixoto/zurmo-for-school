@@ -416,21 +416,11 @@
             tbody td:first-child{
                 border-left:none !important;
             }
-            .selected{
-                color:#333;
-                td:first-child{
-                    border-left:2px solid darken(#DFDFDF, 30%) !important;
-                }
-                td:last-child{
-                    border-right:2px solid darken(#DFDFDF, 30%) !important;
-                }
-                > td, > th{
-                    border-top:2px solid darken(#DFDFDF, 30%) !important;
-                }
-                + tr .hasDrillDownContent{
-                    color:#333;
-                    border-left:2px solid darken(#DFDFDF, 30%) !important;
-                    border-right:2px solid darken(#DFDFDF, 30%) !important;
+            .expanded-row{
+                td, th{
+                    #gradient > .vertical( #222, #333 );
+                    color: #DFDFDF;
+                    border: 1px solid #333;
                 }
             }
         }
@@ -459,21 +449,18 @@
 }
 
 .hasDrillDownContent{
-    padding:0 !important;
-    .border-box();
-    //#gradient > .vertical( #222, #555 );
-    //.b-shadow(inset 0 0 10px 2px #000);
+    padding:0 5px 5px 5px !important;
+    ++.border-box;
+    #gradient > .vertical( #333, #555 );
     .big-spinner{
         margin-top:10px;
     }
 }
 
 .drillDownContent{
-    //border: 1px solid #555;
     background: #fff;
     min-height: 60px;
     border-top: none;
-    border-bottom:1px solid darken(#DFDFDF, 30%) !important;
     tbody{
         td, th{
             padding-top: 5px !important;
