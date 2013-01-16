@@ -1450,17 +1450,15 @@ caption, th, td {
     font-weight: normal;
     text-align: left;
 }
+
 #list-view{
     overflow-x:auto;
-    position:relative;
-    
+    position:relative;    
     background:
         -webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
         -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,        
         -webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
         -webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
-        
-
     background-repeat: no-repeat;
     //background-color: white;
     background-size:
@@ -1468,14 +1466,12 @@ caption, th, td {
         40px 100%, 
         20px 100%,
         20px 100%;
-    
     /* Opera doesn't support this in the shorthand */
     background-attachment:
         local,
         local,
         scroll,
         scroll;
-
 }
 
 table.items{
@@ -2945,12 +2941,12 @@ div.wide.form{
 }
 
 .wrapper,
-.TitleBarAndDetailsView > div,
-.ProgressView > div,
-#MetadataViewEditView > div,
-.TableOfContentsView > div,
-.DetailsView > div,
-.EditAndDetailsView > div{
+.TitleBarAndDetailsView > div:not(.view-toolbar-container),
+.ProgressView           > div:not(.view-toolbar-container),
+#MetadataViewEditView   > div:not(.view-toolbar-container),
+.TableOfContentsView    > div:not(.view-toolbar-container),
+.DetailsView            > div:not(.view-toolbar-container),
+.EditAndDetailsView     > div:not(.view-toolbar-container){
    margin-bottom:20px;
    border:1px solid #ccc;
    .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");

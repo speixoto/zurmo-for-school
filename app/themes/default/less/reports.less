@@ -525,3 +525,39 @@
         padding-left: 22px;
     }
 }
+
+#ReportDetailsView{
+    h1{
+        margin-bottom: 15px;
+    }
+    .view-toolbar ul:first-child{
+        > li > a{
+            border-left: none;
+        }
+    }
+}
+
+.hasCheckboxes{
+    display: inline-block;
+    border-left: 1px solid #bababa;
+    text-indent: 0 !important;
+    vertical-align: middle;
+    padding: 0 0 0 15px;
+    line-height: 30px;
+    &:before{
+        content: "";
+        margin: 0;
+        display: none;
+    }
+    .hasCheckBox{
+        display: inline-block;
+        width: auto;
+        padding-left: 20px;
+        margin-right: 15px;
+        .smaller() !important;
+        font-weight: bold !important;
+        line-height: 23px;
+        position: relative;
+        top:-1px;
+    }
+}

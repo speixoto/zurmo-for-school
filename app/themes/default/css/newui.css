@@ -7928,12 +7928,12 @@ div.wide.form label.hasCheckBox {
   box-sizing: border-box;
 }
 .wrapper,
-.TitleBarAndDetailsView > div,
-.ProgressView > div,
-#MetadataViewEditView > div,
-.TableOfContentsView > div,
-.DetailsView > div,
-.EditAndDetailsView > div {
+.TitleBarAndDetailsView > div:not(.view-toolbar-container),
+.ProgressView > div:not(.view-toolbar-container),
+#MetadataViewEditView > div:not(.view-toolbar-container),
+.TableOfContentsView > div:not(.view-toolbar-container),
+.DetailsView > div:not(.view-toolbar-container),
+.EditAndDetailsView > div:not(.view-toolbar-container) {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -7952,12 +7952,12 @@ div.wide.form label.hasCheckBox {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
 .wrapper .form form,
-.TitleBarAndDetailsView > div .form form,
-.ProgressView > div .form form,
-#MetadataViewEditView > div .form form,
-.TableOfContentsView > div .form form,
-.DetailsView > div .form form,
-.EditAndDetailsView > div .form form {
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) .form form,
+.ProgressView > div:not(.view-toolbar-container) .form form,
+#MetadataViewEditView > div:not(.view-toolbar-container) .form form,
+.TableOfContentsView > div:not(.view-toolbar-container) .form form,
+.DetailsView > div:not(.view-toolbar-container) .form form,
+.EditAndDetailsView > div:not(.view-toolbar-container) .form form {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -7967,12 +7967,12 @@ div.wide.form label.hasCheckBox {
   box-shadow: none;
 }
 .wrapper h1,
-.TitleBarAndDetailsView > div h1,
-.ProgressView > div h1,
-#MetadataViewEditView > div h1,
-.TableOfContentsView > div h1,
-.DetailsView > div h1,
-.EditAndDetailsView > div h1 {
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) h1,
+.ProgressView > div:not(.view-toolbar-container) h1,
+#MetadataViewEditView > div:not(.view-toolbar-container) h1,
+.TableOfContentsView > div:not(.view-toolbar-container) h1,
+.DetailsView > div:not(.view-toolbar-container) h1,
+.EditAndDetailsView > div:not(.view-toolbar-container) h1 {
   text-indent: 15px;
   font-size: 15px;
   height: 40px;
@@ -7996,22 +7996,22 @@ div.wide.form label.hasCheckBox {
   overflow: hidden;
 }
 .wrapper input[type="checkbox"] + label,
-.TitleBarAndDetailsView > div input[type="checkbox"] + label,
-.ProgressView > div input[type="checkbox"] + label,
-#MetadataViewEditView > div input[type="checkbox"] + label,
-.TableOfContentsView > div input[type="checkbox"] + label,
-.DetailsView > div input[type="checkbox"] + label,
-.EditAndDetailsView > div input[type="checkbox"] + label {
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.ProgressView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+#MetadataViewEditView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.TableOfContentsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.DetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.EditAndDetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label {
   width: 60px;
   margin-top: 0;
 }
 .wrapper td + th,
-.TitleBarAndDetailsView > div td + th,
-.ProgressView > div td + th,
-#MetadataViewEditView > div td + th,
-.TableOfContentsView > div td + th,
-.DetailsView > div td + th,
-.EditAndDetailsView > div td + th {
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) td + th,
+.ProgressView > div:not(.view-toolbar-container) td + th,
+#MetadataViewEditView > div:not(.view-toolbar-container) td + th,
+.TableOfContentsView > div:not(.view-toolbar-container) td + th,
+.DetailsView > div:not(.view-toolbar-container) td + th,
+.EditAndDetailsView > div:not(.view-toolbar-container) td + th {
   padding-left: 30px;
 }
 .SecuredEditAndDetailsView,
@@ -15733,6 +15733,36 @@ a.user-link {
 }
 #series-and-range-areas .buffer {
   padding-left: 22px;
+}
+#ReportDetailsView h1 {
+  margin-bottom: 15px;
+}
+#ReportDetailsView .view-toolbar ul:first-child > li > a {
+  border-left: none;
+}
+.hasCheckboxes {
+  display: inline-block;
+  border-left: 1px solid #bababa;
+  text-indent: 0 !important;
+  vertical-align: middle;
+  padding: 0 0 0 15px;
+  line-height: 30px;
+}
+.hasCheckboxes:before {
+  content: "";
+  margin: 0;
+  display: none;
+}
+.hasCheckboxes .hasCheckBox {
+  display: inline-block;
+  width: auto;
+  padding-left: 20px;
+  margin-right: 15px;
+  font-size: 11px !important;
+  font-weight: bold !important;
+  line-height: 23px;
+  position: relative;
+  top: -1px;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {

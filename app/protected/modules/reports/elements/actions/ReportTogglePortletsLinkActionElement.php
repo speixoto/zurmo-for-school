@@ -36,7 +36,10 @@
 
         public function render()
         {
-            return ZurmoHtml::link('temporary ...', '#', $this->getHtmlOptions());
+            $content  = '<label class="hasCheckBox"><input type="checkbox">Show A</label>';
+            $content .= '<label class="hasCheckBox"><input type="checkbox">Show B</label>';
+            return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
+            //return ZurmoHtml::link('temporary ...', '#', $this->getHtmlOptions());
         }
 
         protected function getDefaultLabel()

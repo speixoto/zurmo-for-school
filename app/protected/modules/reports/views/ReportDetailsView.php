@@ -59,8 +59,9 @@
                             array('type'  => 'ReportExportLink',
                                 'htmlOptions' => array('class' => 'icon-export')),
                             array('type'  => 'ReportTogglePortletsLink',
-                                'htmlOptions' => array('class' => 'icon-delete')),
+                                'htmlOptions' => array('class' => 'icon-delete hasCheckboxes')),
                             //todo: add for the 4 checkbox div, need some resolution to know what to show
+                            //also: see that all UL's are created with same ID - this is not valid html
                         ),
                     ),
                 ),
