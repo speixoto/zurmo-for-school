@@ -46,32 +46,32 @@
             {
                 $startingDivStyleSecondValue = "display:none;";
             }
-            $content  = ZurmoHtml::tag('span', array('class' => 'first-series-and-range-area',
-                                                     'style' => $startingDivStyleFirstValue),
-                                       $this->renderEditableFirstSeriesContent() .
-                                       $this->renderEditableFirstRangeContent());
-            $content .= ZurmoHtml::tag('span', array('class' => 'second-series-and-range-area',
-                                                     'style' => $startingDivStyleSecondValue),
-                                       $this->renderEditableSecondSeriesContent() .
-                                       $this->renderEditableSecondRangeContent());
+            $content  = ZurmoHtml::tag('div', array('class' => 'first-series-and-range-area',
+                                                    'style' => $startingDivStyleFirstValue),
+                                       ZurmoHtml::tag('div', array(), $this->renderEditableFirstSeriesContent()) .
+                                       ZurmoHtml::tag('div', array(), $this->renderEditableFirstRangeContent()));
+            $content .= ZurmoHtml::tag('div', array('class' => 'second-series-and-range-area',
+                                                    'style' => $startingDivStyleSecondValue),
+                                       ZurmoHtml::tag('div', array(), $this->renderEditableSecondSeriesContent()) .
+                                       ZurmoHtml::tag('div', array(), $this->renderEditableSecondRangeContent()));
             return $content;
         }
 
         protected function renderEditableFirstSeriesContent()
         {
-           $htmlOptions = array(
-                'empty' => Yii::t('Default', '(None)'),
-                'id'    => $this->getFirstSeriesEditableInputId(),
-           );
-           $label        = $this->form->labelEx($this->model, 'firstSeries',
+            $htmlOptions = array(
+                'empty'  => Yii::t('Default', '(None)'),
+                'id'     => $this->getFirstSeriesEditableInputId(),
+            );
+            $label       = $this->form->labelEx($this->model, 'firstSeries',
                                                 array('for' => $this->getFirstSeriesEditableInputId()));
-           $content      = ZurmoHtml::dropDownList($this->getFirstSeriesEditableInputName(),
+            $content     = ZurmoHtml::dropDownList($this->getFirstSeriesEditableInputName(),
                                                    $this->model->firstSeries,
                                                    $this->model->getAvailableFirstSeriesDataAndLabels(),
                                                    $htmlOptions
                                                    );
-            $error       = $this->form->error($this->model, 'firstSeries',
-                           array('inputID' => $this->getFirstSeriesEditableInputId()));
+            $error      = $this->form->error($this->model, 'firstSeries',
+                            array('inputID' => $this->getFirstSeriesEditableInputId()));
             return $label . $content . $error;
         }
 

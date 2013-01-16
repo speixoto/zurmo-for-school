@@ -39,7 +39,7 @@
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
             $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
             $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
-            $content          .= ZurmoHtml::tag('div', array('class' => 'right-side-edit-view-panel'), $rightSideContent);
+            $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
             $content          .= '</div>';
             $this->form->clearInputPrefixData();
             $this->registerScripts();
@@ -53,9 +53,11 @@
             $script = '
                 $(".chart-selector").live("change", function()
                     {
+                        $("#series-and-range-areas").detach().insertAfter( $(this).parent()  ).removeClass("hidden-element");
                         arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
                         if($(this).val() == "")
                         {
+                            $("#series-and-range-areas").addClass("hidden-element")
                             $(".first-series-and-range-area").hide();
                             $(".first-series-and-range-area").find("input:select").prop("disabled", true);
                         }
