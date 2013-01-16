@@ -808,8 +808,29 @@
             $this->assertTrue($authenticated);     
         }
         
-
-
+        /**
+        *one for when the user exists in ldap but not zurmo
+        */
+        public function testUserExitsInLdapNotInZurmo()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');     
+            $identity = new UserLdapIdentity('john','johnldap');                        
+            $authenticated = $identity->authenticate(true);
+            $this->assertEquals(1, $identity->errorCode);
+            $this->assertFalse($authenticated);     
+        }                
+        
+        /**
+        *one for when the user exists in ldap and zurmo
+        */
+        public function testUserExitsInLdapAndZurmo()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');     
+            $identity = new UserLdapIdentity('admin','ldap123');                        
+            $authenticated = $identity->authenticate(true);
+            $this->assertEquals(0, $identity->errorCode);
+            $this->assertTrue($authenticated);     
+        }           
 
         /**
          * @depends testPasswordUserNamePolicyChangesValidationAndLogin

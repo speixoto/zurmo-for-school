@@ -95,7 +95,7 @@
                 }
                 else
                 {
-                    echo 'Unable to connect to LDAP server';
+                    return parent::authenticate();
                 }
             }
             catch (NotFoundException $e)
