@@ -225,6 +225,9 @@
                     }
                 }
             }
+
+            sort($editableViewsCollection);
+
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
                                ': ' . Yii::t('Default', 'Layouts');
             $breadcrumbLinks = array($title);
