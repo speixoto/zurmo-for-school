@@ -7,7 +7,7 @@
  * original work: http://minghong.blogspot.com/2006/07/csv-parser-for-php.html?m=1
  */
 
-class CsvParserUtil
+class CsvParser
 {
   /**
    * Parse CSV from a File
@@ -75,6 +75,7 @@ class CsvParserUtil
 
     // Parse the content character by character
     $row = array( "" );
+    $data = array();
     $idx = 0;
     $quoted = false;
 
@@ -100,7 +101,7 @@ class CsvParserUtil
           $row[$k] = str_replace( str_repeat( $enclosure, 2 ), $enclosure, $row[$k] ); //replace duplicated encloser tags inside the actual string
 
         }
-       
+
         // Add column names as indexes instead of integer ones if we have header row present.
         if ( $hasHeader )
         {

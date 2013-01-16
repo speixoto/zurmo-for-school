@@ -81,9 +81,8 @@
 
             if($isHeaderRow)
             {
-                //ModelToExportAdapter->getData() does not add quotes to header rows so we have to do it here.
-                //why not just use implode instead of replacing enclosure? because fputcsv does more than just
-                // implode and we don't want to lose that.
+                // ModelToExportAdapter->getData() does not add quotes to header rows so we have to do it here.
+                // Using fputcsv instead of implode because it does couple of more useful things like escaping
                 $csv = str_replace( $enclosure, '', $csv );
             }
 
