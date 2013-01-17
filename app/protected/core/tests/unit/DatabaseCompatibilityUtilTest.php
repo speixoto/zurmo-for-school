@@ -26,11 +26,13 @@
 
     class DatabaseCompatibilityUtilTest extends BaseTest
     {
-        protected $hostname;
-        protected $databasePort = 3306;
+        protected $testDatabaseHostname;
+        protected $testDatabasePort = 3306;
         protected $testDatabaseName;
         protected $testDatabaseUsername;
         protected $testDatabasePassword;
+        protected $temporaryDatabaseHostname;
+        protected $temporaryDatabasePort = 3306;
         protected $temporaryDatabaseUsername;
         protected $temporaryDatabasePassword;
         protected $temporaryDatabaseName;
@@ -40,10 +42,10 @@
         public function __construct()
         {
             parent::__construct();
-            list(, $this->hostname, $this->databasePort, $this->temporaryDatabaseName) = array_values(RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->tempDb->connectionString));
+            list(, $this->temporaryDatabaseHostname, $this->temporaryDatabasePort, $this->temporaryDatabaseName) = array_values(RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->tempDb->connectionString));
             $this->temporaryDatabaseUsername = Yii::app()->tempDb->username;
             $this->temporaryDatabasePassword = Yii::app()->tempDb->password;
-            $this->testDatabaseName = RedBeanDatabase::getDatabaseNameFromDsnString(Yii::app()->db->connectionString);
+            list(, $this->testDatabaseHostname, $this->testDatabasePort, $this->testDatabaseName) = array_values(RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->db->connectionString));
             $this->testDatabaseUsername          = Yii::app()->db->username;
             $this->testDatabasePassword          = Yii::app()->db->password;
             $this->superUserPassword = 'super';
@@ -362,10 +364,10 @@
         public function testGetDatabaseVersion()
         {
             $databaseVersion = DatabaseCompatibilityUtil::getDatabaseVersion('mysql',
-                                                                             $this->hostname,
+                                                                             $this->temporaryDatabaseHostname,
                                                                              $this->temporaryDatabaseUsername,
                                                                              $this->temporaryDatabasePassword,
-                                                                             $this->databasePort);
+                                                                             $this->temporaryDatabasePort);
             $this->assertTrue(strlen($databaseVersion) > 0);
         }
 
@@ -378,40 +380,40 @@
         public function testGetDatabaseMaxAllowedPacketsSize()
         {
             $maxAllowedPacketSize = DatabaseCompatibilityUtil::getDatabaseMaxAllowedPacketsSize('mysql',
-                                                                                                $this->hostname,
+                                                                                                $this->temporaryDatabaseHostname,
                                                                                                 $this->temporaryDatabaseUsername,
                                                                                                 $this->temporaryDatabasePassword,
-                                                                                                $this->databasePort);
+                                                                                                $this->temporaryDatabasePort);
             $this->assertGreaterThan(0, $maxAllowedPacketSize);
         }
 
         public function testGetDatabaseMaxSpRecursionDepth()
         {
             $maxSpRecursionDepth = DatabaseCompatibilityUtil::getDatabaseMaxSpRecursionDepth('mysql',
-                                                                                             $this->hostname,
+                                                                                             $this->temporaryDatabaseHostname,
                                                                                              $this->temporaryDatabaseUsername,
                                                                                              $this->temporaryDatabasePassword,
-                                                                                             $this->databasePort);
+                                                                                             $this->temporaryDatabasePort);
             $this->assertGreaterThan(0, $maxSpRecursionDepth);
         }
 
         public function testGetDatabaseThreadStackValue()
         {
             $threadStackValue = DatabaseCompatibilityUtil::getDatabaseThreadStackValue('mysql',
-                                                                                       $this->hostname,
+                                                                                       $this->temporaryDatabaseHostname,
                                                                                        $this->temporaryDatabaseUsername,
                                                                                        $this->temporaryDatabasePassword,
-                                                                                       $this->databasePort);
+                                                                                       $this->temporaryDatabasePort);
             $this->assertGreaterThan(0, $threadStackValue);
         }
 
         public function testGetDatabaseOptimizerSearchDepthValue()
         {
             $dbOptimizerSearchDepthValue = DatabaseCompatibilityUtil::getDatabaseOptimizerSearchDepthValue('mysql',
-                                                                                                           $this->hostname,
+                                                                                                           $this->temporaryDatabaseHostname,
                                                                                                            $this->temporaryDatabaseUsername,
                                                                                                            $this->temporaryDatabasePassword,
-                                                                                                           $this->databasePort);
+                                                                                                           $this->temporaryDatabasePort);
             $this->assertTrue($dbOptimizerSearchDepthValue !== false);
             $this->assertGreaterThanOrEqual(0, $dbOptimizerSearchDepthValue);
         }
@@ -419,10 +421,10 @@
         public function testGetDatabaseLogBinValue()
         {
             $databaseLogBinValue = DatabaseCompatibilityUtil::getDatabaseLogBinValue('mysql',
-                                                                                     $this->hostname,
+                                                                                     $this->temporaryDatabaseHostname,
                                                                                      $this->temporaryDatabaseUsername,
                                                                                      $this->temporaryDatabasePassword,
-                                                                                     $this->databasePort);
+                                                                                     $this->temporaryDatabasePort);
             $this->assertTrue($databaseLogBinValue !== false);
             $this->assertTrue(is_string($databaseLogBinValue));
         }
@@ -430,10 +432,10 @@
         public function testGetDatabaseLogBinTrustFunctionCreatorsValue()
         {
             $logBinTrustValue = DatabaseCompatibilityUtil::getDatabaseLogBinTrustFunctionCreatorsValue('mysql',
-                                                                                                       $this->hostname,
+                                                                                                       $this->temporaryDatabaseHostname,
                                                                                                        $this->temporaryDatabaseUsername,
                                                                                                        $this->temporaryDatabasePassword,
-                                                                                                       $this->databasePort);
+                                                                                                       $this->temporaryDatabasePort);
             $this->assertTrue($logBinTrustValue !== false);
             $this->assertTrue(is_string($logBinTrustValue));
         }
@@ -441,11 +443,11 @@
         public function testGetDatabaseDefaultCollation()
         {
             $dbDefaultCollation = DatabaseCompatibilityUtil::getDatabaseDefaultCollation('mysql',
-                                                                                          $this->hostname,
+                                                                                          $this->testDatabaseHostname,
                                                                                           $this->testDatabaseName,
                                                                                           $this->testDatabaseUsername,
                                                                                           $this->testDatabasePassword,
-                                                                                          $this->databasePort);
+                                                                                          $this->testDatabasePort);
             $this->assertTrue(is_string($dbDefaultCollation));
             $this->assertTrue(strlen($dbDefaultCollation) > 0);
         }
@@ -453,22 +455,22 @@
         public function testIsDatabaseStrictMode()
         {
             $isDatabaseStrictMode = DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
-                                                                                    $this->hostname,
+                                                                                    $this->temporaryDatabaseHostname,
                                                                                     $this->temporaryDatabaseUsername,
                                                                                     $this->temporaryDatabasePassword,
-                                                                                    $this->databasePort);
+                                                                                    $this->temporaryDatabasePort);
             $this->assertTrue(is_bool($isDatabaseStrictMode));
         }
 
         public function testDatabaseConnection_mysql()
         {
-            $this->assertTrue(DatabaseCompatibilityUtil::checkDatabaseConnection('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort));
+            $this->assertTrue(DatabaseCompatibilityUtil::checkDatabaseConnection('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort));
 
             $compareData = array(1045, "Access denied for user");
-            $result = DatabaseCompatibilityUtil::checkDatabaseConnection('mysql', $this->hostname, $this->temporaryDatabaseUsername,   'wrong', $this->databasePort);
+            $result = DatabaseCompatibilityUtil::checkDatabaseConnection('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername,   'wrong', $this->temporaryDatabasePort);
             $result[1] = substr($result[1], 0, 22);
             $this->assertEquals($compareData, $result);
-            $result = DatabaseCompatibilityUtil::checkDatabaseConnection('mysql', $this->hostname, 'nobody', 'password', $this->databasePort);
+            $result = DatabaseCompatibilityUtil::checkDatabaseConnection('mysql', $this->temporaryDatabaseHostname, 'nobody', 'password', $this->temporaryDatabasePort);
             $result[1] = substr($result[1], 0, 22);
             $this->assertEquals($compareData, $result);
         }
@@ -478,9 +480,9 @@
             // This test cannot run as saltdev. It is therefore skipped on the server.
             if ($this->temporaryDatabaseUsername == 'root')
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::checkDatabaseExists('mysql', $this->hostname, $this->testDatabaseUsername, $this->testDatabasePassword, $this->databasePort, $this->testDatabaseName));
+                $this->assertTrue(DatabaseCompatibilityUtil::checkDatabaseExists('mysql', $this->testDatabaseHostname, $this->testDatabaseUsername, $this->testDatabasePassword, $this->testDatabasePort, $this->testDatabaseName));
                 $this->assertEquals(array(1049, "Unknown database 'junk'"),
-                DatabaseCompatibilityUtil::checkDatabaseExists('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, 'junk'));
+                DatabaseCompatibilityUtil::checkDatabaseExists('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, 'junk'));
             }
         }
 
@@ -489,14 +491,14 @@
             // This test cannot run as saltdev. It is therefore skipped on the server.
             if ($this->temporaryDatabaseUsername == 'root')
             {
-                $this->assertTrue (DatabaseCompatibilityUtil::checkDatabaseUserExists('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseUsername));
-                $this->assertFalse(DatabaseCompatibilityUtil::checkDatabaseUserExists('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, 'dude'));
+                $this->assertTrue (DatabaseCompatibilityUtil::checkDatabaseUserExists('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseUsername));
+                $this->assertFalse(DatabaseCompatibilityUtil::checkDatabaseUserExists('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, 'dude'));
             }
         }
 
         public function testCreateDatabase()
         {
-            $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
+            $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName));
         }
 
         public function testCreateDatabaseUser()
@@ -504,9 +506,9 @@
             // This test cannot run as saltdev. It is therefore skipped on the server.
             if ($this->temporaryDatabaseUsername == 'root')
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName, 'wacko', 'wacked'));
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName, 'wacko', ''));
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName));
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName, 'wacko', 'wacked'));
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName, 'wacko', ''));
             }
         }
 
@@ -533,8 +535,8 @@
             // Create new database (zurmo_temp).
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
-                $connection = @mysql_connect($this->hostname . ':' . $this->databasePort, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword);
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName));
+                $connection = @mysql_connect($this->temporaryDatabaseHostname . ':' . $this->temporaryDatabasePort, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword);
                 $this->assertTrue(is_resource($connection));
 
                 @mysql_select_db($this->temporaryDatabaseName);
@@ -547,12 +549,12 @@
 
                 $this->assertEquals(2, $totalRows[0]);
 
-                $this->assertTrue(DatabaseCompatibilityUtil::backupDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName, $this->databaseBackupTestFile));
+                $this->assertTrue(DatabaseCompatibilityUtil::backupDatabase('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName, $this->databaseBackupTestFile));
 
                 //Drop database, and restore it from backup.
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
-                $this->assertTrue(DatabaseCompatibilityUtil::restoreDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName, $this->databaseBackupTestFile));
-                $connection = @mysql_connect($this->hostname . ':' . $this->databasePort, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword);
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName));
+                $this->assertTrue(DatabaseCompatibilityUtil::restoreDatabase('mysql', $this->temporaryDatabaseHostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->temporaryDatabasePort, $this->temporaryDatabaseName, $this->databaseBackupTestFile));
+                $connection = @mysql_connect($this->temporaryDatabaseHostname . ':' . $this->temporaryDatabasePort, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword);
 
                 $this->assertTrue(is_resource($connection));
 
