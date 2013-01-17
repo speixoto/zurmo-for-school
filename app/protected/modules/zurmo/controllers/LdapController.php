@@ -69,11 +69,11 @@
                 }
                 else
                 {
-                    $configurationForm->host                  = $_POST['LdapConfigurationForm']['ldapHost'];
-                    $configurationForm->port                  = $_POST['LdapConfigurationForm']['ldapPort'];
-                    $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['ldapBindRegisteredDomain'];
-                    $configurationForm->bindPassword          = $_POST['LdapConfigurationForm']['ldapBindPassword'];
-                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['ldapBaseDomain'];
+                    $configurationForm->host                  = $_POST['LdapConfigurationForm']['host'];
+                    $configurationForm->port                  = $_POST['LdapConfigurationForm']['port'];
+                    $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['bindRegisteredDomain'];
+                    $configurationForm->bindPassword          = $_POST['LdapConfigurationForm']['bindPassword'];
+                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['baseDomain'];
                     $configurationForm->ldapEnabled           = $_POST['LdapConfigurationForm']['ldapEnabled'];                    
                 }
                 if ($configurationForm->host != null && $configurationForm->port != null && 

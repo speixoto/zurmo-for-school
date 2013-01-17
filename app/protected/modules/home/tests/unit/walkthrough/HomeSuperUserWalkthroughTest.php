@@ -242,7 +242,7 @@
             $this->assertTrue($portlets[1][4]->id > 0);
             $this->assertEquals('TasksMyList', $portlets[1][4]->viewType);
             
-            //to sort task sort list
+            //to sort task list
             $this->setGetArray(array(
                 'Task_sort'      => 'name',
                 'portletId'      => $portlets[1][4]->id,

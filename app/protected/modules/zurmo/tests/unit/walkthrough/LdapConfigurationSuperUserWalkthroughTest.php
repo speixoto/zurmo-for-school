@@ -51,23 +51,40 @@
             //Change ldap settings
             $this->resetGetArray();
             $this->setPostArray(array('LdapConfigurationForm' => array(
-                                    'host'                              => '192.168.1.24',
+                                    'host'                              => '192.168.1.185',
                                     'port'                              => '389',
                                     'bindRegisteredDomain'              => 'admin',
                                     'bindPassword'                      => 'ldap123',
                                     'baseDomain'                        => 'dc=debuntu,dc=local',
-									'ldapTurnOn'                        => '1')));
+									'ldapEnabled'                        => '1')));
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLdap');
             $this->assertEquals('Ldap configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;
-            $this->assertEquals('192.168.1.24',         Yii::app()->authenticationHelper->ldapHost);
-            $this->assertEquals('389',          Yii::app()->authenticationHelper->ldapPort);
-            $this->assertEquals('admin',          Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
-            $this->assertEquals('ldap123',       Yii::app()->authenticationHelper->ldapBindPassword);
-            $this->assertEquals('dc=debuntu,dc=local',    Yii::app()->authenticationHelper->ldapBaseDomain);
-            $this->assertEquals('1',    Yii::app()->authenticationHelper->ldapTurnOn);
+            $this->assertEquals('192.168.1.185',        Yii::app()->authenticationHelper->ldapHost);
+            $this->assertEquals('389',                  Yii::app()->authenticationHelper->ldapPort);
+            $this->assertEquals('admin',                Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
+            $this->assertEquals('ldap123',              Yii::app()->authenticationHelper->ldapBindPassword);
+            $this->assertEquals('dc=debuntu,dc=local',  Yii::app()->authenticationHelper->ldapBaseDomain);
+            $this->assertEquals('1',                    Yii::app()->authenticationHelper->ldapEnabled);
+        }
+        
+        public function testSuperUserTestLdapConnection()
+        {
+         $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+         //check ldap connection         
+         $this->resetGetArray();
+         $this->setPostArray(array('LdapConfigurationForm' => array(
+                                    'host'                              => '192.168.1.185',
+                                    'port'                              => '389',
+                                    'bindRegisteredDomain'              => 'admin',
+                                    'bindPassword'                      => 'ldap123',
+                                    'baseDomain'                        => 'dc=debuntu,dc=local',
+									'ldapEnabled'                        => '1')));
+         $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');  
+         //$this->assertTrue(strpos($content, "Successfully Connected to LDAP Server") > 0);         
+         //$this->assertEquals('Successfully Connected to LDAP Server', $content);
         }
     }
 ?>
