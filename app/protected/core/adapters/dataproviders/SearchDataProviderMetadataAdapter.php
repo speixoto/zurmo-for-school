@@ -458,7 +458,7 @@
                              count($searchFormClause["concatedAttributeNames"][0]) == 2');
                     assert('!isset($searchFormClause["concatedAttributeNames"]["operatorType"])');
                     assert('!isset($searchFormClause["concatedAttributeNames"]["appendStructureAsAnd"])');
-                    $oldAppendStructureAsAndValue = $this->appendStructureAsAnd;
+                    $oldappendStructureAsAndValue = $this->appendStructureAsAnd;
                     $this->appendStructureAsAnd   = false;
                     $basePartAtRequiredDepth      = static::
                                                        getAdaptedMetadataClauseBasePartAtRequiredDepth(
@@ -478,7 +478,7 @@
                                                                                     $basePartAtRequiredDepth,
                                                                                     $depth);
                     }
-                    $this->appendStructureAsAnd   = $oldAppendStructureAsAndValue;
+                    $this->appendStructureAsAnd   = $oldappendStructureAsAndValue;
                 }
                 else
                 {
@@ -493,7 +493,7 @@
                             $operatorType = null;
                         }
                         //setting a temp value is not ideal. But it avoids passing the parameter.
-                        $oldAppendStructureAsAndValue = $this->appendStructureAsAnd;
+                        $oldappendStructureAsAndValue = $this->appendStructureAsAnd;
                         if (isset($searchFormStructure['appendStructureAsAnd']))
                         {
                             $this->appendStructureAsAnd = $searchFormStructure['appendStructureAsAnd'];
@@ -511,7 +511,7 @@
                                                                         $adaptedMetadataClauseBasePart,
                                                                         $operatorType,
                                                                         $depth);
-                        $this->appendStructureAsAnd = $oldAppendStructureAsAndValue;
+                        $this->appendStructureAsAnd = $oldappendStructureAsAndValue;
                     }
                 }
             }
