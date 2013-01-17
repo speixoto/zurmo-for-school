@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Testing the views for configuring ldap server
+     * Testing the views for configuring LDAP server
      */
-    class LdapConfigurationSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class LDAPConfigurationSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -40,25 +40,25 @@
         public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/configurationEditLdap');
+            $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/configurationEditLDAP');
         }
 
-        public function testSuperUserModifyLdapConfiguration()
+        public function testSuperUserModifyLDAPConfiguration()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
            
 
-            //Change ldap settings
+            //Change LDAP settings
             $this->resetGetArray();
-            $this->setPostArray(array('LdapConfigurationForm' => array(
+            $this->setPostArray(array('LDAPConfigurationForm' => array(
                                     'host'                              => '192.168.1.185',
                                     'port'                              => '389',
                                     'bindRegisteredDomain'              => 'admin',
                                     'bindPassword'                      => 'ldap123',
                                     'baseDomain'                        => 'dc=debuntu,dc=local',
-									'ldapEnabled'                        => '1')));
-            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLdap');
-            $this->assertEquals('Ldap configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+									'enabled'                        => '1')));
+            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLDAP');
+            $this->assertEquals('LDAP Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;
@@ -67,21 +67,21 @@
             $this->assertEquals('admin',                Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
             $this->assertEquals('ldap123',              Yii::app()->authenticationHelper->ldapBindPassword);
             $this->assertEquals('dc=debuntu,dc=local',  Yii::app()->authenticationHelper->ldapBaseDomain);
-            $this->assertEquals('1',                    Yii::app()->authenticationHelper->ldapEnabled);
+            $this->assertEquals('1',                    Yii::app()->authenticationHelper->enabled);
         }
         
-        public function testSuperUserTestLdapConnection()
+        public function testSuperUserTestLDAPConnection()
         {
          $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-         //check ldap connection         
+         //check LDAP connection         
          $this->resetGetArray();
-         $this->setPostArray(array('LdapConfigurationForm' => array(
+         $this->setPostArray(array('LDAPConfigurationForm' => array(
                                     'host'                              => '192.168.1.185',
                                     'port'                              => '389',
                                     'bindRegisteredDomain'              => 'admin',
                                     'bindPassword'                      => 'ldap123',
                                     'baseDomain'                        => 'dc=debuntu,dc=local',
-									'ldapEnabled'                        => '1')));
+									'enabled'                        => '1')));
          $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');  
          //$this->assertTrue(strpos($content, "Successfully Connected to LDAP Server") > 0);         
          //$this->assertEquals('Successfully Connected to LDAP Server', $content);

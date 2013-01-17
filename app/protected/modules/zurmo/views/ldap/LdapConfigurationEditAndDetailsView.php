@@ -25,13 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Edit and details view for the Ldap configuration view.
+     * Edit and details view for the LDAP Configuration view.
      */
-    class LdapConfigurationEditAndDetailsView extends EditAndDetailsView
+    class LDAPConfigurationEditAndDetailsView extends EditAndDetailsView
     {
         public function getTitle()
         {
-            return Yii::t('Default', 'Ldap Configuration');
+            return Yii::t('Default', 'LDAP Configuration');
         }
 
         public static function getDefaultMetadata()
@@ -98,7 +98,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'ldapEnabled', 'type' => 'CheckBox'),
+                                                array('attributeName' => 'enabled', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -108,7 +108,7 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'testConnection',
-                                                      'type' => 'TestLdapConnection'),
+                                                      'type' => 'TestLDAPConnection'),
                                             ),
                                         ),
                                     )

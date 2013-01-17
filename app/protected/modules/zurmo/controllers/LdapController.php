@@ -25,28 +25,28 @@
      ********************************************************************************/
 
     /**
-     * Controller Class for managing Ldap authentication.
+     * Controller Class for managing LDAP Authentication.
      *
      */
-    class ZurmoLdapController extends ZurmoModuleController
+    class ZurmoLDAPController extends ZurmoModuleController
     {       
-        public function actionConfigurationEditLdap()
+        public function actionConfigurationEditLDAP()
         {
-            $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $configurationForm = LDAPConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);            
             if (isset($_POST[$postVariableName]))
             {                                  
                 $configurationForm->setAttributes($_POST[$postVariableName]);                
                 if ($configurationForm->validate())
                 {
-                    LdapConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
+                    LDAPConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Ldap configuration saved successfully.')
+                        Yii::t('Default', 'LDAP Configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
             }
-            $editView = new LdapConfigurationEditAndDetailsView(
+            $editView = new LDAPConfigurationEditAndDetailsView(
                                     'Edit',
                                     $this->getId(),
                                     $this->getModule()->getId(),
@@ -59,9 +59,9 @@
         
         public function actionTestConnection()
         {
-            $configurationForm = LdapConfigurationFormAdapter::makeFormFromGlobalConfiguration();
+            $configurationForm = LDAPConfigurationFormAdapter::makeFormFromGlobalConfiguration();
             $postVariableName   = get_class($configurationForm);
-            if (isset($_POST[$postVariableName]) || (isset($_POST['LdapConfigurationForm'])))
+            if (isset($_POST[$postVariableName]) || (isset($_POST['LDAPConfigurationForm'])))
             {
                 if (isset($_POST[$postVariableName]))
                 {
@@ -69,12 +69,12 @@
                 }
                 else
                 {
-                    $configurationForm->host                  = $_POST['LdapConfigurationForm']['host'];
-                    $configurationForm->port                  = $_POST['LdapConfigurationForm']['port'];
-                    $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['bindRegisteredDomain'];
-                    $configurationForm->bindPassword          = $_POST['LdapConfigurationForm']['bindPassword'];
-                    $configurationForm->baseDomain            = $_POST['LdapConfigurationForm']['baseDomain'];
-                    $configurationForm->ldapEnabled           = $_POST['LdapConfigurationForm']['ldapEnabled'];                    
+                    $configurationForm->host                  = $_POST['LDAPConfigurationForm']['host'];
+                    $configurationForm->port                  = $_POST['LDAPConfigurationForm']['port'];
+                    $configurationForm->bindRegisteredDomain  = $_POST['LDAPConfigurationForm']['bindRegisteredDomain'];
+                    $configurationForm->bindPassword          = $_POST['LDAPConfigurationForm']['bindPassword'];
+                    $configurationForm->baseDomain            = $_POST['LDAPConfigurationForm']['baseDomain'];
+                    $configurationForm->enabled               = $_POST['LDAPConfigurationForm']['enabled'];                    
                 }
                 if ($configurationForm->host != null && $configurationForm->port != null && 
                     $configurationForm->bindRegisteredDomain != null && $configurationForm->bindPassword != null &&
@@ -86,14 +86,14 @@
                     $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $authenticationHelper->ldapBindPassword         = $configurationForm->bindPassword;
                     $authenticationHelper->ldapBaseDomain           = $configurationForm->baseDomain;
-                    $authenticationHelper->ldapEnabled              = $configurationForm->ldapEnabled;
+                    $authenticationHelper->enabled                  = $configurationForm->enabled;
                     
                     $host                      = $configurationForm->host;             
                     $port                      = $configurationForm->port;                
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;         
                     $baseDomain                = $configurationForm->baseDomain;           
-                    $testConnectionResults     = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                    $testConnectionResults     = LDAPTestConnectionHelper::testConnectionLDAP($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
                     
 					if($testConnectionResults)
@@ -110,7 +110,7 @@
                     $messageContent = Yii::t('Default', 'All fields are required') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
-                $messageView = new TestLdapConnectionView($messageContent);
+                $messageView = new TestLDAPConnectionView($messageContent);
                 $view = new ModalView($this, $messageView);				
                 echo $view->render();
             }

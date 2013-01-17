@@ -25,17 +25,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LdapTestConnectionHelper
+    class LDAPTestConnectionHelper
     {
         /**
-         * Send a connection Request.  Can use to determine if the Ldap settings are configured correctly.
+         * Send a connection Request.  Can use to determine if the LDAP settings are configured correctly.
          * @param ZurmoAuthenticationHelper $zurmoAuthenticationHelper
          * @param server $host
          * @param username $bindRegisteredDomain
 		 * @param password $bindPassword, 
 		 * @param base domain $baseDomain		 
          */
-        public static function testConnectionLdap(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
+        public static function testConnectionLDAP(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
         {			
 			$server = $host;
 			$user  = $bindRegisteredDomain;
@@ -43,8 +43,8 @@
 			
             // checking the LDAP server is on this host
             $ldap_conn = ldap_connect($server,$port)  or die("Could not connect to $server");
-            ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
-            ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
+            LDAP_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
+            LDAP_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
                 
             //checking user type
             $username = 'cn='.$user.','.$baseDomain; //for admin access
@@ -53,7 +53,7 @@
 			if ($ldap_conn) {
 			    				
 				// bind with appropriate dn to give update access
-				if (@ldap_bind($ldap_conn, $username, $passwd))  
+				if (@LDAP_bind($ldap_conn, $username, $passwd))  
 				{
 					return true;
 				} 

@@ -30,49 +30,49 @@
     class ZurmoAuthenticationHelper extends CApplicationComponent
     {
         /**
-         * Ldap server host name. Example someDomain.com
+         * LDAP server host name. Example someDomain.com
          * @var string
          */
         public $ldapHost;
 
         /**
-         * Ldap server port number. Default to 389, but it can be set to something different.
+         * LDAP server port number. Default to 389, but it can be set to something different.
          * @var integer
          */
         public $ldapPort = 389;
 
         /**
-         * Ldap server username. 
+         * LDAP server username. 
          * @var string
          */
         public $ldapBindRegisteredDomain;
 
         /**
-         * Ldap server password. 
+         * LDAP server password. 
          * @var string
          */
         public $ldapBindPassword;
 
         /**
-         * Ldap server domain name. 
+         * LDAP server domain name. 
          * @var string
          */
         public $ldapBaseDomain;
 				
          /**
-         * Ldap server authentication feature turn on. 
+         * LDAP server authentication feature turn on. 
          * @var boolean
          */
-        public $ldapEnabled;
+        public $enabled;
         
 		/**
-		* ldap Settings Values
+		* LDAP Settings Values
 		*/
-		public $ldapsettingsvalues;
+		public $ldapSettingsValues;
 
         /**
          * Contains array of settings to load during initialization from the configuration table.
-         * @see loadLdapSettings
+         * @see loadLDAPSettings
          * @var array
          */
         protected $settingsToLoad = array(
@@ -81,21 +81,21 @@
             'ldapBindRegisteredDomain',
             'ldapBindPassword',
             'ldapBaseDomain',
-            'ldapEnabled'
+            'enabled'
         );
 
 
         /**
-         * Called once per page load, will load up ldap settings from the database if available.
+         * Called once per page load, will load up LDAP settings from the database if available.
          * (non-PHPdoc)
          * @see CApplicationComponent::init()
          */
         public function init()
         {
-            $this->loadLdapSettings();
+            $this->loadLDAPSettings();
         }
 
-        protected function loadLdapSettings()
+        protected function loadLDAPSettings()
         {
             foreach ($this->settingsToLoad as $keyName)
             {
@@ -107,9 +107,9 @@
         }
 
         /**
-         * Set ldap settings into the database.
+         * Set LDAP settings into the database.
          */
-        public function setLdapSettings()
+        public function setLDAPSettings()
         {
             foreach ($this->settingsToLoad as $keyName)
             {                
@@ -118,21 +118,21 @@
         }
 		
 		
-        public function getLdapSettingsValues()
+        public function getldapSettingsValues()
 		{
 		    foreach ($this->settingsToLoad as $keyName)
             {
-			    if ($this->ldapsettingsvalues == null)
+			    if ($this->ldapSettingsValues == null)
 				{
-					$this->ldapsettingsvalues = array();
+					$this->ldapSettingsValues = array();
 				}			    
-				$ldapsettingsvalue = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $keyName);
-				if (!in_array($ldapsettingsvalue, $this->ldapsettingsvalues))
+				$LDAPsettingsvalue = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $keyName);
+				if (!in_array($LDAPsettingsvalue, $this->ldapSettingsValues))
 				{
-					$this->ldapsettingsvalues[$keyName] = $ldapsettingsvalue;
+					$this->ldapSettingsValues[$keyName] = $LDAPsettingsvalue;
 				}
 			}
-            return $this->ldapsettingsvalues;
+            return $this->ldapSettingsValues;
 		}
 
 		
@@ -143,11 +143,11 @@
 		*/
 		public function makeIdentity($username, $password)
 		{
-		  //checking ldap option enable 
-		  $ldapEnabled = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'ldapEnabled');
-		  if($ldapEnabled)
+		  //checking LDAP option enable 
+		  $enabled = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'enabled');
+		  if($enabled)
 		  {  		     
-			 return new UserLdapIdentity($username, $password);
+			 return new UserLDAPIdentity($username, $password);
 		  }
           else
 		  {

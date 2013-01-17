@@ -25,38 +25,38 @@
      ********************************************************************************/
 
     /**
-     * Class to adapt Ldap configuration values into a configuration form.
+     * Class to adapt LDAP Configuration values into a configuration form.
      * Saves global values from a configuration form.
      */
-    class LdapConfigurationFormAdapter
+    class LDAPConfigurationFormAdapter
     {
         /**
-         * @return LdapConfigurationForm
+         * @return LDAPConfigurationForm
          */
         public static function makeFormFromGlobalConfiguration()
         {
-            $form                                    = new LdapConfigurationForm();
+            $form                                    = new LDAPConfigurationForm();
             $form->host                              = Yii::app()->authenticationHelper->ldapHost;
             $form->port                              = Yii::app()->authenticationHelper->ldapPort;
             $form->bindRegisteredDomain              = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;            
             $form->bindPassword                      = Yii::app()->authenticationHelper->ldapBindPassword;
             $form->baseDomain                        = Yii::app()->authenticationHelper->ldapBaseDomain;
-            $form->ldapEnabled                       = Yii::app()->authenticationHelper->ldapEnabled;			
+            $form->enabled                           = Yii::app()->authenticationHelper->enabled;			
             return $form;
         }
 
         /**
-         * Given a LdapConfigurationForm, save the configuration global values.
+         * Given a LDAPConfigurationForm, save the configuration global values.
          */
-        public static function setConfigurationFromForm(LdapConfigurationForm $form)
+        public static function setConfigurationFromForm(LDAPConfigurationForm $form)
         {             
             Yii::app()->authenticationHelper->ldapHost                 = $form->host;
             Yii::app()->authenticationHelper->ldapPort                 = $form->port;
             Yii::app()->authenticationHelper->ldapBindRegisteredDomain = $form->bindRegisteredDomain;
             Yii::app()->authenticationHelper->ldapBindPassword         = $form->bindPassword;
             Yii::app()->authenticationHelper->ldapBaseDomain           = $form->baseDomain;
-            Yii::app()->authenticationHelper->ldapEnabled              = $form->ldapEnabled;
-            Yii::app()->authenticationHelper->setLdapSettings();
+            Yii::app()->authenticationHelper->enabled                  = $form->enabled;
+            Yii::app()->authenticationHelper->setldapSettings();
        }
     }
 ?>

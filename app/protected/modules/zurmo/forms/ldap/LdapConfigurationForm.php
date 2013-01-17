@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Form to all editing and viewing of Ldap configuration values in the user interface.
+     * Form to all editing and viewing of LDAP Configuration values in the user interface.
      */
-    class LdapConfigurationForm extends ConfigurationForm
+    class LDAPConfigurationForm extends ConfigurationForm
     {
         public $host;
         public $port = 389;
@@ -35,7 +35,7 @@
         public $bindPassword;
         public $baseDomain;		
         public $testConnection;
-        public $ldapEnabled;
+        public $enabled;
 		
         public function rules()
         {
@@ -55,7 +55,7 @@
                 array('baseDomain',                        'required'),
                 array('baseDomain',                        'type',      'type' => 'string'),
                 array('baseDomain',                        'length',    'min'  => 1, 'max' => 64),
-                array('ldapEnabled',                       'boolean'),
+                array('enabled',                           'boolean'),
             );
         }
 
@@ -67,7 +67,7 @@
                 'bindRegisteredDomain'                 => Yii::t('Default', 'Username'),
                 'bindPassword'                         => Yii::t('Default', 'Password'),
                 'baseDomain'                           => Yii::t('Default', 'Base Domain'),
-                'ldapEnabled'                          => Yii::t('Default', 'Turn On Ldap')
+                'enabled'                              => Yii::t('Default', 'Turn On LDAP')
             );
         }
     }

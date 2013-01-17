@@ -125,7 +125,7 @@
                         'category'         => self::ADMINISTRATION_CATEGORY_GENERAL,
                         'titleLabel'       => 'LDAP Configuration',
                         'descriptionLabel' => 'Manage LDAP Authentication',
-                        'route'            => '/zurmo/ldap/configurationEditLdap',
+                        'route'            => '/zurmo/ldap/configurationEditLDAP',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                 ),
