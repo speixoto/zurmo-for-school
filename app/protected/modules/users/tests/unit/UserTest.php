@@ -802,7 +802,7 @@
             $this->assertTrue($admin->save());
             $admin->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
             $this->assertTrue($admin->save());        
-            $identity = new UserldapIdentity('admin','test123');                        
+            $identity = new UserLDAPIdentity('admin','test123');                        
             $authenticated = $identity->authenticate(true);
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);     
@@ -814,7 +814,7 @@
         public function testUserExitsInldapNotInZurmo()
         {
             Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity = new UserldapIdentity('john','johnldap');                        
+            $identity = new UserLDAPIdentity('john','johnldap');                        
             $authenticated = $identity->authenticate(true);
             $this->assertEquals(1, $identity->errorCode);
             $this->assertFalse($authenticated);     
@@ -826,7 +826,7 @@
         public function testUserExitsInldapAndZurmo()
         {
             Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity = new UserldapIdentity('admin','ldap123');                        
+            $identity = new UserLDAPIdentity('admin','ldap123');                        
             $authenticated = $identity->authenticate(true);
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);     
