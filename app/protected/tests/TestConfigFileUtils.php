@@ -45,6 +45,16 @@
                 $contents = preg_replace('/\$installed\s*=\s*false;/',
                                          '$installed = true;',
                                          $contents);
+                //Update database credentials to use a test db and user.
+                $contents = preg_replace('/\$connectionString\s*=\s*\'mysql:host=localhost;port=3306;dbname=zurmo\';/',
+                    '$connectionString = \'mysql:host=localhost;port=3306;dbname=zurmo_test\';',
+                    $contents);
+                $contents = preg_replace('/\$username\s*=\s*\'zurmo\';/',
+                    '$username = \'zurmo_test\';',
+                    $contents);
+                $contents = preg_replace('/\$password\s*=\s*\'zurmo\';/',
+                    '$password = \'zurmo_test\';',
+                    $contents);
 
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
