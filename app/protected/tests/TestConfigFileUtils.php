@@ -59,6 +59,7 @@
                 // Add temp db Settings
                 $tempDbSettings = <<<EOD
     \$instanceConfig['components']['tempDb'] = array(
+        'class' => 'CDbConnection',
         'connectionString' => 'mysql:host=localhost;port=3306;dbname=zurmo_temp', // Not Coding Standard,
         'username'         => 'zurmo_temp',
         'password'         => 'zurmo_temp',
@@ -133,7 +134,7 @@ EOD;
             }
 
             if($perInstanceTestConfigCreated) {
-                echo "\nPlease updated the newly created ".INSTANCE_ROOT . "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
+                echo "\nPlease update the newly created ".INSTANCE_ROOT . "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
                 exit;
             }
         }
