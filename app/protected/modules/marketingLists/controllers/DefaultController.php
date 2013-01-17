@@ -60,28 +60,19 @@
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();
+        }
 
-            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                'listPageSize', get_class($this->getModule()));
-            $marketingList                  = new MarketingList(false);
-            $activeActionElementType = MissionsUtil::makeActiveActionElementType((int)$type);
-            $dataProvider            = MissionsUtil::makeDataProviderByType($mission, $type, $pageSize);
-            $actionBarAndListView = new ActionBarAndListView(
-                $this->getId(),
-                $this->getModule()->getId(),
-                $mission,
-                'Missions',
-                $dataProvider,
-                array(),
-                'MissionsActionBarForListView',
-                $activeActionElementType
-            );
-            $view = new MissionsPageView(ZurmoDefaultViewUtil::
-                                              makeStandardViewForCurrentUser($this, $actionBarAndListView));
+        public function actionCreate()
+        { 
+            $editView = MarketingListEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost(new MarketingList()),
+                                                 Yii::t('Default', 'Create Marketing List')); 
+            $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 
-        public function actionEdit($id, $redirectUrl = null)
+     /*   public function actionEdit($id, $redirectUrl = null)
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
@@ -98,11 +89,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);
             $marketingList->delete();
             $this->redirect(array($this->getId() . '/index'));
-        }
+        }*/
 
         protected static function getSearchFormClassName()
         {
-            return 'AccountsSearchForm';
+            return 'MarketingListsSearchForm';
         }
     }
 ?>

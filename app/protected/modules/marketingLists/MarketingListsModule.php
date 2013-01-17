@@ -70,5 +70,10 @@
         {
             return self::RIGHT_DELETE_MARKETING_LISTS;
         }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'MarketingListsSearchForm';
+        }
     }
 ?>

@@ -26,28 +26,5 @@
 
     class MarketingListsActionBarForListView extends ActionBarForSearchAndListView
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'CreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'ConversationsCreatedLink',
-                                'htmlOptions'     => array( 'class' => 'icon-conversations-created' )
-                            ),
-                            array(
-                                'type'            => 'ConversationsParticipantLink',
-                                'htmlOptions'     => array( 'class' => 'icon-conversations-participant' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
     }
 ?>

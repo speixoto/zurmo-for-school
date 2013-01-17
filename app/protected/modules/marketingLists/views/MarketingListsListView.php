@@ -30,8 +30,7 @@
         {
             $metadata = array(
                 'global' => array(
-                    'elements' => array(
-                    'panels' => array(
+                     'panels' => array(
                         array(
                             'rows' => array(
                                 array('cells' =>
