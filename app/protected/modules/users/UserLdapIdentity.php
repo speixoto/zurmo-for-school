@@ -25,10 +25,10 @@
      ********************************************************************************/
 
     /**
-     * UserLdapIdentity represents the data needed to identity a user using Ldap server 
+     * UserldapIdentity represents the data needed to identity a user using ldap server 
 	 * authentication.
      */
-    class UserLdapIdentity extends UserIdentity
+    class UserldapIdentity extends UserIdentity
     {
         
         const ERROR_NO_RIGHT_WEB_LOGIN = 3;
@@ -42,7 +42,7 @@
             {
                 if(!$ldapTestSettings)
                 {
-                    $ldapConfigurationValues = Yii::app()->authenticationHelper->getLdapSettingsValues();                		
+                    $ldapConfigurationValues = Yii::app()->authenticationHelper->getldapSettingsValues();                		
                 }
                 else
                 {				 
@@ -54,7 +54,7 @@
                 $bindRegisteredDomain = $ldapConfigurationValues['ldapBindRegisteredDomain'];
                 $bindPassword         = $ldapConfigurationValues['ldapBindPassword'];
                 $baseDomain           = $ldapConfigurationValues['ldapBaseDomain'];
-                $ldapTestConnection   = LdapTestConnectionHelper::testConnectionLdap($authenticationHelper,$host,$port,
+                $ldapTestConnection   = LDAPTestConnectionHelper::testConnectionldap($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  			
                 if($ldapTestConnection)
                 {

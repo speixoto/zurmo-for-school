@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ZurmoCustomFieldApiController extends ZurmoModuleApiController
+    class ZurmoCustomFieldapiController extends ZurmoModuleApiController
     {
         protected function processList($params)
         {

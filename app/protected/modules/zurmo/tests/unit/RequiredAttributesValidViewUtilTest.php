@@ -91,7 +91,7 @@
 
         public function testIsViewMissingRequiredAttributes()
         {
-            $value = RequiredAttributesValidViewUtil::isViewMissingRequiredAttributes('ContactsModule', 'MissingViewShouldAppearInAnyModule');
+            $value = RequiredAttributesValidViewUtil::isViewMissingRequiredAttributes('ContactsModule', 'MissingViewShouldappearInAnyModule');
             $this->assertFalse($value);
             RequiredAttributesValidViewUtil::setAsMissingRequiredAttributes('ContactsModule', 'ContactsPageView');
             $value = RequiredAttributesValidViewUtil::isViewMissingRequiredAttributes('ContactsModule', 'ContactsPageView');
@@ -100,7 +100,7 @@
 
         public function testResolveValidView()
         {
-            $content = RequiredAttributesValidViewUtil::resolveValidView('ContactsModule', 'MissingViewShouldAppearInAnyModule');
+            $content = RequiredAttributesValidViewUtil::resolveValidView('ContactsModule', 'MissingViewShouldappearInAnyModule');
             $this->assertNull($content);
 
             RequiredAttributesValidViewUtil::setAsMissingRequiredAttributes('ContactsModule', 'ContactsListView');
