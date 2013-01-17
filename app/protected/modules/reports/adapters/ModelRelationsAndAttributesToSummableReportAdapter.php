@@ -319,10 +319,11 @@
         public function getCalculationOrModifierType($attribute)
         {
             $parts = explode(FormModelUtil::DELIMITER, $attribute);
-            if($parts > 1)
+            if(count($parts) > 1)
             {
                 return $parts[1];
             }
+            return $attribute;
         }
 
 

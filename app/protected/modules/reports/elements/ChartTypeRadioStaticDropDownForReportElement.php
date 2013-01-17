@@ -29,6 +29,8 @@
     */
     class ChartTypeRadioStaticDropDownForReportElement extends DataFromFormStaticDropDownFormElement
     {
+        public $editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
             assert('$model instanceof ChartForReportForm');
@@ -66,17 +68,12 @@
             return 'getTypeDataAndLabels';
         }
 
-        public function getDropDownArrayX()
-        {
-
-            return $this->model->getTypeDataAndLabels();
-        }
-
         protected function getEditableHtmlOptions()
         {
-            $htmlOptions             = parent::getEditableHtmlOptions();
-            $htmlOptions['template'] = '<div class="radio-input">{input}{label}</div>';
-            $htmlOptions['class']    = 'chart-selector';
+            $htmlOptions              = parent::getEditableHtmlOptions();
+            $htmlOptions['separator'] = '';
+            $htmlOptions['template']  = '<div class="radio-input">{input}{label}</div>';
+            $htmlOptions['class']     = 'chart-selector';
             if (isset($htmlOptions['empty']))
             {
                 unset($htmlOptions['empty']);

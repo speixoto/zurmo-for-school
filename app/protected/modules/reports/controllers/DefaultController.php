@@ -275,7 +275,7 @@
             }
             $seriesAttributesData                       = $modelToReportAdapter->
                                                           getAttributesForChartSeries($report->getGroupBys(),
-                                                          $report->getDisplayAttriubtes());
+                                                          $report->getDisplayAttributes());
             $rangeAttributesData  =                       $modelToReportAdapter->
                                                           getAttributesForChartRange ($report->getDisplayAttributes());
             $dataAndLabels                              = array();

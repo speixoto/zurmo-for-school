@@ -30,6 +30,8 @@
      */
     class MixedChartRangeAndSeriesElement extends Element
     {
+        public $editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
+
         /**
          * @return The element's content as a string.
          */
@@ -137,16 +139,6 @@
         protected function renderControlNonEditable()
         {
             throw new NotSupportedException();
-        }
-
-        protected function renderLabel()
-        {
-            $label = $this->getFormattedAttributeLabel();
-            if ($this->form === null)
-            {
-                return $label;
-            }
-            return ZurmoHtml::label($label, false);
         }
 
         /**
