@@ -27,12 +27,12 @@
     class DatabaseCompatibilityUtilTest extends BaseTest
     {
         protected $hostname;
-        protected $temporaryDatabaseUsername;
-        protected $temporaryDatabasePassword;
         protected $databasePort = 3306;
         protected $testDatabaseName;
         protected $testDatabaseUsername;
         protected $testDatabasePassword;
+        protected $temporaryDatabaseUsername;
+        protected $temporaryDatabasePassword;
         protected $temporaryDatabaseName;
         protected $superUserPassword;
         protected $databaseBackupTestFile;
@@ -504,7 +504,7 @@
             // This test cannot run as saltdev. It is therefore skipped on the server.
             if ($this->temporaryDatabaseUsername == 'root')
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase    ('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
                 $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName, 'wacko', 'wacked'));
                 $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName, 'wacko', ''));
             }
@@ -530,7 +530,7 @@
 
         public function testDatabaseBackupAndRestore()
         {
-            // Create new database (zurmo_wacky).
+            // Create new database (zurmo_temp).
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 $this->assertTrue(DatabaseCompatibilityUtil::createDatabase('mysql', $this->hostname, $this->temporaryDatabaseUsername, $this->temporaryDatabasePassword, $this->databasePort, $this->temporaryDatabaseName));
