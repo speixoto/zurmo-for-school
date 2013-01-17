@@ -40,12 +40,12 @@
             {
                 copy(INSTANCE_ROOT . '/protected/config/perInstanceDIST.php', INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
 
-                //Mark test application installed, because we need this variable to be set to true, for api tests
+                // Mark test application installed, because we need this variable to be set to true, for api tests
                 $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
                 $contents = preg_replace('/\$installed\s*=\s*false;/',
                                          '$installed = true;',
                                          $contents);
-                //Update database credentials to use a test db and user.
+                // Update database credentials to use a test db and user.
                 $contents = preg_replace('/\$connectionString\s*=\s*\'mysql:host=localhost;port=3306;dbname=zurmo\';/',
                     '$connectionString = \'mysql:host=localhost;port=3306;dbname=zurmo_test\';',
                     $contents);
@@ -55,6 +55,20 @@
                 $contents = preg_replace('/\$password\s*=\s*\'zurmo\';/',
                     '$password = \'zurmo_test\';',
                     $contents);
+                // Add temp db Settings
+                $tempDbSettings = <<<EOD
+    \$instanceConfig['components']['tempDb'] = array(
+        'connectionString' => 'mysql:host=localhost;port=3306;dbname=zurmo_temp', // Not Coding Standard,
+        'username'         => 'zurmo_root',
+        'password'         => 'zurmo_root',
+        'emulatePrepare' => true,
+        'charset'        => 'utf8',
+    );
+EOD;
+                $contents = preg_replace('=//@see CustomManagement=',
+                    "//@see CustomManagement\n" . $tempDbSettings,
+                    $contents,
+                    1);
 
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
