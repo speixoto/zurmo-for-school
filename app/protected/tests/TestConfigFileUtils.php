@@ -30,6 +30,7 @@
     {
         public static function configureConfigFiles()
         {
+            $perInstanceTestConfigCreated = false;
             chdir(COMMON_ROOT);
 
             if (!is_file(INSTANCE_ROOT . '/protected/config/debugTest.php'))
@@ -38,7 +39,7 @@
             }
             if (!is_file(INSTANCE_ROOT . '/protected/config/perInstanceTest.php'))
             {
-                copy(INSTANCE_ROOT . '/protected/config/perInstanceDIST.php', INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
+                $perInstanceTestConfigCreated = copy(INSTANCE_ROOT . '/protected/config/perInstanceDIST.php', INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
 
                 // Mark test application installed, because we need this variable to be set to true, for api tests
                 $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
@@ -59,8 +60,8 @@
                 $tempDbSettings = <<<EOD
     \$instanceConfig['components']['tempDb'] = array(
         'connectionString' => 'mysql:host=localhost;port=3306;dbname=zurmo_temp', // Not Coding Standard,
-        'username'         => 'zurmo_root',
-        'password'         => 'zurmo_root',
+        'username'         => 'zurmo_temp',
+        'password'         => 'zurmo_temp',
         'emulatePrepare' => true,
         'charset'        => 'utf8',
     );
@@ -129,6 +130,11 @@ EOD;
                         $contents);
 
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+            }
+
+            if($perInstanceTestConfigCreated) {
+                echo "\nPlease updated the newly created ".INSTANCE_ROOT . "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
+                exit;
             }
         }
     }
