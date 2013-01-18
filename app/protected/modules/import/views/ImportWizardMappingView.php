@@ -209,7 +209,7 @@
             // Begin Not Coding Standard
             $aContent            = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent           .= ZurmoHtml::tag('span', array('class' => 'z-icon'),    null);
-            $aContent           .= ZurmoHtml::tag('span', array('class' => 'z-label'),   Yii::t('Default', 'Add Field'));
+            $aContent           .= ZurmoHtml::wrapLabel(  Yii::t('Default', 'Add Field'));
             $content            .= ZurmoHtml::ajaxLink($aContent,
                                     $ajaxOnChangeUrl,
                                     array('type' => 'GET',

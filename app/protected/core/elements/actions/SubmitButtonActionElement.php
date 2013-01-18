@@ -67,7 +67,7 @@
             }
             $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLabel());
+            $aContent               .= ZurmoHtml::wrapLabel($this->getLabel());
             return ZurmoHtml::link($aContent, '#', $htmlOptions);
         }
     }

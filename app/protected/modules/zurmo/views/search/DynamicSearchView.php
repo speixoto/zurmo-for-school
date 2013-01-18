@@ -225,7 +225,7 @@
             $addFieldLabelContent = $this->getAddFieldLabelContent();
             $aContent             = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-label'), $addFieldLabelContent);
+            $aContent            .= ZurmoHtml::wrapLabel($addFieldLabelContent);
             $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',

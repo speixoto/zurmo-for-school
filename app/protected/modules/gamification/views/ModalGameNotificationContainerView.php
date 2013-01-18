@@ -115,8 +115,7 @@
 
             $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
             $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'),    null);
-            $aContent               .= ZurmoHtml::tag('span',  array('class' => 'z-label'),
-                                                     Yii::t('Default', 'Post to Profile'));
+            $aContent               .= ZurmoHtml::wrapLabel(Yii::t('Default', 'Post to Profile'));
             // Begin Not Coding Standard
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',
