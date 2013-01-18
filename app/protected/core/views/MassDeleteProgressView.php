@@ -67,9 +67,9 @@
 
         protected function getMessage()
         {
-            return Yii::t('Default', 'Deleting') . "&#160;" . $this->start . "-" . $this->getEndSize() . "&#160;" . Yii::t('Default', 'of') . "&#160;" .
-            $this->totalRecordCount . "&#160;" . Yii::t('Default', 'total') . "&#160;" .
-            Yii::t('Default', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
+            return Yii::t('Default', 'Deleting') . " " . $this->start . " - " . $this->getEndSize() . " " . Yii::t('Default', 'of') . " " .
+                $this->totalRecordCount . " " . Yii::t('Default', 'total') . " " .
+                Yii::t('Default', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
         }
 
         protected function getCompleteMessage()
@@ -87,43 +87,6 @@
             return $content;
         }
 
-        protected function renderContent()
-        {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ProgressBar");
-            $cClipWidget->widget('zii.widgets.jui.CJuiProgressBar', array(
-                'id'         => $this->progressBarId,
-                'value'      => $this->getProgressValue(),
-                'options'    => array(
-                    'create' => 'js:function(event, ui)
-                    {
-                        ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
-                        makeSmallLoadingSpinner("sequential-process-spinner", "dark");
-                    }',
-                    'complete' => 'js:function(event, ui)
-                    {
-                        $(\'#' . $this->progressBarId . '\').hide();
-                        $(\'#' . $this->progressBarId . '-links\').show();
-                        $(\'#sequential-process-spinner\').remove();
-                    }',
-                ),
-                'htmlOptions' => array(
-                    'style'   => 'height:20px;'
-                ),
-            ));
-            $cClipWidget->endClip();
-            $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content = "<div><h1>" . Yii::t('Default', 'Mass Delete') . '&#160;' . $this->title . '</h1>';
-            $content .= '<div class="progress-counter">' . "\n";
-            $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . 
-                        '<span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= $progressBarContent;
-            $content .= $this->renderFormLinks();
-            $content .= '</div>';
-            $content .= '</div>';
-            return $content;
-        }
-
         protected function renderFormLinks()
         {
             $listButton = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Return to List')), Yii::app()->createUrl($this->moduleId));
@@ -136,6 +99,11 @@
         protected function onProgressComplete()
         {
             MassDeleteInsufficientPermissionSkipSavingUtil::clear(get_class($this->model));
+        }
+
+        protected function headerLabelPrefixContent()
+        {
+            return Yii::t('Default', 'Mass Update');
         }
     }
 ?>

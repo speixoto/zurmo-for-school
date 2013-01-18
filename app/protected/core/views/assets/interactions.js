@@ -152,13 +152,15 @@ $(window).ready(function(){
  */
 
 function dockFloatingBar(){
-    var windowTop, diff;
-    windowTop = $(window).scrollTop();
-    diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
-    if( windowTop > diff ) {
-        $('#float-bar .view-toolbar-container').addClass('dock');
-    } else {
-        $('#float-bar .view-toolbar-container').removeClass('dock');
+    if ($('.float-bar').find('.disable-float-bar').length == 0) {
+        var windowTop, diff;
+        windowTop = $(window).scrollTop();
+        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+        if( windowTop > diff ) {
+            $('.float-bar .view-toolbar-container').addClass('dock');
+        } else {
+            $('.float-bar .view-toolbar-container').removeClass('dock');
+        }
     }
 }
 
@@ -293,9 +295,9 @@ function makeLargeLoadingSpinner(id){
     });
 }
 
-function makeGlobalSearchSpinner(id, state){
+function makeToggableSpinner(context, state){
     if ( state === true ){
-        $( '.z-spinner', '#' + id ).spin({
+        $( '.z-spinner', context ).spin({
             lines : 10, // The number of lines to draw
             length : 3, // The length of each line
             width : 2, // The line thickness
@@ -312,7 +314,7 @@ function makeGlobalSearchSpinner(id, state){
             left : 0 // Left position relative to parent in px
         });
     } else {
-        $( '.z-spinner', '#' + id ).spin(false);
+        $( '.z-spinner', context ).spin(false);
     }
 }
 

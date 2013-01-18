@@ -48,26 +48,27 @@
          * Constructs a detail view specifying the controller as
          * well as the model that will have its mass delete displayed.
          */
-        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes, $selectedRecordCount, $title, $alertMessage = null, $moduleClassName, $selectedIds)
+        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes, $selectedRecordCount, $title, $alertMessage = null, $moduleClassName)
         {
             assert('is_array($activeAttributes)');
             assert('is_string($title)');
-            $this->controllerId           = $controllerId;
-            $this->moduleId               = $moduleId;
-            $this->model                  = $model;
-            $this->modelClassName         = get_class($model);
-            $this->modelId                = $model->id;
-            $this->activeAttributes       = $activeAttributes;
-            $this->selectedRecordCount    = $selectedRecordCount;
-            $this->title                  = $title;
-            $this->alertMessage           = $alertMessage;
-            $this->moduleClassName        = $moduleClassName;
-            $this->selectedIds            = $selectedIds;
+
+            $this->controllerId                       = $controllerId;
+            $this->moduleId                           = $moduleId;
+            $this->model                              = $model;
+            $this->modelClassName                     = get_class($model);
+            $this->modelId                            = $model->id;
+            $this->activeAttributes                   = $activeAttributes;
+            $this->selectedRecordCount                = $selectedRecordCount;
+            $this->title                              = $title;
+            $this->alertMessage                       = $alertMessage;
+            $this->moduleClassName                    = $moduleClassName;
+
         }
 
-        protected function getSelectedIds()
+        protected function getSelectedRecordCount()
         {
-            return $this->selectedIds;
+            return $this->selectedRecordCount;
         }
 
         public static function getDefaultMetadata()
@@ -80,7 +81,8 @@
                             array('type' => 'DeleteButton',
                                   'htmlOptions' => array(
                                                          'params' => array(
-                                                            'selectedIds' => 'eval:$this->getSelectedIds()'),
+                                                            'selectedRecordCount' => 'eval:$this->getselectedRecordCount()'),
+
                                    ),
                             ),
                         ),
