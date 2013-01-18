@@ -78,10 +78,11 @@
                     {
                         arr  = " . CJSON::encode($valueTypesRequiringFirstDateInput) . ";
                         arr2 = " . CJSON::encode($valueTypesRequiringSecondDateInput) . ";
-                        firstDateSpanAreaQualifier = '#' + event.target.id + '".$firstDateSpanAreaSuffix."';
-                        secondDateSpanAreaQualifier = '#' + event.target.id + '".$secondDateSpanAreaSuffix."';
+                        firstDateSpanAreaQualifier = '#' + $(this).attr('id') + '".$firstDateSpanAreaSuffix."';
+                        secondDateSpanAreaQualifier = '#' + $(this).attr('id') + '".$secondDateSpanAreaSuffix."';
                         if ($.inArray($(this).val(), arr) != -1)
                         {
+                        console.log(firstDateSpanAreaQualifier);
                             $(firstDateSpanAreaQualifier).show();
                             $(firstDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', false);
                         }
