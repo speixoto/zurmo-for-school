@@ -766,7 +766,7 @@ body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
-body.blue a.simple-link,
+body.blue a.simple-link .z-label,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
@@ -1305,7 +1305,7 @@ body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
-body.brown a.simple-link,
+body.brown a.simple-link .z-label,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
@@ -1844,7 +1844,7 @@ body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
-body.lime a.simple-link,
+body.lime a.simple-link .z-label,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
@@ -2383,7 +2383,7 @@ body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
-body.cherry a.simple-link,
+body.cherry a.simple-link .z-label,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
@@ -2922,7 +2922,7 @@ body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
-body.turquoise a.simple-link,
+body.turquoise a.simple-link .z-label,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
@@ -3461,7 +3461,7 @@ body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
-body.violet a.simple-link,
+body.violet a.simple-link .z-label,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
@@ -4000,7 +4000,7 @@ body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
-body.honey a.simple-link,
+body.honey a.simple-link .z-label,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
@@ -6597,7 +6597,31 @@ td.empty {
   color: #fff;
   margin-left: 0;
 }
-a.simple-link {
+body div.form-toolbar a.simple-link:not(.z-button) {
+  background: none !important;
+  background-image: none !important;
+  -webkit-box-shadow: none  !important;
+  -moz-box-shadow: none  !important;
+  -o-box-shadow: none  !important;
+  -ms-box-shadow: none  !important;
+  box-shadow: none  !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  -o-border-radius: 0 !important;
+  border-radius: 0 !important;
+  padding: 0  !important;
+  border: none !important;
+  margin: !important;
+  text-decoration: underline;
+  font-weight: normal;
+}
+body div.form-toolbar a.simple-link:not(.z-button):hover span.z-label {
+  background: none !important;
+  background-image: none !important;
+  background: transparent !important;
+}
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -6614,10 +6638,9 @@ a.simple-link {
   border: none !important;
   margin-left: 10px;
   text-decoration: underline;
-  font-size: 11px;
   font-weight: normal;
 }
-a.simple-link:before {
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
   content: "" !important;
 }
 /*needed for specifity*/

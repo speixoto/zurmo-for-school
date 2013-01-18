@@ -1731,19 +1731,38 @@ td.empty{
     }
 }
 
-a.simple-link{
-    background:none !important;
-    background-image:none !important;
-    .b-shadow( ~"none  !important" );
-    .radius(~"0 !important");
-    padding:0  !important;
-    border: none !important;
-    margin-left:10px;
-    text-decoration:underline;
-    .smaller();
-    font-weight:normal;
-    &:before{
-        content:""  !important;
+body div.form-toolbar{
+    a.simple-link:not(.z-button){
+        background:none !important;
+        background-image:none !important;
+        .b-shadow( ~"none  !important" );
+        .radius(~"0 !important");
+        padding:0  !important;
+        border: none !important;
+        margin:!important;
+        text-decoration:underline;
+        font-weight:normal;
+        &:hover{
+            span.z-label{
+                background:none !important;
+                background-image:none !important;
+                background: transparent !important;
+            }
+        }
+        span.z-label{
+            background:none !important;
+            background-image:none !important;
+            .b-shadow( ~"none  !important" );
+            .radius(~"0 !important");
+            padding:0  !important;
+            border: none !important;
+            margin-left:10px;
+            text-decoration:underline;
+            font-weight:normal;
+            &:before{
+                content:""  !important;
+            }
+        }
     }
 }
 
