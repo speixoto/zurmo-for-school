@@ -35,11 +35,13 @@
 
             if (!is_file(INSTANCE_ROOT . '/protected/config/debugTest.php'))
             {
-                copy(INSTANCE_ROOT . '/protected/config/debugDIST.php', INSTANCE_ROOT . '/protected/config/debugTest.php');
+                copy(INSTANCE_ROOT . '/protected/config/debugDIST.php',
+                    INSTANCE_ROOT . '/protected/config/debugTest.php');
             }
             if (!is_file(INSTANCE_ROOT . '/protected/config/perInstanceTest.php'))
             {
-                $perInstanceTestConfigCreated = copy(INSTANCE_ROOT . '/protected/config/perInstanceDIST.php', INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
+                $perInstanceTestConfigCreated = copy(INSTANCE_ROOT . '/protected/config/perInstanceDIST.php',
+                    INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
 
                 // Mark test application installed, because we need this variable to be set to true, for api tests
                 $contents = file_get_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php');
@@ -134,7 +136,8 @@ EOD;
             }
 
             if($perInstanceTestConfigCreated) {
-                echo "\nPlease update the newly created ".INSTANCE_ROOT . "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
+                echo "\nPlease update the newly created ".INSTANCE_ROOT .
+                    "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
                 exit;
             }
         }
