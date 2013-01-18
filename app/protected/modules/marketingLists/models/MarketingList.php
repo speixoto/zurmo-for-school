@@ -45,15 +45,6 @@
             return 'MarketingListsModuleSingularLabel';
         }
 
-        public function __toString()
-        {
-            if (trim($this->name) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->name;
-        }
-
         /**
          * Returns the display name for plural of the model class.
          * @return dynamic label name based on module.
