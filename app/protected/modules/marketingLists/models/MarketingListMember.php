@@ -77,7 +77,7 @@
                     'createdDateTime'  => 'DateTime',
                     'modifiedDateTime' => 'DateTime',
                     'unsubscribed'     => 'CheckBox',
-            );
+            ));
             return $metadata;
         }
     }
