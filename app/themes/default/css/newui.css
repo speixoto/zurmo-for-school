@@ -772,7 +772,8 @@ body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
 body.blue #clear-search-linkmodal,
 body.blue .treeview span:hover .z-action-link,
-body.blue .drop-zone {
+body.blue .drop-zone,
+body.blue .missing-chart {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1310,7 +1311,8 @@ body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
 body.brown #clear-search-linkmodal,
 body.brown .treeview span:hover .z-action-link,
-body.brown .drop-zone {
+body.brown .drop-zone,
+body.brown .missing-chart {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1848,7 +1850,8 @@ body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
 body.lime #clear-search-linkmodal,
 body.lime .treeview span:hover .z-action-link,
-body.lime .drop-zone {
+body.lime .drop-zone,
+body.lime .missing-chart {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -2386,7 +2389,8 @@ body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
 body.cherry #clear-search-linkmodal,
 body.cherry .treeview span:hover .z-action-link,
-body.cherry .drop-zone {
+body.cherry .drop-zone,
+body.cherry .missing-chart {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2924,7 +2928,8 @@ body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
 body.turquoise #clear-search-linkmodal,
 body.turquoise .treeview span:hover .z-action-link,
-body.turquoise .drop-zone {
+body.turquoise .drop-zone,
+body.turquoise .missing-chart {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -3462,7 +3467,8 @@ body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
 body.violet #clear-search-linkmodal,
 body.violet .treeview span:hover .z-action-link,
-body.violet .drop-zone {
+body.violet .drop-zone,
+body.violet .missing-chart {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -4000,7 +4006,8 @@ body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
 body.honey #clear-search-linkmodal,
 body.honey .treeview span:hover .z-action-link,
-body.honey .drop-zone {
+body.honey .drop-zone,
+body.honey .missing-chart {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -6966,6 +6973,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 60%;
 }
+.splash-view .missing-report:after,
 .splash-view .Report .large-icon:after {
   content: "j";
   font-weight: normal;
@@ -11522,6 +11530,24 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #MyMissionsForPortletView .mission-status {
   font-size: 11px;
+}
+/*Charts*/
+.missing-chart {
+  display: block;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  margin-top: -34px;
+  font-size: 12px;
+}
+.missing-chart:before {
+  content: "j";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
 }
 div.form fieldset {
   border: 1px solid #DDD;
