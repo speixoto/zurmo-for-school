@@ -64,11 +64,11 @@
          */
         protected function renderControlEditable()
         {
-            $valueTypeid                        = $this->getValueTypeEditableInputId();
+            $valueTypeId                        = $this->getValueTypeEditableInputId();
             $firstDateSpanAreaSuffix            = '-first-date-area';
             $secondDateSpanAreaSuffix           = '-second-date-area';
-            $firstDateSpanAreaId                = $valueTypeid . $firstDateSpanAreaSuffix;
-            $secondDateSpanAreaId               = $valueTypeid . $secondDateSpanAreaSuffix;
+            $firstDateSpanAreaId                = $valueTypeId . $firstDateSpanAreaSuffix;
+            $secondDateSpanAreaId               = $valueTypeId . $secondDateSpanAreaSuffix;
             $valueTypesRequiringFirstDateInput  = MixedDateTypesSearchFormAttributeMappingRules::
                                                   getValueTypesRequiringFirstDateInput();
             $valueTypesRequiringSecondDateInput = MixedDateTypesSearchFormAttributeMappingRules::
@@ -78,8 +78,8 @@
                     {
                         arr  = " . CJSON::encode($valueTypesRequiringFirstDateInput) . ";
                         arr2 = " . CJSON::encode($valueTypesRequiringSecondDateInput) . ";
-                        firstDateSpanAreaQualifier = '#'+event.target.id+'".$firstDateSpanAreaSuffix."';
-                        secondDateSpanAreaQualifier = '#'+event.target.id+'".$secondDateSpanAreaSuffix."';
+                        firstDateSpanAreaQualifier = '#' + event.target.id + '".$firstDateSpanAreaSuffix."';
+                        secondDateSpanAreaQualifier = '#' + event.target.id + '".$secondDateSpanAreaSuffix."';
                         if ($.inArray($(this).val(), arr) != -1)
                         {
                             $(firstDateSpanAreaQualifier).show();
