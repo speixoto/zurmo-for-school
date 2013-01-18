@@ -65,8 +65,10 @@
         protected function renderControlEditable()
         {
             $valueTypeid                        = $this->getValueTypeEditableInputId();
-            $firstDateSpanAreaId                = $valueTypeid . '-first-date-area';
-            $secondDateSpanAreaId               = $valueTypeid . '-second-date-area';
+            $firstDateSpanAreaSuffix            = '-first-date-area';
+            $secondDateSpanAreaSuffix           = '-second-date-area';
+            $firstDateSpanAreaId                = $valueTypeid . $firstDateSpanAreaSuffix;
+            $secondDateSpanAreaId               = $valueTypeid . $secondDateSpanAreaSuffix;
             $valueTypesRequiringFirstDateInput  = MixedDateTypesSearchFormAttributeMappingRules::
                                                   getValueTypesRequiringFirstDateInput();
             $valueTypesRequiringSecondDateInput = MixedDateTypesSearchFormAttributeMappingRules::
@@ -76,25 +78,27 @@
                     {
                         arr  = " . CJSON::encode($valueTypesRequiringFirstDateInput) . ";
                         arr2 = " . CJSON::encode($valueTypesRequiringSecondDateInput) . ";
+                        firstDateSpanAreaQualifier = '#'+event.target.id+'".$firstDateSpanAreaSuffix."';
+                        secondDateSpanAreaQualifier = '#'+event.target.id+'".$secondDateSpanAreaSuffix."';
                         if ($.inArray($(this).val(), arr) != -1)
                         {
-                            $('#" . $firstDateSpanAreaId. "').show();
-                            $('#" . $firstDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', false);
+                            $(firstDateSpanAreaQualifier).show();
+                            $(firstDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', false);
                         }
                         else
                         {
-                            $('#" . $firstDateSpanAreaId. "').hide();
-                            $('#" . $firstDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', true);
+                            $(firstDateSpanAreaQualifier).hide();
+                            $(firstDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', true);
                         }
                         if ($.inArray($(this).val(), arr2) != -1)
                         {
-                            $('#" . $secondDateSpanAreaId. "').show();
-                            $('#" . $secondDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', false);
+                            $(secondDateSpanAreaQualifier).show();
+                            $(secondDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', false);
                         }
                         else
                         {
-                            $('#" . $secondDateSpanAreaId. "').hide();
-                            $('#" . $secondDateSpanAreaId. "').find('.hasDatepicker').prop('disabled', true);
+                            $(secondDateSpanAreaQualifier).hide();
+                            $(secondDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', true);
                         }
                     }
                 );
