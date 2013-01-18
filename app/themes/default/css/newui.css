@@ -15869,6 +15869,7 @@ a.user-link {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .zero-components-view {
+  display: none;
   float: left;
   position: absolute;
   left: 30px;
