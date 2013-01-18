@@ -61,7 +61,7 @@
 
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<h2>Drag or double click your ordering columns here</h2><div class="large-icon"></div>');
+            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your ordering columns here</h2>');
         }
     }
 ?>
