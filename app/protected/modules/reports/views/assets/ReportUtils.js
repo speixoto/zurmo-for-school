@@ -6,8 +6,7 @@ $(window).ready(function(){
                 var width = $('.wrapper').width() * 0.75 - 55;
                 var clone = $('<div class="dynamic-attribute-row clone">' + label + '</div>');
                 //clone.width(width);
-                clone.animate({ width : width}, 500);
-
+                clone.animate({ width : width}, 250);
                 $('body').append(clone);
                 return clone;
             },
@@ -29,8 +28,7 @@ $(window).ready(function(){
         hoverClass: "ui-state-active",
         cursor: "pointer",
         drop: function( event, ui ) {
-                        console.log(event, ui);
-
+            console.log(event, ui);
             //todo: hide drop overlay
             isDragging = false;
             $('.dynamic-droppable-area').removeClass('activate-drop-zone');
