@@ -68,5 +68,18 @@
         {
             return $this->renderItems($rowCount, $this->model->displayAttributes);
         }
+
+        protected function getZeroComponentsContent()
+        {
+            $content = '<div class="DisplayAttributesIconOrSomethingElse">';
+            $content .= $this->getZeroComponentsMessageContent();
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function getZeroComponentsMessageContent()
+        {
+            return Yii::t('Default', '<h2>Drag or double click your display columns here</h2><div class="large-icon"></div>');
+        }
     }
 ?>

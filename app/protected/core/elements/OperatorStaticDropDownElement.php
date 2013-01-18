@@ -29,6 +29,20 @@
      */
     class OperatorStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        protected function getEditableHtmlOptions()
+        {
+            $htmlOptions = parent::getEditableHtmlOptions();
+            if(isset($htmlOptions['class']))
+            {
+                $htmlOptions['class'] .= ' operatorType';
+            }
+            else
+            {
+                $htmlOptions['class']  = 'operatorType';
+            }
+            return $htmlOptions;
+        }
+
         protected function renderControlEditable()
         {
             $content = parent::renderControlEditable();
@@ -44,7 +58,7 @@
         protected function renderChangeScript()
         {
             Yii::app()->clientScript->registerScript('operatorRules', "
-                $('#" . $this->getIdForSelectInput() . "').change( function()
+                $('.operatorType').change( function()
                     {
                         arr  = " . CJSON::encode($this->getValueTypesRequiringFirstDateInput()) . ";
                         arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondDateInput()) . ";

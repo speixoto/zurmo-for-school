@@ -64,5 +64,8 @@
             $this->assertCount(1, $filters);
             $this->assertEquals('changedValue', $filters[0]->value);
         }
+
+        //todo: test when isNull or isNotNull that the empty string gets converted properly to null. also check date
+        //since it uses value type, we might need to check valueType sometimes too and convert to null. not sure.
     }
 ?>

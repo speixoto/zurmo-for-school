@@ -27,14 +27,14 @@
     abstract class ReportDetailsAndResultsView extends DetailsAndRelationsView
     {
         /**
-         * @var object SavedReport
+         * @var object Report
          */
-        protected $savedReport;
+        protected $report;
 
-        public function __construct($controllerId, $moduleId, $params, SavedReport $savedReport)
+        public function __construct($controllerId, $moduleId, $params, Report $report)
         {
             parent::__construct($controllerId, $moduleId, $params);
-            $this->savedReport = $savedReport;
+            $this->report = $report;
         }
 
         public function isUniqueToAPage()
@@ -47,7 +47,7 @@
             $detailsViewClassName = $metadata['global']['leftTopView']['viewClassName'];
             return new $detailsViewClassName($this->params["controllerId"],
                                              $this->params["relationModuleId"],
-                                             $this->savedReport);
+                                             $this->report);
         }
 
         protected static function getModelRelationsSecuredPortletFrameViewClassName()
@@ -62,6 +62,7 @@
             $script = "$(document).ready(function () {
                            $('#ReportResultsGridForPortletView').find('.refreshPortletLink').click();
                            $('#ReportChartForPortletView').find('.refreshPortletLink').click();
+                           $('#ReportSQLForPortletView').find('.refreshPortletLink').click();
                        });";
             Yii::app()->clientScript->registerScript('loadReportResults', $script);
             // End Not Coding Standard

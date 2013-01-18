@@ -37,12 +37,17 @@
             {
                 return;
             }
-            $moduleClassName = $report->getModuleClassName();
             $filters         = $report->getFilters();
             foreach($stickyData[ComponentForReportForm::TYPE_FILTERS] as $filterKey => $filterData)
             {
                 if(isset($filters[$filterKey]))
                 {
+                    if($filterData['operator'] == OperatorRules::TYPE_IS_NULL ||
+                       $filterData['operator'] == OperatorRules::TYPE_IS_NOT_NULL)
+                    {
+                        $filterData['value']       = null;
+                        $filterData['secondValue'] = null;
+                    }
                     $filters[$filterKey]->setAttributes($filterData);
                 }
             }

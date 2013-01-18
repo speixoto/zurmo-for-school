@@ -29,12 +29,6 @@
      */
     class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
     {
-        public function getTitle()
-        {
-            $title  = Yii::t('Default', 'ReportResultsGridTitleNeeded');
-            return $title;
-        }
-
         public function renderContent()
         {
 

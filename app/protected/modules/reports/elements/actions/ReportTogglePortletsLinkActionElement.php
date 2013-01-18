@@ -36,8 +36,21 @@
 
         public function render()
         {
-            $content  = '<label class="hasCheckBox"><input type="checkbox">Show A</label>';
-            $content .= '<label class="hasCheckBox"><input type="checkbox">Show B</label>';
+            $content  = null;
+            if($this->hasRuntimeFilters())
+            {
+                $htmlOptions = array('onClick' => 'js:$(".RuntimeFiltersForPortletView").toggle();');
+                $content    .= ZurmoHtml::checkBox(null, true, $htmlOptions) . Yii::t('Default', 'Filters');
+            }
+            if($this->hasChart())
+            {
+                $htmlOptions = array('onClick' => 'js:$(".ReportChartForPortletView").toggle();');
+                $content    .= ZurmoHtml::checkBox(null, true, $htmlOptions) . Yii::t('Default', 'Chart');
+            }
+            $htmlOptions = array('onClick' => 'js:$(".ReportResultsGridForPortletView").toggle();');
+            $content    .= ZurmoHtml::checkBox(null, true, $htmlOptions) . Yii::t('Default', 'Grid');
+            $htmlOptions = array('onClick' => 'js:$(".ReportSQLForPortletView").toggle();');
+            $content    .= ZurmoHtml::checkBox(null, false, $htmlOptions) . Yii::t('Default', 'SQL');
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
 
@@ -49,6 +62,24 @@
         protected function getDefaultRoute()
         {
             return null;
+        }
+
+        protected function hasRuntimeFilters()
+        {
+            if (!isset($this->params['hasRuntimeFilters']))
+            {
+                return false;
+            }
+            return $this->params['hasRuntimeFilters'];
+        }
+
+        protected function hasChart()
+        {
+            if (!isset($this->params['hasChart']))
+            {
+                return false;
+            }
+            return $this->params['hasChart'];
         }
     }
 ?>

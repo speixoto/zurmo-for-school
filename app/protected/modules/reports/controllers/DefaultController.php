@@ -328,7 +328,8 @@
             $sanitizedFiltersData = DataToReportUtil::sanitizeFiltersData($report->getModuleClassName(),
                                                                           $report->getType(),
                                                                           $filtersData);
-            StickyReportUtil::setDataByKeyAndData($report->getId(), $sanitizedFiltersData);
+            $stickyData           = array(ComponentForReportForm::TYPE_FILTERS => $sanitizedFiltersData);
+            StickyReportUtil::setDataByKeyAndData($report->getId(), $stickyData);
         }
 
         public function actionResetRuntimeFilters($id)

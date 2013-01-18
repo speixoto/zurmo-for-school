@@ -24,36 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportDetailsAndResultsView extends ReportDetailsAndResultsView
+    /**
+     * Base class used for wrapping a view of the report SQL queries
+     */
+    class ReportSQLForPortletView extends ReportResultsComponentForPortletView
     {
-        public static function getDefaultMetadata()
+        public function renderContent()
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'ReportDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'RuntimeFiltersForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'ReportResultsGridForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'ReportSQLForPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
+            $content  = $this->renderRefreshLink();
+            $content .= $this->makeSQLViewAndRender();
+            return $content;
+        }
+
+        protected function makeSQLViewAndRender()
+        {
+            $dataProvider = null;
+            if(isset($this->params['dataProvider']))
+            {
+                $dataProvider = $this->params['dataProvider'];
+
+                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
+                {
+                    $view      = new ReportResultsSQLView($dataProvider);
+                }
+                else
+                {
+                    $view      = new UserCannotRenderReportProperlySplashView();
+                }
+                return $view->render();
+            }
         }
     }
 ?>

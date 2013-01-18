@@ -47,6 +47,9 @@
                                     array(
                                         'type' => 'ReportResultsGridForPortlet'
                                     ),
+                                    array(
+                                        'type' => 'ReportSQLForPortlet'
+                                    ),
                                 )
                             )
                         )

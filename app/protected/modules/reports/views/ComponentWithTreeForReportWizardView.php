@@ -28,6 +28,8 @@
     {
         abstract protected function getItems(& $rowCount);
 
+        abstract protected function getZeroComponentsContent();
+
         public static function getTreeType()
         {
             throw new NotImplementedException();
@@ -67,6 +69,8 @@
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
                                                                            static::getTreeType()), $droppableAttributesContent . $dropZone);
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
+                                           static::getTreeType()), $this->getZeroComponentsContent());
             return $content;
         }
 

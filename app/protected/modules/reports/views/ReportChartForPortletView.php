@@ -29,12 +29,6 @@
      */
     class ReportChartForPortletView extends ReportResultsComponentForPortletView
     {
-        public function getTitle()
-        {
-            $title  = Yii::t('Default', 'ReportChartTitleNeeded');
-            return $title;
-        }
-
         public function renderContent()
         {
             $content  = $this->renderRefreshLink();

@@ -127,7 +127,13 @@
                 }
                 else
                 {
-                    $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area">{content}{error}</div></div>';
+                    $startingDivStyleFirstValue     = null;
+                    if (in_array($this->model->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
+                    {
+                        $startingDivStyleFirstValue = "display:none;";
+                    }
+                    $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area" style="' .
+                                                      $startingDivStyleFirstValue . '">{content}{error}</div></div>';
                 }
                 $valueContent                   = $valueElement->render();
             }

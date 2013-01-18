@@ -24,36 +24,23 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MatrixReportDetailsAndResultsView extends ReportDetailsAndResultsView
+    class ReportResultsSQLView extends View
     {
-        public static function getDefaultMetadata()
+        public function __construct($dataProvider)
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'ReportDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'RuntimeFiltersForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'ReportResultsGridForPortlet'
-                                    ),
-                                    array(
-                                        'type' => 'ReportSQLForPortlet'
-                                    ),
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
+            assert('$dataProvider instanceof ReportDataProvider');
+            $this->dataProvider = $dataProvider;
+        }
+
+        protected function renderContent()
+        {
+            $sqlContent  = Yii::t('Default', 'Count Query');
+            $sqlContent .= $this->dataProvider->makeTotalCountSqlQueryForDisplay();
+            $content     = ZurmoHtml::tag('div', array(), $sqlContent);
+            $sqlContent  = Yii::t('Default', 'Grid Query');
+            $sqlContent .= $this->dataProvider->makeSqlQueryForDisplay();
+            $content    .= ZurmoHtml::tag('div', array(), $sqlContent);
+            return $content;
         }
     }
 ?>

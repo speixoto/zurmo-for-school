@@ -60,7 +60,7 @@
             {
                 throw new NotImplementedException();
             }
-            return ZurmoHtml::tag('span', array(), Yii::t('Default', 'Please select the module you would like to use:'));
+            return null;
         }
 
         public function getEditableHtmlOptions()

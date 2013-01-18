@@ -82,7 +82,32 @@
             return $count;
         }
 
+        public function makeTotalCountSqlQueryForDisplay()
+        {
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            return $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
+        }
+
+        public function makeSqlQueryForDisplay()
+        {
+            $offset                 = $this->resolveOffset();
+            $limit                  = $this->resolveLimit();
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            return $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
+        }
+
         protected function fetchData()
+        {
+            $offset = $this->resolveOffset();
+            $limit  = $this->resolveLimit();
+            if ($this->getTotalItemCount() == 0)
+            {
+                return array();
+            }
+            return $this->runQueryAndGetResolveResultsData($offset, $limit);
+        }
+
+        protected function resolveOffset()
         {
             $pagination = $this->getPagination();
             if (isset($pagination))
@@ -90,22 +115,32 @@
                 $totalItemCount = $this->getTotalItemCount();
                 $pagination->setItemCount($totalItemCount);
                 $offset = $pagination->getOffset();
-                $limit  = $pagination->getLimit();
             }
             else
             {
                 $offset = null;
-                $limit  = null;
             }
             if ($this->offset != null)
             {
                 $offset = $this->offset;
             }
-            if ($totalItemCount == 0)
+            return $offset;
+        }
+
+        protected function resolveLimit()
+        {
+            $pagination = $this->getPagination();
+            if (isset($pagination))
             {
-                return array();
+                $totalItemCount = $this->getTotalItemCount();
+                $pagination->setItemCount($totalItemCount);
+                $limit  = $pagination->getLimit();
             }
-            return $this->runQueryAndGetResolveResultsData($offset, $limit);
+            else
+            {
+                $limit  = null;
+            }
+            return $limit;
         }
 
         protected function runQueryAndGetResolveResultsData($offset, $limit)

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class Report
+    class Report extends CComponent
     {
         const TYPE_ROWS_AND_COLUMNS           = 'RowsAndColumns';
 
@@ -124,6 +124,15 @@
                 }
             }
             return $moduleClassNames;
+        }
+
+        public function __toString()
+        {
+            if (trim($this->name) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->name;
         }
 
         public function canCurrentUserProperlyRenderResults()
@@ -357,6 +366,15 @@
             $this->chart = $chart;
         }
 
+        public function hasChart()
+        {
+            if($this->getChart()->type == null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         public function getExplicitReadWriteModelPermissions()
         {
             if($this->explicitReadWriteModelPermissions == null)
@@ -371,7 +389,7 @@
             $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
 
-        public function areRuntimeFiltersPresent()
+        public function hasRuntimeFilters()
         {
             foreach($this->getFilters() as $filter)
             {

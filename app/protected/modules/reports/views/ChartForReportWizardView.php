@@ -51,6 +51,10 @@
             parent::registerScripts();
             $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
             $script = '
+                if($(".chart-selector:checked").val() != "")
+                {
+                    $("#series-and-range-areas").detach().insertAfter( $(".chart-selector:checked").parent()).removeClass("hidden-element");
+                }
                 $(".chart-selector").live("change", function()
                     {
                         $("#series-and-range-areas").detach().insertAfter( $(this).parent()  ).removeClass("hidden-element");

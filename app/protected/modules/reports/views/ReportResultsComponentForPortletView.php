@@ -61,6 +61,11 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        public function getTitle()
+        {
+            return null;
+        }
+
         protected function resolveAndGetPaginationRoute()
         {
             return 'defaultPortlet/myListDetails';

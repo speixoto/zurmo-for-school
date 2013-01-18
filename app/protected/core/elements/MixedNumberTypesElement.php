@@ -43,7 +43,6 @@
             {
                 $startingDivStyleFirstValue = "display:none;";
             }
-
             if ($this->getOperator() != OperatorRules::TYPE_BETWEEN)
             {
                 $startingDivStyleSecondValue = "display:none;";

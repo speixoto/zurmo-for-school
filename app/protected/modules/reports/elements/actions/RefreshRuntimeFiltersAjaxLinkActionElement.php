@@ -69,6 +69,8 @@
                     'success'    => 'js:function(){
                                         $("#RuntimeFiltersForPortletView").find(".refreshPortletLink").click();
                                         $("#ReportResultsGridForPortletView").find(".refreshPortletLink").click();
+                                        $("#ReportChartForPortletView").find(".refreshPortletLink").click();
+                                        $("#ReportSQLForPortletView").find(".refreshPortletLink").click();
                                     }');
             //beforeSend attach loading...
             //success

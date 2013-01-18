@@ -42,7 +42,7 @@
                 foreach ($positionInfo as $position => $portlet)
                 {
                     if($portlet->viewType == 'RuntimeFiltersForPortlet' &&
-                       !$this->params["relationModel"]->areRuntimeFiltersPresent())
+                       !$this->params["relationModel"]->hasRuntimeFilters())
                     {
                         //ignore portlet, since there are no runtime filters
                     }

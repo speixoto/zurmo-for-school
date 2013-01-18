@@ -26,23 +26,19 @@
 
     class ReportDetailsView extends DetailsView
     {
+        public static function assertModelIsValid($model)
+        {
+            assert('$model instanceof Report');
+        }
+
         protected function renderContent()
         {
-            $content = $this->renderTitleContent(); //todo: retool what title shows
-            /**
-            $actionElementContent = $this->renderActionElementMenu();
-            if ($actionElementContent != null)
-            {
-                $content .= '<div class="view-toolbar-container toolbar-mbmenu clearfix"><div class="view-toolbar">';
-                $content .= $actionElementContent;
-                $content .= '</div></div>';
-            }
-**/
+            $content = $this->renderTitleContent();
 //todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
             $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
             $content .= $this->renderActionElementBar(false);
             $content .= '</div></div>';
-
+            $this->registerScripts();
             return $content;
         }
 
@@ -59,9 +55,10 @@
                             array('type'  => 'ReportExportLink',
                                 'htmlOptions' => array('class' => 'icon-export')),
                             array('type'  => 'ReportTogglePortletsLink',
-                                'htmlOptions' => array('class' => 'icon-delete hasCheckboxes')),
-                            //todo: add for the 4 checkbox div, need some resolution to know what to show
-                            //also: see that all UL's are created with same ID - this is not valid html
+                                'htmlOptions' => array('class' => 'icon-delete hasCheckboxes'),
+                                'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
+                                'hasChart'          => 'eval:$this->model->hasChart()'),
+                            //todo: also: see that all UL's are created with same ID - this is not valid html
                         ),
                     ),
                 ),
@@ -84,6 +81,12 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        public function registerScripts()
+        {
+            $script = '$(".ReportSQLForPortletView").hide();';
+            Yii::app()->getClientScript()->registerScript('ReportPortletsDefaultHideScript', $script);
         }
     }
 ?>

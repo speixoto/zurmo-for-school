@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    abstract class ComponentForReportWizardView extends View
+    abstract class ComponentForReportWizardView extends MetadataView
     {
         protected $model;
 
@@ -61,12 +61,10 @@
         {
             $content              = $this->renderTitleContent();
             $content             .= $this->renderFormContent();
-            $actionToolBarContent = $this->renderActionElementBar();
-            if ($actionToolBarContent != null)
+            $actionElementContent = $this->renderActionElementBar(true);
+            if ($actionElementContent != null)
             {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-                $content .= $actionToolBarContent;
-                $content .= '</div></div>';
+                $content .= $this->resolveAndWrapDockableViewToolbarContent($actionElementContent);
             }
             $this->registerScripts();
             return $content;
@@ -79,7 +77,7 @@
         {
         }
 
-        protected function renderActionElementBar()
+        protected function renderActionElementBar($renderedInForm)
         {
             return $this->renderActionLinksContent();
         }

@@ -55,5 +55,18 @@
         {
             return $this->renderItems($rowCount, $this->model->drillDownDisplayAttributes);
         }
+
+        protected function getZeroComponentsContent()
+        {
+            $content = '<div class="DrillDownDisplayAttributesIconOrSomethingElse">';
+            $content .= $this->getZeroComponentsMessageContent();
+            $content .= '</div>';
+            return $content;
+        }
+
+        protected function getZeroComponentsMessageContent()
+        {
+            return Yii::t('Default', '<h2>Drag or double click your drill down display columns here</h2><div class="large-icon"></div>');
+        }
     }
 ?>

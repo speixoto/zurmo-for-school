@@ -29,12 +29,6 @@
      */
     class RuntimeFiltersForPortletView extends ReportResultsComponentForPortletView
     {
-        public function getTitle()
-        {
-            $title  = Yii::t('Default', 'RunTimeFiltersTitleNeeded');
-            return $title;
-        }
-
         public function renderContent()
         {
             return $this->renderForm();
@@ -139,6 +133,7 @@
                         $('#apply-runtime-filters').removeClass('loading-ajax-submit');
                         $('#ReportResultsGridForPortletView').find('.refreshPortletLink').click();
                         $('#ReportChartForPortletView').find('.refreshPortletLink').click();
+                        $('#ReportSQLForPortletView').find('.refreshPortletLink').click();
                        ";
         }
 
