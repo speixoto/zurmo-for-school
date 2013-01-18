@@ -150,16 +150,18 @@ $(window).ready(function(){
 /*
  * this function takes care of the save/cancel buttons' position in long forms, ie. edit account.
  */
+var windowTop, diff;
 
 function dockFloatingBar(){
     if ($('.float-bar').find('.disable-float-bar').length == 0) {
-        var windowTop, diff;
         windowTop = $(window).scrollTop();
-        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
         if( windowTop > diff ) {
             $('.float-bar .view-toolbar-container').addClass('dock');
         } else {
-            $('.float-bar .view-toolbar-container').removeClass('dock');
+            if( $('.wrapper').height() > $('.AppNavigation').height() ) {
+                $('.float-bar .view-toolbar-container').removeClass('dock');
+            }
         }
     }
 }
