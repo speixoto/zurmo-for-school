@@ -57,9 +57,7 @@ $(window).ready(function(){
             appChromeHeight = 40 + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                //$('#LoginView').height(  bufferHeight   );
-                $('#LoginView').css('min-height', bufferHeight);
-
+                $('#LoginView').height(  bufferHeight   );
             }
            //if admin area
         } else if ( $('.AdministrativeArea').length > 0 ) {
