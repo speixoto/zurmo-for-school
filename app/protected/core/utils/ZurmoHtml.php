@@ -598,9 +598,7 @@ EOD;
          */
         public static function wrapLink($label)
         {
-            return static::span('z-spinner').
-                    static::span('z-icon').
-                    static::wrapLabel($label);
+            return static::span('z-spinner') . static::span('z-icon') . static::wrapLabel($label);
         }
 
         /**
