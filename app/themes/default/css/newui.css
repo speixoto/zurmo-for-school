@@ -5780,11 +5780,11 @@ body > .ui-autocomplete {
 .float-bar .view-toolbar-container {
   z-index: 222222;
   position: fixed !important;
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
   background-color: #ffffff ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), color-stop(80%, #f5f5f5), to(#ffffff)) ;
@@ -6872,6 +6872,7 @@ div.wide.form label.hasCheckBox {
 #NoUserEmailConfigurationYetView,
 #NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView*/
+.zero-components-view h2,
 .splash-view h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
@@ -6880,6 +6881,7 @@ div.wide.form label.hasCheckBox {
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
+.zero-components-view i,
 .splash-view i {
   font-size: 13px;
   color: #555;
@@ -6887,6 +6889,7 @@ div.wide.form label.hasCheckBox {
   display: block;
   margin-left: 30px;
 }
+.zero-components-view p,
 .splash-view p {
   font-size: 16px;
   line-height: 24px;
@@ -6896,6 +6899,7 @@ div.wide.form label.hasCheckBox {
   width: 70%;
   margin: 45px 0 0 30px;
 }
+.zero-components-view a,
 .splash-view a {
   margin-left: 30px;
   margin-top: 30px;
@@ -6910,6 +6914,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
   cursor: pointer;
 }
+.zero-components-view a span:before,
 .splash-view a span:before {
   content: "Y";
   font-weight: normal;
@@ -6920,6 +6925,7 @@ div.wide.form label.hasCheckBox {
   left: -5px;
   margin-right: 3px;
 }
+.zero-components-view .large-icon,
 .splash-view .large-icon {
   width: 25%;
   text-align: center;
@@ -6927,6 +6933,7 @@ div.wide.form label.hasCheckBox {
   border-right: 1px solid #ccc;
   float: left;
 }
+.zero-components-view .Contact .large-icon:after,
 .splash-view .Contact .large-icon:after {
   content: "y";
   font-weight: normal;
@@ -6934,6 +6941,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 50%;
 }
+.zero-components-view .Account .large-icon:after,
 .splash-view .Account .large-icon:after {
   content: "P";
   font-weight: normal;
@@ -6941,6 +6949,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+.zero-components-view .Lead .large-icon:after,
 .splash-view .Lead .large-icon:after {
   content: ".";
   font-weight: normal;
@@ -6948,6 +6957,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+.zero-components-view .Opportunity .large-icon:after,
 .splash-view .Opportunity .large-icon:after {
   content: "9";
   font-weight: normal;
@@ -6955,6 +6965,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+.zero-components-view .Conversation .large-icon:after,
 .splash-view .Conversation .large-icon:after {
   content: "b";
   font-weight: normal;
@@ -6962,6 +6973,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 90%;
 }
+.zero-components-view .Mission .large-icon:after,
 .splash-view .Mission .large-icon:after {
   content: "Q";
   font-weight: normal;
@@ -6969,6 +6981,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+.zero-components-view .EmailMessage .large-icon:after,
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
   font-weight: normal;
@@ -6976,7 +6989,9 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 60%;
 }
+.zero-components-view .missing-report:after,
 .splash-view .missing-report:after,
+.zero-components-view .Report .large-icon:after,
 .splash-view .Report .large-icon:after {
   content: "j";
   font-weight: normal;
@@ -15829,6 +15844,24 @@ a.user-link {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.zero-components-view {
+  float: left;
+  position: absolute;
+  left: 30px;
+  top: 75px;
+  width: 100%;
+}
+.zero-components-view .large-icon {
+  border-right: none;
+  margin-right: 30px;
+}
+.zero-components-view .large-icon:after {
+  content: "D";
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
 }
 @media screen and (min-width: 1600px) {
   .AppContainer {
