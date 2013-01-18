@@ -86,14 +86,14 @@
                     $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $authenticationHelper->ldapBindPassword         = $configurationForm->bindPassword;
                     $authenticationHelper->ldapBaseDomain           = $configurationForm->baseDomain;
-                    $authenticationHelper->enabled                  = $configurationForm->enabled;
+                    $authenticationHelper->ldapEnabled              = $configurationForm->enabled;
                     
                     $host                      = $configurationForm->host;             
                     $port                      = $configurationForm->port;                
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;         
                     $baseDomain                = $configurationForm->baseDomain;           
-                    $testConnectionResults     = LDAPTestConnectionHelper::testConnectionLDAP($authenticationHelper,$host,$port,
+                    $testConnectionResults     = LDAPUtil::testConnection($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
                     
 					if($testConnectionResults)

@@ -766,71 +766,7 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
-        }		
-        
-        /**
-        *user exists in zurmo but not on ldap
-        */
-        public function testUserExitsInZurmoButNotOnldap()
-        {            
-            //Now attempt to login as bill a user in zurmo but not on ldap
-            $bill       = User::getByUsername('abcdefg');
-            $this->assertEquals(md5('abcdefgN4'), $bill->hash);
-            $bill->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
-            $this->assertTrue($bill->save());
-            //for normal user
-            $identity = new UserIdentity('abcdefg', 'abcdefgN4');
-            $authenticated = $identity->authenticate();
-            $this->assertEquals(0, $identity->errorCode);
-            $this->assertTrue($authenticated);
-            $bill->forget();            
-        }
-        
-        /**
-        *one where it exists in both, but the pass is wrong for ldap, but ok for zurmo pass.
-        */
-        public function testUserExitsInBothButWrongPasswordForldap()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');
-            //creating user same as on ldap with different password
-            $admin = new User();
-            $admin->username           = 'admin';
-            $admin->title->value       = 'Mr.';
-            $admin->firstName          = 'admin';
-            $admin->lastName           = 'admin';
-            $admin->setPassword('test123');
-            $this->assertTrue($admin->save());
-            $admin->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
-            $this->assertTrue($admin->save());        
-            $identity = new UserLDAPIdentity('admin','test123');                        
-            $authenticated = $identity->authenticate(true);
-            $this->assertEquals(0, $identity->errorCode);
-            $this->assertTrue($authenticated);     
-        }
-        
-        /**
-        *one for when the user exists in ldap but not zurmo
-        */
-        public function testUserExitsInldapNotInZurmo()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity = new UserLDAPIdentity('john','johnldap');                        
-            $authenticated = $identity->authenticate(true);
-            $this->assertEquals(1, $identity->errorCode);
-            $this->assertFalse($authenticated);     
-        }                
-        
-        /**
-        *one for when the user exists in ldap and zurmo
-        */
-        public function testUserExitsInldapAndZurmo()
-        {
-            Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity = new UserLDAPIdentity('admin','ldap123');                        
-            $authenticated = $identity->authenticate(true);
-            $this->assertEquals(0, $identity->errorCode);
-            $this->assertTrue($authenticated);     
-        }           
+        }		        
 
         /**
          * @depends testPasswordUserNamePolicyChangesValidationAndLogin

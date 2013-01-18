@@ -25,21 +25,10 @@
      ********************************************************************************/
 
     /**
-     * View used to render message content as a result of test connection for ldap server.  This is rendered in a modal window.
+     * Override class is used specifically by the
+     * testing framework to handle testing of ldap server configuration.
      */
-    class TestLDAPConnectionView extends View
+    class ZurmoAuthenticationHelperForTesting extends ZurmoAuthenticationHelper
     {
-        protected $message;
-
-        public function __construct($message)
-        {
-            assert('is_string($message)');
-            $this->message = $message;
-        }
-
-        protected function renderContent()
-        {
-            return nl2br($this->message);
-        }
+         
     }
-?>

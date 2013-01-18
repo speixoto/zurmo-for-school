@@ -41,7 +41,7 @@
             $form->bindRegisteredDomain              = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;            
             $form->bindPassword                      = Yii::app()->authenticationHelper->ldapBindPassword;
             $form->baseDomain                        = Yii::app()->authenticationHelper->ldapBaseDomain;
-            $form->enabled                           = Yii::app()->authenticationHelper->enabled;			
+            $form->enabled                           = Yii::app()->authenticationHelper->ldapEnabled;			
             return $form;
         }
 
@@ -55,8 +55,8 @@
             Yii::app()->authenticationHelper->ldapBindRegisteredDomain = $form->bindRegisteredDomain;
             Yii::app()->authenticationHelper->ldapBindPassword         = $form->bindPassword;
             Yii::app()->authenticationHelper->ldapBaseDomain           = $form->baseDomain;
-            Yii::app()->authenticationHelper->enabled                  = $form->enabled;
-            Yii::app()->authenticationHelper->setldapSettings();
+            Yii::app()->authenticationHelper->ldapEnabled                  = $form->enabled;
+            Yii::app()->authenticationHelper->setLDAPSettings();
        }
     }
 ?>

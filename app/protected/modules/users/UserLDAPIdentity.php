@@ -36,42 +36,30 @@
          * Authenticates a user against ldap server.
          * @return boolean whether authentication succeeds.
          */
-        public function authenticate($ldapTestSettings=false)
+        public function authenticate()
         {
             try
-            {
-                if(!$ldapTestSettings)
-                {
-                    $ldapConfigurationValues = Yii::app()->authenticationHelper->getldapSettingsValues();                		
-                }
-                else
-                {				 
-                    $ldapConfigurationValues = Yii::app()->params['authenticationTestSettings']['ldapSettings'];				 				 
-                }				
-                $authenticationHelper = new ZurmoAuthenticationHelper();
-                $host                 = $ldapConfigurationValues['ldapHost'];
-                $port                 = $ldapConfigurationValues['ldapPort'];
-                $bindRegisteredDomain = $ldapConfigurationValues['ldapBindRegisteredDomain'];
-                $bindPassword         = $ldapConfigurationValues['ldapBindPassword'];
-                $baseDomain           = $ldapConfigurationValues['ldapBaseDomain'];
-                $ldapTestConnection   = LDAPTestConnectionHelper::testConnectionldap($authenticationHelper,$host,$port,
-                                                                      $bindRegisteredDomain,$bindPassword,$baseDomain);  			
-                if($ldapTestConnection)
-                {
-                    $ldap_conn = ldap_connect($host,$port);
-                    ldap_set_option($ldap_conn, LDAP_OPT_PROTOCOL_VERSION, 3);
-                    ldap_set_option($ldap_conn, LDAP_OPT_REFERRALS, 0);
-                    $ldap_basedn = $baseDomain;	
-                    $ldap_filter = '(|(cn='.$this->username.')(&(uid='.$this->username.')))'; 
-                    $ldap_results = ldap_search($ldap_conn, $ldap_basedn,$ldap_filter); 					
-                    $ldap_results_count        = ldap_count_entries($ldap_conn,$ldap_results);  
-                    if ($ldap_results_count > 0)
+            {                
+                $host                      = Yii::app()->authenticationHelper->ldapHost;
+                $port                      = Yii::app()->authenticationHelper->ldapPort;
+                $baseDomain                = Yii::app()->authenticationHelper->ldapBaseDomain;
+                $bindPassword              = Yii::app()->authenticationHelper->ldapBindPassword;
+                $bindRegisteredDomain      = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
+			    $zurmoAuthenticationHelper = new ZurmoAuthenticationHelper();
+                $ldapConnection            = LDAPUtil::testConnection($zurmoAuthenticationHelper,$host,$port,
+                                                                      $bindRegisteredDomain,$bindPassword,$baseDomain);                            
+                if($ldapConnection)
+                {                    	
+                    $ldapFilter              = '(|(cn='.$this->username.')(&(uid='.$this->username.')))'; 
+                    $ldapResults             = ldap_search($ldapConnection, $baseDomain,$ldapFilter); 					
+                    $ldapResultsCount        = ldap_count_entries($ldapConnection,$ldapResults);  
+                    if ($ldapResultsCount > 0)
                     {				 
-                        $result = @ldap_get_entries($ldap_conn, $ldap_results);                                                          					
+                        $result = @ldap_get_entries($ldapConnection, $ldapResults);                                                          					
                         $zurmoLogin = parent::authenticate();                                           
                         if(!$zurmoLogin)
                         {
-                           if ($result[0] && @ldap_bind($ldap_conn, $result[0]['dn'], $this->password))
+                           if ($result[0] && @ldap_bind($ldapConnection, $result[0]['dn'], $this->password))
                             {                                
                               if($this->errorCode!=1)
                               {
