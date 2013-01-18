@@ -82,7 +82,6 @@
                         secondDateSpanAreaQualifier = '#' + $(this).attr('id') + '".$secondDateSpanAreaSuffix."';
                         if ($.inArray($(this).val(), arr) != -1)
                         {
-                        console.log(firstDateSpanAreaQualifier);
                             $(firstDateSpanAreaQualifier).show();
                             $(firstDateSpanAreaQualifier).find('.hasDatepicker').prop('disabled', false);
                         }
