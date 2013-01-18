@@ -32,22 +32,6 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-         public function __toString()
-        {
-            try
-            {
-                if (trim($this->name) == '')
-                {
-                    return Yii::t('Default', '(Unnamed)');
-                }
-                return $this->name;
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                return '';
-            }
-        }
-
         public static function getModuleClassName()
         {
             return 'MarketingListsModule';
@@ -81,7 +65,7 @@
                     'unsubscribed',
                 ),
                 'relations' => array(
-                    'contact',
+                    'contact'   => array(RedBeanModel::HAS_ONE,              'Contact'),
                 ),
                 'rules' => array(
                     array('createdDateTime',       'required'),
@@ -89,6 +73,10 @@
                     array('modifiedDateTime',      'type', 'type' => 'datetime'),
                     array('unsubscribed',          'boolean'),
                 ),
+                'elements' => array(
+                    'createdDateTime'  => 'DateTime',
+                    'modifiedDateTime' => 'DateTime',
+                    'unsubscribed'     => 'CheckBox',
             );
             return $metadata;
         }

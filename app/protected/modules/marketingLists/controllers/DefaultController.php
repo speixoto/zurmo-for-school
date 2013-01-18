@@ -63,7 +63,7 @@
         }
 
         public function actionCreate()
-        { 
+        {
             $editView = MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
                                                  Yii::t('Default', 'Create Marketing List')); 

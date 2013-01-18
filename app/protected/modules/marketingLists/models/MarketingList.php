@@ -45,6 +45,15 @@
             return 'MarketingListsModuleSingularLabel';
         }
 
+        public function __toString()
+        {
+            if (trim($this->name) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->name;
+        }
+
         /**
          * Returns the display name for plural of the model class.
          * @return dynamic label name based on module.
@@ -53,7 +62,6 @@
         {
             return 'MarketingListsModulePluralLabel';
         }
-
 
         public static function getDefaultMetadata()
         {
@@ -71,6 +79,9 @@
                     array('name',          'type',    'type' => 'string'),
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                     array('description',   'type',    'type' => 'string'),
+                ),
+                'elements' => array(
+                    'description'                  => 'TextArea',
                 ),
             );
             return $metadata;
