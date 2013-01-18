@@ -119,8 +119,9 @@
                 $memcacheServiceHelper = new MemcacheServiceHelper();
                 if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
                 {
-                    $cacheComponent = Yii::createComponent('CMemCache',
-                        array('servers' => Yii::app()->params['memcacheServers']));
+                    $cacheComponent = Yii::createComponent(array(
+                        'class' => 'CMemCache',
+                        'servers' => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
                 }
             }
