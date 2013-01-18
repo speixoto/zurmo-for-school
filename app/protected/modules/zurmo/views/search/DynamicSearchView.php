@@ -223,9 +223,7 @@
             $content              = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
             $addFieldLabelContent = $this->getAddFieldLabelContent();
-            $aContent             = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent            .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent            .= ZurmoHtml::wrapLabel($addFieldLabelContent);
+            $aContent             = ZurmoHtml::wrapLink($addFieldLabelContent);
             $content             .= ZurmoHtml::ajaxLink($aContent, $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'rowNumber=\' + $(\'#rowCounter-' . $this->getSearchFormId(). '\').val()',
