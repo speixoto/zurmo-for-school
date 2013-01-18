@@ -62,21 +62,20 @@
             //checking user type
             $username = 'cn='.$username.','.$baseDomain; //for admin access
             //$username = 'uid='.$user.','.'ou=People'.','.$baseDomain; //for user access
-			if ($ldapConnection) {
-            
-				// bind with appropriate dn to give update access
-				if (@ldap_bind($ldapConnection, $username, $password))  
-				{
-					return true;
-				} 
-				else 
-				{ 
-					return false;
-				}                			   
-			}
-			else 
-			{ 
-				echo "Unable to connect to LDAP server"; 
-	        }					
+            if ($ldapConnection) {
+                // bind with appropriate dn to give update access
+                if (@ldap_bind($ldapConnection, $username, $password))  
+                {
+                    return true;
+                } 
+                else 
+                { 
+                    return false;
+                }                			   
+            }
+            else 
+            { 
+                echo "Unable to connect to LDAP server"; 
+            }					
         }
     }
