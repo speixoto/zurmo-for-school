@@ -60,7 +60,7 @@
                         }
                         else
                         {
-                            alert('" . Yii::t('Default', 'You have already enable desktop notifications.') . "');
+                            alert('" . Yii::t('Default', 'You have already enabled desktop notifications.') . "');
                         }
                     }
                     else

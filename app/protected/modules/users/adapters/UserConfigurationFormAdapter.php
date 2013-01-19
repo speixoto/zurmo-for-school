@@ -36,13 +36,14 @@
         public static function makeFormFromUserConfigurationByUser(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            $form                            = new UserConfigurationForm($user->id);
-            $form->listPageSize              = Yii::app()->pagination->getByUserAndType($user, 'listPageSize');
-            $form->subListPageSize           = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
-            $form->themeColor                = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
-            $form->backgroundTexture         = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
-            $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue($user);
-            $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue($user);
+            $form                             = new UserConfigurationForm($user->id);
+            $form->listPageSize               = Yii::app()->pagination->getByUserAndType($user, 'listPageSize');
+            $form->subListPageSize            = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
+            $form->themeColor                 = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
+            $form->backgroundTexture          = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
+            $form->hideWelcomeView            = static::resolveAndGetValue($user, 'hideWelcomeView');
+            $form->turnOffEmailNotifications  = static::resolveAndGetValue($user, 'turnOffEmailNotifications');
+            $form->enableDesktopNotifications = static::resolveAndGetValue($user, 'enableDesktopNotifications');
             return $form;
         }
 
@@ -56,8 +57,9 @@
             Yii::app()->pagination    ->setByUserAndType        ($user, 'subListPageSize', (int)$form->subListPageSize);
             Yii::app()->themeManager->setThemeColorValue        ($user, $form->themeColor);
             Yii::app()->themeManager->setBackgroundTextureValue ($user, $form->backgroundTexture);
-            static::setHideWelcomeViewValue                     ($user, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue           ($user, (bool)$form->turnOffEmailNotifications);
+            static::setValue                                    ($user, (bool)$form->hideWelcomeView, 'hideWelcomeView');
+            static::setValue                                    ($user, (bool)$form->turnOffEmailNotifications, 'turnOffEmailNotifications');
+            static::setValue                                    ($user, (bool)$form->enableDesktopNotifications, 'enableDesktopNotifications');
         }
 
         /**
@@ -70,16 +72,18 @@
             Yii::app()->pagination    ->setForCurrentUserByType ('subListPageSize',  (int)$form->subListPageSize);
             Yii::app()->themeManager->setThemeColorValue        (Yii::app()->user->userModel,       $form->themeColor);
             Yii::app()->themeManager->setBackgroundTextureValue (Yii::app()->user->userModel,       $form->backgroundTexture);
-            static::setHideWelcomeViewValue                     (Yii::app()->user->userModel, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue           (Yii::app()->user->userModel, (bool)$form->turnOffEmailNotifications);
+            static::setValue                                    (Yii::app()->user->userModel, (bool)$form->hideWelcomeView, 'hideWelcomeView');
+            static::setValue                                    (Yii::app()->user->userModel, (bool)$form->turnOffEmailNotifications, 'turnOffEmailNotifications');
+            static::setValue                                    (Yii::app()->user->userModel, (bool)$form->enableDesktopNotifications, 'enableDesktopNotifications');
         }
 
-        public static function resolveAndGetHideWelcomeViewValue(User $user)
+        public static function resolveAndGetValue(User $user, $key)
         {
             assert('$user instanceOf User && $user->id > 0');
-            if ( null != $hide = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView'))
+            assert('is_string($key)');
+            if ( null != $value = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', $key))
             {
-                return $hide;
+                return $value;
             }
             else
             {
@@ -87,29 +91,11 @@
             }
         }
 
-        public static function setHideWelcomeViewValue(User $user, $value)
+        public static function setValue(User $user, $value, $key)
         {
             assert('is_bool($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView', $value);
-        }
-
-        public static function resolveAndGetTurnOffEmailNotificationsValue(User $user)
-        {
-            assert('$user instanceOf User && $user->id > 0');
-            if ( null != $turnOff = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications'))
-            {
-                return $turnOff;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static function setTurnOffEmailNotificationsValue(User $user, $value)
-        {
-            assert('is_bool($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications', $value);
+            assert('is_string($key)');
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', $key, $value);
         }
     }
 ?>

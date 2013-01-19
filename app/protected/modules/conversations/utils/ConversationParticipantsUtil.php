@@ -159,7 +159,7 @@
             assert('$person instanceof User || $person instanceof Contact');
             if ($person->primaryEmail->emailAddress !== null &&
                 (($person instanceof User &&
-                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($person)) ||
+                !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications')) ||
                  $person instanceof Contact))
             {
                 $userToSendMessagesFrom     = $conversation->owner;

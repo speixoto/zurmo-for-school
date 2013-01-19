@@ -47,16 +47,16 @@
             $this->assertEquals(51,                 $form->subListPageSize);
             $this->assertEquals('blue',             Yii::app()->themeManager->resolveAndGetThemeColorValue($sally));
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
-            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
-            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'turnOffEmailNotifications'));
             //Confirm billy's configuration is the defaults.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals(50,                 $form->listPageSize);
             $this->assertEquals(51,                 $form->subListPageSize);
             $this->assertEquals('blue',             Yii::app()->themeManager->resolveAndGetThemeColorValue($billy));
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($billy));
-            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($billy));
-            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'hideWelcomeView'));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'turnOffEmailNotifications'));
             //Now change configuration for Billy.
             $form->listPageSize                = 60;
             $form->subListPageSize             = 61;
@@ -71,10 +71,10 @@
             $this->assertEquals(61,                 $form->subListPageSize);
             $this->assertEquals('lime',             Yii::app()->themeManager->resolveAndGetThemeColorValue($billy));
             $this->assertEquals('paper',            Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($billy));
-            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($billy));
-            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
-            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
-            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'hideWelcomeView'));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'turnOffEmailNotifications'));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));
+            $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'turnOffEmailNotifications'));
             //Now set configuration settings for sally and confirm they are correct.
             Yii::app()->user->userModel = $sally;
             UserConfigurationFormAdapter::setConfigurationFromFormForCurrentUser($form);
@@ -83,8 +83,8 @@
             $this->assertEquals(61,                 $form->subListPageSize);
             $this->assertEquals('lime',             Yii::app()->themeManager->resolveAndGetThemeColorValue($sally));
             $this->assertEquals('paper',            Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
-            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
-            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'hideWelcomeView'));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetValue($sally, 'turnOffEmailNotifications'));
         }
     }
 ?>

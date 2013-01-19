@@ -37,7 +37,7 @@
                 foreach ($peopleToSendNotification as $people)
                 {
                     if ($people->primaryEmail->emailAddress !== null &&
-                    !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($people))
+                    !UserConfigurationFormAdapter::resolveAndGetValue($people, 'turnOffEmailNotifications'))
                     {
                         $emailRecipients[] = $people;
                     }

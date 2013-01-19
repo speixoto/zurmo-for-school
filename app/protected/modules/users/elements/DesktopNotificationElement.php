@@ -35,13 +35,10 @@
          */
         protected function renderControlEditable()
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = $this->getDisabledValue();
-            $htmlOptions             = array_merge($this->getHtmlOptions(), $htmlOptions);
-            $content                 = $this->renderButton();
-            return $content;
+            $this->renderScript();
+            $content                 = $this->renderRequestBrowserAutorizationButton();
+            $content                .= $this->renderEnableDesktopNotificationsCheckBox();
+            return ZurmoHtml::tag('div', array('id' => 'enableDesktopNotifications'), $content);
         }
 
         protected function renderControlNonEditable()
@@ -49,18 +46,24 @@
             throw new NotImplementedException();
         }
 
-       /**
-         * Render a button.
-         * popup.
-         * @return The element's content as a string.
-         */
-        protected function renderButton()
+        protected function renderRequestBrowserAutorizationButton()
         {
-            $content  = ZurmoHtml::link(Yii::t('Default', 'Activate Desktop Notifications'),
+            $content  = ZurmoHtml::link(Yii::t('Default', 'Activate Desktop Notifications on Browser'),
                                               '',
                                               array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
             $content .= $this->renderTooltipContent();
-            return $content;
+            return ZurmoHtml::tag('span', array('style' => 'display:none'), $content);
+        }
+
+        protected function renderEnableDesktopNotificationsCheckBox()
+        {
+            $htmlOptions             = array();
+            $htmlOptions['id']       = $this->getEditableInputId();
+            $htmlOptions['name']     = $this->getEditableInputName();
+            $htmlOptions['disabled'] = $this->getDisabledValue();
+            $htmlOptions             = array_merge($this->getHtmlOptions(), $htmlOptions);
+            $content                 = $this->form->checkBox($this->model, $this->attribute, $htmlOptions);
+            return ZurmoHtml::tag('span', array('style' => 'display:none'), $content);
         }
 
         protected static function renderTooltipContent()
@@ -73,6 +76,34 @@
             $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
             $qtip->addQTip("#user-desktop-notifications-tooltip");
             return $content;
+        }
+
+        private function renderScript()
+        {
+            $errorNoBrowserSupport  = Yii::t('Default', 'Sorry! Your browser does not support desktop notifications.');
+            $errorDenied            = Yii::t('Default', 'You have denied desktop notifications. Check your browser settings to change it.');
+            $script = "
+                    if (desktopNotifications.isSupported)
+                    {
+                        if (window.webkitNotifications.checkPermission() == 1)
+                        {
+                            $('#enableDesktopNotifications span:nth-child(1)').toggle();
+                        }
+                        else if (window.webkitNotifications.checkPermission() == 2)
+                        {
+                            $('#enableDesktopNotifications').html('${errorDenied}');
+                        }
+                        else
+                        {
+                            $('#enableDesktopNotifications span:nth-child(2)').toggle();
+                        }
+                    }
+                    else
+                    {
+                        $('#enableDesktopNotifications').html('${errorNoBrowserSupport}');
+                    }
+                ";
+            Yii::app()->clientScript->registerScript('EnableDesktopNotifications', $script, CClientScript::POS_READY);
         }
     }
 ?>

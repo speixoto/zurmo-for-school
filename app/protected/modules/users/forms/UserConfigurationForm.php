@@ -46,7 +46,7 @@
 
         public $turnOffEmailNotifications = false;
 
-        public $activateDesktopNotifications = false;
+        public $enableDesktopNotifications = true;
 
         public function __construct($userId)
         {
@@ -66,18 +66,18 @@
         public function rules()
         {
             return array(
-                array('listPageSize',              'required'),
-                array('listPageSize',              'type',      'type' => 'integer'),
-                array('listPageSize',              'numerical', 'min' => 1),
-                array('subListPageSize',           'required'),
-                array('subListPageSize',           'type',      'type' => 'integer'),
-                array('subListPageSize',           'numerical', 'min' => 1),
-                array('themeColor',                'required'),
-                array('themeColor',                'type',      'type' => 'string'),
-                array('backgroundTexture',         'type',      'type' => 'string'),
-                array('hideWelcomeView',           'boolean'),
-                array('turnOffEmailNotifications', 'boolean'),
-                array('activateDesktopNotifications', 'boolean')
+                array('listPageSize',               'required'),
+                array('listPageSize',               'type',      'type' => 'integer'),
+                array('listPageSize',               'numerical', 'min' => 1),
+                array('subListPageSize',            'required'),
+                array('subListPageSize',            'type',      'type' => 'integer'),
+                array('subListPageSize',            'numerical', 'min' => 1),
+                array('themeColor',                 'required'),
+                array('themeColor',                 'type',      'type' => 'string'),
+                array('backgroundTexture',          'type',      'type' => 'string'),
+                array('hideWelcomeView',            'boolean'),
+                array('turnOffEmailNotifications',  'boolean'),
+                array('enableDesktopNotifications', 'boolean')
             );
         }
 
@@ -90,7 +90,7 @@
                 'backgroundTexture'             => Yii::t('Default', 'Texture'),
                 'hideWelcomeView'               => Yii::t('Default', 'Hide welcome page'),
                 'turnOffEmailNotifications'     => Yii::t('Default', 'Turn off email notifications'),
-                'activateDesktopNotifications'  => Yii::t('Default', 'Activate desktop notifications')
+                'enableDesktopNotifications'    => Yii::t('Default', 'Enable Desktop notifications')
             );
         }
     }

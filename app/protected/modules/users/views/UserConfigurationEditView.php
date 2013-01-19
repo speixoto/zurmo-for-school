@@ -101,7 +101,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'activateDesktopNotifications', 'type' => 'DesktopNotification'),
+                                                array('attributeName' => 'enableDesktopNotifications', 'type' => 'DesktopNotification'),
                                             ),
                                         ),
                                     )

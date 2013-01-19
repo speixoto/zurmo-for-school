@@ -560,7 +560,7 @@
             $conversationParticipant                = new ConversationParticipant();
             $conversationParticipant->person        = $mary;
             $conversation->conversationParticipants->add($conversationParticipant);
-            UserConfigurationFormAdapter::setTurnOffEmailNotificationsValue($mary, true);
+            UserConfigurationFormAdapter::setValue($mary, true, 'turnOffEmailNotifications');
             //Save a new comment
             $this->setGetArray(array('relatedModelId'             => $conversation->id,
                                      'relatedModelClassName'      => 'Conversation',
