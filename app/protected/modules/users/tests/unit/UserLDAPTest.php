@@ -30,6 +30,14 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            Yii::app()->authenticationHelper->ldapHost                 = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
+            Yii::app()->authenticationHelper->ldapPort                 = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'];
+            Yii::app()->authenticationHelper->ldapBindRegisteredDomain = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'];
+            Yii::app()->authenticationHelper->ldapBindPassword         = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'];
+            Yii::app()->authenticationHelper->ldapBaseDomain           = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'];
+            Yii::app()->authenticationHelper->ldapEnabled              = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'];            
+            Yii::app()->authenticationHelper->setLDAPSettings();
+            Yii::app()->authenticationHelper->init();
         }
 
         public function setUp()
@@ -43,14 +51,21 @@
         */
         public function testUserExitsInZurmoButNotOnldap()
         {            
+            $user               = new User();
+            $user->username     = 'abcdefg';
+            $user->title->value = 'Mr.';
+            $user->firstName    = 'abcdefg';
+            $user->lastName     = 'abcdefg';
+            $user->setPassword('abcdefgN4');
+            $this->assertTrue($user->save());
             //Now attempt to login as bill a user in zurmo but not on ldap
-            $bill       = User::getByUsername('abcdefg');
+            $bill               = User::getByUsername('abcdefg');
             $this->assertEquals(md5('abcdefgN4'), $bill->hash);
             $bill->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
             $this->assertTrue($bill->save());
             //for normal user
-            $identity = new UserIdentity('abcdefg', 'abcdefgN4');
-            $authenticated = $identity->authenticate();
+            $identity           = new UserIdentity('abcdefg', 'abcdefgN4');
+            $authenticated      = $identity->authenticate();
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);
             $bill->forget();            
@@ -71,8 +86,10 @@
             $admin->setPassword('test123');
             $this->assertTrue($admin->save());
             $admin->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
-            $this->assertTrue($admin->save());        
-            $identity = new UserLDAPIdentity('admin','test123');                        
+            $this->assertTrue($admin->save());
+            $username = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
+            $password = Yii::app()->authenticationHelper->ldapBindPassword;
+            $identity = new UserLDAPIdentity($username,'test123');                        
             $authenticated = $identity->authenticate(true);
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);     
@@ -84,8 +101,8 @@
         public function testUserExitsInldapNotInZurmo()
         {
             Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity = new UserLDAPIdentity('john','johnldap');                        
-            $authenticated = $identity->authenticate(true);
+            $identity                   = new UserLDAPIdentity('john','johnldap');                        
+            $authenticated              = $identity->authenticate(true);
             $this->assertEquals(1, $identity->errorCode);
             $this->assertFalse($authenticated);     
         }                
@@ -95,9 +112,11 @@
         */
         public function testUserExitsInldapAndZurmo()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity = new UserLDAPIdentity('admin','ldap123');                        
-            $authenticated = $identity->authenticate(true);
+            Yii::app()->user->userModel = User::getByUsername('super'); 
+            $username                   = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
+            $password                   = Yii::app()->authenticationHelper->ldapBindPassword;            
+            $identity                   = new UserLDAPIdentity($username,$password);                        
+            $authenticated              = $identity->authenticate(true);
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);     
         }                  

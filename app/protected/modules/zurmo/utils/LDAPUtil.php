@@ -52,7 +52,7 @@
          * @param password $bindPassword, 
          * @param base domain $baseDomain		 
          */ 
-        public static function testConnection(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
+        public static function establishConnection(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
         {			
 			
             $username = $bindRegisteredDomain;
@@ -72,10 +72,6 @@
                 { 
                     return false;
                 }                			   
-            }
-            else 
-            { 
-                echo "Unable to connect to LDAP server"; 
-            }					
+            }				
         }
     }

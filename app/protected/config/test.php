@@ -58,12 +58,12 @@
     $common_config['components']['assetManager']['baseUrl'] = INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'assets/';
     $common_config['behaviors']['onEndRequest']['class'] = 'application.tests.EndRequestTestBehavior';
     //breaks WalkthroughDocumentationTests so disabling Csrf and Cookie validation and use different class
-    $common_config['components']['clientScript']['class']             = 'application.tests.ClientScriptForTesting';
-    $common_config['components']['request']['class']                  = 'application.tests.HttpRequestForTesting';
-    $common_config['components']['request']['enableCsrfValidation']   = false; //todo: get this working, since for production this is true.
-    $common_config['components']['request']['enableCookieValidation'] = false;
-    $common_config['components']['emailHelper']['class']              = 'application.tests.EmailHelperForTesting';
-    
+    $common_config['components']['clientScript']['class']              = 'application.tests.ClientScriptForTesting';
+    $common_config['components']['request']['class']                   = 'application.tests.HttpRequestForTesting';
+    $common_config['components']['request']['enableCsrfValidation']    = false; //todo: get this working, since for production this is true.
+    $common_config['components']['request']['enableCookieValidation']  = false;
+    $common_config['components']['emailHelper']['class']               = 'application.tests.EmailHelperForTesting';
+    $common_config['components']['zurmoAuthenticationHelper']['class'] = 'application.tests.ZurmoAuthenticationHelper';
     //Set the GeoCodeApiKey to null which will work for localhost requests. If this is not running on
     //localhost, then modify perInstanceConfig.php with an updated key.
     if (!isset($common_config['params']['testGoogleGeoCodeApiKey']))

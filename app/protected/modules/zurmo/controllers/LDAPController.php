@@ -93,7 +93,7 @@
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;         
                     $baseDomain                = $configurationForm->baseDomain;           
-                    $testConnectionResults     = LDAPUtil::testConnection($authenticationHelper,$host,$port,
+                    $testConnectionResults     = LDAPUtil::establishConnection($authenticationHelper,$host,$port,
                                                                       $bindRegisteredDomain,$bindPassword,$baseDomain);  
                     
 					if($testConnectionResults)

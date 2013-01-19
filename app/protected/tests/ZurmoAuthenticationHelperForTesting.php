@@ -28,7 +28,19 @@
      * Override class is used specifically by the
      * testing framework to handle testing of ldap server configuration.
      */
-    class ZurmoAuthenticationHelperForTesting extends ZurmoAuthenticationHelper
+    class ZurmoAuthenticationHelperForTesting 
     {
-         
+        /*
+        * method to get test values and set in the ZurmoAuthenticationHelper
+        */
+        public static function loadValuesFromConfig()
+        {        
+            Yii::app()->authenticationHelper->ldapHost                 = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
+            Yii::app()->authenticationHelper->ldapPort                 = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'];
+            Yii::app()->authenticationHelper->ldapBaseDomain           = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'];
+            Yii::app()->authenticationHelper->ldapBindPassword         = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'];
+            Yii::app()->authenticationHelper->ldapBindRegisteredDomain = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'];            
+            Yii::app()->authenticationHelper->setLDAPSettings();
+            Yii::app()->authenticationHelper->init();
+        }                 
     }
