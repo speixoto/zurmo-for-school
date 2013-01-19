@@ -37,7 +37,10 @@
         protected function renderContent()
         {
             ZurmoNotificationUtil::renderDesktopNotificationsScript();
-            ZurmoNotificationUtil::renderAutoUpdaterScript();
+            if (ZurmoConfigurationFormAdapter::getRealtimeUpdatesEnabled())
+            {
+                ZurmoNotificationUtil::renderAutoUpdaterScript();
+            }
             return $this->verticalGridView->render();
         }
     }
