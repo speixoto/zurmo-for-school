@@ -265,9 +265,10 @@
 
         protected function renderTitleDivContent($selectLink, $createLeadLink, $createContactLink, $deleteLink)
         {
-            assert('is_string($selectContent)');
+            assert('is_string($selectLink)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactLink)');
+            assert('is_string($deleteLink)');
             $content  = '<div id="select-title-' . $this->uniqueId . '" class="select-title">';
             $content .= $selectLink . ' &#183; ';
             if ($this->userCanCreateContact && $this->userCanCreateLead)

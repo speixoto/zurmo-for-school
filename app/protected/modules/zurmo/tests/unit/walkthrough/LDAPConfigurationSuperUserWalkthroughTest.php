@@ -56,7 +56,7 @@
                                     'bindRegisteredDomain'              => 'admin',
                                     'bindPassword'                      => 'ldap123',
                                     'baseDomain'                        => 'dc=debuntu,dc=local',
-									'enabled'                        => '1')));
+									'enabled'                           => '1')));
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLDAP');
             $this->assertEquals('LDAP Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
@@ -67,7 +67,7 @@
             $this->assertEquals('admin',                Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
             $this->assertEquals('ldap123',              Yii::app()->authenticationHelper->ldapBindPassword);
             $this->assertEquals('dc=debuntu,dc=local',  Yii::app()->authenticationHelper->ldapBaseDomain);
-            $this->assertEquals('1',                    Yii::app()->authenticationHelper->enabled);
+            $this->assertEquals('1',                    Yii::app()->authenticationHelper->ldapEnabled);
         }
         
         public function testSuperUserTestLDAPConnection()
@@ -81,7 +81,7 @@
                                     'bindRegisteredDomain'              => 'admin',
                                     'bindPassword'                      => 'ldap123',
                                     'baseDomain'                        => 'dc=debuntu,dc=local',
-									'enabled'                        => '1')));
+									'enabled'                           => '1')));
          $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');  
          //$this->assertTrue(strpos($content, "Successfully Connected to LDAP Server") > 0);         
          //$this->assertEquals('Successfully Connected to LDAP Server', $content);
