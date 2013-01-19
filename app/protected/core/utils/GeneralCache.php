@@ -32,6 +32,8 @@
     {
         private static $cachedEntries = array();
 
+        protected static $cacheIncrementValueVariableName = 'CacheIncrementValue';
+
         public static function getEntry($identifier)
         {
             assert('is_string($identifier)');
@@ -44,7 +46,16 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                @$serializedData = Yii::app()->cache->get('G:' . $identifier);
+                if (self::isIdentifierCacheIncrementValueName($identifier))
+                {
+                    $prefix = self::getCachePrefix(true);
+                }
+                else
+                {
+                    $prefix = self::getCachePrefix();
+                }
+
+                @$serializedData = Yii::app()->cache->get($prefix . $identifier);
                 if ($serializedData !== false)
                 {
                     $unserializedData = unserialize($serializedData);
@@ -68,7 +79,15 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                @Yii::app()->cache->set('G:' . $identifier, serialize($entry));
+                if (self::isIdentifierCacheIncrementValueName($identifier))
+                {
+                    $prefix = self::getCachePrefix(true);
+                }
+                else
+                {
+                    $prefix = self::getCachePrefix();
+                }
+                @Yii::app()->cache->set($prefix . $identifier, serialize($entry));
             }
         }
 
@@ -83,7 +102,15 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                @Yii::app()->cache->delete('G:' . $identifier);
+                if (self::isIdentifierCacheIncrementValueName($identifier))
+                {
+                    $prefix = self::getCachePrefix(true);
+                }
+                else
+                {
+                    $prefix = self::getCachePrefix();
+                }
+                @Yii::app()->cache->delete($prefix . $identifier);
             }
         }
 
@@ -95,7 +122,66 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                @Yii::app()->cache->flush();
+                self::incrementCacheIncrementValue();
+            }
+        }
+
+        protected static function getCachePrefix($isCacheIncrementValue = false)
+        {
+            // To-Do User real zurmo token, not hardcoded one
+            //$zurmoToken = ZurmoModule::getZurmoToken();
+
+            $zurmoToken = 1122;
+
+            if ($isCacheIncrementValue)
+            {
+                $prefix = $zurmoToken . '_' . "G:";
+            }
+            else
+            {
+                $cacheIncrementValue = self::getCacheIncrementValue();
+                $prefix = $zurmoToken . '_' . $cacheIncrementValue . '_' . "G:";
+            }
+
+
+            return $prefix;
+        }
+
+        protected static function getCacheIncrementValue()
+        {
+            try
+            {
+                $cacheIncrementValue = self::getEntry(self::$cacheIncrementValueVariableName);
+            }
+            catch (NotFoundException $e)
+            {
+                $cacheIncrementValue = 0;
+                self::setCacheIncrementValue($cacheIncrementValue);
+            }
+            return $cacheIncrementValue;
+        }
+
+        protected static function setCacheIncrementValue($value)
+        {
+            self::cacheEntry(self::$cacheIncrementValueVariableName, $value);
+        }
+
+        protected static function incrementCacheIncrementValue()
+        {
+            $currentCacheIncrementValue = self::getCacheIncrementValue();
+            $currentCacheIncrementValue++;
+            self::setCacheIncrementValue($currentCacheIncrementValue);
+        }
+
+        protected static function isIdentifierCacheIncrementValueName($identifier)
+        {
+            if ($identifier == self::$cacheIncrementValueVariableName)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
             }
         }
     }
