@@ -725,6 +725,32 @@
             file_put_contents($perInstanceConfigFile, $contents);
         }
 
+        /**
+         * Generate zurmo token and write it to version.php file.
+         * @param $instanceRoot
+         * @return string
+         */
+        public static function setZurmoTokenAndWriteToVersionFile($instanceRoot)
+        {
+            assert('is_dir($instanceRoot)');
+            if (!defined('ZURMO_TOKEN'))
+            {
+                $versionFile = $instanceRoot . DIRECTORY_SEPARATOR . 'version.php';
+                $contents = file_get_contents($versionFile);
+
+                $zurmoToken = substr(md5(microtime() * mt_rand()), 0, 10);
+                $contents = preg_replace('/\?\>/',
+                    "\n" . '    ' . "define('ZURMO_TOKEN', '$zurmoToken');" . "\n" . "?>",
+                    $contents);
+
+                file_put_contents($versionFile, $contents);
+
+                // Make ZURMO_TOKEN const available instantly for use
+                define('ZURMO_TOKEN', $zurmoToken);
+            }
+            return ZURMO_TOKEN;
+        }
+
         public static function isDebugConfigWritable($instanceRoot)
         {
             $debugConfigFileDist = "$instanceRoot/protected/config/debugDIST.php";
@@ -901,7 +927,7 @@
                 NotificationsUtil::submit($message, $rules);
             }
 
-            ZurmoModule::setZurmoToken();
+            InstallUtil::setZurmoTokenAndWriteToVersionFile(INSTANCE_ROOT);
             $messageStreamer->add(Yii::t('Default', 'Installation Complete.'));
         }
 

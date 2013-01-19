@@ -46,14 +46,7 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                if (self::isIdentifierCacheIncrementValueName($identifier))
-                {
-                    $prefix = self::getCachePrefix(true);
-                }
-                else
-                {
-                    $prefix = self::getCachePrefix();
-                }
+                $prefix = self::getCachePrefix($identifier);
 
                 @$serializedData = Yii::app()->cache->get($prefix . $identifier);
                 if ($serializedData !== false)
@@ -79,14 +72,7 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                if (self::isIdentifierCacheIncrementValueName($identifier))
-                {
-                    $prefix = self::getCachePrefix(true);
-                }
-                else
-                {
-                    $prefix = self::getCachePrefix();
-                }
+                $prefix = self::getCachePrefix($identifier);
                 @Yii::app()->cache->set($prefix . $identifier, serialize($entry));
             }
         }
@@ -102,14 +88,7 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                if (self::isIdentifierCacheIncrementValueName($identifier))
-                {
-                    $prefix = self::getCachePrefix(true);
-                }
-                else
-                {
-                    $prefix = self::getCachePrefix();
-                }
+                $prefix = self::getCachePrefix($identifier);
                 @Yii::app()->cache->delete($prefix . $identifier);
             }
         }
@@ -126,23 +105,17 @@
             }
         }
 
-        protected static function getCachePrefix($isCacheIncrementValue = false)
+        protected static function getCachePrefix($identifier)
         {
-            // To-Do User real zurmo token, not hardcoded one
-            //$zurmoToken = ZurmoModule::getZurmoToken();
-
-            $zurmoToken = 1122;
-
-            if ($isCacheIncrementValue)
+            if (self::isIdentifierCacheIncrementValueName($identifier))
             {
-                $prefix = $zurmoToken . '_' . "G:";
+                $prefix = ZURMO_TOKEN . '_' . "G:";
             }
             else
             {
                 $cacheIncrementValue = self::getCacheIncrementValue();
-                $prefix = $zurmoToken . '_' . $cacheIncrementValue . '_' . "G:";
+                $prefix = ZURMO_TOKEN . '_' . $cacheIncrementValue . '_' . "G:";
             }
-
 
             return $prefix;
         }

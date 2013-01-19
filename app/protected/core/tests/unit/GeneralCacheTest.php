@@ -101,5 +101,10 @@
                 }
             }
         }
+
+        public function testForgetAllNotDeleteOtherDataFromCache()
+        {
+
+        }
     }
 ?>
