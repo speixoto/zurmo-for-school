@@ -67,7 +67,7 @@
          */
         public function handleSetGeneralCachePrefix($event)
         {
-            GeneralCache::setAdditionalStringForCachePrefix('Test');
+            ZurmoCache::setAdditionalStringForCachePrefix('Test');
         }
     }
 ?>

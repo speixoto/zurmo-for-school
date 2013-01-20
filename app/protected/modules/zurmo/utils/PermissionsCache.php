@@ -38,6 +38,8 @@
 
         private static $namedSecurableItemActualPermissions = array();
 
+        public static $cacheType = 'P:';
+
         public static function getCombinedPermissions(SecurableItem $securableItem, Permitable $permitable)
         {
             if ($securableItem->getClassId('SecurableItem') == 0 ||

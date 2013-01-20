@@ -28,13 +28,11 @@
      * This is a general cache helper that utilizes both php caching and memcaching if available. Utilized for
      * caching requirements that are simple in/out of a serialized array or string of information.
      */
-    class GeneralCache
+    class GeneralCache extends ZurmoCache
     {
         private static $cachedEntries = array();
 
-        protected static $cacheIncrementValueVariableName = 'CacheIncrementValue';
-
-        public static $additionalStringForCachePrefix = '';
+        public static $cacheType = 'G:';
 
         public static function getEntry($identifier)
         {
@@ -48,7 +46,7 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                $prefix = self::getCachePrefix($identifier);
+                $prefix = self::getCachePrefix($identifier, self::$cacheType);
 
                 @$serializedData = Yii::app()->cache->get($prefix . $identifier);
                 if ($serializedData !== false)
@@ -74,7 +72,7 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                $prefix = self::getCachePrefix($identifier);
+                $prefix = self::getCachePrefix($identifier, self::$cacheType);
                 @Yii::app()->cache->set($prefix . $identifier, serialize($entry));
             }
         }
@@ -90,7 +88,7 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                $prefix = self::getCachePrefix($identifier);
+                $prefix = self::getCachePrefix($identifier, self::$cacheType);
                 @Yii::app()->cache->delete($prefix . $identifier);
             }
         }
@@ -103,76 +101,8 @@
             }
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
-                self::incrementCacheIncrementValue();
+                self::incrementCacheIncrementValue(static::$cacheType);
             }
-        }
-
-        protected static function getCachePrefix($identifier)
-        {
-            if (self::isIdentifierCacheIncrementValueName($identifier))
-            {
-                $prefix = ZURMO_TOKEN . '_' . "G:";
-            }
-            else
-            {
-                $cacheIncrementValue = self::getCacheIncrementValue();
-                $prefix = ZURMO_TOKEN . '_' . $cacheIncrementValue . '_' . "G:";
-            }
-
-            if (self::getAdditionalStringForCachePrefix() != '')
-            {
-                $prefix = self::getAdditionalStringForCachePrefix() . '_' . $prefix;
-            }
-
-            return $prefix;
-        }
-
-        protected static function getCacheIncrementValue()
-        {
-            try
-            {
-                $cacheIncrementValue = self::getEntry(self::$cacheIncrementValueVariableName);
-            }
-            catch (NotFoundException $e)
-            {
-                $cacheIncrementValue = 0;
-                self::setCacheIncrementValue($cacheIncrementValue);
-            }
-            return $cacheIncrementValue;
-        }
-
-        protected static function setCacheIncrementValue($value)
-        {
-            self::cacheEntry(self::$cacheIncrementValueVariableName, $value);
-        }
-
-        protected static function incrementCacheIncrementValue()
-        {
-            $currentCacheIncrementValue = self::getCacheIncrementValue();
-            $currentCacheIncrementValue++;
-            self::setCacheIncrementValue($currentCacheIncrementValue);
-        }
-
-        protected static function isIdentifierCacheIncrementValueName($identifier)
-        {
-            if ($identifier == self::$cacheIncrementValueVariableName)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static function setAdditionalStringForCachePrefix($prefix = '')
-        {
-            self::$additionalStringForCachePrefix = $prefix;
-        }
-
-        public static function getAdditionalStringForCachePrefix()
-        {
-            return self::$additionalStringForCachePrefix;
         }
     }
 ?>
