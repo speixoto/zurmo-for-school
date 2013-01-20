@@ -1081,40 +1081,50 @@
          * @throws NotSupportedException
          * @return string
          */
-        public static function mapHintTypeIntoDatabaseColumnType($hintType)
+        public static function mapHintTypeIntoDatabaseColumnType($hintType, $length = null)
         {
             $databaseColumnType = '';
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
-                switch ($hintType)
+                if (isset($length) && $length > 0 && $length < 255)
                 {
-                    case 'blob':
-                        $databaseColumnType = "BLOB";
-                        break;
-                    case 'longblob':
-                        $databaseColumnType = "LONGBLOB";
-                        break;
-                    case 'boolean':
-                        $databaseColumnType = "TINYINT(1)";
-                        break;
-                    case 'date':
-                        $databaseColumnType = "DATE";
-                        break;
-                    case 'datetime':
-                        $databaseColumnType = "DATETIME";
-                        break;
-                    case 'string':
-                        $databaseColumnType = "VARCHAR(255)";
-                        break;
-                    case 'text':
-                        $databaseColumnType = "TEXT";
-                        break;
-                    case 'longtext':
-                        $databaseColumnType = "LONGTEXT";
-                        break;
-                    case 'id':
-                        $databaseColumnType = "INT(11) UNSIGNED";
-                        break;
+                    if ($hintType == 'string')
+                    {
+                        $databaseColumnType = "VARCHAR({$length})";
+                    }
+                }
+                else
+                {
+                    switch ($hintType)
+                    {
+                        case 'blob':
+                            $databaseColumnType = "BLOB";
+                            break;
+                        case 'longblob':
+                            $databaseColumnType = "LONGBLOB";
+                            break;
+                        case 'boolean':
+                            $databaseColumnType = "TINYINT(1)";
+                            break;
+                        case 'date':
+                            $databaseColumnType = "DATE";
+                            break;
+                        case 'datetime':
+                            $databaseColumnType = "DATETIME";
+                            break;
+                        case 'string':
+                            $databaseColumnType = "VARCHAR(255)";
+                            break;
+                        case 'text':
+                            $databaseColumnType = "TEXT";
+                            break;
+                        case 'longtext':
+                            $databaseColumnType = "LONGTEXT";
+                            break;
+                        case 'id':
+                            $databaseColumnType = "INT(11) UNSIGNED";
+                            break;
+                    }
                 }
             }
             else
@@ -1128,7 +1138,12 @@
             return $databaseColumnType;
         }
 
-        public static function makeTimeZoneAdjustmentContent()
+        public function getCharLimits()
+        {
+
+        }
+
+        public static function makeTimeZoneAdjustlic static function makeTimeZoneAdjustmentContent()
         {
             //todo: move into something that is a wrapper since we can't always know which user we should adjust timezone for.
             $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);

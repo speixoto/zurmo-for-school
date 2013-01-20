@@ -86,7 +86,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/step6/',
                                            array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Next')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Next')), $route);
         }
 
         protected function renderPreviousPageLinkContent()

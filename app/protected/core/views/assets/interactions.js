@@ -79,7 +79,7 @@ $(window).ready(function(){
 
     resizeWhiteArea();
     $(window).resize(function(){
-      console.log('resizing');
+      //console.log('resizing');
       resizeWhiteArea();
     });
 
@@ -101,7 +101,7 @@ $(window).ready(function(){
             $('label', $(this)).fadeIn(250);
         }
     });
-    
+
     $('.hasDropDown').live({
         mouseenter: function(){
             $('span', this).addClass('over-dd');
@@ -125,8 +125,8 @@ $(window).ready(function(){
     /*Docking the save/cancel button in create view*/
     $(window).scroll( dockFloatingBar );
     dockFloatingBar();
-    
-    
+
+
     /*Spinner*/
    $( '.loading', '#stickyListLoadingArea' ).spin({
         lines : 9, // The number of lines to draw
@@ -697,11 +697,11 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
                                 .replace(/>/g, '&gt;')
                                 .replace(/&/g, '&amp;')
                                 .replace(/\n/g, '<br/>&nbsp;');
-    
+
                         if ($.trim(val) === '') {
                             val = 'a';
                         }
-    
+
                         shadow.html(val);
                         $(t).css('height', Math.max(shadow[0].offsetHeight + 15, minHeight));
                     }, 0);

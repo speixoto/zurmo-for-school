@@ -78,6 +78,7 @@
                                 {
                                     $rule[1] = 'RedBeanModelNumberValidator';
                                 }
+                                $rule[0] = $ruleAttributeName;
                                 $applicableRules[] = $rule;
                                 continue;
                             case 'default':

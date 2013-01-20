@@ -207,9 +207,7 @@
                                    array('id' => $this->model->id));
             $content             = ZurmoHtml::hiddenField($hiddenInputName, $columnCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
-            $aContent            = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent           .= ZurmoHtml::tag('span', array('class' => 'z-icon'),    null);
-            $aContent           .= ZurmoHtml::tag('span', array('class' => 'z-label'),   Yii::t('Default', 'Add Field'));
+            $aContent            = ZurmoHtml::wrapLink(Yii::t('Default', 'Add Field'));
             $content            .= ZurmoHtml::ajaxLink($aContent,
                                     $ajaxOnChangeUrl,
                                     array('type' => 'GET',
