@@ -102,5 +102,10 @@
         {
             MassEditInsufficientPermissionSkipSavingUtil::clear(get_class($this->model));
         }
+
+        protected function headerLabelPrefixContent()
+        {
+            return Yii::t('Default', 'Mass Update');
+        }
     }
 ?>

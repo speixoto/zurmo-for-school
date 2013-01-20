@@ -170,17 +170,12 @@
                                         $this->urlParameters), $row, 0);
             }
             $selectLink            = $this->renderSelectLinkContent();
-            $selectContent         = $this->renderSelectContent();
             $createContactLink     = ZurmoHtml::link(Yii::t('Default', 'Create ContactsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link contact-create-link z-action-link'));
-            $createContactContent  = Yii::t('Default', 'Create ContactsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
             $createLeadLink        = ZurmoHtml::link(Yii::t('Default', 'Create LeadsModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules()), '#',
                                      array('class' => 'create-link lead-create-link z-action-link'));
-            $createLeadContent     = Yii::t('Default', 'Create LeadsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
             $deleteLink            = $this->renderDeleteLink();
             $rules    = new EmailMessageMashableActivityRules();
             $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
@@ -270,9 +265,10 @@
 
         protected function renderTitleDivContent($selectLink, $createLeadLink, $createContactLink, $deleteLink)
         {
-            assert('is_string($selectContent)');
+            assert('is_string($selectLink)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactLink)');
+            assert('is_string($deleteLink)');
             $content  = '<div id="select-title-' . $this->uniqueId . '" class="select-title">';
             $content .= $selectLink . ' &#183; ';
             if ($this->userCanCreateContact && $this->userCanCreateLead)
@@ -311,8 +307,8 @@
         protected function getAjaxOptionsForDelete()
         {
             return array('type'     => 'GET',
-                         'success' => "function(){
-                                       window.location = '" . $this->getMatchingListUrl() . "';
+                         'success'  => "function(){
+                                       $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
                                        $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
                                           text: '" . Yii::t('Default', 'Deleted successfully') . "',
