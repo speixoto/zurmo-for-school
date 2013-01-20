@@ -1143,7 +1143,7 @@
 
         }
 
-        public static function makeTimeZoneAdjustlic static function makeTimeZoneAdjustmentContent()
+        public static function makeTimeZoneAdjustmentContent()
         {
             //todo: move into something that is a wrapper since we can't always know which user we should adjust timezone for.
             $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
