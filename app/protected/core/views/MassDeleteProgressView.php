@@ -87,43 +87,9 @@
             return $content;
         }
 
-        protected function renderContent()
-        {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ProgressBar");
-            $cClipWidget->widget('zii.widgets.jui.CJuiProgressBar', array(
-                'id'         => $this->progressBarId,
-                'value'      => $this->getProgressValue(),
-                'options'    => array(
-                    'create' => 'js:function(event, ui)
-                    {
-                        ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
-                    }',
-                    'change' => 'js:function(event, ui){
-                        $("#progress-percent").html( $(\'#' . $this->progressBarId . '\').progressbar("value") + "%");
-                    }',
-                    'complete' => 'js:function(event, ui)
-                    {
-                        $(".progressbar-wrapper").fadeOut(250);
-                        $(\'#' . $this->progressBarId . '-links\').show();
-                    }',
-                ),
-            ));
-            $cClipWidget->endClip();
-            $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content  = "<div><h1>" . Yii::t('Default', 'Mass Delete') . ' ' . $this->title . '</h1>';
-            $content .= '<div class="progress-counter">';
-            $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';
-            $content .= $this->renderFormLinks();
-            $content .= '</div>';
-            $content .= '</div>';
-            return $content;
-        }
-
         protected function renderFormLinks()
         {
-            $listButton = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Return to List')), Yii::app()->createUrl($this->moduleId));
+            $listButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Return to List')), Yii::app()->createUrl($this->moduleId));
             $content = '<div id="' . $this->progressBarId . '-links" style="display:none;">';
             $content .= $listButton;
             $content .= '</div>';
@@ -133,6 +99,11 @@
         protected function onProgressComplete()
         {
             MassDeleteInsufficientPermissionSkipSavingUtil::clear(get_class($this->model));
+        }
+
+        protected function headerLabelPrefixContent()
+        {
+            return Yii::t('Default', 'Mass Update');
         }
     }
 ?>
