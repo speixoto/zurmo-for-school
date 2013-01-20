@@ -341,7 +341,7 @@
             if ($unreadConversations > $uconv)
             {
                 $data['unreadConversations'] = $unreadConversations;
-                $data['imgUrl'] = '';
+                $data['imgUrl'] = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/zurmo-module.png';
                 $data['title'] = Yii::t('Default', 'ZurmoCRM (New comment)');
                 $data['message'] = Yii::t('Default', 'There is an unread conversation.');
                 echo "retry: 10000" . PHP_EOL; // retry in 10 seconds

@@ -31,17 +31,32 @@
     {
         public static function renderDesktopNotificationsScript()
         {
+            if (UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'enableDesktopNotifications'))
+            {
+                $makeNotification = "
+                    if (window.webkitNotifications.checkPermission() == 0) {
+                        nf = window.webkitNotifications.createNotification(image, title, body);
+                        if (nf.hasOwnProperty('onshow'))
+                        {
+                            nf.onshow = function() {setTimeout(function () {nf.close();}, 20000);};
+                        }
+                        nf.show();
+                        return true;
+                    }
+                    ";
+            }
+            else
+            {
+                $makeNotification = "";
+            }
             $script = "
             var desktopNotifications = {
                 notify:function(image,title,body) {
-                    if (window.webkitNotifications.checkPermission() == 0) {
-                        window.webkitNotifications.createNotification(image, title, body).show();
-                        return true;
-                    }
+                    " . $makeNotification . "
                     return false;
                 },
                 isSupported:function() {
-                    if (window.webkitNotifications != 'undefined') {
+                    if (typeof window.webkitNotifications != 'undefined') {
                         return true
                     } else {
                         return false
@@ -88,7 +103,7 @@
                                 uconv = data.unreadConversations;
                                 convPlacer.html(uconv);
                                 if (desktopNotifications.isSupported()) {
-                                    desktopNotifications.notify(data.imageUrl,
+                                    desktopNotifications.notify(data.imgUrl,
                                                                 data.title,
                                                                 data.message);
                                 }

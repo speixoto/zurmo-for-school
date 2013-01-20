@@ -51,7 +51,7 @@
             $content  = ZurmoHtml::link(Yii::t('Default', 'Activate Desktop Notifications on Browser'),
                                               '',
                                               array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
-            $content .= $this->renderTooltipContent();
+            $content .= $this->renderTooltipContentForRequestBrowserAutorization();
             return ZurmoHtml::tag('span', array('style' => 'display:none'), $content);
         }
 
@@ -63,10 +63,22 @@
             $htmlOptions['disabled'] = $this->getDisabledValue();
             $htmlOptions             = array_merge($this->getHtmlOptions(), $htmlOptions);
             $content                 = $this->form->checkBox($this->model, $this->attribute, $htmlOptions);
+            $content                .= $this->renderTooltipContentForEnableDesktopNotifications();
             return ZurmoHtml::tag('span', array('style' => 'display:none'), $content);
         }
 
-        protected static function renderTooltipContent()
+        protected static function renderTooltipContentForEnableDesktopNotifications()
+        {
+            $title       = Yii::t('Default', 'This feature only works when real-time updates is globally enabled in the system. ' .
+                                             'Make sure you system admin has enabled it.');
+            $content     = '<span id="user-enable-desktop-notifications-tooltip" class="tooltip"  title="' . $title . '">';
+            $content    .= '?</span>';
+            $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
+            $qtip->addQTip("#user-enable-desktop-notifications-tooltip");
+            return $content;
+        }
+
+        protected static function renderTooltipContentForRequestBrowserAutorization()
         {
             $title       = Yii::t('Default', 'Desktop Notifications is a pop-up to warn you when new events occurs in Zurmo. </br>' .
                                              'The pop-up will appear as a Desktop Notification but you need to use a browser' .
@@ -80,10 +92,10 @@
 
         private function renderScript()
         {
-            $errorNoBrowserSupport  = Yii::t('Default', 'Sorry! Your browser does not support desktop notifications.');
-            $errorDenied            = Yii::t('Default', 'You have denied desktop notifications. Check your browser settings to change it.');
+            $errorNoBrowserSupport  = Yii::t("Default", "Sorry your browser don\'t support desktop notifications, use Chrome instead.");
+            $errorDenied            = Yii::t("Default", "You have denied desktop notifications. Check your browser settings to change it.");
             $script = "
-                    if (desktopNotifications.isSupported)
+                    if (typeof window.webkitNotifications != 'undefined')
                     {
                         if (window.webkitNotifications.checkPermission() == 1)
                         {
@@ -93,7 +105,7 @@
                         {
                             $('#enableDesktopNotifications').html('${errorDenied}');
                         }
-                        else
+                        else if (window.webkitNotifications.checkPermission() == 0)
                         {
                             $('#enableDesktopNotifications span:nth-child(2)').toggle();
                         }
