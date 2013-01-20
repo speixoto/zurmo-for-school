@@ -609,7 +609,7 @@ EOD;
          */
         public static function span($class)
         {
-            return static::tag('span', array('class' => $class), false);
+            return static::tag('span', array('class' => $class), null);
         }
     }
 ?>
