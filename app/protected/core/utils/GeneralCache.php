@@ -34,6 +34,8 @@
 
         protected static $cacheIncrementValueVariableName = 'CacheIncrementValue';
 
+        public static $additionalStringForCachePrefix = '';
+
         public static function getEntry($identifier)
         {
             assert('is_string($identifier)');
@@ -117,6 +119,11 @@
                 $prefix = ZURMO_TOKEN . '_' . $cacheIncrementValue . '_' . "G:";
             }
 
+            if (self::getAdditionalStringForCachePrefix() != '')
+            {
+                $prefix = self::getAdditionalStringForCachePrefix() . '_' . $prefix;
+            }
+
             return $prefix;
         }
 
@@ -156,6 +163,16 @@
             {
                 return false;
             }
+        }
+
+        public static function setAdditionalStringForCachePrefix($prefix = '')
+        {
+            self::$additionalStringForCachePrefix = $prefix;
+        }
+
+        public static function getAdditionalStringForCachePrefix()
+        {
+            return self::$additionalStringForCachePrefix;
         }
     }
 ?>

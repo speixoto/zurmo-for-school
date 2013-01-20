@@ -104,7 +104,33 @@
 
         public function testForgetAllNotDeleteOtherDataFromCache()
         {
+            if (MEMCACHE_ON && !PHP_CACHING_ON)
+            {
+                GeneralCache::cacheEntry('somethingForTesting4', 34);
+                $value = GeneralCache::getEntry('somethingForTesting4');
+                $this->assertEquals(34, $value);
 
+                $originalAdditionalStringForCachePrefix = GeneralCache::getAdditionalStringForCachePrefix();
+                GeneralCache::setAdditionalStringForCachePrefix('ATEST');
+                GeneralCache::cacheEntry('somethingForTesting4', 43);
+                $value = GeneralCache::getEntry('somethingForTesting4');
+                $this->assertEquals(43, $value);
+
+                GeneralCache::forgetAll();
+                try
+                {
+                    $value = GeneralCache::getEntry('somethingForTesting4');
+                    $this->fail('NotFoundException exception is not thrown.');
+                }
+                catch (NotFoundException $e)
+                {
+                    $this->assertTrue(true);
+                }
+
+                GeneralCache::setAdditionalStringForCachePrefix($originalAdditionalStringForCachePrefix);
+                $value = GeneralCache::getEntry('somethingForTesting4');
+                $this->assertEquals(34, $value);
+            }
         }
     }
 ?>
