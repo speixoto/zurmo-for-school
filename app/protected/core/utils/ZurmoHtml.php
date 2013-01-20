@@ -553,7 +553,7 @@ EOD;
                     $htmlOptions['name'] .= '[]';
                 }
             }
-            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content  = static::span('select-arrow');
             $content .= static::tag('select', $htmlOptions, $options);
             return static::tag('div', array('class' => 'hasDropDown'), $content);
         }
@@ -576,19 +576,20 @@ EOD;
             }
             static::clientChange('change', $htmlOptions);
             $options  = "\n" . static::listOptions($select, $data, $htmlOptions);
-            $content  = static::tag('span', array('class' => 'select-arrow'), '');
+            $content  = static::span('select-arrow');
             $content .= static::tag('select', $htmlOptions, $options);
             return static::tag('div', array('class' => 'hasDropDown'), $content);
         }
 
         /**
-         * Return a label wrapped in z-label span
+         * Return a label wrapped in span
          * @param $label label text
+         * @param $class class to be applied to span wrapper, defaults to z-label
          * @return string wrapped label
          */
-        public static function wrapLabel($label)
+        public static function wrapLabel($label, $class = 'z-label')
         {
-            return static::tag('span', array('class' => 'z-label'), $label);
+            return static::tag('span', array('class' => $class), $label);
         }
 
         /**
@@ -608,7 +609,7 @@ EOD;
          */
         public static function span($class)
         {
-            return static::tag('span', array('class' => $class), null);
+            return static::tag('span', array('class' => $class), false);
         }
     }
 ?>
