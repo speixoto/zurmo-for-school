@@ -90,7 +90,7 @@
                 'backgroundTexture'             => Yii::t('Default', 'Texture'),
                 'hideWelcomeView'               => Yii::t('Default', 'Hide welcome page'),
                 'turnOffEmailNotifications'     => Yii::t('Default', 'Turn off email notifications'),
-                'enableDesktopNotifications'    => Yii::t('Default', 'Turn on desktop notifications')
+                'enableDesktopNotifications'    => Yii::t('Default', 'Turn on desktop notifications (experimental)')
             );
         }
     }
