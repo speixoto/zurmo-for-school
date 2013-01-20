@@ -180,12 +180,12 @@
 
         public function testExportItemToCsvWorksWithDataContainingLineBreaks()
         {
-            $this->assertTrue($this->isValidCsvConversion('Data'.PHP_EOL.'with'.PHP_EOL.'linebreaks'.PHP_EOL));
+            $this->assertTrue($this->isValidCsvConversion("Data \n with \n linebreaks \n"));
         }
 
         public function testExportItemToCsvWorksWithDataContainingCommaAndLineBreaks()
         {
-            $this->assertTrue($this->isValidCsvConversion('Data,'.PHP_EOL.'with,'.PHP_EOL.',linebreaks,'.PHP_EOL));
+            $this->assertTrue($this->isValidCsvConversion("Data, \n with, \n ,linebreaks, \n"));
         }
 
 
