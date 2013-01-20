@@ -15448,6 +15448,7 @@ a.user-link {
   z-index: 0;
   min-height: 600px;
   position: relative;
+  margin-bottom: 15px;
 }
 .dynamic-droppable-area .ui-droppable.ui-state-active .drop-zone {
   filter: alpha(opacity=100);
