@@ -34,9 +34,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelChangesLink', 'renderType' => 'Edit'),
-                            array('type' => 'NoteDeleteLink'),
                             array('type' => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type' => 'CancelLink', 'renderType' => 'Edit'),
+                            array('type' => 'NoteDeleteLink'),
                             array('type' => 'EditLink', 'renderType' => 'Details'),
                             array('type' => 'AuditEventsModalListLink', 'renderType' => 'Details'),
                         ),
