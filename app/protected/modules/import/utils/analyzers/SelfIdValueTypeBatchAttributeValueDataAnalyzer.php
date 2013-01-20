@@ -47,19 +47,17 @@
         {
             if ($this->type == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
-                $label   = Yii::t('Default', '{found} record(s) will be updated ' .
-                                             'and {unfound} record(s) will be skipped during import.',
-                                             array('{found}' => $this->messageCountData[static::FOUND],
-                                                   '{unfound}' => $this->messageCountData[static::UNFOUND]));
+                $label   = '{found} record(s) will be updated ';
+                $label  .= 'and {unfound} record(s) will be skipped during import.';
             }
             else
             {
-                $label   = Yii::t('Default', '{found} record(s) will be updated and ' .
-                                             '{unfound} record(s) will be created during the import.',
-                                             array('{found}' => $this->messageCountData[static::FOUND],
-                                                   '{unfound}' => $this->messageCountData[static::UNFOUND]));
+                $label   = '{found} record(s) will be updated and ';
+                $label  .= '{unfound} record(s) will be created during the import.';
             }
-            $this->addMessage($label);
+            $this->addMessage(Yii::t('Default', $label,
+                              array('{found}' => $this->messageCountData[static::FOUND],
+                                    '{unfound}' => $this->messageCountData[static::UNFOUND])));
             $this->resolveMakeExternalSystemIdTooLargeMessage();
         }
     }

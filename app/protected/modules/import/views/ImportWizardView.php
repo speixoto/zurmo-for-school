@@ -29,9 +29,7 @@
      */
     abstract class ImportWizardView extends EditView
     {
-        protected $cssClasses             = array( 'AdministrativeArea');
-
-        protected $disableFloatOnToolbar  = true;
+        protected $cssClasses =  array( 'AdministrativeArea');
 
         public function __construct($controllerId, $moduleId, ImportWizardForm $model, $title = null)
         {
@@ -84,7 +82,7 @@
          */
         protected function renderNextPageLinkContent()
         {
-            return ZurmoHtml::linkButton(ZurmoHtml::wrapLabel(Yii::t('Default', 'Next')));
+            return ZurmoHtml::linkButton(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Next')));
         }
 
         protected function getPreviousPageLinkContentByControllerAction($action)
@@ -92,7 +90,7 @@
             assert('is_string($action)');
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $action . '/',
                                            array('id' => $this->model->id));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Previous')), $route);
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Previous')), $route);
         }
 
         /**

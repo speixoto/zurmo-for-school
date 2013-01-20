@@ -43,7 +43,7 @@
                 {
                     $headerRow[] = $key;
                 }
-                $output = self::arraytoCsv($headerRow, true);
+                $output = self::arraytoCsv($headerRow);
 
                 foreach ($data as $row)
                 {
@@ -67,6 +67,7 @@
          * @param boolean $isHeaderRow
          * @param string $delimiter
          * @param string $enclosure
+         * @param string $eol
          */
         protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = ',', $enclosure = '"') // Not Coding Standard
         {
@@ -77,18 +78,30 @@
                 return false;
             }
             rewind($fp);
-            $csv = stream_get_contents($fp);
-
-            if($isHeaderRow)
-            {
-                // ModelToExportAdapter->getData() does not add quotes to header rows so we have to do it here.
-                // Using fputcsv instead of implode because it does couple of more useful things like escaping
-                $csv = str_replace( $enclosure, '', $csv );
-            }
-
-            fclose($fp);
+            $csv = fgets($fp);
             return $csv;
         }
 
+        public static function csvToArray($csv, $delimiter = ',', $enclosure = '"', $escape = '\\', $terminator = "\n") // Not Coding Standard
+        {
+            $result = array();
+            $rows = explode($terminator, trim($csv));
+            $columnNames = array_shift($rows);
+            $columnNames = str_getcsv($columnNames, $delimiter, $enclosure, $escape);
+            $numberOfColumns = count($columnNames);
+            foreach ($rows as $row)
+            {
+                if (trim($row))
+                {
+                    $values = str_getcsv($row, $delimiter, $enclosure, $escape);
+                    if (!$values)
+                    {
+                        $values = array_fill(0, $numberOfColumns, null);
+                    }
+                    $result[] = array_combine($columnNames, $values);
+                }
+            }
+            return $result;
+        }
     }
 ?>

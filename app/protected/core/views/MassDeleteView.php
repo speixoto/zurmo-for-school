@@ -137,7 +137,7 @@
                         Yii::t('Default', $this->moduleClassName . 'SingularLabel|' . $this->moduleClassName . 'PluralLabel',
                         array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
                         ' ' . Yii::t('Default', 'selected for removal.');
-            return ZurmoHtml::wrapLabel($message, 'operation-description');
+            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
         }
 
         public static function getDesignerRulesType()

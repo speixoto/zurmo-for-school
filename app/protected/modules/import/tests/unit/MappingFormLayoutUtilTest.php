@@ -83,8 +83,8 @@
             $super                      = SecurityTestHelper::createSuperAdmin();
             Yii::app()->user->userModel = $super;
             $data                       = ImportModelTestItemImportRules::getMappableAttributeIndicesAndDerivedTypes();
-            $mappingFormLayoutUtil      = ImportToMappingFormLayoutUtil::
-                                           make('ImportModelTestItem', new ZurmoActiveForm(), 'ImportModelTestItem', $data);
+            $mappingFormLayoutUtil = ImportToMappingFormLayoutUtil::
+                    make('ImportModelTestItem', new ZurmoActiveForm(), 'ImportModelTestItem', $data);
             $columnName                 = 'SampleColumn';
             $content                    = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, null, 'Accounts', 'importColumn', array());
             $this->assertTrue(stripos($content, $columnName) !== false);
@@ -94,24 +94,6 @@
             $this->assertTrue(stripos($content, '<table><tbody><tr>') !== false);
 
             $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'DummyAttribute', 'Accounts', 'importColumn', array());
-            //Test Decimal/Float attribute
-            $content = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'annualRevenue', 'Accounts', 'importColumn', array());
-            $this->assertTrue(stripos($content, '<table><tbody><tr>') !== false);
-        }
-
-        public function testRenderMappingRulesElementForDecimalAttributeWithPrecision()
-        {
-            Yii::app()->user->userModel = SecurityTestHelper::createSuperAdmin();
-            DesignerTestHelper::createDecimalAttribute('decimal', false, 'Account');
-            ImportRules::resetCache();
-
-            $data                       = ImportModelTestItemImportRules::getMappableAttributeIndicesAndDerivedTypes();
-            $mappingFormLayoutUtil      = ImportToMappingFormLayoutUtil::
-                                          make('ImportModelTestItem', new ZurmoActiveForm(), 'ImportModelTestItem', $data);
-            $columnName                 = 'SampleColumn';
-            //Test Decimal/Float attribute that has precision
-            $content = $mappingFormLayoutUtil->renderMappingRulesElements($columnName, 'decimalCstm', 'Accounts', 'importColumn', array());
-            $this->assertTrue(stripos($content, '<table><tbody><tr>') !== false);
         }
 
         public function testRenderMappingDataMetadataWithRenderedElements()

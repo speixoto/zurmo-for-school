@@ -718,7 +718,7 @@ body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
-body.blue a.simple-link,
+body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
@@ -771,7 +771,8 @@ body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
-body.blue #clear-search-link {
+body.blue #clear-search-link,
+body.blue .switch-state.current-status {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -934,7 +935,7 @@ body.blue .z-button:not(.attachLoading):hover .z-label,
 body.blue .zButton:not(.attachLoading):active .z-label,
 body.blue .z-button:not(.attachLoading):active .z-label,
 body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
 body.blue .form-toolbar a:not(.z-button):hover .z-label,
 body.blue .configuration-list li a:hover .z-label {
@@ -1248,7 +1249,7 @@ body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
-body.brown a.simple-link,
+body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
@@ -1301,7 +1302,8 @@ body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
-body.brown #clear-search-link {
+body.brown #clear-search-link,
+body.brown .switch-state.current-status {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1464,7 +1466,7 @@ body.brown .z-button:not(.attachLoading):hover .z-label,
 body.brown .zButton:not(.attachLoading):active .z-label,
 body.brown .z-button:not(.attachLoading):active .z-label,
 body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
 body.brown .form-toolbar a:not(.z-button):hover .z-label,
 body.brown .configuration-list li a:hover .z-label {
@@ -1778,7 +1780,7 @@ body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
-body.lime a.simple-link,
+body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
@@ -1831,7 +1833,8 @@ body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
-body.lime #clear-search-link {
+body.lime #clear-search-link,
+body.lime .switch-state.current-status {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -1994,7 +1997,7 @@ body.lime .z-button:not(.attachLoading):hover .z-label,
 body.lime .zButton:not(.attachLoading):active .z-label,
 body.lime .z-button:not(.attachLoading):active .z-label,
 body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
 body.lime .form-toolbar a:not(.z-button):hover .z-label,
 body.lime .configuration-list li a:hover .z-label {
@@ -2308,7 +2311,7 @@ body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
-body.cherry a.simple-link,
+body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
@@ -2361,7 +2364,8 @@ body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
-body.cherry #clear-search-link {
+body.cherry #clear-search-link,
+body.cherry .switch-state.current-status {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -2524,7 +2528,7 @@ body.cherry .z-button:not(.attachLoading):hover .z-label,
 body.cherry .zButton:not(.attachLoading):active .z-label,
 body.cherry .z-button:not(.attachLoading):active .z-label,
 body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
 body.cherry .form-toolbar a:not(.z-button):hover .z-label,
 body.cherry .configuration-list li a:hover .z-label {
@@ -2838,7 +2842,7 @@ body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
-body.turquoise a.simple-link,
+body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
@@ -2891,7 +2895,8 @@ body.turquoise .ui-tooltip-default .ui-tooltip-icon,
 body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
-body.turquoise #clear-search-link {
+body.turquoise #clear-search-link,
+body.turquoise .switch-state.current-status {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3054,7 +3059,7 @@ body.turquoise .z-button:not(.attachLoading):hover .z-label,
 body.turquoise .zButton:not(.attachLoading):active .z-label,
 body.turquoise .z-button:not(.attachLoading):active .z-label,
 body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
 body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
 body.turquoise .configuration-list li a:hover .z-label {
@@ -3368,7 +3373,7 @@ body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
-body.violet a.simple-link,
+body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
@@ -3421,7 +3426,8 @@ body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
-body.violet #clear-search-link {
+body.violet #clear-search-link,
+body.violet .switch-state.current-status {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -3584,7 +3590,7 @@ body.violet .z-button:not(.attachLoading):hover .z-label,
 body.violet .zButton:not(.attachLoading):active .z-label,
 body.violet .z-button:not(.attachLoading):active .z-label,
 body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
 body.violet .form-toolbar a:not(.z-button):hover .z-label,
 body.violet .configuration-list li a:hover .z-label {
@@ -3898,7 +3904,7 @@ body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
-body.honey a.simple-link,
+body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
@@ -3951,7 +3957,8 @@ body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
-body.honey #clear-search-link {
+body.honey #clear-search-link,
+body.honey .switch-state.current-status {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -4114,7 +4121,7 @@ body.honey .z-button:not(.attachLoading):hover .z-label,
 body.honey .zButton:not(.attachLoading):active .z-label,
 body.honey .z-button:not(.attachLoading):active .z-label,
 body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-label,
-body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
+body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-select):hover .z-label,
 body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
 body.honey .form-toolbar a:not(.z-button):hover .z-label,
 body.honey .configuration-list li a:hover .z-label {
@@ -5661,11 +5668,11 @@ body > .ui-autocomplete {
   margin-top: 0;
 }
 /*=Inner toolbar*/
-.float-bar {
+#float-bar {
   height: 40px;
   display: block;
 }
-.float-bar .view-toolbar-container {
+#float-bar .view-toolbar-container {
   z-index: 222222;
   position: fixed !important;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
@@ -5689,7 +5696,7 @@ body > .ui-autocomplete {
   float: left;
   width: auto;
 }
-.float-bar .view-toolbar-container.dock {
+#float-bar .view-toolbar-container.dock {
   position: relative !important;
   bottom: 0;
   left: 0;
@@ -6389,7 +6396,9 @@ td.empty {
   top: -35px;
   right: 8px;
 }
+.portlet-toolbar .icon-create,
 .portlet-toolbar a {
+  padding: 0 10px 0 10px;
   line-height: 25px;
   margin: 0;
   font-weight: bold;
@@ -6415,13 +6424,16 @@ td.empty {
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
 }
+.portlet-toolbar .icon-create .z-label,
 .portlet-toolbar a .z-label {
-  padding: 0 10px 0 10px;
+  padding: 0 0 0 5px;
   float: none;
 }
+.portlet-toolbar .icon-create:not(.attachLoading),
 .portlet-toolbar a:not(.attachLoading) {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
+.portlet-toolbar .icon-create:active,
 .portlet-toolbar a:active {
   color: #656565;
   -webkit-box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
@@ -6431,12 +6443,6 @@ td.empty {
   box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
 }
 .portlet-toolbar .icon-create:before {
-  content: "";
-  margin: 0;
-  padding: 0;
-  display: none;
-}
-.portlet-toolbar .icon-create .z-label:before {
   content: "Y";
   font-weight: normal;
   font-size: 24px;
@@ -6449,6 +6455,7 @@ td.empty {
   vertical-align: middle;
   position: relative;
   top: -2px;
+  color: #fff;
   margin: 0 5px 0 0 !important;
 }
 .portlet-toolbar .icon-delete:before {
@@ -6483,7 +6490,7 @@ td.empty {
   color: #fff;
   margin-left: 0;
 }
-a.simple-link {
+a.simple-select {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -6503,11 +6510,10 @@ a.simple-link {
   font-size: 11px;
   font-weight: normal;
 }
-a.simple-link:before {
+a.simple-select:before {
   content: "" !important;
 }
-/*needed for specifity*/
-.portlet-toolbar a.simple-link {
+.portlet-toolbar a.simple-select {
   background: none !important;
 }
 /*=Popup Modals*/
@@ -6945,7 +6951,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
   float: left;
   width: 100%;
-  z-index: 50;
+  z-index: 0;
 }
 .search-view-0 table {
   padding: 0;
@@ -7030,7 +7036,6 @@ div.wide.form label.hasCheckBox {
 }
 .search-form-tools {
   position: absolute;
-  z-index: 100;
   top: 16px;
   left: 265px;
   line-height: 25px;
@@ -7069,17 +7074,13 @@ div.wide.form label.hasCheckBox {
 #ModalView .list-view-items-summary-clone {
   margin: 10px 10px 0 0;
 }
-#ModalView .SearchView {
-  position: relative;
-  z-index: 5;
-}
 #ModalView .search-view-0 {
   margin: 5px 0 0 10px !important;
   width: 220px;
   float: left;
 }
 #ModalView .search-view-1 {
-  z-index: 0;
+  z-index: 100;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -7346,7 +7347,7 @@ div.wide.form label.hasCheckBox {
 }
 .buffer > div {
   float: left;
-  padding: 8px 10px;
+  padding: 10px 10px;
   background: #F4F4F4;
   width: 100%;
   -moz-box-sizing: border-box;
@@ -9434,26 +9435,20 @@ div.hasHalfs .twoThirds {
   width: 100%;
 }
 .ui-widget-header.ui-progressbar-value {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  background-color: transparent !important;
   height: 5px;
-  margin: 5px 0 0 0;
+  background-image: -webkit-linear-gradient(0deg, #969696 0%, #afafaf 100%) !important;
   -webkit-transition: all 0.2s ease-out;
   -moz-transition: all 0.2s ease-out;
   -o-transition: all 0.2s ease-out;
   -ms-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
-  background-color: transparent !important;
-  background-color: #afafaf !important;
-  background-repeat: repeat-x !important;
-  background-image: -moz-linear-gradient(0deg, #969696, #afafaf) !important;
-  background-image: -ms-linear-gradient(0deg, #969696, #afafaf) !important;
-  background-image: -webkit-linear-gradient(0deg, #969696, #afafaf) !important;
-  background-image: -o-linear-gradient(0deg, #969696, #afafaf) !important;
-  background-image: linear-gradient(0deg, #969696, #afafaf) !important;
+  margin: 5px 0 0 0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
 }
 /*=About*/
 #AboutView {
@@ -11197,6 +11192,9 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 0;
   padding: 0;
 }
+#SequentialProcessView h3 {
+  text-indent: 30px;
+}
 #ImportErrorsListView {
   margin-bottom: 15px;
 }
@@ -11768,7 +11766,10 @@ div.wide.form .errorMessage {
   font-style: italic;
   display: inline-block;
   color: #999;
-  margin: 9px 0 0 10px;
+  margin-top: 0;
+  position: absolute;
+  bottom: 3px;
+  left: 100px;
 }
 .ImportWizardView .files {
   margin-top: 15px;
@@ -14112,7 +14113,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   width: 310px;
   height: 310px;
 }
-a.close-ModalGameNotification.simple-link {
+a.close-ModalGameNotification.simple-select {
   background: none !important;
   margin-right: 10px;
   margin-left: -5px;
@@ -14530,6 +14531,105 @@ a.close-ModalGameNotification.simple-link {
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
+/*Sidebar*/
+.thred-details {
+  margin: 0 0 0 0 !important;
+  width: 100%;
+}
+.thred-details td + th {
+  padding-left: 0 !important;
+}
+.thred-details th,
+.thred-details td {
+  text-align: left;
+  padding: 5px 0;
+}
+.thred-details th {
+  color: #545454;
+}
+.thred-details td {
+  font-weight: normal;
+  padding-left: 15px;
+}
+.thred-details .attachments {
+  margin: 0;
+}
+.conversationStatusChangeArea {
+  margin: 15px 0;
+  padding: 5px;
+  background: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+.conversationStatusChangeArea > span {
+  float: left;
+  margin-right: 15px;
+  padding: 0 0;
+}
+.conversationStatusChangeArea label {
+  display: inline !important;
+  margin-right: 10px;
+}
+.conversationStatusChangeArea label input {
+  margin-right: 5px;
+}
+.switch-state {
+  line-height: 1 !important;
+  margin: 0 0 0 5px !important;
+  float: left;
+}
+.switch-state .z-label {
+  padding: 3px;
+  width: 100%;
+  text-align: center;
+  line-height: 1 !important;
+}
+.switch-state.current-status {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.switch-state.current-status span.z-label {
+  padding: 3px;
+  -webkit-border-radius: 3ps;
+  -moz-border-radius: 3ps;
+  -ms-border-radius: 3ps;
+  -o-border-radius: 3ps;
+  border-radius: 3ps;
+  font-size: 11px;
+  font-weight: normal;
+  color: #fff;
+}
+.switch-state.disabled {
+  border: none;
+}
+.switch-state.disabled span.z-label {
+  color: #545454 !important;
+  -webkit-text-shadow: 0px 1px 0 #ffffff !important;
+  -moz-text-shadow: 0px 1px 0 #ffffff !important;
+  -o-text-shadow: 0px 1px 0 #ffffff !important;
+  -ms-text-shadow: 0px 1px 0 #ffffff !important;
+  text-shadow: 0px 1px 0 #ffffff !important;
+  background: #ddd !important;
+}
+/*
+.switch-state:first-child,
+.switch-state:first-child .z-label{
+    .radius(3px 0 0 3px);
+    border-right:none !important;
+}
+.switch-state:last-child,
+.switch-state:last-child .z-label{
+    .radius(0 3px 3px 0);
+    border-left:none !important;
+}
+*/
+/*End sidebar*/
 #ModelDetailsSummaryView h2,
 #CommentList h2,
 .CommentList h2 {
@@ -14553,7 +14653,7 @@ a.close-ModalGameNotification.simple-link {
 }
 #CommentList:last-child,
 .CommentList:last-child {
-  margin-bottom: 8px;
+  margin-bottom: 25px;
 }
 .comment {
   line-height: 140%;
@@ -14646,7 +14746,7 @@ a.close-ModalGameNotification.simple-link {
   font-size: 15px;
 }
 #CommentInlineEditForModelView {
-  margin-top: 15px;
+  margin-top: 0;
   padding-left: 120px;
 }
 #CommentInlineEditForModelView td {
@@ -14680,15 +14780,18 @@ a.close-ModalGameNotification.simple-link {
 .attachments {
   margin-top: 5px;
   list-style: none;
+  line-height: 140%;
 }
 .attachments li {
   margin-bottom: 2px;
+  padding-left: 15px;
 }
 .icon-attachment {
   font-weight: normal;
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  margin-right: 4px;
+  float: left;
+  margin-left: -15px;
 }
 .icon-attachment:before {
   content: "H";

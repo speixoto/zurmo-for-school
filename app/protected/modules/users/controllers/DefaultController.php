@@ -242,6 +242,7 @@
             }
             $title                         = Yii::t('Default', 'Confirm your time zone');
             $timeZoneView                  = new UserTimeZoneConfirmationView($this->getId(),
+
                                                                  $this->getModule()->getId(),
                                                                  $confirmTimeZoneForm,
                                                                  $title);

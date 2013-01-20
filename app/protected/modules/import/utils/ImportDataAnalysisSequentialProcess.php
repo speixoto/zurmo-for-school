@@ -104,10 +104,7 @@
             $this->import->serializedData    = serialize($unserializedData);
             ImportUtil::setDataAnalyzerMessagesDataToImport($this->import, $messagesData, true);
             $saved = $this->import->save();
-            if(!$saved)
-            {
-                throw new FailedToSaveModelException();
-            }
+            assert('$saved');
             $nextColumnName = $this->getNextMappedColumnName($this->mappingData, $params['columnNameToProcess']);
             if ($nextColumnName == null)
             {

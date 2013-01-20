@@ -130,7 +130,7 @@
         {
             if($this->wrapLabel())
             {
-                return ZurmoHtml::wrapLabel($this->getLabel());
+                return ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLabel());
             }
             return $this->getLabel();
         }

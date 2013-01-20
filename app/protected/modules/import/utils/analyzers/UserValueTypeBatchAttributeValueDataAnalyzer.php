@@ -99,10 +99,9 @@
             $invalid  = $this->messageCountData[static::INVALID];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default',  '{count} value(s) have invalid user values. ' .
-                                              'These values will not be used during the import.',
-                                              array('{count}' => $invalid));
-                $this->addMessage($label);
+                $label   = '{count} value(s) have invalid user values. ';
+                $label  .= 'These values will not be used during the import.';
+                $this->addMessage(Yii::t('Default', $label, array('{count}' => $invalid)));
             }
         }
     }

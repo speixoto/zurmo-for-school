@@ -207,21 +207,15 @@
                                    array('id' => $this->model->id));
             $content             = ZurmoHtml::hiddenField($hiddenInputName, $columnCount, $idInputHtmlOptions);
             // Begin Not Coding Standard
-            $aContent            = ZurmoHtml::wrapLink(Yii::t('Default', 'Add Field'));
-            $content            .= ZurmoHtml::ajaxLink($aContent,
+            $content            .= ZurmoHtml::ajaxLink(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Add Field')),
                                     $ajaxOnChangeUrl,
                                     array('type' => 'GET',
                                           'data' => 'js:\'columnCount=\' + $(\'#columnCounter\').val()',
-                                          'complete'   => 'js:function(){$("#addExtraColumnButton").removeClass("loading");
-                                                                         $("#addExtraColumnButton").removeClass("loading-ajax-submit");}',
                                           'success' => 'js:function(data){
                                             $(\'#columnCounter\').val(parseInt($(\'#columnCounter\').val()) + 1)
                                             $(\'#addExtraColumnButton\').parent().parent().prev().after(data);
                                           }'),
-                                    array('id'      => 'addExtraColumnButton', 'class' => 'attachLoading z-button',
-                                          'onclick' => 'js:if($(this).hasClass("loading")) {return false;}
-                                                        $(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        attachLoadingSpinner($(this).attr("id"), true);'));
+                                    array('id' => 'addExtraColumnButton', 'class' => 'z-button'));
             // End Not Coding Standard
             return $content;
         }

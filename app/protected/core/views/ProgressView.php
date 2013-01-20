@@ -32,8 +32,6 @@
      */
     abstract class ProgressView extends View
     {
-        abstract protected function headerLabelPrefixContent();
-
         /**
          * How many total records need to be processed in the batch
          */
@@ -122,10 +120,9 @@
                     'create' => 'js:function(event, ui)
                     {
                         ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
-                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "&#37;");
                     }',
                     'change' => 'js:function(event, ui){
-                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "&#37;");
+                        $("#progress-percent").html( $(\'#' . $this->progressBarId . '\').progressbar("value") + "%");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
@@ -136,10 +133,10 @@
             ));
             $cClipWidget->endClip();
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content  = "<div><h1>" . $this->headerLabelPrefixContent() . ' ' . $this->title . '</h1>';
+            $content  = "<div><h1>" . Yii::t('Default', 'Mass Update') . ' ' . $this->title . '</h1>';
             $content .= '<div class="progress-counter">';
             $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0&#37;</span>' . $progressBarContent . '</div>';
+            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';
             $content .= $this->renderFormLinks();
             $content .= '</div>';
             $content .= '</div>';

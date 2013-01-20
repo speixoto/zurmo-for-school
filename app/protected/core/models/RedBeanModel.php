@@ -765,7 +765,7 @@
                                 {
                                     unset($hints[$columnName]);
                                 }
-                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string', 'text', 'longtext')))
+                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string')))
                                 {
                                     $hints[$columnName] = $validator->type;
                                 }
@@ -802,51 +802,44 @@
                             foreach ($metadata[$modelClassName]['members'] as $memberName)
                             {
                                 $allValidators = $this->getValidators($memberName);
-                                if (!empty($allValidators))
+                                foreach ($allValidators as $validator)
                                 {
-                                    foreach ($allValidators as $validator)
+                                    if ((get_class($validator) == 'RedBeanModelTypeValidator' ||
+                                        get_class($validator) == 'TypeValidator') &&
+                                        $validator->type == 'string')
                                     {
-                                        if ((get_class($validator) == 'RedBeanModelTypeValidator' ||
-                                            get_class($validator) == 'TypeValidator') &&
-                                            $validator->type == 'string')
+                                        $columnName = strtolower($validator->attributes[0]);
+                                        if (count($allValidators) > 1)
                                         {
-                                            $columnName = strtolower($validator->attributes[0]);
-                                            if (count($allValidators) > 1)
+                                            $haveCStringValidator = false;
+                                            foreach ($allValidators as $innerValidator)
                                             {
-                                                $haveCStringValidator = false;
-                                                foreach ($allValidators as $innerValidator)
+                                                if (get_class($innerValidator) == 'CStringValidator' &&
+                                                    isset($innerValidator->max) &&
+                                                    $innerValidator->max > 255)
                                                 {
-                                                    if (get_class($innerValidator) == 'CStringValidator' &&
-                                                        isset($innerValidator->max) &&
-                                                        $innerValidator->max > 0)
+                                                    if ($innerValidator->max > 65535)
                                                     {
-                                                        if ($innerValidator->max > 65535)
-                                                        {
-                                                            $hints[$columnName] = 'longtext';
-                                                        }
-                                                        elseif($innerValidator->max < 255)
-                                                        {
-                                                            $hints[$columnName] = "string({$innerValidator->max})";
-                                                        }
-                                                        else
-                                                        {
-                                                            $hints[$columnName] = 'text';
-                                                        }
+                                                        $hints[$columnName] = 'longtext';
                                                     }
-                                                    if (get_class($innerValidator) == 'CStringValidator')
+                                                    else
                                                     {
-                                                        $haveCStringValidator = true;
+                                                        $hints[$columnName] = 'text';
                                                     }
                                                 }
-                                                if (!$haveCStringValidator)
+                                                if (get_class($innerValidator) == 'CStringValidator')
                                                 {
-                                                    $hints[$columnName] = 'text';
+                                                    $haveCStringValidator = true;
                                                 }
                                             }
-                                            else
+                                            if (!$haveCStringValidator)
                                             {
                                                 $hints[$columnName] = 'text';
                                             }
+                                        }
+                                        else
+                                        {
+                                            $hints[$columnName] = 'text';
                                         }
                                     }
                                 }

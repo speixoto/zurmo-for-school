@@ -32,8 +32,6 @@
      */
     class AutoBuildDatabaseTest extends ZurmoBaseTest
     {
-        protected $unfreezeWhenDone = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -47,28 +45,23 @@
             parent::tearDownAfterClass();
         }
 
-        public function teardown()
-        {
-            if ($this->unfreezeWhenDone)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
-
         public function testAutoBuildDatabase()
         {
-            $this->unfreezeWhenDone     = false;
+            $unfreezeWhenDone     = false;
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
-                $this->unfreezeWhenDone = true;
+                $unfreezeWhenDone = true;
             }
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             InstallUtil::autoBuildDatabase($messageLogger);
+            if ($unfreezeWhenDone)
+            {
+                RedBeanDatabase::freeze();
+            }
 
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             //There are only 1 extra rows that are not being removed during the autobuild process.
@@ -150,81 +143,55 @@
          */
         public function testAutoBuildUpgrade()
         {
-            $this->unfreezeWhenDone = false;
+            $unfreezeWhenDone     = false;
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
-                $this->unfreezeWhenDone = true;
+                $unfreezeWhenDone = true;
             }
-
             // adding Text Field
             $metadata = Account::getMetadata();
             $metadata['Account']['members'][] = 'newField';
             $rules = array('newField', 'type', 'type' => 'string');
             $metadata['Account']['rules'][] = $rules;
-
-            $metadata['Account']['members'][] = 'string128';
-            $rules = array('string128', 'type', 'type' => 'string');
-            $metadata['Account']['rules'][] = $rules;
-            $rules = array('string128', 'length', 'min' => 3, 'max' => 128);
-            $metadata['Account']['rules'][] = $rules;
-
-            $metadata['Account']['members'][] = 'string555';
-            $rules = array('string555', 'type', 'type' => 'string');
-            $metadata['Account']['rules'][] = $rules;
-            $rules = array('string555', 'length', 'min' => 1, 'max' => 555);
-            $metadata['Account']['rules'][] = $rules;
-
-            $metadata['Account']['members'][] = 'string100000';
-            $rules = array('string100000', 'type', 'type' => 'string');
-            $metadata['Account']['rules'][] = $rules;
-            $rules = array('string100000', 'length', 'min' => 1, 'max' => 100000);
-            $metadata['Account']['rules'][] = $rules;
-
-            $metadata['Account']['members'][] = 'textField';
-            $rules = array('textField', 'type', 'type' => 'text');
-            $metadata['Account']['rules'][] = $rules;
-
-            $metadata['Account']['members'][] = 'longTextField';
-            $rules = array('longTextField', 'type', 'type' => 'longtext');
-            $metadata['Account']['rules'][] = $rules;
-
+            // adding Date Field
             $metadata['Account']['members'][] = 'dateField';
             $rules = array('dateField', 'type', 'type' => 'date');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding Boolean Field
             $metadata['Account']['members'][] = 'booleanField';
             $rules = array('booleanField', 'boolean');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding Integer Field
             $metadata['Account']['members'][] = 'integerField';
             $rules = array('integerField', 'type', 'type' => 'integer');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding DateTime Field
             $metadata['Account']['members'][] = 'dateTimeField';
             $rules = array('dateTimeField', 'type', 'type' => 'datetime');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding URL Field
             $metadata['Account']['members'][] = 'urlField';
             $rules = array('urlField', 'url');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding float Field
             $metadata['Account']['members'][] = 'floatField';
             $rules = array('floatField', 'type', 'type' => 'float');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding longText Field
             $metadata['Account']['members'][] = 'longTextField';
             $rules = array('longTextField', 'type', 'type' => 'longtext');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding Blob Field
             $metadata['Account']['members'][] = 'blobField';
             $rules = array('blobField', 'type', 'type' => 'blob');
             $metadata['Account']['rules'][] = $rules;
-
+            // adding longBlob Field
             $metadata['Account']['members'][] = 'longBlobField';
             $rules = array('longBlobField', 'type', 'type' => 'longblob');
             $metadata['Account']['rules'][] = $rules;
 
+            //print_r($accountMetadata);
             Account::setMetadata($metadata);
 
             $super                      = User::getByUsername('super');
@@ -232,59 +199,25 @@
             $messageLogger              = new MessageLogger();
             $beforeRowCount             = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             InstallUtil::autoBuildDatabase($messageLogger);
-
+            if ($unfreezeWhenDone)
+            {
+                RedBeanDatabase::freeze();
+            }
             $afterRowCount              = DatabaseCompatibilityUtil::getTableRowsCountTotal();
             $this->assertEquals($beforeRowCount, $afterRowCount);
 
             //Check Account fields
             $tableName = RedBeanModel::getTableName('Account');
             $columns   = R::$writer->getColumns($tableName);
-
             $this->assertEquals('text',             $columns['newfield']);
-            $this->assertEquals('varchar(128)',     $columns['string128']);
-            $this->assertEquals('text',             $columns['string555']);
-            $this->assertEquals('longtext',         $columns['string100000']);
-            $this->assertEquals('text',             $columns['textfield']);
             $this->assertEquals('date',             $columns['datefield']);
             $this->assertEquals('tinyint(1)',       $columns['booleanfield']);
             $this->assertEquals('int(11) unsigned', $columns['integerfield']);
             $this->assertEquals('datetime',         $columns['datetimefield']);
-            $this->assertEquals('varchar(255)',     $columns['urlfield']);
-            $this->assertEquals('double',           $columns['floatfield']);
-            $this->assertEquals('longtext',         $columns['longtextfield']);
             $this->assertEquals('blob',             $columns['blobfield']);
             $this->assertEquals('longblob',         $columns['longblobfield']);
-
-
-            $account = new Account();
-            $account->name  = 'Test Name';
-            $account->owner = $super;
-            $randomString = str_repeat("Aa", 64);;
-            $account->string128 = $randomString;
-            $saved = $account->save();
-            assert('$saved');
-
-            $metadata = Account::getMetadata();
-
-            foreach($metadata['Account']['rules'] as $key => $rule)
-            {
-                if ($rule[0] == 'string128' && $rule[1] == 'length')
-                {
-                    $metadata['Account']['rules'][$key]['max'] = 64;
-                }
-            }
-            Account::setMetadata($metadata);
-            InstallUtil::autoBuildDatabase($messageLogger);
-
-            RedBeanModel::forgetAll();
-            $modifiedAccount = Account::getById($account->id);
-
-            $this->assertEquals($randomString, $modifiedAccount->string128);
-
-            //Check Account fields
-            $tableName = RedBeanModel::getTableName('Account');
-            $columns   = R::$writer->getColumns($tableName);
-            $this->assertEquals('varchar(128)',     $columns['string128']);
+            $this->assertEquals('varchar(255)',     $columns['urlfield']);
+            $this->assertEquals('double',           $columns['floatfield']);
         }
 
         /**

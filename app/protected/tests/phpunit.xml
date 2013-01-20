@@ -5,7 +5,6 @@
     convertWarningsToExceptions="true"
     stopOnFailure="false">
 
-
   <filter>
     <blacklist>
       <directory suffix=".php">../../../yii</directory>
@@ -17,15 +16,5 @@
     <browser name="Internet Explorer" browser="*iexplore" />
     <browser name="Firefox" browser="*firefox" />
   </selenium>
-
-
-  <listeners>
-    <listener class="ExecutionTimeListener" file="listeners/ExecutionTimeListener.php" >
-      <arguments>
-          <integer>0</integer>
-          <integer>2</integer>
-      </arguments>
-    </listener>
-  </listeners>
 
 </phpunit>

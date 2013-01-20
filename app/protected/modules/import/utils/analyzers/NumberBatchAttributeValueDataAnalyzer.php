@@ -98,10 +98,9 @@
             $invalid  = $this->messageCountData[static::INVALID];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) are invalid. ' .
-                                             'These rows will be skipped during import.',
-                                             array('{count}' => $invalid));
-                $this->addMessage($label);
+                $label   = '{count} value(s) are invalid. ';
+                $label  .= 'These rows will be skipped during import.';
+                $this->addMessage(Yii::t('Default', $label, array('{count}' => $invalid)));
             }
         }
     }

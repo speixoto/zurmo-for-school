@@ -68,7 +68,7 @@
         {
             $content  = '<span>';
             $content .= ZurmoHtml::ajaxLink(
-                ZurmoHtml::wrapLabel(Yii::t('Default', 'Send Test Email')),
+                ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Send Test Email')),
                 Yii::app()->createUrl('emailMessages/default/sendTestMessage/', array()),
                 static::resolveAjaxOptionsForTestEmailSettings($this->form->getId()),
                 array('id' => 'SendATestEmailToButton', 'class' => 'EmailTestingButton z-button')

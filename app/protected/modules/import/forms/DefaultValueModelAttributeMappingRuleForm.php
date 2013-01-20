@@ -42,10 +42,5 @@
         {
             return 'defaultValue';
         }
-
-        public function attributeNames()
-        {
-            return array('defaultValue');
-        }
     }
 ?>

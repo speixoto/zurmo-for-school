@@ -1,45 +1,66 @@
 <?php
     /*********************************************************************************
-   * Zurmo is a customer relationship management program developed by
-   * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
-   *
-   * Zurmo is free software; you can redistribute it and/or modify it under
-   * the terms of the GNU General Public License version 3 as published by the
-   * Free Software Foundation with the addition of the following permission added
-   * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
-   * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
-   * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
-   *
-   * Zurmo is distributed in the hope that it will be useful, but WITHOUT
-   * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
-   * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
-   * details.
-   *
-   * You should have received a copy of the GNU General Public License along with
-   * this program; if not, see http://www.gnu.org/licenses or write to the Free
-   * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
-   * 02110-1301 USA.
-   *
-   * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-   * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
-   ********************************************************************************/
+     * Zurmo is a customer relationship management program developed by
+     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     *
+     * Zurmo is free software; you can redistribute it and/or modify it under
+     * the terms of the GNU General Public License version 3 as published by the
+     * Free Software Foundation with the addition of the following permission added
+     * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+     * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+     * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+     *
+     * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+     * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+     * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+     * details.
+     *
+     * You should have received a copy of the GNU General Public License along with
+     * this program; if not, see http://www.gnu.org/licenses or write to the Free
+     * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+     * 02110-1301 USA.
+     *
+     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
+     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     ********************************************************************************/
 
     class InstallUtilTest extends ZurmoBaseTest
     {
-        protected $temporaryDatabaseHostname;
-        protected $temporaryDatabasePort = 3306;
-        protected $temporaryDatabaseUsername;
-        protected $temporaryDatabasePassword;
+        protected $hostname;
+        protected $rootUsername;
+        protected $rootPassword;
+        protected $databasePort;
+        protected $existingDatabaseName;
         protected $temporaryDatabaseName;
         protected $superUserPassword;
 
         public function __construct()
         {
             parent::__construct();
-            list(, $this->temporaryDatabaseHostname, $this->temporaryDatabasePort, $this->temporaryDatabaseName) =
-                array_values(RedBeanDatabase::getDatabaseInfoFromDsnString(Yii::app()->tempDb->connectionString));
-            $this->temporaryDatabaseUsername = Yii::app()->tempDb->username;
-            $this->temporaryDatabasePassword = Yii::app()->tempDb->password;
+            $matches = array();
+
+            assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", Yii::app()->db->connectionString, $matches) == 1); // Not Coding Standard
+            if ($matches[2] != '')
+            {
+                $this->databasePort      = intval($matches[2]);
+            }
+            else
+            {
+                $databaseType = RedBeanDatabase::getDatabaseTypeFromDsnString(Yii::app()->db->connectionString);
+                $this->databasePort = DatabaseCompatibilityUtil::getDatabaseDefaultPort($databaseType);
+            }
+
+            $this->hostname              = $matches[1];
+            $this->rootUsername          = Yii::app()->db->username;
+            $this->rootPassword          = Yii::app()->db->password;
+            $this->existingDatabaseName  = $matches[3];
+            $this->temporaryDatabaseName = "zurmo_wacky";
+            if ($this->rootUsername == 'zurmo')
+            {
+                $this->rootUsername          = 'zurmoroot';
+                $this->rootPassword          = 'somepass';
+                $this->temporaryDatabaseName = 'zurmo_wacky';
+            }
             $this->superUserPassword = 'super';
         }
 
@@ -77,9 +98,9 @@
             InstallUtil::checkWebServer(array('apache' => '10.0.0'), $expectedVersion);
             $this->assertFalse (InstallUtil::checkWebServer(array('apache' => '3.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
+            $this->assertTrue  (InstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
+            $this->assertTrue  (InstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
             $this->assertFalse (InstallUtil::checkWebServer(array('iis'    => '5.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
@@ -90,9 +111,9 @@
             InstallUtil::checkWebServer(array('apache' => '10.0.0'), $expectedVersion);
             $this->assertFalse (InstallUtil::checkWebServer(array('apache' => '3.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
+            $this->assertTrue  (InstallUtil::checkWebServer(array('apache' => '2.2.16'), $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
+            $this->assertTrue  (InstallUtil::checkWebServer(array('apache' => '2.2.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
             $this->assertFalse (InstallUtil::checkWebServer(array('iis'    => '5.0.0'),  $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
@@ -119,9 +140,9 @@
             $this->assertEquals($expectedVersion, $actualVersion);
             $this->assertFalse (InstallUtil::checkPhp('5.8.0',     $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkPhp(PHP_VERSION, $actualVersion));
+            $this->assertTrue  (InstallUtil::checkPhp(PHP_VERSION, $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkPhp('4.4.1',     $actualVersion));
+            $this->assertTrue  (InstallUtil::checkPhp('4.4.1',     $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
@@ -139,78 +160,54 @@
         {
             $oldValue = ini_get('memory_limit');
             ini_set('memory_limit', '64M');
-            $this->assertFalse(InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue( InstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
+            $this->assertFalse  (InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(64   * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(12   * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting( 1   * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
             ini_set('memory_limit', '64m');
-            $this->assertFalse(InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
+            $this->assertFalse  (                        InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(64   * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(12   * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting( 1   * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024,        $actualMemoryLimitBytes);
             //causing actual exhausting of memory during tests.
             /*
             ini_set('memory_limit', '64K');
-            $this->assertFalse (64 * 1024, InstallUtil::checkPhpMaxMemorySetting(1024 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(12 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
-            $this->assertEquals(64 * 1024, $actualMemoryLimitBytes);
-          */
+            $this->assertFalse (64 * 1024,               InstallUtil::checkPhpMaxMemorySetting(1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024,               $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(64   * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024,               $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(12   * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024,               $actualMemoryLimitBytes);
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting( 1   * 1024, $actualMemoryLimitBytes));
+            $this->assertEquals(64 * 1024,               $actualMemoryLimitBytes);
+            */
             ini_set('memory_limit', '64G');
-            $this->assertFalse( InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertFalse(                          InstallUtil::checkPhpMaxMemorySetting(1024 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(64   * 1024 * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting(12 * 1024 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting(12   * 1024 * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
-            $this->assertTrue(InstallUtil::checkPhpMaxMemorySetting( 1 * 1024, $actualMemoryLimitBytes));
+            $this->assertTrue  (                         InstallUtil::checkPhpMaxMemorySetting( 1   * 1024, $actualMemoryLimitBytes));
             $this->assertEquals(64 * 1024 * 1024 * 1024, $actualMemoryLimitBytes);
             ini_set('memory_limit', $oldValue);
         }
 
         public function testCheckDatabase_mysql()
         {
-            InstallUtil::checkDatabase('mysql',
-                                    $this->temporaryDatabaseHostname,
-                                    $this->temporaryDatabaseUsername,
-                                    $this->temporaryDatabasePassword,
-                                    $this->temporaryDatabasePort,
-                                    '10.5.5',
-                                    $expectedVersion);
-            $this->assertFalse (InstallUtil::checkDatabase('mysql',
-                                $this->temporaryDatabaseHostname,
-                                $this->temporaryDatabaseUsername,
-                                $this->temporaryDatabasePassword,
-                                $this->temporaryDatabasePort,
-                                '7.0.0  ',
-                                $actualVersion));
+            InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '10.5.5', $expectedVersion);
+            $this->assertFalse (InstallUtil::checkDatabase('mysql',  $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '7.0.0  ', $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkDatabase('mysql',
-                            $this->temporaryDatabaseHostname,
-                            $this->temporaryDatabaseUsername,
-                            $this->temporaryDatabasePassword,
-                            $this->temporaryDatabasePort,
-                            $expectedVersion,
-                            $actualVersion));
+            $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $expectedVersion, $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
-            $this->assertTrue(InstallUtil::checkDatabase('mysql',
-                            $this->temporaryDatabaseHostname,
-                            $this->temporaryDatabaseUsername,
-                            $this->temporaryDatabasePassword,
-                            $this->temporaryDatabasePort,
-                            '5.0.0',
-                            $actualVersion));
+            $this->assertTrue  (InstallUtil::checkDatabase('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, '5.0.0', $actualVersion));
             $this->assertEquals($expectedVersion, $actualVersion);
         }
 
@@ -229,48 +226,48 @@
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckSoap()
         {
             $this->assertNotNull(InstallUtil::checkSoap());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckSPL()
         {
             $this->assertNotNull(InstallUtil::checkSPL());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckCtype()
         {
             $this->assertNotNull(InstallUtil::checkCtype());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckPCRE()
         {
             $this->assertNotNull(InstallUtil::checkPCRE());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckImap()
         {
             $this->assertNotNull(InstallUtil::checkImap());
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckZip()
         {
             $this->assertNotNull(InstallUtil::checkZip());
@@ -315,142 +312,142 @@
         }
 
         /**
-       * Setting the upload_max_filesize doesn't seem to do anything.
-       */
+         * Setting the upload_max_filesize doesn't seem to do anything.
+         */
         public function testCheckPhpUploadSizeSetting()
         {
-            $this->assertFalse(InstallUtil::checkPhpUploadSizeSetting(1024 * 1024 * 1024, $actualUploadLimitBytes));
-            $this->assertTrue(InstallUtil::checkPhpUploadSizeSetting(1 * 1024 * 1024, $actualUploadLimitBytes));
+            $this->assertFalse  (InstallUtil::checkPhpUploadSizeSetting(1024 * 1024 * 1024, $actualUploadLimitBytes));
+            $this->assertTrue  (InstallUtil::checkPhpUploadSizeSetting(1 * 1024 * 1024, $actualUploadLimitBytes));
         }
 
         /**
-       * Setting the post_max_size doesn't seem to do anything.
-       */
+         * Setting the post_max_size doesn't seem to do anything.
+         */
         public function testCheckPhpPostSizeSetting()
         {
             $this->assertFalse (InstallUtil::checkPhpPostSizeSetting(1024 * 1024 * 1024, $actualPostLimitBytes));
-            $this->assertTrue(InstallUtil::checkPhpPostSizeSetting(1 * 1024 * 1024, $actualPostLimitBytes));
+            $this->assertTrue  (InstallUtil::checkPhpPostSizeSetting(1 * 1024 * 1024, $actualPostLimitBytes));
         }
 
         /**
-       * Simple test to confirm the check doesnt break.
-       */
+         * Simple test to confirm the check doesnt break.
+         */
         public function testCheckDatabaseMaxAllowedPacketsSize()
         {
             $minimumRequireBytes = 1;
             $actualBytes         = null;
             $this->assertNotNull(InstallUtil::checkDatabaseMaxAllowedPacketsSize('mysql',
-                                                                               $this->temporaryDatabaseHostname,
-                                                                               $this->temporaryDatabaseUsername,
-                                                                               $this->temporaryDatabasePassword,
-                                                                               $this->temporaryDatabasePort,
+                                                                               $this->hostname,
+                                                                               $this->rootUsername,
+                                                                               $this->rootPassword,
+                                                                               $this->databasePort,
                                                                                $minimumRequireBytes,
                                                                                $actualBytes));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckDatabaseMaxSpRecursionDepth()
         {
             $minimumRequiredMaxSpRecursionDepth = 20;
             $maxSpRecursionDepth                = null;
             $this->assertNotNull(InstallUtil::checkDatabaseMaxSpRecursionDepth('mysql',
-                                                                             $this->temporaryDatabaseHostname,
-                                                                             $this->temporaryDatabaseUsername,
-                                                                             $this->temporaryDatabasePassword,
-                                                                             $this->temporaryDatabasePort,
+                                                                             $this->hostname,
+                                                                             $this->rootUsername,
+                                                                             $this->rootPassword,
+                                                                             $this->databasePort,
                                                                              $minimumRequiredMaxSpRecursionDepth,
                                                                              $maxSpRecursionDepth));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckThreadStackValue()
         {
             $minimumRequiredThreadStackValue = 524288;
             $threadStackValue                = null;
             $this->assertNotNull(InstallUtil::checkDatabaseThreadStackValue('mysql',
-                                                                $this->temporaryDatabaseHostname,
-                                                                $this->temporaryDatabaseUsername,
-                                                                $this->temporaryDatabasePassword,
-                                                                $this->temporaryDatabasePort,
+                                                                $this->hostname,
+                                                                $this->rootUsername,
+                                                                $this->rootPassword,
+                                                                $this->databasePort,
                                                                 $minimumRequiredThreadStackValue,
                                                                 $threadStackValue));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckDatabaseOptimizerSearchDepthValue()
         {
             $threadStackValue                = null;
             $this->assertNotNull(InstallUtil::checkDatabaseOptimizerSearchDepthValue('mysql',
-                                                            $this->temporaryDatabaseHostname,
-                                                            $this->temporaryDatabaseUsername,
-                                                            $this->temporaryDatabasePassword,
-                                                            $this->temporaryDatabasePort,
+                                                            $this->hostname,
+                                                            $this->rootUsername,
+                                                            $this->rootPassword,
+                                                            $this->databasePort,
                                                             $optimizerSearchDepth));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckDatabaseDefaultCollation()
         {
             $notAllowedDatabaseCollations = array('utf8_general_ci');
             $databaseDefaultCollation     = null;
             $this->assertNotNull(InstallUtil::checkDatabaseDefaultCollation('mysql',
-                                                                          $this->temporaryDatabaseHostname,
+                                                                          $this->hostname,
                                                                           $this->temporaryDatabaseName,
-                                                                          $this->temporaryDatabaseUsername,
-                                                                          $this->temporaryDatabasePassword,
-                                                                          $this->temporaryDatabasePort,
+                                                                          $this->rootUsername,
+                                                                          $this->rootPassword,
+                                                                          $this->databasePort,
                                                                           $notAllowedDatabaseCollations,
                                                                           $databaseDefaultCollation));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testIsDatabaseStrictMode()
         {
             $this->assertNotNull(DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
-                                                                                 $this->temporaryDatabaseHostname,
-                                                                                 $this->temporaryDatabaseUsername,
-                                                                                 $this->temporaryDatabasePassword,
-                                                                                 $this->temporaryDatabasePort));
+                                                                                 $this->hostname,
+                                                                                 $this->rootUsername,
+                                                                                 $this->rootPassword,
+                                                                                 $this->databasePort));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckDatabaseLogBinValue()
         {
             $logBinValue     = null;
             $this->assertNotNull(InstallUtil::checkDatabaseLogBinValue('mysql',
-                                                                       $this->temporaryDatabaseHostname,
+                                                                       $this->hostname,
                                                                        $this->temporaryDatabaseName,
-                                                                       $this->temporaryDatabaseUsername,
-                                                                       $this->temporaryDatabasePassword,
-                                                                       $this->temporaryDatabasePort,
+                                                                       $this->rootUsername,
+                                                                       $this->rootPassword,
+                                                                       $this->databasePort,
                                                                        $logBinValue));
         }
 
         /**
-      * Simple test to confirm the check doesnt break.
-      */
+        * Simple test to confirm the check doesnt break.
+        */
         public function testCheckDatabaseLogBinTrustFunctionCreatorsValue()
         {
             $logBinTrustFunctionCreatorsValue     = null;
             $this->assertNotNull(InstallUtil::checkDatabaseLogBinTrustFunctionCreatorsValue(
                                                                             'mysql',
-                                                                            $this->temporaryDatabaseHostname,
+                                                                            $this->hostname,
                                                                             $this->temporaryDatabaseName,
-                                                                            $this->temporaryDatabaseUsername,
-                                                                            $this->temporaryDatabasePassword,
-                                                                            $this->temporaryDatabasePort,
+                                                                            $this->rootUsername,
+                                                                            $this->rootPassword,
+                                                                            $this->databasePort,
                                                                             $logBinTrustFunctionCreatorsValue));
         }
 
@@ -461,8 +458,8 @@
                 $this->markTestSkipped('Memcache level caching is turned off.');
             }
 
-            $this->assertTrue(InstallUtil::checkMemcacheConnection('127.0.0.1', 11211));
-            $this->assertTrue(InstallUtil::checkMemcacheConnection('localhost', 11211));
+            $this->assertTrue  (InstallUtil::checkMemcacheConnection('127.0.0.1', 11211));
+            $this->assertTrue  (InstallUtil::checkMemcacheConnection('localhost', 11211));
             $results = InstallUtil::checkMemcacheConnection('10.3.3.3',  11211);
             $this->assertTrue(  110 == $results[0] ||
                                 10060 == $results[0]);
@@ -475,28 +472,11 @@
         public function testConnectToDatabaseCreateSuperUserBuildDatabaseAndFreeze()
         {
             // This test cannot run as saltdev. It is therefore skipped on the server.
-            if ($this->temporaryDatabaseUsername == 'root')
+            if ($this->rootUsername == 'root')
             {
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase ('mysql',
-                                                                            $this->temporaryDatabaseHostname,
-                                                                            $this->temporaryDatabaseUsername,
-                                                                            $this->temporaryDatabasePassword,
-                                                                            $this->temporaryDatabasePort,
-                                                                            $this->temporaryDatabaseName));
-                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql',
-                                                                                $this->temporaryDatabaseHostname,
-                                                                                $this->temporaryDatabaseUsername,
-                                                                                $this->temporaryDatabasePassword,
-                                                                                $this->temporaryDatabasePort,
-                                                                                $this->temporaryDatabaseName,
-                                                                                'wacko',
-                                                                                'wacked'));
-                InstallUtil::connectToDatabase('mysql',
-                                                $this->temporaryDatabaseHostname,
-                                                'wacky',
-                                                $this->temporaryDatabaseUsername,
-                                                $this->temporaryDatabasePassword,
-                                                $this->temporaryDatabasePort);
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabase    ('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $this->temporaryDatabaseName));
+                $this->assertTrue(DatabaseCompatibilityUtil::createDatabaseUser('mysql', $this->hostname, $this->rootUsername, $this->rootPassword, $this->databasePort, $this->temporaryDatabaseName, 'wacko', 'wacked'));
+                InstallUtil::connectToDatabase('mysql', $this->hostname, 'wacky', $this->rootUsername, $this->rootPassword, $this->databasePort);
                 Yii::app()->user->userModel = InstallUtil::createSuperUser('super', 'super');
                 $messageLogger = new MessageLogger();
                 InstallUtil::autoBuildDatabase($messageLogger);
@@ -524,6 +504,7 @@
                                         'currencyvalue',
                                         'customfield',
                                         'customfielddata',
+                                        'customfieldsmodel',
                                         'dashboard',
                                         'email',
                                         'filecontent',
@@ -540,6 +521,7 @@
                                         'opportunity',
                                         'opportunity_read',
                                         'ownedcustomfield',
+                                        'ownedmodel',
                                         'ownedsecurableitem',
                                         'permission',
                                         'permitable',
@@ -572,8 +554,8 @@
             copy($debugConfigFileDist, $debugConfigFile);
             $debugConfiguration = file_get_contents($debugConfigFile);
 
-            $this->assertRegExp('/\$debugOn = true;/', $debugConfiguration);
-            $this->assertRegExp('/\$forceNoFreeze = true;/', $debugConfiguration);
+            $this->assertRegExp   ('/\$debugOn = true;/', $debugConfiguration);
+            $this->assertRegExp   ('/\$forceNoFreeze = true;/', $debugConfiguration);
 
             try
             {
@@ -585,19 +567,19 @@
                                                 '', '');
                 $debugConfiguration       = file_get_contents($debugConfigFile);
                 $perInstanceConfiguration = file_get_contents($perInstanceConfigFile);
-                $this->assertRegExp('/\$debugOn = false;/',
+                $this->assertRegExp   ('/\$debugOn = false;/',
                                        $debugConfiguration);
-                $this->assertRegExp('/\$forceNoFreeze = false;/',
+                $this->assertRegExp   ('/\$forceNoFreeze = false;/',
                                        $debugConfiguration);
-                $this->assertRegExp('/\$language         = \'es\';/',
+                $this->assertRegExp   ('/\$language         = \'es\';/',
                                        $perInstanceConfiguration);
-                $this->assertRegExp('/\$connectionString = \'mysql:host=databases.r-us.com;port=3306;dbname=wacky\';/', // Not Coding Standard
+                $this->assertRegExp   ('/\$connectionString = \'mysql:host=databases.r-us.com;port=3306;dbname=wacky\';/', // Not Coding Standard
                                        $perInstanceConfiguration);
-                $this->assertRegExp('/\$username         = \'wacko\';/',
+                $this->assertRegExp   ('/\$username         = \'wacko\';/',
                                        $perInstanceConfiguration);
-                $this->assertRegExp('/\$password         = \'wacked\';/',
+                $this->assertRegExp   ('/\$password         = \'wacked\';/',
                                        $perInstanceConfiguration);
-                $this->assertRegExp('/\'host\'   => \'memcache.jason.com\',\n' .            // Not Coding Standard
+                $this->assertRegExp   ('/\'host\'   => \'memcache.jason.com\',\n' .            // Not Coding Standard
                                        '                                \'port\'   => 5432,/', // Not Coding Standard
                                        $perInstanceConfiguration);
                 $this->assertNotRegExp('/\/\/ REMOVE THE REMAINDER/',
@@ -633,8 +615,8 @@
         }
 
         /**
-      * @depends testRunInstallation
-      */
+        * @depends testRunInstallation
+        */
         public function testRunAutoBuildFromUpdateSchemaCommand()
         {
             $this->runInstallation(true);
@@ -656,11 +638,11 @@
 
             $form = new InstallSettingsForm();
             $form->databaseType      = 'mysql';
-            $form->databaseHostname  = $this->temporaryDatabaseHostname;
+            $form->databaseHostname  = $this->hostname;
             $form->databaseName      = $this->temporaryDatabaseName;
-            $form->databaseUsername  = $this->temporaryDatabaseUsername;
-            $form->databasePassword  = $this->temporaryDatabasePassword;
-            $form->databasePort      = $this->temporaryDatabasePort;
+            $form->databaseUsername  = $this->rootUsername;
+            $form->databasePassword  = $this->rootPassword;
+            $form->databasePort      = $this->databasePort;
             $form->superUserPassword = $this->superUserPassword;
             if (!$memcacheOn)
             {
@@ -694,23 +676,21 @@
             $this->assertEquals('super', $user->username);
 
             //Check if config files is updated.
-            $this->assertRegExp('/\$connectionString = \'mysql:host='.
-                                $this->temporaryDatabaseHostname.';port='.$this->temporaryDatabasePort.
-                                ';dbname='.$this->temporaryDatabaseName.'\';/', // Not Coding Standard
+            $this->assertRegExp   ('/\$connectionString = \'mysql:host='.$this->hostname.';port='.$this->databasePort.';dbname='.$this->temporaryDatabaseName.'\';/', // Not Coding Standard
                                    $perInstanceConfiguration);
-            $this->assertRegExp('/\$username         = \''.$this->temporaryDatabaseUsername.'\';/',  // Not Coding Standard
+            $this->assertRegExp   ('/\$username         = \''.$this->rootUsername.'\';/',  // Not Coding Standard
                                    $perInstanceConfiguration);
-            $this->assertRegExp('/\$password         = \''.$this->temporaryDatabasePassword.'\';/',  // Not Coding Standard
+            $this->assertRegExp   ('/\$password         = \''.$this->rootPassword.'\';/',  // Not Coding Standard
                                    $perInstanceConfiguration);
 
             if ($memcacheOn)
             {
-                $this->assertRegExp('/\$memcacheLevelCaching\s*=\s*true;/',
+                $this->assertRegExp   ('/\$memcacheLevelCaching\s*=\s*true;/',
                                        $debugConfiguration);
             }
             else
             {
-                $this->assertRegExp('/\$memcacheLevelCaching\s*=\s*false;/',
+                $this->assertRegExp   ('/\$memcacheLevelCaching\s*=\s*false;/',
                                        $debugConfiguration);
             }
             //Restore original config files.
