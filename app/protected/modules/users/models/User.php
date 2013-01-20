@@ -694,5 +694,15 @@
             }
             return $emailSignature;
         }
+
+        public function isDeletable()
+        {
+            $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($superAdminGroup->users->count() == 1 && $superAdminGroup->contains($this))
+            {
+                return false;
+            }
+            return parent::isDeletable();
+        }
     }
 ?>
