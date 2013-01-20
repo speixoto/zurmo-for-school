@@ -24,39 +24,59 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * View  for showing in the user interface when there the global email configuration is not yet set up.
-     * This needs to be configured first before a user's email configuration can be setup.
-     */
-    class NoGlobalEmailConfigurationYetView extends View
+    class ExecutionTimeListener implements PHPUnit_Framework_TestListener
     {
-        public $cssClasses = array('splash-view');
+        private $__timeLimit;
+        private $__precision;
 
-        protected function renderContent()
+        public function __construct($timeLimit = 0, $precision = 2)
         {
-            $params   = array('label' => $this->getCreateLinkDisplayLabel());
-            $url      = Yii::app()->createUrl('/emailMessages/default/configurationEditOutbound');
-            $content  = '<div class="' . $this->getIconName() . '">';
-            $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
-            $content .= '</div>';
-            return $content;
+            $this->__timeLimit = $timeLimit;
+            $this->__precision = $precision;
+
         }
 
-        protected function getIconName()
+        public function startTest(PHPUnit_Framework_Test $test)
         {
-            return 'EmailMessage';
+
         }
 
-        protected function getCreateLinkDisplayLabel()
+        public function endTest(PHPUnit_Framework_Test $test, $length)
         {
-            return Yii::t('Default', 'Configure');
+            if($length > $this->__timeLimit)
+            {
+                echo PHP_EOL."Name: ".$test->getName()." took ".round($length, $this->__precision) . " second(s)".PHP_EOL;
+            }
         }
 
-        protected function getMessageContent()
+        public function addError(PHPUnit_Framework_Test $test, Exception $e, $time)
         {
-            return Yii::t('Default', '<h2>Not so fast</h2><div class="large-icon"></div>' .
-                                     '<p>The administrator must first configure the system outbound email settings.</p>');
+
         }
+
+        public function addFailure(PHPUnit_Framework_Test $test, PHPUnit_Framework_AssertionFailedError $e, $time)
+        {
+
+        }
+
+        public function addIncompleteTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+        {
+
+        }
+
+        public function addSkippedTest(PHPUnit_Framework_Test $test, Exception $e, $time)
+        {
+
+        }
+
+        public function startTestSuite(PHPUnit_Framework_TestSuite $suite)
+        {
+
+        }
+
+        public function endTestSuite(PHPUnit_Framework_TestSuite $suite)
+        {
+
+        }
+
     }
-?>
