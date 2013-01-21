@@ -42,6 +42,15 @@
         private static $infoXmlPath = 'sites/default/files/l10n_packager/l10n_server.xml';
 
         /**
+         * l10n Server info XML
+         */
+        private static $l10nInfo;
+        /**
+         * Holds an array with avalible languages
+         */
+        private static $avalibleLanguages;
+
+        /**
          * @return string
          */
         private static function getReleaseVersion()
@@ -56,18 +65,27 @@
          */
         protected static function getServerInfo()
         {
-            $cacheIdentifier = 'l10nServerInfo';
-            try {
-                $l10nInfo = GeneralCache::getEntry($cacheIdentifier);
-            } catch (NotFoundException $e) {
-                $infoFileUrl = self::$serverDomain . '/' . self::$infoXmlPath;
-                $l10nInfo = @simplexml_load_file($infoFileUrl);
-                GeneralCache::cacheEntry($cacheIdentifier, $l10nInfo);
+            if (self::$l10nInfo
+                && isset(self::$l10nInfo)
+                &&
+                self::$l10nInfo->version == '1.1')
+            {
+                return self::$l10nInfo;
             }
 
-            if (isset($l10nInfo->version) && $l10nInfo->version == '1.1')
+            $cacheIdentifier = 'l10nServerInfo';
+            try {
+                self::$l10nInfo = GeneralCache::getEntry($cacheIdentifier);
+            } catch (NotFoundException $e) {
+                $infoFileUrl = self::$serverDomain . '/' . self::$infoXmlPath;
+                self::$l10nInfo = @simplexml_load_file($infoFileUrl);
+                GeneralCache::cacheEntry($cacheIdentifier, self::$l10nInfo);
+            }
+
+            if (isset(self::$l10nInfo->version)
+                && self::$l10nInfo->version == '1.1')
             {
-                return $l10nInfo;
+                return self::$l10nInfo;
             }
 
             throw new FailedServiceException();
@@ -78,21 +96,59 @@
          */
         public static function getAvalibleLanguages()
         {
+            if (is_array(self::$avalibleLanguages)
+                && !empty(self::$avalibleLanguages))
+            {
+                return self::$avalibleLanguages;
+            }
+
             try {
                 $l10nInfo = self::getServerInfo();
             } catch (FailedServiceException $e) {
-                return false;
+                throw new FailedServiceException();
             }
 
-            $languages = array();
+            self::$avalibleLanguages = array();
             foreach ($l10nInfo->languages->language as $language)
             {
-                $languages[$language->code] = (array)$language;
+                self::$avalibleLanguages[$language->code] = (array)$language;
             }
 
-            if (is_array($languages) && !empty($languages))
+            if (is_array(self::$avalibleLanguages)
+                && !empty(self::$avalibleLanguages))
             {
-                return $languages;
+                return self::$avalibleLanguages;
+            }
+
+            throw new FailedServiceException();
+        }
+
+        protected static function getUrlPattern()
+        {
+            $l10nInfo = self::getServerInfo();
+            return $l10nInfo->update_url;
+        }
+
+        /**
+         * Formats the url to the po file for the specified language
+         */
+        public static function getPoFileUrl($languageCode)
+        {
+            $avalibleLanguages = self::getAvalibleLanguages();
+            if (!empty($avalibleLanguages) && isset($avalibleLanguages[$languageCode]))
+            {
+                $urlPattern = self::getUrlPattern();
+                $searchArray = array(
+                    '%project'  => 'zurmo',
+                    '%release'  => self::getReleaseVersion(),
+                    '%language' => $languageCode
+                );
+
+                return str_replace(
+                    array_keys($searchArray),
+                    $searchArray,
+                    $urlPattern
+                );
             }
 
             throw new FailedServiceException();
