@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SavedReport extends OwnedSecurableItem
+    class SavedWorkflow extends Item
     {
         public function __toString()
         {
@@ -65,7 +65,7 @@
                     array('name',                'required'),
                     array('name',                'type',   'type' => 'string'),
                     array('name',                'length', 'max'  => 64),
-                    array('serializedData',      'required'),
+                   // array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
                     array('type',       		 'required'),
                     array('type',       		 'type',   'type' => 'string'),
@@ -82,12 +82,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ReportsModule';
-        }
-
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
+            return 'WorkflowsModule';
         }
     }
 ?>

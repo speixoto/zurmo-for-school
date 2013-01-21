@@ -24,11 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportsModule extends SecurableModule
+    class WorkflowsModule extends SecurableModule
     {
-        const RIGHT_CREATE_REPORTS = 'Create Reports';
-        const RIGHT_DELETE_REPORTS = 'Delete Reports';
-        const RIGHT_ACCESS_REPORTS = 'Access Reports Tab';
+        const RIGHT_CREATE_WORKFLOWS = 'Create Workflows';
+        const RIGHT_DELETE_WORKFLOWS = 'Delete Workflows';
+        const RIGHT_ACCESS_WORKFLOWS = 'Access Workflows Tab';
 
         public function getDependencies()
         {
@@ -40,7 +40,7 @@
 
         public function getRootModelNames()
         {
-            return array('SavedReport');
+            return array('SavedWorkflow');
         }
 
         public static function getDefaultMetadata()
@@ -52,24 +52,24 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'Reports',
-                        'url'   => array('/reports/default'),
-                        'right' => self::RIGHT_ACCESS_REPORTS,
+                        'label' => 'Workflows',
+                        'url'   => array('/workflows/default'),
+                        'right' => self::RIGHT_ACCESS_WORKFLOWS,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Reports',
-                        'url'   => array('/reports/default'),
-                        'right' => self::RIGHT_ACCESS_REPORTS,
+                        'label' => 'Workflows',
+                        'url'   => array('/workflows/default'),
+                        'right' => self::RIGHT_ACCESS_WORKFLOWS,
                         'order' => 8,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Report',
-                        'url'   => array('/reports/default/selectType'),
-                        'right' => self::RIGHT_CREATE_REPORTS,
+                        'label' => 'Workflow',
+                        'url'   => array('/workflows/default/selectType'),
+                        'right' => self::RIGHT_CREATE_WORKFLOWS,
                     ),
                 ),
             );
@@ -78,37 +78,37 @@
 
         public static function getAccessRight()
         {
-            return self::RIGHT_ACCESS_REPORTS;
+            return self::RIGHT_ACCESS_WORKFLOWS;
         }
 
         public static function getCreateRight()
         {
-            return self::RIGHT_CREATE_REPORTS;
+            return self::RIGHT_CREATE_WORKFLOWS;
         }
 
         public static function getDeleteRight()
         {
-            return self::RIGHT_DELETE_REPORTS;
+            return self::RIGHT_DELETE_WORKFLOWS;
         }
 
         public static function getDefaultDataMakerClassName()
         {
-          //  return 'ReportsDefaultDataMaker';
+          //  return 'WorkflowsDefaultDataMaker';
         }
 
         public static function getDemoDataMakerClassName()
         {
-          //  return 'ReportsDemoDataMaker';
+          //  return 'WorkflowsDemoDataMaker';
         }
 
         /**
-         * Even though reports are never globally searched, the search form can still be used by a specific
+         * Even though workflows are never globally searched, the search form can still be used by a specific
          * search view for a module.  Either this module or a related module.  This is why a class is returned.
          * @see modelsAreNeverGloballySearched controls it not being searchable though in the global search.
          */
         public static function getGlobalSearchFormClassName()
         {
-            return 'ReportsSearchForm';
+            return 'WorkflowsSearchForm';
         }
 
         public static function modelsAreNeverGloballySearched()
@@ -118,7 +118,7 @@
 
         public static function hasPermissions()
         {
-            return true;
+            return false;
         }
     }
 ?>
