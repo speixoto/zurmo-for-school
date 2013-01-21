@@ -39,22 +39,19 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Report Wizard -change label');
+            return Yii::t('Default', 'Report Wizard');
         }
 
         protected function getReportTypeData()
         {
             $categories = array();
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Rows and Columns Report'),
-                                                'descriptionLabel'    => Yii::t('Default', 'TODO Description Text'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
                                             );
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Summation Report'),
-                                                'descriptionLabel'    => Yii::t('Default', 'TODO Description Text'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
                                             );
             $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Matrix Report'),
-                                                'descriptionLabel'    => Yii::t('Default', 'TODO Description Text'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
                                             );
             return $categories;
@@ -67,7 +64,10 @@
             {
                 $content .= '<li>';
                 $content .= '<h4>' . $item['titleLabel'] . '</h4>';
-                $content .= ' - ' . $item['descriptionLabel'];
+                if(isset($item['descriptionLabel']))
+                {
+                    $content .= ' - ' . $item['descriptionLabel'];
+                }
                 $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLinkText()),
                                         Yii::app()->createUrl($item['route']));
                 $content .= '</li>';
