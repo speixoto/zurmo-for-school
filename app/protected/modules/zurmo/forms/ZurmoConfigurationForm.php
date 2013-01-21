@@ -71,7 +71,7 @@
                 'modalListPageSize'                     => Yii::t('Default', 'Popup list page size'),
                 'dashboardListPageSize'                 => Yii::t('Default', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled' => Yii::t('Default', 'Enable game notification popup'),
-                'realtimeUpdatesEnabled'                => Yii::t('Default', 'Enable real-time updates (experimental)'),
+                'realtimeUpdatesEnabled'                => Yii::t('Default', 'Enable real-time updates'),
             );
         }
     }
