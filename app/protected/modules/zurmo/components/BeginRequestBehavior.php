@@ -128,7 +128,7 @@
                 }
                 // todo: Find better way to append this prefix for tests.
                 // We can't put this code only in BeginRequestTestBehavior, because for API tests we are using  BeginRequestBehavior
-                if (IS_TEST)
+                if (defined('IS_TEST'))
                 {
                     ZurmoCache::setAdditionalStringForCachePrefix('Test');
                 }
