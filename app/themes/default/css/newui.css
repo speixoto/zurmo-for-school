@@ -7237,6 +7237,7 @@ div.wide.form label.hasCheckBox {
   margin: 5px 0 0 10px !important;
   width: 220px;
   float: left;
+  z-index: 10000;
 }
 #ModalView .search-view-1 {
   z-index: 0;
@@ -15881,13 +15882,47 @@ a.user-link {
   left: 30px;
   top: 75px;
   width: 100%;
+  /*.large-icon:after{
+        content:"D";
+        .symbly(300px);
+        line-height: 30%;   
+    }*/
+
 }
 .zero-components-view .large-icon {
   border-right: none;
   margin-right: 30px;
 }
-.zero-components-view .large-icon:after {
-  content: "D";
+.ZeroFilters .large-icon:after {
+  content: "�";
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroGroupings .large-icon:after {
+  content: "*";
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroDisplayColumns .large-icon:after {
+  content: "�";
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroOrdering .large-icon:after {
+  content: "�";
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroDrillDown .large-icon:after {
+  content: "�";
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
