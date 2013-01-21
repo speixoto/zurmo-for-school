@@ -144,7 +144,6 @@
             if (!$onlyForgetPhpCache && MEMCACHE_ON && Yii::app()->cache !== null)
             {
                 self::incrementCacheIncrementValue(static::$cacheType);
-                //Yii::app()->cache->flush();
             }
         }
 

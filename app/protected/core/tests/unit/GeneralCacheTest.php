@@ -72,7 +72,7 @@
                 GeneralCache::forgetEntry('somethingForTesting3');
                 try
                 {
-                    $value = GeneralCache::getEntry('somethingForTesting3');
+                    GeneralCache::getEntry('somethingForTesting3');
                     $this->fail('NotFoundException exception is not thrown.');
                 }
                 catch (NotFoundException $e)
@@ -92,7 +92,7 @@
                 GeneralCache::forgetAll();
                 try
                 {
-                    $value = GeneralCache::getEntry('somethingForTesting2');
+                    GeneralCache::getEntry('somethingForTesting2');
                     $this->fail('NotFoundException exception is not thrown.');
                 }
                 catch (NotFoundException $e)
@@ -119,7 +119,7 @@
                 GeneralCache::forgetAll();
                 try
                 {
-                    $value = GeneralCache::getEntry('somethingForTesting4');
+                    GeneralCache::getEntry('somethingForTesting4');
                     $this->fail('NotFoundException exception is not thrown.');
                 }
                 catch (NotFoundException $e)
