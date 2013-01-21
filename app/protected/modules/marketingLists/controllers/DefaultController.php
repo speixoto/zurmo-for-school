@@ -64,15 +64,28 @@
 
         public function actionCreate()
         {
-            $editView = MarketingListEditView($this->getId(), $this->getModule()->getId(),
+           $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
-                                                 Yii::t('Default', 'Create Marketing List')); 
+                                                 Yii::t('Default', 'Create Marketing List'));
             $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 
-     /*   public function actionEdit($id, $redirectUrl = null)
+        public function actionDetails($id)
+        {
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                      array(strval($marketingList), 'MarketingListsModule'), $marketingList);
+            $detailsView              = new MarketingListDetailsView($this->getId(), $this->getModule()->getId(), $marketingList);
+            $view     = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $detailsView));
+            echo $view->render();
+        }
+
+
+        public function actionEdit($id, $redirectUrl = null)
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
@@ -83,7 +96,7 @@
             echo $view->render();
         }
 
-        public function actionDelete($id)
+   /*     public function actionDelete($id)
         {
             $marketingList = MarketingList::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);

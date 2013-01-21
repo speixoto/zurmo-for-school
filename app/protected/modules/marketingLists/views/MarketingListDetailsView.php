@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListEditView extends SecuredEditView
+    class MarketingListDetailsView extends SecuredDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -32,8 +32,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelMarketingListsLink'),
-                            array('type'  => 'SaveButton'),
+                            array('type'  => 'CancelMarketingListsLink',    'renderType' => 'Edit'),
+                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type' => 'EditLink',       'renderType' => 'Details'),
                         ),
                     ),
                     'panels' => array(
@@ -46,7 +47,7 @@
                                                 array('attributeName' => 'name', 'type' => 'Text'),
                                             ),
                                         ),
-                                    ),
+                                    )
                                 ),
                                 array('cells' =>
                                     array(

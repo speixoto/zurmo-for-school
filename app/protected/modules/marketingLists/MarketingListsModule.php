@@ -75,5 +75,16 @@
         {
             return 'MarketingListsSearchForm';
         }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array();
+            $metadata['global'] = array(
+                'globalSearchAttributeNames' => array(
+                    'name',
+                ),
+            );
+            return $metadata;
+        }
     }
 ?>
