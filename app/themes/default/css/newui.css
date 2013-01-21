@@ -15792,6 +15792,9 @@ a.user-link {
   padding-top: 5px !important;
   padding-bottom: 5px !important;
 }
+.hasDrillDownLink {
+  padding: 10px 0 !important;
+}
 .drilldown-link {
   cursor: pointer;
   display: block;
@@ -15800,7 +15803,7 @@ a.user-link {
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
-  left: 4px;
+  left: 5px;
 }
 .ReportResultsComponentForPortletView {
   position: relative;

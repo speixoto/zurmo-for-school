@@ -200,6 +200,7 @@
                 $firstColumn = array(
                     'class'               => 'DrillDownColumn',
                     'id'                  => $this->gridId . $this->gridIdSuffix . '-rowDrillDown',
+                    'htmlOptions'         => array('class' => 'hasDrillDownLink')
                 );
                 array_push($columns, $firstColumn);
             }
