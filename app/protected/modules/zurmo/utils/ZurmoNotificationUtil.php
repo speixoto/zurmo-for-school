@@ -96,7 +96,7 @@
                     var unoti      = notiPlacer.text();
                     var url        = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
                     if(typeof(EventSource) !== 'undefined') {
-                        var source = new EventSource(url + '?uconv=' + uconv + '&unoti=' + unoti);
+                        var source = new EventSource(url + '?unreadConversations=' + uconv);
                         source.addEventListener('updateConversations', function(e) {
                           var data = JSON.parse(e.data);
                             if (uconv != data.unreadConversations) {

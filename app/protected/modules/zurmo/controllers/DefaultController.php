@@ -333,14 +333,14 @@
             StickySearchUtil::clearDataByKey($key);
         }
 
-        public function actionGetUpdatesForRefresh($uconv, $unoti)
+        public function actionGetUpdatesForRefresh($unreadConversations)
         {
             header('Content-Type: text/event-stream');
             header('Cache-Control: no-cache');
-            $unreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
-            if ($unreadConversations > $uconv)
+            $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
+            if ($newUnreadConversations > $unreadConversations)
             {
-                $data['unreadConversations'] = $unreadConversations;
+                $data['unreadConversations'] = $newUnreadConversations;
                 $data['imgUrl'] = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/zurmo-module.png';
                 $data['title'] = Yii::t('Default', 'ZurmoCRM (New comment)');
                 $data['message'] = Yii::t('Default', 'There is an unread conversation.');
