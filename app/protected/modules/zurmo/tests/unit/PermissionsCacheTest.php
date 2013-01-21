@@ -47,6 +47,20 @@
                 PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
                 $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
                 $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
+/*
+                PermissionsCache::forgetAll();
+
+                $account = new Account();
+                $account->name = 'Yooples2';
+                $this->assertTrue($account->save());
+                $super = User::getByUsername('super');
+                $combinedPermissions = 5;
+
+                PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
+                $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
+                $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
+exit;
+*/
             }
         }
 

@@ -29,7 +29,6 @@
         public function attach($owner)
         {
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetGeneralCachePrefix'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
         }
 
@@ -59,15 +58,6 @@
             {
                 Yii::import($file);
             }
-        }
-
-        /**
-         * Import all files that need to be included(for lazy loading)
-         * @param $event
-         */
-        public function handleSetGeneralCachePrefix($event)
-        {
-            ZurmoCache::setAdditionalStringForCachePrefix('Test');
         }
     }
 ?>

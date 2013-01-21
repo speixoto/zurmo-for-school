@@ -125,7 +125,7 @@
             if (MEMCACHE_ON && Yii::app()->cache !== null)
             {
                 $prefix = self::getCachePrefix($modelIdentifier, self::$cacheType);
-                Yii::app()->cache->delete($prefix . $modelIdentifier, 0);
+                Yii::app()->cache->delete($prefix . $modelIdentifier);
             }
         }
 
@@ -144,6 +144,7 @@
             if (!$onlyForgetPhpCache && MEMCACHE_ON && Yii::app()->cache !== null)
             {
                 self::incrementCacheIncrementValue(static::$cacheType);
+                //@Yii::app()->cache->flush();
             }
         }
 

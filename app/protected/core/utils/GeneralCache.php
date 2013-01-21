@@ -34,6 +34,12 @@
 
         public static $cacheType = 'G:';
 
+        /**
+         * Get entry from php cache and/or memcache
+         * @param string $identifier
+         * @return mixed
+         * @throws NotFoundException
+         */
         public static function getEntry($identifier)
         {
             assert('is_string($identifier)');
@@ -49,6 +55,7 @@
                 $prefix = self::getCachePrefix($identifier, self::$cacheType);
 
                 @$serializedData = Yii::app()->cache->get($prefix . $identifier);
+                //echo "GET:" . $prefix . $identifier . "\n";
                 if ($serializedData !== false)
                 {
                     $unserializedData = unserialize($serializedData);
@@ -62,6 +69,11 @@
             throw new NotFoundException();
         }
 
+        /**
+         * Add entry to php cache and/or memcache
+         * @param string $identifier
+         * @param mixed $entry
+         */
         public static function cacheEntry($identifier, $entry)
         {
             assert('is_string($identifier)');
@@ -77,6 +89,10 @@
             }
         }
 
+        /**
+         * Remove entry from php cache and/or memcache
+         * @param string $identifier
+         */
         public static function forgetEntry($identifier)
         {
             if (PHP_CACHING_ON)
@@ -93,6 +109,12 @@
             }
         }
 
+        /**
+         * Remove all GeneralCache data from php cache and/or memcache
+         * Please note that we are not using $Yii::app()->cache->forget function, because
+         * this function remove all data from memcache, so it would remove memcache data
+         * that are added by other application on same server(if there is only one instance of memcache on server)
+         */
         public static function forgetAll()
         {
             if (PHP_CACHING_ON)

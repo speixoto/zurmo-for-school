@@ -126,7 +126,14 @@
                         'servers' => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
                 }
+                // todo: Find better way to append this prefix for tests.
+                // We can't put this code only in BeginRequestTestBehavior, because for API tests we are using  BeginRequestBehavior
+                if (IS_TEST)
+                {
+                    ZurmoCache::setAdditionalStringForCachePrefix('Test');
+                }
             }
+
         }
 
         /**

@@ -25,8 +25,11 @@
      ********************************************************************************/
 
     /**
-     * This is a general cache helper that utilizes both php caching and memcaching if available. Utilized for
-     * caching requirements that are simple in/out of a serialized array or string of information.
+     * This is a base caching class, that contains code related to caching.
+     * Memcache doesn't have option to remove data related just to one application or host,
+     * and that is why we had to implement methods that would simulate this feature.
+     * Please check this link for more details about this idea:
+     * http://stackoverflow.com/questions/1202174/memcache-invalidate-entries-according-to-a-pattern
      */
     abstract class ZurmoCache
     {
@@ -34,9 +37,15 @@
 
         protected static $additionalStringForCachePrefix = '';
 
+        /**
+         * Get cache prefix, based on ZURMO_TOKEN, $cacheIncrementValue and cache type.
+         * In case that we want to get just cache increment value, prefix will not contain increment value.
+         * @param string $identifier
+         * @return string
+         */
         public static function getCachePrefix($identifier)
         {
-            if (self::isIdentifierCacheIncrementValueName(static::$cacheType, $identifier))
+            if (self::isIdentifierCacheIncrementValueName($identifier))
             {
                 $prefix = ZURMO_TOKEN . '_' . static::$cacheType;
             }
@@ -54,11 +63,21 @@
             return $prefix;
         }
 
+        /**
+         * Get curent increment value, based on $cacheType. Cache types can be:
+         * "G:" - for GlobalCache
+         * "M:" - for RedBeanModelsCache
+         * "P:" - for PermissionCache
+         * We need to distinct those cache types, because we should be able to forget only GlobalCache(increment
+         * cache increment value), while other two cache types will contain valid data.
+         * @param string $cacheType
+         * @return int|mixed
+         */
         protected static function getCacheIncrementValue($cacheType)
         {
             try
             {
-                $cacheIncrementValue = GeneralCache::getEntry(static::$cacheIncrementValueVariableName . $cacheType);
+                $cacheIncrementValue = GeneralCache::getEntry(self::$cacheIncrementValueVariableName . $cacheType);
             }
             catch (NotFoundException $e)
             {
@@ -68,11 +87,19 @@
             return $cacheIncrementValue;
         }
 
+        /**
+         * @param string $cacheType
+         * @param mixed $value
+         */
         protected static function setCacheIncrementValue($cacheType, $value)
         {
             GeneralCache::cacheEntry(self::$cacheIncrementValueVariableName . $cacheType, $value);
         }
 
+        /**
+         * Increment CacheIncrementValue
+         * @param string $cacheType
+         */
         protected static function incrementCacheIncrementValue($cacheType)
         {
             $currentCacheIncrementValue = self::getCacheIncrementValue($cacheType);
@@ -80,9 +107,14 @@
             self::setCacheIncrementValue($cacheType, $currentCacheIncrementValue);
         }
 
-        protected static function isIdentifierCacheIncrementValueName($cacheType, $identifier)
+        /**
+         * Check if identifier is same as self::$cacheIncrementValueVariableName.
+         * @param $identifier
+         * @return bool
+         */
+        protected static function isIdentifierCacheIncrementValueName($identifier)
         {
-            if ($identifier == self::$cacheIncrementValueVariableName . $cacheType)
+            if (strstr($identifier, self::$cacheIncrementValueVariableName) !== false)
             {
                 return true;
             }
@@ -92,11 +124,22 @@
             }
         }
 
+        /**
+         * Set additional prefix
+         * This is used to distinct memcache value for tests and for website, because test application and
+         * website application use same ZURMO_TOKEN. This prefix is empty for web application,
+         * and for tests it is set to "Test"
+         * @param string $prefix
+         */
         public static function setAdditionalStringForCachePrefix($prefix = '')
         {
             self::$additionalStringForCachePrefix = $prefix;
         }
 
+        /**
+         * Get additional prefix
+         * @return string
+         */
         public static function getAdditionalStringForCachePrefix()
         {
             return self::$additionalStringForCachePrefix;
