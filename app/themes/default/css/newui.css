@@ -7077,6 +7077,7 @@ div.wide.form label.hasCheckBox {
   margin: 5px 0 0 10px !important;
   width: 220px;
   float: left;
+  z-index: 10000;
 }
 #ModalView .search-view-1 {
   z-index: 0;
