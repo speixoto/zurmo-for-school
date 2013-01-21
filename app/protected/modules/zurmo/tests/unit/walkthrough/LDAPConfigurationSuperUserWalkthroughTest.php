@@ -83,8 +83,8 @@
                                       'bindPassword'                      => Yii::app()->authenticationHelper->ldapBindPassword,
                                       'baseDomain'                        => Yii::app()->authenticationHelper->ldapBaseDomain,
                                       'enabled'                           => Yii::app()->authenticationHelper->ldapEnabled)));
-         $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');            
-         $this->assertTrue(strpos($content, "Successfully Connected to LDAP Server") > 0);                  
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');            
+            $this->assertTrue(strpos($content, "Successfully Connected to LDAP Server") > 0);                  
         }
     }
 ?>

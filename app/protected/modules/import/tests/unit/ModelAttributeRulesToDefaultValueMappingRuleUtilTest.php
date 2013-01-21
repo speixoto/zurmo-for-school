@@ -142,13 +142,13 @@
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('Account', 'decimalCstm', 'defaultValue');
             $compareData = array(array('defaultValue',  'length',  'max'  => 6),
-                                 array('decimalCstm',  'RedBeanModelNumberValidator', 'precision' => 2),
+                                 array('defaultValue',  'RedBeanModelNumberValidator', 'precision' => 2),
                                  array('defaultValue',  'type',  'type' => 'float'));
             $this->assertEquals($compareData, $rules);
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('Account', 'integerCstm', 'defaultValue');
             $compareData = array(array('defaultValue',  'length',  'max'  => 11),
-                                 array('integerCstm',  'numerical', 'min'  => -500000, 'max'  => 500000),
+                                 array('defaultValue',  'numerical', 'min'  => -500000, 'max'  => 500000),
                                  array('defaultValue',  'type',  'type' => 'integer'));
             $this->assertEquals($compareData, $rules);
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
