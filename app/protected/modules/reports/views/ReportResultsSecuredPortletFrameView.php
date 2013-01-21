@@ -46,6 +46,10 @@
                     {
                         //ignore portlet, since there are no runtime filters
                     }
+                    elseif($portlet->viewType == 'ReportChartForPortlet' && !$this->params['relationModel']->hasChart())
+                    {
+                        //ignore portlet, since there is not a chart
+                    }
                     else
                     {
                         $resolvedPortlets[$column][] = $portlet;
