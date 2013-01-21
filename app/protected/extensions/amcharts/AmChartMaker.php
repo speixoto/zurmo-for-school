@@ -74,18 +74,23 @@
                                    "#075220", "#1d9e48", "#375d3b", "#183128", "#012426", "#027353", "#1c2640", "#263357",
                                    "#384c80", "#4e6ab2", "#5979cd"]',
                             5 => '["#262877", "#5979cd"]',
+                            6 => '["#6C8092", "#933140", "#447799", "#44BBCC", "#4A3970", "#91A1DC",
+                                   "#ABBC42", "#C70151", "#8C1C03", "#A67417", "#BDBF7E", "#FFAA07",
+                                   "#274F73", "#D92949", "#29A649", "#46201C", "#D92525", "#7AA61B",
+                                   "#F28B0C", "#8F6181", "#605F53", "#65818C", "#E96151", "#366774",
+                                   "#70995C", "#592519", "#33664D", "#142933", "#F2E530", "#D94625"]'
                 );
             $this->addChartProperties('fontFamily',                 '"Arial"');
             $this->addChartProperties('color',                      "'#545454'");
             $this->addChartProperties('lineColor',                  '"#545454"');
             $this->addValueAxisProperties('axisColor',              '"#545454"');
             $this->addValueAxisProperties('gridColor',              '"#545454"');
-            $this->addChartProperties('colors', $colorTheme[4]);
+            $this->addChartProperties('colors', $colorTheme[6]);
             if ($this->type == ChartRules::TYPE_COLUMN_2D)
             {
                 //Chart
                 $this->addChartProperties('usePrefixes',            true);
-                $this->addChartProperties('plotAreaBorderColor',    "'#000000'");
+                $this->addChartProperties('plotAreaBorderColor',    "'#A39595'");
                 $this->addChartProperties('plotAreaBorderAlpha',    0);
                 //Graph
                 $this->addGraphProperties('fillAlphas',             1);
@@ -145,7 +150,7 @@
             }
             elseif ($this->type == ChartRules::TYPE_DONUT_2D)
             {
-                $this->addChartProperties('color',                  "'#A39595'");
+                $this->addChartProperties('color',                  "'#FFFFFF'");
                 $this->addChartProperties('sequencedAnimation',     true);
                 $this->addChartProperties('startEffect',            "'elastic'");
                 $this->addChartProperties('innerRadius',            "'30%'");
@@ -161,7 +166,7 @@
             }
             elseif ($this->type == ChartRules::TYPE_DONUT_3D)
             {
-                $this->addChartProperties('color',                  "'#A39595'");
+                $this->addChartProperties('color',                  "'#FFFFFF'");
                 $this->addChartProperties('sequencedAnimation',     true);
                 $this->addChartProperties('startEffect',            "'elastic'");
                 $this->addChartProperties('innerRadius',            "'30%'");
@@ -178,10 +183,10 @@
             }
             elseif ($this->type == ChartRules::TYPE_PIE_2D)
             {
-                $this->addChartProperties('color',                  "'#A39595'");
+                $this->addChartProperties('color',                  "'#FFFFFF'");
                 $this->addChartProperties('outlineColor',           "'#FFFFFF'");
                 $this->addChartProperties('outlineAlpha',           0.8);
-                $this->addChartProperties('outlineThickness',       2);
+                $this->addChartProperties('outlineThickness',       1);
                 $this->addChartProperties('usePrefixes',            true);
                 $this->addChartProperties('radius',                 "'45%'");
                 $this->addChartProperties('labelRadius',            -55);
@@ -193,10 +198,10 @@
             }
             elseif ($this->type == ChartRules::TYPE_PIE_3D)
             {
-                $this->addChartProperties('color',                  "'#A39595'");
+                $this->addChartProperties('color',                  "'#FFFFFF'");
                 $this->addChartProperties('outlineColor',           "'#FFFFFF'");
                 $this->addChartProperties('outlineAlpha',           0.8);
-                $this->addChartProperties('outlineThickness',       2);
+                $this->addChartProperties('outlineThickness',       1);
                 $this->addChartProperties('usePrefixes',            true);
                 $this->addChartProperties('radius',                 "'45%'");
                 $this->addChartProperties('labelRadius',            -55);
