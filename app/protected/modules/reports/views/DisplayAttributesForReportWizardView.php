@@ -71,7 +71,7 @@
 
         protected function getZeroComponentsContent()
         {
-            $content = '<div class="DisplayAttributesIconOrSomethingElse">';
+            $content = '<div class="ZeroDisplayAttributes">';
             $content .= $this->getZeroComponentsMessageContent();
             $content .= '</div>';
             return $content;

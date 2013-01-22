@@ -129,7 +129,7 @@
 
         protected function getZeroComponentsContent()
         {
-            $content = '<div class="FilterIconOrSomethingElse">';
+            $content = '<div class="ZeroFilters">';
             $content .= $this->getZeroComponentsMessageContent();
             $content .= '</div>';
             return $content;

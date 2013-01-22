@@ -40,17 +40,21 @@
             if($this->hasRuntimeFilters())
             {
                 $htmlOptions = array('onClick' => 'js:$(".RuntimeFiltersForPortletView").toggle();');
-                $content    .= ZurmoHtml::checkBox(null, true, $htmlOptions) . Yii::t('Default', 'Filters');
+                $label       = ZurmoHtml::label(Yii::t('Default', 'Filters'), Yii::t('Default', 'Filters'), array('class' => 'label-for-report-widgets'));
+                $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'Filters'), true, $htmlOptions) . $label;
             }
             if($this->hasChart())
             {
                 $htmlOptions = array('onClick' => 'js:$(".ReportChartForPortletView").toggle();');
-                $content    .= ZurmoHtml::checkBox(null, true, $htmlOptions) . Yii::t('Default', 'Chart');
+                $label       = ZurmoHtml::label(Yii::t('Default', 'Chart'), Yii::t('Default', 'Chart'), array('class' => 'label-for-report-widgets'));
+                $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'Chart'), true, $htmlOptions) . $label;
             }
             $htmlOptions = array('onClick' => 'js:$(".ReportResultsGridForPortletView").toggle();');
-            $content    .= ZurmoHtml::checkBox(null, true, $htmlOptions) . Yii::t('Default', 'Grid');
+            $label       = ZurmoHtml::label(Yii::t('Default', 'Grid'), Yii::t('Default', 'Grid'), array('class' => 'label-for-report-widgets'));
+            $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'Grid'), true, $htmlOptions) . $label;
             $htmlOptions = array('onClick' => 'js:$(".ReportSQLForPortletView").toggle();');
-            $content    .= ZurmoHtml::checkBox(null, false, $htmlOptions) . Yii::t('Default', 'SQL');
+            $label       = ZurmoHtml::label(Yii::t('Default', 'SQL'), Yii::t('Default', 'SQL'), array('class' => 'label-for-report-widgets'));
+            $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'SQL'), false, $htmlOptions) . $label;
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
 

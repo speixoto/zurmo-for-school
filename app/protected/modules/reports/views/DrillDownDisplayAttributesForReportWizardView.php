@@ -58,7 +58,7 @@
 
         protected function getZeroComponentsContent()
         {
-            $content = '<div class="DrillDownDisplayAttributesIconOrSomethingElse">';
+            $content = '<div class="ZeroDrillDownDisplayAttributes">';
             $content .= $this->getZeroComponentsMessageContent();
             $content .= '</div>';
             return $content;

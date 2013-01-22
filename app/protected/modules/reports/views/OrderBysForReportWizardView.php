@@ -53,7 +53,7 @@
 
         protected function getZeroComponentsContent()
         {
-            $content = '<div class="OrderBysIconOrSomethingElse">';
+            $content = '<div class="ZeroOrderBys">';
             $content .= $this->getZeroComponentsMessageContent();
             $content .= '</div>';
             return $content;
