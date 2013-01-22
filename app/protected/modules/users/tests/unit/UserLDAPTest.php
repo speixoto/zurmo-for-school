@@ -37,7 +37,7 @@
             Yii::app()->authenticationHelper->ldapBaseDomain           = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'];
             Yii::app()->authenticationHelper->ldapEnabled              = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'];            
             Yii::app()->authenticationHelper->setLDAPSettings();
-            Yii::app()->authenticationHelper->init();
+            Yii::app()->authenticationHelper->init();            
         }
 
         public function setUp()

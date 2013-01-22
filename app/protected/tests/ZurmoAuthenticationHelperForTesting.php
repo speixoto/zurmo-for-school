@@ -28,7 +28,7 @@
      * Override class is used specifically by the
      * testing framework to handle testing of ldap server configuration.
      */
-    class ZurmoAuthenticationHelperForTesting 
+    class ZurmoAuthenticationHelperForTesting extends  ZurmoAuthenticationHelper
     {
         /*
         * method to get test values and set in the ZurmoAuthenticationHelper

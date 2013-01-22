@@ -54,7 +54,7 @@
          */ 
         public static function establishConnection(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
         {			
-			
+            assert('is_int($port)');
             $username = $bindRegisteredDomain;
             $password = $bindPassword;
 			

@@ -47,7 +47,7 @@
                 $bindRegisteredDomain      = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;                 
                 $zurmoAuthenticationHelper = new ZurmoAuthenticationHelper();
                 $ldapConnection            = LDAPUtil::establishConnection($zurmoAuthenticationHelper,$host,$port,
-                                                                        $bindRegisteredDomain,$bindPassword,$baseDomain);                                                        
+                                                                           $bindRegisteredDomain,$bindPassword,$baseDomain);                                                        
                 if($ldapConnection)
                 {  
                     $ldapConnection          = LDAPUtil::makeConnection($host,$port);                
