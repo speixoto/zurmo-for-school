@@ -27,5 +27,10 @@
     class DrillDownDisplayAttributeForReportForm extends DisplayAttributeForReportForm
     {
         protected static $count = 0;
+
+        public static function getType()
+        {
+            return static::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+        }
     }
 ?>

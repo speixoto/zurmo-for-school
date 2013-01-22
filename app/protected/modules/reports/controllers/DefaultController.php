@@ -251,7 +251,7 @@
                                                       $form, $treeType);
             $view                               = new AttributeRowForReportComponentView($adapter,
                                                       (int)$rowNumber, $inputPrefixData, $attribute,
-                                                      (bool)$trackableStructurePosition);
+                                                      (bool)$trackableStructurePosition, true, $treeType);
             $content               = $view->render();
             $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
             Yii::app()->getClientScript()->setToAjaxMode();

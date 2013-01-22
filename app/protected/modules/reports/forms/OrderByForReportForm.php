@@ -28,6 +28,11 @@
     {
         public $order = 'asc';
 
+        public static function getType()
+        {
+            return static::TYPE_ORDER_BYS;
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(
