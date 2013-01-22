@@ -82,11 +82,13 @@
             $this->setGetArray($getData);
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
+            $this->assertFalse(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($getData['portletId']));
 
             //Now add roll up
             $getData['LatestActivitiesConfigurationForm']['rollup'] = true;
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
+            $this->assertTrue(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($getData['portletId']), true);
             //Now filter by meeting, task, and note
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Meeting';
             $this->setGetArray($getData);
@@ -98,16 +100,19 @@
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
             //Now do the same thing with filtering but turn off rollup.
-            $getData['LatestActivitiesConfigurationForm']['rollup'] = true;
+            $getData['LatestActivitiesConfigurationForm']['rollup'] = false;
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Meeting';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
+            $this->assertFalse(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($getData['portletId']));
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Note';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Task';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
+
+            // TODO: still need to test deletion of portlet and value of rollup key.
         }
     }
 ?>
