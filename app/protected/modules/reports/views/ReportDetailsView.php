@@ -55,7 +55,7 @@
                             array('type'  => 'ReportExportLink',
                                 'htmlOptions' => array('class' => 'icon-export')),
                             array('type'  => 'ReportTogglePortletsLink',
-                                'htmlOptions' => array('class' => 'icon-delete hasCheckboxes'),
+                                'htmlOptions' => array('class' => 'hasCheckboxes'),
                                 'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
                                 'hasChart'          => 'eval:$this->model->hasChart()'),
                             //todo: also: see that all UL's are created with same ID - this is not valid html

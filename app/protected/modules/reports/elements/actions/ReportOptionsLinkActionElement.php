@@ -48,7 +48,7 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ListViewExportActionMenu'),
+                'htmlOptions' => array('id' => 'ListViewOptionsActionMenu'),
                 'items'                   => array($menuItems),
             ));
             $cClipWidget->endClip();
