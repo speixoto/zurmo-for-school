@@ -45,11 +45,12 @@
 
         public function testSuperUserModifyLDAPConfiguration()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-           
-
-            //Change LDAP settings
-            
+            if (!Yii::app()->params['authenticationTestSettings'])
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+            } 
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');           
+            //Change LDAP settings            
             $this->resetGetArray();
             $this->setPostArray(array('LDAPConfigurationForm' => array(
                                       'host'                              => Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
@@ -73,6 +74,10 @@
         
         public function testSuperUserTestLDAPConnection()
         {
+            if (!Yii::app()->params['authenticationTestSettings'])
+            {
+                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+            } 
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //check LDAP connection         
             $this->resetGetArray();

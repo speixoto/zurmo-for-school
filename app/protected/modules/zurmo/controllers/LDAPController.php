@@ -60,7 +60,7 @@
         public function actionTestConnection()
         {
             $configurationForm = LDAPConfigurationFormAdapter::makeFormFromGlobalConfiguration();
-            $postVariableName   = get_class($configurationForm);
+            $postVariableName  = get_class($configurationForm);
             if (isset($_POST[$postVariableName]) || (isset($_POST['LDAPConfigurationForm'])))
             {
                 if (isset($_POST[$postVariableName]))
@@ -93,17 +93,16 @@
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;         
                     $baseDomain                = $configurationForm->baseDomain;           
-                    $testConnectionResults     = LDAPUtil::establishConnection($authenticationHelper,$host,$port,
-                                                                      $bindRegisteredDomain,$bindPassword,$baseDomain);  
-                    
-					if($testConnectionResults)
-					{
-					 $messageContent = Yii::t('Default', 'Successfully Connected to LDAP Server') . "\n";  
-					}
-					else
-					{
-					$messageContent = Yii::t('Default', 'Unable to connect to LDAP server') . "\n";
-					}                                                                   
+                    $testConnectionResults     = LDAPUtil::establishConnection($host,$port,
+                                                                               $bindRegisteredDomain,$bindPassword,$baseDomain);                      
+                    if($testConnectionResults)
+                    {
+                       $messageContent = Yii::t('Default', 'Successfully Connected to LDAP Server') . "\n";  
+                    }
+                    else
+                    {
+                       $messageContent = Yii::t('Default', 'Unable to connect to LDAP server') . "\n";
+                    }                                                                   
                 }
                 else
                 {

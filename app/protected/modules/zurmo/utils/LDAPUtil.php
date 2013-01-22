@@ -38,7 +38,7 @@
          */
         public static function makeConnection($host,$port)
         {           
-            $ldapConnection = ldap_connect($host,$port) or die("Could not connect to $server");
+            $ldapConnection = ldap_connect($host,$port);            
             LDAP_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
             LDAP_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0); 
             return $ldapConnection;                         
@@ -52,26 +52,20 @@
          * @param password $bindPassword, 
          * @param base domain $baseDomain		 
          */ 
-        public static function establishConnection(ZurmoAuthenticationHelper $zurmoAuthenticationHelper, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
+        public static function establishConnection($host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
         {			
-            assert('is_int($port)');
-            $username = $bindRegisteredDomain;
-            $password = $bindPassword;
-			
+            assert('is_int($port)');			
             $ldapConnection = self::makeConnection($host,$port);
             //checking user type
-            $username = 'cn='.$username.','.$baseDomain; //for admin access
-            //$username = 'uid='.$user.','.'ou=People'.','.$baseDomain; //for user access
-            if ($ldapConnection) {
-                // bind with appropriate dn to give update access
-                if (@ldap_bind($ldapConnection, $username, $password))  
-                {
-                    return true;
-                } 
-                else 
-                { 
-                    return false;
-                }                			   
-            }				
+            $bindRegisteredDomain = 'cn='.$bindRegisteredDomain.','.$baseDomain; //for admin access
+            // bind with appropriate dn to give update access
+            if (@ldap_bind($ldapConnection, $bindRegisteredDomain, $bindPassword))  
+            {
+               return $ldapConnection;
+            } 
+            else 
+            { 
+               return false;
+            }                			   				
         }
     }
