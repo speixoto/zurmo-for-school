@@ -29,6 +29,7 @@
      */
     class LatestActivitiesUtil
     {
+        const ROLLUP_KEY_SUFIX = '_rollup';
         /**
          * Based on the current user, return model class names and thier display labels.  Only include models
          * that the user has a right to access its corresponding module, as well as only models that implement the
@@ -154,5 +155,32 @@
             }
             return array_values($mashableModelClassNames);
         }
+
+        /**
+         * Get the rollup value for the current user by portlet Id.
+         * @param $portletId Id of the portlet against which we should query
+         * @return $rollUpState boolean.
+         */
+        public static function getRollUpStateForCurrentUserByPortletId($portalId)
+        {
+            assert('is_int($portalId)');
+            $keyName = $portalId.self::ROLLUP_KEY_SUFIX;
+            return (boolean) ZurmoConfigurationUtil::getForCurrentUserByModuleName('ActivitiesModule', $keyName);
+        }
+
+        /**
+         * Set the rollup value for the current user by portlet Id.
+         * @param $portletId Id of the portlet against which we should query
+         * @param $rollUpState Current state of rollUp switch
+         */
+        public static function setRollUpForCurrentUserByPortletId($portletId, $rollUpState)
+        {
+            assert('is_int($portalId)');
+            assert('is_int($value)');
+            $keyName = $portletId.self::ROLLUP_KEY_SUFIX;
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName('ActivitiesModule', $keyName, $rollUpState);
+            Yii::app()->user->setState($keyName, $rollUpState);
+        }
+
     }
 ?>

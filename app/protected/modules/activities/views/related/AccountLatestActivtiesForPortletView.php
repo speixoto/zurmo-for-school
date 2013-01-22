@@ -28,6 +28,7 @@
      * Wrapper view for displaying an account's latest activities feed.
      */
     class AccountLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+
     {
         public static function getDefaultMetadata()
         {
@@ -53,6 +54,11 @@
         public function getLatestActivitiesViewClassName()
         {
             return 'LatestActivitiesForAccountListView';
+        }
+
+        public static function hasRollUpSwitch()
+        {
+            return true;
         }
     }
 ?>

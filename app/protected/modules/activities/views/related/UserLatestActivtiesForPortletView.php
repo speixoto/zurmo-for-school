@@ -99,5 +99,10 @@
         {
             return true;
         }
+
+        public static function hasRollUpSwitch()
+        {
+            return true;
+        }
     }
 ?>

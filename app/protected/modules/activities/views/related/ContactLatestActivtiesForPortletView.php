@@ -54,5 +54,10 @@
         {
             return 'LatestActivitiesForContactListView';
         }
+
+        public static function hasRollUpSwitch()
+        {
+            return true;
+        }
     }
 ?>

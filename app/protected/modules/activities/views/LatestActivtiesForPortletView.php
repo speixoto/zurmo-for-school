@@ -28,7 +28,7 @@
      * Base class used for wrapping a latest activity view.
      */
     abstract class LatestActivtiesForPortletView extends ConfigurableMetadataView
-                                                                  implements PortletViewInterface
+                                                                  implements PortletViewInterface, UserPersistentSettingsInterface
     {
         /**
          * Portlet parameters passed in from the portlet.
@@ -101,6 +101,15 @@
                 if (isset($_GET[get_class($latestActivitiesConfigurationForm)]))
                 {
                     $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
+                    $rollUpState = (boolean)$latestActivitiesConfigurationForm->rollup;
+                    if ($rollUpState !== LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']))
+                    {
+                        LatestActivitiesUtil::setRollUpForCurrentUserByPortletId($this->params['portletId'], $rollUpState);
+                    }
+                } else
+                {
+                    $latestActivitiesConfigurationForm->rollup =
+                        LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']);
                 }
                 $latestActivitiesViewClassName = $this->getLatestActivitiesViewClassName();
                 $dataProvider = $this->getDataProvider($uniquePageId, $latestActivitiesConfigurationForm);
@@ -234,6 +243,19 @@
                                                                         new $modelClassName(false));
             }
             return true;
+        }
+
+        public static function hasRollUpSwitch()
+        {
+            return false;
+        }
+
+        public static function processBeforeDelete($portletId)
+        {
+            if (static::hasRollUpSwitch())
+            {
+                LatestActivitiesUtil::setRollUpForCurrentUserByPortletId($portletId, null);
+            }
         }
     }
 ?>
