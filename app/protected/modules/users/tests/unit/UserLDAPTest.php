@@ -30,16 +30,22 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();            
-            if (Yii::app()->params['authenticationTestSettings']) 
+            if (isset(Yii::app()->params['authenticationTestSettings'])) 
             {            
-            Yii::app()->authenticationHelper->ldapHost                 = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
-            Yii::app()->authenticationHelper->ldapPort                 = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'];
-            Yii::app()->authenticationHelper->ldapBindRegisteredDomain = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'];
-            Yii::app()->authenticationHelper->ldapBindPassword         = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'];
-            Yii::app()->authenticationHelper->ldapBaseDomain           = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'];
-            Yii::app()->authenticationHelper->ldapEnabled              = Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'];            
-            Yii::app()->authenticationHelper->setLDAPSettings();
-            Yii::app()->authenticationHelper->init();            
+                Yii::app()->authenticationHelper->ldapHost                 = 
+                Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
+                Yii::app()->authenticationHelper->ldapPort                 = 
+                Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'];
+                Yii::app()->authenticationHelper->ldapBindRegisteredDomain = 
+                Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'];
+                Yii::app()->authenticationHelper->ldapBindPassword         = 
+                Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'];
+                Yii::app()->authenticationHelper->ldapBaseDomain           = 
+                Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'];
+                Yii::app()->authenticationHelper->ldapEnabled              = 
+                Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'];            
+                Yii::app()->authenticationHelper->setLDAPSettings();
+                Yii::app()->authenticationHelper->init();            
             }
         }
 
@@ -54,7 +60,7 @@
         */
         public function testUserExitsInZurmoButNotOnldap()
         {   
-            if (!Yii::app()->params['authenticationTestSettings'])
+            if (!isset(Yii::app()->params['authenticationTestSettings']))
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             }      
@@ -83,7 +89,7 @@
         */
         public function testUserExitsInBothButWrongPasswordForldap()
         {
-            if (!Yii::app()->params['authenticationTestSettings'])
+            if (!isset(Yii::app()->params['authenticationTestSettings']))
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 
@@ -111,7 +117,7 @@
         */
         public function testUserExitsInldapNotInZurmo()
         {
-            if (!Yii::app()->params['authenticationTestSettings'])
+            if (!isset(Yii::app()->params['authenticationTestSettings']))
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 
@@ -127,7 +133,7 @@
         */
         public function testUserExitsInldapAndZurmo()
         {
-            if (!Yii::app()->params['authenticationTestSettings'])
+            if (!isset(Yii::app()->params['authenticationTestSettings']))
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 

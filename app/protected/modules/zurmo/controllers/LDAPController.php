@@ -93,8 +93,8 @@
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;         
                     $baseDomain                = $configurationForm->baseDomain;           
-                    $testConnectionResults     = LDAPUtil::establishConnection($host,$port,
-                                                                               $bindRegisteredDomain,$bindPassword,$baseDomain);                      
+                    $testConnectionResults     = LDAPUtil::establishConnection($host,$port,$bindRegisteredDomain,
+                                                                               $bindPassword,$baseDomain);                      
                     if($testConnectionResults)
                     {
                        $messageContent = Yii::t('Default', 'Successfully Connected to LDAP Server') . "\n";  
