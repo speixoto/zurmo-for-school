@@ -80,7 +80,7 @@
                     }
                     else
                     {
-                        alert('" . Yii::t('Default', 'Sorry! Your browser does not support desktop notifications.') . "');
+                        alert('" . Yii::t('Default', 'This is only available in Chrome.') . "');
                     }
                 }
             };
