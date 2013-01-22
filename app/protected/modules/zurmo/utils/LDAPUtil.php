@@ -37,7 +37,7 @@
          * @return bool $ldapConnection
          */
         public static function makeConnection($host,$port)
-        {           
+        {                            
             $ldapConnection = ldap_connect($host,$port);            
             LDAP_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
             LDAP_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0); 
@@ -53,8 +53,12 @@
          * @param base domain $baseDomain		 
          */ 
         public static function establishConnection($host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
-        {			
-            assert('is_int($port)');			
+        {	
+            assert('is_string($host)');
+            assert('is_int($port)');
+            assert('is_string($bindRegisteredDomain)');
+            assert('is_string($bindPassword)');
+            assert('is_string($baseDomain)');            			
             $ldapConnection = self::makeConnection($host,$port);
             //checking user type
             $bindRegisteredDomain = 'cn='.$bindRegisteredDomain.','.$baseDomain; //for admin access

@@ -54,33 +54,39 @@
             //Change LDAP settings            
             $this->resetGetArray();
             $this->setPostArray(array('LDAPConfigurationForm' => array(
-                                      'host'                              =>
+                                      'host'                  =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
-                                      'port'                              => 
+                                      'port'                  => 
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'],
-                                      'bindRegisteredDomain'              => 
+                                      'bindRegisteredDomain'  => 
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'],
-                                      'bindPassword'                      => 
+                                      'bindPassword'          => 
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'],
-                                      'baseDomain'                        => 
+                                      'baseDomain'            => 
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],
-                                      'enabled'                           => 
+                                      'enabled'               => 
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'])));
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLDAP');
             $this->assertEquals('LDAP Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],                  Yii::app()->authenticationHelper->ldapHost);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'],                  Yii::app()->authenticationHelper->ldapPort);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'],  Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'],          Yii::app()->authenticationHelper->ldapBindPassword);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],            Yii::app()->authenticationHelper->ldapBaseDomain);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'],               Yii::app()->authenticationHelper->ldapEnabled);
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],                  
+                                Yii::app()->authenticationHelper->ldapHost);
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'],
+                                Yii::app()->authenticationHelper->ldapPort);
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'],  
+                                Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'],          
+                                Yii::app()->authenticationHelper->ldapBindPassword);
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],            
+                                Yii::app()->authenticationHelper->ldapBaseDomain);
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'],
+                                Yii::app()->authenticationHelper->ldapEnabled);
         }
         
         /*
-        *@depends testSuperUserModifyLDAPConfiguration
+        *@depends testSuperUserModifyLDAPConfiguration 
         */
         public function testSuperUserTestLDAPConnection()
         {
