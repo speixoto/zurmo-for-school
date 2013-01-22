@@ -72,7 +72,7 @@
             echo $view->render();
         }
 
-        public function actionDetails($id)
+      /*  public function actionDetails($id)
         {
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
@@ -82,27 +82,28 @@
             $view     = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                              makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
-        }
+        }*/
 
 
         public function actionEdit($id, $redirectUrl = null)
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
-            $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this,
-                                             $this->makeEditAndDetailsView(
-                                                 $this->attemptToSaveModelFromPost($marketingList, $redirectUrl), 'Edit')));
+            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
+                                                 $this->attemptToSaveModelFromPost($marketingList),
+                                                 strval($marketingList));
+            $view     = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                                  makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 
-   /*     public function actionDelete($id)
+        public function actionDelete($id)
         {
             $marketingList = MarketingList::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);
             $marketingList->delete();
             $this->redirect(array($this->getId() . '/index'));
-        }*/
+        }
 
         protected static function getSearchFormClassName()
         {
