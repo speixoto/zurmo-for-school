@@ -34,7 +34,7 @@
                 'name' => 'lastName',
                 'header' => Yii::t('Default', 'Name'),
                 'type' => 'raw',
-                'value' => $this->view->getLinkString('$data'),
+                'value' => $this->view->getLinkString('$data', $this->attribute),
                 );
             }
             else

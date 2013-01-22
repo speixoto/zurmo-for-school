@@ -355,18 +355,19 @@
 
         protected function resolveInputNamePrefix()
         {
-            return static::resolveInputIdPrefixIntoString($this->resolveInputPrefix());
+            return static::resolveInputNamePrefixIntoString($this->resolveInputPrefix());
         }
 
-        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        public static function resolveInputNamePrefixIntoString($inputNamePrefix)
         {
-            if (is_array($inputIdPrefix))
+            assert('is_string($inputNamePrefix) || is_array($inputNamePrefix)');
+            if (is_array($inputNamePrefix))
             {
-                if (count($inputIdPrefix) > 1)
+                if (count($inputNamePrefix) > 1)
                 {
                     $inputPrefixContent = null;
                     $firstPrefixPlaced  = false;
-                    foreach ($inputIdPrefix as $value)
+                    foreach ($inputNamePrefix as $value)
                     {
                         if (!$firstPrefixPlaced)
                         {
@@ -377,6 +378,32 @@
                         {
                             $inputPrefixContent .= '[' . $value . ']';
                         }
+                    }
+                    return $inputPrefixContent;
+                }
+            }
+            elseif (!is_string($inputNamePrefix))
+            {
+                throw notSupportedException();
+            }
+            return $inputNamePrefix;
+        }
+
+        public static function resolveInputIdPrefixIntoString($inputIdPrefix)
+        {
+            assert('is_string($inputIdPrefix) || is_array($inputIdPrefix)');
+            if (is_array($inputIdPrefix))
+            {
+                if (count($inputIdPrefix) > 1)
+                {
+                    $inputPrefixContent = null;
+                    foreach ($inputIdPrefix as $value)
+                    {
+                        if ($inputPrefixContent != null)
+                        {
+                            $inputPrefixContent .= '_';
+                        }
+                        $inputPrefixContent .= $value;
                     }
                     return $inputPrefixContent;
                 }

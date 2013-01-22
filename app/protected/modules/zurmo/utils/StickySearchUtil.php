@@ -27,25 +27,8 @@
     /**
      * Helper class for working with Sticky searches
      */
-    class StickySearchUtil
+    class StickySearchUtil extends StickyUtil
     {
-        public static function clearDataByKey($key)
-        {
-            assert('is_string($key)');
-            Yii::app()->user->setState($key, null);
-        }
-
-        public static function getDataByKey($key)
-        {
-            assert('is_string($key)');
-            $stickyData = Yii::app()->user->getState($key);
-            if ($stickyData == null)
-            {
-                return null;
-            }
-            return unserialize($stickyData);
-        }
-
         /**
          * Given an offset and pageSize, determine what the list offset should be in order to maximize how the list
          * displays in the user interface

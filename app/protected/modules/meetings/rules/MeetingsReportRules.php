@@ -24,49 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class RedBeanModelsTest extends BaseTest
+    /**
+     * Report rules to be used with the Meetings module.
+     */
+    class MeetingsReportRules extends ActivitiesReportRules
     {
-        const USERS = 5;
-
-        private $usernames;
-
-        public function setUp()
+        public static function getDefaultMetadata()
         {
-            if (!isset($this->usernames))
-            {
-                $this->usernames = TestHelpers::makeUniqueRandomUsernames(RedBeanModelsTest::USERS);
-            }
-            foreach ($this->usernames as $username)
-            {
-                $user = new User();
-                $user->username           = $username;
-                $user->title->value       = 'Mr.';
-                $user->firstName          = $username;
-                $user->lastName           = $username;
-                $user->setPassword(strtolower($username));
-                $this->assertTrue($user->save());
-            }
-        }
-
-        public function tearDown()
-        {
-            foreach ($this->usernames as $username)
-            {
-                $user = User::getByUsername($username);
-                $user->delete();
-            }
-        }
-
-        public function testCreateAndIterateLazyModels()
-        {
-            $users = new RedBeanModels('User');
-            $this->assertEquals(count($this->usernames), $users->count());
-            foreach ($users as $user)
-            {
-                $this->assertTrue(in_array($user->username, $this->usernames));
-                $this->assertEquals($user->username, $user->firstName);
-                $this->assertEquals($user->username, $user->lastName);
-            }
+            $metadata = array();
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

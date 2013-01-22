@@ -240,7 +240,7 @@
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
             {
-                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" href="' .
+                $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/less/newui.less"/>';
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';

@@ -27,11 +27,119 @@
     class ZurmoActiveForm extends CActiveForm
     {
         /**
+         * Override when utilizing dynamic attributes that are populated on a different form model than the one
+         * that is used to make the form.  If left null, it will default to the model specified in the error function
+         * @var null or string
+         */
+        public $modelClassNameForError;
+
+        /**
          * Allows the form to be bound as a live event. This will allow the form to stay active even after an ajax
          * action done through the yiiGridView for example.
          * @var boolean
          */
         public $bindAsLive = false;
+
+        /**
+         *
+         * Override for special handling of dynamically added attributes.  Allows for overriding the model class name
+         * and id.
+         * (non-PHPdoc)
+         * @see CActiveForm::error()
+         */
+    public function error($model, $attribute, $htmlOptions = array(), $enableAjaxValidation = true, $enableClientValidation = true)
+    {
+        if(!$this->enableAjaxValidation)
+        {
+            $enableAjaxValidation = false;
+        }
+        if(!$this->enableClientValidation)
+        {
+            $enableClientValidation = false;
+        }
+        if(!isset($htmlOptions['class']))
+        {
+            $htmlOptions['class']=$this->errorMessageCssClass;
+        }
+        if(!$enableAjaxValidation && !$enableClientValidation)
+        {
+            return CHtml::error($model,$attribute,$htmlOptions);
+        }
+        $id      = $this->resolveId($model, $attribute);
+        $inputID = isset($htmlOptions['inputID']) ? $htmlOptions['inputID'] : $id;
+        unset($htmlOptions['inputID']);
+        if(!isset($htmlOptions['id']))
+        {
+            $htmlOptions['id'] = $inputID . '_em_';
+        }
+        $option=array(
+            'id'                   => $id,
+            'inputID'              => $inputID,
+            'errorID'              => $htmlOptions['id'],
+            'model'                => $this->resolveModelClassNameForError($model),
+            'name'                 => $attribute,
+            'enableAjaxValidation' => $enableAjaxValidation,
+        );
+        $optionNames = array(
+            'validationDelay',
+            'validateOnChange',
+            'validateOnType',
+            'hideErrorMessage',
+            'inputContainer',
+            'errorCssClass',
+            'successCssClass',
+            'validatingCssClass',
+            'beforeValidateAttribute',
+            'afterValidateAttribute',
+        );
+        foreach($optionNames as $name)
+        {
+            if(isset($htmlOptions[$name]))
+            {
+                $option[$name] = $htmlOptions[$name];
+                unset($htmlOptions[$name]);
+            }
+        }
+        if($model instanceof CActiveRecord && !$model->isNewRecord)
+        {
+            $option['status'] = 1;
+        }
+        if($enableClientValidation)
+        {
+            $validators    = isset($htmlOptions['clientValidation']) ? array($htmlOptions['clientValidation']) : array();
+            $attributeName = $attribute;
+            if(($pos=strrpos($attribute,']')) !== false && $pos !== strlen($attribute)-1) // e.g. [a]name
+            {
+                $attributeName=substr($attribute,$pos+1);
+            }
+            foreach($model->getValidators($attributeName) as $validator)
+            {
+                if($validator->enableClientValidation)
+                {
+                    if(($js=$validator->clientValidateAttribute($model,$attributeName))!='')
+                        $validators[]=$js;
+                }
+            }
+            if($validators!==array())
+                $option['clientValidation'] = new CJavaScriptExpression("function(value, messages, attribute) {\n" .
+                                                                        implode("\n", $validators)."\n}");
+        }
+        $html = CHtml::error($model,$attribute,$htmlOptions);
+        if($html==='')
+        {
+            if(isset($htmlOptions['style']))
+            {
+                $htmlOptions['style'] = rtrim($htmlOptions['style'], ';') . ';display:none';
+            }
+            else
+            {
+                $htmlOptions['style'] = 'display:none';
+            }
+            $html = CHtml::tag('div', $htmlOptions, '');
+        }
+        $this->attributes[$inputID] = $option;
+        return $html;
+    }
 
         /**
          * Override to handle relation model error summary information.  This information needs to be parsed properly
@@ -110,7 +218,6 @@
             }
 
             $options['attributes'] = array_values($this->attributes);
-
             if ($this->summaryID !== null)
             {
                 $options['summaryID'] = $this->summaryID;
@@ -153,6 +260,11 @@
             }
         }
 
+        public function getAttributes()
+        {
+            return $this->attributes;
+        }
+
         /**
          * (non-PHPdoc)
          * @see CActiveForm::radioButtonList()
@@ -188,6 +300,20 @@
         public function dropDownList($model, $attribute, $data, $htmlOptions = array())
         {
             return ZurmoHtml::activeDropDownList($model, $attribute, $data, $htmlOptions);
+        }
+
+        protected function resolveId($model, $attribute)
+        {
+            return CHtml::activeId($model, $attribute);
+        }
+
+        protected function resolveModelClassNameForError($model)
+        {
+            if($this->modelClassNameForError != null)
+            {
+                return $this->modelClassNameForError;
+            }
+            return get_class($model);
         }
     }
 ?>

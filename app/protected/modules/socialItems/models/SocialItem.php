@@ -66,10 +66,13 @@
                     'latestDateTime',
                 ),
                 'relations' => array(
-                    'comments'  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'note'      => array(RedBeanModel::HAS_ONE,  'Note'),
-                    'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED, 'relatedModel'),
-                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User'),
+                    'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'toUser'),
                 ),
                 'rules' => array(
                     array('description',    'type',     'type' => 'string'),

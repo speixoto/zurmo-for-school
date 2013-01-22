@@ -151,7 +151,7 @@
             return array(self::TYPE_BEFORE, self::TYPE_AFTER, self::TYPE_ON, self::TYPE_BETWEEN);
         }
 
-            public static function getValueTypesRequiringSecondDateInput()
+        public static function getValueTypesRequiringSecondDateInput()
         {
             return array(self::TYPE_BETWEEN);
         }

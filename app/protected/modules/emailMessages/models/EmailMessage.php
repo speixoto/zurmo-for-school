@@ -99,12 +99,16 @@
                     'sentDateTime',
                 ),
                 'relations' => array(
-                    'folder'        => array(RedBeanModel::HAS_ONE,  'EmailFolder'),
-                    'content'       => array(RedBeanModel::HAS_ONE,  'EmailMessageContent',    RedBeanModel::OWNED),
+                    'folder'        => array(RedBeanModel::HAS_ONE,  'EmailFolder', RedBeanModel::NOT_OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'folder'),
+                    'content'       => array(RedBeanModel::HAS_ONE,  'EmailMessageContent',    RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'content'),
                     'files'         => array(RedBeanModel::HAS_MANY, 'FileModel',              RedBeanModel::OWNED, 'relatedModel'),
-                    'sender'        => array(RedBeanModel::HAS_ONE,  'EmailMessageSender',     RedBeanModel::OWNED),
+                    'sender'        => array(RedBeanModel::HAS_ONE,  'EmailMessageSender',     RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'sender'),
                     'recipients'    => array(RedBeanModel::HAS_MANY, 'EmailMessageRecipient',  RedBeanModel::OWNED),
-                    'error'         => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED),
+                    'error'         => array(RedBeanModel::HAS_ONE,  'EmailMessageSendError' , RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'error'),
                     'account'       => array(RedBeanModel::HAS_ONE,  'EmailAccount')
                 ),
                 'rules' => array(

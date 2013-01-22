@@ -39,8 +39,10 @@
                     'name',
                 ),
                 'relations' => array(
-                    'polys'           => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySide',      RedBeanModel::NOT_OWNED, 'polyTest'),
-                    'ownedPolys'      => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySideOwned', RedBeanModel::OWNED,     'polyOwnedTest'),
+                    'polys'           => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySide',
+                                               RedBeanModel::NOT_OWNED, RedBeanModel::LINK_TYPE_POLYMORPHIC, 'polyTest'),
+                    'ownedPolys'      => array(RedBeanModel::HAS_MANY,  'TestPolyOneToManyPolySideOwned',
+                                               RedBeanModel::OWNED, RedBeanModel::LINK_TYPE_POLYMORPHIC, 'polyOwnedTest'),
                 ),
                 'rules' => array(
                     array('name',                'type',     'type' => 'string'),

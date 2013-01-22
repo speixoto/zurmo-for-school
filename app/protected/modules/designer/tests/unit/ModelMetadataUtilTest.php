@@ -158,7 +158,8 @@
 
             $this->assertEquals(1, count($metadata['A']['relations']));
             $newRelation = $metadata['A']['relations']['newRelationCstm'];
-            $this->assertEquals(array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED), $newRelation);
+            $this->assertEquals(array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                      RedBeanModel::LINK_TYPE_SPECIFIC, 'newRelationCstm'), $newRelation);
             $this->assertEquals(1, count($metadata['A']['customFields']));
             $this->assertEquals('Things', $metadata['A']['customFields']['newRelationCstm']);
         }
@@ -189,7 +190,8 @@
 
             $this->assertEquals(count($originalMetadata['A']['relations']) + 1, count($metadata['A']['relations']));
             $newRelation = $metadata['A']['relations']['newRelation2Cstm'];
-            $this->assertEquals(array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED), $newRelation);
+            $this->assertEquals(array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                      RedBeanModel::LINK_TYPE_SPECIFIC, 'newRelation2Cstm'), $newRelation);
             $this->assertEquals(count($originalMetadata['A']['customFields']) + 1, count($metadata['A']['customFields']));
             $this->assertEquals('Things', $metadata['A']['customFields']['newRelation2Cstm']);
         }

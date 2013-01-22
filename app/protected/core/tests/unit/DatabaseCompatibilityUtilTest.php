@@ -54,6 +54,12 @@
             $this->databaseBackupTestFile = INSTANCE_ROOT . '/protected/runtime/databaseBackupTest.sql';
         }
 
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
         public function setup()
         {
             RedBeanDatabase::close();
@@ -702,6 +708,23 @@
                     // Do nothing
                 }
             }
+        }
+
+        public function testMakeTimeZoneAdjustmentContent()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->assertNull(DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+            $tempTimeZone                         = Yii::app()->user->userModel->timeZone;
+
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            $compareContent                       = ' - INTERVAL 21600 SECOND';
+            $this->assertEquals($compareContent, DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+
+            Yii::app()->user->userModel->timeZone = 'Asia/Tokyo';
+            $compareContent                       = ' + INTERVAL 32400 SECOND';
+            $this->assertEquals($compareContent, DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+
+            Yii::app()->user->userModel->timeZone = $tempTimeZone;
         }
     }
 ?>

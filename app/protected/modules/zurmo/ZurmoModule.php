@@ -105,12 +105,12 @@
                     array(
                         'label' => 'Forums',
                         'url' => 'http://zurmo.org/forums/',
-                        'order' => 8,
+                        'order' => 9,
                     ),
                     array(
                         'label' => 'About Zurmo',
                         'url' => array('/zurmo/default/about'),
-                        'order' => 9,
+                        'order' => 10,
                     ),
                 ),
                 'adminTabMenuItemsModuleOrdering' => array(

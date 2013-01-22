@@ -43,14 +43,19 @@
          */
         public function __construct($controllerId, $moduleId, $model, $title = null)
         {
-            assert('$model instanceof RedBeanModel || $model instanceof CFormModel || $model instanceof ModelForm');
             assert('$title == null || is_string($title)');
+            $this->assertModelIsValid($model);
             $this->controllerId   = $controllerId;
             $this->moduleId       = $moduleId;
             $this->model          = $model;
             $this->modelClassName = get_class($model);
             $this->modelId        = $model->id;
             $this->title          = $title;
+        }
+
+        public static function assertModelIsValid($model)
+        {
+            assert('$model instanceof RedBeanModel || $model instanceof CFormModel || $model instanceof ModelForm');
         }
 
         /**

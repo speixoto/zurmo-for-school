@@ -48,7 +48,7 @@
 
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/default/SelectFromRelatedList/',
+            return Yii::app()->createUrl($this->moduleId . '/default/relectFromRelatedList/',
                     array(
                     'uniqueLayoutId'          => $this->getUniqueLayoutId(),
                     'portletId'               => $this->getPortletId(),

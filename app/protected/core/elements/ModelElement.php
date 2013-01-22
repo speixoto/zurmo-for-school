@@ -71,6 +71,13 @@
          */
         protected static $nonEditableActionType = 'Details';
 
+
+        public function setIdAttributeId($idAttributeId)
+        {
+            assert('is_string($idAttributeId)');
+            $this->idAttributeId = $idAttributeId;
+        }
+
         protected function renderControlEditable()
         {
             assert('$this->model->{$this->attribute} instanceof RedBeanModel');
@@ -322,11 +329,15 @@
          */
         protected function getModalTransferInformation()
         {
-            return array(
+            return array_merge(array(
                     'sourceIdFieldId' => $this->getIdForHiddenField(),
-                    'sourceNameFieldId' => $this->getIdForTextField(),
-                    'sourceModelId'     => $this->model->id,
-            );
+                    'sourceNameFieldId' => $this->getIdForTextField()
+            ), $this->resolveSourceModelIdForModalTransferInformation());
+        }
+
+        protected function resolveSourceModelIdForModalTransferInformation()
+        {
+            return array('sourceModelId' => $this->model->id);
         }
 
         protected function getSelectLinkStartingStyle()

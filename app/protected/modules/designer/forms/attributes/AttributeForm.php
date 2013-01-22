@@ -107,6 +107,7 @@
                     'skipOnError' => true,
                     'on'   => 'createAttribute',
                 ),
+                array('attributeName', 'validateAttributeDoesNotContainReservedCharacters', 'on' => 'createAttribute'),
             );
         }
 
@@ -179,6 +180,23 @@
             {
                 $this->addError('attributeName', Yii::t('Default', '"{$attributeName}" field name is a database reserved word. Please enter a different one.',
                                                  array('{$attributeName}' => $this->attributeName)));
+            }
+        }
+
+
+        /**
+         * Validates that attribute name does not contain reserved character sequences
+         */
+        public function validateAttributeDoesNotContainReservedCharacters()
+        {
+            if(!(strpos($this->attributeName, FormModelUtil::DELIMITER) === false) ||
+               !(strpos($this->attributeName, FormModelUtil::RELATION_DELIMITER) === false))
+            {
+                $this->addError('attributeName',
+                    Yii::t('Default', '"{$attributeName}" field name contains reserved characters. Either {reserved1} or {reserved2}.',
+                                 array('{$attributeName}' => $this->attributeName,
+                                       '{reserved1}' => FormModelUtil::DELIMITER,
+                                       '{reserved2}' => FormModelUtil::RELATION_DELIMITER)));
             }
         }
 

@@ -30,9 +30,8 @@
 
         protected function renderContent()
         {
-            $content  = $this->renderTitleContent();
+            $content      = $this->renderTitleContent();
             $categoryData = $this->getCategoryData();
-            $categoryLabels = $this->getCategoriesArray();
             foreach ($categoryData as $category => $categoryItems)
             {
                 $categoryItems   = static::sortCategoryItems($categoryItems);
@@ -93,13 +92,6 @@
             }
             $content .= '</ul>';
             return $content;
-        }
-
-        protected function getCategoriesArray()
-        {
-            return array(
-                ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL   => Yii::t('Default', 'General'),
-            );
         }
 
         protected function setLinkText($text)

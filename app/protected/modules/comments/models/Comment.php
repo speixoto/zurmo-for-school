@@ -81,7 +81,8 @@
                     'description',
                 ),
                 'relations' => array(
-                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                     RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description', 'required'),

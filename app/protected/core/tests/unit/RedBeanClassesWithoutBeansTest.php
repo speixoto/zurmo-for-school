@@ -45,9 +45,6 @@
             $extendedNoBean = new ExtendsNoBean();
             $columnName     = $extendedNoBean->getColumnNameByAttribute('name');
             $this->assertEquals('name', $columnName);
-            $aaa            = new AAA();
-            $columnName     = $aaa->getColumnNameByAttribute('noBean');
-            $this->assertEquals('nobean_redbeanmodel_id', $columnName);
         }
     }
 ?>

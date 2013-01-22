@@ -55,6 +55,18 @@
             ),
             'clientScript' => array(
                 'class' => 'ClientScript',
+                'packages' => array(
+                    'treeview' => array(
+                        'basePath' => 'application.core.widgets.assets',
+                        'js' => array(
+                            '/treeView/jquery.treeview.async.js'),
+                        'depends'  => array('baseTreeView')),
+                    'baseTreeView' => array(
+                        'js' => array(
+                            'jquery.treeview.js',
+                            'jquery.treeview.edit.js'),
+                        'depends'  => array('jquery', 'cookie')),
+                ),
             ),
             'currencyHelper' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoCurrencyHelper',
@@ -96,15 +108,18 @@
                 'groupMap' => array(
                     'css' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css'
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
 
                     'js' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.yii.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.ba-bbq.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.yiiactiveform.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yii.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yiiactiveform.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.cookie.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.treeview.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.treeview.edit.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-2.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/extendedGridView/jquery.yiigridview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/elements/assets/Modal.js',
@@ -122,6 +137,7 @@
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.fileupload-ui.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.tmpl.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/fileUpload/jquery.iframe-transport.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/treeView/jquery.treeview.async.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/calendar/Calendar.js'
                     )
@@ -134,6 +150,9 @@
                     array('system.web.js.source',                                       '/jquery.ba-bbq.js'),
                     array('system.web.js.source',                                       '/jui/js/jquery-ui.min.js'),
                     array('system.web.js.source',                                       '/jquery.yiiactiveform.js'),
+                    array('system.web.js.source',                                       '/jquery.jquery.cookie.js'),
+                    array('system.web.js.source',                                       '/jquery.jquery.treeview.js'),
+                    array('system.web.js.source',                                       '/jquery.treeview.edit.js'),
                     array('application.extensions.qtip.assets',                         '/jquery.qtip-2.min.js'),
                     array('application.core.widgets.assets',   '/extendedGridView/jquery.yiigridview.js'),
                     array('application.core.elements.assets',  '/Modal.js'),
@@ -150,6 +169,7 @@
                     array('application.core.widgets.assets',   '/fileUpload/jquery.fileupload-ui.js'),
                     array('application.core.widgets.assets',   '/fileUpload/jquery.tmpl.min.js'),
                     array('application.core.widgets.assets',   '/fileUpload/jquery.iframe-transport.js'),
+                    array('application.core.widgets.assets',   '/treeView/jquery.treeview.async.js'),
                     array('application.extensions.timepicker.assets',                   '/jquery-ui-timepicker-addon.min.js'),
                     array('application.core.widgets.assets',   '/calendar/Calendar.js')
                 ),
@@ -171,16 +191,18 @@
             ),
             'pagination' => array(
                 'class' => 'application.modules.zurmo.components.ZurmoPaginationHelper',
-                'listPageSize'               => 10,
-                'subListPageSize'            => 5,
-                'modalListPageSize'          => 5,
-                'massEditProgressPageSize'   => 5,
-                'autoCompleteListPageSize'   => 5,
-                'importPageSize'             => 50,
-                'dashboardListPageSize'      => 5,
-                'apiListPageSize'            => 10,
-                'massDeleteProgressPageSize' => 5,
-                'unlimitedPageSize'          => 1000000000
+                'listPageSize'                 => 10,
+                'subListPageSize'              => 5,
+                'modalListPageSize'            => 5,
+                'massEditProgressPageSize'     => 5,
+                'autoCompleteListPageSize'     => 5,
+                'importPageSize'               => 50,
+                'dashboardListPageSize'        => 5,
+                'apiListPageSize'              => 10,
+                'massDeleteProgressPageSize'   => 5,
+                'reportResultsListPageSize'    => 20,
+                'reportResultsSubListPageSize' => 5,
+                'unlimitedPageSize'            => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',
@@ -272,7 +294,6 @@
             'application.modules.zurmo.components.BeginRequestBehavior',
             'application.core.utils.ArrayUtil',
             'application.core.utils.FileUtil',
-            'application.core.utils.ZurmoCache',
             'application.core.utils.GeneralCache',
             'application.core.exceptions.NotFoundException',
             'application.core.components.ZurmoLocale',
@@ -306,6 +327,7 @@
             'notes',
             'notifications',
             'opportunities',
+            'reports',
             'rssReader',
             'socialItems',
             'tasks',
@@ -321,7 +343,7 @@
 
         'params' => array(
             'redBeanVersion'    => '3.2',
-            'yiiVersion'        => '1.1.13',
+            'yiiVersion'        => '1.1.12',
             'memcacheServers'   => $memcacheServers,
             'supportedLanguages' => array(
                 'en' => 'English',

@@ -37,7 +37,8 @@
                     'name',
                 ),
                 'relations' => array(
-                    'modelItem'          => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem'),
+                    'modelItem'          => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem'),
                 ),
                 'elements' => array(
                     'modelItem' => 'ApiModelTestItem',

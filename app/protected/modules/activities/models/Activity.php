@@ -28,7 +28,7 @@
      * Extend this class to make different types of activity models.
      *
      */
-    abstract class Activity extends OwnedSecurableItem
+    class Activity extends OwnedSecurableItem
     {
         public static function getByName($name)
         {

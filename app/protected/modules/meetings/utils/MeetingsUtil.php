@@ -26,7 +26,7 @@
 
     class MeetingsUtil
     {
-        public static function renderDaySumaryContent(Meeting $meeting, $link)
+        public static function renderDaySummaryContent(Meeting $meeting, $link)
         {
             $content = null;
             $content .= '<h3>' . $meeting->name . '<span>' . $link . '</span></h3>';

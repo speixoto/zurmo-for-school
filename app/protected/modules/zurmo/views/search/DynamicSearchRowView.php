@@ -80,7 +80,7 @@
             $content .= ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
             $content .= ZurmoHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 

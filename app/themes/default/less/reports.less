@@ -1,0 +1,638 @@
+#ReportsSearchView{
+    .search-view-1{
+        table{
+            border-bottom: none;
+            margin-bottom: 15px;
+        }
+        th{
+            width:15%;
+        }
+        td{
+            width:34%;
+            padding-right: 1%;
+        }
+        td+th{
+            padding-left: 1%;
+        }
+        td:last-child{
+            padding-right: 0;
+        }
+    }
+}
+
+.ComponentForReportWizardView{
+    .view-toolbar-container{
+        margin-top:30px;
+    }
+    .treeview{
+        ul{
+            background: none;
+        }
+        li:hover{
+            cursor:pointer;
+        }
+        li:active{
+            cursor: move;
+        }
+        .ui-draggable-dragging{
+            background:none;
+            font-weight: bold;
+            text-align: center;
+            margin: 0;
+            padding: 0;
+            text-indent: 0;
+            line-height:30px;
+            min-width: 120px;
+            height: 30px;
+            border:1px solid #ccc;
+            #gradient > .vertical(#f6f6f6, #ededed);
+            .b-shadow(inset 0 1px 0 0 #ffffff);
+        }
+    }
+    .radio-input {
+        margin-bottom: 10px !important;
+    }
+}
+
+
+#ModuleForReportWizardView {
+    table{
+        span{
+            text-align: left;
+            display: block;
+            margin-bottom: 20px;
+        }
+        td{
+            padding-left:0;
+        }
+    }
+}
+
+#GeneralDataForReportWizardView{
+    .panel{
+        width: 70%;
+        float: left;
+    }
+    .right-side-edit-view-panel{
+        width: 30%;
+        float: right;
+    }
+}
+
+.hasTree{
+    width:25%;
+    float: left;
+    ++.border-box;
+    //padding: 8px 10px;
+    padding: 8px 0;
+    //background: #f0f0f0;
+    min-height: 500px;
+    max-height:600px;
+    overflow: auto;
+    margin-top:10px;
+    z-index: 10;
+    .animateAll(0.5s);
+    //.radius(3px);
+}
+
+.dynamic-droppable-area{
+    ++.border-box;
+    width: 75%;
+    float: right;
+    padding-left: 15px;
+    margin-top:10px;
+    position: relative;
+    z-index: 5;
+    &.error{
+        
+    }
+    .ui-droppable{
+        float: left;
+        width: 100%;
+        z-index: 0;
+        min-height: 600px;
+        position: relative;
+        margin-bottom: 15px;
+        &.ui-state-active{
+            .drop-zone{
+                .opacity(100);
+            }
+        }
+    }
+}
+
+.activate-drop-zone{
+    .drop-zone{
+        .opacity(100);
+        z-index: 100;
+    }
+}
+
+.drop-zone{
+    .animateAll(0.25s);
+    ++.border-box;
+    width: 100%;
+    height: 100%;
+    display: block;
+    padding: 5px;
+    font-size: 40px;
+    text-align: center;
+    font-weight: bold;
+    clear: left;
+    position: absolute;
+    left: 0;
+    top: 0;
+    .opacity(0);
+    z-index: 0;
+    background: rgba(255, 255, 255, 0.5);
+    div{
+        padding-top:35%;
+        ++.border-box;
+        display: block;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+.cloned{
+    border: 2px solid red !important;
+    z-index:10000;
+}
+
+.attribute-rows{
+    float: left;
+    width:100%;
+    position: relative;
+    z-index: 5;
+    ul, li{
+        list-style: none;
+    }
+    li + li{
+        .dynamic-attribute-row{
+            //border-top: none;
+        }
+    }
+}
+
+.dynamic-attribute-row{
+    ++.cf;
+    position: relative;
+    width: 100%;
+    display: block;
+    margin:0 0 5px 0;
+    background: #f0f0f0;
+    .radius(3px);
+    padding:15px 30px 15px 15px;
+    ++.border-box;
+    > div{
+        position: relative;
+        float: left;
+        width: 100%;
+        ++.cf;
+        > span:first-child + div{
+            margin-right: 0 !important;
+            width: 45%;
+            float: left;
+        }
+        .criteria-value-container{
+            margin-right: 30px !important;
+            width: 45%;
+            float: right;
+        }
+        .has-model-select{
+            float:left;
+        }
+    }
+    label.hasCheckBox{
+        margin-left:0 !important;
+    }
+    .remove-dynamic-attribute-row-link{
+        position: absolute;
+        right: 10px;
+        top: 15px;
+        display: block;
+        .symbly(24px);
+        color:#a7a7a7 !important;
+        .opacity(0);
+        .animateAll(0.2s);
+    }
+    .dynamic-attribute-row-number-label{
+        position: absolute;
+        width: 25px;
+        text-align: right;
+        left:-32px;
+        top:0;
+        float: left;
+        line-height: 26px;
+        margin-right:15px;
+        font-weight: bold;
+        .t-shadow(0 1px 0 rgba(255, 255, 255, 0.8));
+    }
+    .hasDropDown{
+        width: auto !important;
+    }
+    &:hover{
+        .remove-dynamic-attribute-row-link{
+            .opacity(100);
+        }
+    }
+}
+
+.dynamic-attribute-row.clone{
+    padding: 15px;
+    position: absolute;
+    z-index: 10000;
+}
+
+.Filters{
+    .dynamic-attribute-row{
+        padding:15px 30px;
+    }
+}
+
+.sortable{
+    .dynamic-attribute-row:hover{
+        .radius(0 3px 3px 0);
+        background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
+    }
+    .dynamic-attribute-row:active{
+        cursor: move;
+        background-color: #f5f5f5;
+    }
+}
+
+.dynamic-attribute-label{
+    float: left;
+    line-height: 26px;
+    width:20%;
+    ++.border-box;
+}
+
+.dynamic-attribute-operator{
+    float: left;
+    width:20%;
+    ++.border-box;
+    padding-left: 15px;
+}
+
+.dynamic-attribute-field{
+    float: right;
+    width: 80%;
+    ++.border-box;
+}
+
+.value-data{
+    float: right;
+    width:80%;
+    ++.border-box;
+}
+
+.report-runtime-availability{
+    ++.border-box;
+    min-width: 145px;
+    position: relative;
+    display: block;
+    float: right;
+    line-height: 26px;
+    .smaller();
+    label{
+        float: right !important;
+        margin-right:5px;
+    }
+    .hasCheckBox{
+        float: left !important;
+        margin-left:0;
+        margin-right:8px !important;
+    }
+    margin:0 0 0 -160px;
+}
+
+.hasFilter{
+    .dynamic-attribute-label{
+        width:100%;
+    }
+    .dynamic-attribute-operator{
+        padding-left:0;
+    }
+    .value-data{
+        float: left;
+        width: 100%;
+        padding-right: 160px;
+    }
+    .dynamic-attribute-operator + .value-data{
+        padding-left: 15px;
+        width:80%;
+    }    
+    .remove-dynamic-attribute-row-link{
+        top:42px;
+    }
+}
+
+
+.dynamic-and-for-mixed{
+    display: inline-block;
+    padding:5px 0;
+    font-weight: bold;
+}
+
+#show-filters-structure-wrapper{
+    position: relative;
+    z-index: 1;
+    width:100%;
+    float: left;
+    margin-top:15px;
+    span{
+        width:120px;
+    }
+    input{
+        text-indent: 50px;
+    }
+}
+
+#show-filters-structure-div-link{
+    ++.z-link;
+}
+
+#RuntimeFiltersForPortletView{
+    float: left;
+    width: 100%;
+    .wrapper,
+    #edit-form,
+    .dynamic-attribute-row{
+        ++.unstyle-panel;
+    }
+    .dynamic-attribute-row{
+        padding: 0 0 15px 0;
+    }
+    .value-data{
+        width: 60%;
+        padding-left: 15px;
+    }
+    .attribute-rows{
+        float: none;
+        ul{
+            padding: 15px 15px 5px 15px;
+        }
+    }
+    .view-toolbar-container{
+        clear: left;
+        margin:0 15px 15px 15px;
+        .box-sizing();
+        width: auto;
+    }
+}
+
+.ReportResultsComponentForPortletView{
+    min-height: 100px;
+    .big-spinner{
+        float: left;
+        position: relative;
+        left: 50%;
+        margin:30px 0 0 -21px;
+    }
+}
+
+.ReportResultsGridView{
+    #report-results-grid-view{
+        overflow-x: auto;
+        > .items{
+            th, td{
+                border-left:1px solid #DFDFDF !important;
+                text-align: center !important;
+            }
+            th{
+                border-top:1px solid #DFDFDF !important;
+            }
+            thead th:first-child{
+                border-left:none !important;
+            }
+            thead tr:first-child{
+                th, td{
+                    border-top: none !important;
+                }
+            }
+            tbody th:first-child{
+                padding-left:5px !important;
+                border-left:none !important;
+            }
+            tbody td:first-child{
+                border-left:none !important;
+            }
+            .expanded-row{
+                td, th{
+                    #gradient > .vertical( #222, #333 );
+                    color: #DFDFDF;
+                    border: 1px solid #333;
+                }
+            }
+        }
+    }
+    .items{
+        overflow-x: hidden;
+    }
+}
+
+#UserCannotRenderReportProperlySplashView{
+    float: left;
+    margin-bottom: 30px;
+}
+
+#ChartForReportWizardView{
+    .panel > label{
+        text-align: left;
+        display: block;
+        margin-bottom: 20px;
+    }
+    .right-side-edit-view-panel{
+        label{
+            float: none;
+        }
+    }
+}
+
+.hasDrillDownContent{
+    padding:0 5px 5px 5px !important;
+    ++.border-box;
+    #gradient > .vertical( #333, #555 );
+    .big-spinner{
+        margin-top:10px;
+    }
+}
+
+.drillDownContent{
+    background: #fff;
+    min-height: 60px;
+    border-top: none;
+    tbody{
+        td, th{
+            padding-top: 5px !important;
+            padding-bottom: 5px !important;
+        }
+    }
+}
+
+.hasDrillDownLink{
+    padding: 10px 0 !important;
+    width:20px !important;
+    text-align: center !important;
+}
+
+.drilldown-link{
+    cursor: pointer;
+    display: block;
+    text-align: left;
+    .symbly(18px);
+    position: relative;
+    left: 5px;
+}
+
+.ReportResultsComponentForPortletView{
+    position: relative;
+}
+
+.refreshPortletLink{
+    position: absolute;
+    top:-28px;
+    right:10px;
+}
+
+.first-series-and-range-area,
+.second-series-and-range-area{
+    > div{
+        margin-bottom: 15px;
+        width: 50%;
+        float: left;
+        ++.border-box;
+        padding-right: 5px;
+        + div{
+            padding-left: 5px;
+            padding-right: 0;
+        }
+    }
+}
+
+#series-and-range-areas{
+    width: auto;
+    float: none;
+    clear: left;
+    .buffer{
+        padding-left: 22px;
+    }
+}
+
+#ReportDetailsView{
+    h1{
+        margin-bottom: 15px;
+    }
+    .view-toolbar ul:first-child{
+        > li > a{
+            border-left: none;
+        }
+    }
+}
+
+.hasCheckboxes{
+    display: inline-block;
+    border-left: 1px solid #bababa;
+    text-indent: 0 !important;
+    vertical-align: middle;
+    padding: 0 0 0 15px;
+    line-height: 30px;
+    &:before{
+        content: "";
+        margin: 0;
+        display: none;
+    }
+    .hasCheckBox{
+        display: inline-block;
+        width: auto;
+        padding-left: 20px;
+        margin-right: 0;
+        position: relative;
+        top:3px;
+    }
+}
+
+.label-for-report-widgets{
+    padding-right: 15px;
+    margin: 0 !important;
+    .smaller() !important;
+    font-weight: bold !important;
+}
+
+#reset-runtime-filters{
+    .z-label{
+        color:#666 !important;
+        .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+        background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+    }
+}
+
+.zero-components-view{
+    float: left;
+    position: absolute;
+    left: 30px;
+    top:0;
+    width: 100%;
+    .large-icon{
+        border-right:none;
+        margin-right: 30px;
+    }
+    h2{
+        padding-top:10px;
+    }
+    .large-icon:after{
+        margin-right: 45px;
+    }
+}
+
+.FilterIconOrSomethingElse,
+.ZeroFilters{
+    .large-icon:after{
+        content:'\00A9';//"©";
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroGroupBys{
+    .large-icon:after{
+        content:'\002A';//"*";
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroDisplayAttributes{
+    .large-icon:after{
+        content:'\00AB';//"Ç";
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroOrderBys{
+    .large-icon:after{
+        content:'\2039';//"Ü";
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroDrilDownDisplayAttributes{
+    .large-icon:after{
+        content:'\00BB'; //"È";
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+#ReportResultsSQLView{
+    padding: 15px;
+    font-family: monospace, monaco, sans-serif;
+    line-height: 18px;
+    color: #333;
+    > div + div{
+        margin-top:15px;
+    }
+}

@@ -31,6 +31,9 @@
     display:none !important;
     visibility:hidden !important;
 }
+.temp-hidden{
+    display:none;
+}
 
 .disabled-select-element{
     pointer-events:none;
@@ -332,7 +335,6 @@ footer, header, hgroup, menu, nav, section {
         }
     }
 }
-
 
 .notifications-link{
     z-index: 10;
@@ -663,21 +665,21 @@ body > .ui-autocomplete{
 }
 
 .ui-multiselect {
-  padding:0;
-  text-align:left;
-  span.ui-icon {
-    float:right;
-  }
+    padding:0;
+    text-align:left;
+    span.ui-icon {
+        float:right;
+    }
 }
 
 .ui-multiselect-single .ui-multiselect-checkboxes input {
-  position:absolute !important;
-  top:auto !important;
-  left:-9999px;
+    position:absolute !important;
+    top:auto !important;
+    left:-9999px;
 }
 
 .ui-multiselect-single .ui-multiselect-checkboxes label {
-  padding:5px !important;
+    padding:5px !important;
 }
 
 .ui-multiselect-header {
@@ -1000,18 +1002,18 @@ body > .ui-autocomplete{
 #RecentlyViewedView {
 	/*deafult for if an icon doesnt exist*/
 	li{
-		em:before{
-            content: "z";
-        }
+	    em:before{
+                content: "z";
+            }
 	}
 	li.type-ConversationsModule{
-		em{
-            padding-top:3px;
-            padding-right:3px;
-        }
-        em:before{
-            content: "b";
-        }
+	    em{
+                padding-top:3px;
+                padding-right:3px;
+            }
+            em:before{
+                content: "b";
+            }
     }
     li.type-UsersModule{
         em:before{
@@ -1070,12 +1072,16 @@ body > .ui-autocomplete{
             content: "Q";
         }
     }
-        
+    li.type-ReportsModule{
+        em:before{
+            content: "V";
+        }
+    }       
 }
 
 /*=Content*/
 .AppContent{
-	.radius(0 0 5px 5px);
+    .radius(0 0 5px 5px);
     padding:20px 20px 0 20px;
     margin-left:172px;
     margin-bottom:20px;
@@ -1083,30 +1089,27 @@ body > .ui-autocomplete{
     .clearfix();
     .single-column{
     	padding-right:0 !important;
-		> .GridView{
-			display:block;
-			width:100% !important;
-		}
-		.panel{
-			width:70%;
-			float:left;
+        > .GridView{
+            display:block;
+            width:100% !important;
+        }
+        .panel{
+            width:70%;
+            float:left;
             position: relative;
-			td, th{
-				padding-bottom:10px !important;
-			}
-		}
-		.juiportlet-widget,
-		.details-table{
-			margin-right:0 !important;
+        }
+        .juiportlet-widget,
+        .details-table{
+            margin-right:0 !important;
             .clearfix();
-		}
-		#right-side-edit-view-panel{
-			top:55px;
-		}
-		#inline-edit-form .panel{
-			width:100%;
-		}
 	}
+        #right-side-edit-view-panel{
+            top:55px;
+        }
+        #inline-edit-form .panel{
+            width:100%;
+        }
+    }
 }
 
 .DynamicSearchView{
@@ -1154,12 +1157,15 @@ body > .ui-autocomplete{
 
 /*=Inner toolbar*/
 .float-bar{
+    width: 100%;
+    float: left;
+    position: relative;
     height: 40px;
     display: block;
     .view-toolbar-container{
         z-index:222222;
         position:fixed !important;
-        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5)");
+        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3)");
         #gradient > .vertical-three-colors( #f5f5f5, #f5f5f5, 80%, #ffffff );
         padding-bottom:15px;
         margin-left: -20px;
@@ -1319,6 +1325,21 @@ form,
     top:-2px;
 }
 
+#ListViewDetailsActionMenu .parent > a:before,
+.icon-details:before{
+    content: 'T';
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+#ListViewOptionsActionMenu .parent > a:before,
+.icon-options:before{
+    content: "n";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
     content: "2";
@@ -1452,17 +1473,15 @@ caption, th, td {
     font-weight: normal;
     text-align: left;
 }
+
 #list-view{
     overflow-x:auto;
-    position:relative;
-    
+    position:relative;    
     background:
         -webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
         -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,        
         -webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
         -webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
-        
-
     background-repeat: no-repeat;
     //background-color: white;
     background-size:
@@ -1470,14 +1489,12 @@ caption, th, td {
         40px 100%, 
         20px 100%,
         20px 100%;
-    
     /* Opera doesn't support this in the shorthand */
     background-attachment:
         local,
         local,
         scroll,
         scroll;
-
 }
 
 table.items{
@@ -1529,12 +1546,28 @@ table.items{
             border-bottom: none;
         }
         tr{
-			td:first-child:not(.checkbox-column),
-			th:first-child:not(.checkbox-column){
-				padding-left:10px;
-			}
-		}   
+            td:first-child:not(.checkbox-column),
+            th:first-child:not(.checkbox-column){
+                    padding-left:10px;
+            }
+        }   
     }
+}
+
+.sort-link:after{
+    //content:"↑";
+    margin-left: 10px;
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+}
+
+.sort-link.asc:after{
+    content:"↑";
+}
+
+.sort-link.desc:after{
+    content:"↓";
 }
 
 tr.odd{
@@ -1658,9 +1691,9 @@ td.empty{
 }
 
 .AppContent label{
-    font-size:12px !important;
+    font-size:12px;
     color:#666;
-    font-weight:400 !important;
+    font-weight:400;
 }
 
 /*=Form Edit Account*/
@@ -1692,7 +1725,7 @@ td.empty{
         color:#656565;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-        
+        .smaller();
         .z-label{
             padding:0 10px 0 10px;
             float:none;
@@ -1714,6 +1747,7 @@ td.empty{
     .icon-create .z-label:before{
     	content: "Y";
         .view-toolbar-icons();
+        font-size:22px;
         top:-2px;
         margin:0 5px 0 0 !important;
     }
@@ -1733,19 +1767,38 @@ td.empty{
     }
 }
 
-a.simple-link{
-    background:none !important;
-    background-image:none !important;
-    .b-shadow( ~"none  !important" );
-    .radius(~"0 !important");
-    padding:0  !important;
-    border: none !important;
-    margin-left:10px;
-    text-decoration:underline;
-    .smaller();
-    font-weight:normal;
-    &:before{
-        content:""  !important;
+body div.form-toolbar{
+    a.simple-link:not(.z-button){
+        background:none !important;
+        background-image:none !important;
+        .b-shadow( ~"none  !important" );
+        .radius(~"0 !important");
+        padding:0  !important;
+        border: none !important;
+        margin:!important;
+        text-decoration:underline;
+        font-weight:normal;
+        &:hover{
+            span.z-label{
+                background:none !important;
+                background-image:none !important;
+                background: transparent !important;
+            }
+        }
+        span.z-label{
+            background:none !important;
+            background-image:none !important;
+            .b-shadow( ~"none  !important" );
+            .radius(~"0 !important");
+            padding:0  !important;
+            border: none !important;
+            margin-left:10px;
+            text-decoration:underline;
+            font-weight:normal;
+            &:before{
+                content:""  !important;
+            }
+        }
     }
 }
 
@@ -1985,8 +2038,8 @@ div.wide.form{
 #NoUserEmailConfigurationYetView,
 #NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView*/
-.splash-view
-{
+.zero-components-view,
+.splash-view {
     h2{
         font-family:"Times New Roman", Times, serif;
         font-style:italic;
@@ -2068,6 +2121,12 @@ div.wide.form{
     }
     .EmailMessage .large-icon:after{
         content:"g";
+        .symbly(250px);
+        line-height: 60%;
+    }
+    .missing-report:after,
+    .Report .large-icon:after{
+        content:"j";
         .symbly(250px);
         line-height: 60%;
     }
@@ -2621,6 +2680,10 @@ div.wide.form{
     position:absolute;
     right:15px;
     top:15px;
+}
+
+.right-side-edit-view-panel,
+#right-side-edit-view-panel{
     width:30%;
     float:right;
     h3{
@@ -2938,22 +3001,21 @@ div.wide.form{
     .box-sizing();
 }
 
-.TitleBarAndDetailsView,
-.ProgressView,
-#MetadataViewEditView,
-.TableOfContentsView,
-.DetailsView,
-.EditAndDetailsView{
-    > div{
-        margin-bottom:20px;
-        border:1px solid #ccc;
-        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-        #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-        .form form{
-            border:none;
-            background:none;
-            .b-shadow(none);
-        }
+.wrapper,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container),
+.ProgressView           > div:not(.view-toolbar-container),
+#MetadataViewEditView   > div:not(.view-toolbar-container),
+.TableOfContentsView    > div:not(.view-toolbar-container),
+.DetailsView            > div:not(.view-toolbar-container),
+.EditAndDetailsView     > div:not(.view-toolbar-container){
+   margin-bottom:20px;
+   border:1px solid #ccc;
+   .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+   #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+   .form form{
+        border:none;
+        background:none;
+        .b-shadow(none);
     }
     h1{
         text-indent:15px;
@@ -3461,7 +3523,7 @@ div.hasHalfs{
             height:50px;
             float:left;
             margin-left:0;
-            margin-top:-4px;
+            margin-top:-6px;
             width:auto;
             label{
                 margin:0 5px 0 0;
@@ -4074,6 +4136,9 @@ div.hasHalfs{
     }
 }
 
+
+
+
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView{
     #edit-form table{
@@ -4417,4 +4482,5 @@ div.hasHalfs{
 @import 'tablet.less';
 @import 'thread-view.less';
 @import 'email.less';
+@import 'reports.less';
 @import 'media-queries.less';

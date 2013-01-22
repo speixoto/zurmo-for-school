@@ -38,8 +38,9 @@
 
         protected $params;
 
-        public function __construct($attribute, ListView $view, $params)
+        public function __construct($attribute, $view, $params)
         {
+            assert('self::isValidView($view) == true');
             $this->attribute = $attribute;
             $this->view      = $view;
             $this->params    = $params;
@@ -66,6 +67,16 @@
                 return $this->params['isLink'];
             }
             return false;
+        }
+
+        private static function isValidView($view)
+        {
+            $class = new ReflectionClass(get_class($view));
+            if (!$class->implementsInterface('ListViewInterface'))
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

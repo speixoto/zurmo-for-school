@@ -127,7 +127,23 @@
             {
                 $uncheck = '';
             }
-            $hiddenOptions = isset($htmlOptions['id']) ? array('id' => self::ID_PREFIX . $htmlOptions['id']) : array('id' => false);
+
+            if(isset($htmlOptions['id']))
+            {
+                if(isset($htmlOptions['ignoreIdPrefix']) && $htmlOptions['ignoreIdPrefix'])
+                {
+                    $hiddenOptions = array('id' => $htmlOptions['id']);
+                }
+                else
+                {
+                    $hiddenOptions = array('id' => self::ID_PREFIX . $htmlOptions['id']);
+                }
+
+            }
+            else
+            {
+                $hiddenOptions = array('id' => false);
+            }
             $hidden = $uncheck !== null ? self::hiddenField($name, $uncheck, $hiddenOptions) : '';
             return $hidden . self::radioButtonList($name, $selection, $data, $htmlOptions);
         }

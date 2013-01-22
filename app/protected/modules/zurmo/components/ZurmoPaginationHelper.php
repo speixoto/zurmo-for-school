@@ -78,6 +78,16 @@
         protected $_massDeleteProgressPageSize;
 
         /**
+         * The report results list page size
+         */
+        protected $_reportResultsListPageSize;
+
+        /**
+         * The report results drill-down page size
+         */
+        protected $_reportResultsSubListPageSize;
+
+        /**
         * Default list page size for api calls.
         */
         protected $_unlimitedPageSize;
@@ -151,6 +161,24 @@
         public function setMassDeleteProgressPageSize($value)
         {
             $this->_massDeleteProgressPageSize = $value;
+        }
+
+        /**
+         * This is set from the value in the application common config file. It is used as the final fall back
+         * if no other configuration settings are found.
+         */
+        public function setReportResultsListPageSize($value)
+        {
+            $this->_reportResultsListPageSize = $value;
+        }
+
+        /**
+         * This is set from the value in the application common config file. It is used as the final fall back
+         * if no other configuration settings are found.
+         */
+        public function setReportResultsSubListPageSize($value)
+        {
+            $this->_reportResultsSubListPageSize = $value;
         }
 
         /**
@@ -304,7 +332,8 @@
         {
             return array('listPageSize', 'subListPageSize', 'modalListPageSize', 'massEditProgressPageSize',
                          'autoCompleteListPageSize', 'importPageSize', 'dashboardListPageSize', 'apiListPageSize',
-                         'massDeleteProgressPageSize', 'unlimitedPageSize');
+                         'massDeleteProgressPageSize', 'reportResultsListPageSize', 'reportResultsSubListPageSize',
+                         'unlimitedPageSize');
         }
     }
 ?>

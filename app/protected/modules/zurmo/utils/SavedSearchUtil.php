@@ -111,7 +111,7 @@
             {
                 $stickyData['savedSearchId']           = $dataCollection->getSavedSearchId();
             }
-            Yii::app()->user->setState($key, serialize($stickyData));
+            StickySearchUtil::setDataByKeyAndData($key, $stickyData);
         }
 
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)

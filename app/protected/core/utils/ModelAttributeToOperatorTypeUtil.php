@@ -29,6 +29,12 @@
      */
     class ModelAttributeToOperatorTypeUtil
     {
+        const AVAILABLE_OPERATORS_TYPE_STRING   = 'String';
+
+        const AVAILABLE_OPERATORS_TYPE_NUMBER   = 'Number';
+
+        const AVAILABLE_OPERATORS_TYPE_DROPDOWN = 'DropDown';
+
         /**
          * Returns the operator type
          * that should be used with the named attribute
@@ -138,6 +144,109 @@
                 case 'TextArea':
                     return 'contains';
 
+                default :
+                    null;
+            }
+        }
+
+        /**
+         * Returns the available operators type.  A string for example has 'String' as the available operators type.
+         * This can than be adapted into a dropDown to display possible operators that can be used with a string.
+         * @param $model - instance of a RedBeanModel or RedBeanModels if the model is a HAS_MANY relation on the
+         *                 original model.
+         * @return string representing the type. if no type is available then null is returned.
+         */
+        public static function getAvailableOperatorsType($model, $attributeName)
+        {
+            if ($attributeName == 'id')
+            {
+                return null;
+            }
+            if ($model->$attributeName instanceof MultipleValuesCustomField ||
+                $model->$attributeName instanceof CustomField)
+            {
+                return self::AVAILABLE_OPERATORS_TYPE_DROPDOWN;
+            }
+            $metadata = $model->getMetadata();
+            foreach ($metadata as $className => $perClassMetadata)
+            {
+                if (isset($perClassMetadata['elements'][$attributeName]))
+                {
+                    $operatorType = self::getAvailableOperatorsTypeFromModelMetadataElement(
+                                                $perClassMetadata['elements'][$attributeName]);
+                    if ($operatorType == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        return $operatorType;
+                    }
+                }
+            }
+            if ($model->isRelation($attributeName))
+            {
+                throw new NotSupportedException('Unsupported available operators type for Model Class: ' . get_class($model) .
+                                                ' with attribute: ' . $attributeName);
+            }
+            else
+            {
+                $validators = $model->getValidators($attributeName);
+                foreach ($validators as $validator)
+                {
+                    switch(get_class($validator))
+                    {
+                        case 'CBooleanValidator':
+                            return null;
+
+                        case 'CEmailValidator':
+                            return self::AVAILABLE_OPERATORS_TYPE_STRING;
+
+                        case 'RedBeanModelTypeValidator':
+                        case 'TypeValidator':
+                            switch ($validator->type)
+                            {
+                                case 'date':
+                                    return null; //managed through valueType not operator
+
+                                case 'datetime':
+                                    return null; //managed through valueType not operator
+
+                                case 'integer':
+                                    return self::AVAILABLE_OPERATORS_TYPE_NUMBER;
+
+                                case 'float':
+                                    return self::AVAILABLE_OPERATORS_TYPE_NUMBER;
+
+                                case 'time':
+                                    return null; //todo:
+
+                                case 'array':
+                                    throw new NotSupportedException();
+                                case 'string':
+                                    return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                            }
+                            break;
+
+                        case 'CUrlValidator':
+                            return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                    }
+                }
+            }
+            return null;
+        }
+
+        protected static function getAvailableOperatorsTypeFromModelMetadataElement($element)
+        {
+            assert('is_string($element)');
+            switch ($element)
+            {
+                case 'CurrencyValue':
+                    return self::AVAILABLE_OPERATORS_TYPE_NUMBER;
+                case 'Phone':
+                    return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                case 'TextArea':
+                    return self::AVAILABLE_OPERATORS_TYPE_STRING;
                 default :
                     null;
             }
