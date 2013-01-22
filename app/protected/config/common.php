@@ -291,6 +291,7 @@
             'application.modules.zurmo.components.BeginRequestBehavior',
             'application.core.utils.ArrayUtil',
             'application.core.utils.FileUtil',
+            'application.core.utils.ZurmoCache',
             'application.core.utils.GeneralCache',
             'application.core.exceptions.NotFoundException',
             'application.core.components.ZurmoLocale',
@@ -340,7 +341,7 @@
 
         'params' => array(
             'redBeanVersion'    => '3.2',
-            'yiiVersion'        => '1.1.12',
+            'yiiVersion'        => '1.1.13',
             'memcacheServers'   => $memcacheServers,
             'supportedLanguages' => array(
                 'en' => 'English',
