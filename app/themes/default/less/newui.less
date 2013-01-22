@@ -1541,12 +1541,28 @@ table.items{
             border-bottom: none;
         }
         tr{
-			td:first-child:not(.checkbox-column),
-			th:first-child:not(.checkbox-column){
-				padding-left:10px;
-			}
-		}   
+            td:first-child:not(.checkbox-column),
+            th:first-child:not(.checkbox-column){
+                    padding-left:10px;
+            }
+        }   
     }
+}
+
+.sort-link:after{
+    //content:"↑";
+    margin-left: 10px;
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+}
+
+.sort-link.asc:after{
+    content:"↑";
+}
+
+.sort-link.desc:after{
+    content:"↓";
 }
 
 tr.odd{
