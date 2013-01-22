@@ -473,6 +473,8 @@
 
 .hasDrillDownLink{
     padding: 10px 0 !important;
+    width:20px !important;
+    text-align: center !important;
 }
 
 .drilldown-link{
@@ -570,54 +572,56 @@
     float: left;
     position: absolute;
     left: 30px;
-    top:75px;
+    top:0;
     width: 100%;
     .large-icon{
         border-right:none;
         margin-right: 30px;
     }
-    /*.large-icon:after{
-        content:"D";
-        .symbly(300px);
-        line-height: 30%;   
-    }*/
+    h2{
+        padding-top:10px;
+    }
+    .large-icon:after{
+        margin-right: 45px;
+    }
 }
 
+.FilterIconOrSomethingElse,
 .ZeroFilters{
     .large-icon:after{
-        content:"¥";
+        content:'\00A9';//"©";
         .symbly(300px);
         line-height: 30%;   
     }
 }
 
-.ZeroGroupings{
+.ZeroGroupBys{
     .large-icon:after{
-        content:"*";
+        content:'\002A';//"*";
         .symbly(300px);
         line-height: 30%;   
     }
 }
 
-.ZeroDisplayColumns{
+.ZeroDisplayAttributes{
     .large-icon:after{
-        content:"Ç";
+        content:'\00AB';//"Ç";
         .symbly(300px);
         line-height: 30%;   
     }
 }
 
-.ZeroOrdering{
+.ZeroOrderBys{
     .large-icon:after{
-        content:"Ü";
+        content:'\2039';//"Ü";
         .symbly(300px);
         line-height: 30%;   
     }
 }
 
-.ZeroDrillDown{
+.ZeroDrilDownDisplayAttributes{
     .large-icon:after{
-        content:"È";
+        content:'\00BB'; //"È";
         .symbly(300px);
         line-height: 30%;   
     }

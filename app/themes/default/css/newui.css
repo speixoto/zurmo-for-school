@@ -15795,6 +15795,8 @@ a.user-link {
 }
 .hasDrillDownLink {
   padding: 10px 0 !important;
+  width: 20px !important;
+  text-align: center !important;
 }
 .drilldown-link {
   cursor: pointer;
@@ -15880,49 +15882,50 @@ a.user-link {
   float: left;
   position: absolute;
   left: 30px;
-  top: 75px;
+  top: 0;
   width: 100%;
-  /*.large-icon:after{
-        content:"D";
-        .symbly(300px);
-        line-height: 30%;   
-    }*/
-
 }
 .zero-components-view .large-icon {
   border-right: none;
   margin-right: 30px;
 }
+.zero-components-view h2 {
+  padding-top: 10px;
+}
+.zero-components-view .large-icon:after {
+  margin-right: 45px;
+}
+.FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {
-  content: "�";
+  content: '\00A9';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
-.ZeroGroupings .large-icon:after {
-  content: "*";
+.ZeroGroupBys .large-icon:after {
+  content: '\002A';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
-.ZeroDisplayColumns .large-icon:after {
-  content: "�";
+.ZeroDisplayAttributes .large-icon:after {
+  content: '\00AB';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
-.ZeroOrdering .large-icon:after {
-  content: "�";
+.ZeroOrderBys .large-icon:after {
+  content: '\2039';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
-.ZeroDrillDown .large-icon:after {
-  content: "�";
+.ZeroDrilDownDisplayAttributes .large-icon:after {
+  content: '\00BB';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
