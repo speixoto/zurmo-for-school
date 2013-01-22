@@ -46,9 +46,9 @@
          */
         private static $l10nInfo;
         /**
-         * Holds an array with avalible languages
+         * Holds an array with available languages
          */
-        private static $avalibleLanguages;
+        private static $availableLanguages;
 
         /**
          * @return string
@@ -92,14 +92,14 @@
         }
 
         /**
-         * Retrives the list of all languages avalible on the l10n server
+         * Retrives the list of all languages available on the l10n server
          */
-        public static function getAvalibleLanguages()
+        public static function getAvailableLanguages()
         {
-            if (is_array(self::$avalibleLanguages)
-                && !empty(self::$avalibleLanguages))
+            if (is_array(self::$availableLanguages)
+                && !empty(self::$availableLanguages))
             {
-                return self::$avalibleLanguages;
+                return self::$availableLanguages;
             }
 
             try {
@@ -108,16 +108,16 @@
                 throw new FailedServiceException();
             }
 
-            self::$avalibleLanguages = array();
+            self::$availableLanguages = array();
             foreach ($l10nInfo->languages->language as $language)
             {
-                self::$avalibleLanguages[$language->code] = (array)$language;
+                self::$availableLanguages[$language->code] = (array)$language;
             }
 
-            if (is_array(self::$avalibleLanguages)
-                && !empty(self::$avalibleLanguages))
+            if (is_array(self::$availableLanguages)
+                && !empty(self::$availableLanguages))
             {
-                return self::$avalibleLanguages;
+                return self::$availableLanguages;
             }
 
             throw new FailedServiceException();
@@ -134,8 +134,8 @@
          */
         public static function getPoFileUrl($languageCode)
         {
-            $avalibleLanguages = self::getAvalibleLanguages();
-            if (!empty($avalibleLanguages) && isset($avalibleLanguages[$languageCode]))
+            $availableLanguages = self::getavailableLanguages();
+            if (!empty($availableLanguages) && isset($availableLanguages[$languageCode]))
             {
                 $urlPattern = self::getUrlPattern();
                 $searchArray = array(
