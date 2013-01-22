@@ -189,7 +189,7 @@
             return $this->timeTrigger;
         }
 
-        public function setTimeTrigger(TimeTriggerForWorkflowWizardForm $timeTrigger)
+        public function setTimeTrigger(TimeTriggerForWorkflowForm $timeTrigger)
         {
             $this->timeTrigger = $timeTrigger;
         }
@@ -199,7 +199,7 @@
             $this->timeTrigger = null;
         }
 
-        public function addTrigger(TriggerForWorkflowWizardForm $trigger)
+        public function addTrigger(TriggerForWorkflowForm $trigger)
         {
             $this->triggers[] = $trigger;
         }
@@ -214,7 +214,7 @@
             return $this->actions;
         }
 
-        public function addAction(ActionForWorkflowWizardForm $action)
+        public function addAction(ActionForWorkflowForm $action)
         {
             $this->actions[] = $action;
         }
