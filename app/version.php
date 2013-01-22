@@ -42,4 +42,6 @@
                                                           // meaningful.
 
     define('VERSION', join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION)) . ' (' . substr(REPO_ID, strlen('$Revision: '), -2) . ')');
+
+    define('ZURMO_TOKEN', '3c760f2ba5');
 ?>

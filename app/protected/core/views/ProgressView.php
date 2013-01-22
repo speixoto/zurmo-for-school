@@ -32,6 +32,8 @@
      */
     abstract class ProgressView extends View
     {
+        abstract protected function headerLabelPrefixContent();
+
         /**
          * How many total records need to be processed in the batch
          */
@@ -82,10 +84,10 @@
          */
         public function renderRefreshJSONScript()
         {
-            return CJSON::encode($this->renderRefresScript());
+            return CJSON::encode($this->renderRefreshScript());
         }
 
-        protected function renderRefresScript()
+        protected function renderRefreshScript()
         {
             $value = $this->getProgressValue();
             if ($value < 100)
@@ -120,23 +122,24 @@
                     'create' => 'js:function(event, ui)
                     {
                         ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
-                        makeSmallLoadingSpinner("sequential-process-spinner", "dark");
+                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "&#37;");
+                    }',
+                    'change' => 'js:function(event, ui){
+                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "&#37;");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
-                        $(\'#' . $this->progressBarId . '\').hide();
+                        $(".progressbar-wrapper").fadeOut(250);
                         $(\'#' . $this->progressBarId . '-links\').show();
-                        $(\'#sequential-process-spinner\').remove();
                     }',
                 ),
             ));
             $cClipWidget->endClip();
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content = "<div><h1>" . Yii::t('Default', 'Mass Update') . ' ' . $this->title . '</h1>';
-            $content .= '<div class="progress-counter">' . "\n";
-            $content .= '<h3><span id="sequential-process-spinner"><span class="z-spinner"></span></span>' . 
-                        '<span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= $progressBarContent;
+            $content  = "<div><h1>" . $this->headerLabelPrefixContent() . ' ' . $this->title . '</h1>';
+            $content .= '<div class="progress-counter">';
+            $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
+            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0&#37;</span>' . $progressBarContent . '</div>';
             $content .= $this->renderFormLinks();
             $content .= '</div>';
             $content .= '</div>';
