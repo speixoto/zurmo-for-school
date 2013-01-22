@@ -66,7 +66,7 @@
 
         protected function getZeroComponentsContent()
         {
-            $content = '<div class="GroupBysIconOrSomethingElse">';
+            $content = '<div class="ZeroGroupBys">';
             $content .= $this->getZeroComponentsMessageContent();
             $content .= '</div>';
             return $content;
