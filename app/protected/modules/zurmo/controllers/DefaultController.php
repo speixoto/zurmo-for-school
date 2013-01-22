@@ -338,19 +338,19 @@
             header('Content-Type: text/event-stream');
             header('Cache-Control: no-cache');
             $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
+            echo "retry: 10000" . PHP_EOL; // retry in 10 seconds
             if ($newUnreadConversations > $unreadConversations)
             {
                 $data['unreadConversations'] = $newUnreadConversations;
-                $data['imgUrl'] = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/zurmo-module.png';
-                $data['title'] = Yii::t('Default', 'ZurmoCRM (New comment)');
-                $data['message'] = Yii::t('Default', 'There is an unread conversation.');
-                echo "retry: 10000" . PHP_EOL; // retry in 10 seconds
-                echo "event: updateConversations\n"; // retry in 10 seconds
+                $data['imgUrl']              = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/zurmo-module.png';
+                $data['title']               = Yii::t('Default', 'ZurmoCRM (New comment)');
+                $data['message']             = Yii::t('Default', 'There is an unread conversation.');
+                echo "event: updateConversations\n";
                 echo "data: " . CJSON::encode($data) . PHP_EOL;
-                echo PHP_EOL;
-                ob_flush();
-                flush();
             }
+            echo PHP_EOL;
+            ob_flush();
+            flush();
         }
     }
 ?>

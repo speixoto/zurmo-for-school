@@ -75,7 +75,7 @@
                         }
                         else
                         {
-                            alert('" . Yii::t('Default', 'You have already enabled desktop notifications.') . "');
+                            alert('" . Yii::t('Default', 'You have already enabled desktop notifications in this browser.') . "');
                         }
                     }
                     else
@@ -90,18 +90,16 @@
         public static function renderAutoUpdaterScript()
         {
             $script = "
-                    var convPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
-                    var notiPlacer = $('#notifications-link');
-                    var uconv      = convPlacer.text();
-                    var unoti      = notiPlacer.text();
-                    var url        = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
-                    if(typeof(EventSource) !== 'undefined') {
-                        var source = new EventSource(url + '?unreadConversations=' + uconv);
+                    var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
+                    var unreadConversations = conversationsPlacer.text();
+                    var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
+                    if(typeof(EventSource) !== 'undefined' && unreadConversations >= 0) {
+                        var source = new EventSource(url + '?unreadConversations=' + unreadConversations);
                         source.addEventListener('updateConversations', function(e) {
                           var data = JSON.parse(e.data);
-                            if (uconv != data.unreadConversations) {
-                                uconv = data.unreadConversations;
-                                convPlacer.html(uconv);
+                            if (unreadConversations != data.unreadConversations) {
+                                unreadConversations = data.unreadConversations;
+                                conversationsPlacer.html(unreadConversations);
                                 if (desktopNotifications.isSupported()) {
                                     desktopNotifications.notify(data.imgUrl,
                                                                 data.title,
@@ -109,11 +107,9 @@
                                 }
                             }
                         }, false);
-                    } else {
-                        //TODO: What to do when browser not support EventSource?
                     }
                 ";
-            Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_READY);
+            Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_END);
         }
     }
 ?>
