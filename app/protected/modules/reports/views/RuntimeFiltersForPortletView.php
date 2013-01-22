@@ -91,7 +91,7 @@
                                                   $rowCount, $inputPrefixData,
                                                   ReportRelationsAndAttributesToTreeAdapter::
                                                   resolveAttributeByNodeId($nodeIdWithoutTreeType),
-                                                  (bool)$trackableStructurePosition, false);
+                                                  (bool)$trackableStructurePosition, false, null);
                     $view->addWrapper           = false;
                     $items[]                    = array('content' => $view->render());
                 }

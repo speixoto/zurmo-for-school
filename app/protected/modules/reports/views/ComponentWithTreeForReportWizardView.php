@@ -26,9 +26,9 @@
 
     abstract class ComponentWithTreeForReportWizardView extends ComponentForReportWizardView
     {
-        abstract protected function getItems(& $rowCount);
+        abstract protected function getItemsCount();
 
-        abstract protected function getZeroComponentsContent();
+        abstract protected function getItemsContent(& $rowCount);
 
         public static function getTreeType()
         {
@@ -51,7 +51,7 @@
         protected function renderRightSideContent()
         {
             $rowCount                    = 0;
-            $items                       = $this->getItems($rowCount);
+            $items                       = $this->getItemsContent($rowCount);
             if($this->isListContentSortable())
             {
                 $itemsContent            = $this->getSortableListContent($items);
@@ -107,7 +107,7 @@
                                               $rowCount, $inputPrefixData,
                                               ReportRelationsAndAttributesToTreeAdapter::
                                               resolveAttributeByNodeId($nodeIdWithoutTreeType),
-                                              (bool)$trackableStructurePosition);
+                                              (bool)$trackableStructurePosition, true, static::getTreeType());
                 $view->addWrapper           = false;
                 $items[]                    = array('content' => $view->render());
                 $rowCount ++;
@@ -161,8 +161,13 @@
                 $(".attribute-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-attribute-row-link").live("click", function(){
+                $(".remove-dynamic-attribute-row-link.' . static::getTreeType() . '").live("click", function(){
+                    size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
+                    if(size < 2)
+                    {
+                        $(".' . static::getZeroComponentsClassName() . '").show();
+                    }
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     return false;
                 });
@@ -193,7 +198,7 @@
                     $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
                     $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                    //attachLoadingSpinner("' . $this->form->getId() . '", false); - remove spinner
+                    $(".' . static::getZeroComponentsClassName() . '").hide();
                 }'
             ));
         }
@@ -212,7 +217,7 @@
                         $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
                         $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                        //attachLoadingSpinner("' . $this->form->getId() . '", false); - remove spinner
+                        $(".' . static::getZeroComponentsClassName() . '").hide();
                 }'
             ));
         }
@@ -224,6 +229,22 @@
         protected function isListContentSortable()
         {
             return false;
+        }
+
+        protected function getZeroComponentsContent()
+        {
+            if($this->getItemsCount() > 0)
+            {
+                $style = ' style="display:none;"';
+            }
+            else
+            {
+                $style = null;
+            }
+            $content = '<div class="' . static::getZeroComponentsClassName() . '" ' . $style . '>';
+            $content .= $this->getZeroComponentsMessageContent();
+            $content .= '</div>';
+            return $content;
         }
     }
 ?>

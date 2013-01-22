@@ -33,7 +33,7 @@
 
         public static function getTreeType()
         {
-            return ComponentForReportForm::TYPE_FILTERS;
+            return FilterForReportForm::getType();
         }
 
         public static function getWizardStepTitle()
@@ -122,17 +122,19 @@
             return 'rebuildReportFiltersAttributeRowNumbersAndStructureInput("' . get_class($this) . '");';
         }
 
-        protected function getItems(& $rowCount)
+        protected function getItemsCount()
+        {
+            return count($this->model->filters);
+        }
+
+        protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->filters, true);
         }
 
-        protected function getZeroComponentsContent()
+        protected static function getZeroComponentsClassName()
         {
-            $content = '<div class="ZeroFilters">';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
+            return 'ZeroFilters';
         }
 
         protected function getZeroComponentsMessageContent()

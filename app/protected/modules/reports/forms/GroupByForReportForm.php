@@ -28,6 +28,11 @@
     {
         public $axis = 'x';
 
+        public static function getType()
+        {
+            return static::TYPE_GROUP_BYS;
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(

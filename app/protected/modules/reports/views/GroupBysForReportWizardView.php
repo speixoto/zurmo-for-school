@@ -41,7 +41,7 @@
 
         public static function getTreeType()
         {
-            return ComponentForReportForm::TYPE_GROUP_BYS;
+            return GroupByForReportForm::getType();
         }
 
         public static function getWizardStepTitle()
@@ -59,17 +59,19 @@
             return 'groupBysNextLink';
         }
 
-        protected function getItems(& $rowCount)
+        protected function getItemsCount()
+        {
+            return count($this->model->groupBys);
+        }
+
+        protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->groupBys);
         }
 
-        protected function getZeroComponentsContent()
+        protected static function getZeroComponentsClassName()
         {
-            $content = '<div class="ZeroGroupBys">';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
+            return 'ZeroGroupBys';
         }
 
         protected function getZeroComponentsMessageContent()

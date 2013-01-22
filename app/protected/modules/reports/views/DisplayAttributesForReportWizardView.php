@@ -41,7 +41,7 @@
 
         public static function getTreeType()
         {
-            return ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
+            return DisplayAttributeForReportForm::getType();
         }
 
         public static function getWizardStepTitle()
@@ -64,17 +64,19 @@
             return true;
         }
 
-        protected function getItems(& $rowCount)
+        protected function getItemsCount()
+        {
+            return count($this->model->displayAttributes);
+        }
+
+        protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->displayAttributes);
         }
 
-        protected function getZeroComponentsContent()
+        protected static function getZeroComponentsClassName()
         {
-            $content = '<div class="ZeroDisplayAttributes">';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
+            return 'ZeroDisplayAttributes';
         }
 
         protected function getZeroComponentsMessageContent()

@@ -28,7 +28,7 @@
     {
         public static function getTreeType()
         {
-            return ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
+            return DrillDownDisplayAttributeForReportForm::getType();
         }
 
         public static function getWizardStepTitle()
@@ -51,17 +51,19 @@
             return true;
         }
 
-        protected function getItems(& $rowCount)
+        protected function getItemsCount()
+        {
+            return count($this->model->drillDownDisplayAttributes);
+        }
+
+        protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->drillDownDisplayAttributes);
         }
 
-        protected function getZeroComponentsContent()
+        protected static function getZeroComponentsClassName()
         {
-            $content = '<div class="ZeroDrillDownDisplayAttributes">';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
+            return 'ZeroDrillDownDisplayAttributes';
         }
 
         protected function getZeroComponentsMessageContent()

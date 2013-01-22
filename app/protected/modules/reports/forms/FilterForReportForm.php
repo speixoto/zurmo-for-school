@@ -42,6 +42,11 @@
 
         private $_availableOperatorsType;
 
+        public static function getType()
+        {
+            return static::TYPE_FILTERS;
+        }
+
         public function attributeNames()
         {
             return array_merge(parent::attributeNames(), array('operator'));
