@@ -55,7 +55,7 @@
          */
         private static function getReleaseVersion()
         {
-            return join('.', array(MAJOR_VERSION, MINOR_VERSION, PATCH_VERSION));
+            return join('.', array(MAJOR_VERSION, MINOR_VERSION));
         }
 
         /**
@@ -67,8 +67,7 @@
         {
             if (self::$l10nInfo
                 && isset(self::$l10nInfo)
-                &&
-                self::$l10nInfo->version == '1.1')
+                && self::$l10nInfo->version == '1.1')
             {
                 return self::$l10nInfo;
             }
@@ -78,7 +77,8 @@
                 self::$l10nInfo = GeneralCache::getEntry($cacheIdentifier);
             } catch (NotFoundException $e) {
                 $infoFileUrl = self::$serverDomain . '/' . self::$infoXmlPath;
-                self::$l10nInfo = @simplexml_load_file($infoFileUrl);
+                $xml = simplexml_load_file($infoFileUrl);
+                self::$l10nInfo = json_decode(json_encode($xml));
                 GeneralCache::cacheEntry($cacheIdentifier, self::$l10nInfo);
             }
 
