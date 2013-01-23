@@ -72,17 +72,34 @@
             echo $view->render();
         }
 
-      /*  public function actionDetails($id)
+        public function actionDetails($id)
         {
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($marketingList), 'MarketingListsModule'), $marketingList);
-            $detailsView              = new MarketingListDetailsView($this->getId(), $this->getModule()->getId(), $marketingList);
+            $searchForm                     = new MarketingListsSearchForm($marketingList);
+            $listAttributesSelector         = new ListAttributesSelector('MarketingListDetailsView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
+            $dataProvider = $this->resolveSearchDataProvider(
+                $searchForm,
+                $pageSize,
+                null,
+                'MarketingListsSearchView'
+            );
+                $mixedView = $this->makeActionBarSearchAndListView(
+                    $searchForm,
+                    $pageSize,
+                    MarketingListsModule::getModuleLabelByTypeAndLanguage('Plural'),
+                    $dataProvider
+                );print_r($mixedView); die;
+          //  $detailsView              = new MarketingListDetailsView($this->getId(), $this->getModule()->getId(), $marketingList);
             $view     = new MarketingListsPageView(ZurmoDefaultViewUtil::
-                                             makeStandardViewForCurrentUser($this, $detailsView));
+                                             makeStandardViewForCurrentUser($this, $mixedView));
             echo $view->render();
-        }*/
+        }
 
 
         public function actionEdit($id, $redirectUrl = null)
