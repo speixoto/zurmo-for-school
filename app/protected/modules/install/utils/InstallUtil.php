@@ -739,7 +739,7 @@
                 $perInstanceConfigFile     = "$instanceRoot/protected/config/$perInstanceFilename";
                 $contents = file_get_contents($perInstanceConfigFile);
 
-                $zurmoToken = substr(md5(microtime() * mt_rand()), 0, 10);
+                $zurmoToken = substr(md5(microtime() * mt_rand()), 0, 15);
 
                 $contents = preg_replace('/define\(\'ZURMO_TOKEN\', \'defaultValue\'\);/',
                     "define('ZURMO_TOKEN', '$zurmoToken');",
