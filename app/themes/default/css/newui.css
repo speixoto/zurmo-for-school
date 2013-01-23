@@ -782,6 +782,7 @@ body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
+body.blue a.simple-link,
 body.blue a.simple-link .z-label,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
@@ -1338,6 +1339,7 @@ body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
+body.brown a.simple-link,
 body.brown a.simple-link .z-label,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
@@ -1894,6 +1896,7 @@ body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
+body.lime a.simple-link,
 body.lime a.simple-link .z-label,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
@@ -2450,6 +2453,7 @@ body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
+body.cherry a.simple-link,
 body.cherry a.simple-link .z-label,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
@@ -3006,6 +3010,7 @@ body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
+body.turquoise a.simple-link,
 body.turquoise a.simple-link .z-label,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
@@ -3562,6 +3567,7 @@ body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
+body.violet a.simple-link,
 body.violet a.simple-link .z-label,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
@@ -4118,6 +4124,7 @@ body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
+body.honey a.simple-link,
 body.honey a.simple-link .z-label,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
@@ -5489,6 +5496,9 @@ body > .ui-autocomplete {
   margin-left: 0px;
 }
 /*=Left Sidebar*/
+.nav em {
+  display: none;
+}
 .AppNavigation {
   width: 170px;
   float: left;
@@ -5555,6 +5565,9 @@ body > .ui-autocomplete {
   content: "";
   display: table;
   clear: both;
+}
+#MenuView .nav em {
+  display: none;
 }
 #MenuView a {
   height: 35px;
@@ -5711,7 +5724,6 @@ body > .ui-autocomplete {
 }
 #RecentlyViewedView li em {
   z-index: 9999;
-  position: absolute;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -16336,10 +16348,11 @@ orientation : portrait // orientation: landscape    Target orientation
     padding-right: 10px;
   }
   .nav-open {
-    transform: translate3d(170px, 0, 0);
-    -webkit-transform: translate3d(170px, 0, 0);
+    transform: translate3d(45px, 0, 0);
+    -webkit-transform: translate3d(45px, 0, 0);
   }
   .AppNavigation {
+    width: 45px;
     background: none;
     -webkit-box-shadow: none;
     -moz-box-shadow: none;
@@ -16371,6 +16384,46 @@ orientation : portrait // orientation: landscape    Target orientation
     -ms-border-radius: 0 0 0 5px;
     -o-border-radius: 0 0 0 5px;
     border-radius: 0 0 0 5px;
+  }
+  #MenuView .nav em {
+    display: inline-block;
+    position: relative;
+    top: 4px;
+    width: 25px;
+    height: 25px;
+    line-height: 22px;
+    vertical-align: top;
+    background: #FFF;
+    z-index: 9999;
+    text-align: center;
+    margin: 0 0 0 9px;
+    padding: 0 0 0 0;
+    font-style: normal;
+    -webkit-border-radius: 4px;
+    -moz-border-radius: 4px;
+    -ms-border-radius: 4px;
+    -o-border-radius: 4px;
+    border-radius: 4px;
+    font-weight: normal;
+    font-size: 24px;
+    font-family: "ZurmoGamificationSymblyReguRg";
+    -webkit-text-shadow: none !important;
+    -moz-text-shadow: none !important;
+    -o-text-shadow: none !important;
+    -ms-text-shadow: none !important;
+    text-shadow: none !important;
+    -moz-box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+    box-sizing: border-box;
+  }
+  #MenuView .nav em:before {
+    content: "z";
+  }
+  #MenuView .nav em + span {
+    text-indent: -9999px !important;
+  }
+  #MenuView .nav span {
+    width: 33px;
   }
   #RecentlyViewedView ul {
     max-height: 200px;

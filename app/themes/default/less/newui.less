@@ -801,6 +801,10 @@ body > .ui-autocomplete{
 }
 
 /*=Left Sidebar*/
+.nav em{
+    display: none;
+}
+
 .AppNavigation{
     width:170px;
     float:left;
@@ -847,6 +851,9 @@ body > .ui-autocomplete{
 #MenuView .nav{
     li{
         .clearfix();
+    }
+    em{
+        display:none;
     }
 }
 
@@ -976,7 +983,6 @@ body > .ui-autocomplete{
         }
         em{
             z-index:9999;
-            position:absolute;
             .box-sizing();
             width:24px;
             height:24px;
@@ -1000,20 +1006,20 @@ body > .ui-autocomplete{
 @recentlyViewedIconSize : 24px;
 
 #RecentlyViewedView {
-	/*deafult for if an icon doesnt exist*/
-	li{
-	    em:before{
-                content: "z";
-            }
-	}
-	li.type-ConversationsModule{
-	    em{
-                padding-top:3px;
-                padding-right:3px;
-            }
-            em:before{
-                content: "b";
-            }
+    /*deafult for if an icon doesnt exist*/
+    li{
+        em:before{
+            content: "z";
+        }
+    }
+    li.type-ConversationsModule{
+        em{
+            padding-top:3px;
+            padding-right:3px;
+        }
+        em:before{
+            content: "b";
+        }
     }
     li.type-UsersModule{
         em:before{

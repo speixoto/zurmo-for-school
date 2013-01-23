@@ -63,7 +63,6 @@ orientation : portrait // orientation: landscape    Target orientation
 		> div{
 			.box-sizing();
 			padding:10px;
-
 			display: -ms-flex;
 			display: -moz-flex;
 			display: -webkit-flex;
@@ -77,7 +76,6 @@ orientation : portrait // orientation: landscape    Target orientation
 			-moz-justify-content: flex-start;
 			-webkit-justify-content: flex-start;
 			justify-content: flex-start;
-
 			width:100% !important; 
 			height:100% !important; 
 			display:block;
@@ -132,7 +130,6 @@ orientation : portrait // orientation: landscape    Target orientation
 	#login-form{
 		padding:0 20px !important;
 	}
-
 	#nav-trigger{
 		display:block;
 	}
@@ -164,7 +161,6 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
-
 	.view-toolbar{
 		display: -ms-flex;
 		display: -moz-flex;
@@ -176,7 +172,8 @@ orientation : portrait // orientation: landscape    Target orientation
 		-webkit-flex-flow: row wrap;
 		flex-flow: row wrap;
 		width:100% !important; 
-	} 
+	}
+
 	.view-toolbar .nav,
 	.view-toolbar > a {
 		float:none;
@@ -186,11 +183,13 @@ orientation : portrait // orientation: landscape    Target orientation
 		flex: 1 auto;
 		
 	}
+	
 	.view-toolbar .parent > a,
 	.view-toolbar > a {
 		padding:0 5px;
 		text-align:center;
 	}
+	
 	.view-toolbar .parent > a{
 		width:100%;
 	}
@@ -199,12 +198,11 @@ orientation : portrait // orientation: landscape    Target orientation
 	.view-toolbar > a:before{
 		display:none;
 	}
+	
 	.view-toolbar .parent a:after{
 		margin-left:5px;
 		margin-right:5px;
 	}
-
-
 
 	.AppContainer{
 		min-width:0 !important; /* should be 100% but i need to put box-sizing on top level nodes */
@@ -213,6 +211,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
 	}
+	
 	.AppContent{
 		position:relative;
 		top:20px;
@@ -226,27 +225,62 @@ orientation : portrait // orientation: landscape    Target orientation
 		transform: translate3d(0, 0, 0);
 		-webkit-transform: translate3d(0, 0, 0);
 	}
+	
 	#HomePageView .AppContent {
 		padding-right: 10px;
 	}
+	
 	.nav-open{
-		transform: translate3d(170px, 0, 0);
-		-webkit-transform: translate3d(170px, 0, 0);
+		transform: translate3d(45px, 0, 0);
+		-webkit-transform: translate3d(45px, 0, 0);
 		//.b-shadow(-1px 0 15px 0 #ccc);
 	}
+	
 	.AppNavigation{
+		width: 45px;
 		.unstyle-panel();
 		border:none;
 		position:fixed;
 		padding-top:35px;
 	}
+	
 	#MenuView{
 		#gradient > .vertical(#f6f6f6, #f4f4f4);
 		border-right:1px solid #eee;
 		border-left:1px solid #eee;
 		.radius(0 0 0 5px);
+		.nav{
+			em{
+				display:inline-block;
+				position:relative;
+				top:4px;
+				width:25px;
+				height:25px;
+				line-height:22px;
+				vertical-align:top;
+				background:#FFF;
+				z-index:9999;
+				text-align:center;
+				margin:0 0 0 9px;
+				padding:0 0 0 0;
+				font-style:normal;
+				.radius(4px);
+				.symbly(@recentlyViewedIconSize);
+				.t-shadow(~"none !important");
+				.box-sizing();
+			}
+			em:before{
+				content: "z";
+			}
+			em + span{
+				text-indent: -9999px !important;
+			}
+			span{
+				width: 33px;
+			}
+		}
 	}
-
+	
 	#RecentlyViewedView{
 		h3, ul{
 			//display:none;
@@ -268,7 +302,6 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
-
 	#credit-link {
 		line-height: 17px;
 		font-size: 10px;
@@ -284,6 +317,7 @@ orientation : portrait // orientation: landscape    Target orientation
 	.breadcrumbs{
 		padding-bottom:10px;
 	}
+	
 	.BreadCrumbView #StickyListMenu > li > a > span{
 		top:2px;
 	}
@@ -440,5 +474,3 @@ orientation : portrait // orientation: landscape    Target orientation
 
    /*closing media query bracket*/ 
 }
-
-
