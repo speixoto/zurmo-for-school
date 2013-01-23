@@ -746,8 +746,9 @@
                     $contents);
 
                 file_put_contents($perInstanceConfigFile, $contents);
+                return $zurmoToken;
             }
-            return $zurmoToken;
+            return ZURMO_TOKEN;
         }
 
         public static function isDebugConfigWritable($instanceRoot)
