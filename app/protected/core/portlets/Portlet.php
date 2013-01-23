@@ -215,11 +215,15 @@
         public function beforeDelete()
         {
             $className = $this->viewType.'View';
-            $class = new ReflectionClass($className);
-            if ($class->implementsInterface('UserPersistentSettingsInterface'))
+            if (@class_exists($className))
             {
-                $className::processBeforeDelete($this->id);
+                $class = new ReflectionClass($className);
+                if ($class->implementsInterface('UserPersistentSettingsInterface'))
+                {
+                    $className::processBeforeDelete($this->id);
+                }
             }
+
             return parent::beforeDelete();
         }
     }

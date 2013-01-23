@@ -101,16 +101,15 @@
                 if (isset($_GET[get_class($latestActivitiesConfigurationForm)]))
                 {
                     $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
-                    $rollUpState = (boolean)$latestActivitiesConfigurationForm->rollup;
-                    if ($rollUpState !== LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']))
+                    if ($latestActivitiesConfigurationForm->rollup !==
+                        LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']))
                     {
-                        LatestActivitiesUtil::setRollUpForCurrentUserByPortletId($this->params['portletId'], $rollUpState);
+                        LatestActivitiesUtil::setRollUpForCurrentUserByPortletId($this->params['portletId'],
+                            $latestActivitiesConfigurationForm->rollup);
                     }
-                } else
-                {
-                    $latestActivitiesConfigurationForm->rollup =
-                        LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']);
                 }
+                $latestActivitiesConfigurationForm->rollup =
+                        LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']);
                 $latestActivitiesViewClassName = $this->getLatestActivitiesViewClassName();
                 $dataProvider = $this->getDataProvider($uniquePageId, $latestActivitiesConfigurationForm);
                 $latestView = new $latestActivitiesViewClassName($dataProvider,

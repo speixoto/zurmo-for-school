@@ -159,13 +159,13 @@
         /**
          * Get the rollup value for the current user by portlet Id.
          * @param $portletId Id of the portlet against which we should query
-         * @return $rollUpState boolean.
+         * @return $rollUpState null or string.
          */
         public static function getRollUpStateForCurrentUserByPortletId($portalId)
         {
             assert('is_int($portalId)');
             $keyName = $portalId.self::ROLLUP_KEY_SUFIX;
-            return (boolean) ZurmoConfigurationUtil::getForCurrentUserByModuleName('ActivitiesModule', $keyName);
+            return ZurmoConfigurationUtil::getForCurrentUserByModuleName('ActivitiesModule', $keyName);
         }
 
         /**
@@ -176,7 +176,6 @@
         public static function setRollUpForCurrentUserByPortletId($portletId, $rollUpState)
         {
             assert('is_int($portalId)');
-            assert('is_int($value)');
             $keyName = $portletId.self::ROLLUP_KEY_SUFIX;
             ZurmoConfigurationUtil::setForCurrentUserByModuleName('ActivitiesModule', $keyName, $rollUpState);
             Yii::app()->user->setState($keyName, $rollUpState);
