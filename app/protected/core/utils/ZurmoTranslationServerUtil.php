@@ -51,6 +51,16 @@
         private static $availableLanguages;
 
         /**
+         * Getter for the domain fo the l10n server
+         *
+         * @return string
+         */
+        public static function getServerDomain()
+        {
+            return self::$serverDomain;
+        }
+
+        /**
          * @return string
          */
         private static function getReleaseVersion()
