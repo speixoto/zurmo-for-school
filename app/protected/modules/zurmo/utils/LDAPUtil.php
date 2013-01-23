@@ -37,7 +37,9 @@
          * @return bool $ldapConnection
          */
         public static function makeConnection($host,$port)
-        {                            
+        {  
+            assert('is_string($host)');
+            assert('is_int($port)');        
             $ldapConnection = ldap_connect($host,$port);            
             LDAP_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
             LDAP_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0); 
