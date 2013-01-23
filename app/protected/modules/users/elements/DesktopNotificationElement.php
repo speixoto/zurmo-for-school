@@ -67,10 +67,13 @@
             $link        = ZurmoHtml::link(Yii::t('Default', 'click here'),
                                            '',
                                            array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
-            $title       = Yii::t('Default', '<p>You should be aware that this feature only works in Chrome and ' .
-                                             'when real-time updates is globally enabled in the system. </p>' .
-                                             '<p>You need to activate permissions for each browser you want to use this option on. '.
-                                             'To activate it, just <u>{link}</u> and choose "allow" at browser request.</p>',
+
+
+
+
+            $title       = Yii::t('Default', '<p>This feature only works in Chrome when real time updates are globally enabled. </p>' .
+                                             '<p>Permissions need to be activated for each browser.</p>' .
+                                             '<p>To activate, <u>{link}</u> and choose "allow" at browser request.</p>',
                                   array('{link}' => $link)
                             );
             $content     = ZurmoHtml::tag('span',
@@ -80,7 +83,9 @@
                                                ),
                                           '?');
             $qtip        = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'),
-                                                                 'hide'     => array('fixed' => false, 'delay' => 2000)
+                                                                 'hide'     => array('event' => 'unfocus'),
+                                                                 'show'     => array('event' => 'click')
+
                 )));
             $qtip->addQTip("#user-enable-desktop-notifications-tooltip");
             return $content;

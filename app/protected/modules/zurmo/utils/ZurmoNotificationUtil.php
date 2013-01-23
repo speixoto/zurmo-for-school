@@ -63,7 +63,7 @@
                     }
                 },
                 requestAutorization:function() {
-                    if (this.isSupported)
+                    if (typeof window.webkitNotifications != 'undefined')
                     {
                         if (window.webkitNotifications.checkPermission() == 1)
                         {
@@ -71,11 +71,11 @@
                         }
                         else if (window.webkitNotifications.checkPermission() == 2)
                         {
-                            alert('" . Yii::t('Default', 'You have denied desktop notifications. Check your browser settings to change it.') . "');
+                            alert('" . Yii::t('Default', 'You have blocked desktop notifications for this browser.') . "');
                         }
                         else
                         {
-                            alert('" . Yii::t('Default', 'You have already enabled desktop notifications in this browser.') . "');
+                            alert('" . Yii::t('Default', 'You have already activated desktop notifications for Chrome') . "');
                         }
                     }
                     else
@@ -93,7 +93,7 @@
                     var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
                     var unreadConversations = conversationsPlacer.text();
                     var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
-                    if(typeof(EventSource) !== 'undefined' && unreadConversations >= 0) {
+                    if(typeof(EventSource) !== 'undefined' && unreadConversations >= 0 && unreadConversations != '') {
                         var source = new EventSource(url + '?unreadConversations=' + unreadConversations);
                         source.addEventListener('updateConversations', function(e) {
                           var data = JSON.parse(e.data);
