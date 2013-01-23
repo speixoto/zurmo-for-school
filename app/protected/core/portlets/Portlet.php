@@ -223,7 +223,6 @@
                     $className::processBeforeDelete($this->id);
                 }
             }
-
             return parent::beforeDelete();
         }
     }
