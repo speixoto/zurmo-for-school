@@ -260,8 +260,7 @@
             $account->owner = $super;
             $randomString = str_repeat("Aa", 64);;
             $account->string128 = $randomString;
-            $saved = $account->save();
-            assert('$saved');
+            $this->assertTrue($account->save());
 
             $metadata = Account::getMetadata();
 
