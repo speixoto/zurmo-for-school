@@ -415,7 +415,7 @@
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName = get_class($listModel);
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            if (isset($_POST['selectedIds']))
+            if (isset($_POST['selectedRecordCount']))
             {
                         $this->doMassDelete(
                             get_class($listModel),
@@ -474,7 +474,10 @@
         {
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $listModel = new $modelClassName(false);
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+
+            $postData = PostUtil::getData();
+            $selectedRecordCount = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
+
             $this->doMassDelete(
                 get_class($listModel),
                 $modelClassName,

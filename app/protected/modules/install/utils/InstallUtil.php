@@ -725,6 +725,32 @@
             file_put_contents($perInstanceConfigFile, $contents);
         }
 
+        /**
+         * Generate zurmo token and write it to version.php file.
+         * @param $instanceRoot
+         * @return string
+         */
+        public static function setZurmoTokenAndWriteToPerInstanceFile($instanceRoot, $perInstanceFilename = 'perInstance.php')
+        {
+            assert('is_dir($instanceRoot)');
+
+            if (!defined('ZURMO_TOKEN') || ZURMO_TOKEN == 'defaultValue')
+            {
+                $perInstanceConfigFile     = "$instanceRoot/protected/config/$perInstanceFilename";
+                $contents = file_get_contents($perInstanceConfigFile);
+
+                $zurmoToken = substr(md5(microtime() * mt_rand()), 0, 15);
+
+                $contents = preg_replace('/define\(\'ZURMO_TOKEN\', \'defaultValue\'\);/',
+                    "define('ZURMO_TOKEN', '$zurmoToken');",
+                    $contents);
+
+                file_put_contents($perInstanceConfigFile, $contents);
+                return $zurmoToken;
+            }
+            return ZURMO_TOKEN;
+        }
+
         public static function isDebugConfigWritable($instanceRoot)
         {
             $debugConfigFileDist = "$instanceRoot/protected/config/debugDIST.php";
@@ -901,7 +927,7 @@
                 NotificationsUtil::submit($message, $rules);
             }
 
-            ZurmoModule::setZurmoToken();
+            InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Yii::t('Default', 'Installation Complete.'));
         }
 
@@ -940,15 +966,24 @@
             $form->databasePort      = $args[4];
             $form->superUserPassword = $args[5];
 
+            if (!empty($args[6]))
+            {
+                $form->hostInfo = $args[6];
+            }
+            if (!empty($args[7]))
+            {
+                $form->scriptUrl = $args[7];
+            }
+
             InstallUtil::runInstallation($form, $messageStreamer);
-            if (isset($args[6]))
+            if (isset($args[8]))
             {
                 $messageStreamer->add(Yii::t('Default', 'Starting to load demo data.'));
                 $messageLogger = new MessageLogger($messageStreamer);
 
-                if (isset($args[7]))
+                if (isset($args[9]))
                 {
-                    DemoDataUtil::load($messageLogger, intval($args[7]));
+                    DemoDataUtil::load($messageLogger, intval($args[9]));
                 }
                 else
                 {
@@ -956,13 +991,17 @@
                 }
                 $messageStreamer->add(Yii::t('Default', 'Finished loading demo data.'));
             }
-            // Send notification to super admin that need to setup hostInfo and scriptUrl params in perInstance.php
-            $message                    = new NotificationMessage();
-            $message->textContent       = Yii::t('Default', 'The system has detected that the hostInfo and/or scriptUrl are ' .
-                                                            'not set up. Please open the perInstance.php config file and ' .
-                                                            'set up these parameters.');
-            $rules                      = new HostInfoAndScriptUrlNotSetupNotificationRules();
-            NotificationsUtil::submit($message, $rules);
+
+            if (empty($args[6]) || empty($args[7]))
+            {
+                // Send notification to super admin that need to setup hostInfo and scriptUrl params in perInstance.php
+                $message                    = new NotificationMessage();
+                $message->textContent       = Yii::t('Default', 'The system has detected that the hostInfo and/or scriptUrl are ' .
+                                                                'not set up. Please open the perInstance.php config file and ' .
+                                                                'set up these parameters.');
+                $rules                      = new HostInfoAndScriptUrlNotSetupNotificationRules();
+                NotificationsUtil::submit($message, $rules);
+            }
 
             $messageStreamer->add(Yii::t('Default', 'Locking Installation.'));
             InstallUtil::writeInstallComplete(INSTANCE_ROOT);
