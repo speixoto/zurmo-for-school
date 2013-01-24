@@ -86,7 +86,7 @@
             $invalid  = $this->messageCountData[static::INVALID];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default', '{count} dropdown value(s) are missing from the field. ' . 
+                $label   = Yii::t('Default', '{count} dropdown value(s) are missing from the field. ' .
                                              'These values will be added upon import.',
                                              array('{count}' => $invalid));
                 $this->addMessage($label);

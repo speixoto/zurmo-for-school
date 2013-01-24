@@ -142,15 +142,24 @@
                 'options' => array(
                     'select'   => 'js:function(event, ui){ jQuery("#' . $idInputName . '").val(ui.item["id"]);}', // Not Coding Standard
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
-                    'search'   => 'js: function(event, ui) { var context = $("#'.$this->getIdForTextField().'").parent();
-                                                             $(".model-select-icon", context).fadeOut(100);
-                                                             makeToggableSpinner(context, true); }',
-                    'open'     => 'js: function(event, ui) { var context = $("#'.$this->getIdForTextField().'").parent();
-                                                             $(".model-select-icon", context).fadeIn(250);
-                                                             makeToggableSpinner(context, false); }',
-                    'close'    => 'js: function(event, ui) { var context = $("#'.$this->getIdForTextField().'").parent();
-                                                             $(".model-select-icon", context).fadeIn(250);
-                                                             makeToggableSpinner(context, false); }'
+                    'search'   => 'js: function(event, ui)
+                                  {
+                                      var context = $("#' . $this->getIdForTextField() . '").parent();
+                                      $(".model-select-icon", context).fadeOut(100);
+                                      makeToggableSpinner(context, true);
+                                  }',
+                    'open'     => 'js: function(event, ui)
+                                  {
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeIn(250);
+                                       makeToggableSpinner(context, false);
+                                  }',
+                    'close'    => 'js: function(event, ui)
+                                  {
+                                      var context = $("#' . $this->getIdForTextField() . '").parent();
+                                      $(".model-select-icon", context).fadeIn(250);
+                                      makeToggableSpinner(context, false);
+                                  }'
                 ),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),

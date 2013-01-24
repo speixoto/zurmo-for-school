@@ -98,12 +98,12 @@
                 array('importRulesType',     'required'),
                 array('rowColumnDelimiter',  'required'),
                 array('rowColumnEnclosure',  'required'),
-                array('fileUploadData',      'type', 'type' => 'string'),
+                array('fileUploadData',      'type', 'type' => 'array'),
                 array('rowColumnDelimiter',  'type', 'type' => 'string'),
                 array('rowColumnEnclosure',  'type', 'type' => 'string'),
 
                 array('firstRowIsHeaderRow', 'boolean'),
-                array('mappingData',         'type', 'type' => 'string'),
+                array('mappingData',         'type', 'type' => 'array'),
                 array('newPassword',         'validateMappingData', 'on'   => 'saveMappingData'),
             );
         }

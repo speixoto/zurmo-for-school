@@ -289,7 +289,7 @@
             $selectForm            = self::makeSelectForm($userCanAccessLeads, $userCanAccessContacts);
 
             if (isset($_POST[get_class($selectForm)]))
-            { 
+            {
                 if (isset($_POST['ajax']) && $_POST['ajax'] === 'select-contact-form-' . $id)
                 {
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);

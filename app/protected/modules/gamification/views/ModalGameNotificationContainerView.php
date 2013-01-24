@@ -113,10 +113,7 @@
             $url       =   Yii::app()->createUrl('socialItems/default/postGameNotificationToProfile',
                                                array('content' => $socialItemAdapter->getMessageContent()));
 
-            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'),    null);
-            $aContent               .= ZurmoHtml::tag('span',  array('class' => 'z-label'),
-                                                     Zurmo::t('GamificationModule', 'Post to Profile'));
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('GamificationModule', 'Post to Profile'));
             // Begin Not Coding Standard
             $content   = ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'     => 'GET',

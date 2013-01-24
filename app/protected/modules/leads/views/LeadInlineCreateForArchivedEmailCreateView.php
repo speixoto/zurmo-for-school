@@ -143,8 +143,10 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('LeadInlineCreateCollapseActions', "
-                        $('.createLeadCancel').each(function(){
-                            $('.createLeadCancel').live('click', function(){
+                        $('.createLeadCancel').each(function()
+                        {
+                            $('.createLeadCancel').live('click', function()
+                            {
                                 $(this).parentsUntil('.email-archive-item').find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                 $(this).closest('.email-archive-item').closest('td').removeClass('active-panel')
                                 .find('.z-action-link-active').removeClass('z-action-link-active');

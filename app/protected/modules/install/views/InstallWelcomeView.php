@@ -64,7 +64,7 @@
                                            'If you do not have this information, then you will need to contact ' .
                                            'them before you can continue. If you\'re all ready...');
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('InstallModule', 'Click to start')),
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Click to start')),
                                         $nextPageUrl, array('class' => 'z-button'));
             $content .= '</td></tr></table>';
             $content .= '</div>';

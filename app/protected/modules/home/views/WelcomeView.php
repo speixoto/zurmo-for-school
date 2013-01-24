@@ -121,7 +121,7 @@
         {
             if ($this->hasDashboardAccess)
             {
-                $label    = ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('HomeModule', 'Go to the dashboard'));
+                $label    = ZurmoHtml::wrapLabel(Zurmo::t('HomeModule', 'Go to the dashboard'));
                 $content  = ZurmoHtml::link($label, Yii::app()->createUrl('home/default'), array('class' => 'dashboard-link z-button'));
                 return $content;
             }

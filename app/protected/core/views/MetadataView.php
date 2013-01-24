@@ -61,7 +61,7 @@
         protected function resolveAndWrapDockableViewToolbarContent($content)
         {
             assert('is_string($content)');
-            if($this->disableFloatOnToolbar)
+            if ($this->disableFloatOnToolbar)
             {
                 $disableFloatContent = ' disable-float-bar';
             }

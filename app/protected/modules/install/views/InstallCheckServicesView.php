@@ -101,12 +101,12 @@
                                         '<span class="pass">' . Zurmo::t('InstallModule', 'PASS') . '</span>');
             }
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('InstallModule', 'Recheck System')),
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),
                                         $currentPageUrl, array('class' => 'z-button'));
             if (count($this->checkResultsDisplayData[$failedIndexId][$requiredIndexId]) == 0)
             {
                 $content .= ' <span class="install-or">' . Zurmo::t('InstallModule', 'or') . '</span> ';
-                $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('InstallModule', 'Continue')),
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Continue')),
                                         $nextPageUrl, array('class' => 'z-button'));
             }
             $content .= '</td></tr></table>';

@@ -61,7 +61,7 @@
             $id       = 'testImapConnection';
             $content  = '<span>';
             $content .= ZurmoHtml::ajaxLink(
-                ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('EmailMessagesModule', 'Test Connection')),
+                ZurmoHtml::wrapLabel(Zurmo::t('EmailMessagesModule', 'Test Connection')),
                 Yii::app()->createUrl('emailMessages/default/testImapConnection/', array()),
                 static::resolveAjaxOptionsForTestEmailSettings($this->form->getId()),
                 array('id' => $id, 'class' => 'EmailTestingButton z-button')

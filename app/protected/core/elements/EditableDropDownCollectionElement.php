@@ -172,7 +172,7 @@
             $content .= '<div id="' . $this->attribute . '_AddInput_em_" class="errorMessage" style="display:none"></div>';
             $content .= '</td></tr>';
             $content .= '<tr><td>';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Core', 'Add Item')), '#', array('id' => $this->attribute . '_AddInputButton'));
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Add Item')), '#', array('id' => $this->attribute . '_AddInputButton'));
             $content .= '</td></tr>';
             $content .= '</tbody>';
             $content .= '</table>';

@@ -101,7 +101,7 @@
                                         '<span class="pass">' . Zurmo::t('InstallModule', 'PASS') . '</span>');
             }
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('InstallModule', 'Recheck System')),
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('InstallModule', 'Recheck System')),
                                         '#', array('onclick' => 'window.location.reload()', 'class' => 'z-button'));
             $content .= '</td></tr></table>';
             $content .= '</div>';

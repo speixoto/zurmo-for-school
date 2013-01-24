@@ -60,7 +60,7 @@
             $htmlOptions = array(
                 'id'       => $inputId,
                 'name'     => $this->getEditableInputName($this->getExpiryAttributeName()),
-                'class'    => $this->resolveInputClassDisabled()          
+                'class'    => $this->resolveInputClassDisabled()
             );
             $content .= $this->form->textField($this->model, $this->getExpiryAttributeName(), $htmlOptions);
             $content .= Zurmo::t('UsersModule', 'days') . '</span>';

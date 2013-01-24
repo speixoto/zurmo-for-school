@@ -242,7 +242,6 @@
             }
             $title                         = Zurmo::t('UsersModule', 'Confirm your time zone');
             $timeZoneView                  = new UserTimeZoneConfirmationView($this->getId(),
-
                                                                  $this->getModule()->getId(),
                                                                  $confirmTimeZoneForm,
                                                                  $title);

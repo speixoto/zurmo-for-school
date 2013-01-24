@@ -116,9 +116,7 @@
             $htmlOptions['id']       = 'saveLayout';
             $htmlOptions['name']     = 'saveLayout';
             $htmlOptions['class']    = 'attachLoading z-button';
-            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('DesignerModule', 'Save Layout'));
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('DesignerModule', 'Save Layout'));
             return ZurmoHtml::ajaxLink($aContent, '#', array(
                     'data' => 'js:designer.prepareSaveLayout("edit-form")',
                     'dataType' => 'json',
@@ -140,7 +138,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/moduleLayoutsList/',
                                                  array('moduleClassName' => $this->moduleClassName));
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('DesignerModule', 'Cancel')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Cancel')), $route);
         }
 
         /**

@@ -74,23 +74,23 @@
         {
             if ($mission->status == Mission::STATUS_AVAILABLE)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Zurmo::t('MissionsModule', 'Available'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Available'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_TAKEN)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Zurmo::t('MissionsModule', 'In Progress'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'In Progress'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_COMPLETED)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Zurmo::t('MissionsModule', 'Awaiting Acceptance'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Awaiting Acceptance'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_REJECTED)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Zurmo::t('MissionsModule', 'Rejected'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Rejected'), 'mission-status');
             }
             elseif ($mission->status == Mission::STATUS_ACCEPTED)
             {
-                return ZurmoHtml::tag('span', array('class' => 'mission-status'), Zurmo::t('MissionsModule', 'Accepted'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('MissionsModule', 'Accepted'), 'mission-status');
             }
             else
             {
@@ -138,9 +138,7 @@
             assert('is_string($updateDivId)');
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
-            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
-            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
+            $aContent                = ZurmoHtml::wrapLink($label);
             return       ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'       => 'GET',
                                'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'

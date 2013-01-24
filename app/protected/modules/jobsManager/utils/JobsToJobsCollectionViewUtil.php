@@ -113,20 +113,20 @@
             assert('$jobLog instanceof JobLog || $jobLog == null');
             if ($jobLog == null)
             {
-                return ZurmoHtml::tag('span', array('class' => 'jobHasNeverRun'), Zurmo::t('JobsManagerModule', 'Never'));
+                return ZurmoHtml::wrapLabel(Zurmo::t('JobsManagerModule', 'Never'), 'jobHasNeverRun');
             }
             if ($jobLog != null && $jobLog->status == JobLog::STATUS_COMPLETE_WITH_ERROR)
             {
                 $content  = DateTimeUtil::
                            convertDbFormattedDateTimeToLocaleFormattedDisplay($jobLog->createdDateTime);
                 $content .= ' ' . Zurmo::t('JobsManagerModule', '[with errors]');
-                $content  = ZurmoHtml::tag('span', array('class' => 'jobHasErrors'), $content);
+                $content  = ZurmoHtml::wrapLabel($content, 'jobHasErrors');
             }
             else
             {
                 $content = DateTimeUtil::
                            convertDbFormattedDateTimeToLocaleFormattedDisplay($jobLog->createdDateTime);
-                $content  = ZurmoHtml::tag('span', array('class' => 'jobRanSuccessfully'), $content);
+                $content  = ZurmoHtml::wrapLabel($content, 'jobRanSuccessfully');
             }
             return $content;
         }

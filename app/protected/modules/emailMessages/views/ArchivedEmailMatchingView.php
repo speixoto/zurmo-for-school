@@ -179,7 +179,7 @@
             $deleteLink            = $this->renderDeleteLink();
             $rules    = new EmailMessageMashableActivityRules();
             $content = $rules->renderRelatedModelsByImportanceContent($this->emailMessage);
-            $content .= ZurmoHtml::tag('span', array('class' => 'email-subject'), strval($this->emailMessage));
+            $content .= ZurmoHtml::wrapLabel(strval($this->emailMessage), 'email-subject');
             $content .= '<div class="matching-actions-and-content"><div class="email-matching-actions">';
             $content .= $this->renderTitleDivContent($selectLink, $createLeadLink, $createContactLink, $deleteLink);
             $content .= '</div>';
@@ -195,15 +195,17 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('emailMatchingActions', "
-                                  $('.select-contact-link').live('click', function (){
+                                  $('.select-contact-link').live('click', function ()
+                                  {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
                                         $(this).addClass('z-action-link-active');
-                                        $(this).closest('td').addClass('active-panel');                                        
+                                        $(this).closest('td').addClass('active-panel');
                                         $(this).parent().parent().parent().find('.AnyContactSelectForEmailMatchingView').show();
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                    })
-                                   $('.contact-create-link').live('click', function (){
+                                   $('.contact-create-link').live('click', function ()
+                                   {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
                                         $(this).addClass('z-action-link-active');
                                         $(this).closest('td').addClass('active-panel');
@@ -211,7 +213,8 @@
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                    })
-                                   $('.lead-create-link').live('click', function (){
+                                   $('.lead-create-link').live('click', function ()
+                                   {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
                                         $(this).addClass('z-action-link-active');
                                         $(this).closest('td').addClass('active-panel');
@@ -265,9 +268,10 @@
 
         protected function renderTitleDivContent($selectLink, $createLeadLink, $createContactLink, $deleteLink)
         {
-            assert('is_string($selectContent)');
+            assert('is_string($selectLink)');
             assert('is_string($createLeadLink)');
             assert('is_string($createContactLink)');
+            assert('is_string($deleteLink)');
             $content  = '<div id="select-title-' . $this->uniqueId . '" class="select-title">';
             $content .= $selectLink . ' &#183; ';
             if ($this->userCanCreateContact && $this->userCanCreateLead)
@@ -292,7 +296,7 @@
             $htmlOptions = $this->getHtmlOptionsForDelete();
             $route = $this->getDefaultRouteForDelete();
             $ajaxOptions = $this->getAjaxOptionsForDelete();
-            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Zurmo::t('EmailMessagesModule', 'Delete'),$route, $ajaxOptions, 
+            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Zurmo::t('EmailMessagesModule', 'Delete'), $route, $ajaxOptions,
                                      $htmlOptions);
             return $content;
         }
@@ -304,16 +308,19 @@
         }
 
         protected function getAjaxOptionsForDelete()
-        { 
+        {
             return array('type'     => 'GET',
-                         'success'  => "function(){
-                                       $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
-                                       $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                         'success'  => "function()
                                        {
-                                          text: '" . Zurmo::t('EmailMessagesModule', 'Deleted successfully') . "',
-                                          permanent: false,
-                                          showIcon: true,
-                                       })}");
+                                           $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
+                                           $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                           {
+                                              text: '" . Zurmo::t('EmailMessagesModule', 'Deleted successfully') . "',
+                                              permanent: false,
+                                              showIcon: true,
+                                           })
+                                       }
+            ");
         }
 
         protected function getHtmlOptionsForDelete()
@@ -333,6 +340,5 @@
         {
             return 'FlashMessageBar';
         }
-
     }
 ?>

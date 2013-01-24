@@ -63,7 +63,6 @@
             $this->title                              = $title;
             $this->alertMessage                       = $alertMessage;
             $this->moduleClassName                    = $moduleClassName;
-
         }
 
         protected function getSelectedRecordCount()
@@ -137,7 +136,7 @@
                         Yii::t('Default', $this->moduleClassName . 'SingularLabel|' . $this->moduleClassName . 'PluralLabel',
                         array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules())) .
                         ' ' . Zurmo::t('Core', 'selected for removal.');
-            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
+            return ZurmoHtml::wrapLabel($message, 'operation-description');
         }
 
         public static function getDesignerRulesType()
