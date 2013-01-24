@@ -26,20 +26,5 @@
 
     class MarketingListsSearchForm extends OwnedSearchForm
     {
-        public $name;
-
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('name', 'safe'),
-            ));
-        }
-
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-                'name'            => Yii::t('Default', 'Name'),
-            ));
-        }
     }
 ?>

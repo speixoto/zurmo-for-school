@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListMember extends OwnedSecurableItem
+    class MarketingListMember extends OwnedModel
     {
 
         public static function getByName($name)
@@ -79,6 +79,16 @@
                     'unsubscribed'     => 'CheckBox',
             ));
             return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function canSaveMetadata()
+        {
+            return true;
         }
     }
 ?>

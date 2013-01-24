@@ -26,7 +26,7 @@
 
     class MarketingListsDefaultController extends ZurmoModuleController
     {
-         public function actionList()
+        public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
@@ -78,13 +78,45 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($marketingList), 'MarketingListsModule'), $marketingList);
-            $detailsView              = new MarketingListDetailsView($this->getId(), $this->getModule()->getId(), $marketingList);
-            $breadcrumbLinks          = array(StringUtil::getChoppedStringContent(strval($marketingList), 25));
-            $view     = new MarketingListsPageView(ZurmoDefaultViewUtil::
-                                                  makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
-                                                                                        'MarketingListBreadCrumbView'));
-
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $marketingListMember            = new MarketingListMember(false);
+            $searchForm                     = new MarketingListMembersSearchForm($marketingListMember);
+            $dataProvider                   = $this->resolveSearchDataProvider(
+                                              $searchForm,
+                                              $pageSize,
+                                              null,
+                                              'MarketingListMembersSearchView'
+                                              );
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView($searchForm, $dataProvider);
+                $view = new MarketingListsPageView($mixedView);
+            }
+            else
+            {
+                $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($marketingList), 25));
+                $mixedView       = $this->makeActionBarDetailsSearchAndListView($marketingList, $searchForm, $dataProvider);
+                $view            = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                       makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,
+                                                                             'MarketingListBreadCrumbView'));
+            }
             echo $view->render();
+        }
+
+        protected function makeActionBarDetailsSearchAndListView(MarketingList $marketingList,
+                                                                 MarketingListMembersSearchForm $searchModel, $dataProvider)
+        {
+            assert('is_string($actionBarViewClassName)');
+            $listModel = $searchModel->getModel();
+            return new MarketingListMembersActionBarDetailsSearchAndListView(
+                        $this->getId(),
+                        $this->getModule()->getId(),
+                        $marketingList,
+                        $searchModel,
+                        $listModel,
+                        $dataProvider,
+                        GetUtil::resolveSelectedIdsFromGet());
         }
 
 

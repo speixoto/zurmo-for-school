@@ -24,56 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListDetailsView extends SecuredDetailsView
+    /**
+     * Renders an action bar specifically for the search and listview.
+     */
+    class MarketingListMembersActionBarForSearchAndListView extends ActionBarForSearchAndListView
     {
-        public static function assertModelIsValid($model)
-        {
-            assert('$model instanceof Report');
-        }
-
-        protected function renderContent()
-        {
-            $content = $this->renderTitleContent();
-//todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
-            return $content;
-        }
-
         public static function getDefaultMetadata()
         {
+            //todo: vaibhav modify these to be the correct links based on the pencil mockups
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'ReportDetailsLink',
-                                'htmlOptions' => array('class' => 'icon-details')),
-                            array('type'  => 'ReportOptionsLink',
-                                'htmlOptions' => array('class' => 'icon-edit')),
-                            //todo: also: see that all UL's are created with same ID - this is not valid html
+                            array('type'  => 'CreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                            array('type'  => 'MassEditLink',
+                                  'htmlOptions' => array('class' => 'icon-edit'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
+                            array('type'  => 'ExportLink',
+                                  'htmlOptions' => array('class' => 'icon-export'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
+                            array('type'  => 'MassDeleteLink',
+                                  'htmlOptions' => array('class' => 'icon-delete'),
+                                  'listViewGridId' => 'eval:$this->listViewGridId',
+                                  'pageVarName' => 'eval:$this->pageVarName'),
                         ),
                     ),
                 ),
             );
             return $metadata;
-        }
-
-        public function getTitle()
-        {
-            if ($this->model->id > 0)
-            {
-                $moduleClassName = $this->model->moduleClassName;
-                $typesAndLabels  = Report::getTypeDropDownArray();
-                return strval($this->model) . ' - ' .
-                    Yii::t('Default', '{moduleLabel} {typeLabel} Report',
-                        array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
-                            '{typeLabel}'   => $typesAndLabels[$this->model->type]));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
         }
     }
 ?>
