@@ -96,7 +96,7 @@
         public function getSupportedLanguagesData($localDisplay = false)
         {
             $data = array();
-            foreach (Yii::app()->params['supportedLanguages'] as $language => $name)
+            foreach (ZurmoTranslationServerUtil::getAvailableLanguages() as $language => $name)
             {
                 if ($localDisplay)
                 {
@@ -187,6 +187,28 @@
         }
 
         /**
+         * Save given MetaData for the given language code
+         */
+        public function setActiveLanguageMetaData($languageCode, $metaData)
+        {
+            ZurmoConfigurationUtil::setByModuleName(
+                'ZurmoModule',
+                'languageMetaData-' . $languageCode,
+                $metaData);
+        }
+
+        /**
+         * Returns local stored MetaData for given language code
+         */
+        public function getActiveLanguageMetaData($languageCode)
+        {
+            return ZurmoConfigurationUtil::getByModuleName(
+                'ZurmoModule',
+                'languageMetaData-' . $languageCode
+            );
+        }
+
+        /**
          * A language that is the base language or currently selected as a user's default language, cannot be removed.
          * @return true if the specified language can be removed.
          */
@@ -225,6 +247,92 @@
         {
             assert('is_array($activeLanguages)');
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'activeLanguages', $activeLanguages);
+        }
+
+        /**
+         * Activates a language
+         */
+        public function activateLanguage($languageCode)
+        {
+            $activeLanguages = $this->getActiveLanguages();
+            // Check if the language is already active
+            if (in_array($languageCode, $activeLanguages))
+            {
+                return true;
+            }
+
+            $supportedLanguages = $this->getSupportedLanguagesData();
+            // Check if the language is supported
+            if (!array_key_exists($languageCode, $supportedLanguages))
+            {
+                throw new NotFoundException();
+            }
+
+            $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($languageCode);
+
+            // Check if the po file exists
+            $headers = get_headers($translationUrl);
+            list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
+            if ($status_code != 200)
+            {
+                throw new NotFoundException();
+            }
+
+            if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
+            {
+                $activeLanguages[] = $languageCode;
+                $this->setActiveLanguages($activeLanguages);
+                $metaData = array(
+                    'activationDate' => time(),
+                    'lastUpdate'     => time()
+                );
+                $this->setActiveLanguageMetaData($languageCode, $metaData);
+
+                return true;
+            }
+
+            throw new FailedServiceException();
+        }
+
+        /**
+         * Updates a language
+         */
+        public function updateLanguage($languageCode)
+        {
+            $activeLanguages = $this->getActiveLanguages();
+            // Check if the language is already active
+            if (!in_array($languageCode, $activeLanguages))
+            {
+                throw new NotFoundException();
+            }
+
+            $supportedLanguages = $this->getSupportedLanguagesData();
+            // Check if the language is supported
+            if (!array_key_exists($languageCode, $supportedLanguages))
+            {
+                throw new NotFoundException();
+            }
+
+            $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($languageCode);
+
+            // Check if the po file exists
+            $headers = get_headers($translationUrl);
+            list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
+            if ($status_code != 200)
+            {
+                throw new NotFoundException();
+            }
+
+            if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
+            {
+                $metaData = $this->getActiveLanguageMetaData($languageCode);
+                $metaData['lastUpdate'] = time();
+                $this->setActiveLanguageMetaData($languageCode, $metaData);
+
+                return true;
+            }
+
+            throw new FailedServiceException();
         }
 
         /**
