@@ -30,6 +30,11 @@
         {
             $metadata = array(
                 'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CancelMarketingListsLink'),
+                        ),
+                    ),
                      'panels' => array(
                         array(
                             'rows' => array(

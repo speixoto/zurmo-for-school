@@ -24,26 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListsActionBarForListView extends ActionBarForSearchAndListView
+    /**
+     * View that renders Marekting List module breadcrumb content
+     */
+    class MarketingListBreadCrumbView extends BreadCrumbView
     {
-        public static function getDefaultMetadata()
+        protected function getHomeLinkLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'CreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingListDeleteLink',
-                                'htmlOptions'     => array( 'class' => 'icon-delete' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Yii::t('Default', 'Marketing');
         }
     }
 ?>
