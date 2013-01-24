@@ -261,7 +261,7 @@
             $randomString = str_repeat("Aa", 64);;
             $account->string128 = $randomString;
             $saved = $account->save();
-            $this->assertTrue('$saved');
+            assert('$saved');
 
             $metadata = Account::getMetadata();
 
