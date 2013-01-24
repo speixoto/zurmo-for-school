@@ -104,7 +104,7 @@
             $this->import->serializedData    = serialize($unserializedData);
             ImportUtil::setDataAnalyzerMessagesDataToImport($this->import, $messagesData, true);
             $saved = $this->import->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

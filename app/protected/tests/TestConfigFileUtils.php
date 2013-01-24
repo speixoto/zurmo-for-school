@@ -49,8 +49,8 @@
                                          '$installed = true;',
                                          $contents);
                 // Update database credentials to use a test db and user.
-                $contents = preg_replace('/\$connectionString\s*=\s*\'mysql:host=localhost;port=3306;dbname=zurmo\';/',
-                    '$connectionString = \'mysql:host=localhost;port=3306;dbname=zurmo_test\';',
+                $contents = preg_replace('/\$connectionString\s*=\s*\'mysql:host=localhost;port=3306;dbname=zurmo\';/', // Not Coding Standard
+                    '$connectionString = \'mysql:host=localhost;port=3306;dbname=zurmo_test\';', // Not Coding Standard
                     $contents);
                 $contents = preg_replace('/\$username\s*=\s*\'zurmo\';/',
                     '$username = \'zurmo_test\';',
@@ -69,7 +69,7 @@
         'charset'        => 'utf8',
     );
 EOD;
-                $contents = preg_replace('=//@see CustomManagement=',
+                $contents = preg_replace('=//@see CustomManagement=', // Not Coding Standard
                     "//@see CustomManagement\n" . $tempDbSettings,
                     $contents,
                     1);
@@ -135,7 +135,8 @@ EOD;
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
 
-            if($perInstanceTestConfigCreated) {
+            if ($perInstanceTestConfigCreated)
+            {
                 echo "\nPlease update the newly created ".INSTANCE_ROOT .
                     "/protected/config/perInstanceTest.php with latest test and tempDb credentials.\n";
                 exit;

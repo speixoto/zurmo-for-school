@@ -530,7 +530,7 @@
                     else
                     {
                         throw new FailedFileUploadException(Yii::t('Default', 'Failed to open the uploaded file.'));
-                    }                    
+                    }
                     $fileUploadData['id']                = $import->id;
                 }
                 catch (FailedFileUploadException $e)

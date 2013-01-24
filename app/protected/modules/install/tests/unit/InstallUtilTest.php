@@ -695,8 +695,8 @@
 
             //Check if config files is updated.
             $this->assertRegExp('/\$connectionString = \'mysql:host='.
-                                $this->temporaryDatabaseHostname.';port='.$this->temporaryDatabasePort.
-                                ';dbname='.$this->temporaryDatabaseName.'\';/', // Not Coding Standard
+                                $this->temporaryDatabaseHostname . ';port=' . $this->temporaryDatabasePort .
+                                ';dbname=' . $this->temporaryDatabaseName . '\';/', // Not Coding Standard
                                    $perInstanceConfiguration);
             $this->assertRegExp('/\$username         = \''.$this->temporaryDatabaseUsername.'\';/',  // Not Coding Standard
                                    $perInstanceConfiguration);

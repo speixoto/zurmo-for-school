@@ -93,7 +93,7 @@
                 $position = '" . $position . "';
             }
             $dialogClassContent = null;
-            if($class != null)
+            if ($class != null)
             {
                 $dialogClassContent = ", 'dialogClass':'" . $class . "'";
             }

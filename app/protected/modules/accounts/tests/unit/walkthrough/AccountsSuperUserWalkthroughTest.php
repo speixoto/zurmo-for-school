@@ -392,7 +392,7 @@
         }
 
         /**
-         * @deletes selected accounts. 
+         * @deletes selected accounts.
          */
         public function testMassDeleteActionsForSelectedIds()
         {
@@ -419,9 +419,7 @@
             $superAccountId17 = self::getModelIdByModelNameAndName('Account', 'superAccount17');
             $superAccountId18 = self::getModelIdByModelNameAndName('Account', 'superAccount18');
             $superAccountId19 = self::getModelIdByModelNameAndName('Account', 'superAccount19');
-            $superAccountId20 = self::getModelIdByModelNameAndName('Account', 'superAccount20');            
-
-
+            $superAccountId20 = self::getModelIdByModelNameAndName('Account', 'superAccount20');
 
             //Load Model MassDelete Views.
             //MassDelete view for single selected ids
@@ -444,7 +442,7 @@
                 'Account_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => '5'));
             $this->runControllerWithRedirectExceptionAndGetContent('accounts/default/massDelete');
-            
+
             //MassDelete for selected Record Count
             $accounts = Account::getAll();
             $this->assertEquals(18, count($accounts));
@@ -463,12 +461,12 @@
             $this->assertEquals(5, $pageSize);
             //MassDelete for selected ids for page 1
             $this->setGetArray(array(
-                'selectedIds' => $superAccountId13 . ',' . $superAccountId14 . ',' .
-                                 $superAccountId15 . ',' . $superAccountId16 . ',' . 
-                                 $superAccountId17 . ',' . $superAccountId18 . ',' . 
-                                 $superAccountId19 . ',' . $superAccountId20,    // Not Coding Standard
-                'selectAll' => '',
-                'massDelete'=>'',
+                'selectedIds'  => $superAccountId13 . ',' . $superAccountId14 . ',' . // Not Coding Standard
+                                  $superAccountId15 . ',' . $superAccountId16 . ',' . // Not Coding Standard
+                                  $superAccountId17 . ',' . $superAccountId18 . ',' . // Not Coding Standard
+                                  $superAccountId19 . ',' . $superAccountId20,        // Not Coding Standard
+                'selectAll'    => '',
+                'massDelete'   => '',
                 'Account_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 8));
             $this->runControllerWithExitExceptionAndGetContent('accounts/default/massDelete');
@@ -476,24 +474,23 @@
             //MassDelete for selected Record Count
             $accounts = Account::getAll();
             $this->assertEquals(13, count($accounts));
- 
+
             //MassDelete for selected ids for page 2
             $this->setGetArray(array(
-                'selectedIds' => $superAccountId13 . ',' . $superAccountId14 . ',' .
-                                 $superAccountId15 . ',' . $superAccountId16 . ',' . 
-                                 $superAccountId17 . ',' . $superAccountId18 . ',' . 
-                                 $superAccountId19 . ',' . $superAccountId20,    // Not Coding Standard
+                'selectedIds' => $superAccountId13 . ',' . $superAccountId14 . ',' . // Not Coding Standard
+                                 $superAccountId15 . ',' . $superAccountId16 . ',' . // Not Coding Standard
+                                 $superAccountId17 . ',' . $superAccountId18 . ',' . // Not Coding Standard
+                                 $superAccountId19 . ',' . $superAccountId20,        // Not Coding Standard
                 'selectAll' => '',
                 'Account_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 8));
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDeleteProgress');
-            
+
            //MassDelete for selected Record Count
             $accounts = Account::getAll();
             $this->assertEquals(10, count($accounts));
-            
         }
-        
+
          /**
          *Test Bug with mass delete and multiple pages when using select all
          */
@@ -504,10 +501,9 @@
             //MassDelete for selected Record Count
             $accounts = Account::getAll();
             $this->assertEquals(10, count($accounts));
-            
 
             //save Model MassDelete for entire search result
-            $this->setGetArray(array(                                        
+            $this->setGetArray(array(
                 'selectAll' => '1',           // Not Coding Standard
                 'Account_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 10));
@@ -515,12 +511,12 @@
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
             $this->runControllerWithExitExceptionAndGetContent('accounts/default/massDelete');
-          
+
             //check for previous mass delete progress
             $accounts = Account::getAll();
             $this->assertEquals(5, count($accounts));
 
-            $this->setGetArray(array(                                        
+            $this->setGetArray(array(
                 'selectAll' => '1',           // Not Coding Standard
                 'Account_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 10));
@@ -532,7 +528,6 @@
             //calculating account's count
             $accounts = Account::getAll();
             $this->assertEquals(0, count($accounts));
-            
         }
     }
 ?>

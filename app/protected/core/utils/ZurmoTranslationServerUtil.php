@@ -45,6 +45,7 @@
          * l10n Server info XML
          */
         private static $l10nInfo;
+
         /**
          * Holds an array with available languages
          */
@@ -75,25 +76,28 @@
          */
         protected static function getServerInfo()
         {
-            if (self::$l10nInfo
-                && isset(self::$l10nInfo)
-                && self::$l10nInfo->version == '1.1')
+            if (self::$l10nInfo &&
+                isset(self::$l10nInfo) &&
+                self::$l10nInfo->version == '1.1')
             {
                 return self::$l10nInfo;
             }
 
             $cacheIdentifier = 'l10nServerInfo';
-            try {
+            try
+            {
                 self::$l10nInfo = GeneralCache::getEntry($cacheIdentifier);
-            } catch (NotFoundException $e) {
+            }
+            catch (NotFoundException $e)
+            {
                 $infoFileUrl = self::$serverDomain . '/' . self::$infoXmlPath;
                 $xml = simplexml_load_file($infoFileUrl);
                 self::$l10nInfo = json_decode(json_encode($xml));
                 GeneralCache::cacheEntry($cacheIdentifier, self::$l10nInfo);
             }
 
-            if (isset(self::$l10nInfo->version)
-                && self::$l10nInfo->version == '1.1')
+            if (isset(self::$l10nInfo->version) &&
+                self::$l10nInfo->version == '1.1')
             {
                 return self::$l10nInfo;
             }
@@ -106,15 +110,18 @@
          */
         public static function getAvailableLanguages()
         {
-            if (is_array(self::$availableLanguages)
-                && !empty(self::$availableLanguages))
+            if (is_array(self::$availableLanguages) &&
+                !empty(self::$availableLanguages))
             {
                 return self::$availableLanguages;
             }
 
-            try {
+            try
+            {
                 $l10nInfo = self::getServerInfo();
-            } catch (FailedServiceException $e) {
+            }
+            catch (FailedServiceException $e)
+            {
                 throw new FailedServiceException();
             }
 
@@ -124,8 +131,8 @@
                 self::$availableLanguages[$language->code] = (array)$language;
             }
 
-            if (is_array(self::$availableLanguages)
-                && !empty(self::$availableLanguages))
+            if (is_array(self::$availableLanguages) &&
+                !empty(self::$availableLanguages))
             {
                 return self::$availableLanguages;
             }

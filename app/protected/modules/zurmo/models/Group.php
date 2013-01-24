@@ -153,7 +153,7 @@
             {
                 return Yii::t('Default', '(Unnamed)');
             }
-            if($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            if ($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
                 return Yii::t('Default', $this->name);
             }
