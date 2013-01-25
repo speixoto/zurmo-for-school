@@ -105,7 +105,7 @@
 
         protected function headerLabelPrefixContent()
         {
-            return Yii::t('Default', 'Mass Update');
+            return Zurmo::t('Core', 'Mass Update');
         }
     }
 ?>

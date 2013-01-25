@@ -140,7 +140,7 @@
                     $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
                     $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
-                                          text: '" . Yii::t('Default', 'Created ContactsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
+                                          text: '" . Zurmo::t('ContactsModule', 'Created ContactsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
                                           permanent: false,
                                           showIcon: true,
                                        })}"

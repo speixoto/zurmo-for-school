@@ -237,7 +237,7 @@ EOD;
         private function makeDownloadRowScriptContent()
         {
             $deleteLabel = 'Delete';
-            $removeLabel = Yii::t('Default', 'Remove');
+            $removeLabel = Zurmo::t('Core', 'Remove');
 $scriptContent = <<<EOD
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
