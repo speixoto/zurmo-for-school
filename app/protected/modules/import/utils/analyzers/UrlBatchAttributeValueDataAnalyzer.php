@@ -80,6 +80,7 @@
                 $this->messageCountData[static::INVALID] ++;
                 return;
             }
+
             if (strlen($validatedUrl) > $this->maxLength)
             {
                 $this->messageCountData[static::URL_TOO_LONG] ++;
@@ -102,7 +103,7 @@
             }
             if ($tooLarge > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) are too large for this field. ' . 
+                $label   = Yii::t('Default', '{count} value(s) are too large for this field. ' .
                                              'These values will be cleared during import.',
                                              array('{count}' => $tooLarge, '{length}' => $this->maxLength));
                 $this->addMessage($label);

@@ -824,7 +824,7 @@
                                                         {
                                                             $hints[$columnName] = 'longtext';
                                                         }
-                                                        elseif($innerValidator->max < 255)
+                                                        elseif ($innerValidator->max < 255)
                                                         {
                                                             $hints[$columnName] = "string({$innerValidator->max})";
                                                         }

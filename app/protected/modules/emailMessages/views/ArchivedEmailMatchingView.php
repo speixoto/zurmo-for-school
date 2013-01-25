@@ -195,7 +195,8 @@
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('emailMatchingActions', "
-                                  $('.select-contact-link').live('click', function (){
+                                  $('.select-contact-link').live('click', function ()
+                                  {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
                                         $(this).addClass('z-action-link-active');
                                         $(this).closest('td').addClass('active-panel');
@@ -203,7 +204,8 @@
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                    })
-                                   $('.contact-create-link').live('click', function (){
+                                   $('.contact-create-link').live('click', function ()
+                                   {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
                                         $(this).addClass('z-action-link-active');
                                         $(this).closest('td').addClass('active-panel');
@@ -211,7 +213,8 @@
                                         $(this).parent().parent().parent().find('.ContactInlineCreateForArchivedEmailCreateView').show();
                                         $(this).parent().parent().parent().find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                    })
-                                   $('.lead-create-link').live('click', function (){
+                                   $('.lead-create-link').live('click', function ()
+                                   {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
                                         $(this).addClass('z-action-link-active');
                                         $(this).closest('td').addClass('active-panel');
@@ -293,7 +296,7 @@
             $htmlOptions = $this->getHtmlOptionsForDelete();
             $route = $this->getDefaultRouteForDelete();
             $ajaxOptions = $this->getAjaxOptionsForDelete();
-            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'),$route, $ajaxOptions,
+            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Yii::t('Default', 'Delete'), $route, $ajaxOptions,
                                      $htmlOptions);
             return $content;
         }
@@ -307,14 +310,17 @@
         protected function getAjaxOptionsForDelete()
         {
             return array('type'     => 'GET',
-                         'success'  => "function(){
-                                       $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
-                                       $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                         'success'  => "function()
                                        {
-                                          text: '" . Yii::t('Default', 'Deleted successfully') . "',
-                                          permanent: false,
-                                          showIcon: true,
-                                       })}");
+                                           $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
+                                           $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                           {
+                                              text: '" . Yii::t('Default', 'Deleted successfully') . "',
+                                              permanent: false,
+                                              showIcon: true,
+                                           })
+                                       }
+            ");
         }
 
         protected function getHtmlOptionsForDelete()
@@ -334,6 +340,5 @@
         {
             return 'FlashMessageBar';
         }
-
     }
 ?>

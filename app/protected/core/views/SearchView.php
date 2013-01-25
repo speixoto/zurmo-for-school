@@ -168,14 +168,12 @@
             // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript('search' . $this->getSearchFormId(), "
                 $('#clear-search-link" . $this->gridIdSuffix . "').removeAttr('clearForm');
-                $('#clear-search-link" . $this->gridIdSuffix . "').clearform(
-                    {
+                $('#clear-search-link" . $this->gridIdSuffix . "').clearform({
                         form: '#" . $this->getSearchFormId() . "'
                     }
                 );
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
-                $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function()
-                    {
+                $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function(){
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
                         $(this).closest('form').submit();
@@ -184,15 +182,14 @@
                     }
                 );
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
-                $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
-                    {
+                $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event){
                         $('.select-list-attributes-view').hide();
                         $('.search-view-1').toggle();
                         return false;
                     }
                 );
                 $('#cancel-advanced-search').unbind('click');
-                $('#cancel-advanced-search').bind('click', function(event){
+                $('#cancel-advanced-search').live('click', function(event){
                     $('.search-view-1').hide();
                 });
             " . $this->getExtraRenderFormBottomPanelScriptPart());

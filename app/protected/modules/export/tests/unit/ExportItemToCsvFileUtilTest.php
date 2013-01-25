@@ -185,11 +185,11 @@
 
         public function testExportItemToCsvWorksWithDataContainingCommaAndLineBreaks()
         {
-            $this->assertTrue($this->isValidCsvConversion("Data, \n with, \n ,linebreaks, \n"));
+            $this->assertTrue($this->isValidCsvConversion("Data, \n with, \n ,linebreaks, \n")); // Not Coding Standard
         }
 
-
-        protected function isValidCsvConversion($textAreaContent) {
+        protected function isValidCsvConversion($textAreaContent)
+        {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
@@ -217,7 +217,6 @@
             $adapter = new ModelToExportAdapter($testItem);
             $data[] = $adapter->getData();
 
-
             // Export data to csv, and then revert csv back to array, so we compare data
             $csvData = ExportItemToCsvFileUtil::export($data, '', false);
             $revertedData = CsvParser::parseFromString($csvData);
@@ -231,6 +230,5 @@
             // Using === here would fail as we are not setting all keys part of getData()'s return array
             return $compareData == $revertedData[0];
         }
-
     }
 ?>

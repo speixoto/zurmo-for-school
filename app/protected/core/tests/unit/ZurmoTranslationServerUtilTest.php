@@ -25,45 +25,25 @@
      ********************************************************************************/
 
     /**
-     * Policy Rules for displaying a yes/no dropdown
-     * type policy in the user interface.
+     * Test class to test the ZurmoTranslationServerUtil class.
      */
-    class YesNoPolicyRules extends PolicyRules
+    class ZurmoTranslationServerUtilTest extends BaseTest
     {
-        public function getElementAttributeType()
+        public function testGetAvailableLanguages()
         {
-            if (( $this->isReadOnly($this->inherited)))
-            {
-                return 'PolicyInheritedYesNoText';
-            }
-            return 'PolicyStaticDropDown';
-        }
-
-        public function getEffectiveElementAttributeType()
-        {
-            return 'PolicyEffectiveYesNo';
-        }
-
-        public function getFormRules()
-        {
-            $attributeName = FormModelUtil::getDerivedAttributeNameFromTwoStrings($this->moduleName, $this->policy);
-            return array(
-                array($attributeName, 'type', 'type' => 'integer'),
-            );
+            $availableLanguages = ZurmoTranslationServerUtil::getAvailableLanguages();
+            $this->assertGreaterThanOrEqual(1, count($availableLanguages));
         }
 
         /**
-         * If the value is considered strong,
-         * then return true.
-         * @return boolean
+         * @depends testGetAvailableLanguages
          */
-        public function isReadOnly($value)
+        public function testGetPoFileUrl()
         {
-            if ($value == Policy::YES)
-            {
-                return true;
-            }
-            return false;
+            $url = ZurmoTranslationServerUtil::getPoFileUrl('de');
+            $headers = get_headers($url);
+            list($version, $status_code, $msg) = explode(' ', $headers[0], 3);
+            $this->assertEquals(200, intval($status_code));
         }
     }
 ?>
