@@ -43,7 +43,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('_group', "name = '$name'");
+            $bean = R::findOne('_group', "name = :name ", array(':name' => $name));            
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {

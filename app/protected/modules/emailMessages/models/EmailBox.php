@@ -39,7 +39,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne(EmailBox::getTableName('EmailBox'), "name = '$name'");
+            $bean = R::findOne(EmailBox::getTableName('EmailBox'), "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
