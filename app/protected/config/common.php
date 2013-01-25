@@ -290,6 +290,7 @@
             'conversations',
             'designer',
             'emailMessages',
+            'emailTemplates',
             'export',
             'gamification',
             'home',
