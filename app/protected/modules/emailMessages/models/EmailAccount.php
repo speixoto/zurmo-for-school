@@ -139,7 +139,7 @@
                                   array('outboundSecurity',          'type',      'type' => 'string'),
                                   array('outboundType',              'type',      'type' => 'string'),
                                   array('outboundPort',              'type',      'type' => 'integer'),
-                                  array('useCustomOutboundSettings', 'type',      'type' => 'boolean'),
+                                  array('useCustomOutboundSettings', 'boolean'),
                                   array('fromName',                  'length',    'max' => 64),
                                   array('replyToName',               'length',    'max' => 64),
                                   array('outboundType',              'length',    'max' => 4),
