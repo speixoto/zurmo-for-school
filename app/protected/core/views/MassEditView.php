@@ -96,7 +96,7 @@
         {
             $message = '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
                     LabelUtil::getUncapitalizedRecordLabelByCount($this->selectedRecordCount) . ' ' .
-                    Yii::t('Default', 'selected for updating.');
+                    Zurmo::t('Core', 'selected for updating.');
             return ZurmoHtml::wrapLabel($message, 'operation-description');
         }
 

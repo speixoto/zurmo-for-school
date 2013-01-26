@@ -127,7 +127,6 @@ exit;
                 $value = GeneralCache::getEntry('somethingForTesting');
                 $this->assertEquals(34, $value);
 
-
                 PermissionsCache::cacheCombinedPermissions($account, $super, $combinedPermissions);
                 $combinedPermissionsFromCache = PermissionsCache::getCombinedPermissions($account, $super);
                 $this->assertEquals($combinedPermissions, $combinedPermissionsFromCache);
@@ -145,8 +144,8 @@ exit;
                     $this->assertEquals(34, $value);
                 }
             }
-            // To-Do: Add test for forgetAll with $forgetDbLevelCache=true. It could be added to testForgetAll() function.
-            // To-Do: Add test for forgetSecurableItem with $forgetDbLevelCache=true. . It could be added to testForgetSecurableItem() function.
+            // To-Do: Add test for forgetAll with $forgetDbLevelCache = true. It could be added to testForgetAll() function.
+            // To-Do: Add test for forgetSecurableItem with $forgetDbLevelCache = true. . It could be added to testForgetSecurableItem() function.
         }
     }
 ?>

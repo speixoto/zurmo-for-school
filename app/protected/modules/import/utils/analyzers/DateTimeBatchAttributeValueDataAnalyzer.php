@@ -40,7 +40,7 @@
             $invalid  = $this->messageCountData[static::INVALID];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) have invalid date time formats. ' .
+                $label   = Zurmo::t('ImportModule', '{count} value(s) have invalid date time formats. ' .
                                              'These values will be cleared during import.',
                                               array('{count}' => $invalid));
                 $this->addMessage($label);

@@ -38,6 +38,7 @@
         private static $modelIdentifiersToModels = array();
 
         public static $cacheType = 'M:';
+
         /**
          * Get a cached model.
          */

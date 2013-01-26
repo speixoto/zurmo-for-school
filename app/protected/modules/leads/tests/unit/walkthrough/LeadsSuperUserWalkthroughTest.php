@@ -431,7 +431,7 @@
         }
 
         /**
-         * @deletes selected leads. 
+         * @deletes selected leads.
          */
         public function testMassDeleteActionsForSelectedIds()
         {
@@ -475,16 +475,15 @@
             $lead5 = Contact::getById($superLeadId5);
             $lead6 = Contact::getById($superLeadId6);
 
-
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
             //MassDelete for selected ids for page 1
             $this->setGetArray(array(
-                'selectedIds' => $superLeadId . ',' . $superLeadId2 . ',' .
-                                 $superLeadId3 . ',' . $superLeadId4 . ',' . 
-                                 $superLeadId5 . ',' . $superLeadId6,    // Not Coding Standard
-                'selectAll' => '',
-                'massDelete'=>'',
+                'selectedIds'  => $superLeadId . ',' . $superLeadId2 . ',' .  // Not Coding Standard
+                                  $superLeadId3 . ',' . $superLeadId4 . ',' . // Not Coding Standard
+                                  $superLeadId5 . ',' . $superLeadId6,        // Not Coding Standard
+                'selectAll'    => '',
+                'massDelete'   => '',
                 'Contact_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 6));
             $this->runControllerWithExitExceptionAndGetContent('leads/default/massDelete');
@@ -492,24 +491,23 @@
             //MassDelete for selected Record Count
             $leads = Contact::getAll();
             $this->assertEquals(10, count($leads));
- 
+
             //MassDelete for selected ids for page 2
             $this->setGetArray(array(
-                'selectedIds' => $superLeadId . ',' . $superLeadId2 . ',' .
-                                 $superLeadId3 . ',' . $superLeadId4 . ',' . 
-                                 $superLeadId5 . ',' . $superLeadId6,    // Not Coding Standard
-                'selectAll' => '',
-                'massDelete'=>'',
+                'selectedIds'  => $superLeadId . ',' . $superLeadId2 . ',' .  // Not Coding Standard
+                                  $superLeadId3 . ',' . $superLeadId4 . ',' . // Not Coding Standard
+                                  $superLeadId5 . ',' . $superLeadId6,        // Not Coding Standard
+                'selectAll'    => '',
+                'massDelete'   => '',
                 'Contact_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 6));
             $this->runControllerWithNoExceptionsAndGetContent('leads/default/massDeleteProgress');
-            
+
            //MassDelete for selected Record Count
             $leads = Contact::getAll();
             $this->assertEquals(9, count($leads));
-            
         }
-        
+
          /**
          *Test Bug with mass delete and multiple pages when using select all
          */
@@ -520,10 +518,9 @@
             //MassDelete for selected Record Count
             $leads = Contact::getAll();
             $this->assertEquals(9, count($leads));
-            
 
             //save Model MassDelete for entire search result
-            $this->setGetArray(array(                                        
+            $this->setGetArray(array(
                 'selectAll' => '1',           // Not Coding Standard
                 'Contact_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 6));
@@ -531,12 +528,12 @@
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
             $this->runControllerWithExitExceptionAndGetContent('leads/default/massDelete');
-          
+
             //check for previous mass delete progress
             $leads = Contact::getAll();
             $this->assertEquals(4, count($leads));
 
-            $this->setGetArray(array(                                        
+            $this->setGetArray(array(
                 'selectAll' => '1',           // Not Coding Standard
                 'Contact_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 6));
@@ -547,15 +544,13 @@
 
             //calculating lead's count
             $leads = Contact::getAll();
-            /*ContactNotLead,superLead5,superLead6 was converted to a contact.
-            *so this leads are not removed
+            /* ContactNotLead, superLead5, superLead6 was converted to a contact.
+            *  so this leads are not removed
             */
-            $this->assertFalse(strpos(serialize($leads),'ContactNotLead') === false);  
-            $this->assertFalse(strpos(serialize($leads),'superLead5') === false);
-            $this->assertFalse(strpos(serialize($leads),'superLead6') === false);
+            $this->assertFalse(strpos(serialize($leads), 'ContactNotLead') === false);
+            $this->assertFalse(strpos(serialize($leads), 'superLead5') === false);
+            $this->assertFalse(strpos(serialize($leads), 'superLead6') === false);
             $this->assertEquals(3, count($leads));
-            
         }
-
     }
 ?>

@@ -44,10 +44,10 @@
         public function testModelInstantiation()
         {
             $allTime = 0;
-            for($j = 0; $j < 10; $j++)
+            for ($j = 0; $j < 10; $j++)
             {
                 $startTime = microtime(true);
-                for($i = 0; $i < 500; $i++)
+                for ($i = 0; $i < 500; $i++)
                 {
                     $account = new Account();
                 }
@@ -59,5 +59,3 @@
             echo 'all time is: ' . $allTime . "\n";
         }
     }
-
-

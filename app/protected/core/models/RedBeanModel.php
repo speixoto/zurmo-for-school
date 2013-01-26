@@ -824,7 +824,7 @@
                                                         {
                                                             $hints[$columnName] = 'longtext';
                                                         }
-                                                        elseif($innerValidator->max < 255)
+                                                        elseif ($innerValidator->max < 255)
                                                         {
                                                             $hints[$columnName] = "string({$innerValidator->max})";
                                                         }
@@ -1173,7 +1173,7 @@
          */
         public function __toString()
         {
-            return Yii::t('Default', '(None)');
+            return Zurmo::t('Core', '(None)');
         }
 
         /**

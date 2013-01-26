@@ -107,13 +107,14 @@ class EmailCommandTest extends ZurmoBaseTest
             $imapStats = self::$userImap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
+            // Begin Not Coding Standard
             $command = "php zurmocTest.php email send --username=super --toAddress=$toAddress --subject='$subject' --textContent='$textContent' " .
                        "--htmlContent='$htmlContent' --host=$outboundHost --port=$outboundPort --outboundUsername=$outboundUsername " .
                        "--outboundPassword=$outboundPassword";
-
+            // End Not Coding Standard
             if (isset($outboundSecurity) && $outboundSecurity != false)
             {
-                $command .= " --outboundSecurity=$outboundSecurity";
+                $command .= " --outboundSecurity=$outboundSecurity"; // Not Coding Standard
             }
             if (!IS_WINNT)
             {

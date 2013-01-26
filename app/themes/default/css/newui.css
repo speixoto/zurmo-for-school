@@ -7215,13 +7215,14 @@ div.wide.form label.hasCheckBox {
 }
 .dynamic-search-row > div > span:first-child + div {
   margin-right: 0 !important;
-  width: 45%;
+  width: 46%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
   margin-right: 30px !important;
-  width: 45%;
+  width: 46%;
   float: right;
+  position: relative;
 }
 .dynamic-search-row > div .has-model-select {
   float: left;
