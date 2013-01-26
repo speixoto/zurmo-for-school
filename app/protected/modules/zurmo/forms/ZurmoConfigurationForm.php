@@ -56,8 +56,8 @@
                 array('dashboardListPageSize',                  'required'),
                 array('dashboardListPageSize',                  'type',      'type' => 'integer'),
                 array('dashboardListPageSize',                  'numerical', 'min' => 1),
-                array('gamificationModalNotificationsEnabled',  'type', 'type' => 'boolean'),
-                array('realtimeUpdatesEnabled',                 'type', 'type' => 'boolean'),
+                array('gamificationModalNotificationsEnabled',  'boolean'),
+                array('realtimeUpdatesEnabled',                 'boolean'),
             );
         }
 
