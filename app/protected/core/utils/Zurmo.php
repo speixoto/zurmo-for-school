@@ -24,39 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class PhoneAttributeForm extends MaxLengthAttributeForm
+    /**
+     * Helper class.
+     */
+    class Zurmo extends Yii
     {
-        public function __construct(RedBeanModel $model = null, $attributeName = null)
+        /**
+         * Temporary override. Adds a fallback to the old message category naming.
+         */
+        public static function t($category,$message,$params=array(),$source=null,$language=null)
         {
-            $this->maxLength = 20;
-            parent::__construct($model, $attributeName);
-        }
+            $translation = parent::t($category,$message,$params,$source,$language);
+            if ($translation == $message) {
+                $translation = parent::t('Default',$message,$params,$source,$language);
+            }
 
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-                array('maxLength', 'numerical', 'min' => 1, 'max' => 20),
-            ));
-        }
-
-        public static function getAttributeTypeDisplayName()
-        {
-            return Zurmo::t('DesignerModule', 'Phone');
-        }
-
-        public static function getAttributeTypeDisplayDescription()
-        {
-            return Zurmo::t('DesignerModule', 'A phone field');
-        }
-
-        public function getModelAttributePartialRule()
-        {
-            return array('type', 'type' => 'string');
-        }
-
-        public function getAttributeTypeName()
-        {
-            return 'Phone';
+            return $translation;
         }
     }
 ?>

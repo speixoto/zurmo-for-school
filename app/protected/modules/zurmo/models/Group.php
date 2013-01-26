@@ -151,7 +151,7 @@
             assert('$this->name === null || is_string($this->name)');
             if ($this->name === null)
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('ZurmoModule', '(Unnamed)');
             }
             if ($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
@@ -376,7 +376,7 @@
                 ($name == strtolower(Group::SUPER_ADMINISTRATORS_GROUP_NAME) && $this->id != $group2->id)
             )
             {
-                $this->addError('name', Yii::t('Default', 'This name is reserved. Please pick a different name.'));
+                $this->addError('name', Zurmo::t('ZurmoModule', 'This name is reserved. Please pick a different name.'));
                 return false;
             }
             return true;

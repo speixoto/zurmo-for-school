@@ -116,7 +116,7 @@
             $htmlOptions['id']       = 'saveLayout';
             $htmlOptions['name']     = 'saveLayout';
             $htmlOptions['class']    = 'attachLoading z-button';
-            $aContent                = ZurmoHtml::wrapLink(Yii::t('Default', 'Save Layout'));
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('DesignerModule', 'Save Layout'));
             return ZurmoHtml::ajaxLink($aContent, '#', array(
                     'data' => 'js:designer.prepareSaveLayout("edit-form")',
                     'dataType' => 'json',
@@ -126,7 +126,7 @@
                     'success' => 'function(data){designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")}', // Not Coding Standard
                     'error' => 'function(data){ ' . // Not Coding Standard
                         'var data = {' . // Not Coding Standard
-                        '   "message" : "' . Yii::t('Default', 'There was an error processing your request'). '",
+                        '   "message" : "' . Zurmo::t('DesignerModule', 'There was an error processing your request'). '",
                             "type"    : "error"
                         };
                         designer.updateFlashBarAfterSaveLayout(data, "' . $notificationBarId . '")
@@ -138,7 +138,7 @@
         {
             $route = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/moduleLayoutsList/',
                                                  array('moduleClassName' => $this->moduleClassName));
-            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Cancel')), $route);
+            return ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Cancel')), $route);
         }
 
         /**
