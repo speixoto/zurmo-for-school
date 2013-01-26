@@ -90,13 +90,7 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    UsersModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider,
-                    'UsersActionBarForSearchAndListView'
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'UsersActionBarForSearchAndListView');
                 $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
                                          makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'UserBreadCrumbView'));
             }
