@@ -90,7 +90,7 @@
             $invalid  = $this->messageCountData[static::INVALID];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) are too large for this field. ' .
+                $label   = Zurmo::t('ImportModule', '{count} value(s) are too large for this field. ' .
                                              'These values will be truncated to a length of {length} upon import.',
                                              array('{count}' => $invalid, '{length}' => $this->maxLength));
                 $this->addMessage($label);

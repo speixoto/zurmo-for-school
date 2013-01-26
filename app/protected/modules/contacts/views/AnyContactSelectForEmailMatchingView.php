@@ -178,7 +178,7 @@
                     $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
                     $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
-                                          text: '" . Yii::t('Default', 'Selected successfully') . "',
+                                          text: '" . Zurmo::t('ContactsModule', 'Selected successfully') . "',
                                           permanent: false,
                                           showIcon: true,
                                        })}",

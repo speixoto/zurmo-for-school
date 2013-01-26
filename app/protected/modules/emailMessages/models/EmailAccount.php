@@ -35,7 +35,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('EmailMessagesModule', '(Unnamed)');
             }
             return $this->name;
         }
@@ -178,7 +178,7 @@
                 {
                     if ($this->$attribute == null)
                     {
-                        $this->addError($attribute, Yii::t('Default', 'This field is required'));
+                        $this->addError($attribute, Zurmo::t('EmailMessagesModule', 'This field is required'));
                         $haveError = true;
                     }
                 }
