@@ -255,18 +255,16 @@
             $this->assertEquals('blob',             $columns['blobfield']);
             $this->assertEquals('longblob',         $columns['longblobfield']);
 
-
             $account = new Account();
             $account->name  = 'Test Name';
             $account->owner = $super;
             $randomString = str_repeat("Aa", 64);;
             $account->string128 = $randomString;
-            $saved = $account->save();
-            assert('$saved');
+            $this->assertTrue($account->save());
 
             $metadata = Account::getMetadata();
 
-            foreach($metadata['Account']['rules'] as $key => $rule)
+            foreach ($metadata['Account']['rules'] as $key => $rule)
             {
                 if ($rule[0] == 'string128' && $rule[1] == 'length')
                 {

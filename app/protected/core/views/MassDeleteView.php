@@ -63,7 +63,6 @@
             $this->title                              = $title;
             $this->alertMessage                       = $alertMessage;
             $this->moduleClassName                    = $moduleClassName;
-
         }
 
         protected function getSelectedRecordCount()

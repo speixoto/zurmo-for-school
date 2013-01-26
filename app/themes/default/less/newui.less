@@ -2230,10 +2230,11 @@ div.wide.form{
         margin:5px 0 0 10px !important;
         width:220px;
         float:left;
+        z-index: 10000;
     }
     .search-view-1{
         ++.flyout;
-        z-index:0;
+        z-index:1100;
         min-width:400px;
         max-width:75%;
         height:auto;
@@ -2355,13 +2356,14 @@ div.wide.form{
         width: 100%;
         > span:first-child + div{
             margin-right: 0 !important;
-            width: 45%;
+            width: 46%;
             float: left;
         }
         .criteria-value-container{
             margin-right: 30px !important;
-            width: 45%;
+            width: 46%;
             float: right;
+            position: relative;
         }
         .has-model-select{
             float:left;

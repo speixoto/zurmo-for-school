@@ -55,12 +55,11 @@
 
         protected function resolveHtmlOptionsId(& $htmlOptions)
         {
-            if($this->getLinkId() != null)
+            if ($this->getLinkId() != null)
             {
                 $htmlOptions['id']      = $this->getLinkId();
             }
         }
-
 
         protected function getAjaxLinkOptions()
         {
@@ -113,7 +112,7 @@
 
         protected function getLinkId()
         {
-            if($this->getGridId() == null)
+            if ($this->getGridId() == null)
             {
                 return null;
             }

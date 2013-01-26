@@ -511,7 +511,7 @@
         }
 
          /**
-         * @deletes selected contacts. 
+         * @deletes selected contacts.
          */
         public function testRegularMassDeleteActionsForSelectedIds()
         {
@@ -545,31 +545,30 @@
             $this->assertEquals(14, count($contacts));
             //Deleting 6 contacts for pagination scenario
             //Run Mass Delete using progress save for page1
-            $selectedIds = $contact1->id . ',' . $contact2->id . ',' .
-                           $contact3->id . ',' . $contact4->id . ',' . 
-                           $contact5->id . ',' . $contact6->id;
+            $selectedIds = $contact1->id . ',' . $contact2->id . ',' . // Not Coding Standard
+                           $contact3->id . ',' . $contact4->id . ',' . // Not Coding Standard
+                           $contact5->id . ',' . $contact6->id;        // Not Coding Standard
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Contact_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 6));
-            $content = $this->runControllerWithExitExceptionAndGetContent('contacts/default/massDelete');            
+            $content = $this->runControllerWithExitExceptionAndGetContent('contacts/default/massDelete');
             $contacts = Contact::getAll();
             $this->assertEquals(9, count($contacts));
 
             //Run Mass Delete using progress save for page2
-            $selectedIds = $contact1->id . ',' . $contact2->id . ',' .
-                           $contact3->id . ',' . $contact4->id . ',' . 
-                           $contact5->id . ',' . $contact6->id;
+            $selectedIds = $contact1->id . ',' . $contact2->id . ',' . // Not Coding Standard
+                           $contact3->id . ',' . $contact4->id . ',' . // Not Coding Standard
+                           $contact5->id . ',' . $contact6->id;        // Not Coding Standard
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Contact_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 6));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massDeleteProgress');            
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/massDeleteProgress');
             $contacts = Contact::getAll();
             $this->assertEquals(8, count($contacts));
-            
         }
 
          /**
@@ -580,13 +579,13 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $confused = User::getByUsername('confused');
             $billy = User::getByUsername('billy');
-           
+
             //Load MassDelete view for the 8 contacts.
             $contacts = Contact::getAll();
             $this->assertEquals(8, count($contacts));
              //Deleting all contacts
 
-            //mass Delete pagination scenario 
+            //mass Delete pagination scenario
             //Run Mass Delete using progress save for page1
             $this->setGetArray(array(
                 'selectAll' => '1',

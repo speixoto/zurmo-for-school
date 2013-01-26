@@ -1140,7 +1140,6 @@
 
         public function getCharLimits()
         {
-
         }
     }
 ?>

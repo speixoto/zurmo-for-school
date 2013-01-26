@@ -43,7 +43,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('_group', "name = '$name'");
+            $bean = R::findOne('_group', "name = :name ", array(':name' => $name));            
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -153,6 +153,10 @@
             {
                 return Yii::t('Default', '(Unnamed)');
             }
+            if ($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
+            {
+                return Yii::t('Default', $this->name);
+            }
             return $this->name;
         }
 
@@ -172,10 +176,6 @@
         {
             if ($this->isEveryone)
             {
-                if ($attributeName == 'name')
-                {
-                    return Yii::t('Default', self::EVERYONE_GROUP_NAME);
-                }
                 if ($attributeName == 'group')
                 {
                     return null;
@@ -187,10 +187,6 @@
             }
             if ($this->isSuperAdministrators)
             {
-                if ($attributeName == 'name')
-                {
-                    return Yii::t('Default', self::SUPER_ADMINISTRATORS_GROUP_NAME);
-                }
                 if ($attributeName == 'rights')
                 {
                     throw new NotSupportedException();
