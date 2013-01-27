@@ -36,6 +36,13 @@
 
         protected $languagesData;
 
+        protected $languagesList;
+
+        protected $messageBoxContent;
+
+        const LANGUAGE_STATUS_ACTIVE   = 1;
+        const LANGUAGE_STATUS_INACTIVE = 2;
+
         public function __construct($controllerId, $moduleId, $languagesData, $messageBoxContent = null)
         {
             assert('is_string($controllerId)');
@@ -44,38 +51,8 @@
             assert('$messageBoxContent == null || is_string($messageBoxContent)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
-            $this->languagesData           = $languagesData;
+            $this->languagesData          = $languagesData;
             $this->messageBoxContent      = $messageBoxContent;
-        }
-
-        protected function renderContent()
-        {
-            $content = '<div>';
-            $content .= $this->renderTitleContent();
-            $content .= '<div class="wide form">';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'ZurmoActiveForm',
-                                                                array('id' => 'language-collection-form',
-                                                                        'htmlOptions' =>
-                                                                            array('onSubmit' =>
-                                                                                        'js:return attachLoadingOnSubmit("language-collection-form")')
-                                                                )
-                                                            );
-            $content .= $formStart;
-
-            if ($this->messageBoxContent != null)
-            {
-                $content .= $this->messageBoxContent;
-                $content .= '<br/>';
-            }
-            $content .= $this->renderFormLayout($form);
-            $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-            $content .= $this->renderActionElementBar(true);
-            $content .= '</div></div>';
-            $content .= $clipWidget->renderEndWidget();
-            $content .= '</div></div>';
-            return $content;
         }
 
         public function getTitle()
@@ -83,87 +60,166 @@
             return Zurmo::t('ZurmoModule', 'Languages');
         }
 
-        /**
-         * Render a form layout.
-         * @param $form If the layout is editable, then pass a $form otherwise it can
-         * be null.
-         * @return A string containing the element's content.
-          */
-        protected function renderFormLayout(ZurmoActiveForm $form)
-        {
-            $content  = '<table>';
-            $content .= '<colgroup>';
-            $content .= '<col style="width:15%" /><col />';
-            $content .= '</colgroup>';
-            $content .= '<tbody>';
-            $content .= '<tr><th>' . $this->renderActiveHeaderContent() . '</th>';
-            $content .= '<th>' . Zurmo::t('ZurmoModule', 'Language') . '</th>';
-            $content .= '</tr>';
-            foreach ($this->languagesData as $language => $languageData)
-            {
-                assert('is_string($languageData["label"])');
-                assert('is_bool($languageData["active"])');
-                assert('is_bool($languageData["canInactivate"])');
-                $route = $this->moduleId . '/' . $this->controllerId . '/delete/';
-                $content .= '<tr>';
-                $content .= '<td class="checkbox-column">' . self::renderActiveCheckBoxContent($form, $language,
-                                                                       $languageData['active'],
-                                                                       $languageData['canInactivate']) . '</td>';
-                $content .= '<td>' . $languageData['label'] . '</td>';
-                $content .= '</tr>';
-            }
-            $content .= '</tbody>';
-            $content .= '</table>';
-            return $content;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'ConfigurationLink',
-                                  'label' => "eval:Zurmo::t('ZurmoModule', 'Cancel')"),
-                            array('type'  => 'SaveButton',
-                                  'htmlOptions' => array('id' => 'save-collection', 'name' => 'save-collection')),
-                        ),
-                     ),
-                ),
-            );
-            return $metadata;
-        }
-
         public function isUniqueToAPage()
         {
             return true;
         }
 
-        protected static function renderActiveCheckBoxContent(ZurmoActiveForm $form, $language, $active, $canInactivate)
+        protected function renderContent()
         {
-            assert('is_string($language)');
-            assert('is_bool($active)');
-            assert('is_bool($canInactivate)');
-            $name                = 'LanguageCollection[' . $language . '][active]';
-            $htmlOptions         = array();
-            $htmlOptions['id']   = 'LanguageCollection_' . $language . '_active';
-
-            if (!$canInactivate)
-            {
-                $htmlOptions['disabled'] = 'disabled';
-                $htmlOptions['uncheckValue'] = '1';
-            }
-            return ZurmoHtml::checkBox($name, $active, $htmlOptions);
+            $content  = ZurmoHtml::openTag('div');
+            $content .= $this->renderTitleContent();
+            $content .= $this->renderMessageBoxContent();
+            $content .= ZurmoHtml::openTag('ul', array('class' => 'configuration-list'));
+            $content .= $this->renderActiveLanguagesList();
+            $content .= $this->renderInactiveLanguagesList();
+            $content .= ZurmoHtml::closeTag('ul');
+            $content .= ZurmoHtml::closeTag('div');
+            return $content;
         }
 
-        protected static function renderActiveHeaderContent()
+        protected function renderMessageBoxContent()
         {
-            $title      = Zurmo::t('ZurmoModule', 'Active languages can be used by users. The system language and any language in use by a user cannot be inactivated');
-            $content    = Zurmo::t('ZurmoModule', 'Active');
-            $content   .= '<span id="active-languages-tooltip" class="tooltip" title="' . $title . '">?</span>';
-            $qtip = new ZurmoTip();
-            $qtip->addQTip("#active-languages-tooltip");
+            if (empty($this->messageBoxContent))
+            {
+                return;
+            }
+
+            return ZurmoHtml::tag('div', array(), $this->messageBoxContent);
+        }
+
+        protected function renderActiveLanguagesList()
+        {
+            $languagesList = $this->getLanguagesList();
+
+            if (empty($languagesList[self::LANGUAGE_STATUS_ACTIVE]))
+            {
+                return;
+            }
+
+            $content = '';
+            foreach ($languagesList[self::LANGUAGE_STATUS_ACTIVE] as $languageCode => $languageData)
+            {
+                $content .= ZurmoHtml::openTag('li');
+                $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
+
+                $metaData = Yii::app()->languageHelper->getActiveLanguageMetaData($languageCode);
+                if (!empty($metaData) && isset($metaData['lastUpdate']))
+                {
+                    $content .= ' - ' . Zurmo::t(
+                        'ZurmoModule', 'Last updated on {date}',
+                        array('{date}'=>DateTimeUtil::convertTimestampToDbFormatDateTime($metaData['lastUpdate']))
+                    );
+                }
+
+                $content .= $this->renderUpdateButton($languageCode, $languageData);
+                $content .= $this->renderInactivateButton($languageCode, $languageData);
+                $content .= ZurmoHtml::closeTag('li');
+            }
+
             return $content;
+        }
+
+        protected function renderInactiveLanguagesList()
+        {
+            $languagesList = $this->getLanguagesList();
+
+            if (empty($languagesList[self::LANGUAGE_STATUS_INACTIVE]))
+            {
+                return;
+            }
+
+            $content = '';
+            foreach ($languagesList[self::LANGUAGE_STATUS_INACTIVE] as $languageCode => $languageData)
+            {
+                $content .= ZurmoHtml::openTag('li');
+                $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
+                $content .= $this->renderActivateButton($languageCode, $languageData);
+                $content .= ZurmoHtml::closeTag('li');
+            }
+
+            return $content;
+        }
+
+        protected function renderUpdateButton($languageCode, $languageData)
+        {
+            assert('is_string($languageCode)');
+            assert('is_array($languageData)');
+            return ZurmoHtml::link(
+                ZurmoHtml::tag(
+                    'span',
+                    array('class'=>'z-label'),
+                    Zurmo::t('ZurmoModule', 'Update')
+                ),
+                Yii::app()->createUrl('zurmo/language/update/' . $languageCode)
+            );
+        }
+
+        protected function renderInactivateButton($languageCode, $languageData)
+        {
+            assert('is_string($languageCode)');
+            assert('is_array($languageData)');
+            return ZurmoHtml::link(
+                ZurmoHtml::tag(
+                    'span',
+                    array('class'=>'z-label'),
+                    Zurmo::t('ZurmoModule', 'Inactivate')
+                    ),
+                Yii::app()->createUrl('zurmo/language/inactivate/' . $languageCode)
+            );
+        }
+
+        protected function renderActivateButton($languageCode, $languageData)
+        {
+            assert('is_string($languageCode)');
+            assert('is_array($languageData)');
+            return ZurmoHtml::link(
+                ZurmoHtml::tag(
+                    'span',
+                    array('class'=>'z-label'),
+                    Zurmo::t('ZurmoModule','Activate')
+                ),
+                Yii::app()->createUrl('zurmo/language/activate/' . $languageCode)
+            );
+        }
+
+        protected function getLanguagesList()
+        {
+            if (is_array($this->languagesList) && !empty($this->languagesList))
+            {
+                return $this->languagesList;
+            }
+
+            $languagesList = array(
+                self::LANGUAGE_STATUS_ACTIVE   => array(),
+                self::LANGUAGE_STATUS_INACTIVE => array()
+            );
+            foreach ($this->languagesData as $languageCode => $languageData)
+            {
+                if ($languageData['active'])
+                {
+                    $status = self::LANGUAGE_STATUS_ACTIVE;
+                }
+                else
+                {
+                    $status = self::LANGUAGE_STATUS_INACTIVE;
+                }
+
+                $languagesList[$status][$languageCode] = $languageData;
+            }
+
+            usort($languagesList[self::LANGUAGE_STATUS_ACTIVE],
+                  array($this, 'compareLanguagesListElements'));
+            usort($languagesList[self::LANGUAGE_STATUS_INACTIVE],
+                  array($this, 'compareLanguagesListElements'));
+
+            $this->languagesList = $languagesList;
+            return $this->languagesList;
+        }
+
+        protected function compareLanguagesListElements($a, $b)
+        {
+            return strcmp($a['label'], $b['label']);
         }
     }
 ?>

@@ -49,7 +49,11 @@
         public function actionConfigurationList()
         {
             $redirectUrlParams = array('/zurmo/' . $this->getId() . '/ConfigurationList');
-            $messageBoxContent = $this->attemptToUpdateActiveLanguagesFromPostAndGetMessageBoxContent();
+            $messageBoxContent = Zurmo::t('ZurmoModule', 'Don\'t see a language that you want to load? Help us make Zurmo better by contributing on a translation. Click <a href="{l10nServerDomain}" target="_blank">here</a>.',
+                array(
+                    '{l10nServerDomain}'=>ZurmoTranslationServerUtil::getServerDomain()
+                )
+            );
             $view = new LanguageTitleBarConfigurationListView(
                             $this->getId(),
                             $this->getModule()->getId(),
