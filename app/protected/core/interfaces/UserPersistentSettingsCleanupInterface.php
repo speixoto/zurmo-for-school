@@ -30,7 +30,7 @@
  * need to be cleaned before deleting actual
  * instance.
  */
-interface UserPersistentSettingsInterface
+interface UserPersistentSettingsCleanupInterface
 {
     /**
      * Applicable deletion code to

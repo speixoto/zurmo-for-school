@@ -165,7 +165,7 @@
          */
         public static function setPersistentConfigForCurrentUserByPortletIdAndKey($portletId, $keyName, $value)
         {
-            assert('is_int($portalId)');
+            assert('is_int($portletId)');
             $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
             ZurmoConfigurationUtil::setForCurrentUserByModuleName(static::CONFIG_MODULE_NAME, $keyName, $value);
             Yii::app()->user->setState($keyName, $value);
@@ -180,7 +180,7 @@
          */
         public static function getPersistentConfigForCurrentUserByPortletIdAndKey($portletId, $keyName, $returnBoolean = false)
         {
-            assert('is_int($portalId)');
+            assert('is_int($portletId)');
             $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
             $value = ZurmoConfigurationUtil::getForCurrentUserByModuleName(static::CONFIG_MODULE_NAME, $keyName);
             $value = ($returnBoolean)? (boolean) $value: $value;
