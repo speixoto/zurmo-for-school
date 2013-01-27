@@ -133,7 +133,6 @@
                     ZurmoCache::setAdditionalStringForCachePrefix('Test');
                 }
             }
-
         }
 
         /**

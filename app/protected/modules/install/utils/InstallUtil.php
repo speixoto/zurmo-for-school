@@ -730,23 +730,23 @@
          * @param $instanceRoot
          * @return string
          */
-        public static function setZurmoTokenAndWriteToVersionFile($instanceRoot)
+        public static function setZurmoTokenAndWriteToPerInstanceFile($instanceRoot, $perInstanceFilename = 'perInstance.php')
         {
             assert('is_dir($instanceRoot)');
-            if (!defined('ZURMO_TOKEN'))
-            {
-                $versionFile = $instanceRoot . DIRECTORY_SEPARATOR . 'version.php';
-                $contents = file_get_contents($versionFile);
 
-                $zurmoToken = substr(md5(microtime() * mt_rand()), 0, 10);
-                $contents = preg_replace('/\?\>/',
-                    "\n" . '    ' . "define('ZURMO_TOKEN', '$zurmoToken');" . "\n" . "?>",
+            if (!defined('ZURMO_TOKEN') || ZURMO_TOKEN == 'defaultValue')
+            {
+                $perInstanceConfigFile     = "$instanceRoot/protected/config/$perInstanceFilename";
+                $contents = file_get_contents($perInstanceConfigFile);
+
+                $zurmoToken = substr(md5(microtime() * mt_rand()), 0, 15);
+
+                $contents = preg_replace('/define\(\'ZURMO_TOKEN\', \'defaultValue\'\);/',
+                    "define('ZURMO_TOKEN', '$zurmoToken');",
                     $contents);
 
-                file_put_contents($versionFile, $contents);
-
-                // Make ZURMO_TOKEN const available instantly for use
-                define('ZURMO_TOKEN', $zurmoToken);
+                file_put_contents($perInstanceConfigFile, $contents);
+                return $zurmoToken;
             }
             return ZURMO_TOKEN;
         }
@@ -927,7 +927,7 @@
                 NotificationsUtil::submit($message, $rules);
             }
 
-            InstallUtil::setZurmoTokenAndWriteToVersionFile(INSTANCE_ROOT);
+            InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Yii::t('Default', 'Installation Complete.'));
         }
 
