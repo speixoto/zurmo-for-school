@@ -208,18 +208,19 @@
                 $languagesList[$status][$languageCode] = $languageData;
             }
 
-            usort($languagesList[self::LANGUAGE_STATUS_ACTIVE],
-                  array($this, 'compareLanguagesListElements'));
-            usort($languagesList[self::LANGUAGE_STATUS_INACTIVE],
-                  array($this, 'compareLanguagesListElements'));
+            $languagesList[self::LANGUAGE_STATUS_ACTIVE] = ArrayUtil::subValueSort(
+                $languagesList[self::LANGUAGE_STATUS_ACTIVE],
+                'label',
+                'asort'
+            );
+            $languagesList[self::LANGUAGE_STATUS_INACTIVE] = ArrayUtil::subValueSort(
+                $languagesList[self::LANGUAGE_STATUS_INACTIVE],
+                'label',
+                'asort'
+            );
 
             $this->languagesList = $languagesList;
             return $this->languagesList;
-        }
-
-        protected function compareLanguagesListElements($a, $b)
-        {
-            return strcmp($a['label'], $b['label']);
         }
     }
 ?>
