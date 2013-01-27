@@ -145,13 +145,15 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
+            $linkHtml = array('class' => 'update-link');
             return ZurmoHtml::link(
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule', 'Update')
                 ),
-                Yii::app()->createUrl('zurmo/language/update/' . $languageCode)
+                Yii::app()->createUrl('zurmo/language/update/' . $languageCode),
+                $linkHtml
             );
         }
 
@@ -159,13 +161,21 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
+
+            $linkHtml = array('class' => 'inactivate-link');
+            if (!$languageData['canInactivate'])
+            {
+                $linkHtml['class'] .= ' disabled';
+            }
+
             return ZurmoHtml::link(
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule', 'Inactivate')
-                    ),
-                Yii::app()->createUrl('zurmo/language/inactivate/' . $languageCode)
+                ),
+                Yii::app()->createUrl('zurmo/language/inactivate/' . $languageCode),
+                $linkHtml
             );
         }
 
@@ -173,13 +183,15 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
+            $linkHtml = array('class' => 'activate-link');
             return ZurmoHtml::link(
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule','Activate')
                 ),
-                Yii::app()->createUrl('zurmo/language/activate/' . $languageCode)
+                Yii::app()->createUrl('zurmo/language/activate/' . $languageCode),
+                $linkHtml
             );
         }
 
