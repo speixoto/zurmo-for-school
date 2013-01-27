@@ -46,7 +46,7 @@
 
         protected $viewData;
 
-        protected static $persistUserPerPortletConfigs = array(
+        protected static $persistantUserPortletConfigs = array(
             'rollup',
             'ownedByFilter',
             'filteredByModelName'
@@ -136,17 +136,17 @@
         protected function saveUserSettingsFromConfigForm(&$latestActivitiesConfigurationForm)
         {
             $savedConfigs = array();
-            foreach (static::$persistUserPerPortletConfigs as $persistUserConfigItem)
+            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
             {
-                if ($latestActivitiesConfigurationForm->$persistUserConfigItem !==
+                if ($latestActivitiesConfigurationForm->$persistantUserConfigItem !==
                     LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey($this->params['portletId'],
-                        $persistUserConfigItem))
+                        $persistantUserConfigItem))
                 {
                     LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey($this->params['portletId'],
-                        $persistUserConfigItem,
-                        $latestActivitiesConfigurationForm->$persistUserConfigItem
+                        $persistantUserConfigItem,
+                        $latestActivitiesConfigurationForm->$persistantUserConfigItem
                     );
-                    $savedConfigs[] = $persistUserConfigItem;
+                    $savedConfigs[] = $persistantUserConfigItem;
                 }
             }
             return $savedConfigs;
@@ -154,18 +154,18 @@
 
         protected function restoreUserSettingsToConfigFrom(&$latestActivitiesConfigurationForm, $excludeFromRestore)
         {
-            foreach (static::$persistUserPerPortletConfigs as $persistUserConfigItem)
+            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
             {
-                if (in_array($persistUserConfigItem, $excludeFromRestore))
+                if (in_array($persistantUserConfigItem, $excludeFromRestore))
                 {
                     continue;
                 }
-                $persistUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                $persistantUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
                     $this->params['portletId'],
-                    $persistUserConfigItem);
-                if(isset($persistUserConfigItemValue))
+                    $persistantUserConfigItem);
+                if(isset($persistantUserConfigItemValue))
                 {
-                    $latestActivitiesConfigurationForm->$persistUserConfigItem = $persistUserConfigItemValue;
+                    $latestActivitiesConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
                 }
 
             }
@@ -317,13 +317,13 @@
 
         public static function processBeforeDelete($portletId)
         {
-            foreach(static::$persistUserPerPortletConfigs as $persistUserConfigItem)
+            foreach(static::$persistantUserPortletConfigs as $persistantUserConfigItem)
             {
-                $property = static::resolvePropertyName($persistUserConfigItem);
+                $property = static::resolvePropertyName($persistantUserConfigItem);
                 if (method_exists(get_called_class(), $property) && static::$property())
                 {
                     LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
-                        $portletId, $persistUserConfigItem, null);
+                        $portletId, $persistantUserConfigItem, null);
                 }
             }
         }
