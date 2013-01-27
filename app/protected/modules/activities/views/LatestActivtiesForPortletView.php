@@ -46,6 +46,12 @@
 
         protected $viewData;
 
+        protected static $persistUserPerPortletConfigs = array(
+            'rollup',
+            'ownedByFilter',
+            'filteredByModelName'
+        );
+
         abstract protected function getLatestActivitiesViewClassName();
 
         /**
@@ -98,18 +104,7 @@
                 $latestActivitiesConfigurationForm = $this->makeLatestActivitiesConfigurationForm();
                 $latestActivitiesConfigurationForm->mashableModelClassNamesAndDisplayLabels =
                     $mashableModelClassNamesAndDisplayLabels;
-                if (isset($_GET[get_class($latestActivitiesConfigurationForm)]))
-                {
-                    $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
-                    if ($latestActivitiesConfigurationForm->rollup !==
-                        LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']))
-                    {
-                        LatestActivitiesUtil::setRollUpForCurrentUserByPortletId($this->params['portletId'],
-                            $latestActivitiesConfigurationForm->rollup);
-                    }
-                }
-                $latestActivitiesConfigurationForm->rollup =
-                        LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($this->params['portletId']);
+                $this->resolveLatestActivitiesConfigFormFromRequest($latestActivitiesConfigurationForm);
                 $latestActivitiesViewClassName = $this->getLatestActivitiesViewClassName();
                 $dataProvider = $this->getDataProvider($uniquePageId, $latestActivitiesConfigurationForm);
                 $latestView = new $latestActivitiesViewClassName($dataProvider,
@@ -122,6 +117,59 @@
                                                                  get_class(Yii::app()->findModule($this->moduleId)));
                 return $latestView->render();
             }
+        }
+
+        protected function resolveLatestActivitiesConfigFormFromRequest(&$latestActivitiesConfigurationForm)
+        {
+            $excludeFromRestore = array();
+            if (isset($_GET[get_class($latestActivitiesConfigurationForm)]))
+            {
+                $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
+                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($latestActivitiesConfigurationForm);
+            }
+
+            $this->restoreUserSettingsToConfigFrom($latestActivitiesConfigurationForm, $excludeFromRestore);
+
+
+        }
+
+        protected function saveUserSettingsFromConfigForm(&$latestActivitiesConfigurationForm)
+        {
+            $savedConfigs = array();
+            foreach (static::$persistUserPerPortletConfigs as $persistUserConfigItem)
+            {
+                if ($latestActivitiesConfigurationForm->$persistUserConfigItem !==
+                    LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                        $persistUserConfigItem))
+                {
+                    LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                        $persistUserConfigItem,
+                        $latestActivitiesConfigurationForm->$persistUserConfigItem
+                    );
+                    $savedConfigs[] = $persistUserConfigItem;
+                }
+            }
+            return $savedConfigs;
+        }
+
+        protected function restoreUserSettingsToConfigFrom(&$latestActivitiesConfigurationForm, $excludeFromRestore)
+        {
+            foreach (static::$persistUserPerPortletConfigs as $persistUserConfigItem)
+            {
+                if (in_array($persistUserConfigItem, $excludeFromRestore))
+                {
+                    continue;
+                }
+                $persistUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                    $this->params['portletId'],
+                    $persistUserConfigItem);
+                if(isset($persistUserConfigItemValue))
+                {
+                    $latestActivitiesConfigurationForm->$persistUserConfigItem = $persistUserConfigItemValue;
+                }
+
+            }
+            return $latestActivitiesConfigurationForm;
         }
 
         protected static function includeHavingRelatedItemsWhenRenderingMashableModels()
@@ -244,16 +292,39 @@
             return true;
         }
 
-        public static function hasRollUpSwitch()
+        protected static function resolvePropertyName($attribute)
+        {
+            return 'has' .ucfirst($attribute) . 'Switch';
+
+        }
+
+        public static function hasRollupSwitch()
         {
             return false;
         }
 
+        ///*
+        public static function hasOwnedByFilterSwitch()
+        {
+            return true;
+        }
+
+        public static function hasFilteredByModelNameSwitch()
+        {
+            return true;
+        }
+        /**/
+
         public static function processBeforeDelete($portletId)
         {
-            if (static::hasRollUpSwitch())
+            foreach(static::$persistUserPerPortletConfigs as $persistUserConfigItem)
             {
-                LatestActivitiesUtil::setRollUpForCurrentUserByPortletId($portletId, null);
+                $property = static::resolvePropertyName($persistUserConfigItem);
+                if (method_exists(get_called_class(), $property) && static::$property())
+                {
+                    LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
+                        $portletId, $persistUserConfigItem, null);
+                }
             }
         }
     }

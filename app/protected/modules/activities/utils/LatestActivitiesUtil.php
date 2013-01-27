@@ -29,7 +29,8 @@
      */
     class LatestActivitiesUtil
     {
-        const ROLLUP_KEY_SUFIX = '_rollup';
+        const CONFIG_MODULE_NAME = 'ActivitiesModule';
+
         /**
          * Based on the current user, return model class names and thier display labels.  Only include models
          * that the user has a right to access its corresponding module, as well as only models that implement the
@@ -157,28 +158,38 @@
         }
 
         /**
-         * Get the rollup value for the current user by portlet Id.
-         * @param $portletId Id of the portlet against which we should query
-         * @return $rollUpState null or string.
+         * Set a persistent config value for current user against portletId and keyName.
+         * @param $portletId integer Id of the portlet to set value against
+         * @param $keyName string Name of the key that should be set
+         * @param $value string|integer|boolean Value that should be assigned to keyName config
          */
-        public static function getRollUpStateForCurrentUserByPortletId($portalId)
+        public static function setPersistentConfigForCurrentUserByPortletIdAndKey($portletId, $keyName, $value)
         {
             assert('is_int($portalId)');
-            $keyName = $portalId.self::ROLLUP_KEY_SUFIX;
-            return ZurmoConfigurationUtil::getForCurrentUserByModuleName('ActivitiesModule', $keyName);
+            $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName(static::CONFIG_MODULE_NAME, $keyName, $value);
+            Yii::app()->user->setState($keyName, $value);
         }
 
         /**
-         * Set the rollup value for the current user by portlet Id.
-         * @param $portletId Id of the portlet against which we should query
-         * @param $rollUpState Current state of rollUp switch
+         * Get a persistent config value for current user against portletId and keyName.
+         * @param $portletId integer  Id of the portlet to get value against
+         * @param $keyName string Name of the key that should be returned
+         * @param bool $returnBoolean bool Force return value to be boolean (explicit type casting)
+         * @return bool|null|string
          */
-        public static function setRollUpForCurrentUserByPortletId($portletId, $rollUpState)
+        public static function getPersistentConfigForCurrentUserByPortletIdAndKey($portletId, $keyName, $returnBoolean = false)
         {
             assert('is_int($portalId)');
-            $keyName = $portletId.self::ROLLUP_KEY_SUFIX;
-            ZurmoConfigurationUtil::setForCurrentUserByModuleName('ActivitiesModule', $keyName, $rollUpState);
-            Yii::app()->user->setState($keyName, $rollUpState);
+            $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
+            $value = ZurmoConfigurationUtil::getForCurrentUserByModuleName(static::CONFIG_MODULE_NAME, $keyName);
+            $value = ($returnBoolean)? (boolean) $value: $value;
+            return $value;
+        }
+
+        protected static function resolveKeyNameByPortletId($portletId, $keyName)
+        {
+            return $portletId . '_' . $keyName;
         }
 
     }

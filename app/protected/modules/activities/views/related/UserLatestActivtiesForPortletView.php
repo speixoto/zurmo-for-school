@@ -100,7 +100,7 @@
             return true;
         }
 
-        public static function hasRollUpSwitch()
+        public static function hasRollupSwitch()
         {
             return true;
         }

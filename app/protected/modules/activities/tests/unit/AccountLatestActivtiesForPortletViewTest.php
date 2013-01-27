@@ -29,7 +29,7 @@
     */
     class AccountLatestActivtiesForPortletViewTest extends ZurmoBaseTest
     {
-        public $freeze = false;
+        const CONFIG_KEY = 'rollup';
         protected static $accountLatestActivitiesPortletId = null;
 
         public static function setUpBeforeClass()
@@ -53,35 +53,24 @@
             parent::setUp();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
-        }
-
-        public function teardown()
-        {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
         }
 
         public function testNullRollUpForNewAccountLatestActivitiesForPortletView()
         {
-            $this->assertNull(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId(static::$accountLatestActivitiesPortletId));
+            $this->assertNull(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY));
         }
 
         public function testCanSetRollUpForNewAccountLatestActivitiesForPortletView()
         {
-            LatestActivitiesUtil::setRollUpForCurrentUserByPortletId(static::$accountLatestActivitiesPortletId, '');
-            $this->assertTrue(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId(static::$accountLatestActivitiesPortletId) === '');
-            LatestActivitiesUtil::setRollUpForCurrentUserByPortletId(static::$accountLatestActivitiesPortletId, '1');
-            $this->assertTrue(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId(static::$accountLatestActivitiesPortletId) === '1');
+            LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
+                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY, '');
+            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY) === '');
+            LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
+                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY, '1');
+            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY) === '1');
         }
 
         public function testCanDeleteAccountLatestActivitiesForPortletView()

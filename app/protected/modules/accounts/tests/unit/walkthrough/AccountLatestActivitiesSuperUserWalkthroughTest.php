@@ -45,6 +45,9 @@
 
         public function testSuperUserAllDefaultControllerActions()
         {
+            // key used to test persistance of user settings
+            $configKey = 'rollup';
+
             //Set the current user as the super user.
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
@@ -82,13 +85,15 @@
             $this->setGetArray($getData);
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
-            $this->assertTrue(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($getData['portletId']) === '');
+            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                $getData['portletId'], $configKey) === '');
 
             //Now add roll up
             $getData['LatestActivitiesConfigurationForm']['rollup'] = '1';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
-            $this->assertTrue(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($getData['portletId']) === '1');
+            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                $getData['portletId'], $configKey) === '1');
             //Now filter by meeting, task, and note
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Meeting';
             $this->setGetArray($getData);
@@ -104,7 +109,8 @@
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Meeting';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
-            $this->assertTrue(LatestActivitiesUtil::getRollUpStateForCurrentUserByPortletId($getData['portletId']) === '');
+            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+                $getData['portletId'], $configKey) === '');
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Note';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');

@@ -54,7 +54,7 @@
             return 'LatestActivitiesForOpportunityListView';
         }
 
-        public static function hasRollUpSwitch()
+        public static function hasRollupSwitch()
         {
             return true;
         }
