@@ -265,7 +265,7 @@
             // Check if the language is supported
             if (!array_key_exists($languageCode, $supportedLanguages))
             {
-                throw new NotFoundException();
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not supported.'));
             }
 
             $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($languageCode);
@@ -275,7 +275,7 @@
             list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
             if ($status_code != 200)
             {
-                throw new NotFoundException();
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Translation not available.'));
             }
 
             if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
@@ -291,7 +291,7 @@
                 return true;
             }
 
-            throw new FailedServiceException();
+            throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
         }
 
         /**
@@ -303,14 +303,14 @@
             // Check if the language is already active
             if (!in_array($languageCode, $activeLanguages))
             {
-                throw new NotFoundException();
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language already active.'));
             }
 
             $supportedLanguages = $this->getSupportedLanguagesData();
             // Check if the language is supported
             if (!array_key_exists($languageCode, $supportedLanguages))
             {
-                throw new NotFoundException();
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not supported.'));
             }
 
             $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($languageCode);
@@ -320,7 +320,7 @@
             list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
             if ($status_code != 200)
             {
-                throw new NotFoundException();
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Translation not available.'));
             }
 
             if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
@@ -332,7 +332,7 @@
                 return true;
             }
 
-            throw new FailedServiceException();
+            throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
         }
 
         /**
