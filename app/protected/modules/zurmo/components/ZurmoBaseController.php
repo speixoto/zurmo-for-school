@@ -285,7 +285,7 @@
                             $successfulCount = MassEditInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
                                 $selectedRecordCount, $skipCount);
                             MassEditInsufficientPermissionSkipSavingUtil::clear($modelClassName);
-                            $notificationContent = Yii::t('Default', 'Successfully updated') . ' ' .
+                            $notificationContent = Zurmo::t('ZurmoModule', 'Successfully updated') . ' ' .
                                                     $successfulCount . ' ' .
                                                     LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
                                                     '.';
@@ -451,7 +451,7 @@
                             MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
                             $notificationContent =  $successfulCount . ' ' .
                                                     LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
-                                                    ' ' . Yii::t('Default', 'successfully deleted') . '.';
+                                                    ' ' . Zurmo::t('ZurmoModule', 'successfully deleted') . '.';
                             if ($skipCount > 0)
                             {
                                 $notificationContent .= ' ' .
@@ -583,9 +583,7 @@
             }
             else
             {
-                $notificationContent = Yii::t(
-                    'Default',
-                    'You no longer have permissions to access {modelName}.',
+                $notificationContent = Zurmo::t('ZurmoModule', 'You no longer have permissions to access {modelName}.',
                     array('{modelName}' => $modelToStringValue)
                 );
                 Yii::app()->user->setFlash('notification', $notificationContent);

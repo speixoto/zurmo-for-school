@@ -110,7 +110,7 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink        = ZurmoHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
@@ -139,7 +139,7 @@
 
         protected function getClearSearchLabelContent()
         {
-            return Yii::t('Default', 'Clear');
+            return Zurmo::t('Core', 'Clear');
         }
 
         protected function getClearSearchLinkStartingStyle()
@@ -291,7 +291,7 @@
         {
             if ($this->model->getListAttributesSelector() != null)
             {
-                return ZurmoHtml::link(Yii::t('Default', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
+                return ZurmoHtml::link(Zurmo::t('Core', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
             }
         }
 
@@ -342,11 +342,11 @@
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
             $params = array();
-            $params['label']       = Yii::t('Default', 'Search');
+            $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content  = $searchElement->render();
-            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Close')),
+            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
                             '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
             return $closeButton . $content;
         }

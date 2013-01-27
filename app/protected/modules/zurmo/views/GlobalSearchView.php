@@ -62,7 +62,7 @@
                 return null;
             }
             $content                 = $this->renderGlobalSearchScopingInputContent();
-            $hintMessage             = Yii::t('Default', 'Search by name, phone, or e-mail');
+            $hintMessage             = Zurmo::t('ZurmoModule', 'Search by name, phone, or e-mail');
             $htmlOptions             = array('class'   => 'global-search global-search-hint',
                                              'onfocus' => '$(this).removeClass("global-search-hint"); $(this).val("");',
                                              'onblur'  => '$(this).val("")');
