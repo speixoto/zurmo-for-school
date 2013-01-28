@@ -79,7 +79,7 @@
             rewind($fp);
             $csv = stream_get_contents($fp);
 
-            if($isHeaderRow)
+            if ($isHeaderRow)
             {
                 // ModelToExportAdapter->getData() does not add quotes to header rows so we have to do it here.
                 // Using fputcsv instead of implode because it does couple of more useful things like escaping
@@ -89,6 +89,5 @@
             fclose($fp);
             return $csv;
         }
-
     }
 ?>

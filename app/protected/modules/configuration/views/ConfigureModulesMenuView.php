@@ -47,7 +47,7 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Administration');
+            return Zurmo::t('ConfigurationModule', 'Administration');
         }
 
         protected function getCategoryData()
@@ -94,6 +94,13 @@
             return $content;
         }
 
+        protected function getCategoriesArray()
+        {
+            return array(
+                ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL   => Zurmo::t('ConfigurationModule', 'General'),
+            );
+        }
+
         protected function setLinkText($text)
         {
             $this->linkText = $text;
@@ -107,7 +114,7 @@
             }
             else
             {
-                return Yii::t('Default', 'Configure');
+                return Zurmo::t('ConfigurationModule', 'Configure');
             }
         }
     }

@@ -60,8 +60,8 @@
             Yii::app()->clientScript->registerScript('operatorRules', "
                 $('.operatorType').change( function()
                     {
-                        arr  = " . CJSON::encode($this->getValueTypesRequiringFirstDateInput()) . ";
-                        arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondDateInput()) . ";
+                        arr  = " . CJSON::encode($this->getValueTypesRequiringFirstInput()) . ";
+                        arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondInput()) . ";
                         var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
                         var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
                         if ($.inArray($(this).val(), arr) != -1)
@@ -108,7 +108,7 @@
             ");
         }
 
-        public static function getValueTypesRequiringFirstDateInput()
+        public static function getValueTypesRequiringFirstInput()
         {
             return array(OperatorRules::TYPE_EQUALS,
                          OperatorRules::TYPE_DOES_NOT_EQUAL,
@@ -117,10 +117,13 @@
                          OperatorRules::TYPE_GREATER_THAN,
                          OperatorRules::TYPE_LESS_THAN,
                          OperatorRules::TYPE_ONE_OF,
-                         OperatorRules::TYPE_BETWEEN);
+                         OperatorRules::TYPE_BETWEEN,
+                         OperatorRules::TYPE_STARTS_WITH,
+                         OperatorRules::TYPE_ENDS_WITH,
+                         OperatorRules::TYPE_CONTAINS);
         }
 
-        public static function getValueTypesRequiringSecondDateInput()
+        public static function getValueTypesRequiringSecondInput()
         {
             return array(OperatorRules::TYPE_BETWEEN);
         }

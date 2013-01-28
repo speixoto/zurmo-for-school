@@ -30,7 +30,6 @@
         {
             $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
             $copyrightHtml = Yii::t('Default', 'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.');
-
             return $userInterfaceTypeSelectorHtml . $copyrightHtml;
         }
 

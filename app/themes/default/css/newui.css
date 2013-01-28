@@ -7420,7 +7420,7 @@ div.wide.form label.hasCheckBox {
   z-index: 10000;
 }
 #ModalView .search-view-1 {
-  z-index: 0;
+  z-index: 1100;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -7555,13 +7555,14 @@ div.wide.form label.hasCheckBox {
 }
 .dynamic-search-row > div > span:first-child + div {
   margin-right: 0 !important;
-  width: 45%;
+  width: 46%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
   margin-right: 30px !important;
-  width: 45%;
+  width: 46%;
   float: right;
+  position: relative;
 }
 .dynamic-search-row > div .has-model-select {
   float: left;

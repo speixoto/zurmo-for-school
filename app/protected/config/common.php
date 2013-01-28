@@ -298,6 +298,7 @@
             'application.core.utils.GeneralCache',
             'application.core.exceptions.NotFoundException',
             'application.core.components.ZurmoLocale',
+            'application.core.utils.Zurmo',
             'application.modules.api.tests.unit.models.*',
             'application.modules.api.tests.unit.forms.*',
             'application.modules.install.serviceHelpers.MemcacheServiceHelper',

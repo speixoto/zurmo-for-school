@@ -140,7 +140,7 @@
                     $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
                     $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
-                                          text: '" . Yii::t('Default', 'Created ContactsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
+                                          text: '" . Zurmo::t('ContactsModule', 'Created ContactsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
                                           permanent: false,
                                           showIcon: true,
                                        })}"
@@ -156,14 +156,17 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('contactInlineCreateCollapseActions', "
-                        $('.createContactCancel').each(function(){
-                            $('.createContactCancel').live('click', function(){
+                        $('.createContactCancel').each(function()
+                        {
+                            $('.createContactCancel').live('click', function()
+                            {
                                 $(this).parentsUntil('.email-archive-item').find('.ContactInlineCreateForArchivedEmailCreateView').hide();
                                 $(this).closest('.email-archive-item').closest('td').removeClass('active-panel')
                                 .find('.z-action-link-active').removeClass('z-action-link-active');
                             });
                         });");
         }
+
         protected function doesLabelHaveOwnCell()
         {
             return false;
@@ -202,7 +205,7 @@
 
         public static function getDisplayDescription()
         {
-            return Yii::t('Default', 'Matching Archived Emails');
+            return Zurmo::t('ContactsModule', 'Matching Archived Emails');
         }
 
         protected static function getNotificationBarId()

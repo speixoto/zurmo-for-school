@@ -58,7 +58,9 @@
 
         private $categoryAxisProperties = array();
 
-        private $legendProperties = array();
+        private $legendProperties       = array();
+
+        private $barColorTheme          = array();
 
         /**
          * Returns the type of chart to be used in AmChart
@@ -97,25 +99,26 @@
                 $this->addGraphProperties('cornerRadiusTop',        0);
                 $this->addGraphProperties('cornerRadiusBottom',     0);
                 $this->addGraphProperties('lineAlpha',              0);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                $this->addGraphProperties('colorField',             "'color'");
                 //Axis
                 $this->addCategoryAxisProperties('inside',          0);
-                $this->addCategoryAxisProperties('fillColors',      $colorTheme[5]);
                 //ValueAxis
                 $this->addValueAxisProperties('minimum',            0);
                 $this->addValueAxisProperties('dashLength',         2);
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
+                $this->makeBarColorThemeArray($colorTheme[6]);
             }
             elseif ($this->type == ChartRules::TYPE_COLUMN_3D)
             {
                 $this->addGraphProperties('balloonText',            "'[[category]]:[[value]]'");
                 $this->addGraphProperties('lineAlpha',              0.5);
                 $this->addGraphProperties('fillAlphas',             1);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
+                $this->addGraphProperties('colorField',             "'color'");
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
                 $this->makeChart3d();
+                $this->makeBarColorThemeArray($colorTheme[6]);
             }
             elseif ($this->type == ChartRules::TYPE_BAR_2D)
             {
@@ -124,13 +127,14 @@
                 $this->addGraphProperties('plotAreaBorderAlpha',    0);
                 $this->addGraphProperties('lineAlpha',              0);
                 $this->addGraphProperties('fillAlphas',             1);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 $this->addGraphProperties('gradientOrientation',    "'vertical'");
                 $this->addGraphProperties('labelPosition',          "'right'");
                 $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
                 $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                $this->addGraphProperties('colorField',             "'color'");
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
+                $this->makeBarColorThemeArray($colorTheme[6]);
             }
             elseif ($this->type == ChartRules::TYPE_BAR_3D)
             {
@@ -139,14 +143,15 @@
                 $this->addGraphProperties('plotAreaBorderAlpha',    0);
                 $this->addGraphProperties('lineAlpha',              0);
                 $this->addGraphProperties('fillAlphas',             1);
-                $this->addGraphProperties('fillColors',             $colorTheme[5]);
                 $this->addGraphProperties('gradientOrientation',    "'vertical'");
                 $this->addGraphProperties('labelPosition',          "'right'");
                 $this->addGraphProperties('labelText',              "'[[category]]: [[value]]'");
                 $this->addGraphProperties('balloonText',            "'[[category]]: [[value]]'");
+                $this->addGraphProperties('colorField',             "'color'");
                 //General properties
                 $this->resolveColumnAndBarGeneralProperties();
                 $this->makeChart3d();
+                $this->makeBarColorThemeArray($colorTheme[6]);
             }
             elseif ($this->type == ChartRules::TYPE_DONUT_2D)
             {
@@ -323,9 +328,29 @@
             }
         }
 
+        private function makeBarColorThemeArray($colorTheme)
+        {
+            $colorTheme = str_replace(array('[', ']', ' ', '"'), '', $colorTheme);
+            $this->barColorTheme = explode(',', $colorTheme);
+        }
+
         private function convertDataArrayToJavascriptArray()
         {
-            return CJavaScript::encode($this->data);
+            $dataArray = array();
+            $count     = 0;
+            if (!empty($this->barColorTheme))
+            {
+                foreach($this->data as $data)
+                {
+                    $data['color'] = $this->barColorTheme[$count++];
+                    $dataArray[] = $data;
+                }
+            }
+            else
+            {
+                $dataArray = $this->data;
+            }
+            return CJavaScript::encode($dataArray);
         }
 
         public function makeChart3d()
