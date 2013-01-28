@@ -442,6 +442,9 @@
                                       'User'           => array('userStatus' => 'Inactive'))
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
+            $aUser->forget();
+            
+            $aUser = User::getByUsername('auser');
             $this->assertTrue(Right::DENY == $aUser->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));            
             $this->assertEquals(0,$aUser->isActive);
         }

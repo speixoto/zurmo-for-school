@@ -1020,18 +1020,24 @@
             $user->firstName          = 'My';
             $user->lastName           = 'activeuserson';
             $user->setPassword('myuser');
-            $this->assertTrue($user->save());
+            $this->assertTrue($user->save());            
+            unset($user);
+            
             $user = User::getByUsername('activeuser');
             $this->assertEquals(1,$user->isActive);
-                                  
+            unset($user);
+
+            $user = User::getByUsername('activeuser');
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::DENY);
             $this->assertTrue($user->save());
             $this->assertEquals(0,$user->isActive);
+            unset($user);
             
+            $user = User::getByUsername('activeuser');
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
             $this->assertTrue($user->save());
             $this->assertEquals(1,$user->isActive);
-            
+            unset($user);
         }
     }
 ?>

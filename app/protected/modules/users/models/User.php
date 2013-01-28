@@ -217,7 +217,7 @@
             {
                 Yii::app()->languageHelper->setActive($this->language);
             }
-            
+            parent::afterSave();
             if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
@@ -228,12 +228,11 @@
             { 
                 $isActive = true;                              
             }             
-            if($this->unrestrictedGet('isActive') != $isActive)
+            if($this->isActive != $isActive)
             {
                $this->unrestrictedSet('isActive', $isActive);   
                $this->save();
-            }            
-            parent::afterSave();
+            }                        
         }
 
         /**
