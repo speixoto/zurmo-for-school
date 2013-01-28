@@ -42,7 +42,7 @@
         {
             $url = ZurmoTranslationServerUtil::getPoFileUrl('de');
             $headers = get_headers($url);
-            list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
+            list($version, $status_code, $msg) = explode(' ', $headers[0], 3);
             $this->assertEquals(200, intval($status_code));
         }
     }

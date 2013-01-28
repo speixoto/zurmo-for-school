@@ -132,7 +132,7 @@
 
         public static function getDisplayDescription()
         {
-            return Yii::t('Default', 'Matching Archived Emails');
+            return Zurmo::t('LeadsModule', 'Matching Archived Emails');
         }
 
         public function renderAfterFormLayout($form)
@@ -143,13 +143,35 @@
         protected function renderScriptsContent()
         {
             return Yii::app()->clientScript->registerScript('LeadInlineCreateCollapseActions', "
-                        $('.createLeadCancel').each(function(){
-                            $('.createLeadCancel').live('click', function(){
+                        $('.createLeadCancel').each(function()
+                        {
+                            $('.createLeadCancel').live('click', function()
+                            {
                                 $(this).parentsUntil('.email-archive-item').find('.LeadInlineCreateForArchivedEmailCreateView').hide();
                                 $(this).closest('.email-archive-item').closest('td').removeClass('active-panel')
                                 .find('.z-action-link-active').removeClass('z-action-link-active');
                             });
                         });");
+        }
+
+        protected function renderConfigSaveAjax($formName)
+        {
+            // Begin Not Coding Standard
+            return ZurmoHtml::ajax(array(
+                    'type' => 'POST',
+                    'data' => 'js:$("#' . $formName . '").serialize()',
+                    'url'  =>  $this->getValidateAndSaveUrl(),
+                    'update' => '#' . $this->uniquePageId,
+                    'complete' => "function(XMLHttpRequest, textStatus){
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
+                    $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                       {
+                                          text: '" . Zurmo::t('LeadsModule', 'Created LeadsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
+                                          permanent: false,
+                                          showIcon: true,
+                                       })}"
+                ));
+            // End Not Coding Standard
         }
     }
 ?>

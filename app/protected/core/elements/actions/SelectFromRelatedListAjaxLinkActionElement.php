@@ -43,7 +43,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Select');
+            return Zurmo::t('Core', 'Select');
         }
 
         protected function getDefaultRoute()

@@ -69,7 +69,8 @@
             return Yii::app()->clientScript->registerScript('timeZoneSelectOptions', "
              var offset = (new Date()).getTimezoneOffset();
 
-             var timezones = {
+             var timezones =
+             {
              '-12': 'Pacific/Kwajalein',
              '-11': 'Pacific/Samoa',
              '-10': 'Pacific/Honolulu',
@@ -99,12 +100,12 @@
              '9.5': 'Australia/Darwin',
              '10': 'Pacific/Guam',
              '11': 'Asia/Magadan',
-             '12': 'Asia/Kamchatka' 
+             '12': 'Asia/Kamchatka'
             };
             var userLocalTimeZone = timezones[-offset / 60];
             $('#UserTimeZoneConfirmationForm_timeZone_value option').each(function()
             {
-               if($(this).val()== userLocalTimeZone)
+               if ($(this).val() == userLocalTimeZone)
                {
                    $('#UserTimeZoneConfirmationForm_timeZone_value').val(userLocalTimeZone);
                    return false;

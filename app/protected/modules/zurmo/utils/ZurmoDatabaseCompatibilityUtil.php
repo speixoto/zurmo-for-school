@@ -1685,7 +1685,7 @@
                 }
                 catch (Exception $e)
                 {
-                    if(isset($row))
+                    if (isset($row))
                     {
                         echo "Failed to drop {$row['routine_type']} {$row['routine_name']}.\n";
                     }

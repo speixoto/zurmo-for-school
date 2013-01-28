@@ -64,13 +64,13 @@
         public function attributeLabels()
         {
             return array(
-                'applicationName'                       => Yii::t('Default', 'Application Name'),
-                'timeZone'                              => Yii::t('Default', 'Time zone'),
-                'listPageSize'                          => Yii::t('Default', 'List page size'),
-                'subListPageSize'                       => Yii::t('Default', 'Sublist page size'),
-                'modalListPageSize'                     => Yii::t('Default', 'Popup list page size'),
-                'dashboardListPageSize'                 => Yii::t('Default', 'Dashboard portlet list page size'),
-                'gamificationModalNotificationsEnabled' => Yii::t('Default', 'Enable game notification popup'),
+                'applicationName'                       => Zurmo::t('ZurmoModule', 'Application Name'),
+                'timeZone'                              => Zurmo::t('ZurmoModule', 'Time zone'),
+                'listPageSize'                          => Zurmo::t('ZurmoModule', 'List page size'),
+                'subListPageSize'                       => Zurmo::t('ZurmoModule', 'Sublist page size'),
+                'modalListPageSize'                     => Zurmo::t('ZurmoModule', 'Popup list page size'),
+                'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
+                'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                => Yii::t('Default', 'Enable real-time updates'),
             );
         }

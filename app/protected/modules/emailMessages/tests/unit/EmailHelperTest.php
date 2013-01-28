@@ -236,17 +236,15 @@
                 $this->assertTrue($user->save());
             }
 
-
             Yii::app()->imap->connect();
             Yii::app()->imap->deleteMessages(true);
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
 
             $emailMessage = EmailMessageTestHelper::createOutboxEmail($super, 'Test email',
-                'Raw content', ',b>html content</b>end.',
+                'Raw content', ',b>html content</b>end.', // Not Coding Standard
                 'Zurmo', Yii::app()->emailHelper->outboundUsername,
                 'Ivica', Yii::app()->params['emailTestAccounts']['userImapSettings']['imapUsername']);
-
 
             Yii::app()->imap->connect();
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();

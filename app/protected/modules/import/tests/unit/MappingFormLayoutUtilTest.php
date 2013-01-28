@@ -71,7 +71,7 @@
             $attributeForExtraColumn    = $mappingFormLayoutUtil->getMappableAttributeIndicesAndDerivedTypesForExtraColumns();
             $columnName                 = 'SampleColumn';
             $content                    = $mappingFormLayoutUtil->renderAttributeAndColumnTypeContent($columnName, 'extraColumn', 'sampleAttribute', 'sampleAjax');
-            $this->assertTrue(stripos($content, Yii::t('Default', 'Remove Field')) !== false);
+            $this->assertTrue(stripos($content, Zurmo::t('ImportModule', 'Remove Field')) !== false);
             $this->assertTrue(stripos($content, end($attributeForExtraColumn)) !== false);
         }
 

@@ -1,4 +1,4 @@
-<?php
+﻿<?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
@@ -143,18 +143,20 @@
             return $content;
         }
 
-
         protected function renderScriptsContent()
         {
             Yii::app()->clientScript->registerScript('anyContactSelectFormCollapseActions', "
-                        $('.anyContactCancel').each(function(){
-                            $('.anyContactCancel').live('click', function(){
+                        $('.anyContactCancel').each(function()
+                        {
+                            $('.anyContactCancel').live('click', function()
+                            {
                                 $(this).parentsUntil('.email-archive-item').find('.AnyContactSelectForEmailMatchingView').hide();
                                 $(this).closest('.email-archive-item').closest('td').removeClass('active-panel')
                                 .find('.z-action-link-active').removeClass('z-action-link-active');
                             });
                         });");
         }
+
         protected function getFormId()
         {
             return 'select-contact-form-' . $this->uniqueId;
@@ -173,7 +175,13 @@
                     'data' => 'js:$("#' . $formName . '").serialize()',
                     'url'  =>  $this->getValidateAndSaveUrl(),
                     'complete' => "function(XMLHttpRequest, textStatus){
-                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();}"
+                    $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
+                    $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                       {
+                                          text: '" . Zurmo::t('ContactsModule', 'Selected successfully') . "',
+                                          permanent: false,
+                                          showIcon: true,
+                                       })}",
                 ));
             // End Not Coding Standard
         }
@@ -186,6 +194,11 @@
         protected function getViewStyle()
         {
             return " style=' display:none;'";
+        }
+
+        protected static function getNotificationBarId()
+        {
+            return 'FlashMessageBar';
         }
     }
 ?>

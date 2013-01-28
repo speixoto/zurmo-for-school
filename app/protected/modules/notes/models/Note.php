@@ -39,7 +39,7 @@
                 $description  = trim($this->description);
                 if ($description == '')
                 {
-                    $description = Yii::t('Default', '(Unnamed)');
+                    $description = Zurmo::t('NotesModule', '(Unnamed)');
                 }
                 return $description;
             }
