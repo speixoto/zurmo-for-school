@@ -155,9 +155,8 @@
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             $modelClassName        = $this->getModelName();
             $searchFormClassName   = static::getSearchFormClassName();
-            // Set $pageSize to unlimited, because we don't want pagination
-            $pageSize = null;
-            $model = new $modelClassName(false);
+            $pageSize              = null;
+            $model                 = new $modelClassName(false);
 
             if ($searchFormClassName != null)
             {
