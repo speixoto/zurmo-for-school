@@ -40,8 +40,10 @@
 
         protected $showRemoveLink;
 
+        protected $treeType;
+
         public function __construct($elementAdapter, $rowNumber, $inputPrefixData, $attribute,
-                                    $hasTrackableStructurePosition, $showRemoveLink = true)
+                                    $hasTrackableStructurePosition, $showRemoveLink = true, $treeType)
         {
             assert('$elementAdapter instanceof ReportAttributeToElementAdapter');
             assert('is_int($rowNumber)');
@@ -49,12 +51,18 @@
             assert('is_string($attribute)');
             assert('is_bool($hasTrackableStructurePosition)');
             assert(is_bool($showRemoveLink));
+            assert('$treeType == null || is_string($treeType)');
             $this->elementAdapter                     = $elementAdapter;
             $this->rowNumber                          = $rowNumber;
             $this->inputPrefixData                    = $inputPrefixData;
             $this->attribute                          = $attribute;
             $this->hasTrackableStructurePosition      = $hasTrackableStructurePosition;
             $this->showRemoveLink                     = $showRemoveLink;
+            $this->treeType                           = $treeType;
+            if($showRemoveLink && $treeType == null)
+            {
+                throw new NotSupportedException();
+            }
         }
 
         public function render()
@@ -103,20 +111,20 @@
         protected function renderContent()
         {
             $content  = '<div>';
-            $isHasFilterClass = null;
+            $resolvedHasFilterClass = null;
             if($this->hasTrackableStructurePosition)
             {
                 $content .= $this->renderReportAttributeRowNumberLabel();
                 $content .= $this->renderHiddenStructurePositionInput();
-                $isHasFilterClass = ' hasFilter';
+                $resolvedHasFilterClass = ' hasFilter';
             }
             $content .= $this->renderAttributeContent();
             $content .= '</div>';
             if($this->showRemoveLink)
             {
-                $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-attribute-row-link'));
+                $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-attribute-row-link ' . $this->treeType));
             }
-            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-attribute-row{$isHasFilterClass}"), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-attribute-row{$resolvedHasFilterClass}"), $content);
             if($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array(), $content);

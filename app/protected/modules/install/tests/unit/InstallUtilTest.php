@@ -639,9 +639,9 @@
         {
             $this->runInstallation(true);
             $messageLogger = new MessageLogger();
-            $messageLogger->addInfoMessage(Yii::t('Default', 'Starting schema update process.'));
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Starting schema update process.'));
             $result = InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
-            $messageLogger->addInfoMessage(Yii::t('Default', 'Schema update complete.'));
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Schema update complete.'));
             $this->assertTrue($result);
         }
 
@@ -695,8 +695,8 @@
 
             //Check if config files is updated.
             $this->assertRegExp('/\$connectionString = \'mysql:host='.
-                                $this->temporaryDatabaseHostname.';port='.$this->temporaryDatabasePort.
-                                ';dbname='.$this->temporaryDatabaseName.'\';/', // Not Coding Standard
+                                $this->temporaryDatabaseHostname . ';port=' . $this->temporaryDatabasePort .
+                                ';dbname=' . $this->temporaryDatabaseName . '\';/', // Not Coding Standard
                                    $perInstanceConfiguration);
             $this->assertRegExp('/\$username         = \''.$this->temporaryDatabaseUsername.'\';/',  // Not Coding Standard
                                    $perInstanceConfiguration);

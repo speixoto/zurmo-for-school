@@ -50,6 +50,11 @@
          */
         protected $modelAliasUsingTableAliasName;
 
+        public static function getType()
+        {
+            return static::TYPE_DISPLAY_ATTRIBUTES;
+        }
+
         public function __construct($moduleClassName, $modelClassName, $reportType)
         {
             parent::__construct($moduleClassName, $modelClassName, $reportType);

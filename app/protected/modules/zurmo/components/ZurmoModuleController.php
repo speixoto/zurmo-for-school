@@ -222,7 +222,7 @@
                     else
                     {
                         Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'There is no data to export.')
+                            Zurmo::t('ZurmoModule', 'There is no data to export.')
                         );
                     }
                 }
@@ -247,7 +247,7 @@
                     $exportItem->save();
                     $exportItem->forget();
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'A large amount of data has been requested for export.  You will receive ' .
+                        Zurmo::t('ZurmoModule', 'A large amount of data has been requested for export.  You will receive ' .
                         'a notification with the download link when the export is complete.')
                     );
                 }
@@ -255,10 +255,28 @@
             else
             {
                 Yii::app()->user->setFlash('notification',
-                    Yii::t('Default', 'There is no data to export.')
+                    Zurmo::t('ZurmoModule', 'There is no data to export.')
                 );
             }
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_int($id)');
+            try
+            {
+                return $modelClassName::getById($id);
+            }
+            catch (NotFoundException $e)
+            {
+                $messageContent  = Zurmo::t('ZurmoModule', 'The record you are trying to access does not exist.');
+                $messageView     = new ModelNotFoundView($messageContent);
+                $view            = new ModelNotFoundPageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
         }
 
         public function actionRenderStickyListBreadCrumbContent($stickyOffset, $stickyKey, $stickyModelId)

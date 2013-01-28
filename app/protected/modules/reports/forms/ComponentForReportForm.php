@@ -50,6 +50,11 @@
 
         private   $_attributeIndexOrDerivedType;
 
+        public static function getType()
+        {
+            throw new NotImplementedException();
+        }
+
         public function attributeNames()
         {
             return array_merge(parent::attributeNames(), array('attributeIndexOrDerivedType'));

@@ -1321,6 +1321,21 @@ form,
     top:-2px;
 }
 
+#ListViewDetailsActionMenu .parent > a:before,
+.icon-details:before{
+    content: 'T';
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+#ListViewOptionsActionMenu .parent > a:before,
+.icon-options:before{
+    content: "n";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
     content: "2";
@@ -1526,12 +1541,28 @@ table.items{
             border-bottom: none;
         }
         tr{
-			td:first-child:not(.checkbox-column),
-			th:first-child:not(.checkbox-column){
-				padding-left:10px;
-			}
-		}   
+            td:first-child:not(.checkbox-column),
+            th:first-child:not(.checkbox-column){
+                    padding-left:10px;
+            }
+        }   
     }
+}
+
+.sort-link:after{
+    //content:"↑";
+    margin-left: 10px;
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+}
+
+.sort-link.asc:after{
+    content:"↑";
+}
+
+.sort-link.desc:after{
+    content:"↓";
 }
 
 tr.odd{
@@ -2262,7 +2293,7 @@ div.wide.form{
     }
     .search-view-1{
         ++.flyout;
-        z-index:0;
+        z-index:1100;
         min-width:400px;
         max-width:75%;
         height:auto;
@@ -2384,13 +2415,14 @@ div.wide.form{
         width: 100%;
         > span:first-child + div{
             margin-right: 0 !important;
-            width: 45%;
+            width: 46%;
             float: left;
         }
         .criteria-value-container{
             margin-right: 30px !important;
-            width: 45%;
+            width: 46%;
             float: right;
+            position: relative;
         }
         .has-model-select{
             float:left;

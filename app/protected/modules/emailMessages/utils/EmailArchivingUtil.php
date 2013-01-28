@@ -126,7 +126,6 @@
             }
             else
             {
-
                 // Zurmo user sent email, so recipients are in 'To' and 'CC' fields
                 $emailRecipients = $emailMessage->to;
 

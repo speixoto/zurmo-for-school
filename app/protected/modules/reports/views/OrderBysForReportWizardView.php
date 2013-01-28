@@ -28,7 +28,7 @@
     {
         public static function getTreeType()
         {
-            return ComponentForReportForm::TYPE_ORDER_BYS;
+            return OrderByForReportForm::getType();
         }
 
         public static function getWizardStepTitle()
@@ -46,17 +46,19 @@
             return 'orderBysDataNextLink';
         }
 
-        protected function getItems(& $rowCount)
+        protected function getItemsCount()
+        {
+            return count($this->model->orderBys);
+        }
+
+        protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->orderBys);
         }
 
-        protected function getZeroComponentsContent()
+        protected static function getZeroComponentsClassName()
         {
-            $content = '<div class="ZeroOrderBys">';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
+            return 'ZeroOrderBys';
         }
 
         protected function getZeroComponentsMessageContent()
