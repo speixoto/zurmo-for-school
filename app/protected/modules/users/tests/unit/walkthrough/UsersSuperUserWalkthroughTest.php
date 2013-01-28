@@ -437,10 +437,10 @@
             $aUser = User::getByUsername('auser');
             $this->setGetArray(array('id' => $aUser->id));
             $this->setPostArray(array('save'           => 'Save',
-                                      'UserAvatarForm' => array('userStatus' => 'Inactive'))
+                                      'User' => array('userStatus' => 'Inactive'))
                                 );
-            $this->runControllerWithNoExceptionsAndGetContent('users/default/edit');
-            $this->assertEquals(0, $user->isActive);
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
+            $this->assertEquals(1, $aUser->isActive);
         }
     }
 ?>

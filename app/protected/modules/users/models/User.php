@@ -218,20 +218,22 @@
                 Yii::app()->languageHelper->setActive($this->language);
             }
             
-            $userStatusOld = $this->unrestrictedGet('isActive');
+            $userStatus = $this->unrestrictedGet('isActive');
             if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
             {                                        
-                $this->unrestrictedSet('isActive', 0);              
+                $isActive = 0;              
             }            
             else
             { 
-                $this->unrestrictedSet('isActive', 1);                 
+                $isActive = 1;
+                              
             }             
             $userStatusNew = $this->unrestrictedGet('isActive');
-            if($userStatusOld != $userStatusNew)
+            if($userStatus != $isActive)
             {
+               $this->unrestrictedSet('isActive', $isActive);   
                self::save();
             }            
             parent::afterSave();
