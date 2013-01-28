@@ -223,18 +223,17 @@
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
             {                                        
-                $isActive = 0;              
+                $isActive = false;              
             }            
             else
             { 
-                $isActive = 1;
-                              
+                $isActive = true;                              
             }             
             $userStatusNew = $this->unrestrictedGet('isActive');
             if($userStatus != $isActive)
             {
                $this->unrestrictedSet('isActive', $isActive);   
-               self::save();
+               $this->save();
             }            
             parent::afterSave();
         }
