@@ -228,6 +228,12 @@
                            'column_1' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'lastName',
                            'mappingRulesData' =>
                            array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'def'))),
+                           'column_2' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'text',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'xyz'))),
+                           'column_3' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'Date',
+                           'mappingRulesData' =>
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => '2013-'))),
             );
             $data = MappingRuleFormAndElementTypeUtil::
                     makeFormsAndElementTypesByMappingDataAndImportRulesType($mappingData, 'ImportModelTestItem');

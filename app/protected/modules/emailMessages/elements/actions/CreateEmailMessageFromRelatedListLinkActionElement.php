@@ -63,9 +63,9 @@
 
         protected function getAjaxLinkOptions()
         {
-            $title = Yii::t('Default', 'Email');
+            $title = Zurmo::t('EmailMessagesModule', 'Email');
             return ModalView::getAjaxOptionsForModalLink(
-                                     Yii::t('Default', 'Compose Email'), 'modalContainer', 'auto', 800,
+                                     Zurmo::t('EmailMessagesModule', 'Compose Email'), 'modalContainer', 'auto', 800,
                                                                          array(
                                                                             'my' => 'top',
                                                                             'at' => 'bottom',
@@ -74,7 +74,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Email');
+            return Zurmo::t('EmailMessagesModule', 'Email');
         }
 
         protected function getDefaultRoute()

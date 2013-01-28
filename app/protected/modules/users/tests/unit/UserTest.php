@@ -1008,5 +1008,22 @@
             $this->assertContains($avatarUrl, $user->getAvatarImage(2500));
             unset($user);
         }
+        
+        /*
+        * test for checking isActive attribute
+        */
+        public function testIsActiveOnUserSave()
+        {
+            $user = new User();
+            $user->username           = 'activeuser';
+            $user->title->value       = 'Mr.';
+            $user->firstName          = 'My';
+            $user->lastName           = 'activeuserson';
+            $user->isActive           = 1;
+            $user->setPassword('myuser');
+            $this->assertTrue($user->save());
+            $user = User::getByUsername('activeuser');
+            $this->assertEquals(1,$user->isActive);            
+        }
     }
 ?>

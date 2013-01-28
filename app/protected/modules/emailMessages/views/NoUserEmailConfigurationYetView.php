@@ -51,12 +51,12 @@
 
         protected function getCreateLinkDisplayLabel()
         {
-            return Yii::t('Default', 'Configure');
+            return Zurmo::t('EmailMessagesModule', 'Configure');
         }
 
         protected function getMessageContent()
         {
-            return Yii::t('Default', '<h2>Not so fast</h2>' .
+            return Zurmo::t('EmailMessagesModule', '<h2>Not so fast</h2>' .
                                      '<div class="large-icon"></div><p>Configure your email settings before you can send emails.</p>');
         }
     }

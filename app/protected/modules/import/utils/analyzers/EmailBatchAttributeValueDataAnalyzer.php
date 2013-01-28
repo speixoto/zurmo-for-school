@@ -82,14 +82,14 @@
             $tooLarge = $this->messageCountData[static::EMAIL_TOO_LONG];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) have emails that are invalid. ' .
+                $label   = Zurmo::t('ImportModule', '{count} value(s) have emails that are invalid. ' .
                                              'These rows will be skipped during import.',
                                              array('{count}' => $invalid));
                 $this->addMessage($label);
             }
             if ($tooLarge > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) are too large for this field. ' .
+                $label   = Zurmo::t('ImportModule', '{count} value(s) are too large for this field. ' .
                                              'These rows will be skipped during import.',
                                              array('{count}' => $tooLarge, '{length}' => $this->maxLength));
                 $this->addMessage($label);

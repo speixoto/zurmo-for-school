@@ -160,7 +160,7 @@
             $fullName = $this->getFullName();
             if ($fullName == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('UsersModule', '(Unnamed)');
             }
             return $fullName;
         }
@@ -217,6 +217,21 @@
             {
                 Yii::app()->languageHelper->setActive($this->language);
             }
+            
+            $userStatusOld = $this->unrestrictedGet('isActive');
+
+            if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
+            {                                        
+                $this->unrestrictedSet('isActive', 0);              
+            }            
+            else
+            { 
+                $this->unrestrictedSet('isActive', 1);                 
+            }
+            $userStatusNew = $this->unrestrictedGet('isActive');  
+            echo $userStatusNew;die;         
             parent::afterSave();
         }
 
@@ -228,18 +243,7 @@
         protected function beforeSave()
         {
             if (parent::beforeSave())
-            {                            
-                if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
-                    Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
-                    Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
-                {                                        
-                    $this->unrestrictedSet('isActive', 0);                 
-                }
-                else
-                { 
-                    $this->unrestrictedSet('isActive', 1);                 
-                } 
-                
+            {                                            
                 if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
                 {
                     ReadPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));

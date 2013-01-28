@@ -46,7 +46,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Zurmo::t('OpportunitiesModule', '(Unnamed)');
                 }
                 return $this->name;
             }
