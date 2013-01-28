@@ -433,14 +433,17 @@
         */
         public function testSuperUserChangeUserStatus()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');            
             $aUser = User::getByUsername('auser');
+            $this->assertTrue(Right::ALLOW == $aUser->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));            
+            $this->assertEquals(1,$aUser->isActive);
             $this->setGetArray(array('id' => $aUser->id));
             $this->setPostArray(array('save'           => 'Save',
                                       'User'           => array('userStatus' => 'Inactive'))
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
-            $this->assertEquals(1, $aUser->isActive);
+            $this->assertTrue(Right::DENY == $aUser->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));            
+            $this->assertEquals(0,$aUser->isActive);
         }
     }
 ?>
