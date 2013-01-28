@@ -437,7 +437,7 @@
             $aUser = User::getByUsername('auser');
             $this->setGetArray(array('id' => $aUser->id));
             $this->setPostArray(array('save'           => 'Save',
-                                      'User' => array('userStatus' => 'Inactive'))
+                                      'User'           => array('userStatus' => 'Inactive'))
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/edit');
             $this->assertEquals(1, $aUser->isActive);
