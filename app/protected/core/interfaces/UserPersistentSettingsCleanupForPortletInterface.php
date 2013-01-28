@@ -26,11 +26,11 @@
 
 /**
  * A class should implement this interface if
- * it has some user persistent settings that
- * need to be cleaned before deleting actual
+ * it has some user persistent settings for portlets
+ * that need to be cleaned before deleting actual
  * instance.
  */
-interface UserPersistentSettingsCleanupInterface
+interface UserPersistentSettingsCleanupForPortletInterface
 {
     /**
      * Applicable deletion code to

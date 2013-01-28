@@ -29,7 +29,7 @@
      */
     abstract class LatestActivtiesForPortletView extends ConfigurableMetadataView
                                                                   implements PortletViewInterface,
-                                                                            UserPersistentSettingsCleanupInterface
+                                                                        UserPersistentSettingsCleanupForPortletInterface
     {
         /**
          * Portlet parameters passed in from the portlet.

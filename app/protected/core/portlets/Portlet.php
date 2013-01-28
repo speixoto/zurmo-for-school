@@ -218,7 +218,7 @@
             if (@class_exists($className))
             {
                 $class = new ReflectionClass($className);
-                if ($class->implementsInterface('UserPersistentSettingsCleanupInterface'))
+                if ($class->implementsInterface('UserPersistentSettingsCleanupForPortletInterface'))
                 {
                     $className::processBeforeDelete($this->id);
                 }
