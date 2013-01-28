@@ -83,13 +83,8 @@
             return static::RIGHTS_FILTER_PATH;
         }
 
-        protected function makeActionBarSearchAndListView(
-            $searchModel,
-            $pageSize,
-            $title,
-            $dataProvider,
-            $actionBarViewClassName = 'SecuredActionBarForSearchAndListView'
-            )
+        protected function makeActionBarSearchAndListView($searchModel, $dataProvider,
+                                                          $actionBarViewClassName = 'SecuredActionBarForSearchAndListView')
         {
             assert('is_string($actionBarViewClassName)');
             $listModel = $searchModel->getModel();

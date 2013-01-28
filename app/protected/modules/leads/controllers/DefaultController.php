@@ -73,12 +73,7 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    LeadsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
                 $view = new LeadsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
