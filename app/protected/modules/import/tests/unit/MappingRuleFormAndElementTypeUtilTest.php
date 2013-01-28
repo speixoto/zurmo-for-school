@@ -256,26 +256,26 @@
             $data = MappingRuleFormAndElementTypeUtil::
                     makeFormsAndElementTypesByMappingDataAndImportRulesType($mappingData, 'ImportModelTestItem');
             $this->assertEquals(10, count($data));
-            $this->assertEquals('2012-01-12',  $data['column_0'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Date', $data['column_0'][0]['elementType']);
-            $this->assertEquals('2012-01-12 00:45',  $data['column_1'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('DateTime', $data['column_1'][0]['elementType']);
-            $this->assertEquals('def',  $data['column_2'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Text', $data['column_2'][0]['elementType']);
-            $this->assertEquals('1.45',  $data['column_3'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Decimal', $data['column_3'][0]['elementType']);
-            $this->assertEquals(1,  $data['column_4'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Integer', $data['column_4'][0]['elementType']);
-            $this->assertEquals('7844121541',  $data['column_5'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Phone', $data['column_5'][0]['elementType']);
-            $this->assertEquals('testTextArea',  $data['column_6'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('TextArea', $data['column_6'][0]['elementType']);
-            $this->assertEquals('http://www.test.com',  $data['column_7'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Url', $data['column_7'][0]['elementType']);
-            $this->assertEquals('testString',  $data['column_8'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Text', $data['column_8'][0]['elementType']);
-            $this->assertEquals('testfirstName',  $data['column_9'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Text', $data['column_9'][0]['elementType']);             
+            $this->assertEquals('2012-01-12',          $data['column_0'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Date',                $data['column_0'][0]['elementType']);
+            $this->assertEquals('2012-01-12 00:45',    $data['column_1'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('DateTime',            $data['column_1'][0]['elementType']);
+            $this->assertEquals('def',                 $data['column_2'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Text',                $data['column_2'][0]['elementType']);
+            $this->assertEquals('1.45',                $data['column_3'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Decimal',             $data['column_3'][0]['elementType']);
+            $this->assertEquals(1,                     $data['column_4'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Integer',             $data['column_4'][0]['elementType']);
+            $this->assertEquals('7844121541',          $data['column_5'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Phone',               $data['column_5'][0]['elementType']);
+            $this->assertEquals('testTextArea',        $data['column_6'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('TextArea',            $data['column_6'][0]['elementType']);
+            $this->assertEquals('http://www.test.com', $data['column_7'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Url',                 $data['column_7'][0]['elementType']);
+            $this->assertEquals('testString',          $data['column_8'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Text',                $data['column_8'][0]['elementType']);
+            $this->assertEquals('testfirstName',       $data['column_9'][0]['mappingRuleForm']->defaultValue);
+            $this->assertEquals('Text',                $data['column_9'][0]['elementType']);             
         }
 
         public function testValidateMappingRuleForms()
