@@ -159,7 +159,7 @@
                     {
                         $s             .= strval($auditEvent);
                         $s             .= ", $name";
-                        $s             .= ', ' . Yii::t('Default', 'Changed') . ' ';
+                        $s             .= ', ' . Zurmo::t('ZurmoModule', 'Changed') . ' ';
                     }
                     $attributeModel = $model;
                     $attributeLabels = array();
@@ -182,9 +182,9 @@
                         }
                     }
                     $s .= join(' ', $attributeLabels);
-                    $s .= ' ' . Yii::t('Default', 'from') . ' ';
+                    $s .= ' ' . Zurmo::t('ZurmoModule', 'from') . ' ';
                     $s .= AuditUtil::stringifyValue($attributeModel, $attributeName, $oldValue, $format) . ' ';
-                    $s .= Yii::t('Default', 'to') . ' ';
+                    $s .= Zurmo::t('ZurmoModule', 'to') . ' ';
                     $s .= AuditUtil::stringifyValue($attributeModel, $attributeName, $newValue, $format);
                     break;
             }

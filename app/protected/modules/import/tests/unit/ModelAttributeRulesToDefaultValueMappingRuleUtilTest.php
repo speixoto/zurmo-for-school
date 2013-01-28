@@ -136,7 +136,7 @@
             $compareData = array(array('defaultValue',  'TypeValidator', 'type' => 'datetime'));
             $this->assertEquals($compareData, $rules);
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
-                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'checkboxCstm', 'defaultValue');            
+                     getApplicableRulesByModelClassNameAndAttributeName('Account', 'checkboxCstm', 'defaultValue');
             $compareData = array(array('defaultValue', 'boolean'));
             $this->assertEquals($compareData, $rules);
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::

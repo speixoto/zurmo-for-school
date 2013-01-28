@@ -61,8 +61,8 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                               'dynamicClauses' => Yii::t('Default', 'Advanced Search Rows'),
-                               'dynamicStructure' => Yii::t('Default', 'Search Operator'),
+                               'dynamicClauses' => Zurmo::t('Core', 'Advanced Search Rows'),
+                               'dynamicStructure' => Zurmo::t('Core', 'Search Operator'),
             ));
         }
 
@@ -76,6 +76,27 @@
                 {
                     $this->addError('dynamicStructure', $errorMessage);
                 }
+                else
+                {
+                    $formula = str_replace("(", "", $formula);
+                    $formula = str_replace(")", "", $formula);
+                    $arguments = preg_split("/or|and/", $formula);
+                    foreach ($arguments as $argument)
+                    {
+                        $argument = trim($argument);
+                        if (!is_numeric($argument) ||
+                            !(intval($argument) <= count($this->dynamicClauses)) ||
+                            !(intval($argument) > 0) ||
+                            !(preg_match("/\./", $argument) === 0) )
+                        {
+                            $errorContent = Zurmo::t('Core', 'Please use only integers lesser than {max}.', array('{max}' => count($this->dynamicClauses)));
+                        }
+                    }
+                }
+                if (isset($errorContent))
+                {
+                    $this->addError('dynamicStructure', Zurmo::t('Core', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
+                }
             }
         }
 
@@ -88,7 +109,7 @@
                     $structurePosition = $rowData['structurePosition'];
                     if ($rowData['attributeIndexOrDerivedType'] == null)
                     {
-                        $this->addError('dynamicClauses', Yii::t('Default', 'You must select a field for row {rowNumber}',
+                        $this->addError('dynamicClauses', Zurmo::t('Core', 'You must select a field for row {rowNumber}',
                         array('{rowNumber}' => $structurePosition)));
                     }
                     else
@@ -106,7 +127,7 @@
                         $metadata = $metadataAdapter->getAdaptedDataProviderMetadata();
                         if (count($metadata['clauses']) == 0)
                         {
-                            $this->addError('dynamicClauses', Yii::t('Default', 'You must select a value for row {rowNumber}',
+                            $this->addError('dynamicClauses', Zurmo::t('Core', 'You must select a value for row {rowNumber}',
                             array('{rowNumber}' => $structurePosition)));
                         }
                     }

@@ -61,7 +61,7 @@
         protected function resolveAndWrapDockableViewToolbarContent($content)
         {
             assert('is_string($content)');
-            if($this->disableFloatOnToolbar)
+            if ($this->disableFloatOnToolbar)
             {
                 $disableFloatContent = ' disable-float-bar';
             }
@@ -202,7 +202,7 @@
         {
             if ($title == null)
             {
-                $title = Yii::t('Default', 'Options');
+                $title = Zurmo::t('Core', 'Options');
             }
             $metadata  = $this::getMetadata();
             $menuItems = array('label' => $title, 'items' => array());

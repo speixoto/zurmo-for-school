@@ -435,7 +435,7 @@
         }
 
          /**
-         * @deletes selected leads. 
+         * @deletes selected leads.
          */
         public function testRegularMassDeleteActionsForSelectedIds()
         {
@@ -465,31 +465,30 @@
             $this->assertEquals(15, count($opportunities));
             //Deleting 6 opportunities for pagination scenario
             //Run Mass Delete using progress save for page1
-            $selectedIds = $opportunity1->id . ',' . $opportunity2->id . ',' .
-                           $opportunity3->id . ',' . $opportunity4->id . ',' . 
-                           $opportunity5->id . ',' . $opportunity6->id;
+            $selectedIds = $opportunity1->id . ',' . $opportunity2->id . ',' . // Not Coding Standard
+                           $opportunity3->id . ',' . $opportunity4->id . ',' . // Not Coding Standard
+                           $opportunity5->id . ',' . $opportunity6->id;        // Not Coding Standard
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Opportunity_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 6));
-            $content = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/massDelete');            
+            $content = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/massDelete');
             $opportunities = Opportunity::getAll();
             $this->assertEquals(10, count($opportunities));
 
             //Run Mass Delete using progress save for page2
-            $selectedIds = $opportunity1->id . ',' . $opportunity2->id . ',' .
-                           $opportunity3->id . ',' . $opportunity4->id . ',' . 
-                           $opportunity5->id . ',' . $opportunity6->id;
+            $selectedIds = $opportunity1->id . ',' . $opportunity2->id . ',' . // Not Coding Standard
+                           $opportunity3->id . ',' . $opportunity4->id . ',' . // Not Coding Standard
+                           $opportunity5->id . ',' . $opportunity6->id;        // Not Coding Standard
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Opportunity_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 6));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/massDeleteProgress');            
+            $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/massDeleteProgress');
             $opportunities = Opportunity::getAll();
             $this->assertEquals(9, count($opportunities));
-            
         }
 
          /**
@@ -500,13 +499,13 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $confused = User::getByUsername('confused');
             $nobody = User::getByUsername('nobody');
-           
+
             //Load MassDelete view for the 8 opportunities.
             $opportunities = Opportunity::getAll();
             $this->assertEquals(9, count($opportunities));
              //Deleting all opportunities
 
-            //mass Delete pagination scenario 
+            //mass Delete pagination scenario
             //Run Mass Delete using progress save for page1
             $this->setGetArray(array(
                 'selectAll' => '1',
@@ -514,10 +513,10 @@
             $this->setPostArray(array('selectedRecordCount' => 9));
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            $content = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/massDelete');                     
+            $content = $this->runControllerWithExitExceptionAndGetContent('opportunities/default/massDelete');
             $opportunities = Opportunity::getAll();
             $this->assertEquals(4, count($opportunities));
-         
+
            //Run Mass Delete using progress save for page2
             $this->setGetArray(array(
                 'selectAll' => '1',
@@ -525,10 +524,10 @@
             $this->setPostArray(array('selectedRecordCount' => 9));
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
             $this->assertEquals(5, $pageSize);
-            $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/massDeleteProgress');            
-            
-            $opportunities = Opportunity::getAll();    
+            $content = $this->runControllerWithNoExceptionsAndGetContent('opportunities/default/massDeleteProgress');
+
+            $opportunities = Opportunity::getAll();
             $this->assertEquals(0, count($opportunities));
-        }            
+        }
     }
 ?>

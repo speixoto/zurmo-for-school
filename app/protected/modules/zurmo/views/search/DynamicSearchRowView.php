@@ -97,7 +97,7 @@
             $name        = $this->formModelClassName . '[' . DynamicSearchForm::DYNAMIC_NAME . '][' . $this->rowNumber . '][attributeIndexOrDerivedType]';
             $id          = $this->formModelClassName . '_' . DynamicSearchForm::DYNAMIC_NAME . '_' . $this->rowNumber . '_attributeIndexOrDerivedType';
             $htmlOptions = array('id' => $id, 'class' => 'attribute-dropdown',
-                'empty' => Yii::t('Default', 'Select a field')
+                'empty' => Zurmo::t('ZurmoModule', 'Select a field')
             );
             Yii::app()->clientScript->registerScript('AttributeDropDown' . $id,
                                                      $this->renderAttributeDropDownOnChangeScript($id,

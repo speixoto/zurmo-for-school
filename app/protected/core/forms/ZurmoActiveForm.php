@@ -161,7 +161,7 @@
             {
                 if ($header === null)
                 {
-                    $header = '<p>' . Yii::t('yii', 'Please fix the following input errors:') . '</p>';
+                    $header = '<p>' . Zurmo::t('yii', 'Please fix the following input errors:') . '</p>';
                 }
                 if (!isset($htmlOptions['class']))
                 {
