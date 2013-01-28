@@ -139,23 +139,22 @@
             if ($this->type == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID ||
                $this->type == RelatedModelValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
-                $label   = '{found} record(s) will be updated ';
-                $label  .= 'and {unfound} record(s) will be skipped during import.';
+                $label   = Yii::t('Default', '{found} record(s) will be updated and {unfound} record(s) will be skipped during import.',
+                                             array('{found}'   => $this->messageCountData[static::FOUND],
+                                                   '{unfound}' => $this->messageCountData[static::UNFOUND]));
             }
             else
             {
-                $label   = '{found} record(s) will be updated and ';
-                $label  .= '{unfound} record(s) will be created during the import.';
+                $label   = Yii::t('Default', '{found} record(s) will be updated and {unfound} record(s) will be created during the import.',
+                                             array('{found}'   => $this->messageCountData[static::FOUND],
+                                                   '{unfound}' => $this->messageCountData[static::UNFOUND]));
             }
-            $this->addMessage(Yii::t('Default', $label,
-                              array('{found}' => $this->messageCountData[static::FOUND],
-                                    '{unfound}' => $this->messageCountData[static::UNFOUND])));
+            $this->addMessage($label);
             if ($this->messageCountData[static::NEW_NAME_TO0_LONG] > 0)
             {
-                $label   = '{invalid} name value(s) is/are too long.';
-                $label  .= 'These records will be skipped during import.';
-                $this->addMessage(Yii::t('Default', $label,
-                              array('{invalid}' => $this->messageCountData[static::NEW_NAME_TO0_LONG])));
+                $label   = Yii::t('Default', '{invalid} name value(s) is/are too long. These records will be skipped during import.',
+                                             array('{invalid}' => $this->messageCountData[static::NEW_NAME_TO0_LONG]));
+                $this->addMessage($label);
             }
             $this->resolveMakeExternalSystemIdTooLargeMessage();
         }

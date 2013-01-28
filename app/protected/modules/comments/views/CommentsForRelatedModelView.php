@@ -121,7 +121,9 @@
                 $userUrl        = Yii::app()->createUrl('/users/default/details', array('id' => $comment->createdByUser->id));
                 $stringContent  = ZurmoHtml::link($comment->createdByUser->getAvatarImage(36), $userUrl);
                 $userName       = ZurmoHtml::link(strval($comment->createdByUser), $userUrl, array('class' => 'user-link'));
-                $stringContent .= '<div class="comment-content"><p>' . $userName . ': ' . $comment->description . '</p>';
+                $element        = new TextAreaElement($comment, 'description');
+                $element->nonEditableTemplate = '<div class="comment-content"><p>'. $userName . ': {content}</p>';
+                $stringContent .= $element->render();
 
                 //attachments
                 if ($comment->files->count() > 0)

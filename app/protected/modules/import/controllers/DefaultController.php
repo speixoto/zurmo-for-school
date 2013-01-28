@@ -531,8 +531,6 @@
                     {
                         throw new FailedFileUploadException(Yii::t('Default', 'Failed to open the uploaded file.'));
                     }
-                    $fileUploadData['humanReadableSize'] = FileModelDisplayUtil::convertSizeToHumanReadableAndGet(
-                                                           $fileUploadData['size']);
                     $fileUploadData['id']                = $import->id;
                 }
                 catch (FailedFileUploadException $e)

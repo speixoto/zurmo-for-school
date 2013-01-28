@@ -35,9 +35,15 @@
             $categoryLabels = $this->getCategoriesArray();
             foreach ($categoryData as $category => $categoryItems)
             {
-                $content .= $this->renderMenu($categoryItems);
+                $categoryItems   = static::sortCategoryItems($categoryItems);
+                $content        .= $this->renderMenu($categoryItems);
             }
             return $content;
+        }
+
+        protected static function sortCategoryItems($categoryItems)
+        {
+            return ArrayUtil::subValueSort($categoryItems, 'titleLabel', 'asort');
         }
 
         public function getTitle()
@@ -81,7 +87,7 @@
                 $content .= '<li>';
                 $content .= '<h4>' . $item['titleLabel'] . '</h4>';
                 $content .= ' - ' . $item['descriptionLabel'];
-                $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLinkText()),
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getLinkText()),
                                         Yii::app()->createUrl($item['route']));
                 $content .= '</li>';
             }

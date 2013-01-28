@@ -56,7 +56,7 @@
             $content .= '<table><tr><td>';
             $content .= Yii::t('Default', 'The next step is to install the demo data.');
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Click Here to install the demo data')),
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Click Here to install the demo data')),
                                         $demoDataUrl, array('class' => 'z-button'));
             $content .= '</td></tr></table>';
             $content .= '</div>';
@@ -67,7 +67,7 @@
             $content .= '<br/>';
             $content .= Yii::t('Default', 'Click below to go to the login page. The username is <b>super</b>');
             $content .= '<br/><br/>';
-            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Sign in')),
+            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Sign in')),
                                         $loginUrl, array('class' => 'z-button'));
             $content .= '</td></tr></table>';
             $content .= '</div>';

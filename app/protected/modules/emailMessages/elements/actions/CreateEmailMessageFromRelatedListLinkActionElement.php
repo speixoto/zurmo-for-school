@@ -46,6 +46,21 @@
             );
         }
 
+        protected function getHtmlOptions()
+        {
+            $htmlOptions            = parent::getHtmlOptions();
+            $this->resolveHtmlOptionsId($htmlOptions);
+            return $htmlOptions;
+        }
+
+        protected function resolveHtmlOptionsId(& $htmlOptions)
+        {
+            if ($this->getLinkId() != null)
+            {
+                $htmlOptions['id']      = $this->getLinkId();
+            }
+        }
+
         protected function getAjaxLinkOptions()
         {
             $title = Yii::t('Default', 'Email');
@@ -84,6 +99,24 @@
         public function getActionType()
         {
             return 'Create';
+        }
+
+        protected function getGridId()
+        {
+            if (!isset($this->params['gridId']))
+            {
+                return null;
+            }
+            return $this->params['gridId'];
+        }
+
+        protected function getLinkId()
+        {
+            if ($this->getGridId() == null)
+            {
+                return null;
+            }
+            return $this->getGridId(). '-createEmail-' . $this->modelId;
         }
     }
 ?>
