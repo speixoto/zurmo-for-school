@@ -580,5 +580,36 @@ EOD;
             $content .= static::tag('select', $htmlOptions, $options);
             return static::tag('div', array('class' => 'hasDropDown'), $content);
         }
+
+        /**
+         * Return a label wrapped in span
+         * @param $label label text
+         * @param $class class to be applied to span wrapper, defaults to z-label
+         * @return string wrapped label
+         */
+        public static function wrapLabel($label, $class = 'z-label')
+        {
+            return static::tag('span', array('class' => $class), $label);
+        }
+
+        /**
+         * Returns a link wrapped in standard tags
+         * @param $label link text
+         * @return string wrapped link
+         */
+        public static function wrapLink($label)
+        {
+            return static::span('z-spinner') . static::span('z-icon') . static::wrapLabel($label);
+        }
+
+        /**
+         * Return a span tag with specified class
+         * @param $class name of css class to apply
+         * @return string span tag
+         */
+        public static function span($class)
+        {
+            return static::tag('span', array('class' => $class), null);
+        }
     }
 ?>
