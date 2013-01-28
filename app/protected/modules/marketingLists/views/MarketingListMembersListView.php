@@ -24,38 +24,23 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailTemplateEditAndDetailsView extends SecuredEditAndDetailsView
+    class MarketingListMembersListView extends SecuredListView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                        ),
-                    ),
-                    'panels' => array(
+                     'panels' => array(
                         array(
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
                                             ),
                                         ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
+                                    ),
                                 ),
                             ),
                         ),
@@ -63,19 +48,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function renderRightSideFormLayoutForEdit($form)
-        {
-            $content = null;
-            return $content;
-        }
-
-
-        protected function getNewModelTitleLabel()
-        {
-            return Yii::t('Default', 'Create EmailTemplatesModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

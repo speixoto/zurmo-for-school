@@ -24,8 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailTemplate extends OwnedSecurableItem
+    class Autoresponder extends OwnedModel
     {
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -33,7 +34,7 @@
 
         public static function getModuleClassName()
         {
-            return 'EmailTemplatesModule';
+            return 'MarketingListsModule';
         }
 
         /**
@@ -42,23 +43,7 @@
          */
         protected static function getLabel()
         {
-            return 'EmailTemplatesModuleSingularLabel';
-        }
-
-        public function __toString()
-        {
-            try
-            {
-                if (trim($this->name) == '')
-                {
-                    return Yii::t('Default', '(Unnamed)');
-                }
-                return $this->name;
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                return '';
-            }
+            return 'MarketingListsModuleSingularLabel';
         }
 
         /**
@@ -67,17 +52,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'EmailTemplatesModulePluralLabel';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return true;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            return 'MarketingListsModulePluralLabel';
         }
 
         public static function getDefaultMetadata()
@@ -90,11 +65,11 @@
                     'subject',
                     'htmlContent',
                     'textContent',
+                    'secondsFromSubscribe'
                 ),
                 'rules' => array(
                     array('type',                 'required'),
                     array('type',                 'type',    'type' => 'integer'),
-                    array('type',                 'length',  'min'  => 1),
                     array('name',                 'required'),
                     array('name',                 'type',    'type' => 'string'),
                     array('name',                 'length',  'min'  => 3, 'max' => 64),
@@ -104,12 +79,25 @@
                     array('htmlContent',          'type',    'type' => 'string'),
                     array('textContent',          'type',    'type' => 'string'),
                 ),
+                'relations' => array(
+                    'autoresponderItem'         => array(RedBeanModel::HAS_MANY,   'AutoresponderItem'),
+                ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',
                     'textContent'                  => 'TextArea',
                 ),
             );
             return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function canSaveMetadata()
+        {
+            return true;
         }
     }
 ?>

@@ -82,12 +82,27 @@
                                               'listPageSize', get_class($this->getModule()));
             $marketingListMember            = new MarketingListMember(false);
             $searchForm                     = new MarketingListMembersSearchForm($marketingListMember);
-            $dataProvider                   = $this->resolveSearchDataProvider(
+         /*   $dataProvider                   = $this->resolveSearchDataProvider(
                                               $searchForm,
                                               $pageSize,
                                               null,
                                               'MarketingListMembersSearchView'
-                                              );
+                                              );*/
+            $searchAttributes = array();
+            $metadataAdapter  = new MarketingListsSearchDataProviderMetadataAdapter(
+                $marketingListMember,
+                Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $id
+            );
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadataAdapter->getAdaptedMetadata(),
+                'MarketingListMember',
+                'RedBeanModelDataProvider',
+                'latestDateTime',
+                true,
+                $pageSize
+            );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);

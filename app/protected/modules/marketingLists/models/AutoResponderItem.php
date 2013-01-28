@@ -24,8 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailTemplate extends OwnedSecurableItem
+    class AutoResponderItem extends OwnedModel
     {
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -33,7 +34,7 @@
 
         public static function getModuleClassName()
         {
-            return 'EmailTemplatesModule';
+            return 'MarketingListsModule';
         }
 
         /**
@@ -42,23 +43,7 @@
          */
         protected static function getLabel()
         {
-            return 'EmailTemplatesModuleSingularLabel';
-        }
-
-        public function __toString()
-        {
-            try
-            {
-                if (trim($this->name) == '')
-                {
-                    return Yii::t('Default', '(Unnamed)');
-                }
-                return $this->name;
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                return '';
-            }
+            return 'MarketingListsModuleSingularLabel';
         }
 
         /**
@@ -67,17 +52,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'EmailTemplatesModulePluralLabel';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return true;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
+            return 'MarketingListsModulePluralLabel';
         }
 
         public static function getDefaultMetadata()
@@ -85,31 +60,25 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'type',
-                    'name',
-                    'subject',
-                    'htmlContent',
-                    'textContent',
+                ),
+                'relations' => array(
+                    'contact'   => array(RedBeanModel::HAS_ONE,              'Contact'),
                 ),
                 'rules' => array(
-                    array('type',                 'required'),
-                    array('type',                 'type',    'type' => 'integer'),
-                    array('type',                 'length',  'min'  => 1),
-                    array('name',                 'required'),
-                    array('name',                 'type',    'type' => 'string'),
-                    array('name',                 'length',  'min'  => 3, 'max' => 64),
-                    array('subject',              'required'),
-                    array('subject',              'type',    'type' => 'string'),
-                    array('subject',              'length',  'min'  => 3, 'max' => 64),
-                    array('htmlContent',          'type',    'type' => 'string'),
-                    array('textContent',          'type',    'type' => 'string'),
                 ),
                 'elements' => array(
-                    'htmlContent'                  => 'TextArea',
-                    'textContent'                  => 'TextArea',
-                ),
-            );
+            ));
             return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function canSaveMetadata()
+        {
+            return true;
         }
     }
 ?>

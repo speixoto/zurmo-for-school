@@ -28,46 +28,7 @@
      * Adapter class to handle special metadata needs of marketing list listviews.  This is because there is a
      * relation where clause with marketing list id,  which is difficult to do via the searchAttributes array
      */
-    class MarketingListsSearchDataProviderMetadataAdapter extends SearchDataProviderMetadataAdapter
+    class MarketingListsMembersSearchDataProviderMetadataAdapter extends SearchDataProviderMetadataAdapter
     {
-
-        protected $listId;
-
-        /**
-         * Override to add passing in listId
-         */
-        public function __construct($model, $userId, $metadata, $listId)
-        {
-            parent::__construct($model, $userId, $metadata);
-            $this->listId = $listId;
-        }
-
-        /**
-         * Convert metadata which is just an array
-         * of posted searchAttributes into metadata that is
-         * readable by the RedBeanModelDataProvider
-         */
-        public function getAdaptedMetadata($appendStructureAsAnd = true)
-        {
-            $adaptedMetadata = parent::getAdaptedMetadata($appendStructureAsAnd);
-            $clauseCount = count($adaptedMetadata['clauses']);
-            $startingCount = $clauseCount + 1;
-            $structure = '';
-            $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName' => 'id',
-                    'operatorType'  => 'equals',
-                    'value'         => $this->listId
-                );
-            $structure .= $startingCount;
-            if (empty($metadata['structure']))
-            {
-                $adaptedMetadata['structure'] = '(' . $structure . ')';
-            }
-            else
-            {
-                $adaptedMetadata['structure'] = '(' . $adaptedMetadata['structure'] . ') and (' . $structure . ')';
-            }
-            return $adaptedMetadata;
-        }
     }
 ?>

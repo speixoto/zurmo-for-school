@@ -54,12 +54,12 @@
                 $this->getId(),
                 $this->getModule()->getId(),
                 $emailTemplate,
-                'EmailTemplate',
+                'EmailTemplates',
                 $dataProvider,
                 array(),
                 'EmailTemplatesActionBarForListView'
             );
-              /*  $mixedView = $this->makeActionBarSearchAndListView(
+           /*     $mixedView = $this->makeActionBarSearchAndListView(
                     $searchForm,
                     $pageSize,
                     EmailTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),

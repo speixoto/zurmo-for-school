@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailTemplate extends OwnedSecurableItem
+    class Campaign extends OwnedSecurableItem
     {
         public static function getByName($name)
         {
@@ -33,7 +33,7 @@
 
         public static function getModuleClassName()
         {
-            return 'EmailTemplatesModule';
+            return 'CampaignsModule';
         }
 
         /**
@@ -42,7 +42,7 @@
          */
         protected static function getLabel()
         {
-            return 'EmailTemplatesModuleSingularLabel';
+            return 'CampaignsModuleSingularLabel';
         }
 
         public function __toString()
@@ -67,7 +67,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'EmailTemplatesModulePluralLabel';
+            return 'CampaignsModulePluralLabel';
         }
 
         public static function canSaveMetadata()
@@ -85,8 +85,11 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'type',
                     'name',
+                    'type',
+                    'formatType',
+                    'fromName',
+                    'fromAddress',
                     'subject',
                     'htmlContent',
                     'textContent',
