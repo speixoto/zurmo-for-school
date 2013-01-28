@@ -1019,11 +1019,19 @@
             $user->title->value       = 'Mr.';
             $user->firstName          = 'My';
             $user->lastName           = 'activeuserson';
-            $user->isActive           = 1;
             $user->setPassword('myuser');
             $this->assertTrue($user->save());
             $user = User::getByUsername('activeuser');
-            $this->assertEquals(1,$user->isActive);            
+            $this->assertEquals(1,$user->isActive);
+                                  
+            $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::DENY);
+            $this->assertTrue($user->save());
+            $this->assertEquals(0,$user->isActive);
+            
+            $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
+            $this->assertTrue($user->save());
+            $this->assertEquals(1,$user->isActive);
+            
         }
     }
 ?>

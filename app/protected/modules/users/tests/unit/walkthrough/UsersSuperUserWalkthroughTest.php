@@ -427,5 +427,20 @@
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
         }
+        
+        /**
+        * Test for checking userStatus
+        */
+        public function testSuperUserChangeUserStatus()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $aUser = User::getByUsername('auser');
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->setPostArray(array('save'           => 'Save',
+                                      'UserAvatarForm' => array('userStatus' => 'Inactive'))
+                                );
+            $this->runControllerWithNoExceptionsAndGetContent('users/default/edit');
+            $this->assertEquals(0, $user->isActive);
+        }
     }
 ?>

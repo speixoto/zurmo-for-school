@@ -219,7 +219,6 @@
             }
             
             $userStatusOld = $this->unrestrictedGet('isActive');
-
             if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
@@ -229,9 +228,12 @@
             else
             { 
                 $this->unrestrictedSet('isActive', 1);                 
-            }
-            $userStatusNew = $this->unrestrictedGet('isActive');  
-            echo $userStatusNew;die;         
+            }             
+            $userStatusNew = $this->unrestrictedGet('isActive');
+            if($userStatusOld != $userStatusNew)
+            {
+               self::save();
+            }            
             parent::afterSave();
         }
 
