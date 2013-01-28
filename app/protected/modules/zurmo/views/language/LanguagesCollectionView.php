@@ -34,8 +34,6 @@
 
         protected $moduleId;
 
-        protected $languagesData;
-
         protected $languagesList;
 
         protected $messageBoxContent;
@@ -47,11 +45,9 @@
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
-            assert('is_array($languagesData)');
             assert('$messageBoxContent == null || is_string($messageBoxContent)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
-            $this->languagesData          = $languagesData;
             $this->messageBoxContent      = $messageBoxContent;
         }
 
@@ -71,8 +67,8 @@
             $content .= $this->renderTitleContent();
             $content .= $this->renderMessageBoxContent();
             $content .= ZurmoHtml::openTag('ul', array('class' => 'configuration-list'));
-            $content .= $this->renderActiveLanguagesList();
-            $content .= $this->renderInactiveLanguagesList();
+            $content .= $this->renderLanguagesList(self::LANGUAGE_STATUS_ACTIVE);
+            $content .= $this->renderLanguagesList(self::LANGUAGE_STATUS_INACTIVE);
             $content .= ZurmoHtml::closeTag('ul');
             $content .= ZurmoHtml::closeTag('div');
             return $content;
@@ -88,21 +84,30 @@
             return ZurmoHtml::tag('div', array(), $this->messageBoxContent);
         }
 
-        protected function renderActiveLanguagesList()
+        protected function renderLanguagesList($languageStatus)
         {
-            $languagesList = $this->getLanguagesList();
+            $languagesList = $this->getLanguagesList($languageStatus);
 
-            if (empty($languagesList[self::LANGUAGE_STATUS_ACTIVE]))
+            if (empty($languagesList))
             {
                 return;
             }
 
             $content = '';
-            foreach ($languagesList[self::LANGUAGE_STATUS_ACTIVE] as $languageCode => $languageData)
+            foreach ($languagesList as $languageCode => $languageData)
             {
-                $content .= ZurmoHtml::openTag('li');
-                $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
+                $content .= $this->renderLanguageRow($languageCode, $languageData);
+            }
 
+            return $content;
+        }
+
+        protected function renderLanguageRow($languageCode, $languageData)
+        {
+            $content = ZurmoHtml::openTag('li');
+            $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
+            if ($languageData['active'])
+            {
                 $metaData = Yii::app()->languageHelper->getActiveLanguageMetaData($languageCode);
                 if (!empty($metaData) && isset($metaData['lastUpdate']))
                 {
@@ -111,32 +116,14 @@
                         array('{date}'=>DateTimeUtil::convertTimestampToDbFormatDateTime($metaData['lastUpdate']))
                     );
                 }
-
                 $content .= $this->renderUpdateButton($languageCode, $languageData);
                 $content .= $this->renderInactivateButton($languageCode, $languageData);
-                $content .= ZurmoHtml::closeTag('li');
             }
-
-            return $content;
-        }
-
-        protected function renderInactiveLanguagesList()
-        {
-            $languagesList = $this->getLanguagesList();
-
-            if (empty($languagesList[self::LANGUAGE_STATUS_INACTIVE]))
+            else
             {
-                return;
-            }
-
-            $content = '';
-            foreach ($languagesList[self::LANGUAGE_STATUS_INACTIVE] as $languageCode => $languageData)
-            {
-                $content .= ZurmoHtml::openTag('li');
-                $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
                 $content .= $this->renderActivateButton($languageCode, $languageData);
-                $content .= ZurmoHtml::closeTag('li');
             }
+            $content .= ZurmoHtml::closeTag('li');
 
             return $content;
         }
@@ -195,18 +182,30 @@
             );
         }
 
-        protected function getLanguagesList()
+        protected function getLanguagesList($languageStatus=null)
         {
             if (is_array($this->languagesList) && !empty($this->languagesList))
             {
-                return $this->languagesList;
+                switch ($languageStatus)
+                {
+                    case self::LANGUAGE_STATUS_ACTIVE:
+                        return $this->languagesList[self::LANGUAGE_STATUS_ACTIVE];
+                        break;
+                    case self::LANGUAGE_STATUS_INACTIVE:
+                        return $this->languagesList[self::LANGUAGE_STATUS_INACTIVE];
+                        break;
+                    case null:
+                        return $this->languagesList;
+                        break;
+                }
             }
 
             $languagesList = array(
                 self::LANGUAGE_STATUS_ACTIVE   => array(),
                 self::LANGUAGE_STATUS_INACTIVE => array()
             );
-            foreach ($this->languagesData as $languageCode => $languageData)
+            $languagesData = LanguagesToLanguageCollectionViewUtil::getLanguagesData();
+            foreach ($languagesData as $languageCode => $languageData)
             {
                 if ($languageData['active'])
                 {
@@ -232,7 +231,7 @@
             );
 
             $this->languagesList = $languagesList;
-            return $this->languagesList;
+            return $this->getLanguagesList($languageStatus);
         }
     }
 ?>
