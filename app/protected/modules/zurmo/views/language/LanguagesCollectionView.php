@@ -41,7 +41,7 @@
         const LANGUAGE_STATUS_ACTIVE   = 1;
         const LANGUAGE_STATUS_INACTIVE = 2;
 
-        public function __construct($controllerId, $moduleId, $languagesData, $messageBoxContent = null)
+        public function __construct($controllerId, $moduleId, $messageBoxContent = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -204,7 +204,7 @@
                 self::LANGUAGE_STATUS_ACTIVE   => array(),
                 self::LANGUAGE_STATUS_INACTIVE => array()
             );
-            $languagesData = LanguagesToLanguageCollectionViewUtil::getLanguagesData();
+            $languagesData = $this->getLanguagesData();
             foreach ($languagesData as $languageCode => $languageData)
             {
                 if ($languageData['active'])
@@ -232,6 +232,20 @@
 
             $this->languagesList = $languagesList;
             return $this->getLanguagesList($languageStatus);
+        }
+
+        protected function getLanguagesData()
+        {
+            $activeLanguages    = Yii::app()->languageHelper->getActiveLanguages();
+            $languagesData       = array();
+            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $label)
+            {
+                $languagesData[$language] = array('label'         => $label,
+                                                 'active'        => in_array($language, $activeLanguages),
+                                                 'canInactivate' =>
+                                                        Yii::app()->languageHelper->canInactivateLanguage($language));
+            }
+            return $languagesData;
         }
     }
 ?>

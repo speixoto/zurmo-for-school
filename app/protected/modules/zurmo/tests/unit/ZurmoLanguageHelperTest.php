@@ -159,40 +159,6 @@
         }
 
         /**
-         * @depends testGetAndSetActiveLanguages
-         */
-        public function testLanguagesToLanguageCollectionViewUtil()
-        {
-            $data = LanguagesToLanguageCollectionViewUtil::getLanguagesData();
-            $compareData = array('de' => array(
-                                    'label' => 'German',
-                                    'active' => true,
-                                    'canInactivate' => true,
-                                 ),
-                                 'en' => array(
-                                    'label' => 'English',
-                                    'active' => true,
-                                    'canInactivate' => false,
-                                 ),
-                                 'es' => array(
-                                    'label' => 'Spanish',
-                                    'active' => false,
-                                    'canInactivate' => true,
-                                 ),
-                                 'fr' => array(
-                                    'label' => 'French',
-                                    'active' => true,
-                                    'canInactivate' => false,
-                                 ),
-                                 'it' => array(
-                                    'label' => 'Italian',
-                                    'active' => false,
-                                    'canInactivate' => true,
-                                 ));
-            $this->assertEquals($compareData, $data);
-        }
-
-        /**
          * This test shows that accents are maybe not in the right encoding in the message file. This is just an example
          * of something that was not working in windows correctly. The result was the label would not display in the
          * input box in the browser in the module general in designer.
