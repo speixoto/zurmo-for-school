@@ -156,7 +156,7 @@
             $modelClassName        = $this->getModelName();
             $searchFormClassName   = static::getSearchFormClassName();
             // Set $pageSize to unlimited, because we don't want pagination
-            $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
+            $pageSize = null;
             $model = new $modelClassName(false);
 
             if ($searchFormClassName != null)
