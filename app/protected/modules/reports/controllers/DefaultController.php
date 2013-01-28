@@ -81,13 +81,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    Yii::t('Default', 'Reports'),
-                    $dataProvider,
-                    'SecuredActionBarForReportsSearchAndListView'
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                             'SecuredActionBarForReportsSearchAndListView');
                 $view = new ReportsPageView(ZurmoDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
                                             $this, $mixedView, $breadcrumbLinks, 'ReportBreadCrumbView'));
