@@ -189,27 +189,17 @@
             $passwordChanged = array_key_exists('hash', $this->originalAttributeValues);
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
+            assert('!isset($this->originalAttributeValues["hash"])');
             $saved = parent::save($runValidation, $attributeNames);
             if ($saved && $passwordChanged)
             {
                 AuditEvent::
                 logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_PASSWORD_CHANGED, $this->username, $this);
-            }
-            if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
-                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
-                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
-            {                                        
-                $isActive = false;              
             }            
-            else
-            { 
-                $isActive = true;                              
-            }             
-            if($this->isActive != $isActive)
+            if($saved)
             {
-               $this->unrestrictedSet('isActive', $isActive);   
-               $this->save();
-            } 
+                $this->setIsActive();
+            }
             return $saved;
         }
 
@@ -710,6 +700,28 @@
                 $emailSignature = $this->emailSignatures[0];
             }
             return $emailSignature;
+        }
+        
+        /**
+        * to change isActive attribute  properly during save
+        */
+        protected function setIsActive()
+        {
+            if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
+            {                                        
+                $isActive = false;              
+            }            
+            else
+            { 
+                $isActive = true;                              
+            }             
+            if($this->isActive != $isActive)
+            {
+               $this->unrestrictedSet('isActive', $isActive);   
+               $this->save();
+            } 
         }
     }
 ?>
