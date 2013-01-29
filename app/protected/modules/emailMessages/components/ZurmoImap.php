@@ -96,7 +96,23 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
+                if ($keyName == 'imapPassword')
+                {
+                    $encryptedKeyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
+                    if ($encryptedKeyValue !== '' && $encryptedKeyValue !== null)
+                    {
+                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($encryptedKeyValue);
+                    }
+                    else
+                    {
+                        $keyValue = null;
+                    }
+                }
+                else
+                {
+                    $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
+                }
+                if (null !== $keyValue)
                 {
                     $this->$keyName = $keyValue;
                 }
@@ -110,7 +126,15 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                if ($keyName == 'imapPassword')
+                {
+                    $password = ZurmoPasswordSecurityUtil::encrypt($this->$keyName);
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $password);
+                }
+                else
+                {
+                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
+                }
             }
         }
 
