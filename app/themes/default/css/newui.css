@@ -10890,9 +10890,8 @@ table.configuration-list td:last-child a .z-label:before {
 #testImapConnection {
   margin: 0;
 }
-#TestImapConnectionMessageView,
+.connection-test-message {
 #TestLDAPConnectionView,
-#TestEmailMessageView {
   min-height: 60px;
   padding: 15px;
   line-height: 150%;

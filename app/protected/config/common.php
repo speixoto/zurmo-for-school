@@ -182,8 +182,7 @@
                 'importPageSize'             => 50,
                 'dashboardListPageSize'      => 5,
                 'apiListPageSize'            => 10,
-                'massDeleteProgressPageSize' => 5,
-                'unlimitedPageSize'          => 1000000000
+                'massDeleteProgressPageSize' => 5
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',
