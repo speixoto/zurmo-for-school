@@ -195,6 +195,21 @@
                 AuditEvent::
                 logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_PASSWORD_CHANGED, $this->username, $this);
             }
+            if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
+                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
+            {                                        
+                $isActive = false;              
+            }            
+            else
+            { 
+                $isActive = true;                              
+            }             
+            if($this->isActive != $isActive)
+            {
+               $this->unrestrictedSet('isActive', $isActive);   
+               $this->save();
+            } 
             return $saved;
         }
 
@@ -217,22 +232,7 @@
             {
                 Yii::app()->languageHelper->setActive($this->language);
             }
-            parent::afterSave();
-            if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
-                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
-                Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
-            {                                        
-                $isActive = false;              
-            }            
-            else
-            { 
-                $isActive = true;                              
-            }             
-            if($this->isActive != $isActive)
-            {
-               $this->unrestrictedSet('isActive', $isActive);   
-               $this->save();
-            }                        
+            parent::afterSave();                       
         }
 
         /**

@@ -236,6 +236,20 @@
             $this->resetGetArray();
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('home/default');
+                                    
+            //task sorting issue
+            //check whether tasks portlet render or not
+            $this->assertTrue($portlets[1][4]->id > 0);
+            $this->assertEquals('TasksMyList', $portlets[1][4]->viewType);
+            
+            //to sort task list
+            $this->setGetArray(array(
+                'Task_sort'      => 'name',
+                'portletId'      => $portlets[1][4]->id,
+                'uniqueLayoutId' => $uniqueLayoutId,
+            ));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');  
         }
     }
 ?>
