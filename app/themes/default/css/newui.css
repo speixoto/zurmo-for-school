@@ -6506,6 +6506,9 @@ a.simple-link {
 a.simple-link:before {
   content: "" !important;
 }
+.normal-size {
+  font-size: 12px !important;
+}
 /*needed for specifity*/
 .portlet-toolbar a.simple-link {
   background: none !important;
@@ -10603,12 +10606,6 @@ table.configuration-list td:last-child a .z-label:before {
   position: relative;
   top: -3px;
 }
-#LanguagesCollectionView tr:last-child td {
-  border-bottom: none !important;
-}
-#LanguagesCollectionView .checkbox-column {
-  padding-left: 15px !important;
-}
 /*Jobs*/
 #JobsCollectionView .form form {
   padding: 0;
@@ -10663,6 +10660,13 @@ table.configuration-list td:last-child a .z-label:before {
   color: #b38b01;
 }
 /*Languages*/
+#LanguagesCollectionView h1 + div {
+  padding: 15px;
+}
+#LanguagesCollectionView h1 + div a {
+  float: none;
+  margin: 0 !important;
+}
 #LanguagesCollectionView form {
   padding: 0;
 }
@@ -10675,6 +10679,25 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #LanguagesCollectionView form td > label:first-child {
   margin-top: 0 !important;
+}
+#LanguagesCollectionView tr:last-child td {
+  border-bottom: none !important;
+}
+#LanguagesCollectionView .checkbox-column {
+  padding-left: 15px !important;
+}
+#LanguagesCollectionView a {
+  position: relative;
+  float: right;
+  right: 0;
+  top: 0;
+  margin: -6px 0 0 10px;
+}
+#LanguagesCollectionView .configuration-list {
+  border-top: 1px solid #ccc;
+}
+#LanguagesCollectionView .configuration-list li:first-child {
+  border-top: 1px solid #fff;
 }
 /*Currency*/
 #currency-collection-form {
