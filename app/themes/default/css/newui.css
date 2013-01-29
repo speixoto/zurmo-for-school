@@ -10891,7 +10891,6 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 0;
 }
 .connection-test-message {
-#TestLDAPConnectionView,
   min-height: 60px;
   padding: 15px;
   line-height: 150%;
