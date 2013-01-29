@@ -65,20 +65,6 @@
 
             $emailTemplate = EmailTemplate::getAll();
             $this->assertEquals(2, count($emailTemplate));
-
-    /*        $marketingListNameId = self::getModelIdByModelNameAndName ('MarketingList', 'MarketingListName');
-            $this->setGetArray(array('id' => $marketingListNameId));
-            $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
-
-            //Save account.
-            $marketingListName = MarketingList::getById($marketingListNameId);
-            $this->assertEquals('MarketingList Description', $marketingListName->description);
-            $this->setPostArray(array('MarketingList' => array('description' => 'Edited Description')));
-            //Test having a failed validation on the account during save.
-            $this->setGetArray (array('id'      => $marketingListNameId));
-            $this->setPostArray(array('MarketingList' => array('name' => '')));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
-            $this->assertFalse(strpos($content, 'Name cannot be blank') === false);*/
         }
     }
 ?>
