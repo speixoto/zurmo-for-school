@@ -78,7 +78,8 @@
                          'DatabaseThreadStack',
                          'DatabaseDefaultCollation',
                          'DatabaseLogBin',
-                         'DatabaseOptimizerSearchDepth'
+                         'DatabaseOptimizerSearchDepth',
+                         'LDAP'                         
             );
         }
 
