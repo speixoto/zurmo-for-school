@@ -335,6 +335,29 @@
             throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
         }
 
+        public function inactivateLanguage($languageCode)
+        {
+            $activeLanguages = $this->getActiveLanguages();
+            // Check if the language is already active
+            if (!in_array($languageCode, $activeLanguages))
+            {
+                return true;
+            }
+
+            foreach ($activeLanguages as $key => $activeLanguageCode)
+            {
+                if ($activeLanguageCode == $languageCode)
+                {
+                    unset($activeLanguages[$key]);
+                }
+            }
+            $this->setActiveLanguages($activeLanguages);
+
+            $metaData = array();
+            $this->setActiveLanguageMetaData($languageCode, $metaData);
+            
+        }
+
         /**
          * Given a language, is it in use as a default language by any of the users.
          * @param string $language

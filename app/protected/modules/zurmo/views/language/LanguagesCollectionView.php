@@ -102,9 +102,18 @@
             return $content;
         }
 
-        protected function renderLanguageRow($languageCode, $languageData)
+        public function renderLanguageRow($languageCode, $languageData=null)
         {
-            $content = ZurmoHtml::openTag('li');
+
+            if (!$languageData)
+            {
+                $languageData = $this->getLanguageDataByLanguageCode($languageCode);
+            }
+
+            $content = ZurmoHtml::openTag(
+                'li',
+                array('id'=>'language-row-' . $languageCode)
+            );
             $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
             if ($languageData['active'])
             {
@@ -133,13 +142,14 @@
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
             $linkHtml = array('class' => 'update-link');
-            return ZurmoHtml::link(
+            return ZurmoHtml::ajaxLink(
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule', 'Update')
                 ),
-                Yii::app()->createUrl('zurmo/language/update/' . $languageCode),
+                Yii::app()->createUrl('zurmo/language/update/languageCode/' . $languageCode),
+                array('replace' => '#language-row-' . $languageCode),
                 $linkHtml
             );
         }
@@ -155,13 +165,14 @@
                 $linkHtml['class'] .= ' disabled';
             }
 
-            return ZurmoHtml::link(
+            return ZurmoHtml::ajaxLink(
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule', 'Inactivate')
                 ),
-                Yii::app()->createUrl('zurmo/language/inactivate/' . $languageCode),
+                Yii::app()->createUrl('zurmo/language/inactivate/languageCode/' . $languageCode),
+                array('replace' => '#language-row-' . $languageCode),
                 $linkHtml
             );
         }
@@ -170,14 +181,20 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
-            $linkHtml = array('class' => 'activate-link');
-            return ZurmoHtml::link(
+            $linkHtml = array(
+                'class' => 'activate-link attachLoading z-button',
+                'onclick' => "attachLoadingOnSubmit('language-row-$languageCode');"
+            );
+            return ZurmoHtml::ajaxLink(
+                ZurmoHtml::tag('span', array('class'=>'z-spinner'), '') .
+                ZurmoHtml::tag('span', array('class'=>'z-icon'), '') . 
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule','Activate')
                 ),
-                Yii::app()->createUrl('zurmo/language/activate/' . $languageCode),
+                Yii::app()->createUrl('zurmo/language/activate/languageCode/' . $languageCode),
+                array('replace' => '#language-row-' . $languageCode),
                 $linkHtml
             );
         }
@@ -204,7 +221,7 @@
                 self::LANGUAGE_STATUS_ACTIVE   => array(),
                 self::LANGUAGE_STATUS_INACTIVE => array()
             );
-            $languagesData = $this->getLanguagesData();
+            $languagesData = self::getLanguagesData();
             foreach ($languagesData as $languageCode => $languageData)
             {
                 if ($languageData['active'])
@@ -234,7 +251,18 @@
             return $this->getLanguagesList($languageStatus);
         }
 
-        protected function getLanguagesData()
+        public static function getLanguageDataByLanguageCode($languageCode)
+        {
+            $languagesData = self::getLanguagesData();
+            if (isset($languagesData[$languageCode]))
+            {
+                return $languagesData[$languageCode];
+            }
+
+            return false;
+        }
+
+        public static function getLanguagesData()
         {
             $activeLanguages    = Yii::app()->languageHelper->getActiveLanguages();
             $languagesData       = array();

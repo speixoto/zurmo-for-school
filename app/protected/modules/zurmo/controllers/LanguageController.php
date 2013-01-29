@@ -57,29 +57,109 @@
             $view = new LanguageTitleBarConfigurationListView(
                             $this->getId(),
                             $this->getModule()->getId(),
-                            LanguagesToLanguageCollectionViewUtil::getLanguagesData(),
                             $messageBoxContent);
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $view));
             echo $view->render();
         }
 
-        protected function attemptToUpdateActiveLanguagesFromPostAndGetMessageBoxContent()
+        public function actionActivate($languageCode)
         {
-            if (isset($_POST['LanguageCollection']))
+            $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+            try
             {
-                $languageCollectionActiveData = $_POST['LanguageCollection'];
-                $activeLanguages = array();
-                foreach ($languageCollectionActiveData as $language => $languageData)
+                if (Yii::app()->languageHelper->activateLanguage($languageCode))
                 {
-                    if ($languageData['active'])
-                    {
-                        $activeLanguages[] = $language;
-                    }
+                    $message = Zurmo::t('ZurmoModule', '{languageName} Activated successfully',
+                        array('{languageName}' => $languageData['label'])
+                    );
                 }
-                Yii::app()->languageHelper->setActiveLanguages($activeLanguages);
-                Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Changes to active languages saved successfully.'));
             }
+            catch (Exception $e)
+            {
+                $message = Zurmo::t('ZurmoModule', '{languageName} activation failed',
+                        array('{languageName}' => $languageData['label'])
+                    );
+            }
+
+            $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
+                                text: '$message',
+                                permanent: false,
+                                showIcon: true,
+                            });</script>";
+
+            $view = new LanguagesCollectionView(
+                $this->getId(),
+                $this->getModule()->getId()
+            );
+            $content .= $view->renderLanguageRow($languageCode, $languageData);
+            print $content;
+        }
+
+        public function actionUpdate($languageCode)
+        {
+            $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+            try
+            {
+                if (Yii::app()->languageHelper->updateLanguage($languageCode))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} updated successfully',
+                        array('{languageName}' => $languageData['label'])
+                    );
+                }
+            }
+            catch (Exception $e)
+            {
+                $message = Zurmo::t('ZurmoModule', '{languageName} update failed',
+                        array('{languageName}' => $languageData['label'])
+                    );
+            }
+
+            $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
+                                text: '$message',
+                                permanent: false,
+                                showIcon: true,
+                            });</script>";
+
+            $view = new LanguagesCollectionView(
+                $this->getId(),
+                $this->getModule()->getId()
+            );
+            $content .= $view->renderLanguageRow($languageCode, $languageData);
+            print $content;
+        }
+
+        public function actionInactivate($languageCode)
+        {
+            $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+            try
+            {
+                if (Yii::app()->languageHelper->inactivateLanguage($languageCode))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} inactivated successfully',
+                        array('{languageName}' => $languageData['label'])
+                    );
+                }
+            }
+            catch (Exception $e)
+            {
+                $message = Zurmo::t('ZurmoModule', '{languageName} inactivate failed',
+                        array('{languageName}' => $languageData['label'])
+                    );
+            }
+
+            $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
+                                text: '$message',
+                                permanent: false,
+                                showIcon: true,
+                            });</script>";
+
+            $view = new LanguagesCollectionView(
+                $this->getId(),
+                $this->getModule()->getId()
+            );
+            $content .= $view->renderLanguageRow($languageCode, $languageData);
+            print $content;
         }
     }
 ?>
