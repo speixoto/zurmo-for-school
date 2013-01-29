@@ -335,23 +335,19 @@
 
         public function actionGetUpdatesForRefresh($unreadConversations)
         {
-            header('Content-Type: text/event-stream');
-            header('Cache-Control: no-cache');
-            header('Charset: utf-8');
             $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
-            echo "retry: 10000" . PHP_EOL; // retry in 10 seconds
             if ($newUnreadConversations > $unreadConversations)
             {
                 $data['unreadConversations'] = $newUnreadConversations;
                 $data['imgUrl']              = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/zurmo-module.png';
                 $data['title']               = Yii::t('Default', 'ZurmoCRM (New comment)');
                 $data['message']             = Yii::t('Default', 'There is an unread conversation.');
-                echo "event: updateConversations\n";
-                echo "data: " . CJSON::encode($data) . PHP_EOL;
+                echo CJSON::encode($data);
             }
-            echo PHP_EOL;
-            ob_flush();
-            flush();
+            else
+            {
+                echo CJSON::encode(null);
+            }
         }
     }
 ?>

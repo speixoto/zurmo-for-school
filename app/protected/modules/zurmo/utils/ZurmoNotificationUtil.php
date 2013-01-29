@@ -90,27 +90,38 @@
         public static function renderAutoUpdaterScript()
         {
             $script = "
+                    var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
+                    var unreadConversations = conversationsPlacer.text();
+                    var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
                     function startAutoUpdater()
                     {
-                        var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
-                        var unreadConversations = conversationsPlacer.text();
-                        var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
-                        if(typeof(EventSource) !== 'undefined' && unreadConversations >= 0 && unreadConversations != '') {
-                            var source = new EventSource(url + '?unreadConversations=' + unreadConversations);
-                            source.addEventListener('updateConversations', function(e) {
-                                var data = JSON.parse(e.data);
-                                if (unreadConversations != data.unreadConversations) {
-                                    unreadConversations = data.unreadConversations;
-                                    conversationsPlacer.html(unreadConversations);
-                                    if (desktopNotifications.isSupported()) {
-                                        desktopNotifications.notify(data.imgUrl,
-                                                                    data.title,
-                                                                    data.message);
+                        if(unreadConversations >= 0 && unreadConversations != '') {
+                            $.ajax({
+                                type: 'GET',
+                                url: url + '?unreadConversations=' + unreadConversations,
+                                async: true,
+                                cache: false,
+                                timeout: 15000,
+                                success: function(data){
+                                    data = JSON.parse(data);
+                                    if (data != null)
+                                    {
+                                        if (unreadConversations != data.unreadConversations) {
+                                            unreadConversations = data.unreadConversations;
+                                            conversationsPlacer.html(unreadConversations);
+                                            if (desktopNotifications.isSupported()) {
+                                                desktopNotifications.notify(data.imgUrl,
+                                                                            data.title,
+                                                                            data.message);
+                                            }
+                                        }
                                     }
+                                    setTimeout(startAutoUpdater, 10000);
+                                },
+                                error: function(XMLHttpRequest, textStatus, errorThrown){
+                                    setTimeout(startAutoUpdater, 30000);
                                 }
                             });
-                            //TODO: Need to understand why this makes the event source work in firefox!
-                            console.log(source);
                         }
                     }
                     setTimeout(startAutoUpdater, 10000);
