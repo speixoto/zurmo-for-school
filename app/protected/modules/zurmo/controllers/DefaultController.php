@@ -337,6 +337,7 @@
         {
             header('Content-Type: text/event-stream');
             header('Cache-Control: no-cache');
+            header('Charset: utf-8');
             $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
             echo "retry: 10000" . PHP_EOL; // retry in 10 seconds
             if ($newUnreadConversations > $unreadConversations)
