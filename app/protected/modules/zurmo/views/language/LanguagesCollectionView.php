@@ -143,6 +143,7 @@
             assert('is_array($languageData)');
             $linkHtml = array('class' => 'update-link');
             return ZurmoHtml::ajaxLink(
+                $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
@@ -166,6 +167,7 @@
             }
 
             return ZurmoHtml::ajaxLink(
+                $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
@@ -186,8 +188,7 @@
                 'onclick' => "attachLoadingOnSubmit('language-row-$languageCode');"
             );
             return ZurmoHtml::ajaxLink(
-                ZurmoHtml::tag('span', array('class'=>'z-spinner'), '') .
-                ZurmoHtml::tag('span', array('class'=>'z-icon'), '') . 
+                $this->renderButtonSpinnerSpans() . 
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
@@ -197,6 +198,12 @@
                 array('replace' => '#language-row-' . $languageCode),
                 $linkHtml
             );
+        }
+
+        protected function renderButtonSpinnerSpans()
+        {
+            return ZurmoHtml::tag('span', array('class'=>'z-spinner'), '') .
+                    ZurmoHtml::tag('span', array('class'=>'z-icon'), '');
         }
 
         protected function getLanguagesList($languageStatus=null)
