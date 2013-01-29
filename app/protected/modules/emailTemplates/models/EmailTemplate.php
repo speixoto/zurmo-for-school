@@ -36,15 +36,6 @@
             return 'EmailTemplatesModule';
         }
 
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'EmailTemplatesModuleSingularLabel';
-        }
-
         public function __toString()
         {
             try

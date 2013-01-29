@@ -71,6 +71,17 @@
             return $content;
         }
 
+        protected function renderAfterFormLayout($form)
+        {
+            $content = null;
+            $content .= '<div class="email-template-comtent"></div>' . "\n";
+            $content .= '<div>' . "\n";
+            //$atrributeName = EmailTemplateHtmlAndTextContentElement::getModelAttributeNames();
+            $element  = new EmailTemplateHtmlAndTextContentElement($this->model, 'htmlContent' , $form);
+            $content .= $element->render();
+            $content .= '</div>' . "\n";
+            return $content;
+        }
 
         protected function getNewModelTitleLabel()
         {

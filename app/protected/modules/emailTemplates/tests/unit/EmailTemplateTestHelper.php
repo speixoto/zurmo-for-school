@@ -24,14 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Display the account selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on account.  Also includes a hidden input for the user
-     * id.
-     */
-    class EmailTemplateHtmlAndTextContentElement extends Element
+    class EmailTemplateTestHelper
     {
+        public static function createEmailTemplateByName($type, $subject, $name, $htmlContent, $textContent)
+        {
+            $emailTemplate = new EmailTemplate();
+            $emailTemplate->type        = $type;
+            $emailTemplate->subject     = $subject;
+            $emailTemplate->name        = $name;
+            $emailTemplate->htmlContent = $htmlContent;
+            $emailTemplate->textContent = $textContent;
+            $saved = $emailTemplate->save();
+            assert('$saved');
+            return $emailTemplate;
+        }
     }
 ?>
