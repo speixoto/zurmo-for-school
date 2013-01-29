@@ -189,7 +189,6 @@
             $passwordChanged = array_key_exists('hash', $this->originalAttributeValues);
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
-            assert('!isset($this->originalAttributeValues["hash"])');
             $saved = parent::save($runValidation, $attributeNames);
             if ($saved && $passwordChanged)
             {
