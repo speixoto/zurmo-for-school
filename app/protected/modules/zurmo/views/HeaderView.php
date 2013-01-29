@@ -57,6 +57,17 @@
             $horizontalGridView = new GridView(1, 1);
             $horizontalGridView->setView($globalSearchAndShortcutsCreateMenuView, 0, 0);
             $this->verticalGridView->setView($horizontalGridView, 1, 0);
+            if (Yii::app()->components['user']->loginRequiredAjaxResponse){
+                Yii::app()->clientScript->registerScript('ajaxLoginRequired', '
+                    jQuery("body").ajaxSuccess(
+                        function(event, request, options) {
+                            if (request.responseText == "'.Yii::app()->components['user']->loginRequiredAjaxResponse.'") {
+                                window.location.reload(true);
+                            }
+                        }
+                    );
+                ');
+            }
         }
 
         protected function renderContent()
