@@ -71,7 +71,60 @@
             $content .= $this->renderLanguagesList(self::LANGUAGE_STATUS_INACTIVE);
             $content .= ZurmoHtml::closeTag('ul');
             $content .= ZurmoHtml::closeTag('div');
+            $this->registerJavaScript();
             return $content;
+        }
+
+        protected function registerJavaScript()
+        {
+            $commonErrorMessage = Zurmo::t('ZurmoModule', 'Unexpected error during the AJAX call');
+            $script = <<<EOD
+$(document).on('click', ".action-button", function() {
+    var _parent = $(this).parent();
+    var _ajaxAction = $(this).attr('ajaxaction');
+    var _languageCode = $(this).attr('languagecode');
+
+    if (_parent.hasClass('loading-ajax'))
+    {
+        return false;
+    }
+
+    if ($.inArray(_ajaxAction, ["activate", "inactivate", "update"]) == -1)
+    {
+        return false;
+    }
+
+    _parent.addClass('loading-ajax');
+    $(this).addClass('loading');
+    attachLoadingSpinner(_parent.attr('id'), true);
+
+    $.ajax({
+        'url':'/app/index.php/zurmo/language/' + _ajaxAction + '/languageCode/' + _languageCode,
+        'cache':false,
+        'success':function(html) {
+            _parent.replaceWith(html);
+        },
+        'error':function(jqXHR, textStatus, errorThrown) {
+            $('#FlashMessageBar').jnotifyAddMessage({
+                text: '$commonErrorMessage',
+                permanent: false,
+                showIcon: true,
+            });
+            attachLoadingSpinner(_parent.attr('id'));
+            $(this).removeClass('loading');
+            _parent.removeClass('loading-ajax');
+        }
+    });
+
+    return false;
+});
+EOD;
+            $cs = Yii::app()->getClientScript();
+            $cs->registerScript(
+                'my-hello-world-1',
+                $script,
+                CClientScript::POS_END
+            );
         }
 
         protected function renderMessageBoxContent()
@@ -141,17 +194,15 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
-            $linkHtml = array('class' => 'update-link');
-            return ZurmoHtml::ajaxLink(
+            return ZurmoHtml::link(
                 $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule', 'Update')
                 ),
-                Yii::app()->createUrl('zurmo/language/update/languageCode/' . $languageCode),
-                array('replace' => '#language-row-' . $languageCode),
-                $linkHtml
+                '#',
+                $this->renderButtonHtml('update', $languageCode, $languageData)
             );
         }
 
@@ -159,23 +210,15 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
-
-            $linkHtml = array('class' => 'inactivate-link');
-            if (!$languageData['canInactivate'])
-            {
-                $linkHtml['class'] .= ' disabled';
-            }
-
-            return ZurmoHtml::ajaxLink(
+            return ZurmoHtml::link(
                 $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule', 'Inactivate')
                 ),
-                Yii::app()->createUrl('zurmo/language/inactivate/languageCode/' . $languageCode),
-                array('replace' => '#language-row-' . $languageCode),
-                $linkHtml
+                '#',
+                $this->renderButtonHtml('inactivate', $languageCode, $languageData)
             );
         }
 
@@ -183,21 +226,32 @@
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
-            $linkHtml = array(
-                'class' => 'activate-link attachLoading z-button',
-                'onclick' => "attachLoadingOnSubmit('language-row-$languageCode');"
-            );
-            return ZurmoHtml::ajaxLink(
+            return ZurmoHtml::link(
                 $this->renderButtonSpinnerSpans() . 
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
                     Zurmo::t('ZurmoModule','Activate')
                 ),
-                Yii::app()->createUrl('zurmo/language/activate/languageCode/' . $languageCode),
-                array('replace' => '#language-row-' . $languageCode),
-                $linkHtml
+                '#',
+                $this->renderButtonHtml('activate', $languageCode, $languageData)
             );
+        }
+
+        protected function renderButtonHtml($action, $languageCode, $languageData)
+        {
+            assert('in_array($action, array("activate", "inactivate", "update"))');
+            $buttonHtml = array(
+                'ajaxaction' => $action,
+                'languagecode' => $languageCode,
+                'class' => 'action-button attachLoading z-button'
+            );
+            if (!$languageData['canInactivate'])
+            {
+                $buttonHtml['class'] .= ' disabled';
+            }
+
+            return $buttonHtml;
         }
 
         protected function renderButtonSpinnerSpans()
