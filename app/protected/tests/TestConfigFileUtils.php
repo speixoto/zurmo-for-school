@@ -100,7 +100,7 @@ EOD;
            'ldapPort'                 => '',
            'ldapBindRegisteredDomain' => '',
            'ldapBindPassword'         => '',
-		   'ldapBaseDomain'           => '',
+           'ldapBaseDomain'           => '',
            'ldapEnabled'              => '',
         ),
     );
