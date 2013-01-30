@@ -105,7 +105,7 @@
                 $this->getId(),
                 $this->getModule()->getId()
             );
-            $content .= $view->renderLanguageRow($languageCode, $languageData);
+            $content .= $view->renderLanguageRow($languageCode);
             print $content;
         }
 
@@ -151,7 +151,7 @@
                 $this->getId(),
                 $this->getModule()->getId()
             );
-            $content .= $view->renderLanguageRow($languageCode, $languageData);
+            $content .= $view->renderLanguageRow($languageCode);
             print $content;
         }
 
@@ -197,7 +197,7 @@
                 $this->getId(),
                 $this->getModule()->getId()
             );
-            $content .= $view->renderLanguageRow($languageCode, $languageData);
+            $content .= $view->renderLanguageRow($languageCode);
             print $content;
         }
     }
