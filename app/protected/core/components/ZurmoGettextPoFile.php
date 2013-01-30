@@ -45,12 +45,6 @@
                 throw new NotSupportedException();
             }
 
-            assert('is_readable($file)');
-            if (!is_readable($file))
-            {
-                throw new FileNotReadableException();
-            }
-
             $pattern = '/(msgctxt\s+"(.*?(?<!\\\\))")?' // Not Coding Standard
                     . '\s+msgid\s+"(.*?(?<!\\\\))"'     // Not Coding Standard
                     . '\s+msgstr\s+"(.*?(?<!\\\\))"/';  // Not Coding Standard
