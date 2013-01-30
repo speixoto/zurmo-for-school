@@ -105,11 +105,16 @@
         public static function isPdoInstalled()
         {
             return extension_loaded("pdo");
-        }
+        }        
 
         public static function isPdoMysqlInstalled()
         {
             return extension_loaded("pdo_mysql");
+        }
+        
+        public static function isLDAPInstalled()
+        {
+            return extension_loaded("ldap");
         }
 
         public static function isMbStringInstalled()
