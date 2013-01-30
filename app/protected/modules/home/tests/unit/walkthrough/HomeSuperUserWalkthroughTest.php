@@ -236,7 +236,7 @@
             $this->resetGetArray();
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('home/default');
-                                    
+            
             //task sorting issue
             //check whether tasks portlet render or not
             $this->assertTrue($portlets[1][4]->id > 0);
@@ -249,7 +249,7 @@
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');  
+            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');                        
         }
     }
 ?>

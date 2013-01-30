@@ -766,7 +766,7 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
-        }
+        }		        
 
         /**
          * @depends testPasswordUserNamePolicyChangesValidationAndLogin
