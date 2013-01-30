@@ -232,7 +232,7 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
-                'loginRequiredAjaxResponse' => 'Session timeout occurred. Reloading Page.',
+                'loginRequiredAjaxResponse' => 'sessionTimeout',
                 'behaviors' => array(
                     'onAfterLogin' => array(
                         'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'

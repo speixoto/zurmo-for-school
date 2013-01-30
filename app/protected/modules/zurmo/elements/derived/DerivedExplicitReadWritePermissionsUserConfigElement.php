@@ -31,15 +31,9 @@
     {
         protected function assertModelIsValid()
         {
-            // TODO: This should be enough, right?
             assert('$this->model instanceof UserConfigurationForm');
         }
 
-        // TODO: @Shoaibi: why do we use null in parent as first index?
-        // TODO: @Shoaibi:  not compatible with parent so how do we map on create?
-        // TODO: @Shoaibi:  incompatible because in parents the first index is null but that won't pass validator for UserConfigForm
-        // TODO: @Shoaibi:    furthermore if we save null in db then we cant distinguish if there was a config in db at all or not
-        // TODO: @Shoaibi: refactor
         protected function getPermissionTypes()
         {
             return array(
@@ -83,12 +77,12 @@
             return 'defaultPermissionGroupSetting';
         }
 
-        protected function resolveAttributeName()
+        protected function resolveAttributeNameAndRelatedAttributes()
         {
             return array($this->getAttributeName(), null);
         }
 
-        protected function resolveSelectableAttributeName()
+        protected function resolveSelectableAttributeNameAndRelatedAttributes()
         {
             return array($this->getSelectableAttributeName(), null);
         }

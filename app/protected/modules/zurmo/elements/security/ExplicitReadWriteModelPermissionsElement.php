@@ -53,7 +53,7 @@
         protected function renderControlEditable()
         {
             $this->assertModelIsValid();
-            list($attributeName, $relationAttributeName) = $this->resolveAttributeName();
+            list($attributeName, $relationAttributeName) = $this->resolveAttributeNameAndRelatedAttributes();
             list($data, $dataSelectOption)  = $this->resolveData();
             $content                        = ZurmoHtml::radioButtonList(
                                                         $this->getEditableInputName($attributeName, $relationAttributeName),
@@ -117,7 +117,7 @@
 
         public function getEditableHtmlOptions()
         {
-            list($attributeName, $relationAttributeName) = $this->resolveAttributeName();
+            list($attributeName, $relationAttributeName) = $this->resolveAttributeNameAndRelatedAttributes();
             $htmlOptions = array(
                 'id'   => $this->getEditableInputId($attributeName, $relationAttributeName),
             );
@@ -209,7 +209,7 @@
 
         protected function renderSelectableGroupsContent()
         {
-            list($selectableAttributeName, $selectableRelationAttributeName) = $this->resolveSelectableAttributeName();
+            list($selectableAttributeName, $selectableRelationAttributeName) = $this->resolveSelectableAttributeNameAndRelatedAttributes();
             $htmlOptions = array(
                 'id'        => $this->getEditableInputId   ($selectableAttributeName, $selectableRelationAttributeName),
                 'onclick'   => 'document.getElementById("{bindId}").checked="checked";',
@@ -237,12 +237,12 @@
             return $groupsData;
         }
 
-        protected function resolveAttributeName()
+        protected function resolveAttributeNameAndRelatedAttributes()
         {
             return array($this->getAttributeName(), 'type');
         }
 
-        protected function resolveSelectableAttributeName()
+        protected function resolveSelectableAttributeNameAndRelatedAttributes()
         {
             return array($this->getSelectableAttributeName(), 'nonEveryoneGroup');
         }
