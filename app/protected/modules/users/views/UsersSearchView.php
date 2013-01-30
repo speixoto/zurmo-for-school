@@ -32,8 +32,10 @@
                 'global' => array(
                     'nonPlaceableAttributeNames' => array(
                         'hash',
+                        'currency',                        
                         'newPassword',
                         'newPassword_repeat',
+                        'serializedAvatarData',
                     ),
                     'panels' => array(
                         array(
