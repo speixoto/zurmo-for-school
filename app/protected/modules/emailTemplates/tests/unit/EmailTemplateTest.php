@@ -84,8 +84,8 @@
             $emailTemplate->name        = 'Test Marketing List2';
             $emailTemplate->description = 'Test Description2';
             $this->assertTrue($marketingList->save());
-            $marketingLists = MarketingList::getAll();
-            $this->assertEquals(2, count($marketingLists));
+            $emailTemplate = EmailTemplate::getAll();
+            $this->assertEquals(2, count($emailTemplate));
           /*  $marketingLists[0]->delete();
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(1, count($marketingLists));

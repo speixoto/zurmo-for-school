@@ -89,7 +89,7 @@
                                               'MarketingListMembersSearchView'
                                               );*/
             $searchAttributes = array();
-            $metadataAdapter  = new MarketingListsSearchDataProviderMetadataAdapter(
+            $metadataAdapter  = new MarketingListsMembersSearchDataProviderMetadataAdapter(
                 $marketingListMember,
                 Yii::app()->user->userModel->id,
                 $searchAttributes,
@@ -153,6 +153,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);
             $marketingList->delete();
             $this->redirect(array($this->getId() . '/index'));
+        }
+
+        public function actionSelectContact()
+        {
+          
         }
 
         protected static function getSearchFormClassName()

@@ -68,6 +68,7 @@
         {
             return array(
                 'htmlContent',
+                'textContent',
             );
         }
 

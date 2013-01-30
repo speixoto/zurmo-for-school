@@ -28,7 +28,7 @@
     {
         public static function assertModelIsValid($model)
         {
-            assert('$model instanceof Report');
+            assert('$model instanceof MarketingList');
         }
 
         protected function renderContent()
@@ -47,9 +47,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'ReportDetailsLink',
+                            array('type'  => 'MarketingListsDetailsLink',
                                 'htmlOptions' => array('class' => 'icon-details')),
-                            array('type'  => 'ReportOptionsLink',
+                            array('type'  => 'MarketingListsOptionsLink',
                                 'htmlOptions' => array('class' => 'icon-edit')),
                             //todo: also: see that all UL's are created with same ID - this is not valid html
                         ),
@@ -66,7 +66,7 @@
                 $moduleClassName = $this->model->moduleClassName;
                 $typesAndLabels  = Report::getTypeDropDownArray();
                 return strval($this->model) . ' - ' .
-                    Yii::t('Default', '{moduleLabel} {typeLabel} Report',
+                    Yii::t('Default', '{moduleLabel} {typeLabel} MarketingList',
                         array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
                             '{typeLabel}'   => $typesAndLabels[$this->model->type]));
             }
@@ -74,6 +74,25 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function renderActionElementBar($renderedInForm)
+        {
+            $selectContactAndReportLinkActionElement  = new SelectContactAndReportLinkActionElement(
+                $this->controllerId,
+                $this->moduleId,
+                $this->modelId,
+                array('htmlOptions' => array('class'   => 'icon-select')))
+            );
+            $updateMarketingListsLinkActionElement  = new UpdateMarketingListsLinkActionElement(
+                $this->controllerId,
+                $this->moduleId,
+                $this->modelId,
+                array('htmlOptions' => array('class'   => 'icon-update')))
+            );
+            $content .= $selectContactAndReportLinkActionElement->render();
+            $content .= $updateMarketingListsLinkActionElement->render();
+            return $content;
         }
     }
 ?>
