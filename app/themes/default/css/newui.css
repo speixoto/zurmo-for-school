@@ -974,6 +974,7 @@ body.blue .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.blue #LanguagesCollectionView .green-button:hover .z-label,
 body.blue .green-button:not(.attachLoading):hover .z-label,
 body.blue .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -1504,6 +1505,7 @@ body.brown .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.brown #LanguagesCollectionView .green-button:hover .z-label,
 body.brown .green-button:not(.attachLoading):hover .z-label,
 body.brown .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -2034,6 +2036,7 @@ body.lime .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.lime #LanguagesCollectionView .green-button:hover .z-label,
 body.lime .green-button:not(.attachLoading):hover .z-label,
 body.lime .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -2564,6 +2567,7 @@ body.cherry .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.cherry #LanguagesCollectionView .green-button:hover .z-label,
 body.cherry .green-button:not(.attachLoading):hover .z-label,
 body.cherry .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -3094,6 +3098,7 @@ body.turquoise .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.turquoise #LanguagesCollectionView .green-button:hover .z-label,
 body.turquoise .green-button:not(.attachLoading):hover .z-label,
 body.turquoise .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -3624,6 +3629,7 @@ body.violet .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.violet #LanguagesCollectionView .green-button:hover .z-label,
 body.violet .green-button:not(.attachLoading):hover .z-label,
 body.violet .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -4154,6 +4160,7 @@ body.honey .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.honey #LanguagesCollectionView .green-button:hover .z-label,
 body.honey .green-button:not(.attachLoading):hover .z-label,
 body.honey .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -10660,6 +10667,9 @@ table.configuration-list td:last-child a .z-label:before {
   color: #b38b01;
 }
 /*Languages*/
+#LanguagesCollectionView {
+  padding-bottom: 0 !important;
+}
 #LanguagesCollectionView h1 + div {
   padding: 15px;
 }
@@ -10698,6 +10708,12 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #LanguagesCollectionView .configuration-list li:first-child {
   border-top: 1px solid #fff;
+}
+#LanguagesCollectionView .z-label {
+  padding: 0 25px;
+}
+#LanguagesCollectionView .z-label:before {
+  display: none !important;
 }
 /*Currency*/
 #currency-collection-form {

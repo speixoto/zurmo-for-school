@@ -219,7 +219,7 @@ EOD;
                 ZurmoHtml::tag(
                     'span',
                     array('class'=>'z-label'),
-                    Zurmo::t('ZurmoModule', 'Inactivate')
+                    Zurmo::t('ZurmoModule', 'Deactivate')
                 ),
                 '#',
                 $this->renderButtonHtml('inactivate', $languageCode, $languageData)
@@ -248,7 +248,7 @@ EOD;
             $buttonHtml = array(
                 'ajaxaction' => $action,
                 'languagecode' => $languageCode,
-                'class' => 'action-button attachLoading z-button'
+                'class' => 'action-button attachLoading z-button green-button'
             );
             if (!$languageData['canInactivate'])
             {
