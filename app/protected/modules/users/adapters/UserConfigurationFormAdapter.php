@@ -43,6 +43,8 @@
             $form->backgroundTexture         = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
             $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue($user);
             $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue($user);
+            $form->defaultPermissionSetting  = static::resolveAndGetDefaultPermissionSetting($user);
+            $form->defaultPermissionGroupSetting = static::resolveAndGetDefaultPermissionGroupSetting($user);
             return $form;
         }
 
@@ -52,12 +54,15 @@
         public static function setConfigurationFromForm(UserConfigurationForm $form, User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            Yii::app()->pagination    ->setByUserAndType        ($user, 'listPageSize',    (int)$form->listPageSize);
-            Yii::app()->pagination    ->setByUserAndType        ($user, 'subListPageSize', (int)$form->subListPageSize);
-            Yii::app()->themeManager->setThemeColorValue        ($user, $form->themeColor);
+            Yii::app()->pagination->setByUserAndType($user, 'listPageSize', (int)$form->listPageSize);
+            Yii::app()->pagination->setByUserAndType($user, 'subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->themeManager->setThemeColorValue($user, $form->themeColor);
             Yii::app()->themeManager->setBackgroundTextureValue ($user, $form->backgroundTexture);
-            static::setHideWelcomeViewValue                     ($user, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue           ($user, (bool)$form->turnOffEmailNotifications);
+            static::setHideWelcomeViewValue($user, (bool)$form->hideWelcomeView);
+            static::setTurnOffEmailNotificationsValue($user, (bool)$form->turnOffEmailNotifications);
+            static::setDefaultPermissionSettingValue($user, (int)$form->defaultPermissionSetting);
+            static::setDefaultPermissionGroupSetting($user, (int)$form->defaultPermissionGroupSetting,
+                (int)$form->defaultPermissionSetting);
         }
 
         /**
@@ -66,12 +71,16 @@
          */
         public static function setConfigurationFromFormForCurrentUser(UserConfigurationForm $form)
         {
-            Yii::app()->pagination    ->setForCurrentUserByType ('listPageSize',     (int)$form->listPageSize);
-            Yii::app()->pagination    ->setForCurrentUserByType ('subListPageSize',  (int)$form->subListPageSize);
-            Yii::app()->themeManager->setThemeColorValue        (Yii::app()->user->userModel,       $form->themeColor);
-            Yii::app()->themeManager->setBackgroundTextureValue (Yii::app()->user->userModel,       $form->backgroundTexture);
-            static::setHideWelcomeViewValue                     (Yii::app()->user->userModel, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue           (Yii::app()->user->userModel, (bool)$form->turnOffEmailNotifications);
+            Yii::app()->pagination->setForCurrentUserByType ('listPageSize', (int)$form->listPageSize);
+            Yii::app()->pagination->setForCurrentUserByType ('subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->themeManager->setThemeColorValue(Yii::app()->user->userModel, $form->themeColor);
+            Yii::app()->themeManager->setBackgroundTextureValue(Yii::app()->user->userModel, $form->backgroundTexture);
+            static::setHideWelcomeViewValue(Yii::app()->user->userModel, (bool)$form->hideWelcomeView);
+            static::setTurnOffEmailNotificationsValue(Yii::app()->user->userModel,
+                (bool)$form->turnOffEmailNotifications);
+            static::setDefaultPermissionSettingValue(Yii::app()->user->userModel, (int)$form->defaultPermissionSetting);
+            static::setDefaultPermissionGroupSetting(Yii::app()->user->userModel,
+                (int)$form->defaultPermissionGroupSetting, (int)$form->defaultPermissionSetting);
         }
 
         public static function resolveAndGetHideWelcomeViewValue(User $user)
@@ -110,6 +119,47 @@
         {
             assert('is_bool($value)');
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications', $value);
+        }
+
+        public static function resolveAndGetDefaultPermissionSetting(User $user)
+        {
+            assert('$user instanceOf User && $user->id > 0');
+            if ( null != $defaultPermission = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule',
+                'defaultPermissionSetting'))
+            {
+                return $defaultPermission;
+            }
+            else
+            {
+                return UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE;
+            }
+        }
+
+        public static function resolveAndGetDefaultPermissionGroupSetting(User $user)
+        {
+            assert('$user instanceOf User && $user->id > 0');
+            return ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting');
+        }
+
+        public static function setDefaultPermissionSettingValue(User $user, $value)
+        {
+            assert('is_int($value)');
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionSetting', $value);
+        }
+
+        public static function setDefaultPermissionGroupSetting(User $user, $value, $defaultPermissionSetting)
+        {
+            assert('is_int($value)');
+            assert('is_int($defaultPermissionSetting)');
+            if ($defaultPermissionSetting == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
+            {
+                ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',
+                    $value);
+            } else
+            {
+                ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',
+                    null);
+            }
         }
     }
 ?>

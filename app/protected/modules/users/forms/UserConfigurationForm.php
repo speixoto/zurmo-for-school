@@ -46,6 +46,14 @@
 
         public $turnOffEmailNotifications = false;
 
+        const DEFAULT_PERMISSIONS_SETTING_OWNER = 1;
+        const DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP = 2;
+        const DEFAULT_PERMISSIONS_SETTING_EVERYONE = 3;
+
+        public $defaultPermissionSetting;
+
+        public $defaultPermissionGroupSetting;
+
         public function __construct($userId)
         {
             assert('is_int($userId) && $userId > 0');
@@ -74,7 +82,10 @@
                 array('themeColor',                'type',      'type' => 'string'),
                 array('backgroundTexture',         'type',      'type' => 'string'),
                 array('hideWelcomeView',           'boolean'),
-                array('turnOffEmailNotifications', 'boolean')
+                array('turnOffEmailNotifications', 'boolean'),
+                array('defaultPermissionSetting',   'numerical', 'min' => self::DEFAULT_PERMISSIONS_SETTING_OWNER,
+                    'max' => self::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
+                array('defaultPermissionGroupSetting', 'numerical', 'min' => 1)
             );
         }
 
