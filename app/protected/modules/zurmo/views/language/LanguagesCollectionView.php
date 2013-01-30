@@ -178,8 +178,12 @@ EOD;
                         array('{date}'=>DateTimeUtil::convertTimestampToDbFormatDateTime($metaData['lastUpdate']))
                     );
                 }
-                $content .= $this->renderUpdateButton($languageCode, $languageData);
-                $content .= $this->renderInactivateButton($languageCode, $languageData);
+
+                if ($languageCode != Yii::app()->sourceLanguage)
+                {
+                    $content .= $this->renderUpdateButton($languageCode, $languageData);
+                    $content .= $this->renderInactivateButton($languageCode, $languageData);
+                }
             }
             else
             {
