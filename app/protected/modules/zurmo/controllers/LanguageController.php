@@ -77,9 +77,22 @@
             }
             catch (Exception $e)
             {
-                $message = Zurmo::t('ZurmoModule', '{languageName} activation failed',
+                $exceptionMessage = $e->getMessage();
+                if (!empty($exceptionMessage))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} activation failed. Error: {errorMessage}',
+                        array(
+                            '{languageName}' => $languageData['label'],
+                            '{errorMessage}' => $exceptionMessage
+                        )
+                    );
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} activation failed. Unexpected error.',
                         array('{languageName}' => $languageData['label'])
                     );
+                }
             }
 
             $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
@@ -110,9 +123,22 @@
             }
             catch (Exception $e)
             {
-                $message = Zurmo::t('ZurmoModule', '{languageName} update failed',
+                $exceptionMessage = $e->getMessage();
+                if (!empty($exceptionMessage))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} update failed. Error: {errorMessage}',
+                        array(
+                            '{languageName}' => $languageData['label'],
+                            '{errorMessage}' => $exceptionMessage
+                        )
+                    );
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} update failed. Unexpected error.',
                         array('{languageName}' => $languageData['label'])
                     );
+                }
             }
 
             $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
@@ -143,9 +169,22 @@
             }
             catch (Exception $e)
             {
-                $message = Zurmo::t('ZurmoModule', '{languageName} inactivate failed',
+                $exceptionMessage = $e->getMessage();
+                if (!empty($exceptionMessage))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} inactivate failed. Error: {errorMessage}',
+                        array(
+                            '{languageName}' => $languageData['label'],
+                            '{errorMessage}' => $exceptionMessage
+                        )
+                    );
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} inactivate failed. Unexpected error.',
                         array('{languageName}' => $languageData['label'])
                     );
+                }
             }
 
             $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
