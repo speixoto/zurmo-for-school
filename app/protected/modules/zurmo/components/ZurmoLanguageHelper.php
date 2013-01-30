@@ -355,7 +355,8 @@
 
             $metaData = array();
             $this->setActiveLanguageMetaData($languageCode, $metaData);
-            
+
+            return true;
         }
 
         /**
