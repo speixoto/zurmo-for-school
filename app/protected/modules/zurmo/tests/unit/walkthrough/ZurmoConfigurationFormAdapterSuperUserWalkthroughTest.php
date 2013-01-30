@@ -38,26 +38,20 @@
         }
 
         public function testSuperUserEditConfigurationForm()
-        {
+        {        
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');            
-            $this->setPostArray(array('save'                                            => 'Save',
-                                      'ZurmoConfigurationForm'    
-                                       => array('applicationName'                       => 'Demo Company Inc.'),
-                                      'ZurmoConfigurationForm'    
-                                       => array('dashboardListPage'                     => 5),
-                                      'ZurmoConfigurationForm'    
-                                       => array('gamificationModalNotificationsEnabled' => 1),
-                                      'ZurmoConfigurationForm'    
-                                       => array('listPageSize'                          => 10),
-                                      'ZurmoConfigurationForm'    
-                                       => array('modalListPageSize'                     => 5),
-                                      'ZurmoConfigurationForm'    
-                                       => array('subListPageSize'                       => ''),
-                                      'ZurmoConfigurationForm'    
-                                       => array('timeZone'                              => 'America/Chicago'),                                       
-                                      )
+            $this->setPostArray(array('save'                                        => 'Save',
+                                      'ZurmoConfigurationForm'                      => array(
+                                      'applicationName'                             => 'Demo Company Inc.',                                          
+                                      'dashboardListPage'                           => '5',                                      
+                                      'gamificationModalNotificationsEnabled'       => '1',                                      
+                                      'listPageSize'                                => '10',                                      
+                                      'modalListPageSize'                           => '5',                                      
+                                      'subListPageSize'                             => '',                                      
+                                      'timeZone'                                    => 'America/Chicago'),                                       
+                                      )                                      
                                );
-            $content = $this->runControllerWithRedirectExceptionAndGetContent('zurmo/default/configurationEdit'); 
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/configurationEdit'); 
             $this->assertFalse(strpos($content, 'Sublist page size cannot be blank.') === false);          
         }    
     }
