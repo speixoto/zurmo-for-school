@@ -46,7 +46,7 @@
 
         public function testSuperUserModifyLDAPConfiguration()
         {
-            if (!isset(Yii::app()->params['authenticationTestSettings']))
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration())
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 
@@ -90,7 +90,7 @@
         */
         public function testSuperUserTestLDAPConnection()
         {
-            if (!isset(Yii::app()->params['authenticationTestSettings']))
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration())
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 

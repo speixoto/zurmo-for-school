@@ -30,7 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();            
-            if (isset(Yii::app()->params['authenticationTestSettings'])) 
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration()) 
             {            
                 Yii::app()->authenticationHelper->ldapHost                 = 
                 Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
@@ -60,7 +60,7 @@
         */
         public function testUserExitsInZurmoButNotOnldap()
         {   
-            if (!isset(Yii::app()->params['authenticationTestSettings']))
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration())
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             }      
@@ -89,7 +89,7 @@
         */
         public function testUserExitsInBothButWrongPasswordForldap()
         {
-            if (!isset(Yii::app()->params['authenticationTestSettings']))
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration())
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 
@@ -117,7 +117,7 @@
         */
         public function testUserExitsInldapNotInZurmo()
         {
-            if (!isset(Yii::app()->params['authenticationTestSettings']))
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration())
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 
@@ -132,8 +132,8 @@
         *one for when the user exists in ldap and zurmo
         */
         public function testUserExitsInldapAndZurmo()
-        {
-            if (!isset(Yii::app()->params['authenticationTestSettings']))
+        {                    
+            if (!ZurmoTestHelper::isSetAuthenticationLDAPTestConfiguration())
             {
                 $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
             } 

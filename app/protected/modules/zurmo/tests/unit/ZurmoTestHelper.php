@@ -42,5 +42,27 @@
             assert('$saved'); // Not Coding Standard
             return $file;
         }
+        
+        public static function isSetAuthenticationLDAPTestConfiguration()
+        {
+            $isSetAuthenticationLDAPTestConfiguration = false;
+
+            if (isset(Yii::app()->params['authenticationTestSettings']))
+            {
+                $ldapHost                 = Yii::app()->params['ldapSettings']['ldapHost'];
+                $ldapPort                 = Yii::app()->params['ldapSettings']['ldapPort'];
+                $ldapBindRegisteredDomain = Yii::app()->params['ldapSettings']['ldapBindRegisteredDomain'];
+                $ldapBindPassword         = Yii::app()->params['ldapSettings']['ldapBindPassword'];
+                $ldapBaseDomain           = Yii::app()->params['ldapSettings']['ldapBaseDomain'];
+
+                if ($ldapHost != '' && $ldapPort != '' && $ldapBindRegisteredDomain != '' && 
+                    $ldapBindPassword != '' && $ldapBaseDomain != '' 
+                )
+                {
+                    $isSetAuthenticationLDAPTestConfiguration = true;
+                }
+            }
+            return $isSetAuthenticationLDAPTestConfiguration;
+        }
     }
 ?>
