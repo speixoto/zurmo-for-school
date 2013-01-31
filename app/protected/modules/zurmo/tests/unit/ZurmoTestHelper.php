@@ -43,9 +43,9 @@
             return $file;
         }
         
-        public static function isSetAuthenticationLDAPTestConfiguration()
+        public static function isAuthenticationLDAPTestConfigurationSet()
         {
-            $isSetAuthenticationLDAPTestConfiguration = false;
+            $isAuthenticationLDAPTestConfigurationSet = false;
 
             if (isset(Yii::app()->params['authenticationTestSettings']))
             {
@@ -59,10 +59,10 @@
                     $ldapBindPassword != '' && $ldapBaseDomain != '' 
                 )
                 {
-                    $isSetAuthenticationLDAPTestConfiguration = true;
+                    $isAuthenticationLDAPTestConfigurationSet = true;
                 }
             }
-            return $isSetAuthenticationLDAPTestConfiguration;
+            return $isAuthenticationLDAPTestConfigurationSet;
         }
     }
 ?>
