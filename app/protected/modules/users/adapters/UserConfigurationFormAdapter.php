@@ -44,10 +44,10 @@
             $form->subListPageSize           = Yii::app()->pagination->getByUserAndType(static::$user, 'subListPageSize');
             $form->themeColor                = Yii::app()->themeManager->resolveAndGetThemeColorValue(static::$user);
             $form->backgroundTexture         = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue(static::$user);
-            $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue();
-            $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue();
-            $form->defaultPermissionSetting  = static::resolveAndGetDefaultPermissionSetting();
-            $form->defaultPermissionGroupSetting = static::resolveAndGetDefaultPermissionGroupSetting();
+            $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue(static::$user);
+            $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue(static::$user);
+            $form->defaultPermissionSetting  = static::resolveAndGetDefaultPermissionSetting(static::$user);
+            $form->defaultPermissionGroupSetting = static::resolveAndGetDefaultPermissionGroupSetting(static::$user);
             return $form;
         }
 
@@ -78,18 +78,18 @@
             Yii::app()->pagination->setByUserAndType(static::$user, 'subListPageSize', (int)$form->subListPageSize);
             Yii::app()->themeManager->setThemeColorValue(static::$user, $form->themeColor);
             Yii::app()->themeManager->setBackgroundTextureValue(static::$user, $form->backgroundTexture);
-            static::setHideWelcomeViewValue((bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue((bool)$form->turnOffEmailNotifications);
-            static::setDefaultPermissionSettingValue((int)$form->defaultPermissionSetting);
-            static::setDefaultPermissionGroupSetting((int)$form->defaultPermissionGroupSetting,
+            static::setHideWelcomeViewValue(static::$user, (bool)$form->hideWelcomeView);
+            static::setTurnOffEmailNotificationsValue(static::$user, (bool)$form->turnOffEmailNotifications);
+            static::setDefaultPermissionSettingValue(static::$user, (int)$form->defaultPermissionSetting);
+            static::setDefaultPermissionGroupSetting(static::$user, (int)$form->defaultPermissionGroupSetting,
                 (int)$form->defaultPermissionSetting);
 
         }
 
-        public static function resolveAndGetHideWelcomeViewValue()
+        public static function resolveAndGetHideWelcomeViewValue(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            if ( null != $hide = ZurmoConfigurationUtil::getByUserAndModuleName(static::$user, 'ZurmoModule', 'hideWelcomeView'))
+            if ( null != $hide = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView'))
             {
                 return $hide;
             }
@@ -99,16 +99,16 @@
             }
         }
 
-        public static function setHideWelcomeViewValue($value)
+        public static function setHideWelcomeViewValue(User $user, $value)
         {
             assert('is_bool($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName(static::$user, 'ZurmoModule', 'hideWelcomeView', $value);
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView', $value);
         }
 
-        public static function resolveAndGetTurnOffEmailNotificationsValue()
+        public static function resolveAndGetTurnOffEmailNotificationsValue(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            if ( null != $turnOff = ZurmoConfigurationUtil::getByUserAndModuleName(static::$user, 'ZurmoModule', 'turnOffEmailNotifications'))
+            if ( null != $turnOff = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications'))
             {
                 return $turnOff;
             }
@@ -118,16 +118,16 @@
             }
         }
 
-        public static function setTurnOffEmailNotificationsValue($value)
+        public static function setTurnOffEmailNotificationsValue(User $user, $value)
         {
             assert('is_bool($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName(static::$user, 'ZurmoModule', 'turnOffEmailNotifications', $value);
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications', $value);
         }
 
-        public static function resolveAndGetDefaultPermissionSetting()
+        public static function resolveAndGetDefaultPermissionSetting(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            if ( null != $defaultPermission = ZurmoConfigurationUtil::getByUserAndModuleName(static::$user, 'ZurmoModule',
+            if ( null != $defaultPermission = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule',
                 'defaultPermissionSetting'))
             {
                 return $defaultPermission;
@@ -138,29 +138,30 @@
             }
         }
 
-        public static function resolveAndGetDefaultPermissionGroupSetting()
+        public static function resolveAndGetDefaultPermissionGroupSetting(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            return ZurmoConfigurationUtil::getByUserAndModuleName(static::$user, 'ZurmoModule', 'defaultPermissionGroupSetting');
+            return ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting');
         }
 
-        public static function setDefaultPermissionSettingValue($value)
+        public static function setDefaultPermissionSettingValue(User $user, $value)
         {
             assert('is_int($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName(static::$user, 'ZurmoModule', 'defaultPermissionSetting', $value);
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionSetting', $value);
         }
 
-        public static function setDefaultPermissionGroupSetting($value, $defaultPermissionSetting)
+        public static function setDefaultPermissionGroupSetting(User $user, $value, $defaultPermissionSetting)
         {
             assert('is_int($value)');
             assert('is_int($defaultPermissionSetting)');
             if ($defaultPermissionSetting == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
             {
-                ZurmoConfigurationUtil::setByUserAndModuleName(static::$user, 'ZurmoModule', 'defaultPermissionGroupSetting',
+                ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',
                     $value);
-            } else
+            }
+            else
             {
-                ZurmoConfigurationUtil::setByUserAndModuleName(static::$user, 'ZurmoModule', 'defaultPermissionGroupSetting',
+                ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',
                     null);
             }
         }

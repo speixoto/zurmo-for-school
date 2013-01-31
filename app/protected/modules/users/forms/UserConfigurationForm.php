@@ -100,5 +100,14 @@
                 'turnOffEmailNotifications' => Zurmo::t('UsersModule', 'Turn off email notifications')
             );
         }
+
+        public static function getAllDefaultPermissionTypes()
+        {
+            return array(
+                static::DEFAULT_PERMISSIONS_SETTING_OWNER                       => Zurmo::t('ZurmoModule', 'Owner'),
+                static::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP    => Zurmo::t('ZurmoModule', 'Owner and users in'),
+                static::DEFAULT_PERMISSIONS_SETTING_EVERYONE                    => Zurmo::t('ZurmoModule', 'Everyone'),
+            );
+        }
     }
 ?>
