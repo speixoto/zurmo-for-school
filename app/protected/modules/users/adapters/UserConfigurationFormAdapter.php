@@ -38,7 +38,7 @@
         public static function makeFormFromUserConfigurationByUser(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            static::$user                      = $user;
+            static::$user                    = $user;
             $form                            = new UserConfigurationForm(static::$user->id);
             $form->listPageSize              = Yii::app()->pagination->getByUserAndType(static::$user, 'listPageSize');
             $form->subListPageSize           = Yii::app()->pagination->getByUserAndType(static::$user, 'subListPageSize');

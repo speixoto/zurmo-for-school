@@ -563,7 +563,7 @@
             => 'E-mail secondaire',
         'Securable Item'
             => 'Élément sécurisable',
-        'Security'
+        'Security Overview'
             => 'Sécurité',
         'See more search results by clicking the down arrow at the bottom of the screen.'
             => 'Cliquez sur la flèche vers le bas pour afficher plus de résultats de votre recherche.',
