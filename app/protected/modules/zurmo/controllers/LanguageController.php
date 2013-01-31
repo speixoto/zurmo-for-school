@@ -74,7 +74,10 @@
                         array('{languageName}' => $languageData['label'])
                     );
 
-                $content = LanguagesCollectionView::renderFlashMessage($message);
+                    $content = LanguagesCollectionView::renderFlashMessage($message);
+
+                    RedBeansCache::forgetAll();
+                    GeneralCache::forgetAll();
                 }
             }
             catch (Exception $e)
@@ -120,9 +123,12 @@
                     $message = Zurmo::t('ZurmoModule', '{languageName} updated successfully',
                         array('{languageName}' => $languageData['label'])
                     );
-                }
 
-                $content = LanguagesCollectionView::renderFlashMessage($message);
+                    $content = LanguagesCollectionView::renderFlashMessage($message);
+
+                    RedBeansCache::forgetAll();
+                    GeneralCache::forgetAll();
+                }
             }
             catch (Exception $e)
             {
@@ -171,6 +177,9 @@
                     );
 
                     $content = LanguagesCollectionView::renderFlashMessage($message);
+
+                    RedBeansCache::forgetAll();
+                    GeneralCache::forgetAll();
                 }
             }
             catch (Exception $e)
