@@ -68,7 +68,7 @@
             $stateMetadataAdapterClassName = null,
             $dataCollection = null)
         {
-            assert('is_int($pageSize)');
+            assert('is_int($pageSize) || $pageSize == null');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
             $listModelClassName = get_class($searchModel->getModel());
