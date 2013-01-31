@@ -54,7 +54,7 @@
          */
         protected function resolveSelectedGroup()
         {
-            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting(Yii::app()->user->userModel);
+            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting(UserConfigurationFormAdapter::$user);
         }
 
         /**
@@ -64,7 +64,7 @@
          */
         protected function resolveSelectedType()
         {
-            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(Yii::app()->user->userModel);
+            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(UserConfigurationFormAdapter::$user);
         }
 
         protected function getAttributeName()
