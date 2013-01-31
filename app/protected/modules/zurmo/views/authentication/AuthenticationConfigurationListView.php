@@ -24,39 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * UserIdentity represents the data needed to identity a user.
-     */
-    class UserIdentity extends CUserIdentity
+    class AuthenticationConfigurationListView extends GridView
     {
-        const ERROR_NO_RIGHT_WEB_LOGIN = 3;
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
 
-        /**
-         * Authenticates a user.
-         * @return boolean whether authentication succeeds.
-         */
-        public function authenticate()
-        {  
-            try
-            {
-                User::authenticate($this->username, $this->password);
-                $this->setState('username', $this->username);     
-                $this->errorCode = self::ERROR_NONE;
-                return true;
-            }
-            catch (NotFoundException $e)
-            {
-                $this->errorCode = self::ERROR_USERNAME_INVALID;
-            }
-            catch (BadPasswordException $e)
-            {
-                $this->errorCode = self::ERROR_PASSWORD_INVALID;
-            }
-            catch (NoRightWebLoginException $e)
-            {
-                $this->errorCode = self::ERROR_NO_RIGHT_WEB_LOGIN;
-            }
-            return false;
+        public function __construct()
+        {
+            parent::__construct(1, 1);
+            $this->setView(new AuthenticationConfigurationMenuView(), 0, 0);
+        }
+
+        public function isUniqueToAPage()
+        {
+            return true;
         }
     }
 ?>

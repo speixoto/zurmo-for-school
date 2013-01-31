@@ -38,21 +38,38 @@
         }
 
         public function testSuperUserEditConfigurationForm()
-        {        
+        {    
+            //to test validation through walkthrough test for error    
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');            
             $this->setPostArray(array('save'                                        => 'Save',
                                       'ZurmoConfigurationForm'                      => array(
-                                      'applicationName'                             => 'Demo Company Inc.',                                          
-                                      'dashboardListPage'                           => '5',                                      
-                                      'gamificationModalNotificationsEnabled'       => '1',                                      
-                                      'listPageSize'                                => '10',                                      
-                                      'modalListPageSize'                           => '5',                                      
-                                      'subListPageSize'                             => '',                                      
-                                      'timeZone'                                    => 'America/Chicago'),                                       
+                                        'applicationName'                             => 'Demo Company Inc.',                                          
+                                        'dashboardListPage'                           => '5',                                      
+                                        'gamificationModalNotificationsEnabled'       => '1',                                      
+                                        'listPageSize'                                => '10',                                      
+                                        'modalListPageSize'                           => '5',                                      
+                                        'subListPageSize'                             => '',                                      
+                                        'timeZone'                                    => 'America/Chicago'),                                       
                                       )                                      
                                );
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/configurationEdit'); 
-            $this->assertFalse(strpos($content, 'Sublist page size cannot be blank.') === false);          
+            $this->assertFalse(strpos($content, 'Sublist page size cannot be blank.') === false);  
+
+            //to test validation through walkthrough test for success
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');            
+            $this->setPostArray(array('save'                                        => 'Save',
+                                      'ZurmoConfigurationForm'                      => array(
+                                        'applicationName'                             => 'Demo Company Inc.',                                          
+                                        'dashboardListPage'                           => '5',                                      
+                                        'gamificationModalNotificationsEnabled'       => '1',                                      
+                                        'listPageSize'                                => '10',                                      
+                                        'modalListPageSize'                           => '5',                                      
+                                        'subListPageSize'                             => '5',                                      
+                                        'timeZone'                                    => 'America/Chicago'),                                       
+                                      )                                      
+                               );
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/configurationEdit'); 
+            $this->assertFalse(strpos($content, 'Sublist page size cannot be blank.') === false);            
         }    
     }
 ?>
