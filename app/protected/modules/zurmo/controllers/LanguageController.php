@@ -158,15 +158,15 @@
             print $content;
         }
 
-        public function actionInactivate($languageCode)
+        public function actionDeactivate($languageCode)
         {
             $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
 
             try
             {
-                if (Yii::app()->languageHelper->inactivateLanguage($languageCode))
+                if (Yii::app()->languageHelper->deactivateLanguage($languageCode))
                 {
-                    $message = Zurmo::t('ZurmoModule', '{languageName} inactivated successfully',
+                    $message = Zurmo::t('ZurmoModule', '{languageName} deactivated successfully',
                         array('{languageName}' => $languageData['label'])
                     );
 
@@ -178,7 +178,7 @@
                 $exceptionMessage = $e->getMessage();
                 if (!empty($exceptionMessage))
                 {
-                    $message = Zurmo::t('ZurmoModule', '{languageName} inactivate failed. Error: {errorMessage}',
+                    $message = Zurmo::t('ZurmoModule', '{languageName} deactivate failed. Error: {errorMessage}',
                         array(
                             '{languageName}' => $languageData['label'],
                             '{errorMessage}' => $exceptionMessage
@@ -187,7 +187,7 @@
                 }
                 else
                 {
-                    $message = Zurmo::t('ZurmoModule', '{languageName} inactivate failed. Unexpected error.',
+                    $message = Zurmo::t('ZurmoModule', '{languageName} deactivate failed. Unexpected error.',
                         array('{languageName}' => $languageData['label'])
                     );
                 }

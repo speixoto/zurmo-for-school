@@ -30,7 +30,7 @@
     class ZurmoLanguageHelper extends CApplicationComponent
     {
         /**
-         * The base language as defined by the config file. This language cannot be inactivated.
+         * The base language as defined by the config file. This language cannot be deactivated.
          * @var string
          */
         protected $baseLanguage;
@@ -212,7 +212,7 @@
          * A language that is the base language or currently selected as a user's default language, cannot be removed.
          * @return true if the specified language can be removed.
          */
-        public function canInactivateLanguage($language)
+        public function canDeactivateLanguage($language)
         {
             assert('is_string($language)');
             if ($language == $this->baseLanguage || $this->isLanguageADefaultLanguageForAnyUsers($language))
@@ -335,7 +335,7 @@
             throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
         }
 
-        public function inactivateLanguage($languageCode)
+        public function deactivateLanguage($languageCode)
         {
             $activeLanguages = $this->getActiveLanguages();
             // Check if the language is already active

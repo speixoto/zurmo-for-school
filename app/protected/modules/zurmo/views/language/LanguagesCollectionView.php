@@ -89,7 +89,7 @@ $(document).on('click', ".action-button", function() {
         return false;
     }
 
-    if ($.inArray(_ajaxAction, ["activate", "inactivate", "update"]) == -1)
+    if ($.inArray(_ajaxAction, ["activate", "deactivate", "update"]) == -1)
     {
         return false;
     }
@@ -182,7 +182,7 @@ EOD;
                 if ($languageCode != Yii::app()->sourceLanguage)
                 {
                     $content .= $this->renderUpdateButton($languageCode, $languageData);
-                    $content .= $this->renderInactivateButton($languageCode, $languageData);
+                    $content .= $this->renderDeactivateButton($languageCode, $languageData);
                 }
             }
             else
@@ -210,7 +210,7 @@ EOD;
             );
         }
 
-        protected function renderInactivateButton($languageCode, $languageData)
+        protected function renderDeactivateButton($languageCode, $languageData)
         {
             assert('is_string($languageCode)');
             assert('is_array($languageData)');
@@ -222,7 +222,7 @@ EOD;
                     Zurmo::t('ZurmoModule', 'Deactivate')
                 ),
                 '#',
-                $this->renderButtonHtml('inactivate', $languageCode, $languageData)
+                $this->renderButtonHtml('deactivate', $languageCode, $languageData)
             );
         }
 
@@ -244,13 +244,13 @@ EOD;
 
         protected function renderButtonHtml($action, $languageCode, $languageData)
         {
-            assert('in_array($action, array("activate", "inactivate", "update"))');
+            assert('in_array($action, array("activate", "deactivate", "update"))');
             $buttonHtml = array(
                 'ajaxaction' => $action,
                 'languagecode' => $languageCode,
                 'class' => 'action-button attachLoading z-button green-button'
             );
-            if ($action == 'inactivate' && !$languageData['canInactivate'])
+            if ($action == 'deactivate' && !$languageData['canDeactivate'])
             {
                 $buttonHtml['class'] .= ' disabled';
             }
@@ -335,8 +335,8 @@ EOD;
             {
                 $languagesData[$language] = array('label'         => $label,
                                                  'active'        => in_array($language, $activeLanguages),
-                                                 'canInactivate' =>
-                                                        Yii::app()->languageHelper->canInactivateLanguage($language));
+                                                 'canDeactivate' =>
+                                                        Yii::app()->languageHelper->canDeactivateLanguage($language));
             }
             return $languagesData;
         }
