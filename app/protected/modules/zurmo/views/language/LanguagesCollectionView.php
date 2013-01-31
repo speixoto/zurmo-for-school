@@ -250,7 +250,7 @@ EOD;
                 'languagecode' => $languageCode,
                 'class' => 'action-button attachLoading z-button green-button'
             );
-            if (!$languageData['canInactivate'])
+            if ($action == 'inactivate' && !$languageData['canInactivate'])
             {
                 $buttonHtml['class'] .= ' disabled';
             }
@@ -339,6 +339,25 @@ EOD;
                                                         Yii::app()->languageHelper->canInactivateLanguage($language));
             }
             return $languagesData;
+        }
+
+        public static function renderFlashMessage($text, $permanent = false, $showIcon = true)
+        {
+            assert('is_string($text) && !empty($text)');
+            assert('is_bool($permanent)');
+            assert('is_bool($showIcon)');
+            $messageConfig = array(
+                'text' => $text,
+                'permanent' => $permanent,
+                'showIcon' => $showIcon
+            );
+
+            return sprintf(
+                "<script type=\"text/javascript\">" .
+                "$('#FlashMessageBar').jnotifyAddMessage(%s);" .
+                "</script>",
+                json_encode($messageConfig)
+            );
         }
     }
 ?>

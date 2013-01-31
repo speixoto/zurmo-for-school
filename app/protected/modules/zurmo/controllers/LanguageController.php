@@ -73,6 +73,8 @@
                     $message = Zurmo::t('ZurmoModule', '{languageName} Activated successfully',
                         array('{languageName}' => $languageData['label'])
                     );
+
+                $content = LanguagesCollectionView::renderFlashMessage($message);
                 }
             }
             catch (Exception $e)
@@ -93,13 +95,12 @@
                         array('{languageName}' => $languageData['label'])
                     );
                 }
-            }
 
-            $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
-                                text: '$message',
-                                permanent: false,
-                                showIcon: true,
-                            });</script>";
+                $content = LanguagesCollectionView::renderFlashMessage(
+                    $message,
+                    true
+                );
+            }
 
             $view = new LanguagesCollectionView(
                 $this->getId(),
@@ -120,10 +121,13 @@
                         array('{languageName}' => $languageData['label'])
                     );
                 }
+
+                $content = LanguagesCollectionView::renderFlashMessage($message);
             }
             catch (Exception $e)
             {
                 $exceptionMessage = $e->getMessage();
+
                 if (!empty($exceptionMessage))
                 {
                     $message = Zurmo::t('ZurmoModule', '{languageName} update failed. Error: {errorMessage}',
@@ -139,13 +143,12 @@
                         array('{languageName}' => $languageData['label'])
                     );
                 }
-            }
 
-            $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
-                                text: '$message',
-                                permanent: false,
-                                showIcon: true,
-                            });</script>";
+                $content = LanguagesCollectionView::renderFlashMessage(
+                    $message,
+                    true
+                );
+            }
 
             $view = new LanguagesCollectionView(
                 $this->getId(),
@@ -158,6 +161,7 @@
         public function actionInactivate($languageCode)
         {
             $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+
             try
             {
                 if (Yii::app()->languageHelper->inactivateLanguage($languageCode))
@@ -165,6 +169,8 @@
                     $message = Zurmo::t('ZurmoModule', '{languageName} inactivated successfully',
                         array('{languageName}' => $languageData['label'])
                     );
+
+                    $content = LanguagesCollectionView::renderFlashMessage($message);
                 }
             }
             catch (Exception $e)
@@ -185,13 +191,12 @@
                         array('{languageName}' => $languageData['label'])
                     );
                 }
-            }
 
-            $content = "<script type=\"text/javascript\">$('#FlashMessageBar').jnotifyAddMessage({
-                                text: '$message',
-                                permanent: false,
-                                showIcon: true,
-                            });</script>";
+                $content = LanguagesCollectionView::renderFlashMessage(
+                    $message,
+                    true
+                );
+            }
 
             $view = new LanguagesCollectionView(
                 $this->getId(),
