@@ -143,5 +143,19 @@
             $this->assertEquals(1, count($participants));
             $this->assertEquals($participants[0], $super);
         }
+
+        public function testResolvePeopleToSendNotificationToOnNewMission()
+        {
+            $super                              = User::getByUsername('super');
+            Yii::app()->user->userModel         = $super;
+            $steven                             = User::getByUsername('steven');
+            $mary                               = UserTestHelper::createBasicUser('mary');
+            $missions                           = Mission::getAll();
+            $mission                            = $missions[0];
+            $people                             = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($mission);
+            $this->assertNotContains($super,  $people);
+            $this->assertContains   ($steven, $people);
+            $this->assertContains   ($mary,   $people);
+        }
     }
 ?>

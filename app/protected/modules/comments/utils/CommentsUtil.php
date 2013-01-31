@@ -109,7 +109,7 @@
                                           '{commentDescription}'  => strval($comment),
                                           '{url}'                 => ZurmoHtml::link($url, $url)
                                         ));
-            $emailContent->textContent  = $emailContent->htmlContent  = EmailNotificationUtil::
+            $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
             $htmlContent = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
@@ -136,7 +136,7 @@
             }
         }
 
-        protected static function getUrlToEmail($model)
+        public static function getUrlToEmail($model)
         {
             if ($model instanceof Conversation)
             {

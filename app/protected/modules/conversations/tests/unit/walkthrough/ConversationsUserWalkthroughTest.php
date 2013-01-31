@@ -514,7 +514,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/ajaxChangeStatus');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
             //Conversation is closed
             $this->setGetArray(array('type' => 1));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
@@ -523,7 +523,7 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
             $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/ajaxChangeStatus');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
             //Conversation is Re-opened
             $this->setGetArray(array('type' => 1));
             $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');

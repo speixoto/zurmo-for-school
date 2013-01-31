@@ -146,7 +146,7 @@
             echo $view->render();
         }
 
-        public function actionChangeIsClosed($status, $id)
+        public function actionAjaxChangeStatus($status, $id)
         {
             $content         = null;
             $save            = true;

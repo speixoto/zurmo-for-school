@@ -45,10 +45,11 @@
             //Create test users
             $steven                             = UserTestHelper::createBasicUser('steven');
             $steven->primaryEmail->emailAddress = 'steven@testzurmo.com';
+            UserConfigurationFormAdapter::setValue($steven, true, 'turnOffEmailNotifications');
             $sally                              = UserTestHelper::createBasicUser('sally');
             $sally->primaryEmail->emailAddress  = 'sally@testzurmo.com';
             $mary                               = UserTestHelper::createBasicUser('mary');
-            $mary->primaryEmail->emailAddress  = 'mary@testzurmo.com';
+            $mary->primaryEmail->emailAddress   = 'mary@testzurmo.com';
 
             //give 3 users access, create, delete for mission rights.
             $steven->setRight('MissionsModule', MissionsModule::RIGHT_ACCESS_MISSIONS);
@@ -116,6 +117,12 @@
             $readWritePermitables              = $explicitReadWriteModelPermissions->getReadWritePermitables();
             $this->assertEquals(1, count($readWritePermitables));
             $this->assertTrue(isset($readWritePermitables[$everyoneGroup->id]));
+
+            //Confirm email was sent
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
+            $emailMessages = EmailMessage::getAll();
+            $this->assertEquals(2, count($emailMessages[0]->recipients));
         }
 
         /**
@@ -134,7 +141,7 @@
             $missions  = Mission::getAll();
             $this->assertEquals(1, count($missions));
             $this->assertEquals(0, $missions[0]->comments->count());
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $oldStamp        = $missions[0]->latestDateTime;
 
@@ -364,7 +371,7 @@
             $this->assertEquals(1, count($missions));
             $mission        = $missions[0];
             $this->assertEquals(0, $mission->comments->count());
-            $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
+            $messageCount   = Yii::app()->emailHelper->getQueuedCount();
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             //Save new comment.
@@ -375,10 +382,10 @@
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name')));
             $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
             $this->assertEquals(1, $mission->comments->count());
-            $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
+            $this->assertEquals($messageCount + 1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages  = EmailMessage::getAll();
-            $emailMessage   = $emailMessages[0];
+            $emailMessage   = $emailMessages[$messageCount];
             $this->assertEquals(1, count($emailMessage->recipients));
             $this->assertContains('mission', $emailMessage->subject);
             $this->assertContains(strval($mission), $emailMessage->subject);
