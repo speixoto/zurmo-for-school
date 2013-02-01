@@ -194,15 +194,7 @@
 
         protected function renderScriptsContent()
         {
-            Yii::app()->clientScript->registerScript('emailMatchingActions', "
-                                  $.ajaxSetup({
-                                  complete:function(req) {                                   
-                                    if($('.email-archive-item').length==0)
-                                    {                                     
-                                        window.location.reload()                                     
-                                    }                                  
-                                  }                                                                   
-                                  });             
+            Yii::app()->clientScript->registerScript('emailMatchingActions', "             
                                   $('.select-contact-link').live('click', function ()
                                   {
                                         $(this).closest('td').find('.z-action-link-active').removeClass('z-action-link-active');
@@ -327,6 +319,10 @@
                                               permanent: false,
                                               showIcon: true,
                                            })
+                                           if($('.email-archive-item').length==0)
+                                           {                                     
+                                              window.location.reload();                                  
+                                           } 
                                        }
             ");
         }
