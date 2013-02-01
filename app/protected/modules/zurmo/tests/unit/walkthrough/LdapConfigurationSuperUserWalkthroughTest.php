@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Testing the views for configuring LDAP server
+     * Testing the views for configuring Ldap server
      */
-    class LDAPConfigurationSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class LdapConfigurationSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -40,20 +40,20 @@
         public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/configurationEditLDAP');
+            $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/configurationEditLdap');
         }
         
 
-        public function testSuperUserModifyLDAPConfiguration()
+        public function testSuperUserModifyLdapConfiguration()
         {
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet())
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');           
-            //Change LDAP settings            
+            //Change Ldap settings            
             $this->resetGetArray();
-            $this->setPostArray(array('LDAPConfigurationForm' => array(
+            $this->setPostArray(array('LdapConfigurationForm' => array(
                                       'host'                  =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
                                       'port'                  => 
@@ -66,8 +66,8 @@
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],
                                       'enabled'               => 
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'])));
-            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLDAP');
-            $this->assertEquals('LDAP Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLdap');
+            $this->assertEquals('Ldap Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;
@@ -86,18 +86,18 @@
         }
         
         /*
-        *@depends testSuperUserModifyLDAPConfiguration 
+        *@depends testSuperUserModifyLdapConfiguration 
         */
-        public function testSuperUserTestLDAPConnection()
+        public function testSuperUserTestLdapConnection()
         {
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet())
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            //check LDAP connection         
+            //check Ldap connection         
             $this->resetGetArray();
-            $this->setPostArray(array('LDAPConfigurationForm' => array(
+            $this->setPostArray(array('LdapConfigurationForm' => array(
                                       'host'                              => Yii::app()->authenticationHelper->ldapHost,
                                       'port'                              => Yii::app()->authenticationHelper->ldapPort,
                                       'bindRegisteredDomain'              => Yii::app()->authenticationHelper->ldapBindRegisteredDomain,
@@ -105,7 +105,7 @@
                                       'baseDomain'                        => Yii::app()->authenticationHelper->ldapBaseDomain,
                                       'enabled'                           => Yii::app()->authenticationHelper->ldapEnabled)));
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');            
-            $this->assertTrue(strpos($content, "Successfully Connected to LDAP Server") > 0);                  
+            $this->assertTrue(strpos($content, "Successfully Connected to Ldap Server") > 0);                  
         }
     }
 ?>

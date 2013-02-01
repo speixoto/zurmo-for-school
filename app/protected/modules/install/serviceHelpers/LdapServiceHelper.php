@@ -25,22 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Checks that the LDAP extension for php is installed.
+     * Checks that the Ldap extension for php is installed.
      */
-    class LDAPServiceHelper extends ServiceHelper
+    class LdapServiceHelper extends ServiceHelper
     {
         protected $required = false;
 
         protected function checkService()
         {
-            $passed = InstallUtil::isLDAPInstalled();
+            $passed = InstallUtil::isLdapInstalled();
             if ($passed)
             {
-                $this->message = Zurmo::t('InstallModule', 'LDAP is installed.');
+                $this->message = Zurmo::t('InstallModule', 'Ldap is installed.');
             }
             else
             {
-                $this->message = Zurmo::t('InstallModule', 'LDAP is not installed.');
+                $this->message = Zurmo::t('InstallModule', 'Ldap is not installed.');
             }
             return $passed;
         }

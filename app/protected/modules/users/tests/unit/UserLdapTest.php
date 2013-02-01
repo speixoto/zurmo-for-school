@@ -24,13 +24,13 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserLDAPTest extends ZurmoBaseTest
+    class UserLdapTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();            
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet()) 
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet()) 
             {            
                 Yii::app()->authenticationHelper->ldapHost                 = 
                 Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
@@ -44,7 +44,7 @@
                 Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'];
                 Yii::app()->authenticationHelper->ldapEnabled              = 
                 Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'];            
-                Yii::app()->authenticationHelper->setLDAPSettings();
+                Yii::app()->authenticationHelper->setLdapSettings();
                 Yii::app()->authenticationHelper->init();            
             }
         }
@@ -60,9 +60,9 @@
         */
         public function testUserExitsInZurmoButNotOnldap()
         {   
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet())
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             }      
             $user               = new User();
             $user->username     = 'abcdefg';
@@ -89,9 +89,9 @@
         */
         public function testUserExitsInBothButWrongPasswordForldap()
         {
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet())
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             Yii::app()->user->userModel = User::getByUsername('super');
             //creating user same as on ldap with different password
@@ -106,7 +106,7 @@
             $this->assertTrue($admin->save());
             $username = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
             $password = Yii::app()->authenticationHelper->ldapBindPassword;
-            $identity = new UserLDAPIdentity($username,'test123');                        
+            $identity = new UserLdapIdentity($username,'test123');                        
             $authenticated = $identity->authenticate(true);
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);     
@@ -117,12 +117,12 @@
         */
         public function testUserExitsInldapNotInZurmo()
         {
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet())
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             Yii::app()->user->userModel = User::getByUsername('super');     
-            $identity                   = new UserLDAPIdentity('john','johnldap');                        
+            $identity                   = new UserLdapIdentity('john','johnldap');                        
             $authenticated              = $identity->authenticate(true);
             $this->assertEquals(1, $identity->errorCode);
             $this->assertFalse($authenticated);     
@@ -133,14 +133,14 @@
         */
         public function testUserExitsInldapAndZurmo()
         {                    
-            if (!ZurmoTestHelper::isAuthenticationLDAPTestConfigurationSet())
+            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test LDAP settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             Yii::app()->user->userModel = User::getByUsername('super'); 
             $username                   = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
             $password                   = Yii::app()->authenticationHelper->ldapBindPassword;            
-            $identity                   = new UserLDAPIdentity($username,$password);                        
+            $identity                   = new UserLdapIdentity($username,$password);                        
             $authenticated              = $identity->authenticate(true);
             $this->assertEquals(0, $identity->errorCode);
             $this->assertTrue($authenticated);     

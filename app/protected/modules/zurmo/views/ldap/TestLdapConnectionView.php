@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * View used to render message content as a result of test connection for ldap server.  This is rendered in a modal window.
+     * View used to render message content as a result of test connection for Ldap server.  This is rendered in a modal window.
      */
-    class TestLDAPConnectionView extends View
+    class TestLdapConnectionView extends View
     {
         protected $message;
 

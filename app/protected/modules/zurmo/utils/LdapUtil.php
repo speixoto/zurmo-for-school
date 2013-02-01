@@ -26,12 +26,12 @@
      ********************************************************************************/
      
      /**
-     * Helper class to create a connection object and test connection for ldap.
+     * Helper class to create a connection object and test connection for Ldap.
      */
-    class LDAPUtil
+    class LdapUtil
     {        
         /**
-         * Given an host and port, a ldapConnection is created and returned.
+         * Given an host and port, a LdapConnection is created and returned.
          * @param string $host
          * @param string $port
          * @return bool $ldapConnection
@@ -47,7 +47,7 @@
         }
         
         /**
-         * Send a connection Request.  Can use to determine if the LDAP settings are configured correctly.
+         * Send a connection Request.  Can use to determine if the Ldap settings are configured correctly.
          * @param ZurmoAuthenticationHelper $zurmoAuthenticationHelper
          * @param server $host
          * @param username $bindRegisteredDomain

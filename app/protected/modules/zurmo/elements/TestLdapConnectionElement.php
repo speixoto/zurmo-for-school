@@ -25,10 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Utilize this element to display a  button that can be used to send a test LDAP connection while setting
-     * up the LDAP server configuration.
+     * Utilize this element to display a  button that can be used to send a test Ldap connection while setting
+     * up the Ldap server configuration.
      */
-    class TestLDAPConnectionElement extends Element
+    class TestLdapConnectionElement extends Element
     {
         /**
          * Renders a button.
@@ -66,14 +66,14 @@
             $content .= ZurmoHtml::ajaxLink(
                 ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Test Connection')),
                 Yii::app()->createUrl('zurmo/ldap/testConnection/', array()),
-                static::resolveAjaxOptionsForTestLDAPConnection($this->form->getId()),
-                array('id' => 'TestLDAPConnectionButton', 'class' => 'LDAPTestingButton z-button')
+                static::resolveAjaxOptionsForTestLdapConnection($this->form->getId()),
+                array('id' => 'TestLdapConnectionButton', 'class' => 'LdapTestingButton z-button')
             );
             $content .= '</span>';
             return $content;
         }
 
-        protected static function resolveAjaxOptionsForTestLDAPConnection($formId)
+        protected static function resolveAjaxOptionsForTestLdapConnection($formId)
         {
             assert('is_string($formId)');
             $title               = Yii::t('Default', 'Test Connection Results');

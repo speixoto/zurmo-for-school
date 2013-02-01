@@ -25,17 +25,17 @@
      ********************************************************************************/
 
     /**
-     * Class to adapt LDAP Configuration values into a configuration form.
+     * Class to adapt Ldap Configuration values into a configuration form.
      * Saves global values from a configuration form.
      */
-    class LDAPConfigurationFormAdapter
+    class LdapConfigurationFormAdapter
     {
         /**
-         * @return LDAPConfigurationForm
+         * @return LdapConfigurationForm
          */
         public static function makeFormFromGlobalConfiguration()
         {
-            $form                                    = new LDAPConfigurationForm();
+            $form                                    = new LdapConfigurationForm();
             $form->host                              = Yii::app()->authenticationHelper->ldapHost;
             $form->port                              = Yii::app()->authenticationHelper->ldapPort;
             $form->bindRegisteredDomain              = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;            
@@ -46,9 +46,9 @@
         }
 
         /**
-         * Given a LDAPConfigurationForm, save the configuration global values.
+         * Given a LdapConfigurationForm, save the configuration global values.
          */
-        public static function setConfigurationFromForm(LDAPConfigurationForm $form)
+        public static function setConfigurationFromForm(LdapConfigurationForm $form)
         {             
             Yii::app()->authenticationHelper->ldapHost                 = $form->host;
             Yii::app()->authenticationHelper->ldapPort                 = $form->port;
@@ -56,7 +56,7 @@
             Yii::app()->authenticationHelper->ldapBindPassword         = $form->bindPassword;
             Yii::app()->authenticationHelper->ldapBaseDomain           = $form->baseDomain;
             Yii::app()->authenticationHelper->ldapEnabled                  = $form->enabled;
-            Yii::app()->authenticationHelper->setLDAPSettings();
+            Yii::app()->authenticationHelper->setLdapSettings();
        }
     }
 ?>
