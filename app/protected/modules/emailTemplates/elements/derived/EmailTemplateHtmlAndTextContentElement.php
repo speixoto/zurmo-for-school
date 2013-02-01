@@ -74,7 +74,7 @@
 
          protected function renderTextContentArea()
          {
-         
+          
          }
         public static function getModelAttributeNames()
         {
