@@ -40,10 +40,29 @@
             {
                 return true;
             }
-            //need to add logic for watching there is last unmatched mail deleted
-            
+            //Added some logic for watching there is last unmatched mail deleted            
+            $pageSize         = null;
+            $emailMessage     = new EmailMessage(false);
+            $searchAttributes = array();
+            $metadataAdapter  = new ArchivedEmailMatchingSearchDataProviderMetadataAdapter(
+                $emailMessage,
+                Yii::app()->user->userModel->id,
+                $searchAttributes
+            );
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadataAdapter->getAdaptedMetadata(),
+                'EmailMessage',
+                'RedBeanModelDataProvider',
+                'createdDateTime',
+                true,
+                $pageSize
+            );
+            $data=$dataProvider->getData();
+            if(($n=count($data))>0)
+            {              
+              return true;
+            }
             $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
-
             $messageView = new ZeroEmailMessagesRequiringArchivingView();
             $view        = new ModalView($this->controller, $messageView);
             Yii::app()->getClientScript()->setToAjaxMode();

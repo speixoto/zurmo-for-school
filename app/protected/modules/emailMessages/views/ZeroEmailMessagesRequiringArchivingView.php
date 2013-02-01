@@ -55,7 +55,7 @@
         protected function getMessageContent()
         {
             return Zurmo::t('EmailMessagesModule', '<h2>Not so fast</h2><div class="large-icon"></div>' .
-                                     '<p>User Dont have any Unmatched Emails</p>');
+                                     '<p>You Dont have any Unmatched Emails</p>');
         }
     }
 ?>

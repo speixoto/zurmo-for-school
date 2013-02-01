@@ -52,7 +52,7 @@
                 array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + createEmailMessage',
                      'controller' => $this,
                 ),                
-                array(self::EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH,
+                array(self::EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH . ' + matchingList' ,
                      'controller' => $this,
                 )
             );
