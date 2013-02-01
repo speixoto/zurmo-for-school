@@ -81,6 +81,7 @@
                 ),
                 'relations' => array(
                     'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember'),
+                    'autoresponders'               => array(RedBeanModel::HAS_MANY,   'Autoresponder'),
                 ),
                 'rules' => array(
                     array('name',          'required'),

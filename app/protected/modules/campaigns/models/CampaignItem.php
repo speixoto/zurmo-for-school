@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class Campaign extends OwnedSecurableItem
+    class CampaignItem extends OwnedSecurableItem
     {
         public static function getByName($name)
         {
@@ -85,39 +85,15 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
-                    'type',
-                    'formatType',
-                    'fromName',
-                    'fromAddress',
-                    'subject',
-                    'htmlContent',
-                    'textContent',
                 ),
                 'relations' => array(
-                    'campaignItem'         => array(RedBeanModel::HAS_MANY,   'CampaignItem'),
+                    'person'                       => array(RedBeanModel::HAS_ONE,    'Person'),
+                    'emailMessage'                 => array(RedBeanModel::HAS_ONE,    'EmailMessage'),
+                    'campaignItemActivity'         => array(RedBeanModel::HAS_MANY,   'CampaignItemActivity'),
                 ),
                 'rules' => array(
-                    array('type',                 'required'),
-                    array('type',                 'type',    'type' => 'integer'),
-                    array('type',                 'length',  'min'  => 1),
-                    array('name',                 'required'),
-                    array('name',                 'type',    'type' => 'string'),
-                    array('name',                 'length',  'min'  => 3, 'max' => 64),
-                    array('formatType',           'type',    'type' => 'string'),
-                    array('formatType',           'length',  'min'  => 3, 'max' => 64),
-                    array('fromName',             'required'),
-                    array('fromName',             'type',    'type' => 'string'),
-                    array('fromName',             'length',  'min'  => 3, 'max' => 64),
-                    array('subject',              'required'),
-                    array('subject',              'type',    'type' => 'string'),
-                    array('subject',              'length',  'min'  => 3, 'max' => 64),
-                    array('htmlContent',          'type',    'type' => 'string'),
-                    array('textContent',          'type',    'type' => 'string'),
                 ),
                 'elements' => array(
-                    'htmlContent'                  => 'TextArea',
-                    'textContent'                  => 'TextArea',
                 ),
             );
             return $metadata;

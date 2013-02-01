@@ -70,15 +70,57 @@
             $this->setGetArray(array('id' => $marketingListNameId));
             $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
 
-            //Save account.
+            //Save marketingList.
             $marketingListName = MarketingList::getById($marketingListNameId);
             $this->assertEquals('MarketingList Description', $marketingListName->description);
             $this->setPostArray(array('MarketingList' => array('description' => 'Edited Description')));
-            //Test having a failed validation on the account during save.
+            //Test having a failed validation on the marketingList during save.
             $this->setGetArray (array('id'      => $marketingListNameId));
             $this->setPostArray(array('MarketingList' => array('name' => '')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/default/edit');
             $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
+        }
+
+        public function testSuperUserDeleteAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $marketingListNameId = self::getModelIdByModelNameAndName ('MarketingList', 'MarketingListName');
+
+            //Delete an marketingList.
+            $this->setGetArray(array('id' => $marketingListNameId));
+            $this->resetPostArray();
+            $this->runControllerWithRedirectExceptionAndGetContent('marketingLists/default/delete');
+            $marketingLists = MarketingList::getAll();
+            $this->assertEquals(1, count($marketingLists));
+            try
+            {
+                MarketingList::getById($marketingLists);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+                //success
+            }
+        }
+
+        public function testSuperUserCreateAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //Create a new marketingList.
+            $this->resetGetArray();
+            $this->setPostArray(array('MarketingList' => array(
+                                            'name'            => 'New MarketingListName'
+                                            'description'     => 'New MarketingList Description')));
+            $redirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/create');
+            $marketingList = MarketingList::getByName('New MarketingListName');
+            $this->assertEquals(1, count($marketingList));
+            $this->assertTrue  ($marketingList[0]->id > 0);
+            $compareRedirectUrl = Yii::app()->createUrl('marketingLists/default/details', array('id' => $marketingList[0]->id));
+            $this->assertEquals($compareRedirectUrl, $redirectUrl);
+            $this->assertEquals('New MarketingList Description', $marketingList[0]->description);
+            $this->assertTrue  ($marketingList[0]->owner == $super);
+            $marketingList = MarketingList::getAll();
+            $this->assertEquals(2, count($marketingList));
         }
     }
 ?>

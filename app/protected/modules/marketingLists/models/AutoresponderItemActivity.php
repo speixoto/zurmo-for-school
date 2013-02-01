@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Model for storing an email message item activity.
+     * Model for storing an autoresponder item activity.
      */
-    class EmailMessageItemActivity extends RedBeanModel
+    class AutoresponderItemActivity extends EmailMessageItemActivity
     {
         public function __toString()
         {
@@ -40,16 +40,7 @@
 
         public static function getModuleClassName()
         {
-            return 'EmailMessagesModule';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'Emails';
+            return 'MarketingListsModule';
         }
 
         public static function canSaveMetadata()
@@ -59,20 +50,7 @@
 
         public static function getDefaultMetadata()
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'type',
-                    'dateTime',
-                ),
-                'rules' => array(
-                    array('dateTime',  'type', 'type' => 'datetime'),
-                ),
-                'elements' => array(
-                    'dateTime'  => 'DateTime',
-                )
-            );
-            return $metadata;
+        //todo
         }
 
         public static function isTypeDeletable()

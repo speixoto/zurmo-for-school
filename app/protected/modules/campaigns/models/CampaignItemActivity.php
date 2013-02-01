@@ -42,16 +42,6 @@
         {
             return 'CampaignsModule';
         }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'Campaign';
-        }
-
         /**
          * Returns the display name for plural of the model class.
          * @return dynamic label name based on module.
@@ -61,23 +51,10 @@
             return 'Campaigns';
         }
 
-        public static function canSaveMetadata()
-        {
-            return false;
-        }
-
         public static function getDefaultMetadata()
         {
         }
 
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
 
-        public static function hasRelatedItems()
-        {
-            return true;
-        }
     }
 ?>

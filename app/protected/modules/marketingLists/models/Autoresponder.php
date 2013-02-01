@@ -78,9 +78,11 @@
                     array('subject',              'length',  'min'  => 3, 'max' => 64),
                     array('htmlContent',          'type',    'type' => 'string'),
                     array('textContent',          'type',    'type' => 'string'),
+                    array('secondsFromSubscribe', 'type',    'type' => 'integer'),
                 ),
                 'relations' => array(
                     'autoresponderItem'         => array(RedBeanModel::HAS_MANY,   'AutoresponderItem'),
+                    'emailMessageUrls'          => array(RedBeanModel::HAS_MANY,   'EmailMessageUrl'),
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',

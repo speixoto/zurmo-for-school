@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AutoResponderItem extends OwnedModel
+    class AutoresponderItem extends OwnedModel
     {
 
         public static function getByName($name)
@@ -62,7 +62,9 @@
                 'members' => array(
                 ),
                 'relations' => array(
-                    'contact'   => array(RedBeanModel::HAS_ONE,              'Contact'),
+                    'contact'                             => array(RedBeanModel::HAS_ONE,              'Contact'),
+                    'emailMessage'                        => array(RedBeanModel::HAS_ONE,              'EmailMessage'),
+                    'autoresponderItemActivities'         => array(RedBeanModel::HAS_MANY,             'AutoresponderItemActivity'),
                 ),
                 'rules' => array(
                 ),

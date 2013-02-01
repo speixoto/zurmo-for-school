@@ -24,60 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Model for storing an email message item activity.
+     /**
+     Modal view class for selecting contact for marketing list
      */
-    class EmailMessageItemActivity extends RedBeanModel
+    class SelectContactModalListView extends ContactsModalListView
     {
-        public function __toString()
-        {
-            if (trim($this->subject) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->subject;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'EmailMessagesModule';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'Emails';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return false;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'type',
-                    'dateTime',
-                ),
-                'rules' => array(
-                    array('dateTime',  'type', 'type' => 'datetime'),
-                ),
-                'elements' => array(
-                    'dateTime'  => 'DateTime',
-                )
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
     }
 ?>

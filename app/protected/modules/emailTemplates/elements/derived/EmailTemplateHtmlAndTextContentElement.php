@@ -31,39 +31,51 @@
     {
         protected function renderControlNonEditable()
         {
-            assert('$this->model->{$this->attribute} instanceof EmailTemplate');
-            $emailMessageContent = $this->model->{$this->attribute};
-            if ($emailMessageContent->htmlContent != null)
+            $emailMessageTemplate = new EmailTemplate();
+            assert('$this->attribute == null');
+            if ($emailMessageTemplate->htmlContent != null)
             {
-                return Yii::app()->format->html($emailMessageContent->htmlContent);
+                return Yii::app()->format->html($emailMessageTemplate->htmlContent);
             }
-            elseif ($emailMessageContent->textContent != null)
+            elseif ($emailMessageTemplate->textContent != null)
             {
-                return Yii::app()->format->text($emailMessageContent->textContent);
+                return Yii::app()->format->text($emailMessageTemplate->textContent);
             }
         }
 
         protected function renderControlEditable()
         {
-            $emailMessageContent     = $this->model->{$this->attribute};
+          $content = '<div class="email-template-htmlcontent">';
+          $content .= $this->renderHtmlContentArea();
+          $content .= '<div>';
+          return $content;
+        }
+
+        protected function renderHtmlContentArea()
+        {
+           $emailMessageTemplate = new EmailTemplate();
             $inputNameIdPrefix       = $this->attribute;
-            $attribute               = 'htmlContent';
-            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, $attribute);
+            //$attribute               = 'htmlContent';
+            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, 'htmlContent');
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
+            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, 'htmlContent');
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
-                                        'content'     => $emailMessageContent->$attribute,
+                                        'content'     => $emailMessageTemplate->htmlContent,
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];
-            $content .= $this->form->error($emailMessageContent, $attribute);
+            $content .= $this->form->error($emailMessageTemplate, 'htmlContent');
             return $content;
         }
 
+         protected function renderTextContentArea()
+         {
+         
+         }
         public static function getModelAttributeNames()
         {
             return array(
@@ -71,15 +83,5 @@
                 'textContent',
             );
         }
-
-        public function render()
-        {
-            $className = get_called_class();
-            if ($this->form === null || $className::isReadOnly())
-            {
-                return $this->renderControlNonEditable();
-            }
-            return $this->renderControlEditable();
-        }
-    }
+     }
 ?>

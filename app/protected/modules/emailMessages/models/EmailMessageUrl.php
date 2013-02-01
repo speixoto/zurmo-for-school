@@ -24,33 +24,53 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SelectContactsModalListView extends ModalListView
+    class EmailMessageUrl extends OwnedSecurableItem
     {
+        public function __toString()
+        {
+            if (trim($this->subject) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->subject;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'EmailMessagesModule';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel()
+        {
+            return 'Emails';
+        }
+
+        public static function canSaveMetadata()
+        {
+            return false;
+        }
+
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'derivedAttributeTypes' => array(
-                        'FullName',
-                    ),
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'isTrackable',
+                ),
+                'rules' => array(
+                    array('isTrackable',  'boolean'),
                 ),
             );
             return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
         }
     }
 ?>

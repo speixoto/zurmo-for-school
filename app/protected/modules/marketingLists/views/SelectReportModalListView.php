@@ -24,21 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SelectContactsModalSearchView extends SearchView
+    class SelectReportModalListView extends ModalListView
     {
         public static function getDefaultMetadata()
         {
-          //todo:
-        }
-
-        public static function getDesignerRulesType()
-        {
-            return 'ModalSearchView';
-        }
-
-        public static function getModelForMetadataClassName()
-        {
-          //todo:
+          // todo: add the metadata for reports
         }
     }
 ?>

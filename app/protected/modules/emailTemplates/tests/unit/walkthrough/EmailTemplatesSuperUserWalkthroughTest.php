@@ -63,8 +63,68 @@
             $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
             $this->resetGetArray();
 
-            $emailTemplate = EmailTemplate::getAll();
+            $emailTemplates = EmailTemplate::getAll();
+            $this->assertEquals(2, count($emailTemplates));
+            
+            $emailTemplateNameId = self::getModelIdByModelNameAndName ('EmailTemplate', 'Test Name');
+            $this->setGetArray(array('id' => $emailTemplateNameId));
+            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
+
+            //Save emailTemplate.
+            $emailTemplateName = EmailTemplate::getById($emailTemplateNameId);
+            $this->assertEquals('Test Subject', $emailTemplateName->subject);
+            $this->setPostArray(array('EmailTemplate' => array('subject' => 'Test Subject')));
+            //Test having a failed validation on the emailTemplate during save.
+            $this->setGetArray (array('id'      => $emailTemplateNameId));
+            $this->setPostArray(array('EmailTemplate' => array('name' => '')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
+            $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
+        }
+
+         
+        public function testSuperUserDeleteAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'Test Name');
+
+            //Delete an emailTemplate.
+            $this->setGetArray(array('id' => $emailTemplateId));
+            $this->resetPostArray();
+            $this->runControllerWithRedirectExceptionAndGetContent('emailTemplates/default/delete');
+            $emailTemplates = EmailTemplate::getAll();
+            $this->assertEquals(1, count($emailTemplates));
+            try
+            {
+                EmailTemplate::getById($emailTemplates);
+                $this->fail();
+            }
+            catch (NotFoundException $e)
+            {
+                //success
+            }
+        }
+
+        public function testSuperUserCreateAction()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //Create a new emailTemplate.
+            $this->resetGetArray();
+            $this->setPostArray(array('EmailTemplate' => array(
+                                            'type'        => 1,
+                                            'name'        => 'New Test EmailTemplate'
+                                            'subject'     => 'New Test Subject',
+                                            'textContent' => 'New Text Content')));
+            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/create');
+            $emailTemplate = EmailTemplate::getByName('New Test EmailTemplate');
+            $this->assertEquals(1, count($emailTemplate));
+            $this->assertTrue  ($emailTemplate[0]->id > 0);
+            $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/details', array('id' => $emailTemplate[0]->id));
+            $this->assertEquals($compareRedirectUrl, $redirectUrl);
+            $this->assertEquals('New Test Subject', $emailTemplate[0]->subject);
+            $this->assertTrue  ($emailTemplate[0]->owner == $super);
+            $emailTemplates = EmailTemplate::getAll();
             $this->assertEquals(2, count($emailTemplate));
         }
+
     }
 ?>
