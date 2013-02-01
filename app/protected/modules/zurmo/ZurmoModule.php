@@ -123,9 +123,9 @@
                 'configureSubMenuItems' => array(
                     array(
                         'category'         => self::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'LDAP Configuration',
-                        'descriptionLabel' => 'Manage LDAP Authentication',
-                        'route'            => '/zurmo/ldap/configurationEditLDAP',
+                        'titleLabel'       => 'Ldap Configuration',
+                        'descriptionLabel' => 'Manage Ldap Authentication',
+                        'route'            => '/zurmo/ldap/configurationEditLdap',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                 ),

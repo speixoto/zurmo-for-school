@@ -66,7 +66,7 @@
                          'IMAP',
                          'Pdo',
                          'PdoMysql',
-                         'LDAP'
+                         'Ldap'
             );
         }
 

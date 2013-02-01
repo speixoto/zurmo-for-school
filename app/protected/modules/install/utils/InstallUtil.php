@@ -112,7 +112,7 @@
             return extension_loaded("pdo_mysql");
         }
         
-        public static function isLDAPInstalled()
+        public static function isLdapInstalled()
         {
             return extension_loaded("ldap");
         }
