@@ -36,15 +36,15 @@
         public static function makeFormFromUserConfigurationByUser(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            $form                            = new UserConfigurationForm($user);
-            $form->listPageSize              = Yii::app()->pagination->getByUserAndType($user, 'listPageSize');
-            $form->subListPageSize           = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
-            $form->themeColor                = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
-            $form->backgroundTexture         = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
-            $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue($user);
-            $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue($user);
-            $form->defaultPermissionSetting  = static::resolveAndGetDefaultPermissionSetting($user);
-            $form->defaultPermissionGroupSetting = static::resolveAndGetDefaultPermissionGroupSetting($user);
+            $form                                   = new UserConfigurationForm($user);
+            $form->listPageSize                     = Yii::app()->pagination->getByUserAndType($user, 'listPageSize');
+            $form->subListPageSize                  = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
+            $form->themeColor                       = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
+            $form->backgroundTexture                = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
+            $form->hideWelcomeView                  = static::resolveAndGetHideWelcomeViewValue($user);
+            $form->turnOffEmailNotifications        = static::resolveAndGetTurnOffEmailNotificationsValue($user);
+            $form->defaultPermissionSetting         = static::resolveAndGetDefaultPermissionSetting($user);
+            $form->defaultPermissionGroupSetting    = static::resolveAndGetDefaultPermissionGroupSetting($user);
             return $form;
         }
 
@@ -125,7 +125,7 @@
         {
             assert('$user instanceOf User && $user->id > 0');
             if ( null != $defaultPermission = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule',
-                'defaultPermissionSetting'))
+                            'defaultPermissionSetting'))
             {
                 return $defaultPermission;
             }

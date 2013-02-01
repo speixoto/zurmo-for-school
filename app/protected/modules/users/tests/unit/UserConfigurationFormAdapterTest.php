@@ -49,6 +49,8 @@
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
+            $this->assertNull(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($sally));
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($sally), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
             //Confirm billy's configuration is the defaults.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals(50,                 $form->listPageSize);
@@ -57,13 +59,17 @@
             $this->assertEquals(null,               Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($billy));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($billy));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
+            $this->assertNull(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($billy));
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
             //Now change configuration for Billy.
-            $form->listPageSize                = 60;
-            $form->subListPageSize             = 61;
-            $form->themeColor                  = 'lime';
-            $form->backgroundTexture           = 'paper';
-            $form->hideWelcomeView             = true;
-            $form->turnOffEmailNotifications   = true;
+            $form->listPageSize                     = 60;
+            $form->subListPageSize                  = 61;
+            $form->themeColor                       = 'lime';
+            $form->backgroundTexture                = 'paper';
+            $form->hideWelcomeView                  = true;
+            $form->turnOffEmailNotifications        = true;
+            $form->defaultPermissionSetting         = UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP;
+            $form->defaultPermissionGroupSetting    = 6;
             UserConfigurationFormAdapter::setConfigurationFromForm($form, $billy);
             //Confirm billy's settings are changed correctly.
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
@@ -72,9 +78,13 @@
             $this->assertEquals('lime',             Yii::app()->themeManager->resolveAndGetThemeColorValue($billy));
             $this->assertEquals('paper',            Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($billy));
             $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($billy));
-            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
+            $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($billy));
             $this->assertFalse(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($billy), 6);
+            $this->assertNull(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($sally));
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP);
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($sally), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
             //Now set configuration settings for sally and confirm they are correct.
             Yii::app()->user->userModel = $sally;
             UserConfigurationFormAdapter::setConfigurationFromFormForCurrentUser($form);
@@ -85,6 +95,16 @@
             $this->assertEquals('paper',            Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($sally));
             $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetHideWelcomeViewValue($sally));
             $this->assertTrue(UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($sally));
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($sally), 6);
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($sally), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP);
+            //Now test that setting defaultPermissionSetting to owner makes the group settings null
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
+            $form->defaultPermissionSetting         = UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER;
+            $form->defaultPermissionGroupSetting    = 4;
+            UserConfigurationFormAdapter::setConfigurationFromForm($form, $billy);
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
+            $this->assertNull(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($billy));
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER);
         }
     }
 ?>
