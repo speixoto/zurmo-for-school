@@ -105,13 +105,13 @@
         public static function isPdoInstalled()
         {
             return extension_loaded("pdo");
-        }        
+        }
 
         public static function isPdoMysqlInstalled()
         {
             return extension_loaded("pdo_mysql");
         }
-        
+
         public static function isLdapInstalled()
         {
             return extension_loaded("ldap");
@@ -731,7 +731,7 @@
         }
 
         /**
-         * Generate zurmo token and write it to version.php file.
+         * Generate zurmo token and write it to perInstance file.
          * @param $instanceRoot
          * @return string
          */
