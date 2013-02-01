@@ -32,7 +32,7 @@
         /**
          * Is set in order to properly route action elements in view.
          */
-        public $userId;
+        private $user;
 
         public $listPageSize;
 
@@ -54,10 +54,16 @@
 
         public $defaultPermissionGroupSetting;
 
-        public function __construct($userId)
+        public function __construct($user)
         {
-            assert('is_int($userId) && $userId > 0');
-            $this->userId = $userId;
+            assert('$user instanceof User');
+            assert('is_int($user->id) && $user->id > 0');
+            $this->user = $user;
+        }
+
+        public function getUser()
+        {
+            return $this->user;
         }
 
         /**
@@ -66,7 +72,7 @@
          */
         public function getId()
         {
-            return $this->userId;
+            return $this->user->id;
         }
 
         public function rules()

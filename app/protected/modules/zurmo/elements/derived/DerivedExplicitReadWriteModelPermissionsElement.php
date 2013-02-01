@@ -96,8 +96,12 @@
          */
         protected function resolveSelectedType()
         {
+            if (!$this->isModelCreateAction())
+            {
+                return parent::resolveSelectedType();
+            }
             $selectedType = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(
-                Yii::app()->user->userModel);
+                                                                                        Yii::app()->user->userModel);
             if (null == $selectedType)
             {
                 return parent::resolveSelectedType();
@@ -115,6 +119,10 @@
          */
         protected function resolveSelectedGroup()
         {
+            if (!$this->isModelCreateAction())
+            {
+                return parent::resolveSelectedGroup();
+            }
             if (null != $selectedGroup = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting(
                 Yii::app()->user->userModel))
             {
@@ -122,7 +130,7 @@
             }
             else
             {
-                return parent::resolveSelectedType();
+                return parent::resolveSelectedGroup();
             }
         }
 
@@ -136,10 +144,15 @@
             assert('is_int($selectedType');
             assert('$selectedType >= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER');
             assert('$selectedType <= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE');
-            $userConfigPermissionTypes = UserConfigurationForm::getAllDefaultPermissionTypes();
-            $explicitReadWritePermissionTypes = parent::getPermissionTypes();
+            $userConfigPermissionTypes          = UserConfigurationForm::getAllDefaultPermissionTypes();
+            $explicitReadWritePermissionTypes   = parent::getPermissionTypes();
             return array_search($userConfigPermissionTypes[$selectedType], $explicitReadWritePermissionTypes);
 
+        }
+
+        protected function isModelCreateAction()
+        {
+            return ($this->model->id <= 0);
         }
     }
 ?>

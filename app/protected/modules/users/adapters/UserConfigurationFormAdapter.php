@@ -30,24 +30,21 @@
      */
     class UserConfigurationFormAdapter
     {
-        public static $user;
-
         /**
          * @return UserConfigurationForm
          */
         public static function makeFormFromUserConfigurationByUser(User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            static::$user                    = $user;
-            $form                            = new UserConfigurationForm(static::$user->id);
-            $form->listPageSize              = Yii::app()->pagination->getByUserAndType(static::$user, 'listPageSize');
-            $form->subListPageSize           = Yii::app()->pagination->getByUserAndType(static::$user, 'subListPageSize');
-            $form->themeColor                = Yii::app()->themeManager->resolveAndGetThemeColorValue(static::$user);
-            $form->backgroundTexture         = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue(static::$user);
-            $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue(static::$user);
-            $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue(static::$user);
-            $form->defaultPermissionSetting  = static::resolveAndGetDefaultPermissionSetting(static::$user);
-            $form->defaultPermissionGroupSetting = static::resolveAndGetDefaultPermissionGroupSetting(static::$user);
+            $form                            = new UserConfigurationForm($user);
+            $form->listPageSize              = Yii::app()->pagination->getByUserAndType($user, 'listPageSize');
+            $form->subListPageSize           = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
+            $form->themeColor                = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
+            $form->backgroundTexture         = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
+            $form->hideWelcomeView           = static::resolveAndGetHideWelcomeViewValue($user);
+            $form->turnOffEmailNotifications = static::resolveAndGetTurnOffEmailNotificationsValue($user);
+            $form->defaultPermissionSetting  = static::resolveAndGetDefaultPermissionSetting($user);
+            $form->defaultPermissionGroupSetting = static::resolveAndGetDefaultPermissionGroupSetting($user);
             return $form;
         }
 
@@ -57,8 +54,15 @@
         public static function setConfigurationFromForm(UserConfigurationForm $form, User $user)
         {
             assert('$user instanceOf User && $user->id > 0');
-            self::$user = $user;
-            static::setConfigurationFromFormForUser($form);
+            Yii::app()->pagination->setByUserAndType($user, 'listPageSize', (int)$form->listPageSize);
+            Yii::app()->pagination->setByUserAndType($user, 'subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->themeManager->setThemeColorValue($user, $form->themeColor);
+            Yii::app()->themeManager->setBackgroundTextureValue ($user, $form->backgroundTexture);
+            static::setHideWelcomeViewValue($user, (bool)$form->hideWelcomeView);
+            static::setTurnOffEmailNotificationsValue($user, (bool)$form->turnOffEmailNotifications);
+            static::setDefaultPermissionSettingValue($user, (int)$form->defaultPermissionSetting);
+            static::setDefaultPermissionGroupSetting($user, (int)$form->defaultPermissionGroupSetting,
+                (int)$form->defaultPermissionSetting);
         }
 
         /**
@@ -67,23 +71,16 @@
          */
         public static function setConfigurationFromFormForCurrentUser(UserConfigurationForm $form)
         {
-            self::$user = Yii::app()->user->userModel;
-            static::setConfigurationFromFormForUser($form);
-        }
-
-        public static function setConfigurationFromFormForUser(UserConfigurationForm $form)
-        {
-            assert('self::$user instanceOf User && self::$user->id > 0');
-            Yii::app()->pagination->setByUserAndType(static::$user, 'listPageSize', (int)$form->listPageSize);
-            Yii::app()->pagination->setByUserAndType(static::$user, 'subListPageSize', (int)$form->subListPageSize);
-            Yii::app()->themeManager->setThemeColorValue(static::$user, $form->themeColor);
-            Yii::app()->themeManager->setBackgroundTextureValue(static::$user, $form->backgroundTexture);
-            static::setHideWelcomeViewValue(static::$user, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue(static::$user, (bool)$form->turnOffEmailNotifications);
-            static::setDefaultPermissionSettingValue(static::$user, (int)$form->defaultPermissionSetting);
-            static::setDefaultPermissionGroupSetting(static::$user, (int)$form->defaultPermissionGroupSetting,
-                (int)$form->defaultPermissionSetting);
-
+            Yii::app()->pagination->setForCurrentUserByType ('listPageSize', (int)$form->listPageSize);
+            Yii::app()->pagination->setForCurrentUserByType ('subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->themeManager->setThemeColorValue(Yii::app()->user->userModel, $form->themeColor);
+            Yii::app()->themeManager->setBackgroundTextureValue(Yii::app()->user->userModel, $form->backgroundTexture);
+            static::setHideWelcomeViewValue(Yii::app()->user->userModel, (bool)$form->hideWelcomeView);
+            static::setTurnOffEmailNotificationsValue(Yii::app()->user->userModel,
+                (bool)$form->turnOffEmailNotifications);
+            static::setDefaultPermissionSettingValue(Yii::app()->user->userModel, (int)$form->defaultPermissionSetting);
+            static::setDefaultPermissionGroupSetting(Yii::app()->user->userModel,
+                (int)$form->defaultPermissionGroupSetting, (int)$form->defaultPermissionSetting);
         }
 
         public static function resolveAndGetHideWelcomeViewValue(User $user)

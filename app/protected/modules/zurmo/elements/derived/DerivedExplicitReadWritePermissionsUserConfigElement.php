@@ -32,6 +32,7 @@
         protected function assertModelIsValid()
         {
             assert('$this->model instanceof UserConfigurationForm');
+            assert('$this->model->user instanceof User');
         }
 
         protected function getPermissionTypes()
@@ -54,7 +55,7 @@
          */
         protected function resolveSelectedGroup()
         {
-            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting(UserConfigurationFormAdapter::$user);
+            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($this->model->user);
         }
 
         /**
@@ -64,7 +65,7 @@
          */
         protected function resolveSelectedType()
         {
-            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting(UserConfigurationFormAdapter::$user);
+            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($this->model->user);
         }
 
         protected function getAttributeName()

@@ -17,29 +17,8 @@
     <td></td>
 </tr>
 <tr>
-  <td>click</td>
-  <td>link=My Profile</td>
-  <td></td>
-</tr>
-<tr>
-    <td>waitForPageToLoad</td>
-    <td></td>
-    <td></td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
-    <td>click</td>
-    <td>link=Configuration</td>
-    <td></td>
-</tr>
-
-<tr>
-    <td>clickAndWait</td>
-    <td>link=General</td>
+    <td>open</td>
+    <td>index.php/users/default/configurationEdit?id=1</td>
     <td></td>
 </tr>
 <tr>
@@ -68,14 +47,8 @@
     <td></td>
 </tr>
 <tr>
-    <td>click</td>
-    <td>link=Create</td>
-    <td></td>
-</tr>
-
-<tr>
-    <td>clickAndWait</td>
-    <td>link=Account</td>
+    <td>open</td>
+    <td>index.php/accounts/default/create</td>
     <td></td>
 </tr>
 <tr>
@@ -97,6 +70,31 @@
     <td>assertSelectedLabel</td>
     <td>Account_explicitReadWriteModelPermissions_nonEveryoneGroup</td>
     <td>West Channel Sales</td>
+</tr>
+<tr>
+    <td>open</td>
+    <td>index.php/accounts/default/edit?id=7</td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForPageToLoad</td>
+    <td></td>
+    <td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+    <td>assertValue</td>
+    <td>Account_explicitReadWriteModelPermissions_type_0</td>
+    <td>on</td>
+</tr>
+<tr>
+    <td>assertSelectedLabel</td>
+    <td>Account_explicitReadWriteModelPermissions_nonEveryoneGroup</td>
+    <td>East</td>
 </tr>
 </tbody></table>
 </body>
