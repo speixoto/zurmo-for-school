@@ -157,10 +157,7 @@
                 self::buildAndAddSuiteFromDirectory($suite, 'BadDependencies', COMMON_ROOT . '/protected/tests/unit/notSupposedToBeHere', $whatToTest, $includeUnitTests, $includeWalkthroughs, $includeBenchmarks);
 ////////////////////////////////////////////////////////////////////////////////
             }
-            else
-            {
 
-            }
             if ($suite->count() == 0)
             {
                 echo $usage;
