@@ -83,8 +83,12 @@
         public function testDeleteAutoresponder()
         {
             $autoresponder = new Autoresponder();
-            $autoresponder->name        = 'Test Marketing List2';
-            $autoresponder->description = 'Test Description2';
+            $autoresponder->type                  = 1;
+            $autoresponder->name                  = 'Test Autoresponder name1';
+            $autoresponder->subject               = 'Test Autoresponder subject1';
+            $autoresponder->htmlContent           = 'Test HtmlContent1';
+            $autoresponder->textContent           = 'Test TextContent1';
+            $autoresponder->secondsFromSubscribe  = 30;
             $this->assertTrue($autoresponder->save());
             $autoresponder = Autoresponder::getAll();
             $this->assertEquals(2, count($autoresponder));
