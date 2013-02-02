@@ -341,7 +341,7 @@
                                 $attributeLabel = $model->getAttributeLabel($attributeName);
                                 if (isset($untranslatedLabels[$attributeName]))
                                 {
-                                    $translatedLabel = Yii::t('Default', $untranslatedLabels[$attributeName],
+                                    $translatedLabel = Zurmo::t('Core', $untranslatedLabels[$attributeName],
                                                                          LabelUtil::getTranslationParamsForAllModules());
                                     if ($untranslatedLabels[$attributeName] == $attributeLabel ||
                                        $translatedLabel != $attributeLabel)

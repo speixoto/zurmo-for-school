@@ -63,7 +63,7 @@
         {
             $emailContent  = new EmailMessageContent();
             $url           = static::getUrlToEmail($model);
-            $textContent   = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
+            $textContent   = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{modelName}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\" {lineBreak}{lineBreak} {url} ",
                                     array('{lineBreak}'           => "\n",
@@ -77,7 +77,7 @@
                                         ));
             $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
-            $htmlContent = Yii::t('Default', "Hello, {lineBreak} {updaterName} added a new comment to the " .
+            $htmlContent = Zurmo::t('CommentsModule', "Hello, {lineBreak} {updaterName} added a new comment to the " .
                                              "{strongStartTag}{url}{strongEndTag}: {lineBreak}" .
                                              "\"{commentDescription}.\"",
                                array('{lineBreak}'           => "<br/>",
@@ -96,7 +96,7 @@
         {
             if ($model instanceof Conversation || $model instanceof Mission)
             {
-                return Yii::t('Default', 'New comment on {modelName}: {subject}',
+                return Zurmo::t('CommentsModule', 'New comment on {modelName}: {subject}',
                                     array('{subject}'   => strval($model),
                                           '{modelName}' => $model->getModelLabelByTypeAndLanguage('SingularLowerCase')));
             }

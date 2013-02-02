@@ -41,7 +41,7 @@
         public static function renderAlertBoxByMessage($message)
         {
             assert('$message != null && is_string($message)');
-            $alertMessage = '<strong>' . Yii::t('Default', 'Alert') . ':</strong> ' . $message ;
+            $alertMessage = '<strong>' . Zurmo::t('ZurmoModule', 'Alert') . ':</strong> ' . $message ;
             $content   = ZurmoHtml::tag('span', array('class' => 'ui-icon ui-icon-alert'), '&#160' ) . $alertMessage;
             $innerContent = ZurmoHtml::tag('p', array(), $content );
             $innerDiv  = ZurmoHtml::tag('div', array('class' => 'ui-state-highlight ui-corner-all'), $innerContent );

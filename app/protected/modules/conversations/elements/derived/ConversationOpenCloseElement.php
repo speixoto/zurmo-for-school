@@ -50,7 +50,7 @@
         public static function renderStatusChangeArea(Conversation $conversation)
         {
             $statusAction      = self::renderStatusButtonsContent($conversation);
-            $content = ZurmoHtml::tag('span', array(), Yii::t('Default', 'Status')) . $statusAction;
+            $content = ZurmoHtml::tag('span', array(), Zurmo::t('ConversationsModule', 'Status')) . $statusAction;
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
                                                'class' => 'conversationStatusChangeArea clearfix'),
                                                 $content);
@@ -97,7 +97,7 @@
 
         public static function getDisplayName()
         {
-            return Yii::t('Default', 'Status');
+            return Zurmo::t('ConversationsModule', 'Status');
         }
 
         /**
@@ -118,7 +118,7 @@
                 function(data){
                     $('#FlashMessageBar').jnotifyAddMessage(
                         {
-                            text: '" . CJavaScript::quote(Yii::t('Default', 'Conversation status was changed.')) . "',
+                            text: '" . CJavaScript::quote(Zurmo::t('ConversationsModule', 'Conversation status was changed.')) . "',
                             permanent: false,
                             showIcon: true,
                             type: 'ConversationsChangeStatusMessage'
@@ -131,8 +131,8 @@
 
         public static function getDropDownArray()
         {
-            return array('0' => Yii::t('Default', 'Open'),
-                         '1' => Yii::t('Default', 'Closed'));
+            return array('0' => Zurmo::t('ConversationsModule', 'Open'),
+                         '1' => Zurmo::t('ConversationsModule', 'Closed'));
         }
     }
 ?>

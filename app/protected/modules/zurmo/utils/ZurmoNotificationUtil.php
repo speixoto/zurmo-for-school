@@ -71,16 +71,16 @@
                         }
                         else if (window.webkitNotifications.checkPermission() == 2)
                         {
-                            alert('" . Yii::t('Default', 'You have blocked desktop notifications for this browser.') . "');
+                            alert('" . Zurmo::t('ZurmoModule', 'You have blocked desktop notifications for this browser.') . "');
                         }
                         else
                         {
-                            alert('" . Yii::t('Default', 'You have already activated desktop notifications for Chrome') . "');
+                            alert('" . Zurmo::t('ZurmoModule', 'You have already activated desktop notifications for Chrome') . "');
                         }
                     }
                     else
                     {
-                        alert('" . Yii::t('Default', 'This is only available in Chrome.') . "');
+                        alert('" . Zurmo::t('ZurmoModule', 'This is only available in Chrome.') . "');
                     }
                 }
             };

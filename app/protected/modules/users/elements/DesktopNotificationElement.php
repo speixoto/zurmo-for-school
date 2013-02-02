@@ -64,14 +64,14 @@
 
         protected static function renderTooltipContentForEnableDesktopNotifications()
         {
-            $link        = ZurmoHtml::link(Yii::t('Default', 'click here'),
+            $link        = ZurmoHtml::link(Zurmo::t('UsersModule', 'click here'),
                                            '',
                                            array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
 
 
 
 
-            $title       = Yii::t('Default', '<p>This feature only works in Chrome when real time updates are globally enabled. </p>' .
+            $title       = Zurmo::t('UsersModule', '<p>This feature only works in Chrome when real time updates are globally enabled. </p>' .
                                              '<p>Permissions need to be activated for each browser.</p>' .
                                              '<p>To activate, <u>{link}</u> and choose "allow" at browser request.</p>',
                                   array('{link}' => $link)

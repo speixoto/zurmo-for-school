@@ -71,7 +71,7 @@
                 'modalListPageSize'                     => Zurmo::t('ZurmoModule', 'Popup list page size'),
                 'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
-                'realtimeUpdatesEnabled'                => Yii::t('Default', 'Enable real-time updates'),
+                'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
             );
         }
     }

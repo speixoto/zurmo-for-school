@@ -69,7 +69,7 @@
         {
             return Zurmo::t('Core', 'Deleting') . " " . $this->start . " - " . $this->getEndSize() . " " . Zurmo::t('Core', 'of') . " " .
                 $this->totalRecordCount . " " . Zurmo::t('Core', 'total') . " " .
-                Yii::t('Default', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
+                Zurmo::t('Core', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
         }
 
         protected function getCompleteMessage()
@@ -111,7 +111,7 @@
             ));
             $cClipWidget->endClip();
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content  = "<div><h1>" . Yii::t('Default', 'Mass Delete') . ' ' . $this->title . '</h1>';
+            $content  = "<div><h1>" . Zurmo::t('Core', 'Mass Delete') . ' ' . $this->title . '</h1>';
             $content .= '<div class="progress-counter">';
             $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
             $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';

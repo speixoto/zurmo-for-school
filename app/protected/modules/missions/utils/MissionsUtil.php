@@ -204,7 +204,7 @@
         {
             $emailContent  = new EmailMessageContent();
             $url           = CommentsUtil::getUrlToEmail($mission);
-            $textContent   = Yii::t('MissionsModule', "Hello, {lineBreak}There is a new mission. " .
+            $textContent   = Zurmo::t('MissionsModule', "Hello, {lineBreak}There is a new mission. " .
                                     "Be the first one to start it and get this great reward: {reward}." .
                                     "{lineBreak}{lineBreak} {url}",
                                     array('{lineBreak}' => "\n",
@@ -213,7 +213,7 @@
                                         ));
             $emailContent->textContent  = $emailContent->htmlContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate($textContent);
-            $htmlContent = Yii::t('MissionsModule', "Hello, {lineBreak}There is a new {url}. " .
+            $htmlContent = Zurmo::t('MissionsModule', "Hello, {lineBreak}There is a new {url}. " .
                                     "Be the first one to start it and get this great reward: {reward}.",
                                array('{lineBreak}'      => "<br/>",
                                      '{strongStartTag}' => '<strong>',
@@ -228,7 +228,7 @@
 
         public static function getEmailSubject(Mission $mission)
         {
-            return Yii::t('MissionsModule', 'New mission');
+            return Zurmo::t('MissionsModule', 'New mission');
         }
 
         public static function resolvePeopleToSendNotificationToOnNewMission(Mission $mission)

@@ -49,7 +49,7 @@
             }
             catch (ChecksumMismatchException $e)
             {
-                echo Yii::t('Default', 'A checksum mismatch has occurred while retrieving a cached model. ' .
+                echo Zurmo::t('Core', 'A checksum mismatch has occurred while retrieving a cached model. ' .
                                        'This is most likely caused by setting debug=true. The cache must be cleared.'); // Not Coding Standard
                 echo '<br/>';
                 exit;
