@@ -46,7 +46,7 @@
                 $content = self::getEmailContent($relatedModel, $comment, $senderPerson);
                 if ($emailRecipients > 0)
                 {
-                    self::resolveEmailNewComment($senderPerson, $emailRecipients, $subject, $content);
+                    EmailNotificationUtil::resolveAndSendEmail($senderPerson, $emailRecipients, $subject, $content);
                 }
                 else
                 {
@@ -57,40 +57,6 @@
             {
                 return;
             }
-        }
-
-        public static function resolveEmailNewComment($senderPerson, $recipients, $subject, $content)
-        {
-            assert('$senderPerson instanceof User');
-            assert('is_array($recipients)');
-            assert('is_string($subject)');
-            assert('$content instanceof EmailMessageContent');
-            if (count($recipients) == 0)
-            {
-                return;
-            }
-            $userToSendMessagesFrom     = $senderPerson;
-            $emailMessage               = new EmailMessage();
-            $emailMessage->owner        = $senderPerson;
-            $emailMessage->subject      = $subject;
-            $emailMessage->content      = $content;
-            $sender                     = new EmailMessageSender();
-            $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
-            $sender->fromName           = strval($userToSendMessagesFrom);
-            $sender->personOrAccount    = $userToSendMessagesFrom;
-            $emailMessage->sender       = $sender;
-            foreach ($recipients as $recipientPerson)
-            {
-                $recipient                  = new EmailMessageRecipient();
-                $recipient->toAddress       = $recipientPerson->primaryEmail->emailAddress;
-                $recipient->toName          = strval($recipientPerson);
-                $recipient->type            = EmailMessageRecipient::TYPE_TO;
-                $recipient->personOrAccount = $recipientPerson;
-                $emailMessage->recipients->add($recipient);
-            }
-            $box                        = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            $emailMessage->folder       = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_DRAFT);
-            Yii::app()->emailHelper->send($emailMessage);
         }
 
         public static function getEmailContent(RedBeanModel $model, Comment $comment, User $user)

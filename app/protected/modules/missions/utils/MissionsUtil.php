@@ -194,7 +194,7 @@
                     $recipients[] = $person;
                 }
             }
-            CommentsUtil::resolveEmailNewComment($mission->owner,
+            EmailNotificationUtil::resolveAndSendEmail($mission->owner,
                                                  $recipients,
                                                  static::getEmailSubject($mission),
                                                  static::getEmailContent($mission));
