@@ -83,6 +83,9 @@
             'emailHelper' => array(
                 'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
+            'authenticationHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoAuthenticationHelper',
+            ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
             ),
@@ -202,7 +205,6 @@
                 'massDeleteProgressPageSize'   => 5,
                 'reportResultsListPageSize'    => 20,
                 'reportResultsSubListPageSize' => 5,
-                'unlimitedPageSize'            => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',

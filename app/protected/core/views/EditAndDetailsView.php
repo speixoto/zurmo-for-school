@@ -93,7 +93,9 @@
             $actionElementContent = $this->renderActionElementBar(true);
             if ($actionElementContent != null)
             {
-                $content .= $this->resolveAndWrapDockableViewToolbarContent($actionElementContent);
+                $content .= '<div id="float-bar"><div class="view-toolbar-container clearfix dock"><div class="form-toolbar">';
+                $content .= $actionElementContent;
+                $content .= '</div></div></div>';
             }
             $formEnd = $clipWidget->renderEndWidget();
             $content .= $formEnd;

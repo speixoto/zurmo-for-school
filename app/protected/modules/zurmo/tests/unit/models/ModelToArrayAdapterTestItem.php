@@ -31,7 +31,8 @@
     {
         public static function getByName($name)
         {
-            return self::getByNameOrEquivalent('firstName', $name);
+            assert('is_string($name) && $name != ""');
+            return self::getSubset(null, null, null, "firstName = '$name'");
         }
 
         protected function untranslatedAttributeLabels()

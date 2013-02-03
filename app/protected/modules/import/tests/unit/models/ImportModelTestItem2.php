@@ -28,7 +28,8 @@
     {
         public static function getByName($name)
         {
-            return self::getByNameOrEquivalent('name', $name);
+            assert('is_string($name) && $name != ""');
+            return self::getSubset(null, null, null, "name = '$name'");
         }
 
         public static function getDefaultMetadata()

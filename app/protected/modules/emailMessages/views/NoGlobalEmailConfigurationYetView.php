@@ -38,7 +38,7 @@
             $url      = Yii::app()->createUrl('/emailMessages/default/configurationEditOutbound');
             $content  = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
-            $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getCreateLinkDisplayLabel()), $url, array('class' => 'z-button green-button'));
             $content .= '</div>';
             return $content;
         }

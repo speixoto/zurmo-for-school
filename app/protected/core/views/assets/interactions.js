@@ -79,7 +79,7 @@ $(window).ready(function(){
 
     resizeWhiteArea();
     $(window).resize(function(){
-      //console.log('resizing');
+      console.log('resizing');
       resizeWhiteArea();
     });
 

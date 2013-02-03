@@ -28,7 +28,8 @@
     {
         public static function getByName($name)
         {
-            return self::getByNameOrEquivalent('description', $name);
+            assert('is_string($name) && $name != ""');
+            return self::getSubset(null, null, null, "description = '$name'");
         }
 
         public function __toString()

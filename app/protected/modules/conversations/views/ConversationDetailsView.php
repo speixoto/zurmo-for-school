@@ -54,7 +54,8 @@
         protected function renderRightSideContent($form = null)
         {
             assert('$form == null');
-            $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
+            $content  = '<div id="right-side-edit-view-panel" class="thred-info"><div class="buffer"><div>';
+            $content .= $this->renderConversationRelatedToAndAttachmentsContent();
             $content .= "<h3>".Zurmo::t('ConversationsModule', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
             $content .= '</div></div></div>';
@@ -85,6 +86,21 @@
             $content .= $element->render();
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            return $content;
+        }
+
+        protected function renderConversationRelatedToAndAttachmentsContent()
+        {
+            $element  = new ConversationItemsElement($this->model, 'null');
+            $contentForTable = $element->render();
+            if ($this->model->files->count() > 0)
+            {
+                $element  = new FilesElement($this->model, 'null');
+                $contentForTable .= $element->render();
+            }
+            $content  = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
+            $element  = new ConversationOpenCloseElement($this->model, 'isClosed');
+            $content  .= $element->render();
             return $content;
         }
 
@@ -154,7 +170,12 @@
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             $content      .= $inlineView->render();
-            return ZurmoHtml::tag('div', array('id' => 'CommentInlineEditForModelView'), $content);
+            $htmlOptions = array('id' => 'CommentInlineEditForModelView');
+            if ($this->model->isClosed)
+            {
+                $htmlOptions['style'] = 'display: none;';
+            }
+            return ZurmoHtml::tag('div', $htmlOptions, $content);
         }
 
         protected function getPortletDetailsUrl()
