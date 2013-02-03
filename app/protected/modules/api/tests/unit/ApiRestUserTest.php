@@ -151,7 +151,6 @@
             $data['primaryEmail']         = $primaryEmail;
             $data['primaryAddress']       = $primaryAddress;
             $data['serializedAvatarData'] = '';
-            $data['isActive']             = '1';
 
             $data['currency']       = array(
                 'id' => $currency->id
@@ -189,6 +188,8 @@
 
             ksort($data);
             ksort($response['data']);
+            //Add isActive
+            $data['isActive'] = '1';
             $this->assertEquals($data, $response['data']);
             // Check if new user can log in
             $newUser = User::getByUsername('diggy011');
