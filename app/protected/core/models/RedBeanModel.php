@@ -2329,18 +2329,7 @@ exit;
          */
         public static function getAnAttributeLabel($attributeName)
         {
-            assert('is_string($attributeName)');
-            $labels = static::untranslatedAbbreviatedAttributeLabels();
-            if (isset($labels[$attributeName]))
-            {
-                return ZurmoHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
-                                  Yii::t('Default', $labels[$attributeName],
-                                  LabelUtil::getTranslationParamsForAllModules(), null));
-            }
-            else
-            {
-                return null;
-            }
+            return static::getAttributeLabelByLanguage($attributeName, Yii::app()->language);
         }
 
         /**
@@ -2366,7 +2355,7 @@ exit;
             else
             {
                 //should do a T:: wrapper here too.
-                return Zurmo::t('Core', static::generateAttributeLabel($attributeName), array(), null, $language);
+                return Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
         }
 
