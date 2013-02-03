@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UsersSearchForm extends DynamicSearchForm
+    class UsersSearchForm extends SavedDynamicSearchForm
     {
         public $anyEmail;
         public $fullName;
@@ -40,8 +40,8 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'anyEmail'           => Yii::t('Default', 'Any Email Address'),
-                'fullName'           => Yii::t('Default', 'Name'),
+                'anyEmail'           => Zurmo::t('UsersModule', 'Any Email Address'),
+                'fullName'           => Zurmo::t('UsersModule', 'Name'),
             ));
         }
 

@@ -80,6 +80,7 @@
                 $this->messageCountData[static::INVALID] ++;
                 return;
             }
+
             if (strlen($validatedUrl) > $this->maxLength)
             {
                 $this->messageCountData[static::URL_TOO_LONG] ++;
@@ -95,14 +96,14 @@
             $tooLarge = $this->messageCountData[static::URL_TOO_LONG];
             if ($invalid > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) have urls that are invalid. ' .
+                $label   = Zurmo::t('ImportModule', '{count} value(s) have urls that are invalid. ' .
                                              'These values will be cleared during import.',
                                              array('{count}' => $invalid));
                 $this->addMessage($label);
             }
             if ($tooLarge > 0)
             {
-                $label   = Yii::t('Default', '{count} value(s) are too large for this field. ' . 
+                $label   = Zurmo::t('ImportModule', '{count} value(s) are too large for this field. ' .
                                              'These values will be cleared during import.',
                                              array('{count}' => $tooLarge, '{length}' => $this->maxLength));
                 $this->addMessage($label);

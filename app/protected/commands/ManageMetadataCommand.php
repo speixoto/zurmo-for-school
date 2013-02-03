@@ -87,7 +87,7 @@ EOD;
                 }
                 elseif ($action == 'getAllMetadata')
                 {
-                        $this->getAllMetadata();
+                    $this->getAllMetadata();
                 }
                 else
                 {
@@ -96,7 +96,8 @@ EOD;
             }
             catch (Exception $e)
             {
-               echo Yii::t('Default', 'An error occur during metadata manage: ') . $e->getMessage();
+               echo Zurmo::t('Commands', 'An error occur during metadata manage: {message}',
+                             array('{message}' => $e->getMessage()));
             }
         }
 
@@ -153,6 +154,7 @@ EOD;
 
         protected function getAllMetadata()
         {
+            throw new NotImplementedException();
         }
     }
 ?>

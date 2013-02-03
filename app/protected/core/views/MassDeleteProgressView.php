@@ -67,9 +67,9 @@
 
         protected function getMessage()
         {
-            return Yii::t('Default', 'Deleting') . " " . $this->start . " - " . $this->getEndSize() . " " . Yii::t('Default', 'of') . " " .
-                $this->totalRecordCount . " " . Yii::t('Default', 'total') . " " .
-                Yii::t('Default', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
+            return Zurmo::t('Core', 'Deleting') . " " . $this->start . " - " . $this->getEndSize() . " " . Zurmo::t('Core', 'of') . " " .
+                $this->totalRecordCount . " " . Zurmo::t('Core', 'total') . " " .
+                Zurmo::t('Core', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
         }
 
         protected function getCompleteMessage()
@@ -77,7 +77,7 @@
             $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
                                $this->totalRecordCount, $this->skipCount);
             $content =         $successfulCount . ' ' . LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
-                               . ' ' . Yii::t('Default', 'successfully deleted') . '.';
+                               . ' ' . Zurmo::t('Core', 'successfully deleted') . '.';
             if ($this->skipCount > 0)
             {
                 $content .= '<br/>' .
@@ -100,7 +100,7 @@
                         ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
                     }',
                     'change' => 'js:function(event, ui){
-                        $("#progress-percent").html( Math.ceil($(\'#' . $this->progressBarId . '\').progressbar("value")) + "%");
+                        $("#progress-percent").html( $(\'#' . $this->progressBarId . '\').progressbar("value") + "%");
                     }',
                     'complete' => 'js:function(event, ui)
                     {
@@ -111,7 +111,7 @@
             ));
             $cClipWidget->endClip();
             $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content  = "<div><h1>" . Yii::t('Default', 'Mass Delete') . ' ' . $this->title . '</h1>';
+            $content  = "<div><h1>" . Zurmo::t('Core', 'Mass Delete') . ' ' . $this->title . '</h1>';
             $content .= '<div class="progress-counter">';
             $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
             $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';
@@ -123,7 +123,7 @@
 
         protected function renderFormLinks()
         {
-            $listButton = ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), Yii::t('Default', 'Return to List')), Yii::app()->createUrl($this->moduleId));
+            $listButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Return to List')), Yii::app()->createUrl($this->moduleId));
             $content = '<div id="' . $this->progressBarId . '-links" style="display:none;">';
             $content .= $listButton;
             $content .= '</div>';
@@ -133,6 +133,11 @@
         protected function onProgressComplete()
         {
             MassDeleteInsufficientPermissionSkipSavingUtil::clear(get_class($this->model));
+        }
+
+        protected function headerLabelPrefixContent()
+        {
+            return Zurmo::t('Core', 'Mass Update');
         }
     }
 ?>

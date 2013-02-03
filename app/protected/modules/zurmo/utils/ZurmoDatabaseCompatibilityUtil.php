@@ -1685,7 +1685,10 @@
                 }
                 catch (Exception $e)
                 {
-                    echo "Failed to drop {$row['routine_type']} {$row['routine_name']}.\n";
+                    if (isset($row))
+                    {
+                        echo "Failed to drop {$row['routine_type']} {$row['routine_name']}.\n";
+                    }
                     throw $e;
                 }
                 if (YII_DEBUG)

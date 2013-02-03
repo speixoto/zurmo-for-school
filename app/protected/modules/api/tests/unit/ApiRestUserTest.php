@@ -33,7 +33,7 @@
         {
             if (!$this->isApiTestUrlConfigured())
             {
-                $this->markTestSkipped(Yii::t('Default', 'API test url is not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
             }
             $this->assertTrue(strlen($this->serverUrl) > 0);
         }
@@ -151,6 +151,7 @@
             $data['primaryEmail']         = $primaryEmail;
             $data['primaryAddress']       = $primaryAddress;
             $data['serializedAvatarData'] = '';
+            $data['isActive']             = '1';
 
             $data['currency']       = array(
                 'id' => $currency->id

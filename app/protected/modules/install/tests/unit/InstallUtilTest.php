@@ -504,6 +504,7 @@
                                         'currencyvalue',
                                         'customfield',
                                         'customfielddata',
+                                        'customfieldsmodel',
                                         'dashboard',
                                         'email',
                                         'filecontent',
@@ -520,6 +521,7 @@
                                         'opportunity',
                                         'opportunity_read',
                                         'ownedcustomfield',
+                                        'ownedmodel',
                                         'ownedsecurableitem',
                                         'permission',
                                         'permitable',
@@ -619,9 +621,9 @@
         {
             $this->runInstallation(true);
             $messageLogger = new MessageLogger();
-            $messageLogger->addInfoMessage(Yii::t('Default', 'Starting schema update process.'));
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Starting schema update process.'));
             $result = InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
-            $messageLogger->addInfoMessage(Yii::t('Default', 'Schema update complete.'));
+            $messageLogger->addInfoMessage(Zurmo::t('InstallModule', 'Schema update complete.'));
             $this->assertTrue($result);
         }
 

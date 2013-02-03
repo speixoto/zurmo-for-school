@@ -1149,7 +1149,7 @@ body > .ui-autocomplete{
 }
 
 /*=Inner toolbar*/
-#float-bar{
+.float-bar{
     height: 40px;
     display: block;
     .view-toolbar-container{
@@ -2119,7 +2119,7 @@ div.wide.form{
     position: relative;
     float: left;
     width: 100%;
-    z-index: 0;
+    z-index: 50;
     table{
         padding: 0;
         margin: 0;
@@ -2179,6 +2179,7 @@ div.wide.form{
 
 .search-form-tools{
     position: absolute;
+    z-index:100;
     top:16px;
     left:265px;
     line-height:25px;
@@ -2221,14 +2222,19 @@ div.wide.form{
     .list-view-items-summary-clone{
         margin:10px 10px 0 0;
     }
+    .SearchView{
+        position: relative;
+        z-index: 5;
+    }
     .search-view-0{
         margin:5px 0 0 10px !important;
         width:220px;
         float:left;
+        z-index: 10000;
     }
     .search-view-1{
         ++.flyout;
-        z-index:100;
+        z-index:1100;
         min-width:400px;
         max-width:75%;
         height:auto;
@@ -2350,13 +2356,14 @@ div.wide.form{
         width: 100%;
         > span:first-child + div{
             margin-right: 0 !important;
-            width: 45%;
+            width: 46%;
             float: left;
         }
         .criteria-value-container{
             margin-right: 30px !important;
-            width: 45%;
+            width: 46%;
             float: right;
+            position: relative;
         }
         .has-model-select{
             float:left;
@@ -2477,12 +2484,11 @@ div.wide.form{
 
 /*=Edit + Add Account View*/
 .buffer{
-	.clearfix();
-    padding-left:30px;
-    
+    .clearfix();
+    padding-left:30px;    
     > div{
     	float:left;
-        padding:8px 10px;
+        padding:10px 10px;
         background:#F4F4F4;
     	width:100%;
         .box-sizing();
@@ -4175,12 +4181,12 @@ div.hasHalfs{
 }
 
 .ui-widget-header.ui-progressbar-value{
-    .radius(3px);
-    height:5px;
-    margin:5px 0 0 0;
-    .animateAll(0.2s);
     background-color: transparent !important;
-    #gradient > .directional( rgb(150, 150, 150), rgb(175, 175, 175), 0deg ) !important;
+    height:5px;
+    background-image: -webkit-linear-gradient(0deg, rgb(150, 150, 150) 0%, rgb(175, 175, 175) 100%) !important;
+    .animateAll(0.2s);
+    margin:5px 0 0 0;
+    .radius(3px);
 }
 
 /*=About*/

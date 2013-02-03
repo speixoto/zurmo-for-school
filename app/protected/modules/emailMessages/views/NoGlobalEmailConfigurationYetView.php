@@ -50,12 +50,12 @@
 
         protected function getCreateLinkDisplayLabel()
         {
-            return Yii::t('Default', 'Configure');
+            return Zurmo::t('EmailMessagesModule', 'Configure');
         }
 
         protected function getMessageContent()
         {
-            return Yii::t('Default', '<h2>Not so fast</h2><div class="large-icon"></div>' .
+            return Zurmo::t('EmailMessagesModule', '<h2>Not so fast</h2><div class="large-icon"></div>' .
                                      '<p>The administrator must first configure the system outbound email settings.</p>');
         }
     }
