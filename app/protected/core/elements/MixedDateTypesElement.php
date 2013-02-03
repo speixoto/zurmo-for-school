@@ -120,7 +120,7 @@
             $content .= ZurmoHtml::tag('span', array('id'    => $secondDateSpanAreaId,
                                                      'class' => 'second-date-area',
                                                      'style' => $startingDivStyleSecondDate),
-                                                     ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Yii::t('Default', 'and')) .
+                                                     ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Zurmo::t('Core', 'and')) .
                                                      $this->renderEditableSecondDateContent());
             return $content;
         }
@@ -195,7 +195,7 @@
                 'id'    => $this->getValueTypeEditableInputId(),
                 'class' => 'dateValueType',
             );
-            $htmlOptions['empty']    = Yii::t('Default', '(None)');
+            $htmlOptions['empty']    = Zurmo::t('Core', '(None)');
             $htmlOptions['disabled'] = $this->getDisabledValue();
             return $htmlOptions;
         }

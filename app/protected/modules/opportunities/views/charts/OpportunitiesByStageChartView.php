@@ -67,7 +67,7 @@
         {
             return array(
                 'perUser' => array(
-                    'title' => "eval:Yii::t('Default', 'Opportunities By Sales Stage', LabelUtil::getTranslationParamsForAllModules())",
+                    'title' => "eval:Zurmo::t('OpportunitiesModule', 'Opportunities By Sales Stage', LabelUtil::getTranslationParamsForAllModules())",
                     'type'  => ChartRules::TYPE_COLUMN_2D,
                 ),
                 'global' => array(

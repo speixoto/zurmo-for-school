@@ -28,7 +28,7 @@
     {
         protected function getSubtitle()
         {
-            return Yii::t('Default', 'Reports');
+            return Zurmo::t('ReportsModule', 'Reports');
         }
     }
 ?>

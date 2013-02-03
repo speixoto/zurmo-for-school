@@ -38,7 +38,7 @@
 
         protected function getMessageContent()
         {
-            return Yii::t('Default', '<h2>Someone messed with the flux capacitor!</h2><div class="large-icon"></div>' .
+            return Zurmo::t('ReportsModule', '<h2>Someone messed with the flux capacitor!</h2><div class="large-icon"></div>' .
             '<p>You cannot run this report because it contains data you do not have access to. ' .
             'Speak to the report creator or CRM administrator about this issue.</p>');
         }

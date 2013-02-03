@@ -52,7 +52,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Details');
+            return Zurmo::t('ReportsModule', 'Details');
         }
 
         protected function getDefaultRoute()

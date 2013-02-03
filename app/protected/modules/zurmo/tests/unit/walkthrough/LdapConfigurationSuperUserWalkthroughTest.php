@@ -42,60 +42,60 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/configurationEditLdap');
         }
-        
+
 
         public function testSuperUserModifyLdapConfiguration()
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
-            } 
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');           
-            //Change Ldap settings            
+                $this->markTestSkipped(Zurmo::t('ZurmoModule', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+            }
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //Change Ldap settings
             $this->resetGetArray();
             $this->setPostArray(array('LdapConfigurationForm' => array(
                                       'host'                  =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
-                                      'port'                  => 
+                                      'port'                  =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'],
-                                      'bindRegisteredDomain'  => 
+                                      'bindRegisteredDomain'  =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'],
-                                      'bindPassword'          => 
+                                      'bindPassword'          =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'],
-                                      'baseDomain'            => 
+                                      'baseDomain'            =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],
-                                      'enabled'               => 
+                                      'enabled'               =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'])));
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLdap');
             $this->assertEquals('Ldap Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],                  
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
                                 Yii::app()->authenticationHelper->ldapHost);
             $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'],
                                 Yii::app()->authenticationHelper->ldapPort);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'],  
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindRegisteredDomain'],
                                 Yii::app()->authenticationHelper->ldapBindRegisteredDomain);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'],          
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBindPassword'],
                                 Yii::app()->authenticationHelper->ldapBindPassword);
-            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],            
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapBaseDomain'],
                                 Yii::app()->authenticationHelper->ldapBaseDomain);
             $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'],
                                 Yii::app()->authenticationHelper->ldapEnabled);
         }
-        
+
         /*
-        *@depends testSuperUserModifyLdapConfiguration 
+        *@depends testSuperUserModifyLdapConfiguration
         */
         public function testSuperUserTestLdapConnection()
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
-            } 
+                $this->markTestSkipped(Zurmo::t('ZurmoModule', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+            }
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            //check Ldap connection         
+            //check Ldap connection
             $this->resetGetArray();
             $this->setPostArray(array('LdapConfigurationForm' => array(
                                       'host'                              => Yii::app()->authenticationHelper->ldapHost,
@@ -104,8 +104,8 @@
                                       'bindPassword'                      => Yii::app()->authenticationHelper->ldapBindPassword,
                                       'baseDomain'                        => Yii::app()->authenticationHelper->ldapBaseDomain,
                                       'enabled'                           => Yii::app()->authenticationHelper->ldapEnabled)));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');            
-            $this->assertTrue(strpos($content, "Successfully Connected to Ldap Server") > 0);                  
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/testConnection');
+            $this->assertTrue(strpos($content, "Successfully Connected to Ldap Server") > 0);
         }
     }
 ?>

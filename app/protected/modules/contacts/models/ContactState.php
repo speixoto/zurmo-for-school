@@ -31,8 +31,8 @@
     {
         public static function getByName($name)
         {
-            assert('is_string($name) && $name != ""');            
-            return self::makeModels(R::find('contactstate', "name = :name ", array(':name' => $name)));            
+            assert('is_string($name) && $name != ""');
+            return self::makeModels(R::find('contactstate', "name = :name ", array(':name' => $name)));
         }
 
         public function __toString()
@@ -84,7 +84,7 @@
                     return $unserializedLabels[$language];
                 }
             }
-            return Yii::t('Default', $this->name, array(), null, $language);
+            return Zurmo::t('ContactsModule', $this->name, array(), null, $language);
         }
     }
 ?>

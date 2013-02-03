@@ -28,13 +28,13 @@
     {
         public function getTitle()
         {
-            return Yii::t('Default', 'Authentication Configuration');
+            return Zurmo::t('ZurmoModule', 'Authentication Configuration');
         }
 
         protected function getCategoryData()
         {
             $categories = array();
-            $module = new ZurmoModule('ZurmoModule', false);            
+            $module = new ZurmoModule('ZurmoModule', false);
             $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser('ZurmoModule');
             if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
             {

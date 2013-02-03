@@ -39,7 +39,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Reset');
+            return Zurmo::t('ReportsModule', 'Reset');
         }
 
         protected function getDefaultRoute()

@@ -149,7 +149,7 @@
         protected function renderViewToolBarLinks($form)
         {
             $params                = array();
-            $params['label']       = Yii::t('Default', 'Apply');
+            $params['label']       = Zurmo::t('ReportsModule', 'Apply');
             $params['htmlOptions'] = array('id'      => 'apply-runtime-filters',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $applyElement          = new SaveButtonActionElement(null, null, null, $params);

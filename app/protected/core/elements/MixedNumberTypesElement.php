@@ -54,7 +54,7 @@
             $content .= ZurmoHtml::tag('div', array('id'    => $secondValueSpanAreaId,
                                                     'class' => 'second-value-area',
                                                     'style' => $startingDivStyleSecondValue),
-                                                    ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Yii::t('Default', 'and')) .
+                                                    ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Zurmo::t('Core', 'and')) .
                                                     $this->renderEditableSecondValueContent());
             return $content;
         }

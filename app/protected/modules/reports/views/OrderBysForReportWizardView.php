@@ -33,7 +33,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Ordering');
+            return Zurmo::t('ReportsModule', 'Select Ordering');
         }
 
         public static function getPreviousPageLinkId()
@@ -63,7 +63,7 @@
 
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your ordering columns here</h2>');
+            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your ordering columns here</h2>');
         }
     }
 ?>

@@ -605,7 +605,7 @@
             }
             catch (NotFoundException $e)
             {
-                $messageContent  = Yii::t('Default', 'The record you are trying to access does not exist.');
+                $messageContent  = Zurmo::t('ZurmoModule', 'The record you are trying to access does not exist.');
                 $messageView     = new ModelNotFoundView($messageContent);
                 $view            = new ModelNotFoundPageView($messageView);
                 echo $view->render();

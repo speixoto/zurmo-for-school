@@ -102,7 +102,7 @@
         protected function renderMaximumGroupsContent()
         {
             $content  = '<div class="a-class-we-can-call-something-else">';
-            $content .= Yii::t('Default', 'Your report has too many groups to plot. ' .
+            $content .= Zurmo::t('ReportsModule', 'Your report has too many groups to plot. ' .
                                           'Please adjust the filters to reduce the number below {maximum}.',
                         array('{maximum}' => $this->maximumGroupsPerChart));
             $content .= '</div>';

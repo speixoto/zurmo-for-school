@@ -38,7 +38,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Filters');
+            return Zurmo::t('ReportsModule', 'Select Filters');
         }
 
         public static function getPreviousPageLinkId()
@@ -84,7 +84,7 @@
             {
                 $style3 = 'display:none;';
             }
-            $content  = ZurmoHtml::link(Yii::t('Default', 'Modify Structure'), '#',
+            $content  = ZurmoHtml::link(Zurmo::t('ReportsModule', 'Modify Structure'), '#',
                             array('id'    => 'show-filters-structure-div-link',
                                   'style' => $style1));
             $content .= ZurmoHtml::tag('div',
@@ -102,7 +102,7 @@
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'filters-structure-input');
             $content             = $this->form->textField($this->model, 'filtersStructure', $idInputHtmlOptions);
-            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
+            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('ReportsModule', 'Search Operator'));
             $content            .= $this->form->error($this->model, 'filtersStructure');
             return $content;
         }
@@ -139,7 +139,7 @@
 
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your filters here</h2>');
+            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your filters here</h2>');
         }
     }
 ?>

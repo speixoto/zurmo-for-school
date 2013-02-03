@@ -86,32 +86,32 @@
             {
                 if($this->firstSeries == null)
                 {
-                    $this->addError('firstSeries', Yii::t('Default', 'First Series cannot be blank.'));
+                    $this->addError('firstSeries', Zurmo::t('ReportsModule', 'First Series cannot be blank.'));
                     $passedValidation = false;
                 }
                 if($this->firstRange == null)
                 {
-                    $this->addError('firstRange', Yii::t('Default', 'First Range cannot be blank.'));
+                    $this->addError('firstRange', Zurmo::t('ReportsModule', 'First Range cannot be blank.'));
                     $passedValidation = false;
                 }
                 if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
                 {
-                    $this->addError('secondSeries', Yii::t('Default', 'Second Series cannot be blank.'));
+                    $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series cannot be blank.'));
                     $passedValidation = false;
                 }
                 if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
                 {
-                    $this->addError('secondRange', Yii::t('Default', 'Second Range cannot be blank.'));
+                    $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range cannot be blank.'));
                     $passedValidation = false;
                 }
                 if($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
                 {
-                    $this->addError('secondSeries', Yii::t('Default', 'Second Series must be unique.'));
+                    $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series must be unique.'));
                     $passedValidation = false;
                 }
                 if($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
                 {
-                    $this->addError('secondRange', Yii::t('Default', 'Second Range must be unique.'));
+                    $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range must be unique.'));
                     $passedValidation = false;
                 }
             }

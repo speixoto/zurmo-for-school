@@ -68,19 +68,19 @@
 
         public static function translatedTypeLabels()
         {
-            return array(OperatorRules::TYPE_EQUALS                      => Yii::t('Default', 'Equals'),
-                         OperatorRules::TYPE_DOES_NOT_EQUAL              => Yii::t('Default', 'Does Not Equal'),
-                         OperatorRules::TYPE_STARTS_WITH                 => Yii::t('Default', 'Starts With'),
-                         OperatorRules::TYPE_ENDS_WITH                   => Yii::t('Default', 'Ends With'),
-                         OperatorRules::TYPE_CONTAINS                    => Yii::t('Default', 'Contains'),
-                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO    => Yii::t('Default', 'Greater Than Or Equal To'),
-                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO       => Yii::t('Default', 'Less Than Or Equal To'),
-                         OperatorRules::TYPE_GREATER_THAN                => Yii::t('Default', 'Greater Than'),
-                         OperatorRules::TYPE_LESS_THAN                   => Yii::t('Default', 'Less Than'),
-                         OperatorRules::TYPE_ONE_OF                      => Yii::t('Default', 'One Of'),
-                         OperatorRules::TYPE_BETWEEN                     => Yii::t('Default', 'Between'),
-                         OperatorRules::TYPE_IS_NULL                     => Yii::t('Default', 'Is Null'),
-                         OperatorRules::TYPE_IS_NOT_NULL                 => Yii::t('Default', 'Is Not Null'),
+            return array(OperatorRules::TYPE_EQUALS                      => Zurmo::t('Core', 'Equals'),
+                         OperatorRules::TYPE_DOES_NOT_EQUAL              => Zurmo::t('Core', 'Does Not Equal'),
+                         OperatorRules::TYPE_STARTS_WITH                 => Zurmo::t('Core', 'Starts With'),
+                         OperatorRules::TYPE_ENDS_WITH                   => Zurmo::t('Core', 'Ends With'),
+                         OperatorRules::TYPE_CONTAINS                    => Zurmo::t('Core', 'Contains'),
+                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO    => Zurmo::t('Core', 'Greater Than Or Equal To'),
+                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO       => Zurmo::t('Core', 'Less Than Or Equal To'),
+                         OperatorRules::TYPE_GREATER_THAN                => Zurmo::t('Core', 'Greater Than'),
+                         OperatorRules::TYPE_LESS_THAN                   => Zurmo::t('Core', 'Less Than'),
+                         OperatorRules::TYPE_ONE_OF                      => Zurmo::t('Core', 'One Of'),
+                         OperatorRules::TYPE_BETWEEN                     => Zurmo::t('Core', 'Between'),
+                         OperatorRules::TYPE_IS_NULL                     => Zurmo::t('Core', 'Is Null'),
+                         OperatorRules::TYPE_IS_NOT_NULL                 => Zurmo::t('Core', 'Is Not Null'),
             );
         }
 

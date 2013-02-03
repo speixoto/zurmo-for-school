@@ -46,7 +46,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Groupings');
+            return Zurmo::t('ReportsModule', 'Select Groupings');
         }
 
         public static function getPreviousPageLinkId()
@@ -76,7 +76,7 @@
 
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your groupings here</h2>');
+            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your groupings here</h2>');
         }
     }
 ?>

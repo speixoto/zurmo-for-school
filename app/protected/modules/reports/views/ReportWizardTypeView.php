@@ -39,19 +39,19 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Report Wizard');
+            return Zurmo::t('ReportsModule', 'Report Wizard');
         }
 
         protected function getReportTypeData()
         {
             $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Rows and Columns Report'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Summation Report'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Matrix Report'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
                                             );
             return $categories;
@@ -83,7 +83,7 @@
 
         protected function getLinkText()
         {
-            return Yii::t('Default', 'Create');
+            return Zurmo::t('ReportsModule', 'Create');
         }
     }
 ?>

@@ -51,7 +51,7 @@
 
         protected function renderRightSideFormLayout()
         {
-            $content  = '<h3>' . Yii::t('Default', 'Rights and Permissions') . '</h3><div id="owner-box">';
+            $content  = '<h3>' . Zurmo::t('ReportsModule', 'Rights and Permissions') . '</h3><div id="owner-box">';
             $element  = new OwnerNameIdElement($this->model, 'null', $this->form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
@@ -64,13 +64,13 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Save Report');
+            return Zurmo::t('ReportsModule', 'Save Report');
         }
 
         protected function renderNextPageLinkContent()
         {
             $params = array();
-            $params['label']       = Yii::t('Default', 'Save and Run');
+            $params['label']       = Zurmo::t('ReportsModule', 'Save and Run');
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();

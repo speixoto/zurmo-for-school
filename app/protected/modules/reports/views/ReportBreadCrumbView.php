@@ -31,7 +31,7 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Yii::t('Default', 'Reports');
+            return Zurmo::t('ReportsModule', 'Reports');
         }
     }
 ?>

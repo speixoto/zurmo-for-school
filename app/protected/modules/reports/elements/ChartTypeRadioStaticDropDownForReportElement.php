@@ -58,7 +58,7 @@
             $data = array();
             if ($this->getAddBlank())
             {
-                $data[''] = Yii::t('Default', '(None)');
+                $data[''] = Zurmo::t('ReportsModule', '(None)');
             }
             return array_merge($data, $this->getDropDownArray());
         }

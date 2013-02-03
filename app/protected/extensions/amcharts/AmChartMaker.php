@@ -521,7 +521,7 @@
 
         private function renderOnEmptyDataMessage()
         {
-            $errorMessage = Yii::t('Default', 'Not enough data to render chart');
+            $errorMessage = Zurmo::t('Core', 'Not enough data to render chart');
             $content      = ZurmoHtml::tag('span', array('class' => 'empty missing-chart'), $errorMessage);
             $javascript   = "
                     $('#chartContainer{$this->id}').html('" . $content . "');

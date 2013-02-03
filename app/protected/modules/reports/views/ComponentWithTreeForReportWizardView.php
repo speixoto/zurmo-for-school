@@ -76,13 +76,13 @@
 
         protected function renderRightSideDropZoneContent()
         {
-            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), ZurmoHtml::tag('div', array(), Yii::t('Default', 'Drop Here')));
+            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), ZurmoHtml::tag('div', array(), Zurmo::t('ReportsModule', 'Drop Here')));
         }
-        
+
         protected function renderExtraDroppableAttributesContent()
-        {   
+        {
         }
-        
+
         protected function renderSplashArea()
         {
             //return ZurmoHtml::tag('div', array('class' => 'splash'), 'Splash');
@@ -202,7 +202,7 @@
                 }'
             ));
         }
-        
+
         protected function getAjaxForDoubleClickedAttribute()
         {
             return ZurmoHtml::ajax(array(

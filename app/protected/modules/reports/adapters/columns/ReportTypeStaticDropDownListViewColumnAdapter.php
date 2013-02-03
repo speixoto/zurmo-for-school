@@ -30,7 +30,7 @@
         {
             return array(
                 'name' => 'type',
-                'header' => Yii::t('Default', 'Type'),
+                'header' => Zurmo::t('ReportsModule', 'Type'),
                 'type'   => 'raw',
                 'value'  => 'ReportUtil::renderNonEditableTypeStringContent($data->type)'
             );
