@@ -33,10 +33,10 @@
         public $port = 389;
         public $bindRegisteredDomain;
         public $bindPassword;
-        public $baseDomain;		
+        public $baseDomain;
         public $testConnection;
         public $enabled;
-		
+
         public function rules()
         {
             return array(
@@ -62,12 +62,12 @@
         public function attributeLabels()
         {
             return array(
-                'host'                                 => Yii::t('Default', 'Host'),
-                'port'                                 => Yii::t('Default', 'Port'),
-                'bindRegisteredDomain'                 => Yii::t('Default', 'Username'),
-                'bindPassword'                         => Yii::t('Default', 'Password'),
-                'baseDomain'                           => Yii::t('Default', 'Base Domain'),
-                'enabled'                              => Yii::t('Default', 'Turn On Ldap')
+                'host'                                 => Zurmo::t('ZurmoModule', 'Host'),
+                'port'                                 => Zurmo::t('ZurmoModule', 'Port'),
+                'bindRegisteredDomain'                 => Zurmo::t('ZurmoModule', 'Username'),
+                'bindPassword'                         => Zurmo::t('ZurmoModule', 'Password'),
+                'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'),
+                'enabled'                              => Zurmo::t('ZurmoModule', 'Turn On Ldap')
             );
         }
     }
