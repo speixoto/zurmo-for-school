@@ -60,7 +60,7 @@
             $labels             = array();
             foreach (static::getUntranslatedRightsLabels() as $name => $label)
             {
-                $labels[$name] = Zurmo::t('ZurmoModule', $label, $moduleTranslations);
+                $labels[$name] = Yii::t('Default', $label, $moduleTranslations);
             }
             return $labels;
         }
@@ -88,7 +88,7 @@
             $policyNames = self::getPolicyNames();
             foreach ($policyNames as $name)
             {
-                $labels[$name] = Zurmo::t('ZurmoModule', $name);
+                $labels[$name] = Yii::t('Default', $name);
             }
             return $labels;
         }
@@ -99,7 +99,7 @@
             $labels             = array();
             foreach (static::getUntranslatedPolicyLabels() as $name => $label)
             {
-                $labels[$name] = Zurmo::t('ZurmoModule', $label, $moduleTranslations);
+                $labels[$name] = Yii::t('Default', $label, $moduleTranslations);
             }
             return $labels;
         }

@@ -72,6 +72,15 @@
                                 }
                                 $rule[0] = $ruleAttributeName;
                                 $applicableRules[] = $rule;
+                                continue;
+                            case 'numerical':
+                                if (isset($rule['precision']))
+                                {
+                                    $rule[1] = 'RedBeanModelNumberValidator';
+                                }
+                                $rule[0] = $ruleAttributeName;
+                                $applicableRules[] = $rule;
+                                continue;
                             case 'default':
                             case 'safe':
                                 continue;
@@ -94,7 +103,6 @@
                                  //It would map to RedBeanModelDateTimeDefaultValueValidator and is unneeded
                                 continue;
                             default:
-
                                $rule[0] = $ruleAttributeName;
                                $applicableRules[] = $rule;
                         }

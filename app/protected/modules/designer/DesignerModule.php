@@ -50,7 +50,7 @@
                     !empty($moduleTreeMenuItems))
                 {
                     $tabMenuItems[0]['items'][] = array(
-                        'label' => Zurmo::t('DesignerModule', $module::getModuleLabelByTypeAndLanguage('Plural')),
+                        'label' => Yii::t('Default', $module::getModuleLabelByTypeAndLanguage('Plural')),
                         'url'   => array('/designer/default/modulesMenu', 'moduleClassName' => get_class($module)),
                     );
                 }

@@ -202,10 +202,6 @@
 
         protected function afterSave()
         {
-            if ($this->isNewModel)
-            {
-                MissionsUtil::makeAndSubmitNewMissionNotificationMessage($this);
-            }
             if (((isset($this->originalAttributeValues['status'])) && !$this->isNewModel) &&
                 $this->originalAttributeValues['status'] != $this->status)
             {

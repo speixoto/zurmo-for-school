@@ -29,7 +29,9 @@
      */
     abstract class ImportWizardView extends EditView
     {
-        protected $cssClasses =  array( 'AdministrativeArea');
+        protected $cssClasses             = array( 'AdministrativeArea');
+
+        protected $disableFloatOnToolbar  = true;
 
         public function __construct($controllerId, $moduleId, ImportWizardForm $model, $title = null)
         {

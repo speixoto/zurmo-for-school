@@ -366,7 +366,7 @@
                     $browsersToRun = substr($argv[$i], 2);
                     if ($browsersToRun == BROWSERS_TO_RUN)
                     {
-                        return self::getBrowsersData();
+                        return $this->getBrowsersData();
                     }
                     if (!in_array($browsersToRun,
                         array('*iexplore', '*firefox', '*googlechrome')))

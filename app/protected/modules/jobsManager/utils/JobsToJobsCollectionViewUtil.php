@@ -120,13 +120,13 @@
                 $content  = DateTimeUtil::
                            convertDbFormattedDateTimeToLocaleFormattedDisplay($jobLog->createdDateTime);
                 $content .= ' ' . Zurmo::t('JobsManagerModule', '[with errors]');
-                $content  = ZurmoHtml::tag('span', array('class' => 'jobHasErrors'), $content);
+                $content  = ZurmoHtml::wrapLabel($content, 'jobHasErrors');
             }
             else
             {
                 $content = DateTimeUtil::
                            convertDbFormattedDateTimeToLocaleFormattedDisplay($jobLog->createdDateTime);
-                $content  = ZurmoHtml::tag('span', array('class' => 'jobRanSuccessfully'), $content);
+                $content  = ZurmoHtml::wrapLabel($content, 'jobRanSuccessfully');
             }
             return $content;
         }

@@ -42,12 +42,6 @@
          */
         const LIST_TYPE_PARTICIPANT = 2;
 
-        /**
-         * Filter by conversations that are marked as closed
-         * @var integer
-         */
-        const LIST_TYPE_CLOSED = 3;
-
         protected $type;
 
         /**
@@ -55,7 +49,7 @@
          */
         public function __construct($model, $userId, $metadata, $type)
         {
-            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT || $type == self::LIST_TYPE_CLOSED');
+            assert('$type == self::LIST_TYPE_CREATED || $type == self::LIST_TYPE_PARTICIPANT');
             parent::__construct($model, $userId, $metadata);
             $this->type = $type;
         }
@@ -75,65 +69,26 @@
             if ($this->type == self::LIST_TYPE_CREATED)
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName' => 'isClosed',
-                    'operatorType'  => 'isNull',
-                    'value'         => null
-                );
-                $adaptedMetadata['clauses'][$startingCount + 1] = array(
-                    'attributeName' => 'isClosed',
-                    'operatorType'  => 'equals',
-                    'value'         => 0
-                );
-                $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->id
                 );
-                $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and ' . ($startingCount + 2);
+                $structure .= $startingCount;
             }
-            elseif ($this->type == self::LIST_TYPE_PARTICIPANT)
+            else
             {
                 $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName' => 'isClosed',
-                    'operatorType'  => 'isNull',
-                    'value'         => null
-                );
-                $adaptedMetadata['clauses'][$startingCount + 1] = array(
-                    'attributeName' => 'isClosed',
-                    'operatorType'  => 'equals',
-                    'value'         => 0
-                );
-                $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName'        => 'conversationParticipants',
                     'relatedAttributeName' => 'person',
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
-                $adaptedMetadata['clauses'][$startingCount + 2] = array(
-                    'attributeName' => 'owner',
-                    'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
-                );
-                $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and (' . ($startingCount + 2) . ' or ' . ($startingCount + 3) . ')';
-            }
-            elseif ($this->type == self::LIST_TYPE_CLOSED) {
-                $adaptedMetadata['clauses'][$startingCount] = array(
-                    'attributeName' => 'isClosed',
-                    'operatorType'  => 'equals',
-                    'value'         => true
-                );
                 $adaptedMetadata['clauses'][$startingCount + 1] = array(
-                    'attributeName'        => 'conversationParticipants',
-                    'relatedAttributeName' => 'person',
-                    'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->getClassId('Item')
-                );
-                $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->id
                 );
-                $structure .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
+                $structure .= $startingCount . ' or ' . ($startingCount + 1);
             }
             if (empty($metadata['structure']))
             {

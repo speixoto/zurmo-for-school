@@ -96,7 +96,7 @@
         protected static function sendEmail(Notification $notification)
         {
             if ($notification->owner->primaryEmail->emailAddress !== null &&
-                !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
+                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($notification->owner))
             {
                 $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
                 $emailMessage               = new EmailMessage();

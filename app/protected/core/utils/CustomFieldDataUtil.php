@@ -72,7 +72,7 @@
                 }
                 else
                 {
-                    $labels[] = Zurmo::t('Core', $dataName, array(), null, $language);
+                    $labels[] = Yii::t('Default', $dataName, array(), null, $language);
                 }
             }
             return $labels;

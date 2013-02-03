@@ -1,7 +1,4 @@
 {
-DisplayStrings = (
-l
-);
 customParameters = (
 {
 name = glyphOrder;

@@ -78,7 +78,7 @@
         {
             $s  = self::rightToString($this->type);
             $s .= ':';
-            $s .= Zurmo::t('ZurmoModule', $this->name);
+            $s .= Yii::t('Default', $this->name);
             return $s;
         }
 
