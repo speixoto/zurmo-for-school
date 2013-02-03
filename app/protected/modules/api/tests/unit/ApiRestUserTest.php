@@ -151,6 +151,7 @@
             $data['primaryEmail']         = $primaryEmail;
             $data['primaryAddress']       = $primaryAddress;
             $data['serializedAvatarData'] = '';
+            $data['isActive']             = '1';
 
             $data['currency']       = array(
                 'id' => $currency->id
