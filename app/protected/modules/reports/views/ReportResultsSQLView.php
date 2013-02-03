@@ -34,10 +34,10 @@
 
         protected function renderContent()
         {
-            $sqlContent  = Yii::t('Default', 'Count Query');
+            $sqlContent  = Zurmo::t('ReportsModule', 'Count Query');
             $sqlContent .= $this->dataProvider->makeTotalCountSqlQueryForDisplay();
             $content     = ZurmoHtml::tag('div', array(), $sqlContent);
-            $sqlContent  = Yii::t('Default', 'Grid Query');
+            $sqlContent  = Zurmo::t('ReportsModule', 'Grid Query');
             $sqlContent .= $this->dataProvider->makeSqlQueryForDisplay();
             $content    .= ZurmoHtml::tag('div', array(), $sqlContent);
             return $content;

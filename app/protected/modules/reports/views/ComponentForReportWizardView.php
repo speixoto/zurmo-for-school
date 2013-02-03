@@ -36,7 +36,7 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
+            return Zurmo::t('ReportsModule', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
         }
 
         public static function getWizardStepTitle()
@@ -109,7 +109,7 @@
         protected function renderPreviousPageLinkContent()
         {
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                   Yii::t('Default', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
+                   Zurmo::t('ReportsModule', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
         }
 
         /**
@@ -118,7 +118,7 @@
         protected function renderNextPageLinkContent()
         {
             $params = array();
-            $params['label']       = Yii::t('Default', 'Next');
+            $params['label']       = Zurmo::t('ReportsModule', 'Next');
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);

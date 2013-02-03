@@ -90,6 +90,27 @@ EOD;
                         $contents);
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
+            
+            if (!strpos($contents, '$authenticationTestSettings'))
+            {
+                $authenticationTestSettings = <<<EOD
+    \$authenticationTestSettings = array(
+        'ldapSettings' => array(
+           'ldapHost'                 => '',
+           'ldapPort'                 => '',
+           'ldapBindRegisteredDomain' => '',
+           'ldapBindPassword'         => '',
+           'ldapBaseDomain'           => '',
+           'ldapEnabled'              => '',
+        ),
+    );
+EOD;
+                $contents = preg_replace('/\?\>/',
+                        "\n" . $authenticationTestSettings . "\n" . "?>",
+                        $contents);
+
+                file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
+            }
 
             if (!strpos($contents, '$emailTestAccounts'))
             {

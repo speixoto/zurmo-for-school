@@ -40,9 +40,9 @@
             //todo: need confirmation on delete link.
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                 'items' => array(
-                    array(  'label'   => Yii::t('Default', 'Edit'),
+                    array(  'label'   => Zurmo::t('ReportsModule', 'Edit'),
                             'url'     => Yii::app()->createUrl($this->getEditRoute(), array('id' => $this->modelId))),
-                    array(  'label'   => Yii::t('Default', 'Delete'),
+                    array(  'label'   => Zurmo::t('ReportsModule', 'Delete'),
                             'url'     => Yii::app()->createUrl($this->getDeleteRoute(), array('id' => $this->modelId))
                     )));
             $cClipWidget = new CClipWidget();
@@ -57,7 +57,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Options');
+            return Zurmo::t('ReportsModule', 'Options');
         }
 
         protected function getDefaultRoute()

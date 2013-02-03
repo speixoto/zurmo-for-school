@@ -88,7 +88,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select a Chart');
+            return Zurmo::t('ReportsModule', 'Select a Chart');
         }
 
         public static function getPreviousPageLinkId()

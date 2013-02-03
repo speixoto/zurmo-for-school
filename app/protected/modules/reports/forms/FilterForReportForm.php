@@ -101,7 +101,7 @@
         {
             if($this->getAvailableOperatorsType() != null && $this->operator == null)
             {
-                $this->addError('operator', Yii::t('yii', 'Operator cannot be blank.'));
+                $this->addError('operator', Zurmo::t('ReportsModule', 'Operator cannot be blank.'));
                 return  false;
             }
         }
@@ -115,7 +115,7 @@
                ($this->getValueElementType()  == 'MixedDateTypesForReport' && $this->valueType == null))) &&
                $this->value == null)
             {
-                $this->addError('value', Yii::t('yii', 'Value cannot be blank.'));
+                $this->addError('value', Zurmo::t('ReportsModule', 'Value cannot be blank.'));
             }
             $passedValidation = true;
             $rules            = array();
@@ -130,7 +130,7 @@
                 {
                     if(!is_string($subValue))
                     {
-                        $this->addError('value', Yii::t('Default', 'Value must be a string.'));
+                        $this->addError('value', Zurmo::t('ReportsModule', 'Value must be a string.'));
                         $passedValidation = false;
                     }
                 }
@@ -166,7 +166,7 @@
         {
             if($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null)
             {
-                $this->addError('valueType', Yii::t('yii', 'Type cannot be blank.'));
+                $this->addError('valueType', Zurmo::t('ReportsModule', 'Type cannot be blank.'));
                 return false;
             }
         }
@@ -182,7 +182,7 @@
                 }
                 else
                 {
-                    throw new CException(Yii::t('yii','{class} has an invalid validation rule. The rule must specify ' .
+                    throw new CException(Zurmo::t('ReportsModule','{class} has an invalid validation rule. The rule must specify ' .
                                                       'attributes to be validated and the validator name.' ,
                         array('{class}'=>get_class($this))));
                 }

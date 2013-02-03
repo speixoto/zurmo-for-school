@@ -51,5 +51,5 @@
             $saved = $user->save();
             assert('$saved');
             return $user;
-        }
+        }        
     }

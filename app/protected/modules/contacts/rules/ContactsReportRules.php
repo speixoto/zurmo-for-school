@@ -63,15 +63,15 @@
             }
             elseif($adapterName == 'LeadsStateMetadataAdapter')
             {
-                return Yii::t('Default', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+                return Zurmo::t('ContactsModule', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
             elseif($adapterName == 'ContactsStateMetadataAdapter')
             {
-                return Yii::t('Default', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+                return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
             elseif($adapterName === null)
             {
-                return Yii::t('Default', 'ContactsModulePluralLabel and LeadsModulePluralLabel',
+                return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel and LeadsModulePluralLabel',
                        LabelUtil::getTranslationParamsForAllModules());
             }
             else

@@ -50,7 +50,7 @@
             }
             if($this->order != 'asc' && $this->order != 'desc')
             {
-                $this->addError('order', Yii::t('Default', 'Order must be asc or desc.'));
+                $this->addError('order', Zurmo::t('ReportsModule', 'Order must be asc or desc.'));
                 return false;
             }
             return true;
@@ -63,8 +63,8 @@
                 throw new NotSupportedException();
             }
             $data = array();
-            $data['asc']       = Yii::t('Default', 'Ascending');
-            $data['desc']       = Yii::t('Default', 'Descending');
+            $data['asc']       = Zurmo::t('ReportsModule', 'Ascending');
+            $data['desc']      = Zurmo::t('ReportsModule', 'Descending');
             return $data;
         }
     }

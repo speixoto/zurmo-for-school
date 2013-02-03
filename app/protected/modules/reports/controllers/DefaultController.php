@@ -67,7 +67,7 @@
                 null,
                 'ReportsSearchView'
             );
-            $title           = Yii::t('Default', 'Reports');
+            $title           = Zurmo::t('ReportsModule', 'Reports');
             $breadcrumbLinks = array(
                  $title,
             );
@@ -81,13 +81,8 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    Yii::t('Default', 'Reports'),
-                    $dataProvider,
-                    'SecuredActionBarForReportsSearchAndListView'
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                             'SecuredActionBarForReportsSearchAndListView');
                 $view = new ReportsPageView(ZurmoDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
                                             $this, $mixedView, $breadcrumbLinks, 'ReportBreadCrumbView'));
@@ -112,7 +107,7 @@
 
         public function actionSelectType()
         {
-            $breadcrumbLinks  = array(Yii::t('Default', 'Select Report Type'));
+            $breadcrumbLinks  = array(Zurmo::t('ReportsModule', 'Select Report Type'));
             $view             = new ReportsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                     $this,
@@ -129,7 +124,7 @@
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
             }
-            $breadcrumbLinks = array(Yii::t('Default', 'Create'));
+            $breadcrumbLinks = array(Zurmo::t('ReportsModule', 'Create'));
             assert('is_string($type)');
             $report           = new Report();
             $report->setType($type);
@@ -279,16 +274,16 @@
             $rangeAttributesData  =                       $modelToReportAdapter->
                                                           getAttributesForChartRange ($report->getDisplayAttributes());
             $dataAndLabels                              = array();
-            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
             $dataAndLabels['firstSeriesDataAndLabels']  = array_merge($dataAndLabels['firstSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('ReportsModule', '(None)'));
             $dataAndLabels['firstRangeDataAndLabels']   = array_merge($dataAndLabels['firstRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
-            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('ReportsModule', '(None)'));
             $dataAndLabels['secondSeriesDataAndLabels'] = array_merge($dataAndLabels['secondSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Yii::t('Default', '(None)'));
+            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
             $dataAndLabels['secondRangeDataAndLabels']  = array_merge($dataAndLabels['secondRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
             echo CJSON::encode($dataAndLabels);
@@ -411,8 +406,8 @@
             }
             else
             {
-                $notificationContent = Yii::t(
-                    'Default',
+                $notificationContent = Zurmo::t(
+                    'ReportsModule',
                     'You no longer have permissions to access {modelName}.',
                     array('{modelName}' => $modelToStringValue)
                 );

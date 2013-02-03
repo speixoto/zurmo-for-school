@@ -45,7 +45,7 @@
             if(!$xAxisFound || !$yAxisFound)
             {
                 $this->addError( 'groupBys',
-                                    Yii::t('Default', 'At least one x-axis and one y-axis grouping must be selected'));
+                                    Zurmo::t('ReportsModule', 'At least one x-axis and one y-axis grouping must be selected'));
                 $validated = false;
             }
             return $validated;

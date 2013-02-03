@@ -147,11 +147,11 @@
         public function attributeLabels()
         {
             return array(
-                'name'                       => Yii::t('Default', 'Name'),
-                'ownerId'                    => Yii::t('Default', 'Owner Id'),
-                'ownerName'                  => Yii::t('Default', 'Owner Name'),
-                'currencyConversionType'     => Yii::t('Default', 'Currency Conversion'),
-                'spotConversionCurrencyCode' => Yii::t('Default', 'Spot Currency'),
+                'name'                       => Zurmo::t('ReportsModule', 'Name'),
+                'ownerId'                    => Zurmo::t('ReportsModule', 'Owner Id'),
+                'ownerName'                  => Zurmo::t('ReportsModule', 'Owner Name'),
+                'currencyConversionType'     => Zurmo::t('ReportsModule', 'Currency Conversion'),
+                'spotConversionCurrencyCode' => Zurmo::t('ReportsModule', 'Spot Currency'),
             );
         }
 
@@ -193,7 +193,7 @@
             $validated = $this->validateComponent(ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES, 'displayAttributes');
             if(count($this->displayAttributes) == 0)
             {
-                $this->addError( 'displayAttributes', Yii::t('Default', 'At least one display column must be selected'));
+                $this->addError( 'displayAttributes', Zurmo::t('ReportsModule', 'At least one display column must be selected'));
                 $validated = false;
             }
             return $validated;
@@ -222,7 +222,7 @@
             }
             if($duplicateGroupByFound)
             {
-                $this->addError( 'groupBys', Yii::t('Default', 'Each grouping must be unique'));
+                $this->addError( 'groupBys', Zurmo::t('ReportsModule', 'Each grouping must be unique'));
                 $validated = false;
             }
             return $validated;
@@ -252,7 +252,7 @@
             if($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT &&
                $this->spotConversionCurrencyCode == null)
             {
-                $this->addError('spotConversionCurrencyCode', Yii::t('Default', 'Spot Currency cannot be blank.'));
+                $this->addError('spotConversionCurrencyCode', Zurmo::t('ReportsModule', 'Spot Currency cannot be blank.'));
                 $passedValidation = false;
             }
             return $passedValidation;
@@ -303,12 +303,12 @@
             $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
             return array(
                 Report::CURRENCY_CONVERSION_TYPE_ACTUAL =>
-                    Yii::t('Default', 'Do not convert (Can produce mixed results)'),
+                    Zurmo::t('ReportsModule', 'Do not convert (Can produce mixed results)'),
                 Report::CURRENCY_CONVERSION_TYPE_BASE   =>
-                    Yii::t('Default', 'Convert to base currency ({baseCurrencyCode})',
+                    Zurmo::t('ReportsModule', 'Convert to base currency ({baseCurrencyCode})',
                         array('{baseCurrencyCode}' => $baseCurrencyCode)),
                 Report::CURRENCY_CONVERSION_TYPE_SPOT   =>
-                    Yii::t('Default', 'Convert to base currency ({baseCurrencyCode}) and then to a spot currency',
+                    Zurmo::t('ReportsModule', 'Convert to base currency ({baseCurrencyCode}) and then to a spot currency',
                                       array('{baseCurrencyCode}' => $baseCurrencyCode))
             );
         }

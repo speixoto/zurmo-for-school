@@ -36,7 +36,7 @@
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Yii::t('Default', 'Module'));
+            return Yii::app()->format->text(Zurmo::t('ReportsModule', 'Module'));
         }
     }
 ?>

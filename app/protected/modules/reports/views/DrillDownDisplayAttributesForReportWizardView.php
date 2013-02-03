@@ -33,7 +33,7 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Drill Down Display Columns');
+            return Zurmo::t('ReportsModule', 'Select Drill Down Display Columns');
         }
 
         public static function getPreviousPageLinkId()
@@ -68,7 +68,7 @@
 
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your drill down display columns here</h2>');
+            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your drill down display columns here</h2>');
         }
     }
 ?>

@@ -69,11 +69,11 @@
         protected static function translatedDisplayCalculationShortLabels()
         {
             return array(
-                self::DISPLAY_CALCULATION_COUNT       => Yii::t('Default', 'Count'),
-                self::DISPLAY_CALCULATION_SUMMMATION  => Yii::t('Default', 'Sum'),
-                self::DISPLAY_CALCULATION_AVERAGE     => Yii::t('Default', 'Avg'),
-                self::DISPLAY_CALCULATION_MINIMUM     => Yii::t('Default', 'Min'),
-                self::DISPLAY_CALCULATION_MAXIMUM     => Yii::t('Default', 'Max'),
+                self::DISPLAY_CALCULATION_COUNT       => Zurmo::t('ReportsModule', 'Count'),
+                self::DISPLAY_CALCULATION_SUMMMATION  => Zurmo::t('ReportsModule', 'Sum'),
+                self::DISPLAY_CALCULATION_AVERAGE     => Zurmo::t('ReportsModule', 'Avg'),
+                self::DISPLAY_CALCULATION_MINIMUM     => Zurmo::t('ReportsModule', 'Min'),
+                self::DISPLAY_CALCULATION_MAXIMUM     => Zurmo::t('ReportsModule', 'Max'),
             );
         }
 
@@ -87,11 +87,11 @@
         protected static function translatedGroupByCalculationShortLabels()
         {
             return array(
-                self::GROUP_BY_CALCULATION_DAY       => Yii::t('Default', 'Day'),
-                self::GROUP_BY_CALCULATION_WEEK      => Yii::t('Default', 'Week'),
-                self::GROUP_BY_CALCULATION_MONTH     => Yii::t('Default', 'Month'),
-                self::GROUP_BY_CALCULATION_QUARTER   => Yii::t('Default', 'Quarter'),
-                self::GROUP_BY_CALCULATION_YEAR      => Yii::t('Default', 'Year'),
+                self::GROUP_BY_CALCULATION_DAY       => Zurmo::t('ReportsModule', 'Day'),
+                self::GROUP_BY_CALCULATION_WEEK      => Zurmo::t('ReportsModule', 'Week'),
+                self::GROUP_BY_CALCULATION_MONTH     => Zurmo::t('ReportsModule', 'Month'),
+                self::GROUP_BY_CALCULATION_QUARTER   => Zurmo::t('ReportsModule', 'Quarter'),
+                self::GROUP_BY_CALCULATION_YEAR      => Zurmo::t('ReportsModule', 'Year'),
             );
         }
 
@@ -332,7 +332,7 @@
             $attributes       = array();
             if($this->shouldIncludeIdAsGroupByAttribute)
             {
-                $attributes['id'] = array('label' => Yii::t('Default', 'Id'));
+                $attributes['id'] = array('label' => Zurmo::t('ReportsModule', 'Id'));
             }
             $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
             $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
@@ -409,7 +409,7 @@
 
         protected function getDisplayCalculationAttributes()
         {
-            $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Yii::t('Default', 'Count')));
+            $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Zurmo::t('ReportsModule', 'Count')));
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
                 $this->getDisplayCalculationAttribute($attributes, $attribute);

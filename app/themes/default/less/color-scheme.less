@@ -1,11 +1,11 @@
 @import 'mixins.less';
 
 /*START COLOR SCHEME/THEME*/
-    @textColor         : #545454;
-    a:link, a:active, a:visited{
-        color:@textColor;
-        cursor: pointer;
-    }
+@textColor         : #545454;
+a:link, a:active, a:visited{
+    color:@textColor;
+    cursor: pointer;
+}
 
 .AppColors(){
     .textColor{ color: @textColor; }
@@ -70,6 +70,7 @@
     .latest-activity-toolbar a,
     a.more-panels-link,
     a.simple-link .z-label,
+	a.simple-select,
     .after-form-details-content a,
     .ui-dialog-title,
     .show-file-upload-box,
@@ -135,8 +136,9 @@
     .zLink,
     .z-link,
     .lead-conversion-actions a,
-    #clear-search-link,
+    #clear-search-link
     #show-filters-structure-div-link
+
     {
         background-color: @themeColor;
     }
@@ -572,7 +574,4 @@ body.light-toast,
 .texture-swatch.light-toast .background-texture-1{
     background: url(../patterns/light-toast/light-toast.png) left top repeat;
 }
-
-
-
 /*END COLOR SCHEME/THEME*/

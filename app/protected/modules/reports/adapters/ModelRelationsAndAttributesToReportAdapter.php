@@ -434,7 +434,7 @@
 
         public function getAttributesIncludingDerivedAttributesData()
         {
-            $attributes = array('id' => array('label' => Yii::t('Default', 'Id')));
+            $attributes = array('id' => array('label' => Zurmo::t('ReportsModule', 'Id')));
             $attributes = array_merge($attributes, $this->getAttributesNotIncludingDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());

@@ -50,7 +50,7 @@
             }
             if($this->axis != 'x' && $this->axis != 'y')
             {
-                $this->addError('axis', Yii::t('Default', 'Axis must be x or y.'));
+                $this->addError('axis', Zurmo::t('ReportsModule', 'Axis must be x or y.'));
                 return false;
             }
             return true;
@@ -63,8 +63,8 @@
                 throw new NotSupportedException();
             }
             $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
+            $data['x']       = Zurmo::t('ReportsModule', 'X-Axis');
+            $data['y']       = Zurmo::t('ReportsModule', 'Y-Axis');
             return $data;
         }
     }

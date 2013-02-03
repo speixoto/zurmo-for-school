@@ -73,7 +73,7 @@
                 $moduleClassName = $this->model->moduleClassName;
                 $typesAndLabels  = Report::getTypeDropDownArray();
                 return strval($this->model) . ' - ' .
-                       Yii::t('Default', '{moduleLabel} {typeLabel} Report',
+                       Zurmo::t('ReportsModule', '{moduleLabel} {typeLabel} Report',
                               array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
                                     '{typeLabel}'   => $typesAndLabels[$this->model->type]));
             }

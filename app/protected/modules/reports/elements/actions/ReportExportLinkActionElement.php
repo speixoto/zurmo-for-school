@@ -38,9 +38,9 @@
         {
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
-                                        array(  'label'   => Yii::t('Default', 'to CSV'),
+                                        array(  'label'   => Zurmo::t('ReportsModule', 'to CSV'),
                                                 'url'     => '#'), //todo: make sure to use default route method.
-                                        array(  'label'   => Yii::t('Default', 'to PDF'),
+                                        array(  'label'   => Zurmo::t('ReportsModule', 'to PDF'),
                                                 'url'     => '#'))); //todo: make sure to use default route method.
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
@@ -54,7 +54,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Export');
+            return Zurmo::t('ReportsModule', 'Export');
         }
 
         protected function getDefaultRoute()

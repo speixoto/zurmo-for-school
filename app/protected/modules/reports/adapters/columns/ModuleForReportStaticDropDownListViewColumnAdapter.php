@@ -30,7 +30,7 @@
         {
             return array(
                 'name'   => 'moduleClassName',
-                'header' => Yii::t('Default', 'Module'),
+                'header' => Zurmo::t('ReportsModule', 'Module'),
                 'type'   => 'raw',
                 'value'  => 'ReportUtil::renderNonEditableModuleStringContent($data->moduleClassName)'
             );

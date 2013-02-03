@@ -32,7 +32,7 @@
             {
                 return array(
                     'name' => 'lastName',
-                    'header' => Yii::t('Default', 'Name'),
+                    'header' => Zurmo::t('ReportsModule', 'Name'),
                     'type' => 'raw',
                     'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
                 );
@@ -41,7 +41,7 @@
             {
                 return array(
                     'name' => 'lastName',
-                    'header' => Yii::t('Default', 'Name'),
+                    'header' => Zurmo::t('ReportsModule', 'Name'),
                     'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
                 );
             }

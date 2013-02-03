@@ -92,19 +92,19 @@
 
         public static function translatedTypeLabels()
         {
-            return array(ChartRules::TYPE_BAR_2D             => Yii::t('Default', '2D Horizontal Bar Graph'),
-                         ChartRules::TYPE_BAR_3D             => Yii::t('Default', '3D Horizontal Bar Graph'),
-                         ChartRules::TYPE_COLUMN_2D          => Yii::t('Default', '2D Vertical Bar Graph'),
-                         ChartRules::TYPE_COLUMN_3D          => Yii::t('Default', '3D Vertical Bar Graph'),
-                         ChartRules::TYPE_DONUT_2D           => Yii::t('Default', 'Donut 2D'),
-                         ChartRules::TYPE_DONUT_3D           => Yii::t('Default', 'Donut 3D'),
-                         ChartRules::TYPE_PIE_2D             => Yii::t('Default', 'Pie 2D'),
-                         ChartRules::TYPE_PIE_3D             => Yii::t('Default', 'Pie 3D'),
-                         ChartRules::TYPE_STACKED_BAR_2D     => Yii::t('Default', 'Stacked Bar 2D'),
-                         ChartRules::TYPE_STACKED_BAR_3D     => Yii::t('Default', 'Stacked Bar 3D'),
-                         ChartRules::TYPE_STACKED_COLUMN_2D  => Yii::t('Default', 'Stacked Column 2D'),
-                         ChartRules::TYPE_STACKED_COLUMN_3D  => Yii::t('Default', 'Stacked Column 3D'),
-                         ChartRules::TYPE_STACKED_AREA       => Yii::t('Defailt', 'Stacked Area'),
+            return array(ChartRules::TYPE_BAR_2D             => Zurmo::t('Core', '2D Horizontal Bar Graph'),
+                         ChartRules::TYPE_BAR_3D             => Zurmo::t('Core', '3D Horizontal Bar Graph'),
+                         ChartRules::TYPE_COLUMN_2D          => Zurmo::t('Core', '2D Vertical Bar Graph'),
+                         ChartRules::TYPE_COLUMN_3D          => Zurmo::t('Core', '3D Vertical Bar Graph'),
+                         ChartRules::TYPE_DONUT_2D           => Zurmo::t('Core', 'Donut 2D'),
+                         ChartRules::TYPE_DONUT_3D           => Zurmo::t('Core', 'Donut 3D'),
+                         ChartRules::TYPE_PIE_2D             => Zurmo::t('Core', 'Pie 2D'),
+                         ChartRules::TYPE_PIE_3D             => Zurmo::t('Core', 'Pie 3D'),
+                         ChartRules::TYPE_STACKED_BAR_2D     => Zurmo::t('Core', 'Stacked Bar 2D'),
+                         ChartRules::TYPE_STACKED_BAR_3D     => Zurmo::t('Core', 'Stacked Bar 3D'),
+                         ChartRules::TYPE_STACKED_COLUMN_2D  => Zurmo::t('Core', 'Stacked Column 2D'),
+                         ChartRules::TYPE_STACKED_COLUMN_3D  => Zurmo::t('Core', 'Stacked Column 3D'),
+                         ChartRules::TYPE_STACKED_AREA       => Zurmo::t('Core', 'Stacked Area'),
             );
         }
 

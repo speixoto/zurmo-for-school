@@ -65,7 +65,8 @@
                          'SetIncludePath',
                          'IMAP',
                          'Pdo',
-                         'PdoMysql'
+                         'PdoMysql',
+                         'Ldap'
             );
         }
 
@@ -78,7 +79,7 @@
                          'DatabaseThreadStack',
                          'DatabaseDefaultCollation',
                          'DatabaseLogBin',
-                         'DatabaseOptimizerSearchDepth'
+                         'DatabaseOptimizerSearchDepth'                                                 
             );
         }
 

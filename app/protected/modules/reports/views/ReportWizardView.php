@@ -51,7 +51,7 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Report Wizard');
+            return Zurmo::t('ReportsModule', 'Report Wizard');
         }
 
         protected function renderContent()

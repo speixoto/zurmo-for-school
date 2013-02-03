@@ -138,7 +138,7 @@
 
         protected static function getSummaryText()
         {
-            return Yii::t('Default', '{count} result(s)');
+            return Zurmo::t('ReportsModule', '{count} result(s)');
         }
 
         protected static function getSummaryCssClass()

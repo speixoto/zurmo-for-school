@@ -185,11 +185,11 @@
             {
                 if($value)
                 {
-                    $translatedValue = Yii::t('Default', 'Yes');
+                    $translatedValue = Zurmo::t('ReportsModule', 'Yes');
                 }
                 elseif($value == false && $value != '')
                 {
-                    $translatedValue = Yii::t('Default', 'No');
+                    $translatedValue = Zurmo::t('ReportsModule', 'No');
                 }
             }
             if($translatedValue === null)

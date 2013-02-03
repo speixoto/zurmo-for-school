@@ -767,6 +767,7 @@ body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
 body.blue a.simple-link .z-label,
+body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
@@ -821,8 +822,7 @@ body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
-body.blue #clear-search-link,
-body.blue #show-filters-structure-div-link {
+body.blue #clear-search-link #show-filters-structure-div-link {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1306,6 +1306,7 @@ body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
 body.brown a.simple-link .z-label,
+body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
@@ -1360,8 +1361,7 @@ body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
-body.brown #clear-search-link,
-body.brown #show-filters-structure-div-link {
+body.brown #clear-search-link #show-filters-structure-div-link {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1845,6 +1845,7 @@ body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
 body.lime a.simple-link .z-label,
+body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
@@ -1899,8 +1900,7 @@ body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
-body.lime #clear-search-link,
-body.lime #show-filters-structure-div-link {
+body.lime #clear-search-link #show-filters-structure-div-link {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2384,6 +2384,7 @@ body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
 body.cherry a.simple-link .z-label,
+body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
@@ -2438,8 +2439,7 @@ body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
-body.cherry #clear-search-link,
-body.cherry #show-filters-structure-div-link {
+body.cherry #clear-search-link #show-filters-structure-div-link {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -2923,6 +2923,7 @@ body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
 body.turquoise a.simple-link .z-label,
+body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
@@ -2977,8 +2978,7 @@ body.turquoise .ui-tooltip-default .ui-tooltip-icon,
 body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
-body.turquoise #clear-search-link,
-body.turquoise #show-filters-structure-div-link {
+body.turquoise #clear-search-link #show-filters-structure-div-link {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3462,6 +3462,7 @@ body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
 body.violet a.simple-link .z-label,
+body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
@@ -3516,8 +3517,7 @@ body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
-body.violet #clear-search-link,
-body.violet #show-filters-structure-div-link {
+body.violet #clear-search-link #show-filters-structure-div-link {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -4001,6 +4001,7 @@ body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
 body.honey a.simple-link .z-label,
+body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
@@ -4055,8 +4056,7 @@ body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
-body.honey #clear-search-link,
-body.honey #show-filters-structure-div-link {
+body.honey #clear-search-link #show-filters-structure-div-link {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -6933,10 +6933,6 @@ div.wide.form label.hasCheckBox {
 .cgrid-view.loading .list-preloader {
   display: block;
 }
-/*
-#NoUserEmailConfigurationYetView,
-#NoGlobalEmailConfigurationYetView,
-.ZeroModelsYetView*/
 .zero-components-view h2,
 .splash-view h2 {
   font-family: "Times New Roman", Times, serif;
@@ -11113,8 +11109,7 @@ table.configuration-list td:last-child a .z-label:before {
 #testImapConnection {
   margin: 0;
 }
-#TestImapConnectionMessageView,
-#TestEmailMessageView {
+.connection-test-message {
   min-height: 60px;
   padding: 15px;
   line-height: 150%;

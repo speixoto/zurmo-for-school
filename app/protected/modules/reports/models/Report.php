@@ -76,9 +76,9 @@
 
         public static function getTypeDropDownArray()
         {
-            return array(self::TYPE_ROWS_AND_COLUMNS  => Yii::t('Default', 'Rows and Columns'),
-                         self::TYPE_SUMMATION         => Yii::t('Default', 'Summation'),
-                         self::TYPE_MATRIX            => Yii::t('Default', 'Matrix'),);
+            return array(self::TYPE_ROWS_AND_COLUMNS  => Zurmo::t('ReportsModule', 'Rows and Columns'),
+                         self::TYPE_SUMMATION         => Zurmo::t('ReportsModule', 'Summation'),
+                         self::TYPE_MATRIX            => Zurmo::t('ReportsModule', 'Matrix'),);
         }
 
         /**
@@ -130,7 +130,7 @@
         {
             if (trim($this->name) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('ReportsModule', '(Unnamed)');
             }
             return $this->name;
         }

@@ -31,7 +31,7 @@
             $validated = parent::validateGroupBys();
             if(count($this->groupBys) == 0)
             {
-                $this->addError( 'groupBys', Yii::t('Default', 'At least one grouping must be selected'));
+                $this->addError( 'groupBys', Zurmo::t('ReportsModule', 'At least one grouping must be selected'));
                 $validated = false;
             }
             return $validated;

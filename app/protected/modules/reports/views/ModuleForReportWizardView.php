@@ -45,18 +45,18 @@
 
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Module');
+            return Zurmo::t('ReportsModule', 'Select Module');
         }
 
         protected function renderPreviousPageLinkContent()
         {
             if($this->model->isNew())
             {
-                $label = Yii::t('Default', 'Cancel');
+                $label = Zurmo::t('ReportsModule', 'Cancel');
             }
             else
             {
-                $label = Yii::t('Default', 'Cancel Changes');
+                $label = Zurmo::t('ReportsModule', 'Cancel Changes');
             }
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
         }

@@ -193,7 +193,7 @@
                !(strpos($this->attributeName, FormModelUtil::RELATION_DELIMITER) === false))
             {
                 $this->addError('attributeName',
-                    Yii::t('Default', '"{$attributeName}" field name contains reserved characters. Either {reserved1} or {reserved2}.',
+                    Zurmo::t('DesignerModule', '"{$attributeName}" field name contains reserved characters. Either {reserved1} or {reserved2}.',
                                  array('{$attributeName}' => $this->attributeName,
                                        '{reserved1}' => FormModelUtil::DELIMITER,
                                        '{reserved2}' => FormModelUtil::RELATION_DELIMITER)));
