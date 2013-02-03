@@ -53,18 +53,6 @@
             }
         }
 
-        public function resolveIsClosedForNull()
-        {
-            if ($this->isClosed == true)
-            {
-                return 1;
-            }
-            else
-            {
-                return 0;
-            }
-        }
-
         /**
          * Given a user get the count of conversations that have unread comments.
          * @param object $user User
@@ -127,7 +115,6 @@
                     'latestDateTime',
                     'subject',
                     'ownerHasReadLatest',
-                    'isClosed'
                 ),
                 'relations' => array(
                     'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
@@ -144,7 +131,6 @@
                     array('subject',            'type',    'type' => 'string'),
                     array('subject',            'length',  'min'  => 3, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
-                    array('isClosed',           'boolean'),
                 ),
                 'elements' => array(
                     'conversationItems' => 'ConversationItem',

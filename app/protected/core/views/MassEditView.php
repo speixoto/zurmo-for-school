@@ -97,7 +97,7 @@
             $message = '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
                     LabelUtil::getUncapitalizedRecordLabelByCount($this->selectedRecordCount) . ' ' .
                     Zurmo::t('Core', 'selected for updating.');
-            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
+            return ZurmoHtml::wrapLabel($message, 'operation-description');
         }
 
         /**

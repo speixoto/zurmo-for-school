@@ -32,6 +32,8 @@
     {
         protected $editableDesignerMetadata = false;
 
+        protected $disableFloatOnToolbar  = false;
+
         protected $modelId;
 
         /**

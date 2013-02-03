@@ -49,10 +49,9 @@
             }
             catch (ChecksumMismatchException $e)
             {
-                echo Zurmo::t('Core', 'A checksum mismatch has occurred while retrieving a cached model. ' .
-                                       'This is most likely caused by setting debug=true. The cache must be cleared.'); // Not Coding Standard
+                echo 'A checksum mismatch has occurred while retrieving a cached model. ' .
+                     'This is most likely caused by setting debug=true. The cache must be cleared.'; // Not Coding Standard
                 echo '<br/>';
-                exit;
                 $url = Yii::app()->createUrl('zurmo/default/index/', array('clearCache' => true));
                 echo ZurmoHtml::link('Click here to clear the cache', $url);
                 Yii::app()->end(0, false);

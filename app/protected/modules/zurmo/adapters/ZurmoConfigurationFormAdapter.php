@@ -43,7 +43,6 @@
             $form->modalListPageSize                     = Yii::app()->pagination->getGlobalValueByType('modalListPageSize');
             $form->dashboardListPageSize                 = Yii::app()->pagination->getGlobalValueByType('dashboardListPageSize');
             $form->gamificationModalNotificationsEnabled = Yii::app()->gameHelper->modalNotificationsEnabled;
-            $form->realtimeUpdatesEnabled                = static::getRealtimeUpdatesEnabled();
             return $form;
         }
 
@@ -61,21 +60,6 @@
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'gamificationModalNotificationsEnabled',
                                                     (boolean) $form->gamificationModalNotificationsEnabled);
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
-                                                    'realtimeUpdatesEnabled',
-                                                    (boolean) $form->realtimeUpdatesEnabled);
-       }
-
-       public static function getRealtimeUpdatesEnabled()
-       {
-            if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'realtimeUpdatesEnabled') !== null)
-            {
-                return ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'realtimeUpdatesEnabled');
-            }
-            else
-            {
-                return false;
-            }
        }
     }
 ?>

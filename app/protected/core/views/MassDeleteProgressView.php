@@ -69,7 +69,7 @@
         {
             return Zurmo::t('Core', 'Deleting') . " " . $this->start . " - " . $this->getEndSize() . " " . Zurmo::t('Core', 'of') . " " .
                 $this->totalRecordCount . " " . Zurmo::t('Core', 'total') . " " .
-                Zurmo::t('Core', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
+                Yii::t('Default', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
         }
 
         protected function getCompleteMessage()
@@ -84,40 +84,6 @@
                             MassDeleteInsufficientPermissionSkipSavingUtil::getSkipCountMessageContentByModelClassName(
                                             $this->skipCount, get_class($this->model));
             }
-            return $content;
-        }
-
-        protected function renderContent()
-        {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ProgressBar");
-            $cClipWidget->widget('zii.widgets.jui.CJuiProgressBar', array(
-                'id'         => $this->progressBarId,
-                'value'      => $this->getProgressValue(),
-                'options'    => array(
-                    'create' => 'js:function(event, ui)
-                    {
-                        ' . $this->getCreateProgressBarAjax($this->progressBarId) . ';
-                    }',
-                    'change' => 'js:function(event, ui){
-                        $("#progress-percent").html( $(\'#' . $this->progressBarId . '\').progressbar("value") + "%");
-                    }',
-                    'complete' => 'js:function(event, ui)
-                    {
-                        $(".progressbar-wrapper").fadeOut(250);
-                        $(\'#' . $this->progressBarId . '-links\').show();
-                    }',
-                ),
-            ));
-            $cClipWidget->endClip();
-            $progressBarContent =  $cClipWidget->getController()->clips['ProgressBar'];
-            $content  = "<div><h1>" . Zurmo::t('Core', 'Mass Delete') . ' ' . $this->title . '</h1>';
-            $content .= '<div class="progress-counter">';
-            $content .= '<h3><span id="' . $this->progressBarId . '-msg">' . $this->getMessage() . '</span></h3>';
-            $content .= '<div class="progressbar-wrapper"><span id="progress-percent">0%</span>' . $progressBarContent . '</div>';
-            $content .= $this->renderFormLinks();
-            $content .= '</div>';
-            $content .= '</div>';
             return $content;
         }
 

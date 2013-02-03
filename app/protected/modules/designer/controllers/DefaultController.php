@@ -91,12 +91,14 @@
                 $derivedAttributesAdapter = new DerivedAttributesAdapter(get_class($model));
                 $customAttributes         = array_merge($adapter->getCustomAttributes(),
                                                         $derivedAttributesAdapter->getAttributes());
+                $customAttributes = ArrayUtil::subValueSort($customAttributes, 'attributeLabel', 'asort');
+                $standardAttributes = ArrayUtil::subValueSort($adapter->getStandardAttributes(), 'attributeLabel', 'asort');
                 $canvasView = new StandardAndCustomAttributesListView(
                             $this->getId(),
                             $this->getModule()->getId(),
                             $module,
                             $moduleClassName::getModuleLabelByTypeAndLanguage('Plural'),
-                            $adapter->getStandardAttributes(),
+                            $standardAttributes,
                             $customAttributes,
                             $modelClassName
                 );
@@ -225,6 +227,7 @@
                     }
                 }
             }
+            $editableViewsCollection = ArrayUtil::subValueSort($editableViewsCollection, 'titleLabel', 'asort');
             $title           = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural') .
                                ': ' . Zurmo::t('DesignerModule', 'Layouts');
             $breadcrumbLinks = array($title);

@@ -43,7 +43,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('_group', "name = :name ", array(':name' => $name));
+            $bean = R::findOne('_group', "name = :name ", array(':name' => $name));            
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -155,7 +155,7 @@
             }
             if ($this->name == self::EVERYONE_GROUP_NAME || $this->name == self::SUPER_ADMINISTRATORS_GROUP_NAME)
             {
-                return Zurmo::t('ZurmoModule', $this->name);
+                return Yii::t('Default', $this->name);
             }
             return $this->name;
         }
@@ -176,10 +176,6 @@
         {
             if ($this->isEveryone)
             {
-                if ($attributeName == 'name')
-                {
-                    return Zurmo::t('ZurmoModule', self::EVERYONE_GROUP_NAME);
-                }
                 if ($attributeName == 'group')
                 {
                     return null;
@@ -191,10 +187,6 @@
             }
             if ($this->isSuperAdministrators)
             {
-                if ($attributeName == 'name')
-                {
-                    return Zurmo::t('ZurmoModule', self::SUPER_ADMINISTRATORS_GROUP_NAME);
-                }
                 if ($attributeName == 'rights')
                 {
                     throw new NotSupportedException();
