@@ -2330,13 +2330,12 @@ exit;
         public static function getAnAttributeLabel($attributeName)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
-            $labels = $this->untranslatedAbbreviatedAttributeLabels();
+            $labels = static::untranslatedAbbreviatedAttributeLabels();
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
                                   Yii::t('Default', $labels[$attributeName],
-                                  LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                                  LabelUtil::getTranslationParamsForAllModules(), null));
             }
             else
             {
