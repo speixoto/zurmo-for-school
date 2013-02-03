@@ -113,15 +113,6 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                     ),

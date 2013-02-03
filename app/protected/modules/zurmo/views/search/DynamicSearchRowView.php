@@ -75,7 +75,7 @@
             $idInputHtmlOptions  = array('id' => $hiddenInputId, 'class' => 'structure-position');
 
             $content  = '<div>';
-            $content .= ZurmoHtml::tag('span', array('class' => 'dynamic-search-row-number-label'), ($this->rowNumber + 1) . '.');
+            $content .= ZurmoHtml::wrapLabel(($this->rowNumber + 1) . '.', 'dynamic-search-row-number-label');
             $content .= $this->renderAttributeDropDownContent();
             $content .= ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
             $content .= ZurmoHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);

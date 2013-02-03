@@ -695,7 +695,7 @@
                             $label = 'Relations of type HAS_MANY_BELONGS_TO must have the relation name ' .
                                      'the same as the related model class name. Relation: {relationName} ' .
                                      'Relation model class name: {relationModelClassName}';
-                            throw new NotSupportedException(Zurmo::t('Core', $label,
+                            throw new NotSupportedException(Yii::t('Default', $label,
                                       array('{relationName}' => $relationName,
                                             '{relationModelClassName}' => $relationModelClassName)));
                         }
@@ -1642,7 +1642,7 @@
             $attributeLabels = array();
             foreach ($this->untranslatedAttributeLabels() as $attributeName => $label)
             {
-                $attributeLabels[$attributeName] = Zurmo::t('Core', $label);
+                $attributeLabels[$attributeName] = Yii::t('Default', $label);
             }
             return $attributeLabels;
         }
@@ -1673,7 +1673,7 @@
             $abbreviatedAttributeLabels = array();
             foreach ($this->untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
             {
-                $abbreviatedAttributeLabels[$attributeName] = Zurmo::t('Core', $label);
+                $abbreviatedAttributeLabels[$attributeName] = Yii::t('Default', $label);
             }
             return $abbreviatedAttributeLabels;
         }
@@ -1969,7 +1969,7 @@
                                     $label = 'Relations of type HAS_MANY_BELONGS_TO OR HAS_ONE_BELONGS_TO must have the relation name ' .
                                              'the same as the related model class name. Relation: {relationName} ' .
                                              'Relation model class name: {relationModelClassName}';
-                                    throw new NotSupportedException(Zurmo::t('Core', $label,
+                                    throw new NotSupportedException(Yii::t('Default', $label,
                                               array('{relationName}' => $linkName,
                                                     '{relationModelClassName}' => $relatedModelClassName)));
                                 }
@@ -2430,22 +2430,22 @@
             assert('in_array($type, array("Singular", "SingularLowerCase", "Plural", "PluralLowerCase"))');
             if ($type == 'Singular')
             {
-               return Zurmo::t('Core', static::getLabel(),
+               return Yii::t('Default', static::getLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language);
             }
             if ($type == 'SingularLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getLabel(),
+               return strtolower(Yii::t('Default', static::getLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
             if ($type == 'Plural')
             {
-               return Zurmo::t('Core', static::getPluralLabel(),
+               return Yii::t('Default', static::getPluralLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language);
             }
             if ($type == 'PluralLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getPluralLabel(),
+               return strtolower(Yii::t('Default', static::getPluralLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
         }
@@ -2481,7 +2481,7 @@
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
-                                  Zurmo::t('Core', $labels[$attributeName],
+                                  Yii::t('Default', $labels[$attributeName],
                                   LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
             else
@@ -2515,13 +2515,13 @@
             }
             elseif (isset($labels[$attributeName]))
             {
-                return Zurmo::t('Core', $labels[$attributeName],
+                return Yii::t('Default', $labels[$attributeName],
                               LabelUtil::getTranslationParamsForAllModules(), null, $language);
             }
             else
             {
                 //should do a T:: wrapper here too.
-                return Zurmo::t('Core', $this->generateAttributeLabel($attributeName), array(), null, $language);
+                return Yii::t('Default', $this->generateAttributeLabel($attributeName), array(), null, $language);
             }
         }
 
@@ -2938,7 +2938,7 @@
         {
             if (YII_DEBUG)
             {
-                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
+                Yii::log(Yii::t('yii', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
             }
         }
 

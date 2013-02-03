@@ -79,7 +79,7 @@ $(window).ready(function(){
 
     resizeWhiteArea();
     $(window).resize(function(){
-      console.log('resizing');
+      //console.log('resizing');
       resizeWhiteArea();
     });
 
@@ -152,13 +152,15 @@ $(window).ready(function(){
  */
 
 function dockFloatingBar(){
-    var windowTop, diff;
-    windowTop = $(window).scrollTop();
-    diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
-    if( windowTop > diff ) {
-        $('#float-bar .view-toolbar-container').addClass('dock');
-    } else {
-        $('#float-bar .view-toolbar-container').removeClass('dock');
+    if ($('.float-bar').find('.disable-float-bar').length == 0) {
+        var windowTop, diff;
+        windowTop = $(window).scrollTop();
+        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+        if( windowTop > diff ) {
+            $('.float-bar .view-toolbar-container').addClass('dock');
+        } else {
+            $('.float-bar .view-toolbar-container').removeClass('dock');
+        }
     }
 }
 
