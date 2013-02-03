@@ -985,6 +985,7 @@
                     }
                 }
             }
+            self::forgetBeanModel(get_called_class());
             RedBeanModelsCache::forgetAllByModelType(get_called_class());
             GeneralCache::forgetEntry(get_called_class() . 'Metadata');
         }
@@ -2242,6 +2243,7 @@ exit;
          */
         public static function forgetAll()
         {
+            self::forgetAllBeanModels();
             RedBeanModelsCache::forgetAll();
             RedBeansCache::forgetAll();
         }
@@ -2252,6 +2254,7 @@ exit;
          */
         public function forget()
         {
+            self::forgetBeanModel(get_called_class());
             RedBeanModelsCache::forgetModel($this);
             RedBeansCache::forgetBean(self::getTableName(get_called_class()) . $this->id);
         }

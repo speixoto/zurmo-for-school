@@ -390,5 +390,28 @@
             }
             return self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
         }
+
+        protected static function forgetBeanModel($modelClassName)
+        {
+            if(isset(self::$attributeNamesToClassNames[$modelClassName]))
+            {
+                unset(self::$attributeNamesToClassNames[$modelClassName]);
+            }
+            if(isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
+            {
+                unset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]);
+            }
+            if(isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
+            {
+                unset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]);
+            }
+        }
+
+        protected static function forgetAllBeanModels()
+        {
+            self::$attributeNamesToClassNames                      = null;
+            self::$relationNameToRelationTypeModelClassNameAndOwns = null;
+            self::$attributeNamesNotBelongsToOrManyMany            = null;
+        }
     }
 ?>
