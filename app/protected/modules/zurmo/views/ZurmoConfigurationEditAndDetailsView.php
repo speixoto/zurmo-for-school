@@ -31,7 +31,7 @@
     {
         public function getTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Global Configuration');
+            return Yii::t('Default', 'Global Configuration');
         }
 
         public static function getDefaultMetadata()
@@ -41,7 +41,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'ConfigurationLink',
-                                            'label' => "eval:Zurmo::t('ZurmoModule', 'Cancel')"),
+                                            'label' => "eval:Yii::t('Default', 'Cancel')"),
                             array('type' => 'SaveButton',    'renderType' => 'Edit'),
                             array('type' => 'EditLink',      'renderType' => 'Details'),
                         ),
@@ -109,6 +109,15 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'gamificationModalNotificationsEnabled', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'realtimeUpdatesEnabled', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )

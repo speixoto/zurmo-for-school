@@ -39,7 +39,7 @@
         {
             $url      = Yii::app()->createUrl('/conversations/default/details', array('id' => $conversation->id));
             $content  = $conversation->subject;
-            $details  = '<span class="list-item-details">' . Zurmo::t('ConversationsModule', 'Updated') . ': ' .
+            $details  = '<span class="list-item-details">' . Yii::t('Default', 'Updated') . ': ' .
                                 DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($conversation->latestDateTime) .
                                 '</span>';
             $link     = ZurmoHtml::link($content, $url);
@@ -110,6 +110,34 @@
                 }
             }
             return false;
+        }
+
+        public static function resolvePeopleOnConversation(Conversation $conversation)
+        {
+            $people   = ConversationParticipantsUtil::getConversationParticipants($conversation);
+            $people[] = $conversation->owner;
+            return $people;
+        }
+
+        /**
+         * Given a Conversation and the User that created the new comment
+         * return the people on the conversation to send new notification to
+         * @param Conversation $conversation
+         * @param User $user
+         * @return Array $peopleToSendNotification
+         */
+        public static function  resolvePeopleToSendNotificationToOnNewComment(Conversation $conversation, User $user)
+        {
+            $peopleToSendNotification = array();
+            $peopleOnConversation     = self::resolvePeopleOnConversation($conversation);
+            foreach ($peopleOnConversation as $people)
+            {
+                if (!$people->isSame($user))
+                {
+                    $peopleToSendNotification[] = $people;
+                }
+            }
+            return $peopleToSendNotification;
         }
     }
 ?>

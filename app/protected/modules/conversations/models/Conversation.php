@@ -43,13 +43,25 @@
             {
                 if (trim($this->subject) == '')
                 {
-                    return Zurmo::t('ConversationsModule', '(Unnamed)');
+                    return Yii::t('Default', '(Unnamed)');
                 }
                 return $this->subject;
             }
             catch (AccessDeniedSecurityException $e)
             {
                 return '';
+            }
+        }
+
+        public function resolveIsClosedForNull()
+        {
+            if ($this->isClosed == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
             }
         }
 
@@ -115,6 +127,7 @@
                     'latestDateTime',
                     'subject',
                     'ownerHasReadLatest',
+                    'isClosed'
                 ),
                 'relations' => array(
                     'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
@@ -131,6 +144,7 @@
                     array('subject',            'type',    'type' => 'string'),
                     array('subject',            'length',  'min'  => 3, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
+                    array('isClosed',           'boolean'),
                 ),
                 'elements' => array(
                     'conversationItems' => 'ConversationItem',

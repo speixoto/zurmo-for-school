@@ -159,13 +159,13 @@
             assert('$person instanceof User || $person instanceof Contact');
             if ($person->primaryEmail->emailAddress !== null &&
                 (($person instanceof User &&
-                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($person)) ||
+                !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications')) ||
                  $person instanceof Contact))
             {
                 $userToSendMessagesFrom     = $conversation->owner;
                 $emailMessage               = new EmailMessage();
                 $emailMessage->owner        = Yii::app()->user->userModel;
-                $emailMessage->subject      = Zurmo::t('ConversationsModule', 'You have been invited to participate in a conversation');
+                $emailMessage->subject      = Yii::t('Default', 'You have been invited to participate in a conversation');
                 $emailContent               = new EmailMessageContent();
                 $emailContent->textContent  = EmailNotificationUtil::
                                                 resolveNotificationTextTemplate(
@@ -201,7 +201,7 @@
         protected static function getParticipantInviteEmailTextContent(Conversation $conversation)
         {
             $url     = static::getUrlToConversationDetailAndRelationsView($conversation->id);
-            $content = Zurmo::t('ConversationsModule', '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
+            $content = Yii::t('Default', '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
                                          'would like you to join a conversation {strongStartTag}"{conversationSubject}"{strongEndTag}',
                                array('{headerStartTag}'      => null,
                                      '{headerEndTag}'        => null,
@@ -218,7 +218,7 @@
         protected static function getParticipantInviteEmailHtmlContent(Conversation $conversation)
         {
             $url     = static::getUrlToConversationDetailAndRelationsView($conversation->id);
-            $content = Zurmo::t('ConversationsModule', '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
+            $content = Yii::t('Default', '{headerStartTag}Join the Conversation{headerEndTag}{headerLineBreak}{ownerName} ' .
                                          'would like you to join a conversation {strongStartTag}"{conversationSubject}"{strongEndTag}',
                                array('{headerStartTag}'      => '<h2 class="h2">',
                                      '{headerEndTag}'        => '</h2>',
@@ -228,14 +228,24 @@
                                      '{ownerName}'           => $conversation->owner,
                                      '{conversationSubject}' => $conversation->subject));
             $content .= "<br/>";
-            $content .= ZurmoHtml::link(Zurmo::t('ConversationsModule', 'Click Here'), $url);
+            $content .= ZurmoHtml::link(Yii::t('Default', 'Click Here'), $url);
             return $content;
         }
 
-        protected static function getUrlToConversationDetailAndRelationsView($id)
+        public static function getUrlToConversationDetailAndRelationsView($id)
         {
             assert('is_int($id)');
             return Yii::app()->createAbsoluteUrl('conversations/default/details/', array('id' => $id));
+        }
+
+        public static function getConversationParticipants(Conversation $conversation)
+        {
+            $participants = array();
+            foreach ($conversation->conversationParticipants as $participant)
+            {
+                $participants[] = static::castDownItem($participant->person);
+            }
+            return $participants;
         }
     }
 ?>

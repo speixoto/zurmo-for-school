@@ -31,7 +31,7 @@
     {
         protected static function getEmailSubject()
         {
-            return Zurmo::t('NotificationsModule', 'You have a new notification');
+            return Yii::t('Default', 'You have a new notification');
         }
 
         /**
@@ -96,7 +96,7 @@
         protected static function sendEmail(Notification $notification)
         {
             if ($notification->owner->primaryEmail->emailAddress !== null &&
-                !UserConfigurationFormAdapter::resolveAndGetTurnOffEmailNotificationsValue($notification->owner))
+                !UserConfigurationFormAdapter::resolveAndGetValue($notification->owner, 'turnOffEmailNotifications'))
             {
                 $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
                 $emailMessage               = new EmailMessage();
@@ -174,7 +174,7 @@
             }
             else
             {
-                $content .= '<div class="single-notification">' . Zurmo::t('NotificationsModule', 'There are no recent notifications.') . '</div>';
+                $content .= '<div class="single-notification">' . Yii::t('Default', 'There are no recent notifications.') . '</div>';
             }
             return $content;
         }

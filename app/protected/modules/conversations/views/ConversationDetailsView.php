@@ -54,8 +54,9 @@
         protected function renderRightSideContent($form = null)
         {
             assert('$form == null');
-            $content  = '<div id="right-side-edit-view-panel"><div class="buffer"><div>';
-            $content .= "<h3>".Zurmo::t('ConversationsModule', 'Participants') . '</h3>';
+            $content  = '<div id="right-side-edit-view-panel" class="thred-info"><div class="buffer"><div>';
+            $content .= $this->renderConversationRelatedToAndAttachmentsContent();
+            $content .= "<h3>".Yii::t('Default', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
             $content .= '</div></div></div>';
             return $content;
@@ -88,6 +89,21 @@
             return $content;
         }
 
+        protected function renderConversationRelatedToAndAttachmentsContent()
+        {
+            $element  = new ConversationItemsElement($this->model, 'null');
+            $contentForTable = $element->render();
+            if ($this->model->files->count() > 0)
+            {
+                $element  = new FilesElement($this->model, 'null');
+                $contentForTable .= $element->render();
+            }
+            $content  = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
+            $element  = new ConversationOpenCloseElement($this->model, 'isClosed');
+            $content  .= $element->render();
+            return $content;
+        }
+
         protected function renderConversationContent()
         {
             $userUrl  = Yii::app()->createUrl('/users/default/details', array('id' => $this->model->createdByUser->id));
@@ -111,16 +127,6 @@
             $date = '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                               $this->model->createdDateTime, 'long', null) . '</strong></span>';
             $content .= $date;
-            if ($this->model->files->count() > 0)
-            {
-                $element  = new FilesElement($this->model, 'null');
-                $element->nonEditableTemplate = '<div>{content}</div>';
-                $content .= '<div><strong>' . Zurmo::t('ConversationsModule', 'Attachments'). '</strong></div>';
-                $content .= $element->render();
-            }
-            $element  = new ConversationItemsElement($this->model, 'null');
-            $element->nonEditableTemplate = '<div>{content}</div>';
-            $content .= $element->render();
             $content .= '</div>';
             return ZurmoHtml::tag('div', array('id' => 'ModelDetailsSummaryView'), $content);
         }
@@ -140,7 +146,7 @@
 
         protected function renderConversationCreateCommentContent()
         {
-            $content       = ZurmoHtml::tag('h2', array(), Zurmo::t('ConversationsModule', 'Add Comment'));
+            $content       = ZurmoHtml::tag('h2', array(), Yii::t('Default', 'Add Comment'));
             $comment       = new Comment();
             $uniquePageId  = 'CommentInlineEditForModelView';
             $redirectUrl   = Yii::app()->createUrl('/conversations/default/inlineCreateCommentFromAjax',
@@ -154,7 +160,12 @@
             $inlineView    = new CommentInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                       $urlParameters, $uniquePageId);
             $content      .= $inlineView->render();
-            return ZurmoHtml::tag('div', array('id' => 'CommentInlineEditForModelView'), $content);
+            $htmlOptions = array('id' => 'CommentInlineEditForModelView');
+            if ($this->model->isClosed)
+            {
+                $htmlOptions['style'] = 'display: none;';
+            }
+            return ZurmoHtml::tag('div', $htmlOptions, $content);
         }
 
         protected function getPortletDetailsUrl()
