@@ -125,14 +125,6 @@
                     'attributeImportRulesType' => 'DateTime',
                     'isRequired' => false,
                   ),
-              'decimal' =>
-                  array (
-                    'attributeLabel' => 'Decimal',
-                    'attributeName' => 'decimal',
-                    'relationAttributeName' => null,
-                    'attributeImportRulesType' => 'Decimal',
-                    'isRequired' => false,
-                  ),
               'float' =>
                   array (
                     'attributeLabel' => 'Float',
@@ -145,14 +137,6 @@
                   array (
                     'attributeLabel' => 'Integer',
                     'attributeName' => 'integer',
-                    'relationAttributeName' => null,
-                    'attributeImportRulesType' => 'Integer',
-                    'isRequired' => false,
-                  ),
-              'numerical' =>
-                  array (
-                    'attributeLabel' => 'Numerical',
-                    'attributeName' => 'numerical',
                     'relationAttributeName' => null,
                     'attributeImportRulesType' => 'Integer',
                     'isRequired' => false,

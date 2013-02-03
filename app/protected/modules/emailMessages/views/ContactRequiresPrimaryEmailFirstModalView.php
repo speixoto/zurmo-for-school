@@ -77,7 +77,7 @@
                          Zurmo::t('EmailMessagesModule', 'There is no primary email associated with {contactName}. Please add one to continue.',
                                  array('{contactName}' => strval($this->model))));
             $message  = ZurmoHtml::tag('strong', array(), $highlight);
-            return ZurmoHtml::wrapLabel($message, 'operation-description');
+            return ZurmoHtml::tag('span', array('class' => 'operation-description'), $message);
         }
 
         protected function resolveActiveFormAjaxValidationOptions()

@@ -138,7 +138,9 @@
             assert('is_string($updateDivId)');
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
-            $aContent                = ZurmoHtml::wrapLink($label);
+            $aContent                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
+            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-icon'), null);
+            $aContent               .= ZurmoHtml::tag('span', array('class' => 'z-label'), $label);
             return       ZurmoHtml::ajaxLink($aContent, $url,
                          array('type'       => 'GET',
                                'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'

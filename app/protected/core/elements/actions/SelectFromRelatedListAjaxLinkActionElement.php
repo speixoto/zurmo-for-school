@@ -32,7 +32,7 @@
             {
                 $params['htmlOptions'] = array();
             }
-            $params['htmlOptions'] = array_merge(array('class' => 'simple-link'), $params['htmlOptions']);
+            $params['htmlOptions'] = array_merge(array('class' => 'simple-select'), $params['htmlOptions']);
             parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
 

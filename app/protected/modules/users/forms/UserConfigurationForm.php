@@ -46,6 +46,8 @@
 
         public $turnOffEmailNotifications = false;
 
+        public $enableDesktopNotifications = true;
+
         public function __construct($userId)
         {
             assert('is_int($userId) && $userId > 0');
@@ -64,29 +66,31 @@
         public function rules()
         {
             return array(
-                array('listPageSize',              'required'),
-                array('listPageSize',              'type',      'type' => 'integer'),
-                array('listPageSize',              'numerical', 'min' => 1),
-                array('subListPageSize',           'required'),
-                array('subListPageSize',           'type',      'type' => 'integer'),
-                array('subListPageSize',           'numerical', 'min' => 1),
-                array('themeColor',                'required'),
-                array('themeColor',                'type',      'type' => 'string'),
-                array('backgroundTexture',         'type',      'type' => 'string'),
-                array('hideWelcomeView',           'boolean'),
-                array('turnOffEmailNotifications', 'boolean')
+                array('listPageSize',               'required'),
+                array('listPageSize',               'type',      'type' => 'integer'),
+                array('listPageSize',               'numerical', 'min' => 1),
+                array('subListPageSize',            'required'),
+                array('subListPageSize',            'type',      'type' => 'integer'),
+                array('subListPageSize',            'numerical', 'min' => 1),
+                array('themeColor',                 'required'),
+                array('themeColor',                 'type',      'type' => 'string'),
+                array('backgroundTexture',          'type',      'type' => 'string'),
+                array('hideWelcomeView',            'boolean'),
+                array('turnOffEmailNotifications',  'boolean'),
+                array('enableDesktopNotifications', 'boolean')
             );
         }
 
         public function attributeLabels()
         {
             return array(
-                'listPageSize'              => Zurmo::t('UsersModule', 'List page size'),
-                'subListPageSize'           => Zurmo::t('UsersModule', 'Sublist page size'),
-                'themeColor'                => Zurmo::t('UsersModule', 'Theme'),
-                'backgroundTexture'         => Zurmo::t('UsersModule', 'Texture'),
-                'hideWelcomeView'           => Zurmo::t('UsersModule', 'Hide welcome page'),
-                'turnOffEmailNotifications' => Zurmo::t('UsersModule', 'Turn off email notifications')
+                'listPageSize'                  => Zurmo::t('UsersModule', 'List page size'),
+                'subListPageSize'               => Zurmo::t('UsersModule', 'Sublist page size'),
+                'themeColor'                    => Zurmo::t('UsersModule', 'Theme'),
+                'backgroundTexture'             => Zurmo::t('UsersModule', 'Texture'),
+                'hideWelcomeView'               => Zurmo::t('UsersModule', 'Hide welcome page'),
+                'turnOffEmailNotifications'     => Zurmo::t('UsersModule', 'Turn off email notifications'),
+                'enableDesktopNotifications'    => Zurmo::t('UsersModule', 'Enable Desktop notifications')
             );
         }
     }
