@@ -116,6 +116,7 @@
     td{
 	font-weight: normal;
 	padding-left: 15px;
+	text-align: right;
     }
     .attachments{
 	margin: 0;
@@ -124,9 +125,9 @@
 
 .conversationStatusChangeArea{
     margin: 15px 0;
-    padding:5px;
-    background:#fff;
-    .radius(5px);
+    padding:0;
+    //background:#fff;
+    //.radius(5px);
     > span{
 	float: left;
 	margin-right: 15px;
@@ -139,9 +140,99 @@
 	    margin-right: 5px;
 	}
     }
-    
 }
 
+
+.switch{
+    /*border-top:1px solid    rgba(200, 200, 200, 0.4);
+    border-left: 1px solid  rgba(185, 185, 185, 0.4);
+    border-right:1px solid  rgba(185, 185, 185, 0.4);
+    border-bottom:1px solid rgba(170, 170, 170, 0.4);*/
+    
+    border:1px solid rgba(170, 170, 170, 0.3);
+    
+    //background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+    //#gradient > .vertical( #f5f5f5, #ebebeb );
+    #gradient > .vertical( #353535, #252525 );
+    .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
+    
+    display: inline-block;
+    padding: 7px 1px 6px 1px;
+    .radius(3px);
+    margin-top: -10px;
+    float: right;
+}
+
+.switch-state{
+    display: inline-block;
+    position: relative;
+    width: auto;
+    
+    label{
+	position: relative;
+	z-index: 0;
+	padding: 5px 7px 5px 25px !important;
+	margin: 0;
+	//.radius(50px 0 0 50px);
+	.radius(2px);
+	.opacity(25);
+	color: #fff;
+	.smaller() !important;
+	font-weight: 700 !important;
+    }
+    input{
+	position: absolute;
+	z-index: 1;
+	left: 7px;
+	.opacity(25);
+    }
+    input:after{
+	content: "";
+	width: 14px;
+	height: 14px;
+	.radius(50px);
+	display: block;
+	position: absolute;
+	left: -3px;
+	top:-2px;
+    }
+    input:checked{
+	.opacity(100);
+    }
+    input:checked + label{
+	.opacity(100);
+	//border:1px solid rgba(170, 170, 170, 0.3);
+    }
+    &:first-child input:checked + label{
+	@topColor: #97c43d;
+        @bottomColor: #6fa82d;
+	#gradient > .vertical(@topColor, @bottomColor ) !important; //green
+	border:1px solid @topColor;
+    }
+    &:last-child input:checked + label{
+	@topColor: #c43d53;
+        @bottomColor: #a82d31;
+	#gradient > .vertical(@topColor, @bottomColor ) !important; //red
+	border:1px solid @topColor;
+    }
+    &:first-child input:checked:after{
+	border:2px solid #6fa82d;
+	box-shadow:0 0 10px #6fa82d;
+    }
+    &:last-child input:checked:after{
+	border:2px solid #a82d31;
+	box-shadow:0 0 10px #a82d31;
+    }
+}
+
+.switch-state + .switch-state{
+    margin-left: 0;
+}
+
+
+
+
+/*
 .switch-state{
     line-height: 1 !important;
     margin: 0 0 0 5px !important;
@@ -152,7 +243,6 @@
 	text-align: center;
 	line-height: 1 !important;
     }
-    
     &.current-status{
 	.radius(3px);
 	span.z-label{
@@ -163,7 +253,6 @@
 	    color:#fff;
 	}
     }
-    
     &.disabled{
 	border: none;
 	span.z-label{
@@ -171,13 +260,12 @@
 	    color: #545454 !important;
 	    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 1) ) !important;
 	    background: #ddd !important;
-	    
 	    //#gradient > .vertical( darken(#ccc, 10%), #ccc ) !important;
 	    //#gradient > .vertical( #fff, darken(#fff, 5%) ) !important;
 	}
     }
 }
-/*
+
 .switch-state:first-child,
 .switch-state:first-child .z-label{
     .radius(3px 0 0 3px);

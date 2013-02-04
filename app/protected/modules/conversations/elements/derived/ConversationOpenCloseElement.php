@@ -49,8 +49,10 @@
 
         public static function renderStatusChangeArea(Conversation $conversation)
         {
-            $statusAction      = self::renderStatusButtonsContent($conversation);
+            $statusAction      = '<div class="switch"><div class="switch-state clearfix">'.self::renderStatusButtonsContent($conversation).'</div></div>';
             $content = ZurmoHtml::tag('span', array(), Zurmo::t('ConversationsModule', 'Status')) . $statusAction;
+            
+            
             return ZurmoHtml::tag('div', array('id' => self::getStatusChangeDivId($conversation->id),
                                                'class' => 'conversationStatusChangeArea clearfix'),
                                                 $content);
@@ -72,7 +74,7 @@
                     self::getRadioButtonListName($conversation->id),
                     $conversation->resolveIsClosedForNull(),
                     self::getDropDownArray(),
-                    array('separator'=>''));
+                    array('separator'=>'</div><div class="switch-state clearfix">'));
         }
 
         protected static function renderAjaxStatusChange($conversationId)
