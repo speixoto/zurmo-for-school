@@ -705,6 +705,8 @@
             => '¿Qué es esto?',
         'Who can read and write'
             => 'Permiso de lectura / escritura',
+        'Who can read and write - Default'
+            => 'Permiso de lectura / escritura',
         'Word of Mouth'
             => 'Boca en boca',
         'Write'

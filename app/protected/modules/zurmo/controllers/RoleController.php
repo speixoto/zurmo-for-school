@@ -166,5 +166,16 @@
             }
             $this->redirect($redirectUrlParams);
         }
+
+        public function actionUsersInRoleModalList($id)
+        {
+            // TODO: @Shoaibi needs test
+            $model = Role::getById((int)$id);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
+            $searchAttributeData = UsersListControllerUtil::makeSearchAttributeDataByRoleModel($model);
+            $dataProvider = UsersListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            echo UsersListControllerUtil::renderList($this, $dataProvider);
+        }
     }
 ?>

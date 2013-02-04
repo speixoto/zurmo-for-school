@@ -87,5 +87,14 @@
         {
             return array($this->getSelectableAttributeName(), null);
         }
+
+        protected function renderLabel()
+        {
+            if ($this->model === null)
+            {
+                throw new NotImplementedException();
+            }
+            return ZurmoHtml::label(Zurmo::t('ZurmoModule', 'Who can read and write - Default'), false);
+        }
     }
 ?>

@@ -705,6 +705,8 @@
             => 'Was ist das?',
         'Who can read and write'
             => 'Wer darf lesen und schreiben?',
+        'Who can read and write - Default'
+            => 'Wer darf lesen und schreiben?',
         'Word of Mouth'
             => 'Mund zu Mund Propaganda',
         'Write'

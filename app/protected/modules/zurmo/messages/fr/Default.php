@@ -705,6 +705,8 @@
             => 'Aide',
         'Who can read and write'
             => 'Autorisation lecture/écriture',
+        'Who can read and write - Default'
+            => 'Autorisation lecture/écriture',
         'Word of Mouth'
             => 'Bouche à oreille',
         'Write'
