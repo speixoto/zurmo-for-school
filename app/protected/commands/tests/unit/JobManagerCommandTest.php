@@ -24,39 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * UserIdentity represents the data needed to identity a user.
-     */
-    class UserIdentity extends CUserIdentity
+    class JobManagerCommandTest extends ZurmoBaseTest
     {
-        const ERROR_NO_RIGHT_WEB_LOGIN = 3;
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
 
-        /**
-         * Authenticates a user.
-         * @return boolean whether authentication succeeds.
-         */
-        public function authenticate()
-        {  
-            try
+        public function testRun()
+        {
+            $this->assertTrue(ContactsModule::loadStartingData());
+            $messageLogger              = new MessageLogger();
+            InstallUtil::autoBuildDatabase($messageLogger);
+
+            chdir(COMMON_ROOT . DIRECTORY_SEPARATOR . 'protected' . DIRECTORY_SEPARATOR . 'commands');
+
+            $command = "php zurmocTest.php jobManager super ExportCleanup";
+
+            if (!IS_WINNT)
             {
-                User::authenticate($this->username, $this->password);
-                $this->setState('username', $this->username);     
-                $this->errorCode = self::ERROR_NONE;
-                return true;
+                $command .= ' 2>&1';
             }
-            catch (NotFoundException $e)
-            {
-                $this->errorCode = self::ERROR_USERNAME_INVALID;
-            }
-            catch (BadPasswordException $e)
-            {
-                $this->errorCode = self::ERROR_PASSWORD_INVALID;
-            }
-            catch (NoRightWebLoginException $e)
-            {
-                $this->errorCode = self::ERROR_NO_RIGHT_WEB_LOGIN;
-            }
-            return false;
+
+            exec($command, $output);
+            $this->assertTrue(array_search('Info - Job completed successfully', $output) !== false);
         }
     }
 ?>

@@ -71,6 +71,9 @@
             'emailHelper' => array(
                 'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
+            'authenticationHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoAuthenticationHelper',
+            ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
             ),

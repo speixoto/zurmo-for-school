@@ -46,6 +46,7 @@
         {
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('is_string($dataProviderClassName)');
+            assert('is_int($pageSize) || $pageSize == null');
             if ($stateMetadataAdapterClassName != null)
             {
                 $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);

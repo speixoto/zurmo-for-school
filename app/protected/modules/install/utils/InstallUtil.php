@@ -112,6 +112,11 @@
             return extension_loaded("pdo_mysql");
         }
 
+        public static function isLdapInstalled()
+        {
+            return extension_loaded("ldap");
+        }
+
         public static function isMbStringInstalled()
         {
             return function_exists('mb_strlen');
@@ -726,7 +731,7 @@
         }
 
         /**
-         * Generate zurmo token and write it to version.php file.
+         * Generate zurmo token and write it to perInstance file.
          * @param $instanceRoot
          * @return string
          */
