@@ -63,7 +63,22 @@
                                                                    getInstanceAndAttach(R::$adapter ));
                 }
                 $debug = defined('REDBEAN_DEBUG') && REDBEAN_DEBUG;
-                R::debug($debug);
+                $debugSaveSqlQueriesIntoFile = defined('REDBEAN_DEBUG_FILE') && REDBEAN_DEBUG_FILE;
+
+                if (!$debugSaveSqlQueriesIntoFile)
+                {
+                    R::debug($debug);
+                }
+                else
+                {
+                    $queryLoggerComponent = Yii::createComponent(array(
+                        'class' => 'application.core.models.ZurmoRedBeanQueryFileLogger',
+                    ));
+                    $queryLoggerComponent->init();
+                    Yii::app()->setComponent('queryFileLogger', $queryLoggerComponent);
+                    R::debug(true, Yii::app()->queryFileLogger);
+                }
+
                 self::$isSetup      = true;
                 self::$databaseType = substr($dsn, 0, strpos($dsn, ':'));
             }
