@@ -112,5 +112,14 @@
                     }';
             // End Not Coding Standard
         }
+
+        public function getLinkString($attributeString)
+        {
+            $string  = 'ZurmoHtml::link(';
+            $string .=  $attributeString . ', ';
+            $string .= 'Yii::app()->createUrl("/users/default/details", array("id" => $data->id))';
+            $string .= ')';
+            return $string;
+        }
     }
 ?>
