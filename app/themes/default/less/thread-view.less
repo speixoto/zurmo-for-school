@@ -92,6 +92,109 @@
     }
 }
 
+/*Sidebar*/
+.thred-info{
+    h3{
+	//border-top:1px solid #fff;
+	//padding-top:10px;
+    }
+}
+
+.thred-details{
+    margin:0 0 0 0 !important;
+    width: 100%;
+    td + th{
+	padding-left:0 !important;
+    }
+    th, td{
+	text-align: left;
+	padding:5px 0;
+    }
+    th{
+	color: #545454;
+    }
+    td{
+	font-weight: normal;
+	padding-left: 15px;
+    }
+    .attachments{
+	margin: 0;
+    }
+}
+
+.conversationStatusChangeArea{
+    margin: 15px 0;
+    padding:5px;
+    background:#fff;
+    .radius(5px);
+    > span{
+	float: left;
+	margin-right: 15px;
+	padding: 0 0;
+    }
+    label{
+	display: inline !important;
+	margin-right: 10px;
+	input{
+	    margin-right: 5px;
+	}
+    }
+    
+}
+
+.switch-state{
+    line-height: 1 !important;
+    margin: 0 0 0 5px !important;
+    float: left;
+    .z-label{
+	padding:3px;
+	width: 100%;
+	text-align: center;
+	line-height: 1 !important;
+    }
+    
+    &.current-status{
+	.radius(3px);
+	span.z-label{
+	    padding:3px;
+	    .radius(3ps);
+	    .smaller();
+	    font-weight: normal;
+	    color:#fff;
+	}
+    }
+    
+    &.disabled{
+	border: none;
+	span.z-label{
+	    //.opacity(25);
+	    color: #545454 !important;
+	    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 1) ) !important;
+	    background: #ddd !important;
+	    
+	    //#gradient > .vertical( darken(#ccc, 10%), #ccc ) !important;
+	    //#gradient > .vertical( #fff, darken(#fff, 5%) ) !important;
+	}
+    }
+}
+/*
+.switch-state:first-child,
+.switch-state:first-child .z-label{
+    .radius(3px 0 0 3px);
+    border-right:none !important;
+}
+.switch-state:last-child,
+.switch-state:last-child .z-label{
+    .radius(0 3px 3px 0);
+    border-left:none !important;
+}
+*/
+
+
+
+
+/*End sidebar*/
+
 #ModelDetailsSummaryView,
 #CommentList,
 .CommentList{
@@ -116,7 +219,7 @@
         margin-top:15px;
     }
     &:last-child{
-        margin-bottom: 8px;
+        margin-bottom: 25px;
     }
 }
 
@@ -193,7 +296,7 @@
 }
 
 #CommentInlineEditForModelView{
-    margin-top: 15px;
+    margin-top: 0;
     padding-left: 120px;
     td{
         padding:0 0 0 10px !important;
@@ -224,14 +327,17 @@
 .attachments{
     margin-top:5px;
     list-style: none;
+    line-height: 140%;
     li{
         margin-bottom:2px;
+	padding-left:15px;
     }
 }
 
 .icon-attachment{
     .symbly(18px);
-    margin-right:4px;
+    float: left;
+    margin-left: -15px;
     &:before{
         content:"H";
     }

@@ -14531,6 +14531,105 @@ a.close-ModalGameNotification.simple-link {
 #ConversationDetailsAndRelationsView #right-side-edit-view-panel {
   top: 55px;
 }
+/*Sidebar*/
+.thred-details {
+  margin: 0 0 0 0 !important;
+  width: 100%;
+}
+.thred-details td + th {
+  padding-left: 0 !important;
+}
+.thred-details th,
+.thred-details td {
+  text-align: left;
+  padding: 5px 0;
+}
+.thred-details th {
+  color: #545454;
+}
+.thred-details td {
+  font-weight: normal;
+  padding-left: 15px;
+}
+.thred-details .attachments {
+  margin: 0;
+}
+.conversationStatusChangeArea {
+  margin: 15px 0;
+  padding: 5px;
+  background: #fff;
+  -webkit-border-radius: 5px;
+  -moz-border-radius: 5px;
+  -ms-border-radius: 5px;
+  -o-border-radius: 5px;
+  border-radius: 5px;
+}
+.conversationStatusChangeArea > span {
+  float: left;
+  margin-right: 15px;
+  padding: 0 0;
+}
+.conversationStatusChangeArea label {
+  display: inline !important;
+  margin-right: 10px;
+}
+.conversationStatusChangeArea label input {
+  margin-right: 5px;
+}
+.switch-state {
+  line-height: 1 !important;
+  margin: 0 0 0 5px !important;
+  float: left;
+}
+.switch-state .z-label {
+  padding: 3px;
+  width: 100%;
+  text-align: center;
+  line-height: 1 !important;
+}
+.switch-state.current-status {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+}
+.switch-state.current-status span.z-label {
+  padding: 3px;
+  -webkit-border-radius: 3ps;
+  -moz-border-radius: 3ps;
+  -ms-border-radius: 3ps;
+  -o-border-radius: 3ps;
+  border-radius: 3ps;
+  font-size: 11px;
+  font-weight: normal;
+  color: #fff;
+}
+.switch-state.disabled {
+  border: none;
+}
+.switch-state.disabled span.z-label {
+  color: #545454 !important;
+  -webkit-text-shadow: 0px 1px 0 #ffffff !important;
+  -moz-text-shadow: 0px 1px 0 #ffffff !important;
+  -o-text-shadow: 0px 1px 0 #ffffff !important;
+  -ms-text-shadow: 0px 1px 0 #ffffff !important;
+  text-shadow: 0px 1px 0 #ffffff !important;
+  background: #ddd !important;
+}
+/*
+.switch-state:first-child,
+.switch-state:first-child .z-label{
+    .radius(3px 0 0 3px);
+    border-right:none !important;
+}
+.switch-state:last-child,
+.switch-state:last-child .z-label{
+    .radius(0 3px 3px 0);
+    border-left:none !important;
+}
+*/
+/*End sidebar*/
 #ModelDetailsSummaryView h2,
 #CommentList h2,
 .CommentList h2 {
@@ -14554,7 +14653,7 @@ a.close-ModalGameNotification.simple-link {
 }
 #CommentList:last-child,
 .CommentList:last-child {
-  margin-bottom: 8px;
+  margin-bottom: 25px;
 }
 .comment {
   line-height: 140%;
@@ -14647,7 +14746,7 @@ a.close-ModalGameNotification.simple-link {
   font-size: 15px;
 }
 #CommentInlineEditForModelView {
-  margin-top: 15px;
+  margin-top: 0;
   padding-left: 120px;
 }
 #CommentInlineEditForModelView td {
@@ -14681,15 +14780,18 @@ a.close-ModalGameNotification.simple-link {
 .attachments {
   margin-top: 5px;
   list-style: none;
+  line-height: 140%;
 }
 .attachments li {
   margin-bottom: 2px;
+  padding-left: 15px;
 }
 .icon-attachment {
   font-weight: normal;
   font-size: 18px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  margin-right: 4px;
+  float: left;
+  margin-left: -15px;
 }
 .icon-attachment:before {
   content: "H";
