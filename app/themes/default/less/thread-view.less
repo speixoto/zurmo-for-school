@@ -153,11 +153,11 @@
     
     //background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
     //#gradient > .vertical( #f5f5f5, #ebebeb );
-    #gradient > .vertical( #353535, #252525 );
+    #gradient > .vertical( #777, #999 );
     .b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.15));
     
     display: inline-block;
-    padding: 7px 1px 6px 1px;
+    padding: 8px 2px 7px 2px;
     .radius(3px);
     margin-top: -10px;
     float: right;
@@ -171,11 +171,11 @@
     label{
 	position: relative;
 	z-index: 0;
-	padding: 5px 7px 5px 25px !important;
+	padding: 5px 7px 5px 7px !important;
 	margin: 0;
 	//.radius(50px 0 0 50px);
 	.radius(2px);
-	.opacity(25);
+	.opacity(50);
 	color: #fff;
 	.smaller() !important;
 	font-weight: 700 !important;
@@ -184,7 +184,7 @@
 	position: absolute;
 	z-index: 1;
 	left: 7px;
-	.opacity(25);
+	.opacity(0);
     }
     input:after{
 	content: "";
@@ -197,7 +197,7 @@
 	top:-2px;
     }
     input:checked{
-	.opacity(100);
+	//.opacity(100);
     }
     input:checked + label{
 	.opacity(100);
