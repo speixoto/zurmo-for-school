@@ -63,7 +63,7 @@
             $content .= '</div></div></div>';
             return $content;
         }
-        
+
         protected function renderConversationOpenCloseElement()
         {
             $element = new ConversationOpenCloseElement($this->model, 'isClosed');
@@ -100,13 +100,13 @@
 
         protected function renderConversationRelatedToAndAttachmentsContent()
         {
-            //$element  = new ConversationOpenCloseElement($this->model, 'isClosed');
-            //$content  = $element->render();
             $element  = new ConversationItemsElement($this->model, 'null');
+            $element->nonEditableTemplate = '<td colspan="{colspan}" class="conversation-related-Attachments">{content}</td>';
             $contentForTable = $element->render();
             if ($this->model->files->count() > 0)
             {
                 $element  = new FilesElement($this->model, 'null');
+                $element->nonEditableTemplate = '<td colspan="{colspan}" class="attachments">{content}</td>';
                 $contentForTable .= $element->render();
             }
             $content = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
