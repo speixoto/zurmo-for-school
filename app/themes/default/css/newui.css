@@ -14554,7 +14554,7 @@ a.close-ModalGameNotification.simple-link {
 }
 /*Sidebar*/
 .thred-details {
-  margin: 0 0 15px 0 !important;
+  margin: 0 0 0 0 !important;
   width: 100%;
 }
 .thred-details td + th {
@@ -14568,13 +14568,51 @@ a.close-ModalGameNotification.simple-link {
 .thred-details th {
   color: #545454;
 }
-.thred-details td {
-  font-weight: normal;
-  padding-left: 15px;
-  text-align: right;
-}
 .thred-details .attachments {
   margin: 0;
+  font-weight: normal;
+}
+.conversation-related-Account {
+  -webkit-text-shadow: 0 1px #ffffff;
+  -moz-text-shadow: 0 1px #ffffff;
+  -o-text-shadow: 0 1px #ffffff;
+  -ms-text-shadow: 0 1px #ffffff;
+  text-shadow: 0 1px #ffffff;
+  position: relative;
+}
+.conversation-related-Account:before {
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  content: "P";
+  font-weight: normal !important;
+  position: absolute;
+  top: 3px;
+}
+.conversation-related-Account a {
+  position: relative;
+  left: 15px;
+}
+.conversation-related-Opportunity {
+  -webkit-text-shadow: 0 1px #ffffff;
+  -moz-text-shadow: 0 1px #ffffff;
+  -o-text-shadow: 0 1px #ffffff;
+  -ms-text-shadow: 0 1px #ffffff;
+  text-shadow: 0 1px #ffffff;
+  position: relative;
+}
+.conversation-related-Opportunity:before {
+  font-weight: normal;
+  font-size: 21px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  content: "9";
+  font-weight: normal !important;
+  position: absolute;
+  top: 4px;
+}
+.conversation-related-Opportunity a {
+  position: relative;
+  left: 15px;
 }
 .conversationStatusChangeArea {
   margin: 15px 0;

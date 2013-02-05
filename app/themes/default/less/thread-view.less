@@ -101,7 +101,7 @@
 }
 
 .thred-details{
-    margin:0 0 15px 0 !important;
+    margin:0 0 0 0 !important;
     width: 100%;
     td + th{
 	padding-left:0 !important;
@@ -114,12 +114,44 @@
 	color: #545454;
     }
     td{
-	font-weight: normal;
-	padding-left: 15px;
-	text-align: right;
+	
     }
     .attachments{
 	margin: 0;
+	font-weight: normal;
+    }
+}
+
+.conversation-related-Account{
+    .t-shadow(0 1px #fff);
+    position: relative;
+    &:before{
+	.symbly(20px);
+	content:"P";
+	font-weight: normal !important;
+	position: absolute;
+	top:3px;
+    }
+    a{
+	position: relative;
+	left: 15px;
+    }
+    
+}
+
+.conversation-related-Opportunity{
+    .t-shadow(0 1px #fff);
+    position: relative;
+    &:before{
+	.symbly(21px);
+	content:"9";
+	font-weight: normal !important;
+	position: absolute;
+	top:4px;
+    }
+    a{
+	position: relative;
+	left: 15px;
     }
 }
 
@@ -158,7 +190,6 @@
     display: inline-block;
     position: relative;
     width: auto;
-    
     label{
 	position: relative;
 	z-index: 0;
