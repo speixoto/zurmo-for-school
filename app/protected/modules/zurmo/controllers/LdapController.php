@@ -41,7 +41,7 @@
                 {
                     LdapConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Ldap Configuration saved successfully.')
+                        Zurmo::t('Default', 'Ldap Configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
@@ -97,16 +97,16 @@
                                                                                $bindPassword,$baseDomain);                      
                     if($testConnectionResults)
                     {
-                       $messageContent = Yii::t('Default', 'Successfully Connected to Ldap Server') . "\n";  
+                       $messageContent = Zurmo::t('Default', 'Successfully Connected to Ldap Server') . "\n";  
                     }
                     else
                     {
-                       $messageContent = Yii::t('Default', 'Unable to connect to Ldap server') . "\n";
+                       $messageContent = Zurmo::t('Default', 'Unable to connect to Ldap server') . "\n";
                     }                                                                   
                 }
                 else
                 {
-                    $messageContent = Yii::t('Default', 'All fields are required') . "\n";
+                    $messageContent = Zurmo::t('Default', 'All fields are required') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
                 $messageView = new TestLdapConnectionView($messageContent);
