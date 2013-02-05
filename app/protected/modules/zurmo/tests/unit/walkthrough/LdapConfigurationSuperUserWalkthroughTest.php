@@ -48,7 +48,7 @@
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');           
             //Change Ldap settings            
@@ -92,7 +92,7 @@
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //check Ldap connection         
