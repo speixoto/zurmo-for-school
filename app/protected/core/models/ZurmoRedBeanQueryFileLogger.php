@@ -29,7 +29,7 @@
         /**
          * @var integer maximum log file size
          */
-        protected $maxFileSize = 1024; // in KB
+        protected $maxFileSize = 32; // in KB
 
         /**
          * @var integer number of log files used for rotation
@@ -77,11 +77,11 @@
          */
         public function setLogPath($value)
         {
-            $this->logPath=realpath($value);
+            $this->logPath = realpath($value);
             if($this->logPath === false || !is_dir($this->logPath) || !is_writable($this->logPath))
             {
-                throw new CException(Yii::t('core','CFileLogRoute.logPath "{path}" does not point to a valid directory. Make sure the directory exists and is writable by the Web server process.',
-                    array('{path}'=>$value)));
+                throw new CException(Zurmo::t('Default','CFileLogRoute.logPath "{path}" does not point to a valid directory. Make sure the directory exists and is writable by the Web server process.',
+                    array('{path}' => $value)));
             }
         }
 
@@ -98,7 +98,7 @@
          */
         public function setLogFile($value)
         {
-            $this->logFile=$value;
+            $this->logFile = $value;
         }
 
         /**
