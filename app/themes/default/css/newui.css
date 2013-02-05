@@ -591,7 +591,8 @@ table.configuration-list td:last-child a.loading .z-icon,
   color: #fff !important;
   text-decoration: underline;
 }
-.z-action-link {
+.z-action-link,
+.showAllCommentsLink {
   font-size: 11px;
   filter: alpha(opacity=50);
   -khtml-opacity: 0.5;
@@ -599,7 +600,8 @@ table.configuration-list td:last-child a.loading .z-icon,
   opacity: 0.5;
   text-decoration: none;
 }
-.z-action-link:hover {
+.z-action-link:hover,
+.showAllCommentsLink:hover {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
@@ -723,7 +725,8 @@ body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
 body.blue #clear-search-linkmodal,
-body.blue .z-action-link {
+body.blue .z-action-link,
+body.blue .showAllCommentsLink {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1253,7 +1256,8 @@ body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
 body.brown #clear-search-linkmodal,
-body.brown .z-action-link {
+body.brown .z-action-link,
+body.brown .showAllCommentsLink {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1783,7 +1787,8 @@ body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
 body.lime #clear-search-linkmodal,
-body.lime .z-action-link {
+body.lime .z-action-link,
+body.lime .showAllCommentsLink {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -2313,7 +2318,8 @@ body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
 body.cherry #clear-search-linkmodal,
-body.cherry .z-action-link {
+body.cherry .z-action-link,
+body.cherry .showAllCommentsLink {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2843,7 +2849,8 @@ body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
 body.turquoise #clear-search-linkmodal,
-body.turquoise .z-action-link {
+body.turquoise .z-action-link,
+body.turquoise .showAllCommentsLink {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -3373,7 +3380,8 @@ body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
 body.violet #clear-search-linkmodal,
-body.violet .z-action-link {
+body.violet .z-action-link,
+body.violet .showAllCommentsLink {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -3903,7 +3911,8 @@ body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
 body.honey #clear-search-linkmodal,
-body.honey .z-action-link {
+body.honey .z-action-link,
+body.honey .showAllCommentsLink {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -14545,7 +14554,7 @@ a.close-ModalGameNotification.simple-link {
 }
 /*Sidebar*/
 .thred-details {
-  margin: 0 0 0 0 !important;
+  margin: 0 0 15px 0 !important;
   width: 100%;
 }
 .thred-details td + th {
@@ -14573,8 +14582,10 @@ a.close-ModalGameNotification.simple-link {
 }
 .conversationStatusChangeArea > span {
   float: left;
-  margin-right: 15px;
+  line-height: 1;
+  margin: 10px 10px 0 0;
   padding: 0 0;
+  font-weight: bold;
 }
 .conversationStatusChangeArea label {
   display: inline !important;
@@ -14584,11 +14595,6 @@ a.close-ModalGameNotification.simple-link {
   margin-right: 5px;
 }
 .switch {
-  /*border-top:1px solid    rgba(200, 200, 200, 0.4);
-    border-left: 1px solid  rgba(185, 185, 185, 0.4);
-    border-right:1px solid  rgba(185, 185, 185, 0.4);
-    border-bottom:1px solid rgba(170, 170, 170, 0.4);*/
-
   border: 1px solid rgba(170, 170, 170, 0.3);
   background-color: #999999;
   background-repeat: repeat-x;
@@ -14612,7 +14618,7 @@ a.close-ModalGameNotification.simple-link {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  margin-top: -10px;
+  cursor: pointer;
   float: right;
 }
 .switch-state {
@@ -14637,6 +14643,7 @@ a.close-ModalGameNotification.simple-link {
   color: #fff;
   font-size: 11px !important;
   font-weight: 700 !important;
+  cursor: pointer;
 }
 .switch-state input {
   position: absolute;
@@ -14704,51 +14711,6 @@ a.close-ModalGameNotification.simple-link {
 .switch-state + .switch-state {
   margin-left: 0;
 }
-/*
-.switch-state{
-    line-height: 1 !important;
-    margin: 0 0 0 5px !important;
-    float: left;
-    .z-label{
-	padding:3px;
-	width: 100%;
-	text-align: center;
-	line-height: 1 !important;
-    }
-    &.current-status{
-	.radius(3px);
-	span.z-label{
-	    padding:3px;
-	    .radius(3ps);
-	    .smaller();
-	    font-weight: normal;
-	    color:#fff;
-	}
-    }
-    &.disabled{
-	border: none;
-	span.z-label{
-	    //.opacity(25);
-	    color: #545454 !important;
-	    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 1) ) !important;
-	    background: #ddd !important;
-	    //#gradient > .vertical( darken(#ccc, 10%), #ccc ) !important;
-	    //#gradient > .vertical( #fff, darken(#fff, 5%) ) !important;
-	}
-    }
-}
-
-.switch-state:first-child,
-.switch-state:first-child .z-label{
-    .radius(3px 0 0 3px);
-    border-right:none !important;
-}
-.switch-state:last-child,
-.switch-state:last-child .z-label{
-    .radius(0 3px 3px 0);
-    border-left:none !important;
-}
-*/
 /*End sidebar*/
 #ModelDetailsSummaryView h2,
 #CommentList h2,
@@ -14832,7 +14794,8 @@ a.close-ModalGameNotification.simple-link {
 }
 .showAllCommentsLink {
   margin-left: 130px;
-  margin-bottom: 10px;
+  position: relative;
+  top: 5px;
   display: block;
 }
 #ModelDetailsSummaryView,

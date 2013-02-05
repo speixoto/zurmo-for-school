@@ -54,11 +54,20 @@
         protected function renderRightSideContent($form = null)
         {
             assert('$form == null');
-            $content  = '<div id="right-side-edit-view-panel" class="thred-info"><div class="buffer"><div>';
+            $content  = '<div id="right-side-edit-view-panel" class="thred-info"><div class="buffer">';
+            $content .= $this->renderConversationOpenCloseElement();
+            $content .= '<div>';
             $content .= $this->renderConversationRelatedToAndAttachmentsContent();
             $content .= "<h3>".Zurmo::t('ConversationsModule', 'Participants') . '</h3>';
             $content .= $this->renderConversationParticipantsContent();
             $content .= '</div></div></div>';
+            return $content;
+        }
+        
+        protected function renderConversationOpenCloseElement()
+        {
+            $element = new ConversationOpenCloseElement($this->model, 'isClosed');
+            $content = $element->render();
             return $content;
         }
 
@@ -91,8 +100,8 @@
 
         protected function renderConversationRelatedToAndAttachmentsContent()
         {
-            $element  = new ConversationOpenCloseElement($this->model, 'isClosed');
-            $content  = $element->render();
+            //$element  = new ConversationOpenCloseElement($this->model, 'isClosed');
+            //$content  = $element->render();
             $element  = new ConversationItemsElement($this->model, 'null');
             $contentForTable = $element->render();
             if ($this->model->files->count() > 0)
@@ -100,7 +109,7 @@
                 $element  = new FilesElement($this->model, 'null');
                 $contentForTable .= $element->render();
             }
-            $content .= ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
+            $content = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
             return $content;
         }
 
