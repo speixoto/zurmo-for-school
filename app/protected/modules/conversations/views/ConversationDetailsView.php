@@ -91,6 +91,8 @@
 
         protected function renderConversationRelatedToAndAttachmentsContent()
         {
+            $element  = new ConversationOpenCloseElement($this->model, 'isClosed');
+            $content  = $element->render();
             $element  = new ConversationItemsElement($this->model, 'null');
             $contentForTable = $element->render();
             if ($this->model->files->count() > 0)
@@ -98,9 +100,7 @@
                 $element  = new FilesElement($this->model, 'null');
                 $contentForTable .= $element->render();
             }
-            $content  = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
-            $element  = new ConversationOpenCloseElement($this->model, 'isClosed');
-            $content  .= $element->render();
+            $content .= ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
             return $content;
         }
 
