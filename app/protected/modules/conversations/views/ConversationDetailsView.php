@@ -101,12 +101,12 @@
         protected function renderConversationRelatedToAndAttachmentsContent()
         {
             $element  = new ConversationItemsElement($this->model, 'null');
-            $element->nonEditableTemplate = '<td colspan="{colspan}" class="conversation-related-Attachments">{content}</td>';
+            $element->nonEditableTemplate = '<td colspan="{colspan}">{content}</td>';
             $contentForTable = $element->render();
             if ($this->model->files->count() > 0)
             {
                 $element  = new FilesElement($this->model, 'null');
-                $element->nonEditableTemplate = '<td colspan="{colspan}" class="attachments">{content}</td>';
+                $element->nonEditableTemplate = '<td colspan="{colspan}" class="conversation-related-Attachments">{content}</td>';
                 $contentForTable .= $element->render();
             }
             $content = ZurmoHtml::tag('table', array('class' => 'thred-details'), $contentForTable);
