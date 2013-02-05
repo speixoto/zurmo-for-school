@@ -64,7 +64,7 @@
         {
             $content  = '<span>';
             $content .= ZurmoHtml::ajaxLink(
-                ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('ZurmoModule', 'Test Connection')),
+                ZurmoHtml::tag('span', array('class' => 'z-label'), Zurmo::t('Default', 'Test Connection')),
                 Yii::app()->createUrl('zurmo/ldap/testConnection/', array()),
                 static::resolveAjaxOptionsForTestLdapConnection($this->form->getId()),
                 array('id' => 'TestLdapConnectionButton', 'class' => 'LdapTestingButton z-button')
@@ -76,7 +76,7 @@
         protected static function resolveAjaxOptionsForTestLdapConnection($formId)
         {
             assert('is_string($formId)');
-            $title               = Zurmo::t('ZurmoModule', 'Test Connection Results');
+            $title               = Zurmo::t('Default', 'Test Connection Results');
             $ajaxOptions         = ModalView::getAjaxOptionsForModalLink($title);
             $ajaxOptions['type'] = 'POST';
             $ajaxOptions['data'] = 'js:$("#' . $formId . '").serialize()';

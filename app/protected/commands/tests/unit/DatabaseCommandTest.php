@@ -65,8 +65,6 @@
             parent::tearDownAfterClass();
         }
 
-
-
         public function setup()
         {
             if (is_file($this->databaseBackupTestFile))

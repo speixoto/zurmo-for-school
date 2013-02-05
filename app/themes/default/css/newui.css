@@ -4378,6 +4378,7 @@ body.light-toast,
 .strong {
   font-weight: bold;
 }
+.ui-helper-hidden-accessible,
 .hidden-element {
   display: none !important;
   visibility: hidden !important;
@@ -15367,7 +15368,7 @@ a.user-link {
 .outbound-settings label {
   margin-bottom: 5px;
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
   }

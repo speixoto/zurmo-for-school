@@ -1021,7 +1021,7 @@
         {
             assert('$messageLogger instanceof MessageLogger');
             ForgetAllCacheUtil::forgetAllCaches();
-            $unfreezeWhenDone     = false;
+            $freezeWhenDone     = false;
             if (RedBeanDatabase::isFrozen())
             {
                 RedBeanDatabase::unfreeze();
