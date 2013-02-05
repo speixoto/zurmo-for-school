@@ -29,7 +29,7 @@
         /**
          * @var integer maximum log file size
          */
-        protected $maxFileSize = 32; // in KB
+        protected $maxFileSize = 1024; // in KB
 
         /**
          * @var integer number of log files used for rotation
