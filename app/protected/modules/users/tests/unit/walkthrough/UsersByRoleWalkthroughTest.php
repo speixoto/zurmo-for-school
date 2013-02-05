@@ -24,21 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    class UsersByRoleWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        protected function getDefaultLabel()
+        public static function setUpBeforeClass()
         {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        protected function getAjaxLinkTitle()
+        public function testUsersInRoleModalListAction()
         {
-            return $this->getLabel();
-        }
+            $role = new Role();
+            $role->name = 'myRole';
+            $role->save();
+            $super = User::getByUsername('super');
+            $super->role = $role;
+            $super->save();
+            Yii::app()->user->userModel = User::getByUsername('super');
 
-        protected function getRouteAction()
-        {
-            return '/auditEventsModalList/';
-        }
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $this->setGetArray(array('id' => $role->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/role/UsersInRoleModalList');
+            $this->assertTrue(strpos($content, "1-1 of 1 result(s).") !== false);
+            $this->assertTrue(strpos($content, "/users/default/details?id=".$super->id) !== false);
+            $this->assertTrue(strpos($content, $super->username) !== false);
+            $this->assertTrue(strpos($content, $super->getFullName()) !== false);
+
+      }
     }
 ?>

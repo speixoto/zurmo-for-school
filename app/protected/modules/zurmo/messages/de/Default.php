@@ -687,6 +687,8 @@
             => 'Benutzer Mitgliedschaft erfolgreich gespeichert',
         'Username'
             => 'Benutzername',
+        'Users'
+            => 'Users',
         'Value'
             => 'Wert',
         'Values'

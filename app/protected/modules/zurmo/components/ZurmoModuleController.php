@@ -134,7 +134,7 @@
             $modelClassName = $this->getModule()->getPrimaryModelName();
             $model = $modelClassName::getById((int)$id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
-            $searchAttributeData = AuditEventsListControllerUtil::makeSearchAttributeDataByAuditedModel($model);
+            $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($model);
             $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo AuditEventsListControllerUtil::renderList($this, $dataProvider);

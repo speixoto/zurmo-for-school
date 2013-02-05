@@ -24,21 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    abstract class ModalListLinkActionElement extends LinkActionElement
     {
-        protected function getDefaultLabel()
+        public function getActionType()
         {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
+            return 'Details';
         }
 
-        protected function getAjaxLinkTitle()
+        public function render()
         {
-            return $this->getLabel();
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
         }
 
-        protected function getRouteAction()
+        public function renderMenuItem()
         {
-            return '/auditEventsModalList/';
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return array('label'           => $this->getLabel(),
+                             'url'             => $this->getDefaultRoute(),
+                             'linkOptions'     => $this->getHtmlOptions(),
+                             'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+                );
+            }
         }
+
+        protected function getAjaxLinkOptions()
+        {
+            return ModalView::getAjaxOptionsForModalLink($this->getAjaxLinkTitle());
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(),
+                                         array('id' => $this->modelId));
+        }
+
+        abstract protected function getAjaxLinkTitle();
+
+        abstract protected function getRouteAction();
     }
 ?>

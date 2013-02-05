@@ -27,10 +27,7 @@
     /**
      * Helper class to render a list of users called from a model controller.
      */
-    // TODO: @Shoaibi this and AuditEventsListControllerUtil should implement an interface.
-    // TODO: @Shoaibi compare the code for this requirement against the code of user list on create action, might need some refactoring.
-    // TODO: @Shoaibi need tests
-    class UsersListControllerUtil
+    class UsersByRoleModalListControllerUtil
     {
         /**
          * @return rendered content from view as string.
@@ -38,10 +35,13 @@
         public static function renderList(CController $controller, $dataProvider)
         {
             assert('$dataProvider instanceof RedBeanModelDataProvider');
-            $usersListView = new UsersMultiColumnModalListView(
+            $modalListLinkProvider = new UserDetailsModalListLinkProvider;
+            $usersListView = new UsersByRoleModalListView(
                 $controller->getId(),
                 $controller->getModule()->getId(),
+                'usersInRoleModalList',
                 'User',
+                $modalListLinkProvider,
                 $dataProvider,
                 'modal'
             );
@@ -54,9 +54,8 @@
          * @param object $model Role
          * @return array $searchAttributeData
          */
-        public static function makeSearchAttributeDataByRoleModel($model)
+        public static function makeModalSearchAttributeDataByRoleModel($model)
         {
-            // TODO: @Shoaibi this works but use a better way like $dataProvider = $role->users, but that won't create paginated list, what if we do lazy loading with that?
             assert('$model instanceof Role');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(

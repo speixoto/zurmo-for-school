@@ -24,21 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    class UserDetailsModalListLinkProvider extends ModalListLinkProvider
     {
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
-        }
+        const USER_DETAILS_ROUTE = "/users/default/details";
 
-        protected function getAjaxLinkTitle()
+        public function getLinkString($attributeString)
         {
-            return $this->getLabel();
-        }
-
-        protected function getRouteAction()
-        {
-            return '/auditEventsModalList/';
+            $string  = 'ZurmoHtml::link(';
+            $string .=  $attributeString . ', ';
+            $string .= 'Yii::app()->createUrl("'.self::USER_DETAILS_ROUTE.'", array("id" => $data->id))';
+            $string .= ')';
+            return $string;
         }
     }
 ?>

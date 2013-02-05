@@ -687,6 +687,8 @@
             => 'Membres du groupe sauvegardé.',
         'Username'
             => 'Nom d\'utilisateur',
+        'Users'
+            => 'Users',
         'Value'
             => 'Valeur',
         'Values'

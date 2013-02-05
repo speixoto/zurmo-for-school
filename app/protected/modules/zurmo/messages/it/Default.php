@@ -687,6 +687,8 @@
             => 'Membri modificati con successo.',
         'Username'
             => 'Nome utente',
+        'Users'
+            => 'Users',
         'Value'
             => 'Valore',
         'Values'

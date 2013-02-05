@@ -687,6 +687,8 @@
             => 'Miembros del grupo guardado con éxito.',
         'Username'
             => 'Usuario',
+        'Users'
+            => 'Users',
         'Value'
             => 'Valor',
         'Values'

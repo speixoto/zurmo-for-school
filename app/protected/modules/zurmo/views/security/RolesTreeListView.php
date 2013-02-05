@@ -101,7 +101,8 @@
                 return $element->render();
 
             }
-            else{
+            else
+            {
                 return $userCount;
             }
         }

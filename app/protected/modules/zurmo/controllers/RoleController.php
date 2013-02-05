@@ -169,13 +169,12 @@
 
         public function actionUsersInRoleModalList($id)
         {
-            // TODO: @Shoaibi needs test
             $model = Role::getById((int)$id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
-            $searchAttributeData = UsersListControllerUtil::makeSearchAttributeDataByRoleModel($model);
-            $dataProvider = UsersListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
+            $searchAttributeData = UsersByRoleModalListControllerUtil::makeModalSearchAttributeDataByRoleModel($model);
+            $dataProvider = UsersByRoleModalListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
-            echo UsersListControllerUtil::renderList($this, $dataProvider);
+            echo UsersByRoleModalListControllerUtil::renderList($this, $dataProvider);
         }
     }
 ?>

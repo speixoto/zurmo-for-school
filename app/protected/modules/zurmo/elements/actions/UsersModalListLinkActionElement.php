@@ -24,52 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // TODO: @Shoaibi create a new class that has common functions between this and AuditEventsModalListLinkActionElement
-    // TODO: @Shoaibi change this class's and AuditEventsModalListLinkActionElement's parent.
-    // TODO: @Shoaibi needs test
-    class UsersModalListLinkActionElement extends LinkActionElement
+    class UsersModalListLinkActionElement extends ModalListLinkActionElement
     {
-        public function getActionType()
-        {
-            return 'Details';
-        }
-
-        public function render()
-        {
-            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
-                $this->getAjaxLinkOptions(),
-                $this->getHtmlOptions()
-            );
-        }
-
-        public function renderMenuItem()
-        {
-            if (!empty($this->modelId) && $this->modelId > 0)
-            {
-                return array('label'           => $this->getLabel(),
-                             'url'             => $this->getDefaultRoute(),
-                             'linkOptions'     => $this->getHtmlOptions(),
-                             'ajaxLinkOptions' => $this->getAjaxLinkOptions()
-                );
-            }
-        }
-
-        protected function getAjaxLinkOptions()
-        {
-            // TODO: @Shoaibi need transaltion strings for this
-            $title = Zurmo::t('ZurmoModule', 'Users');
-            return ModalView::getAjaxOptionsForModalLink($title);
-        }
-
         protected function getDefaultLabel()
         {
+            // Because we get a dynamic label(userCount) from RolesTreeListView
             throw new NotSupportedException;
         }
 
-        protected function getDefaultRoute()
+        protected function getAjaxLinkTitle()
         {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/usersInRoleModalList/',
-                                         array('id' => $this->modelId));
+            return Zurmo::t('ZurmoModule', 'Users');
+        }
+
+        protected function getRouteAction()
+        {
+            return '/usersInRoleModalList/';
         }
     }
 ?>
