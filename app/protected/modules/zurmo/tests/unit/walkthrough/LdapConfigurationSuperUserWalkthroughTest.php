@@ -43,7 +43,6 @@
             $this->runControllerWithNoExceptionsAndGetContent('zurmo/ldap/configurationEditLdap');
         }
         
-
         public function testSuperUserModifyLdapConfiguration()
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())

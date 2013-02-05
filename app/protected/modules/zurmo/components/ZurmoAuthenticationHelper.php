@@ -79,7 +79,6 @@
             'ldapEnabled'
         );
 
-
         /**
          * Called once per page load, will load up Ldap settings from the database if available.
          * (non-PHPdoc)
