@@ -56,6 +56,7 @@ body{
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size:12px;
     color: #545454;
+
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
@@ -141,6 +142,7 @@ footer, header, hgroup, menu, nav, section {
             border-right:none !important;
             border-bottom:none !important;
             .b-shadow(~"none !important");
+            //.no-ie-shadow();
             .reset-filter();
             > div{
                 margin-bottom:15px;
@@ -2027,6 +2029,10 @@ div.wide.form{
     }
 }
 
+/*
+#NoUserEmailConfigurationYetView,
+#NoGlobalEmailConfigurationYetView,
+.ZeroModelsYetView*/
 .zero-components-view,
 .splash-view {
     h2{
@@ -2287,7 +2293,7 @@ div.wide.form{
     }
     .search-view-1{
         ++.flyout;
-        z-index:1100;
+        z-index:0;
         min-width:400px;
         max-width:75%;
         height:auto;
@@ -2409,14 +2415,13 @@ div.wide.form{
         width: 100%;
         > span:first-child + div{
             margin-right: 0 !important;
-            width: 46%;
+            width: 45%;
             float: left;
         }
         .criteria-value-container{
             margin-right: 30px !important;
-            width: 46%;
+            width: 45%;
             float: right;
-            position: relative;
         }
         .has-model-select{
             float:left;
@@ -4353,27 +4358,21 @@ div.hasHalfs{
     text-indent: -9999px;
     margin-right: 5px;
 }
-
 .facebook span{
     background-position: -88px bottom !important;
 }
-
 .twitter span{
     background-position: -22px bottom !important;
 }
-
 .linkedin span{
     background-position: -66px bottom !important;
 }
-
 .rss span{
     background-position: 0 bottom !important;
 }
-
 .bitbucket span{
     background-position: -132px bottom !important;
 }
-
 .pivotal span{
     background-position: 100% bottom !important;
 }
@@ -4381,16 +4380,16 @@ div.hasHalfs{
 /*=RSS Widget*/
 .rssBody{
     line-height: 140%;
-    ul{
-        list-style: none;
-    }
-    li{
-        padding:10px 15px;
-        border-bottom:1px solid #dfdfdf;
-        &:last-child{
-            border-bottom:none;
-        }
-    }
+	ul{
+		list-style: none;
+	}
+	li{
+		padding:10px 15px;
+		border-bottom:1px solid #dfdfdf;
+		&:last-child{
+			border-bottom:none;
+		}
+	}
 }
 
 /*=Search Results - Mixed Search Results*/
@@ -4457,7 +4456,7 @@ div.hasHalfs{
         margin-right:15px;
         position: relative;
         top:1px;
-    }
+    } 
 }
 
 @import 'widget-juiportlets.less';
