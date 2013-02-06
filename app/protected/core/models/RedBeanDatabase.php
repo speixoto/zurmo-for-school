@@ -62,14 +62,8 @@
                     Yii::app()->performance->setRedBeanQueryLogger(ZurmoRedBeanPluginQueryLogger::
                                                                    getInstanceAndAttach(R::$adapter ));
                 }
-                $debug = defined('REDBEAN_DEBUG') && REDBEAN_DEBUG;
-                $debugSaveSqlQueriesIntoFile = defined('REDBEAN_DEBUG_FILE') && REDBEAN_DEBUG_FILE;
 
-                if (!$debugSaveSqlQueriesIntoFile)
-                {
-                    R::debug($debug);
-                }
-                else
+                if (defined('REDBEAN_DEBUG_TO_FILE') && REDBEAN_DEBUG_TO_FILE)
                 {
                     $queryLoggerComponent = Yii::createComponent(array(
                         'class' => 'application.core.models.ZurmoRedBeanQueryFileLogger',
@@ -77,6 +71,10 @@
                     $queryLoggerComponent->init();
                     Yii::app()->setComponent('queryFileLogger', $queryLoggerComponent);
                     R::debug(true, Yii::app()->queryFileLogger);
+                }
+                else
+                {
+                    R::debug(defined('REDBEAN_DEBUG') && REDBEAN_DEBUG);
                 }
 
                 self::$isSetup      = true;

@@ -24,6 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Log sql queries into file.
+     * ZurmoRedBeanPluginQueryLogger doesn't contain all data we need to log, so we had to extend this class.
+     * Code is optimized, so data are written only once to file, in EndRequestBehavior
+     */
     class ZurmoRedBeanQueryFileLogger extends CApplicationComponent implements RedBean_ILogger
     {
         /**
@@ -219,11 +224,11 @@
                 $pathInfo = Yii::app()->request->getPathInfo();
                 $queryInfo = Yii::app()->request->getQueryString();
 
-                $requestInfoString .= '--------------------------------' . PHP_EOL;
+                $requestInfoString .= '--------------------------------' .         PHP_EOL;
                 $requestInfoString .= 'Request Date: ' . date('F j, Y, g:i:s a') . PHP_EOL;
-                $requestInfoString .= 'Request Url: ' . $pathInfo . PHP_EOL;
-                $requestInfoString .= 'Query String: ' . $queryInfo . PHP_EOL;
-                $requestInfoString .= '-------------------------------' . PHP_EOL;
+                $requestInfoString .= 'Request Url: '  . $pathInfo .               PHP_EOL;
+                $requestInfoString .= 'Query String: ' . $queryInfo .              PHP_EOL;
+                $requestInfoString .= '-------------------------------' .          PHP_EOL;
             }
             return $requestInfoString;
         }

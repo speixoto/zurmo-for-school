@@ -40,7 +40,7 @@
             }
             $owner->attachEventHandler('onEndRequest', array($this, 'handleSaveGlobalStateCheck'));
             $owner->attachEventHandler('onEndRequest', array($this, 'handleEndLogRouteEvents'));
-            $owner->attachEventHandler('onEndRequest', array($this, 'handleSaveSqlQueriesIntoFile'));
+            $owner->attachEventHandler('onEndRequest', array($this, 'handleResolveRedBeanQueriesToFile'));
             $owner->attachEventHandler('onEndRequest', array($this, 'handleEndRequest'));
         }
 
@@ -80,9 +80,9 @@
 
         }
 
-        public function handleSaveSqlQueriesIntoFile($event)
+        public function handleResolveRedBeanQueriesToFile($event)
         {
-            if (defined('REDBEAN_DEBUG_FILE') && REDBEAN_DEBUG_FILE)
+            if (defined('REDBEAN_DEBUG_TO_FILE') && REDBEAN_DEBUG_TO_FILE)
             {
                 if (isset(Yii::app()->queryFileLogger))
                 {

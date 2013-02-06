@@ -42,7 +42,7 @@
 
     // Turn this on to save RedBean queries into file. Turn it off in production.
     // Check it in as false!
-    $redBeanDebugSaveToFileOn = true;
+    $redBeanDebugLogToFileOn = false;
 
     // Turn this on to see extra query data such as total count, duplicate count, and duplicate queries
     // Check it in as false!
@@ -122,7 +122,7 @@
     define('SHOW_PERFORMANCE',       $performanceOn);
     define('SHOW_QUERY_DATA',        $queryDataOn);
     define('REDBEAN_DEBUG',          $redBeanDebugOn);
-    define('REDBEAN_DEBUG_FILE',     $redBeanDebugSaveToFileOn);
+    define('REDBEAN_DEBUG_TO_FILE',  $redBeanDebugLogToFileOn);
     define('SECURITY_OPTIMIZED',     $securityOptimized);
     define('AUDITING_OPTIMIZED',     $auditingOptimized);
     define('PHP_CACHING_ON',         $phpLevelCaching);
