@@ -28,7 +28,13 @@
     {
         protected function getDropDownArray()
         {
-            return Yii::app()->languageHelper->getActiveLanguagesData(true);
+            $activeLanguages = Yii::app()->languageHelper->getActiveLanguagesData();
+            $dropDownArray = array();
+            foreach ($activeLanguages as $language)
+            {
+                $dropDownArray[$language->code] = $language->label;
+            }
+            return $dropDownArray;
         }
     }
 ?>

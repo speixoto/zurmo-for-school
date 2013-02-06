@@ -170,12 +170,11 @@ EOD;
             $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
             if ($languageData['active'])
             {
-                $metaData = Yii::app()->languageHelper->getActiveLanguageMetaData($languageCode);
-                if (!empty($metaData) && isset($metaData['lastUpdate']))
+                if (isset($languageData['lastUpdateDatetime']) && !empty($languageData['lastUpdateDatetime']))
                 {
                     $content .= ' - ' . Zurmo::t(
                         'ZurmoModule', 'Last updated on {date}',
-                        array('{date}'=>DateTimeUtil::convertTimestampToDbFormatDateTime($metaData['lastUpdate']))
+                        array('{date}'=>$languageData['lastUpdateDatetime'])
                     );
                 }
 
@@ -329,14 +328,23 @@ EOD;
 
         public static function getLanguagesData()
         {
-            $activeLanguages    = Yii::app()->languageHelper->getActiveLanguages();
+            $activeLanguagesData    = Yii::app()->languageHelper->getActiveLanguagesData();
             $languagesData       = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $label)
+            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language)
             {
-                $languagesData[$language] = array('label'         => $label,
-                                                 'active'        => in_array($language, $activeLanguages),
-                                                 'canDeactivate' =>
-                                                        Yii::app()->languageHelper->canDeactivateLanguage($language));
+                $languagesData[$language->code] = array(
+                    'label'  => Yii::app()->languageHelper->formatLanguageLabel($language),
+                    'active' => false
+                );
+
+                if (isset($activeLanguagesData[$language->code]))
+                {
+                    $languagesData[$language->code]['active'] = true;
+                    $languagesData[$language->code] = array_merge(
+                        $languagesData[$language->code],
+                        $activeLanguagesData[$language->code]
+                    );
+                }
             }
             return $languagesData;
         }

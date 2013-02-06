@@ -129,8 +129,9 @@
             foreach ($l10nInfo->languages->language as $language)
             {
                 self::$availableLanguages[$language->code] = array(
-                    'languageName'          => $language->name,
-                    'languageNativeName'    => $language->native,
+                    'code'          => $language->code,
+                    'name'          => $language->name,
+                    'nativeName'    => $language->native,
                 );
             }
 

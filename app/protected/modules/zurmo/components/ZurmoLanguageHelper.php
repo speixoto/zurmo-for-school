@@ -88,31 +88,21 @@
         }
 
         /**
-         * Get supported languages and translates names of language. Uses language id as
+         * Get supported languages and data of language. Uses language id as
          * key.
-         * @param bool $localDisplay Display names of languages in local language?
-         * @return array of language keys/ translated names.
+         * @return array of language keys/ data.
          */
-        public function getSupportedLanguagesData($localDisplay = false)
+        public function getSupportedLanguagesData()
         {
             $data = array();
-            foreach (ZurmoTranslationServerUtil::getAvailableLanguages() as $language => $name)
+            foreach (ZurmoTranslationServerUtil::getAvailableLanguages() as $language)
             {
-                if ($localDisplay)
-                {
-                    $data[$language] = Yii::app()->getLocale($language)->getLanguage($language);
-                }
-                else
-                {
-                    $data[$language] = Yii::app()->getLocale($this->getForCurrentUser())->getLanguage($language);
-                }
-
-                // In case the language name in local language is not available,
-                // fallback to the base language for the language name.
-                if (!isset($data[$language]))
-                {
-                    $data[$language] = Yii::app()->getLocale($this->baseLanguage)->getLanguage($language);
-                }
+                $data[$language['code']] = $language;
+                $data[$language['code']]['label'] = sprintf(
+                    '%s (%s)',
+                    $language['name'],
+                    $language['nativeName']
+                );
             }
             return $data;
         }
@@ -163,49 +153,27 @@
         }
 
         /**
-         * Returns an array of active language data which includes the language as the index, and the translated
-         * name of the language as the value.
-         * @param bool $localDisplay Display names of languages in local language?
+         * Returns an array of active language models.
          */
-        public function getActiveLanguagesData($localDisplay = false)
+        public function getActiveLanguagesData()
         {
-            $supportedLanguages = $this->getSupportedLanguagesData($localDisplay);
-            $activeLanguages    = $this->getActiveLanguages();
+            $beans = ActiveLanguage::getAll();
 
-            foreach ($supportedLanguages as $language => $notUsed)
+            $activeLanguages = array();
+            foreach ($beans as $bean)
             {
-                if (!in_array($language, $activeLanguages))
-                {
-                    unset($supportedLanguages[$language]);
-                }
+                $activeLanguages[$bean->code] = array(
+                    'canDeactivate'         => $this->canDeactivateLanguage($bean->code),
+                    'activationDatetime'    => $bean->activationDatetime,
+                    'lastUpdateDatetime'    => $bean->lastUpdateDatetime,
+                    'label'                 => $this->formatLanguageLabel($bean)
+                );
             }
 
-            // Sort languages alphabetically
-            ksort($supportedLanguages);
+            // Sort languages alphabetically by the language code
+            ksort($activeLanguages);
 
-            return $supportedLanguages;
-        }
-
-        /**
-         * Save given MetaData for the given language code
-         */
-        public function setActiveLanguageMetaData($languageCode, $metaData)
-        {
-            ZurmoConfigurationUtil::setByModuleName(
-                'ZurmoModule',
-                'languageMetaData-' . $languageCode,
-                $metaData);
-        }
-
-        /**
-         * Returns local stored MetaData for given language code
-         */
-        public function getActiveLanguageMetaData($languageCode)
-        {
-            return ZurmoConfigurationUtil::getByModuleName(
-                'ZurmoModule',
-                'languageMetaData-' . $languageCode
-            );
+            return $activeLanguages;
         }
 
         /**
@@ -223,40 +191,13 @@
         }
 
         /**
-         * Given a language, returns true if the language is active, otherwise false.
-         */
-        public function getActiveLanguages()
-        {
-            $activeLanguages = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'activeLanguages');
-            if ($activeLanguages == null)
-            {
-                $activeLanguages = array();
-            }
-            if (!in_array($this->baseLanguage, $activeLanguages))
-            {
-                $activeLanguages[] = $this->baseLanguage;
-            }
-            return $activeLanguages;
-        }
-
-        /**
-         * Set the array of active languages that can be selected in the user interface by users.
-         * @param array $activeLanguages
-         */
-        public function setActiveLanguages($activeLanguages)
-        {
-            assert('is_array($activeLanguages)');
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'activeLanguages', $activeLanguages);
-        }
-
-        /**
          * Activates a language
          */
         public function activateLanguage($languageCode)
         {
-            $activeLanguages = $this->getActiveLanguages();
+            $activeLanguages = $this->getActiveLanguagesData();
             // Check if the language is already active
-            if (in_array($languageCode, $activeLanguages))
+            if (array_key_exists($languageCode, $activeLanguages))
             {
                 return true;
             }
@@ -281,14 +222,16 @@
             if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
             {
                 $activeLanguages[] = $languageCode;
-                $this->setActiveLanguages($activeLanguages);
-                $metaData = array(
-                    'activationDate' => time(),
-                    'lastUpdate'     => time()
-                );
-                $this->setActiveLanguageMetaData($languageCode, $metaData);
-
-                return true;
+                $language = new ActiveLanguage;
+                $language->code = $supportedLanguages[$languageCode]['code'];
+                $language->name = $supportedLanguages[$languageCode]['name'];
+                $language->nativeName = $supportedLanguages[$languageCode]['nativeName'];
+                $language->activationDatetime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                $language->lastUpdateDatetime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                if ($language->save())
+                {
+                    return true;
+                }
             }
 
             throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
@@ -299,21 +242,23 @@
          */
         public function updateLanguage($languageCode)
         {
-            $activeLanguages = $this->getActiveLanguages();
-            // Check if the language is already active
-            if (!in_array($languageCode, $activeLanguages))
+            try
             {
-                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language already active.'));
+                $language = ActiveLanguage::getByCode($languageCode);
+            }
+            catch (NotFoundException $e)
+            {
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not active.'));
             }
 
             $supportedLanguages = $this->getSupportedLanguagesData();
             // Check if the language is supported
-            if (!array_key_exists($languageCode, $supportedLanguages))
+            if (!array_key_exists($language->code, $supportedLanguages))
             {
                 throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not supported.'));
             }
 
-            $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($languageCode);
+            $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($language->code);
 
             // Check if the po file exists
             $headers = get_headers($translationUrl);
@@ -323,13 +268,14 @@
                 throw new NotFoundException(Zurmo::t('ZurmoModule', 'Translation not available.'));
             }
 
-            if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
+            if (ZurmoMessageSourceUtil::importPoFile($language->code, $translationUrl))
             {
-                $metaData = $this->getActiveLanguageMetaData($languageCode);
-                $metaData['lastUpdate'] = time();
-                $this->setActiveLanguageMetaData($languageCode, $metaData);
-
-                return true;
+                
+                $language->lastUpdateDatetime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+                if ($language->save())
+                {
+                    return true;
+                }
             }
 
             throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
@@ -337,26 +283,26 @@
 
         public function deactivateLanguage($languageCode)
         {
-            $activeLanguages = $this->getActiveLanguages();
-            // Check if the language is already active
-            if (!in_array($languageCode, $activeLanguages))
+            try
+            {
+                $language = ActiveLanguage::getByCode($languageCode);
+            }
+            catch (NotFoundException $e)
+            {
+                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not active.'));
+            }
+
+            if ($language->delete())
             {
                 return true;
             }
 
-            foreach ($activeLanguages as $key => $activeLanguageCode)
-            {
-                if ($activeLanguageCode == $languageCode)
-                {
-                    unset($activeLanguages[$key]);
-                }
-            }
-            $this->setActiveLanguages($activeLanguages);
+            throw new FailedServiceException(Zurmo::t('ZurmoModule', 'Unexpected error. Please try again later.'));
+        }
 
-            $metaData = array();
-            $this->setActiveLanguageMetaData($languageCode, $metaData);
-
-            return true;
+        public function formatLanguageLabel($language)
+        {
+            return sprintf('%s (%s)', $language->name, $language->nativeName);
         }
 
         /**

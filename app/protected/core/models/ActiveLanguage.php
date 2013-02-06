@@ -47,5 +47,29 @@
             );
             return $metadata;
         }
+
+        public static function getByCode($languageCode, $modelClassName = null)
+        {
+            assert('!empty($category)');
+            assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
+            if ($modelClassName === null)
+            {
+                $modelClassName = get_called_class();
+            }
+            $tableName = self::getTableName($modelClassName);
+            $bean = R::findOne(
+                $tableName,
+                ' code = :code',
+                array(
+                    ':code' => $languageCode
+                )
+            );
+            assert('$bean === false || $bean instanceof RedBean_OODBBean');
+            if (!is_object($bean))
+            {
+                throw new NotFoundException();
+            }
+            return self::makeModel($bean, $modelClassName);
+        }
     }
 ?>
