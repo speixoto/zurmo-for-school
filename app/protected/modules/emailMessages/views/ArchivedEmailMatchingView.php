@@ -294,8 +294,8 @@
         protected function renderDeleteLink()
         {
             $htmlOptions = $this->getHtmlOptionsForDelete();
-            $route = $this->getDefaultRouteForDelete();
-            $ajaxOptions = $this->getAjaxOptionsForDelete();
+            $route = $this->getDefaultRouteForDelete();            
+            $ajaxOptions = $this->getAjaxOptionsForDelete();                       
             $content = ' &#183; ' . ZurmoHtml::ajaxLink(Zurmo::t('EmailMessagesModule', 'Delete'), $route, $ajaxOptions,
                                      $htmlOptions);
             return $content;
@@ -308,7 +308,7 @@
         }
 
         protected function getAjaxOptionsForDelete()
-        {
+        {            
             return array('type'     => 'GET',
                          'success'  => "function()
                                        {
@@ -318,7 +318,7 @@
                                               text: '" . Zurmo::t('EmailMessagesModule', 'Deleted successfully') . "',
                                               permanent: false,
                                               showIcon: true,
-                                           })
+                                           });                                           
                                            if($('.email-archive-item').length==0)
                                            {                                     
                                               window.location.reload();                                  

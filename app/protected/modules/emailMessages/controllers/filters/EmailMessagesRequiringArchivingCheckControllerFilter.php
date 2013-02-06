@@ -63,10 +63,11 @@
               return true;
             }
             $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
-            $messageView = new ZeroEmailMessagesRequiringArchivingView();
-            $view        = new ModalView($this->controller, $messageView);
-            Yii::app()->getClientScript()->setToAjaxMode();
-            echo $view->render();
+            $messageView = new ZeroEmailMessagesRequiringArchivingView();            
+            $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+            $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
+                                                 makeStandardViewForCurrentUser($this->controller, $messageView));
+            echo $view->render();                       
             return false;
         }                
     }

@@ -33,9 +33,7 @@
         public $cssClasses = array('splash-view');
 
         protected function renderContent()
-        {
-            $params   = array('label' => $this->getCreateLinkDisplayLabel());
-            $url      = Yii::app()->createUrl('/emailMessages/default/configurationEditOutbound');
+        {            
             $content  = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();            
             $content .= '</div>';
@@ -47,15 +45,10 @@
             return 'EmailMessage';
         }
 
-        protected function getCreateLinkDisplayLabel()
-        {
-            return Zurmo::t('EmailMessagesModule', 'Zero Model');
-        }
-
         protected function getMessageContent()
         {
-            return Zurmo::t('EmailMessagesModule', '<h2>Not so fast</h2><div class="large-icon"></div>' .
-                                     '<p>You Dont have any Unmatched Emails</p>');
+            return Zurmo::t('EmailMessagesModule', '<div class="large-icon"></div>' .
+                                     '<p>There are no unmatched emails</p>');
         }
     }
 ?>
