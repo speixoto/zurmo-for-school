@@ -34,9 +34,9 @@
 
         public function __construct($moduleId, $controllerId, $actionId)
         {
-            $this->moduleId = $moduleId;
+            $this->moduleId     = $moduleId;
             $this->controllerId = $controllerId;
-            $this->actionId = $actionId;
+            $this->actionId     = $actionId;
         }
 
         public function getLinkString($attributeString)
