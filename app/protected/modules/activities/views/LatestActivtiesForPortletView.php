@@ -291,8 +291,7 @@
 
         protected static function resolvePropertyName($attribute)
         {
-            return 'has' .ucfirst($attribute) . 'Switch';
-
+            return 'has' . ucfirst($attribute) . 'Switch';
         }
 
         public static function hasRollupSwitch()
