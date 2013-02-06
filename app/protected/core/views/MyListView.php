@@ -95,7 +95,7 @@
             $sortDescending           = SearchUtil::resolveSortDescendingFromGetArray($this->modelClassName);
             assert('is_array($searchAttributeData)');
             $pageSize                 = Yii::app()->pagination->resolveActiveForCurrentUserByType('dashboardListPageSize');
-            $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $this->getSortAttributeForDataProvider(), false,
+            $redBeanModelDataProvider = new RedBeanModelDataProvider($this->modelClassName, $sortAttribute, $sortDescending,
                                                                 $searchAttributeData, array(
                                                                     'pagination' => array(
                                                                         'pageSize' => $pageSize,
