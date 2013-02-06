@@ -34,6 +34,14 @@
 
         protected $applicationName;
 
+        const USER_MENU_ID                              = 'user-header-menu';
+
+        const SETTINGS_MENU_ID                          = 'settings-header-menu';
+
+        const MERGED_MENU_ID                            = 'settings-header-menu';
+
+        const MERGE_USER_AND_SETTINGS_MENU_IF_MOBILE    = true;
+
         public function __construct($settingsMenuItems, $userMenuItems, $notificationsUrl, $applicationName)
         {
             assert('is_array($settingsMenuItems)');
@@ -60,31 +68,59 @@
             }
             $content  .= '</div>';
             $content  .= '<div id="user-toolbar" class="clearfix">';
-            $content  .= static::renderHeaderMenuContent(
-                            static::resolveUserMenuItemsWithTopLevelItem($this->userMenuItems),
-                            'user-header-menu');
             $content  .= static::renderNotificationsLinkContent();
-            $content  .= static::renderHeaderMenuContent(
-                            static::resolveSettingsMenuItemsWithTopLevelItem($this->settingsMenuItems),
-                            'settings-header-menu');
+            $content  .= static::renderHeaderMenus($this->userMenuItems, $this->settingsMenuItems);
             $content  .= '</div></div>';
             return $content;
+        }
+
+        protected static function renderHeaderMenus($userMenuItems, $settingsMenuItems)
+        {
+            $userMenuItemsWithTopLevel = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
+            $settingsMenuItemsWithTopLevel = static::resolveSettingsMenuItemsWithTopLevelItem($settingsMenuItems);
+
+            if (self::MERGE_USER_AND_SETTINGS_MENU_IF_MOBILE)// && Yii::app()->userInterface->isMobile())
+            {
+                $menuItems = CMap::mergeArray($userMenuItemsWithTopLevel, $settingsMenuItemsWithTopLevel);
+                return static::renderHeaderMenuContent($menuItems, self::MERGED_MENU_ID);
+            }
+            else
+            {
+                return static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID) .
+                    static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
+            }
         }
 
         protected static function resolveUserMenuItemsWithTopLevelItem($menuItems)
         {
             assert('is_array($menuItems)');
-            $finalMenuItems             = array(array('label' => Yii::app()->user->userModel->username, 'url' => null));
-            $finalMenuItems[0]['items'] = $menuItems;
-            return $finalMenuItems;
+            $topLevel = static::getUserMenuTopLevelItem();
+            return static::resolveMenuItemsWithTopLevelItem($topLevel, $menuItems);
         }
 
         protected static function resolveSettingsMenuItemsWithTopLevelItem($menuItems)
         {
             assert('is_array($menuItems)');
-            $finalMenuItems             = array(array('label' => Zurmo::t('ZurmoModule', 'Settings'), 'url' => null));
-            $finalMenuItems[0]['items'] = $menuItems;
-            return $finalMenuItems;
+            $topLevel = static::getSettingsMenuTopLevel();
+            return static::resolveMenuItemsWithTopLevelItem($topLevel, $menuItems);
+        }
+
+        protected static function resolveMenuItemsWithTopLevelItem($topLevel, $menuItems)
+        {
+            assert('is_array($menuItems)');
+            assert('is_array($topLevel)');
+            $topLevel[0]['items'] = $menuItems;
+            return $topLevel;
+        }
+
+        protected static function getUserMenuTopLevelItem()
+        {
+            return array(array('label' => Yii::app()->user->userModel->username, 'url' => null));
+        }
+
+        protected static function getSettingsMenuTopLevel()
+        {
+            return array(array('label' => Zurmo::t('ZurmoModule', 'Settings'), 'url' => null));
         }
 
         protected static function renderHeaderMenuContent($menuItems, $menuId)
