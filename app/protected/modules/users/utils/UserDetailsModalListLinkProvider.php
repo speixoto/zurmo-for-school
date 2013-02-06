@@ -26,15 +26,31 @@
 
     class UserDetailsModalListLinkProvider extends ModalListLinkProvider
     {
-        const USER_DETAILS_ROUTE = "/users/default/details";
+        protected $moduleId;
+
+        protected $controllerId;
+
+        protected $actionId;
+
+        public function __construct($moduleId, $controllerId, $actionId)
+        {
+            $this->moduleId = $moduleId;
+            $this->controllerId = $controllerId;
+            $this->actionId = $actionId;
+        }
 
         public function getLinkString($attributeString)
         {
             $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';
-            $string .= 'Yii::app()->createUrl("'.self::USER_DETAILS_ROUTE.'", array("id" => $data->id))';
+            $string .= 'Yii::app()->createUrl("' . $this->resolveUrl() . '", array("id" => $data->id))';
             $string .= ')';
             return $string;
+        }
+
+        protected function resolveUrl()
+        {
+            return '/' . $this->moduleId . '/' . $this->controllerId . '/' . $this->actionId .'/';
         }
     }
 ?>

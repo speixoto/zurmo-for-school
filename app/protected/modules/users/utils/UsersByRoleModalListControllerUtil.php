@@ -35,7 +35,7 @@
         public static function renderList(CController $controller, $dataProvider)
         {
             assert('$dataProvider instanceof RedBeanModelDataProvider');
-            $modalListLinkProvider = new UserDetailsModalListLinkProvider;
+            $modalListLinkProvider = new UserDetailsModalListLinkProvider('users', 'default', 'details');
             $usersListView = new UsersByRoleModalListView(
                 $controller->getId(),
                 $controller->getModule()->getId(),
