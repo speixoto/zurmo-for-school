@@ -62,12 +62,12 @@
         public function attributeLabels()
         {
             return array(
-                'host'                                 => Yii::t('Default', 'Host'),
-                'port'                                 => Yii::t('Default', 'Port'),
-                'bindRegisteredDomain'                 => Yii::t('Default', 'Username'),
-                'bindPassword'                         => Yii::t('Default', 'Password'),
-                'baseDomain'                           => Yii::t('Default', 'Base Domain'),
-                'enabled'                              => Yii::t('Default', 'Turn On Ldap')
+                'host'                                 => Zurmo::t('Default', 'Host'),
+                'port'                                 => Zurmo::t('Default', 'Port'),
+                'bindRegisteredDomain'                 => Zurmo::t('Default', 'Username'),
+                'bindPassword'                         => Zurmo::t('Default', 'Password'),
+                'baseDomain'                           => Zurmo::t('Default', 'Base Domain'),
+                'enabled'                              => Zurmo::t('Default', 'Turn On Ldap')
             );
         }
     }
