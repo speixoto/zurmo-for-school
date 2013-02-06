@@ -76,7 +76,6 @@
             $content = null;
             $content .= '<div class="email-template-comtent"></div>' . "\n";
             $content .= '<div>' . "\n";
-            //$atrributeName = EmailTemplateHtmlAndTextContentElement::getModelAttributeNames();
             $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , $form);
             $content .= $element->render();
             $content .= '</div>' . "\n";

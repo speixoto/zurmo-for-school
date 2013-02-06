@@ -33,7 +33,8 @@
         public function getDependencies()
         {
             return array(
-                'activities',
+                'configuration',
+                'zurmo',
             );
         }
 
@@ -85,6 +86,11 @@
                 ),
             );
             return $metadata;
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return false;
         }
     }
 ?>

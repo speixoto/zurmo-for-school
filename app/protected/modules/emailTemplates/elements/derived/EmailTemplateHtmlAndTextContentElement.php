@@ -45,6 +45,9 @@
 
         protected function renderControlEditable()
         {
+          $content = '<div class="email-template-textcontent">';
+          $content .= $this->renderTextContentArea();
+          $content .= '<div>';
           $content = '<div class="email-template-htmlcontent">';
           $content .= $this->renderHtmlContentArea();
           $content .= '<div>';
@@ -55,11 +58,11 @@
         {
            $emailMessageTemplate = new EmailTemplate();
             $inputNameIdPrefix       = $this->attribute;
-            //$attribute               = 'htmlContent';
-            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, 'htmlContent');
+            $attribute               = 'htmlContent';
+            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, $attribute);
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, 'htmlContent');
+            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
             $cClipWidget   = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
@@ -68,13 +71,20 @@
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Redactor'];
-            $content .= $this->form->error($emailMessageTemplate, 'htmlContent');
+            $content .= $this->form->error($emailMessageTemplate, $attribute);
             return $content;
         }
 
          protected function renderTextContentArea()
          {
-          
+            $emailMessageTemplate = new EmailTemplate();
+            $inputNameIdPrefix       = $this->attribute;
+            $attribute               = 'textContent';
+            $content .= '<textarea name = "' . $this->getEditableInputName($inputNameIdPrefix, $attribute) .
+                        '" id = "' . $this->getEditableInputId($inputNameIdPrefix, $attribute) .
+                        '" rows= "50" cols= "50"/> </textarea>';
+            $content .= $this->form->error($emailMessageTemplate, $attribute);
+            return $content;
          }
         public static function getModelAttributeNames()
         {
