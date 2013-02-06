@@ -30,7 +30,6 @@
      */
     class UserLdapIdentity extends UserIdentity
     {
-        
         const ERROR_NO_RIGHT_WEB_LOGIN = 3;
         /**
          * Authenticates a user against ldap server.
@@ -49,7 +48,7 @@
                                                                            $bindPassword,$baseDomain);                                                        
                 if($ldapConnection)
                 {                                     
-                    $ldapFilter              = '(|(cn='.$this->username.')(&(uid='.$this->username.')))'; 
+                    $ldapFilter              = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))'; 
                     $ldapResults             = ldap_search($ldapConnection, $baseDomain,$ldapFilter); 					
                     $ldapResultsCount        = ldap_count_entries($ldapConnection,$ldapResults);  
                     if ($ldapResultsCount > 0)

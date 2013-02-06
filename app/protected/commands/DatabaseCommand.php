@@ -124,7 +124,7 @@ EOD;
                 $template        = "{message}\n";
                 $messageStreamer = new MessageStreamer($template);
                 $messageStreamer->setExtraRenderBytes(0);
-                $messageStreamer->add('');
+                $messageStreamer->add(' ');
 
                 if ($action == 'backup')
                 {

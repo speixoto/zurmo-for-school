@@ -62,7 +62,7 @@
         {   
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             }      
             $user               = new User();
             $user->username     = 'abcdefg';
@@ -91,7 +91,7 @@
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             Yii::app()->user->userModel = User::getByUsername('super');
             //creating user same as on ldap with different password
@@ -119,7 +119,7 @@
         {
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             Yii::app()->user->userModel = User::getByUsername('super');     
             $identity                   = new UserLdapIdentity('john','johnldap');                        
@@ -135,7 +135,7 @@
         {                    
             if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
-                $this->markTestSkipped(Yii::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('Default', 'Test Ldap settings are not configured in perInstanceTest.php file.'));
             } 
             Yii::app()->user->userModel = User::getByUsername('super'); 
             $username                   = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
