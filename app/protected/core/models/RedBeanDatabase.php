@@ -170,13 +170,13 @@
                 {
                     $databasePort = $matches['3'];
                 }
-                $databaseConnactionInfo = array(
+                $databaseConnectionInfo = array(
                     'databaseType' => $matches['1'],
                     'databaseHost' => $matches['2'],
                     'databasePort' => intval($databasePort),
                     'databaseName' => $matches['4']
                 );
-                return $databaseConnactionInfo;
+                return $databaseConnectionInfo;
             }
             else
             {
@@ -189,11 +189,21 @@
          * Function allow two connection formats because backward compatibility
          * 1. "host=localhost;port=3306;dbname=zurmo"
          * 2. "host=localhost;dbname=zurmo"
+         * @param string $dsn
+         * @throws NotSupportedException
+         * @return string
          */
         public static function getDatabaseNameFromDsnString($dsn)
         {
             assert(preg_match("/host=([^;]+);(?:port=([^;]+);)?dbname=([^;]+)/", $dsn, $matches) == 1); // Not Coding Standard
-            return $matches[3];
+            if (count($matches) == 4)
+            {
+                return $matches[3];
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

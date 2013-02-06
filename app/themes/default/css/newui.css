@@ -4378,6 +4378,7 @@ body.light-toast,
 .strong {
   font-weight: bold;
 }
+.ui-helper-hidden-accessible,
 .hidden-element {
   display: none !important;
   visibility: hidden !important;
@@ -10890,8 +10891,7 @@ table.configuration-list td:last-child a .z-label:before {
 #testImapConnection {
   margin: 0;
 }
-#TestImapConnectionMessageView,
-#TestEmailMessageView {
+.connection-test-message {
   min-height: 60px;
   padding: 15px;
   line-height: 150%;
@@ -15147,7 +15147,7 @@ a.user-link {
 .outbound-settings label {
   margin-bottom: 5px;
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
   }

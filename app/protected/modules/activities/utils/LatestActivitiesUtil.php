@@ -191,6 +191,5 @@
         {
             return $portletId . '_' . $keyName;
         }
-
     }
 ?>
