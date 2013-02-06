@@ -98,7 +98,7 @@
                 Yii::import('application.extensions.sentrylog.RSentryLog');
                 $rSentryLog = Yii::createComponent(
                     array('class' => 'RSentryLog', 'dsn' => Yii::app()->params['sentryDsn']));
-                //Have to invoke component init(), because it is not caled automatically
+                // Have to invoke component init(), because it is not called automatically
                 $rSentryLog->init();
                 $component   = Yii::app()->getComponent('log');
                 $allRoutes   = $component->getRoutes();
