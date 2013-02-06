@@ -190,7 +190,7 @@
                 );
                 $('#cancel-advanced-search').unbind('click');
                 $('#cancel-advanced-search').live('click', function(event){
-                $(this).closest('form').find('.search-view-1').hide();
+                    $(this).closest('form').find('.search-view-1').hide();
                 });
             " . $this->getExtraRenderFormBottomPanelScriptPart());
             $this->renderAdvancedSearchScripts();
