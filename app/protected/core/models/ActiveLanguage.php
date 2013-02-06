@@ -38,11 +38,18 @@
                     'lastUpdateDatetime'
                 ),
                 'rules' => array(
-                    array('code, name, nativeName, activationDatetime', 'required'),
-                    array('code, name, nativeName', 'type', 'type' => 'string'),
-                    array('activationDatetime, lastUpdateDatetime', 'type', 'type' => 'date'),
+                    array('code', 'required'),
+                    array('code', 'type', 'type' => 'string'),
                     array('code', 'length',  'min'  => 2, 'max' => 5),
-                    array('name, nativeName', 'length',  'min'  => 2, 'max' => 64),
+                    array('name', 'required'),
+                    array('name', 'type', 'type' => 'string'),
+                    array('name', 'length',  'min'  => 2, 'max' => 64),
+                    array('nativeName', 'required'),
+                    array('nativeName', 'type', 'type' => 'string'),
+                    array('nativeName', 'length',  'min'  => 2, 'max' => 64),
+                    array('activationDatetime', 'required'),
+                    array('activationDatetime', 'type', 'type' => 'date'),
+                    array('lastUpdateDatetime', 'type', 'type' => 'date'),
                 )
             );
             return $metadata;
