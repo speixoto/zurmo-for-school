@@ -68,9 +68,9 @@
         protected function getRelatedItemNonEditableTemplate()
         {
             $template  = "<tr>";
-            $template .= "<td colspan=\"" . $this->getColumnSpan() . "\" class=conversation-related-{label} >\n";
+            $template .= "<td colspan=\"" . $this->getColumnSpan() . "\" class=conversation-related-{label} ><div>";
             $template .= '{content}';
-            $template .= "</td></tr>\n";
+            $template .= "</div></td></tr>";
             return $template;
         }
     }
