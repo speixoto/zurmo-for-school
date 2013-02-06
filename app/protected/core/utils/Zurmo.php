@@ -35,7 +35,6 @@
         public static function t($category,$message,$params=array(),$source=null,$language=null)
         {
             $translation = parent::t('Default',$message,$params,$source,$language);
-
             return $translation;
         }
     }

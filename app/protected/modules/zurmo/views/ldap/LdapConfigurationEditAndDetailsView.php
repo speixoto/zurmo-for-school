@@ -31,7 +31,7 @@
     {
         public function getTitle()
         {
-            return Yii::t('Default', 'Ldap Configuration');
+            return Zurmo::t('Default', 'Ldap Configuration');
         }
 
         public static function getDefaultMetadata()

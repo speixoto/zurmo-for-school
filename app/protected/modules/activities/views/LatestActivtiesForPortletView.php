@@ -128,10 +128,7 @@
                 $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
                 $excludeFromRestore = $this->saveUserSettingsFromConfigForm($latestActivitiesConfigurationForm);
             }
-
             $this->restoreUserSettingsToConfigFrom($latestActivitiesConfigurationForm, $excludeFromRestore);
-
-
         }
 
         protected function saveUserSettingsFromConfigForm(&$latestActivitiesConfigurationForm)
@@ -168,7 +165,6 @@
                 {
                     $latestActivitiesConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
                 }
-
             }
             return $latestActivitiesConfigurationForm;
         }
