@@ -80,6 +80,9 @@
             $this->assertEquals('Autoresponders', $autoresponder[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
 
+        /**
+         * @depends testCreateAndGetAutoresponderById
+         */
         public function testDeleteAutoresponder()
         {
             $autoresponder = new Autoresponder();

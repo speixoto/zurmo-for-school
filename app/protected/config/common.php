@@ -284,6 +284,7 @@
             'accounts',
             'activities',
             'api',
+            'campaigns',
             'comments',
             'configuration',
             'contacts',

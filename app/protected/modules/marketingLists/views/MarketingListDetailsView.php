@@ -82,14 +82,12 @@
                 $this->controllerId,
                 $this->moduleId,
                 $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-select')))
-            );
+                array('htmlOptions' => array('class'   => 'icon-select')));
             $updateMarketingListsLinkActionElement  = new UpdateMarketingListsLinkActionElement(
                 $this->controllerId,
                 $this->moduleId,
                 $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-update')))
-            );
+                array('htmlOptions' => array('class'   => 'icon-update')));
             $content .= $selectContactAndReportLinkActionElement->render();
             $content .= $updateMarketingListsLinkActionElement->render();
             return $content;

@@ -94,9 +94,6 @@
                     'htmlContent',
                     'textContent',
                 ),
-                'relations' => array(
-                    'campaignItem'         => array(RedBeanModel::HAS_MANY,   'CampaignItem'),
-                ),
                 'rules' => array(
                     array('type',                 'required'),
                     array('type',                 'type',    'type' => 'integer'),

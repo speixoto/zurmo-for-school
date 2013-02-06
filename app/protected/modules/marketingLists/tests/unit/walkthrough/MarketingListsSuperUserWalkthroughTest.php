@@ -92,15 +92,6 @@
             $this->runControllerWithRedirectExceptionAndGetContent('marketingLists/default/delete');
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(1, count($marketingLists));
-            try
-            {
-                MarketingList::getById($marketingLists);
-                $this->fail();
-            }
-            catch (NotFoundException $e)
-            {
-                //success
-            }
         }
 
         public function testSuperUserCreateAction()
@@ -109,7 +100,7 @@
             //Create a new marketingList.
             $this->resetGetArray();
             $this->setPostArray(array('MarketingList' => array(
-                                            'name'            => 'New MarketingListName'
+                                            'name'            => 'New MarketingListName',
                                             'description'     => 'New MarketingList Description')));
             $redirectUrl    = $this->runControllerWithRedirectExceptionAndGetUrl('marketingLists/default/create');
             $marketingList = MarketingList::getByName('New MarketingListName');

@@ -82,7 +82,6 @@
                 ),
                 'relations' => array(
                     'autoresponderItem'         => array(RedBeanModel::HAS_MANY,   'AutoresponderItem'),
-                    'emailMessageUrls'          => array(RedBeanModel::HAS_MANY,   'EmailMessageUrl'),
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',

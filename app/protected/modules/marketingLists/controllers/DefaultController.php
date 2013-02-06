@@ -150,16 +150,20 @@
         public function actionDelete($id)
         {
             $marketingList = MarketingList::GetById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($account);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($marketingList);
             $marketingList->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
 
-        public function actionSelectContact()
+        public function actionModalList()
         {
-          
+            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+                                            $_GET['modalTransferInformation']['sourceIdFieldId'],
+                                            $_GET['modalTransferInformation']['sourceNameFieldId']
+            );
+            echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
+                                                'ContactsStateMetadataAdapter');
         }
-
         protected static function getSearchFormClassName()
         {
             return 'MarketingListsSearchForm';

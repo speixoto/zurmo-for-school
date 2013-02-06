@@ -64,14 +64,6 @@
         /**
          * @depends testCreateAndGetMarketingListById
          */
-        public function testGetLabel()
-        {
-            $marketingLists = MarketingList::getByName('Test Marketing List');
-            $this->assertEquals(1, count($marketingLists));
-            $this->assertEquals('Marketing List',  $marketingLists[0]::getModelLabelByTypeAndLanguage('Singular'));
-            $this->assertEquals('Marketing Lists', $marketingLists[0]::getModelLabelByTypeAndLanguage('Plural'));
-        }
-
         public function testDeleteMarketingList()
         {
             $marketingList = new MarketingList();
@@ -80,9 +72,9 @@
             $this->assertTrue($marketingList->save());
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(2, count($marketingLists));
-          /*  $marketingLists[0]->delete();
+            $marketingLists[0]->delete();
             $marketingLists = MarketingList::getAll();
-            $this->assertEquals(1, count($marketingLists));*/
+            $this->assertEquals(1, count($marketingLists));
         }
     }
 ?>

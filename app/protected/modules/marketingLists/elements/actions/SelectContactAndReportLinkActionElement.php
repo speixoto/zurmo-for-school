@@ -24,9 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Cancel conversion link.
-     */
+
     class SelectContactAndReportLinkActionElement extends LinkActionElement
     {
         public function getActionType()
@@ -48,6 +46,20 @@
             $gridId         = $this->getListViewGridId();
             $selectContact   = $gridId . '-selectContactAndLead';
             $selectReport        = $gridId . '-selectReport';
+            Yii::app()->clientScript->registerScript($gridId . '-listViewContactAndLead', "
+                $('#" . $gridId . "-selectContactAndLead').unbind('click.action');
+                $('#" . $gridId . "-selectContactAndLead').bind('click.action', function()
+                    {
+                    }   
+                );
+            ");
+            Yii::app()->clientScript->registerScript($gridId . '-listViewReport', "
+                $('#" . $gridId . "-selectReport').unbind('click.action');
+                $('#" . $gridId . "-selectReport').bind('click.action', function()
+                    {
+                    }
+                );
+            ");
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
                                         array(  'label'   => Yii::t('Default', 'Contact/Lead'),
