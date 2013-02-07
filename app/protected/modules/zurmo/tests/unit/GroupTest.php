@@ -51,9 +51,9 @@
                 $user->lastName     = "Uuuuuu{$i}son";
                 $user->setPassword("uuuuu$i");
                 $this->assertTrue($user->save());
-                //Clear cache of user so the groups properly get accounted for later.
-                //This was needed after we added isActive which calls save twice when a user is
-                //created
+                // Clear cache of user so the groups properly get accounted for later.
+                // This was needed after we added isActive which calls save twice when a user is
+                // created
                 $id = $user->id;
                 $user->forget();
                 $u[] = User::getById($id);
