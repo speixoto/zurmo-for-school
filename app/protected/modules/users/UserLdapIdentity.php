@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * UserLdapIdentity represents the data needed to identity a user using ldap server 
+     * UserLdapIdentity represents the data needed to identity a user using ldap server
 	 * authentication.
      */
     class UserLdapIdentity extends UserIdentity
@@ -38,37 +38,37 @@
         public function authenticate()
         {
             try
-            {                
+            {
                 $host                      = Yii::app()->authenticationHelper->ldapHost;
                 $port                      = Yii::app()->authenticationHelper->ldapPort;
                 $baseDomain                = Yii::app()->authenticationHelper->ldapBaseDomain;
                 $bindPassword              = Yii::app()->authenticationHelper->ldapBindPassword;
-                $bindRegisteredDomain      = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;                                 
+                $bindRegisteredDomain      = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
                 $ldapConnection            = LdapUtil::establishConnection($host,$port,$bindRegisteredDomain,
-                                                                           $bindPassword,$baseDomain);                                                        
+                                                                           $bindPassword,$baseDomain);
                 if($ldapConnection)
-                {                                     
-                    $ldapFilter              = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))'; 
-                    $ldapResults             = ldap_search($ldapConnection, $baseDomain,$ldapFilter); 					
-                    $ldapResultsCount        = ldap_count_entries($ldapConnection,$ldapResults);  
+                {
+                    $ldapFilter              = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))';
+                    $ldapResults             = ldap_search($ldapConnection, $baseDomain,$ldapFilter);
+                    $ldapResultsCount        = ldap_count_entries($ldapConnection,$ldapResults);
                     if ($ldapResultsCount > 0)
-                    {				 
-                        $result = @ldap_get_entries($ldapConnection, $ldapResults);                                                          					
-                        $zurmoLogin = parent::authenticate();                                           
+                    {
+                        $result = @ldap_get_entries($ldapConnection, $ldapResults);
+                        $zurmoLogin = parent::authenticate();
                         if(!$zurmoLogin)
                         {
                            if ($result[0] && @ldap_bind($ldapConnection, $result[0]['dn'], $this->password))
-                            {                                
-                              if($this->errorCode!=1)
+                            {
+                              if($this->errorCode != 1)
                               {
                                  $this->setState('username', $this->username);
                                  $this->errorCode = self::ERROR_NONE;
                                  return true;
-                              }                              
-                            }                                                    
+                              }
+                            }
                         }
                         else
-                        {                             
+                        {
                             $this->setState('username', $this->username);
                             $this->errorCode = self::ERROR_NONE;
                             return true;
@@ -76,8 +76,8 @@
                     }
                     else
                     {
-                        return parent::authenticate();	                     
-                    }					
+                        return parent::authenticate();
+                    }
                 }
                 else
                 {

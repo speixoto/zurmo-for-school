@@ -24,43 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Data analyzer for a user status attribute.
-     */
-    class UserStatusBatchAttributeValueDataAnalyzer extends BatchAttributeValueDataAnalyzer
-                                                      implements DataAnalyzerInterface
+    class ConversationsClosedLinkActionElement extends EditLinkActionElement
     {
-        public function __construct($modelClassName, $attributeName)
+        protected function getDefaultLabel()
         {
-            parent:: __construct($modelClassName, $attributeName);
-            assert('$attributeName == null');
+            return Zurmo::t('ConversationsModule', 'Closed');
         }
 
-        public function runAndMakeMessages(AnalyzerSupportedDataProvider $dataProvider, $columnName)
+        protected function getDefaultRoute()
         {
-            assert('is_string($columnName)');
-            $this->processAndMakeMessage($dataProvider, $columnName);
-        }
-
-        protected function analyzeByValue($value)
-        {
-            if ($value != null &&
-               strtolower($value) != strtolower(UserStatusUtil::ACTIVE) &&
-               strtolower($value) == strtolower(UserStatusUtil::INACTIVE))
-            {
-                $this->messageCountData[static::INVALID] ++;
-            }
-        }
-
-        protected function makeMessages()
-        {
-            $invalid  = $this->messageCountData[static::INVALID];
-            if ($invalid > 0)
-            {
-                $label   = '{count} user status value(s) are not valid. ';
-                $label  .= 'Users that have these values will be set to active upon import.';
-                $this->addMessage(Zurmo::t('UsersModule', $label, array('{count}' => $invalid)));
-            }
+            return Yii::app()->createUrl(
+                $this->moduleId . '/' . $this->controllerId . '/list/',
+                array('type' => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED));
         }
     }
 ?>
