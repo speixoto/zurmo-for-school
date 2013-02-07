@@ -41,7 +41,7 @@
         public function testUserCanSaveDefaultPermissions()
         {
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $group = Group::getByName('testGroup2');
+            $group          = Group::getByName('testGroup2');
 
             // set permission setting to 'everyone' and permission group settings to 'testGroup2'
             $this->setGetArray(array('id' => $super->id));
@@ -75,25 +75,53 @@
          */
         public function testUserDefaultPermissionsLoadedOnCreate()
         {
-            // TODO @Shoaibi waiting on input on DOM Suggestion.
-            // make a get to account's create and ensure that permissions are loaded there
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $group          = Group::getByName('testGroup2');
+            $content        = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/create');
+            // test that 'Owner and users in' radio button is checked with testGroup2 selected
+            $this->assertEquals(preg_match('%<input id="Account_explicitReadWriteModelPermissions_type_1" value="2"'.
+                ' checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
+                $content), 1);
+            $this->assertEquals(preg_match('%<option value="'.$group->id.
+                '" selected="selected">'.$group->name.'</option>%', $content), 1);
         }
 
         /**
-         * @depends testUserCanSaveDefaultPermissions
+         * @depends testUserDefaultPermissionsLoadedOnCreate
          */
         public function testUserDefaultPermissionsLoadedOnlyOnCreate()
         {
-            // TODO @Shoaibi waiting on input on DOM Suggestion.
-            // make a get to edit url of an account and ensure that permissions aren't loaded there.
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $testGroup1     = Group::getByName('testGroup1');
+            $testGroup2     = Group::getByName('testGroup2');
+            AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $superAccountId = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $this->setGetArray(array('id' => $superAccountId));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/edit');
+            // test that 'Owner and users in' radio button is not checked.
+            $this->assertEquals(preg_match('%<input id="Account_explicitReadWriteModelPermissions_type_1" value="2" '.
+                'checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
+                $content), 0);
+            // test that 'Owner' radio button is checked, which is default for AccountTestHelper
+            $this->assertEquals(preg_match('%<input id="Account_explicitReadWriteModelPermissions_type_0" value="" '.
+                    'checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
+                $content), 1);
+            // test that no dropdown item is selected
+            $this->assertEquals(preg_match('%<option value="(\d+)" selected="selected">(.*)</option>%', $content), 0);
         }
 
         public function testGlobalDefaultsLoadedOnCreateInAbsenceOfUserDefaultPermissions()
         {
-            // TODO @Shoaibi waiting on input on DOM Suggestion.
-            // delete user's default values by setting them to null. zurmoconfig
-            // make a get request to create screen
-            // compare the values to global defaults
+            $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            UserConfigurationFormAdapter::setDefaultPermissionSettingValue($super, null);
+            UserConfigurationFormAdapter::setDefaultPermissionGroupSetting($super, null, null);
+            $content        = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/create');
+            // test that 'everyone' radio button is checked
+            $this->assertEquals(preg_match('%<input id="Account_explicitReadWriteModelPermissions_type_2" value="1" '.
+                    'checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
+                $content), 1);
+            // test that no downdown item is selected
+            $this->assertEquals(preg_match('%<option value="(\d+)" selected="selected">(.*)</option>%', $content), 0);
         }
     }
 ?>
