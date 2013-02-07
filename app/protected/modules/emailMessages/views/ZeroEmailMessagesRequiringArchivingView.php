@@ -35,6 +35,7 @@
         protected function renderContent()
         {            
             $content  = '<div class="' . $this->getIconName() . '">';
+            $content .= '<div class="large-icon"></div>';
             $content .= $this->getMessageContent();            
             $content .= '</div>';
             return $content;
@@ -47,8 +48,7 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('EmailMessagesModule', '<div class="large-icon"></div>' .
-                                     '<p>There are no unmatched emails</p>');
+            return Zurmo::t('EmailMessagesModule', '<p>There are no unmatched emails</p>');
         }
     }
 ?>
