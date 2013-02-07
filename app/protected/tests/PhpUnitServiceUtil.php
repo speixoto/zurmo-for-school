@@ -34,7 +34,7 @@
 
         public static function checkVersion()
         {
-           /* try
+            try
             {
                 $actualVersion = PHPUnit_Runner_Version::id();
 
@@ -61,7 +61,7 @@
             {
                 echo "You must install PHPUnit, before running tests";
                 exit;
-            }*/
+            }
         }
     }
 ?>
