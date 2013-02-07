@@ -30,7 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            if (!ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
+            if (ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
                 Yii::app()->authenticationHelper->ldapHost                 =
                     Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
