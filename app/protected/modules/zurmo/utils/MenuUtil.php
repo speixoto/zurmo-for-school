@@ -100,6 +100,7 @@
                         $moduleMenuItemsInOrder[$order]             = self::resolveMenuItemsForLanguageLocalization(
                                                                       $moduleMenuItems, get_class($module));
                         $moduleMenuItemsInOrder[$order][0]['moduleId'] = $moduleId;
+                        $moduleMenuItemsInOrder[$order][0]['itemOptions'] = array('id' => $moduleId);
                     }
                 }
             }
