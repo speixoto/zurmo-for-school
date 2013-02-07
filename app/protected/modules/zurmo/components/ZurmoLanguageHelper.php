@@ -159,7 +159,12 @@
         {
             $beans = ActiveLanguage::getAll();
 
-            $activeLanguages = array();
+            $activeLanguages = array(
+                'en' => array(
+                    'canDeactivate' => false,
+                    'label'         => 'English'
+                )
+            );
             foreach ($beans as $bean)
             {
                 $activeLanguages[$bean->code] = array(
@@ -249,13 +254,6 @@
             catch (NotFoundException $e)
             {
                 throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not active.'));
-            }
-
-            $supportedLanguages = $this->getSupportedLanguagesData();
-            // Check if the language is supported
-            if (!array_key_exists($language->code, $supportedLanguages))
-            {
-                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not supported.'));
             }
 
             $translationUrl = ZurmoTranslationServerUtil::getPoFileUrl($language->code);

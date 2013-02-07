@@ -72,18 +72,95 @@
             $this->assertEquals('en', Yii::app()->language);
         }
 
+        public function testActivateLanguage()
+        {
+            $languageHelper = new ZurmoLanguageHelper();
+
+            $status = $languageHelper->activateLanguage('de');
+            $this->assertEquals(true, $status);
+
+            // Trying with an unsupported language
+            $exceptionRaised = false;
+            try
+            {
+                $languageHelper->activateLanguage('aaaa');
+            }
+            catch (NotFoundException $e)
+            {
+                $exceptionRaised = true;
+            }
+
+            if (!$exceptionRaised)
+            {
+                $this->fail('NotFoundException has not been raised.');
+            }
+        }
+
+        /**
+         * @depends testActivateLanguage
+         */
+        public function testUpdateLanguage()
+        {
+            $languageHelper = new ZurmoLanguageHelper();
+
+            $status = $languageHelper->updateLanguage('de');
+            $this->assertEquals(true, $status);
+
+            // Trying with an unsupported language
+            $exceptionRaised = false;
+            try
+            {
+                $languageHelper->updateLanguage('aaaa');
+            }
+            catch (NotFoundException $e)
+            {
+                $exceptionRaised = true;
+            }
+
+            if (!$exceptionRaised)
+            {
+                $this->fail('NotFoundException has not been raised.');
+            }
+        }
+
+        /**
+         * @depends testUpdateLanguage
+         */
+        public function testDeactivateLanguage()
+        {
+            $languageHelper = new ZurmoLanguageHelper();
+
+            $status = $languageHelper->deactivateLanguage('de');
+            $this->assertEquals(true, $status);
+
+            // Trying with an unsupported language
+            $exceptionRaised = false;
+            try
+            {
+                $languageHelper->updateLanguage('aaaa');
+            }
+            catch (NotFoundException $e)
+            {
+                $exceptionRaised = true;
+            }
+
+            if (!$exceptionRaised)
+            {
+                $this->fail('NotFoundException has not been raised.');
+            }
+        }
+
         public function testGetSupportedLanguagesData()
         {
             $languageHelper = new ZurmoLanguageHelper();
             $data = $languageHelper->getSupportedLanguagesData();
             $compareData = array(
-                'en' => 'English',
-                'es' => 'Spanish',
-                'it' => 'Italian',
-                'fr' => 'French',
-                'de' => 'German',
+                'code' => 'de',
+                'name' => 'German',
+                'nativeName' => 'Deutsch',
+                'label' => 'German (Deutsch)'
             );
-            $this->assertEquals($compareData, $data);
+            $this->assertEquals($compareData, $data['de']);
         }
 
         /**
@@ -96,7 +173,9 @@
             $languageHelper->load();
             $data = $languageHelper->getActiveLanguagesData();
             $compareData = array(
-                'en' => 'English',
+                'en' => array(
+                    
+                ),
             );
             $this->assertEquals($compareData, $data);
 
