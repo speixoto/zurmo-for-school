@@ -249,7 +249,16 @@
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('home/default');                        
+            $this->runControllerWithNoExceptionsAndGetContent('home/default');
+              
+            //to sort task list
+            $this->resetGetArray();
+            $this->setGetArray(array(
+                'Task_sort'      => 'date',
+                'portletId'      => $portlets[1][4]->id,
+                'uniqueLayoutId' => $uniqueLayoutId,
+            ));
+            $this->runControllerWithNoExceptionsAndGetContent('home/default');
         }
     }
 ?>
