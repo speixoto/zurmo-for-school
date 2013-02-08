@@ -22,81 +22,6 @@
     <td>randomSuffix</td>
 </tr>
 <tr>
-	<td>open</td>
-	<td>index.php/users/default</td>
-	<td></td>
-</tr>
-<tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
-	<td>clickAndWait</td>
-	<td>//a[@class="icon-create"]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>id=UserPasswordForm_title_value</td>
-	<td>label=Mr.</td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=UserPasswordForm_firstName</td>
-	<td>Test</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=UserPasswordForm_lastName</td>
-	<td>User${randomSuffix}</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=UserPasswordForm_username</td>
-	<td>testusername${randomSuffix}</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=UserPasswordForm_newPassword</td>
-	<td>password</td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=UserPasswordForm_newPassword_repeat</td>
-	<td>password</td>
-</tr>
-<tr>
-	<td>select</td>
-	<td>id=UserPasswordForm_userStatus</td>
-	<td>label=Inactive</td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>save</td>
-    <td></td>
-</tr>
-<tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>//div[@id='MenuView']/ul/li[4]/ul/li/a/span[2]</td>
 	<td></td>
@@ -157,26 +82,6 @@
     <td></td>
 </tr>
 <tr>
-	<td>addSelection</td>
-	<td>id=edit-form_userNonMembershipData</td>
-	<td>label=Test User${randomSuffix}</td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>id=yw1moveRight</td>
-	<td></td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
 	<td>clickAndWait</td>
 	<td>save</td>
 	<td></td>
@@ -190,36 +95,6 @@
     <td>waitForCondition</td>
     <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
     <td>30000</td>
-</tr>
-<tr>
-    <td>verifyTextPresent</td>
-    <td>Groups Home / Testgroup ${randomSuffix} / Edit</td>
-    <td></td>
-</tr>
-<tr>
-    <td>clickAndWait</td>
-    <td>link=User Membership</td>
-    <td></td>
-</tr>
-<tr>
-  <td>waitForPageToLoad</td>
-  <td></td>
-  <td></td>
-</tr>
-<tr>
-    <td>waitForCondition</td>
-    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-    <td>30000</td>
-</tr>
-<tr>
-    <td>addSelection</td>
-    <td>edit-form_userMembershipData</td>
-    <td>label=Test User${randomSuffix}</td>
-</tr>
-<tr>
-    <td>removeSelection</td>
-    <td>edit-form_userMembershipData</td>
-    <td>label=Test User${randomSuffix}</td>
 </tr>
 </tbody></table>
 </body>
