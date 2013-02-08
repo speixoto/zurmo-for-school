@@ -254,7 +254,7 @@
             //to sort task list
             $this->resetGetArray();
             $this->setGetArray(array(
-                'Task_sort'      => 'date',
+                'Task_sort'      => 'dueDateTime',
                 'portletId'      => $portlets[1][4]->id,
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
