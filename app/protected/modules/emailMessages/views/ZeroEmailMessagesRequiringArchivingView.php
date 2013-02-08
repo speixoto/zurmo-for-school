@@ -25,21 +25,30 @@
      ********************************************************************************/
 
     /**
-     * A  NotificationRules to manage when jobs are detected as being 'stuck' by the
-     * job monitor.
+     * Filter used by controllers to ascertain whether
+     * any visible models exist for the logged in user. If not, it will display a helpful message.
      */
-    class HostInfoAndScriptUrlNotSetupNotificationRules extends JobsManagerAccessNotificationRules
+    class ZeroEmailMessagesRequiringArchivingView extends View
     {
-        protected $critical    = true;
+        public $cssClasses = array('splash-view');
 
-        public static function getDisplayName()
-        {
-            return Zurmo::t('JobsManagerModule', 'hostInfo or scriptUrl not set up');
+        protected function renderContent()
+        {            
+            $content  = '<div class="' . $this->getIconName() . '">';
+            $content .= '<div class="large-icon"></div>';
+            $content .= $this->getMessageContent();            
+            $content .= '</div>';
+            return $content;
         }
 
-        public static function getType()
+        protected function getIconName()
         {
-            return 'HostInfoAndScriptUrlNotSetup';
+            return 'EmailMessage';
+        }
+
+        protected function getMessageContent()
+        {
+            return Zurmo::t('EmailMessagesModule', '<p>There are no unmatched emails</p>');
         }
     }
 ?>

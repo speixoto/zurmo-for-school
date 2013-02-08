@@ -41,10 +41,11 @@
             $form->subListPageSize                  = Yii::app()->pagination->getByUserAndType($user, 'subListPageSize');
             $form->themeColor                       = Yii::app()->themeManager->resolveAndGetThemeColorValue($user);
             $form->backgroundTexture                = Yii::app()->themeManager->resolveAndGetBackgroundTextureValue($user);
-            $form->hideWelcomeView                  = static::resolveAndGetHideWelcomeViewValue($user);
-            $form->turnOffEmailNotifications        = static::resolveAndGetTurnOffEmailNotificationsValue($user);
+            $form->hideWelcomeView                  = static::resolveAndGetValue($user, 'hideWelcomeView');
+            $form->turnOffEmailNotifications        = static::resolveAndGetValue($user, 'turnOffEmailNotifications');
+            $form->enableDesktopNotifications       = static::resolveAndGetValue($user, 'enableDesktopNotifications');
+            $form->defaultPermissionGroupSetting    = static::resolveAndGetValue($user, 'defaultPermissionGroupSetting', false);
             $form->defaultPermissionSetting         = static::resolveAndGetDefaultPermissionSetting($user);
-            $form->defaultPermissionGroupSetting    = static::resolveAndGetDefaultPermissionGroupSetting($user);
             return $form;
         }
 
@@ -58,9 +59,10 @@
             Yii::app()->pagination->setByUserAndType($user, 'subListPageSize', (int)$form->subListPageSize);
             Yii::app()->themeManager->setThemeColorValue($user, $form->themeColor);
             Yii::app()->themeManager->setBackgroundTextureValue ($user, $form->backgroundTexture);
-            static::setHideWelcomeViewValue($user, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue($user, (bool)$form->turnOffEmailNotifications);
-            static::setDefaultPermissionSettingValue($user, (int)$form->defaultPermissionSetting);
+            static::setValue($user, (bool)$form->hideWelcomeView, 'hideWelcomeView');
+            static::setValue($user, (bool)$form->turnOffEmailNotifications, 'turnOffEmailNotifications');
+            static::setValue($user, (bool)$form->enableDesktopNotifications, 'enableDesktopNotifications');
+            static::setValue($user, (int)$form->defaultPermissionSetting, 'defaultPermissionSetting', false);
             static::setDefaultPermissionGroupSetting($user, (int)$form->defaultPermissionGroupSetting,
                 (int)$form->defaultPermissionSetting);
         }
@@ -71,54 +73,34 @@
          */
         public static function setConfigurationFromFormForCurrentUser(UserConfigurationForm $form)
         {
-            Yii::app()->pagination->setForCurrentUserByType ('listPageSize', (int)$form->listPageSize);
-            Yii::app()->pagination->setForCurrentUserByType ('subListPageSize', (int)$form->subListPageSize);
+            Yii::app()->pagination->setForCurrentUserByType('listPageSize', (int)$form->listPageSize);
+            Yii::app()->pagination->setForCurrentUserByType('subListPageSize', (int)$form->subListPageSize);
             Yii::app()->themeManager->setThemeColorValue(Yii::app()->user->userModel, $form->themeColor);
-            Yii::app()->themeManager->setBackgroundTextureValue(Yii::app()->user->userModel, $form->backgroundTexture);
-            static::setHideWelcomeViewValue(Yii::app()->user->userModel, (bool)$form->hideWelcomeView);
-            static::setTurnOffEmailNotificationsValue(Yii::app()->user->userModel,
-                (bool)$form->turnOffEmailNotifications);
-            static::setDefaultPermissionSettingValue(Yii::app()->user->userModel, (int)$form->defaultPermissionSetting);
+            Yii::app()->themeManager->setBackgroundTextureValue (Yii::app()->user->userModel, $form->backgroundTexture);
+            static::setValue(Yii::app()->user->userModel, (bool)$form->hideWelcomeView, 'hideWelcomeView');
+            static::setValue(Yii::app()->user->userModel, (bool)$form->turnOffEmailNotifications, 'turnOffEmailNotifications');
+            static::setValue(Yii::app()->user->userModel, (bool)$form->enableDesktopNotifications, 'enableDesktopNotifications');
+            static::setValue(Yii::app()->user->userModel, (int)$form->defaultPermissionSetting, 'defaultPermissionSetting', false);
             static::setDefaultPermissionGroupSetting(Yii::app()->user->userModel,
                 (int)$form->defaultPermissionGroupSetting, (int)$form->defaultPermissionSetting);
         }
 
-        public static function resolveAndGetHideWelcomeViewValue(User $user)
+        public static function resolveAndGetValue(User $user, $key, $returnBoolean = true)
         {
             assert('$user instanceOf User && $user->id > 0');
-            if ( null != $hide = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView'))
-            {
-                return $hide;
-            }
-            else
-            {
-                return false;
-            }
+            assert('is_string($key)');
+            assert('is_bool($returnBoolean)');
+            $value = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', $key);
+            return ($returnBoolean)? (bool) $value : $value;
         }
 
-        public static function setHideWelcomeViewValue(User $user, $value)
+        public static function setValue(User $user, $value, $key, $saveBoolean = true)
         {
-            assert('is_bool($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'hideWelcomeView', $value);
-        }
-
-        public static function resolveAndGetTurnOffEmailNotificationsValue(User $user)
-        {
-            assert('$user instanceOf User && $user->id > 0');
-            if ( null != $turnOff = ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications'))
-            {
-                return $turnOff;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public static function setTurnOffEmailNotificationsValue(User $user, $value)
-        {
-            assert('is_bool($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'turnOffEmailNotifications', $value);
+            assert('is_bool($saveBoolean)');
+            assert('$saveBoolean && is_bool($value)');
+            assert('is_string($key)');
+            $value = ($saveBoolean)? (bool) $value : $value;
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', $key, $value);
         }
 
         public static function resolveAndGetDefaultPermissionSetting(User $user)
@@ -133,18 +115,6 @@
             {
                 return UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE;
             }
-        }
-
-        public static function resolveAndGetDefaultPermissionGroupSetting(User $user)
-        {
-            assert('$user instanceOf User && $user->id > 0');
-            return ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting');
-        }
-
-        public static function setDefaultPermissionSettingValue(User $user, $value)
-        {
-            assert('is_int($value)');
-            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionSetting', $value);
         }
 
         public static function setDefaultPermissionGroupSetting(User $user, $value, $defaultPermissionSetting)

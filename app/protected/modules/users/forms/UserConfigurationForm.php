@@ -46,6 +46,8 @@
 
         public $turnOffEmailNotifications = false;
 
+        public $enableDesktopNotifications = true;
+
         const DEFAULT_PERMISSIONS_SETTING_OWNER = 1;
         const DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP = 2;
         const DEFAULT_PERMISSIONS_SETTING_EVERYONE = 3;
@@ -89,6 +91,7 @@
                 array('backgroundTexture',         'type',      'type' => 'string'),
                 array('hideWelcomeView',           'boolean'),
                 array('turnOffEmailNotifications', 'boolean'),
+                array('enableDesktopNotifications', 'boolean'),
                 array('defaultPermissionSetting',   'numerical', 'min' => self::DEFAULT_PERMISSIONS_SETTING_OWNER,
                     'max' => self::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
                 array('defaultPermissionGroupSetting', 'numerical', 'min' => 1)
@@ -98,12 +101,13 @@
         public function attributeLabels()
         {
             return array(
-                'listPageSize'              => Zurmo::t('UsersModule', 'List page size'),
-                'subListPageSize'           => Zurmo::t('UsersModule', 'Sublist page size'),
-                'themeColor'                => Zurmo::t('UsersModule', 'Theme'),
-                'backgroundTexture'         => Zurmo::t('UsersModule', 'Texture'),
-                'hideWelcomeView'           => Zurmo::t('UsersModule', 'Hide welcome page'),
-                'turnOffEmailNotifications' => Zurmo::t('UsersModule', 'Turn off email notifications')
+                'listPageSize'                  => Zurmo::t('UsersModule', 'List page size'),
+                'subListPageSize'               => Zurmo::t('UsersModule', 'Sublist page size'),
+                'themeColor'                    => Zurmo::t('UsersModule', 'Theme'),
+                'backgroundTexture'             => Zurmo::t('UsersModule', 'Texture'),
+                'hideWelcomeView'               => Zurmo::t('UsersModule', 'Hide welcome page'),
+                'turnOffEmailNotifications'     => Zurmo::t('UsersModule', 'Turn off email notifications'),
+                'enableDesktopNotifications'    => Zurmo::t('UsersModule', 'Enable Desktop notifications')
             );
         }
 
