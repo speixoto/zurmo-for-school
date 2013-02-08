@@ -32,12 +32,7 @@
         protected function renderControlNonEditable()
         {
             assert('$this->model instanceof EmailMessage');
-            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
-            {
-                return parent::renderControlNonEditable();
-            }
-            return Zurmo::t('EmailMessagesModule', 'Currently in the {folderType} folder',
-                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
+            return $this->model->sentDateTime;
         }
     }
 ?>
