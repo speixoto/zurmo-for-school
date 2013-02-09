@@ -141,7 +141,7 @@
          */
         protected function resolveUserPermissionConfigurationToPermissionType($selectedType)
         {
-            assert('is_int($selectedType');
+            assert('is_int($selectedType)');
             assert('$selectedType >= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER');
             assert('$selectedType <= UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE');
             $userConfigPermissionTypes          = UserConfigurationForm::getAllDefaultPermissionTypes();
