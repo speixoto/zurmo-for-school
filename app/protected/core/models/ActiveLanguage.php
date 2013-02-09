@@ -48,8 +48,8 @@
                     array('nativeName', 'type', 'type' => 'string'),
                     array('nativeName', 'length',  'min'  => 2, 'max' => 64),
                     array('activationDatetime', 'required'),
-                    array('activationDatetime', 'type', 'type' => 'date'),
-                    array('lastUpdateDatetime', 'type', 'type' => 'date'),
+                    array('activationDatetime', 'type', 'type' => 'datetime'),
+                    array('lastUpdateDatetime', 'type', 'type' => 'datetime'),
                 )
             );
             return $metadata;
@@ -57,7 +57,7 @@
 
         public static function getByCode($languageCode, $modelClassName = null)
         {
-            assert('!empty($category)');
+            assert('!empty($languageCode)');
             assert('$modelClassName === null || is_string($modelClassName) && $modelClassName != ""');
             if ($modelClassName === null)
             {

@@ -226,7 +226,6 @@
 
             if (ZurmoMessageSourceUtil::importPoFile($languageCode, $translationUrl))
             {
-                $activeLanguages[] = $languageCode;
                 $language = new ActiveLanguage;
                 $language->code = $supportedLanguages[$languageCode]['code'];
                 $language->name = $supportedLanguages[$languageCode]['name'];
@@ -268,7 +267,6 @@
 
             if (ZurmoMessageSourceUtil::importPoFile($language->code, $translationUrl))
             {
-                
                 $language->lastUpdateDatetime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 if ($language->save())
                 {
