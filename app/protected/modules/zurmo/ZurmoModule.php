@@ -160,7 +160,7 @@
                 case self::AUDIT_EVENT_ITEM_DELETED:
                     if ($format == 'short')
                     {
-                        return Yii::t('Default', $auditEvent->eventName);
+                        return Zurmo::t('ZurmoModule', $auditEvent->eventName);
                     }
                     $s   .= strval($auditEvent);
                     $name = unserialize($auditEvent->serializedData);

@@ -278,7 +278,7 @@
                     return $unserializedLabels[$language];
                 }
             }
-            return Yii::t('Default', $state->name, array(), null, $language);
+            return Zurmo::t('ContactsModule', $state->name, array(), null, $language);
         }
     }
 ?>
