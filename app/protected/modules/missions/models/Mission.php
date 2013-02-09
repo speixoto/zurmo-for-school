@@ -199,7 +199,7 @@
 
         protected function afterSave()
         {
-            if ($this->isNewModel)
+            if ($this->isNewModel && $this->getScenario() != 'autoBuildDatabase')
             {
                 MissionsUtil::makeAndSubmitNewMissionNotificationMessage($this);
             }
