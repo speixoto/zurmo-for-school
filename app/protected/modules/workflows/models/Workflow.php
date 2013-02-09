@@ -92,7 +92,7 @@
             $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {
-                if($module::isReportable())
+                if($module::canHaveWorkflow())
                 {
                     if (WorkflowSecurityUtil::canCurrentUserCanAccessModule(get_class($module)))
                     {
@@ -174,7 +174,7 @@
 
         public function setType($type)
         {
-            assert('is_string($type)');
+            assert('$type == self::TYPE_ON_SAVE || $type == self::TYPE_BY_TIME');
             $this->type = $type;
         }
 

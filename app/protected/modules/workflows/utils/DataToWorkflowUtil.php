@@ -44,7 +44,7 @@
             }
             if(isset($data['triggersStructure']))
             {
-                $workflow->setFiltersStructure($data['triggersStructure']);
+                $workflow->setTriggersStructure($data['triggersStructure']);
             }
             self::resolveTriggers                   ($data, $workflow);
             self::resolveActions                    ($data, $workflow);
@@ -53,118 +53,99 @@
 
         public static function resolveTriggers($data, Workflow $workflow)
         {
-            $report->removeAllFilters();
-            $moduleClassName = $report->getModuleClassName();
+            $workflow->removeAllTriggers();
+            $moduleClassName = $workflow->getModuleClassName();
             if(count($triggersData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TRIGGERS)) > 0)
             {
-                $sanitizedTriggersData = self::sanitizeTriggersData($moduleClassName, $report->getType(), $triggersData);
+                $sanitizedTriggersData = self::sanitizeTriggersData($moduleClassName, $workflow->getType(), $triggersData);
                 foreach($sanitizedTriggersData as $triggerData)
                 {
                     $trigger = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                           $workflow->getType());
-                    $trigger->setAttributes($filterData);
+                    $trigger->setAttributes($triggersData);
                     $workflow->addTrigger($trigger);
                 }
             }
             else
             {
-                $report->removeAllFilters();
+                $workflow->removeAllTriggers();
             }
         }
 
-        public static function sanitizeTriggersData($moduleClassName, $reportType, array $filtersData)
+        public static function sanitizeTriggersData($moduleClassName, $workflowType, array $triggersData)
         {
             assert('is_string($moduleClassName)');
-            assert('is_string($reportType)');
-            $sanitizedFiltersData = array();
-            foreach($filtersData as $filterData)
+            assert('is_string($workflowType)');
+            $sanitizedTriggersData = array();
+            foreach($triggersData as $triggerData)
             {
-                $sanitizedFiltersData[] = static::sanitizeFilterData($moduleClassName,
+                $sanitizedTriggersData[] = static::sanitizeTriggerData($moduleClassName,
                                                                      $moduleClassName::getPrimaryModelName(),
-                                                                     $reportType,
-                                                                     $filterData);
+                                                                     $workflowType,
+                                                                     $triggerData);
             }
-            return $sanitizedFiltersData;
+            return $sanitizedTriggersData;
         }
 
-        protected static function sanitizeTriggerData($moduleClassName, $modelClassName, $reportType, $filterData)
+        protected static function sanitizeTriggerData($moduleClassName, $modelClassName, $workflowType, $triggerData)
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
-            assert('is_string($reportType)');
-            assert('is_array($filterData)');
-            $filterForSanitizing = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                           $reportType);
+            assert('is_string($workflowType)');
+            assert('is_array($triggerData)');
+            $triggerForSanitizing = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                               $workflowType);
 
-            $filterForSanitizing->setAttributes($filterData);
+            $triggerForSanitizing->setAttributes($triggerData);
             $valueElementType = null;
-            $valueElementType    = $filterForSanitizing->getValueElementType();
-            if($valueElementType == 'MixedDateTypesForReport')
+            $valueElementType    = $triggerForSanitizing->getValueElementType();
+            if($valueElementType == 'MixedDateTypesForWorkflow')
             {
-                if(isset($filterData['value']) && $filterData['value'] !== null)
+                if(isset($triggerData['value']) && $triggerData['value'] !== null)
                 {
-                    $filterData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($filterData['value']);
+                    $triggerData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['value']);
                 }
-                if(isset($filterData['secondValue']) && $filterData['secondValue'] !== null)
+                if(isset($triggerData['secondValue']) && $triggerData['secondValue'] !== null)
                 {
-                    $filterData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($filterData['secondValue']);
+                    $triggerData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['secondValue']);
                 }
             }
-            return $filterData;
+            return $triggerData;
         }
 
-        protected static function resolveActions($data, Report $report)
+        protected static function resolveActions($data, Workflow $workflow)
         {
             //todo: we need to sanitize action data too since we can be populating things like static dates..
-            $report->removeAllOrderBys();
-            $moduleClassName = $report->getModuleClassName();
-            if(count($orderBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_ORDER_BYS)) > 0)
+            $workflow->removeAllActions();
+            $moduleClassName = $workflow->getModuleClassName();
+            if(count($actionsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_ACTIONS)) > 0)
             {
-                foreach($orderBysData as $orderByData)
+                foreach($actionsData as $actionData)
                 {
-                    $orderBy = new OrderByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                        $report->getType());
-                    $orderBy->setAttributes($orderByData);
-                    $report->addOrderBy($orderBy);
+                    $action = new ActionForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                        $workflow->getType());
+                    $action->setAttributes($actionData);
+                    $workflow->addAction($action);
                 }
             }
             else
             {
-                $report->removeAllOrderBys();
+                $workflow->removeAllActions();
             }
         }
 
-        protected static function resolveTimeTrigger($data, Report $report)
+        protected static function resolveTimeTrigger($data, Workflow $workflow)
         {
-            //todo: need to re-work this method for time trigger.
-            if($report->getType() != Report::TYPE_SUMMATION)
+            if($workflow->getType() != Workflow::TYPE_BY_TIME)
             {
                 return;
             }
-            $moduleClassName = $report->getModuleClassName();
-            if($moduleClassName != null)
+            $timeTrigger             = new TimeTriggerForWorkflowForm();
+            if(null != $timeTriggerData = ArrayUtil::getArrayValue($data, 'TimeTriggerForWorkflowForm'))
             {
-                $modelClassName      = $moduleClassName::getPrimaryModelName();
-                $adapter             = ModelRelationsAndAttributesToSummationReportAdapter::
-                    make($moduleClassName, $modelClassName, $report->getType());
-                $seriesDataAndLabels = ReportUtil::makeDataAndLabelsForSeriesOrRange(
-                    $adapter->getAttributesForChartSeries($report->getGroupBys(),
-                        $report->getDisplayAttributes()));
-                $rangeDataAndLabels  = ReportUtil::makeDataAndLabelsForSeriesOrRange(
-                    $adapter->getAttributesForChartRange($report->getDisplayAttributes()));
+                $timeTrigger->setAttributes($timeTriggerData);
             }
-            else
-            {
-                $seriesDataAndLabels = array();
-                $rangeDataAndLabels  = array();
-            }
-
-            $chart           = new ChartForReportForm($seriesDataAndLabels, $rangeDataAndLabels);
-            if(null != $chartData = ArrayUtil::getArrayValue($data, 'ChartForReportForm'))
-            {
-                $chart->setAttributes($chartData);
-            }
-            $report->setChart($chart);
+            $workflow->setTimeTrigger($timeTrigger);
         }
     }
 ?>

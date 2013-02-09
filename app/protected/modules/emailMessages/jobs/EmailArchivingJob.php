@@ -91,7 +91,6 @@
                    foreach ($messages as $message)
                    {
                        Yii::app()->user->userModel = self::$jobOwnerUserModel;
-                       $lastMessageCreatedTime = strtotime($message->createdDate);
                        if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                        {
                            $lastCheckTime = $message->createdDate;

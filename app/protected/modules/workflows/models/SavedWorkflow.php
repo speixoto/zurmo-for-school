@@ -65,7 +65,7 @@
                     array('name',                'required'),
                     array('name',                'type',   'type' => 'string'),
                     array('name',                'length', 'max'  => 64),
-                   // array('serializedData',      'required'),
+                    array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
                     array('type',       		 'required'),
                     array('type',       		 'type',   'type' => 'string'),
