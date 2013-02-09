@@ -332,17 +332,17 @@ EOD;
             $languagesData       = array();
             foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language)
             {
-                $languagesData[$language->code] = array(
+                $languagesData[$language['code']] = array(
                     'label'  => Yii::app()->languageHelper->formatLanguageLabel($language),
                     'active' => false
                 );
 
-                if (isset($activeLanguagesData[$language->code]))
+                if (isset($activeLanguagesData[$language['code']]))
                 {
-                    $languagesData[$language->code]['active'] = true;
-                    $languagesData[$language->code] = array_merge(
-                        $languagesData[$language->code],
-                        $activeLanguagesData[$language->code]
+                    $languagesData[$language['code']]['active'] = true;
+                    $languagesData[$language['code']] = array_merge(
+                        $languagesData[$language['code']],
+                        $activeLanguagesData[$language['code']]
                     );
                 }
             }

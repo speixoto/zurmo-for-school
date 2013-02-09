@@ -78,5 +78,15 @@
             }
             return self::makeModel($bean, $modelClassName);
         }
+
+        public static function getSourceLanguageModel()
+        {
+            $model = new self();
+            $model->code = 'en';
+            $model->name = 'English';
+            $model->nativeName = 'English';
+
+            return $model;
+        }
     }
 ?>

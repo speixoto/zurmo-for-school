@@ -159,12 +159,8 @@
         {
             $beans = ActiveLanguage::getAll();
 
-            $activeLanguages = array(
-                'en' => array(
-                    'canDeactivate' => false,
-                    'label'         => 'English'
-                )
-            );
+            $beans[] = ActiveLanguage::getSourceLanguageModel();
+
             foreach ($beans as $bean)
             {
                 $activeLanguages[$bean->code] = array(
@@ -298,7 +294,22 @@
 
         public function formatLanguageLabel($language)
         {
-            return sprintf('%s (%s)', $language->name, $language->nativeName);
+            if ($language instanceof ActiveLanguage)
+            {
+                $language = array(
+                    'name'       => $language->name,
+                    'nativeName' => $language->nativeName
+                );
+            }
+
+            if (!empty($language['nativeName']))
+            {
+                return sprintf('%s (%s)', $language['name'], $language['nativeName']);
+            }
+            else
+            {
+                return $language['name'];
+            }
         }
 
         /**
