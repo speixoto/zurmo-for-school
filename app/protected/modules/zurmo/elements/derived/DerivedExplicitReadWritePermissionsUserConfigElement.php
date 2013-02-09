@@ -55,7 +55,7 @@
          */
         protected function resolveSelectedGroup()
         {
-            return UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($this->model->user);
+            return UserConfigurationFormAdapter::resolveAndGetValue($this->model->user, 'defaultPermissionGroupSetting', false);
         }
 
         /**

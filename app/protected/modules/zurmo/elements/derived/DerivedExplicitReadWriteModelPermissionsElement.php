@@ -123,8 +123,8 @@
             {
                 return parent::resolveSelectedGroup();
             }
-            if (null != $selectedGroup = UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting(
-                Yii::app()->user->userModel))
+            if (null != $selectedGroup = UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel,
+                'defaultPermissionGroupSetting', false))
             {
                 return $selectedGroup;
             }
