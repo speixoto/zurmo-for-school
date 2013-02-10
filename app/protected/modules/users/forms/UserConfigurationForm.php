@@ -32,7 +32,7 @@
         /**
          * Is set in order to properly route action elements in view.
          */
-        public $userId;
+        private $user;
 
         public $listPageSize;
 
@@ -48,10 +48,24 @@
 
         public $enableDesktopNotifications = true;
 
-        public function __construct($userId)
+        const DEFAULT_PERMISSIONS_SETTING_OWNER = 1;
+        const DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP = 2;
+        const DEFAULT_PERMISSIONS_SETTING_EVERYONE = 3;
+
+        public $defaultPermissionSetting;
+
+        public $defaultPermissionGroupSetting;
+
+        public function __construct($user)
         {
-            assert('is_int($userId) && $userId > 0');
-            $this->userId = $userId;
+            assert('$user instanceof User');
+            assert('is_int($user->id) && $user->id > 0');
+            $this->user = $user;
+        }
+
+        public function getUser()
+        {
+            return $this->user;
         }
 
         /**
@@ -60,24 +74,27 @@
          */
         public function getId()
         {
-            return $this->userId;
+            return $this->user->id;
         }
 
         public function rules()
         {
             return array(
-                array('listPageSize',               'required'),
-                array('listPageSize',               'type',      'type' => 'integer'),
-                array('listPageSize',               'numerical', 'min' => 1),
-                array('subListPageSize',            'required'),
-                array('subListPageSize',            'type',      'type' => 'integer'),
-                array('subListPageSize',            'numerical', 'min' => 1),
-                array('themeColor',                 'required'),
-                array('themeColor',                 'type',      'type' => 'string'),
-                array('backgroundTexture',          'type',      'type' => 'string'),
-                array('hideWelcomeView',            'boolean'),
-                array('turnOffEmailNotifications',  'boolean'),
-                array('enableDesktopNotifications', 'boolean')
+                array('listPageSize',              'required'),
+                array('listPageSize',              'type',      'type' => 'integer'),
+                array('listPageSize',              'numerical', 'min' => 1),
+                array('subListPageSize',           'required'),
+                array('subListPageSize',           'type',      'type' => 'integer'),
+                array('subListPageSize',           'numerical', 'min' => 1),
+                array('themeColor',                'required'),
+                array('themeColor',                'type',      'type' => 'string'),
+                array('backgroundTexture',         'type',      'type' => 'string'),
+                array('hideWelcomeView',           'boolean'),
+                array('turnOffEmailNotifications', 'boolean'),
+                array('enableDesktopNotifications', 'boolean'),
+                array('defaultPermissionSetting',   'numerical', 'min' => self::DEFAULT_PERMISSIONS_SETTING_OWNER,
+                    'max' => self::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
+                array('defaultPermissionGroupSetting', 'numerical', 'min' => 1)
             );
         }
 
@@ -91,6 +108,15 @@
                 'hideWelcomeView'               => Zurmo::t('UsersModule', 'Hide welcome page'),
                 'turnOffEmailNotifications'     => Zurmo::t('UsersModule', 'Turn off email notifications'),
                 'enableDesktopNotifications'    => Zurmo::t('UsersModule', 'Enable Desktop notifications')
+            );
+        }
+
+        public static function getAllDefaultPermissionTypes()
+        {
+            return array(
+                static::DEFAULT_PERMISSIONS_SETTING_OWNER                       => Zurmo::t('ZurmoModule', 'Owner'),
+                static::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP    => Zurmo::t('ZurmoModule', 'Owner and users in'),
+                static::DEFAULT_PERMISSIONS_SETTING_EVERYONE                    => Zurmo::t('ZurmoModule', 'Everyone'),
             );
         }
     }

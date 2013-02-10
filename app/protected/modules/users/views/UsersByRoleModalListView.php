@@ -24,31 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * View is used to display rows of email messages that are archived but not connected to any contacts or leads.
-     */
-    class ArchivedEmailMatchingListView extends SecuredListView
+    class UsersByRoleModalListView extends UsersModalListView
     {
-       /**
-        * Override to set rows as not being selectable.
-        */
-       public function __construct(
-            $controllerId,
-            $moduleId,
-            $modelClassName,
-            $dataProvider
-        )
-        {
-            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, array());
-            $this->rowsAreSelectable = false;
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'derivedAttributeTypes' => array(
-                        'ArchivedEmailMatching',
+                        'FullName',
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'hash',
+                        'newPassword',
+                        'newPassword_repeat',
                     ),
                     'panels' => array(
                         array(
@@ -57,52 +45,27 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ArchivedEmailMatching'),
+                                                array('attributeName' => 'null', 'type' => 'FullName', 'isLink' => true),
                                             ),
                                         ),
-                                    )
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'username', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),
                     ),
                 ),
-
             );
             return $metadata;
         }
 
-        /**
-         * Override so the edit link does not show.
-         * (non-PHPdoc)
-         * @see SecuredListView::getCGridViewLastColumn()
-         */
-        protected function getCGridViewLastColumn()
+        public static function getDesignerRulesType()
         {
-            return array();
-        }
-        
-        /**
-         * Override so the pagination link works properly.
-         * (non-PHPdoc)
-         * @see ListView::getCGridViewPagerParams()
-         */
-        protected function getCGridViewPagerParams()
-        {
-            $defaultGridViewPagerParams = array(
-                        'prevPageLabel'    => '<span>previous</span>',
-                        'nextPageLabel'    => '<span>next</span>',
-                        'class'            => 'EndlessListLinkPager',
-                        'paginationParams' => GetUtil::getData(),
-                        'route'            => $this->getGridViewActionRoute('matchingList', $this->moduleId),
-                    );
-            if (empty($this->gridViewPagerParams))
-            {
-                return $defaultGridViewPagerParams;
-            }
-            else
-            {
-                return array_merge($defaultGridViewPagerParams, $this->gridViewPagerParams);
-            }
+            return null;
         }
     }
 ?>

@@ -24,21 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
+    /**
+     * Filter used by controllers to ascertain whether
+     * any visible models exist for the logged in user. If not, it will display a helpful message.
+     */
+    class ZeroEmailMessagesRequiringArchivingView extends View
     {
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('ZurmoModule', 'Audit Trail');
+        public $cssClasses = array('splash-view');
+
+        protected function renderContent()
+        {            
+            $content  = '<div class="' . $this->getIconName() . '">';
+            $content .= '<div class="large-icon"></div>';
+            $content .= $this->getMessageContent();            
+            $content .= '</div>';
+            return $content;
         }
 
-        protected function getAjaxLinkTitle()
+        protected function getIconName()
         {
-            return $this->getLabel();
+            return 'EmailMessage';
         }
 
-        protected function getRouteAction()
+        protected function getMessageContent()
         {
-            return '/auditEventsModalList/';
+            return Zurmo::t('EmailMessagesModule', '<p>There are no unmatched emails</p>');
         }
     }
 ?>

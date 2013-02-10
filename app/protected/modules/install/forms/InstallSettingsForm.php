@@ -72,6 +72,8 @@
                 array('databasePassword',      'required'),
                 array('databasePort',          'required'),
                 array('superUserPassword',     'required'),
+                array('hostInfo',              'required'),
+                array('scriptUrl',             'required'),
                 array('databaseHostname',      'type', 'type' => 'string'),
                 array('databaseAdminUsername', 'type', 'type' => 'string'),
                 array('databaseAdminPassword', 'type', 'type' => 'string'),

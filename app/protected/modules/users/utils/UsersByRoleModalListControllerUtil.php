@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Helper class to render a list of audit events called from a model controller.
+     * Helper class to render a list of users called from a model controller.
      */
-    class AuditEventsListControllerUtil
+    class UsersByRoleModalListControllerUtil
     {
         /**
          * @return rendered content from view as string.
@@ -35,44 +35,37 @@
         public static function renderList(CController $controller, $dataProvider)
         {
             assert('$dataProvider instanceof RedBeanModelDataProvider');
-            $auditEventsListView = new AuditEventsModalListView(
+            $modalListLinkProvider = new UserDetailsModalListLinkProvider('users', 'default', 'details');
+            $usersListView = new UsersByRoleModalListView(
                 $controller->getId(),
                 $controller->getModule()->getId(),
-                'AuditEvent',
+                'usersInRoleModalList',
+                'User',
+                $modalListLinkProvider,
                 $dataProvider,
                 'modal'
             );
-            $view = new ModalView($controller, $auditEventsListView);
+            $view = new ModalView($controller, $usersListView);
             return $view->render();
         }
 
         /**
-         * Creates the appropriate filtering of audit events by the specified model.
-         * @param object $model AuditEvent
+         * Creates the appropriate filtering of users by the specified model.
+         * @param object $model Role
          * @return array $searchAttributeData
          */
-        public static function makeModalSearchAttributeDataByAuditedModel($model)
+        public static function makeModalSearchAttributeDataByRoleModel($model)
         {
-            assert('$model instanceof Item');
+            assert('$model instanceof Role');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'        => 'modelClassName',
-                    'operatorType'         => 'equals',
-                    'value'                => get_class($model),
-                ),
-                2 => array(
-                    'attributeName'        => 'modelId',
+                    'attributeName'        => 'role',
                     'operatorType'         => 'equals',
                     'value'                => $model->id,
-                ),
-                3 => array(
-                    'attributeName'        => 'eventName',
-                    'operatorType'         => 'doesNotEqual',
-                    'value'                => ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                 )
             );
-            $searchAttributeData['structure'] = '1 and 2 and 3';
+            $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
 
@@ -85,8 +78,9 @@
         {
             assert('is_array($searchAttributeData)');
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            return new RedBeanModelDataProvider( 'AuditEvent', 'dateTime', true,
-                                                                $searchAttributeData, array(
+            return new RedBeanModelDataProvider( 'User', null, false,
+                                                                $searchAttributeData,
+                                                                array(
                                                                     'pagination' => array(
                                                                         'pageSize' => $pageSize,
                                                                     )

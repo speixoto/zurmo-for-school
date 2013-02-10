@@ -24,22 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * A  NotificationRules to manage when jobs are detected as being 'stuck' by the
-     * job monitor.
-     */
-    class HostInfoAndScriptUrlNotSetupNotificationRules extends JobsManagerAccessNotificationRules
+    abstract class ModalListLinkActionElement extends LinkActionElement
     {
-        protected $critical    = true;
-
-        public static function getDisplayName()
+        public function getActionType()
         {
-            return Zurmo::t('JobsManagerModule', 'hostInfo or scriptUrl not set up');
+            return 'Details';
         }
 
-        public static function getType()
+        public function render()
         {
-            return 'HostInfoAndScriptUrlNotSetup';
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
         }
+
+        public function renderMenuItem()
+        {
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return array('label'           => $this->getLabel(),
+                             'url'             => $this->getDefaultRoute(),
+                             'linkOptions'     => $this->getHtmlOptions(),
+                             'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+                );
+            }
+        }
+
+        protected function getAjaxLinkOptions()
+        {
+            return ModalView::getAjaxOptionsForModalLink($this->getAjaxLinkTitle());
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(),
+                                         array('id' => $this->modelId));
+        }
+
+        abstract protected function getAjaxLinkTitle();
+
+        abstract protected function getRouteAction();
     }
 ?>

@@ -197,9 +197,15 @@
             }
         }
 
+        /**
+         * After a mission is saved, if it is new, then a notification should go out to all users alerting them
+         * of a new mission.  Depending on the status change of the mission, a notification can go out as well to
+         * the owner or user who has taken the mission.
+         */
         protected function afterSave()
         {
-            if ($this->isNewModel)
+            if ($this->isNewModel && $this->getScenario() != 'autoBuildDatabase' &&
+                $this->getScenario() != 'importModel')
             {
                 MissionsUtil::makeAndSubmitNewMissionNotificationMessage($this);
             }
