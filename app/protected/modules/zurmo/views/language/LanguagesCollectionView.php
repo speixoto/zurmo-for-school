@@ -81,15 +81,9 @@
             $script = <<<EOD
 $(document).on('click', ".action-button", function() {
     var _parent = $(this).parent();
-    var _ajaxAction = $(this).attr('ajaxaction');
-    var _languageCode = $(this).attr('languagecode');
+    var _ajaxUrl = $(this).attr('ajaxurl');
 
     if (_parent.hasClass('loading-ajax'))
-    {
-        return false;
-    }
-
-    if ($.inArray(_ajaxAction, ["activate", "deactivate", "update"]) == -1)
     {
         return false;
     }
@@ -99,7 +93,7 @@ $(document).on('click', ".action-button", function() {
     attachLoadingSpinner(_parent.attr('id'), true);
 
     $.ajax({
-        'url':'/app/index.php/zurmo/language/' + _ajaxAction + '/languageCode/' + _languageCode,
+        'url':_ajaxUrl,
         'cache':false,
         'success':function(html) {
             _parent.replaceWith(html);
@@ -245,8 +239,13 @@ EOD;
         {
             assert('in_array($action, array("activate", "deactivate", "update"))');
             $buttonHtml = array(
-                'ajaxaction' => $action,
-                'languagecode' => $languageCode,
+                'ajaxurl' => Yii::app()->createUrl(
+                    sprintf(
+                        'zurmo/language/%s/languageCode/%s',
+                        $action,
+                        $languageCode
+                    )
+                ),
                 'class' => 'action-button attachLoading z-button green-button'
             );
             if ($action == 'deactivate' && !$languageData['canDeactivate'])

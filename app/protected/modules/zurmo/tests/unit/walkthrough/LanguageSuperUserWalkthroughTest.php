@@ -44,51 +44,123 @@
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Test all default controller actions that do not require any POST/GET variables to be passed.
-            //This does not include portlet controller actions.
+            // Test all default controller actions that do not require any POST/GET variables to be passed.
+            // This does not include portlet controller actions.
             $this->runControllerWithNoExceptionsAndGetContent     ('zurmo/language');
             $this->runControllerWithNoExceptionsAndGetContent     ('zurmo/language/configurationList');
         }
 
-        public function testSuperUserModifyActiveLanguagesInCollection()
+        public function testSuperUserActivateLanguages()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
-            //Confirm only english is the active language.
-            $data = Yii::app()->languageHelper->getActiveLanguages();
+            // Confirm only english is the active language.
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $this->assertArrayHasKey('en', $data);
             $compareData = array(
-                'en',
+                'en' => array(
+                    'canDeactivate' => false,
+                    'label' => 'English (English)'
+                ),
             );
             $this->assertEquals($compareData, $data);
 
-            //Make French and German language active.
+            // Activate German
             $this->resetGetArray();
-            $this->setPostArray(array('LanguageCollection' => array(
-                'fr' => array('active' => '1'), 'de' => array('active' => '1'))));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/language/configurationList');
-            $this->assertTrue(strpos($content, 'Changes to active languages saved successfully.') !== false);
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/language/activate/languageCode/de');
+            $this->assertTrue(strpos($content, 'activated successfully') !== false);
 
-            //Confirm the new languages are active
-            $data = Yii::app()->languageHelper->getActiveLanguages();
+            // Activate Italian
+            $this->resetGetArray();
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/language/activate/languageCode/it');
+            $this->assertTrue(strpos($content, 'activated successfully') !== false);
+
+            // Confirm the new languages are active
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
             $compareData = array(
-                'fr',
-                'de',
-                'en',
+                'en' => array(
+                    'canDeactivate' => false,
+                    'label' => 'English (English)'
+                ),
+                'de' => array(
+                    'canDeactivate' => true,
+                    'label' => 'German (Deutsch)'
+                ),
+                'it' => array(
+                    'canDeactivate' => true,
+                    'label' => 'Italian (Italiano)'
+                ),
+            );
+            $this->assertEquals($compareData, $data);
+        }
+
+        /**
+         * @depends testSuperUserActivateLanguages
+         */
+        public function testSuperUserUpdateLanguages()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            // Confirm German is active
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $this->assertArrayHasKey('de', $data);
+            $compareData = array(
+                'canDeactivate' => true,
+                'label' => 'German (Deutsch)'
+            );
+            $this->assertEquals($compareData, $data['de']);
+
+            // Update German
+            $this->resetGetArray();
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/language/update/languageCode/de');
+            $this->assertTrue(strpos($content, 'updated successfully') !== false);
+        }
+
+        /**
+         * @depends testSuperUserUpdateLanguages
+         */
+        public function testSuperUserDeactivateLanguages()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            // Confirm German and Italian are active
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $compareData = array(
+                'en' => array(
+                    'canDeactivate' => false,
+                    'label' => 'English (English)'
+                ),
+                'de' => array(
+                    'canDeactivate' => true,
+                    'label' => 'German (Deutsch)'
+                ),
+                'it' => array(
+                    'canDeactivate' => true,
+                    'label' => 'Italian (Italiano)'
+                ),
             );
             $this->assertEquals($compareData, $data);
 
-            //Now inactivate the German language.
+            // Deactivate German
             $this->resetGetArray();
-            $this->setPostArray(array('LanguageCollection' => array(
-                'fr' => array('active' => '1'), 'de' => array('active' => ''))));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/language/configurationList');
-            $this->assertTrue(strpos($content, 'Changes to active languages saved successfully.') !== false);
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/language/deactivate/languageCode/de');
+            $this->assertTrue(strpos($content, 'deactivated successfully') !== false);
 
-            //Confirm the correct languages are active.
-            $data = Yii::app()->languageHelper->getActiveLanguages();
+            // Confirm the correct languages are active.
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
             $compareData = array(
-                'fr',
-                'en',
+                'en' => array(
+                    'canDeactivate' => false,
+                    'label' => 'English (English)'
+                ),
+                'it' => array(
+                    'canDeactivate' => true,
+                    'label' => 'Italian (Italiano)'
+                ),
             );
             $this->assertEquals($compareData, $data);
         }

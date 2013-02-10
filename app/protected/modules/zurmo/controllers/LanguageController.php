@@ -70,7 +70,7 @@
             {
                 if (Yii::app()->languageHelper->activateLanguage($languageCode))
                 {
-                    $message = Zurmo::t('ZurmoModule', '{languageName} Activated successfully',
+                    $message = Zurmo::t('ZurmoModule', '{languageName} activated successfully',
                         array('{languageName}' => $languageData['label'])
                     );
 

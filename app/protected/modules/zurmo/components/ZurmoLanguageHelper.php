@@ -312,6 +312,26 @@
             }
         }
 
+        public function getActiveLanguagesDataForTest()
+        {
+            $activeLanguagesData = $this->getActiveLanguagesData();
+
+            foreach ($activeLanguagesData as $languageCode=>$languageData)
+            {
+                if (array_key_exists('activationDatetime', $languageData))
+                {
+                    unset($activeLanguagesData[$languageCode]['activationDatetime']);
+                }
+
+                if (array_key_exists('lastUpdateDatetime', $languageData))
+                {
+                    unset($activeLanguagesData[$languageCode]['lastUpdateDatetime']);
+                }
+            }
+
+            return $activeLanguagesData;
+        }
+
         /**
          * Given a language, is it in use as a default language by any of the users.
          * @param string $language
