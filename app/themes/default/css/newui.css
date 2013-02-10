@@ -822,7 +822,8 @@ body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
-body.blue #clear-search-link #show-filters-structure-div-link {
+body.blue #clear-search-link,
+body.blue #show-filters-structure-div-link {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1361,7 +1362,8 @@ body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
-body.brown #clear-search-link #show-filters-structure-div-link {
+body.brown #clear-search-link,
+body.brown #show-filters-structure-div-link {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1900,7 +1902,8 @@ body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
-body.lime #clear-search-link #show-filters-structure-div-link {
+body.lime #clear-search-link,
+body.lime #show-filters-structure-div-link {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2439,7 +2442,8 @@ body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
-body.cherry #clear-search-link #show-filters-structure-div-link {
+body.cherry #clear-search-link,
+body.cherry #show-filters-structure-div-link {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -2978,7 +2982,8 @@ body.turquoise .ui-tooltip-default .ui-tooltip-icon,
 body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
-body.turquoise #clear-search-link #show-filters-structure-div-link {
+body.turquoise #clear-search-link,
+body.turquoise #show-filters-structure-div-link {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3517,7 +3522,8 @@ body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
-body.violet #clear-search-link #show-filters-structure-div-link {
+body.violet #clear-search-link,
+body.violet #show-filters-structure-div-link {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -4056,7 +4062,8 @@ body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
-body.honey #clear-search-link #show-filters-structure-div-link {
+body.honey #clear-search-link,
+body.honey #show-filters-structure-div-link {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -6933,6 +6940,10 @@ div.wide.form label.hasCheckBox {
 .cgrid-view.loading .list-preloader {
   display: block;
 }
+/*
+#NoUserEmailConfigurationYetView,
+#NoGlobalEmailConfigurationYetView,
+.ZeroModelsYetView*/
 .zero-components-view h2,
 .splash-view h2 {
   font-family: "Times New Roman", Times, serif;
@@ -7278,7 +7289,7 @@ div.wide.form label.hasCheckBox {
   z-index: 10000;
 }
 #ModalView .search-view-1 {
-  z-index: 1100;
+  z-index: 0;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -7413,14 +7424,13 @@ div.wide.form label.hasCheckBox {
 }
 .dynamic-search-row > div > span:first-child + div {
   margin-right: 0 !important;
-  width: 46%;
+  width: 45%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
   margin-right: 30px !important;
-  width: 46%;
+  width: 45%;
   float: right;
-  position: relative;
 }
 .dynamic-search-row > div .has-model-select {
   float: left;
@@ -15919,16 +15929,21 @@ a.user-link {
 .zero-components-view {
   float: left;
   position: absolute;
-  left: 30px;
+  left: 0;
   top: 0;
   width: 100%;
 }
 .zero-components-view .large-icon {
   border-right: none;
-  margin-right: 30px;
+  margin-right: 0;
+  width: 100%;
+  textalign: center;
 }
 .zero-components-view h2 {
   padding-top: 10px;
+  text-align: center;
+  width: 50%;
+  margin: 0 auto;
 }
 .zero-components-view .large-icon:after {
   margin-right: 45px;
@@ -15962,7 +15977,7 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
-.ZeroDrilDownDisplayAttributes .large-icon:after {
+.ZeroDrillDownDisplayAttributes .large-icon:after {
   content: '\00BB';
   font-weight: normal;
   font-size: 300px;
