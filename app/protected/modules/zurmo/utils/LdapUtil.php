@@ -1,5 +1,4 @@
 <?php
-
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
@@ -63,7 +62,7 @@
             assert('is_string($baseDomain)');            			
             $ldapConnection = self::makeConnection($host,$port);
             //checking user type
-            $bindRegisteredDomain = 'cn='.$bindRegisteredDomain.','.$baseDomain; //for admin access
+            $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; //for admin access
             // bind with appropriate dn to give update access
             if (@ldap_bind($ldapConnection, $bindRegisteredDomain, $bindPassword))  
             {

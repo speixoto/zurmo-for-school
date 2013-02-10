@@ -257,6 +257,7 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
+                'loginRequiredAjaxResponse' => 'sessionTimeout',
                 'behaviors' => array(
                     'onAfterLogin' => array(
                         'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
