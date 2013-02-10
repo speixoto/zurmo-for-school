@@ -226,7 +226,7 @@
 
         public function setType($type)
         {
-            assert('is_string($type)');
+            assert('$type == self::TYPE_ROWS_AND_COLUMNS || $type == self::TYPE_SUMMATION || $type == self::TYPE_MATRIX');
             $this->type = $type;
         }
 
