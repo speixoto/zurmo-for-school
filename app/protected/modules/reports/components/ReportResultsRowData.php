@@ -55,6 +55,15 @@
             $this->id                = $id;
         }
 
+        public function __isset($name)
+        {
+            if($this->$name !== null)
+            {
+                return true;
+            }
+            return parent::__isset($name);
+        }
+
         public function __get($name)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $name);

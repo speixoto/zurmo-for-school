@@ -100,7 +100,6 @@
         {
             $columns = $this->getCGridViewColumns();
             assert('is_array($columns)');
-
             return array(
                 'id' => $this->getGridViewId(),
                 'htmlOptions' => array(
