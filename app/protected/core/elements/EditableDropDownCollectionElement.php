@@ -145,7 +145,7 @@
                         '" type = "text" value = "{content}" size="50"/>
                         <input name = "' . $this->getNameForExistingValueHiddenField() . '" type = "hidden" value = "{content}"/>
 
-                        ' . static::renderLanguageLabelHtmlContent($activeLanguagesData[$baseLanguage]) .
+                        ' . static::renderLanguageLabelHtmlContent($activeLanguagesData[$baseLanguage]['name']) .
                         '</div>{removalContent}' .
                         $this->renderSortableLanguageLabelInputsForAddingNewValuesJuiSortableContent() .
                         '</li>';
@@ -167,7 +167,7 @@
             $content .= '<tbody>';
             $content .= '<tr><td>';
             $content .= '<div class="has-lang-label">' . ZurmoHtml::textField( $this->attribute . '_AddInput', '', array('size' => 50));
-            $content .= static::renderLanguageLabelHtmlContent($activeLanguagesData[$baseLanguage]);
+            $content .= static::renderLanguageLabelHtmlContent($activeLanguagesData[$baseLanguage]['name']);
             $content .= '</div>';
             $content .= '<div id="' . $this->attribute . '_AddInput_em_" class="errorMessage" style="display:none"></div>';
             $content .= '</td></tr>';
@@ -243,14 +243,14 @@
             $activeLanguagesData = $this->getActiveLanguagesData();
             $baseLanguage           = $this->getBaseLanguage();
             $content                = null;
-            foreach ($activeLanguagesData as $language => $label)
+            foreach ($activeLanguagesData as $language => $languageData)
             {
                 if ($language != $baseLanguage)
                 {
                     $content .= "<div class=\"has-lang-label\"><input name=\"" . $this->getNameForLabelInputField($language) . "\" id=\"" . $this->getLabelInputIdPrefix($language) .
                                 "' + ($('input[name=\"" . $this->getNameForLabelInputField($language) . "\"]').length + 1) +'\"" .
                                 " type=\"text\" value=\"' + $('#" . $this->attribute . "_AddInput').val() + '\" size=\"50\"/>";
-                    $content .= static::renderLanguageLabelHtmlContent($label) . "</div>";
+                    $content .= static::renderLanguageLabelHtmlContent($languageData['name']) . "</div>";
                 }
             }
             return $content;
@@ -261,14 +261,14 @@
             $activeLanguagesData = $this->getActiveLanguagesData();
             $baseLanguage           = $this->getBaseLanguage();
             $content                = null;
-            foreach ($activeLanguagesData as $language => $label)
+            foreach ($activeLanguagesData as $language => $languageData)
             {
                 if ($language != $baseLanguage)
                 {
                     $content .= "<div class=\"has-lang-label\"><input name=\"" . $this->getNameForLabelInputField($language) . "\" id=\"" . $this->getLabelInputIdPrefix($language) .
                                 "{dataLengthPlusOne}\"" .
                                 " type=\"text\" value=\"{" . $language . "Label}\" size=\"50\"/>";
-                    $content .= static::renderLanguageLabelHtmlContent($label) . "</div>";
+                    $content .= static::renderLanguageLabelHtmlContent($languageData['name']) . "</div>";
                 }
             }
             return $content;

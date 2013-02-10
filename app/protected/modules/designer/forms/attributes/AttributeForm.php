@@ -185,7 +185,7 @@
         public function validateAttributeLabels($attribute, $params)
         {
             $data = $this->$attribute;
-            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $language => $notUsed)
             {
                 if ( empty($data[$language]))
                 {

@@ -60,7 +60,9 @@
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
-                    'label' => 'English (English)'
+                    'label' => 'English (English)',
+                    'nativeName' => 'English',
+                    'name' => 'English'
                 ),
             );
             $this->assertEquals($compareData, $data);
@@ -82,15 +84,21 @@
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
-                    'label' => 'English (English)'
+                    'label' => 'English (English)',
+                    'nativeName' => 'English',
+                    'name' => 'English'
                 ),
                 'de' => array(
                     'canDeactivate' => true,
-                    'label' => 'German (Deutsch)'
+                    'label' => 'German (Deutsch)',
+                    'nativeName' => 'Deutsch',
+                    'name' => 'German'
                 ),
                 'it' => array(
                     'canDeactivate' => true,
-                    'label' => 'Italian (Italiano)'
+                    'label' => 'Italian (Italiano)',
+                    'nativeName' => 'Italiano',
+                    'name' => 'Italian'
                 ),
             );
             $this->assertEquals($compareData, $data);
@@ -108,7 +116,9 @@
             $this->assertArrayHasKey('de', $data);
             $compareData = array(
                 'canDeactivate' => true,
-                'label' => 'German (Deutsch)'
+                'label' => 'German (Deutsch)',
+                'nativeName' => 'Deutsch',
+                'name' => 'German'
             );
             $this->assertEquals($compareData, $data['de']);
 
@@ -131,15 +141,21 @@
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
-                    'label' => 'English (English)'
+                    'label' => 'English (English)',
+                    'nativeName' => 'English',
+                    'name' => 'English'
                 ),
                 'de' => array(
                     'canDeactivate' => true,
-                    'label' => 'German (Deutsch)'
+                    'label' => 'German (Deutsch)',
+                    'nativeName' => 'Deutsch',
+                    'name' => 'German'
                 ),
                 'it' => array(
                     'canDeactivate' => true,
-                    'label' => 'Italian (Italiano)'
+                    'label' => 'Italian (Italiano)',
+                    'nativeName' => 'Italiano',
+                    'name' => 'Italian'
                 ),
             );
             $this->assertEquals($compareData, $data);
@@ -155,11 +171,15 @@
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
-                    'label' => 'English (English)'
+                    'label' => 'English (English)',
+                    'nativeName' => 'English',
+                    'name' => 'English'
                 ),
                 'it' => array(
                     'canDeactivate' => true,
-                    'label' => 'Italian (Italiano)'
+                    'label' => 'Italian (Italiano)',
+                    'nativeName' => 'Italiano',
+                    'name' => 'Italian'
                 ),
             );
             $this->assertEquals($compareData, $data);

@@ -167,6 +167,8 @@
                     'canDeactivate'         => $this->canDeactivateLanguage($bean->code),
                     'activationDatetime'    => $bean->activationDatetime,
                     'lastUpdateDatetime'    => $bean->lastUpdateDatetime,
+                    'nativeName'            => $bean->nativeName,
+                    'name'                  => $bean->name,
                     'label'                 => $this->formatLanguageLabel($bean)
                 );
             }
