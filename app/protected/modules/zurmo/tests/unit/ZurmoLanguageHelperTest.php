@@ -168,7 +168,7 @@
             Yii::app()->language = 'en'; //Set the base language back to english.
             $languageHelper = new ZurmoLanguageHelper();
             $languageHelper->load();
-            $data = $languageHelper->getActiveLanguagesData();
+            $data = $languageHelper->getActiveLanguagesDataForTest();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
@@ -179,13 +179,11 @@
 
             //Now activate de.
             $languageHelper->activateLanguage('de');
-            $data = $languageHelper->getActiveLanguagesData();
-            unset($data['de']['activationDatetime']);
-            unset($data['de']['lastUpdateDatetime']);
+            $data = $languageHelper->getActiveLanguagesDataForTest();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
-                    'label' => 'English'
+                    'label' => 'English (English)'
                 ),
                 'de' => array(
                     'canDeactivate' => false,
@@ -196,11 +194,7 @@
 
             //Now activate es.
             $languageHelper->activateLanguage('it');
-            $data = $languageHelper->getActiveLanguagesData();
-            unset($data['de']['activationDatetime']);
-            unset($data['de']['lastUpdateDatetime']);
-            unset($data['it']['activationDatetime']);
-            unset($data['it']['lastUpdateDatetime']);
+            $data = $languageHelper->getActiveLanguagesDataForTest();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
