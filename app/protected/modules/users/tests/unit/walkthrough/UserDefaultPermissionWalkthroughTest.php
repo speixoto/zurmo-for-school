@@ -52,7 +52,8 @@
                                 Yii::app()->createUrl('users/default/details', array('id' => $super->id)));
             $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($super),
                                 UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_EVERYONE);
-            $this->assertNull(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($super));
+            $this->assertNull(UserConfigurationFormAdapter::resolveAndGetValue($super, 'defaultPermissionGroupSetting',
+                                false));
 
             // set permission setting to 'users and group', set permission group settings to 'testGroup2'
             $this->resetGetArray();
@@ -66,8 +67,8 @@
                                 Yii::app()->createUrl('users/default/details', array('id' => $super->id)));
             $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($super),
                                 UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP);
-            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionGroupSetting($super),
-                                $group->id);
+            $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetValue($super, 'defaultPermissionGroupSetting',
+                                false), $group->id);
         }
 
         /**
@@ -113,7 +114,7 @@
         public function testGlobalDefaultsLoadedOnCreateInAbsenceOfUserDefaultPermissions()
         {
             $super          = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            UserConfigurationFormAdapter::setDefaultPermissionSettingValue($super, null);
+            UserConfigurationFormAdapter::setValue($super, null, 'defaultPermissionSetting', false);
             UserConfigurationFormAdapter::setDefaultPermissionGroupSetting($super, null, null);
             $content        = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/create');
             // test that 'everyone' radio button is checked
