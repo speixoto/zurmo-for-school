@@ -140,6 +140,7 @@
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',
+                    'combinedInboxes',
                     'accounts',
                     'leads',
                     'contacts',

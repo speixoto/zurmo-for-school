@@ -289,6 +289,7 @@
             'accounts',
             'activities',
             'api',
+            'combinedInboxes',
             'comments',
             'configuration',
             'contacts',
