@@ -29,6 +29,9 @@
      */
     class TasksReportRules extends ActivitiesReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();

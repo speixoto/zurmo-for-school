@@ -30,8 +30,15 @@
      */
     abstract class ReportRules
     {
+        /**
+         * @var string
+         */
         protected $modelClassName;
 
+        /**
+         * @param $moduleClassName
+         * @return ReportRules based object
+         */
         public static function makeByModuleClassName($moduleClassName)
         {
             assert('is_string($moduleClassName)');
@@ -40,11 +47,7 @@
         }
 
         /**
-         * Returns metadata for use in the rules.  Will attempt to retrieve from cache if
-         * available, otherwill retrieve from database and cache.
-         * @see getDefaultMetadata()
-         * @param $user The current user.
-         * @returns An array of metadata.
+         * @return array
          */
         public static function getMetadata()
         {
@@ -66,9 +69,7 @@
         }
 
         /**
-         * Sets new metadata.
-         * @param $metadata An array of metadata.
-         * @param $user The current user.
+         * @param array $metadata
          */
         public static function setMetadata(array $metadata)
         {
@@ -89,10 +90,13 @@
             return array();
         }
 
-        protected static function assertMetadataIsValid(array $metadata)
-        {
-        }
-
+        /**
+         * Some relations such as a CustomField are shown as non-related nodes in the report wizard. For a custom field
+         * this method would return true for example.  Whereas account -> opportunities would return false.
+         * @param RedBeanModel $model
+         * @param $relation
+         * @return bool
+         */
         public function relationIsReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -116,6 +120,11 @@
             return false;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return bool
+         */
         public function attributeIsReportable(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
@@ -129,6 +138,10 @@
             return true;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @return array
+         */
         public function getDerivedAttributeTypesData(RedBeanModel $model)
         {
             $derivedAttributeTypesData = array();
@@ -151,6 +164,11 @@
             return $derivedAttributeTypesData;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return null | string
+         */
         public function getAvailableOperatorsTypes(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
@@ -164,6 +182,11 @@
             return null;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @return null | string
+         */
         public function getFilterValueElementType(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
@@ -177,6 +200,12 @@
             return null;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $relation
+         * @return string
+         * @throws NotSupportedException if the relation is not really reported as an attribute
+         */
         public function getSortAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -206,6 +235,12 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $relation
+         * @return null|string
+         * @throws NotSupportedException if the relation is not really reported as an attribute
+         */
         public function getGroupByRelatedAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -235,6 +270,11 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param $relation
+         * @return null | string
+         */
         public function getRawValueRelatedAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -250,28 +290,56 @@
             }
         }
 
+        /**
+         * Override in children classes as necessary.  @see ContactReportRules
+         * @param User $user
+         * @throws NotImplementedException
+         */
         public static function getVariableStateModuleLabel(User $user)
         {
             assert('$user->id > 0');
             throw new NotImplementedException();
         }
 
+        /**
+         * Override in children classes as necessary.  @see ContactReportRules
+         * @param User $user
+         * @throws NotImplementedException
+         */
         public static function canUserAccessModuleInAVariableState(User $user)
         {
             assert('$user->id > 0');
             throw new NotImplementedException();
         }
 
+        /**
+         * Override in children classes as necessary.  @see ContactReportRules
+         * @param User $user
+         * @throws NotImplementedException
+         */
         public static function resolveStateAdapterUserHasAccessTo(User $user)
         {
             assert('$user->id > 0');
             throw new NotImplementedException();
         }
 
+        /**
+         * Override in children classes as necessary.  @see ContactReportRules
+         * @param $modelClassName
+         * @param User $user
+         */
         public static function getVariableStateValuesForUser($modelClassName, User $user)
         {
             assert('is_string($modelClassName)');
             assert('$user->id > 0');
+        }
+
+        /**
+         * Override in children classes as necessary.
+         * @param array $metadata
+         */
+        protected static function assertMetadataIsValid(array $metadata)
+        {
         }
     }
 ?>
