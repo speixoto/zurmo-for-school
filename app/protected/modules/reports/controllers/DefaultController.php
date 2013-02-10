@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Default controller for all report actions
+      */
     class ReportsDefaultController extends ZurmoBaseController
     {
         public function filters()
@@ -339,10 +342,10 @@
 
         public function actionDelete($id)
         {
-            $report = SavedReport::GetById(intval($id));
+            $savedReport = SavedReport::GetById(intval($id));
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($report);
-            $report->delete();
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedReport);
+            $savedReport->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
 

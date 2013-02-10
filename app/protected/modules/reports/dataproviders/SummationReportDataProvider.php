@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Data provider a report that is a summation report
+     */
     class SummationReportDataProvider extends ReportDataProvider
     {
         /**
@@ -33,20 +36,30 @@
          */
         private $resolvedDisplayAttributes;
 
+        /**
+         * @param Report $report
+         * @param array $config
+         */
         public function __construct(Report $report, array $config = array())
         {
             parent::__construct($report, $config);
         }
 
+        /**
+         * @return int
+         */
         public function calculateTotalItemCount()
         {
-        $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
-        $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
-        $rows                   = R::getAll($sql);
-        $count                  = count($rows);
-        return $count;
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
+            $rows                   = R::getAll($sql);
+            $count                  = count($rows);
+            return $count;
         }
 
+        /**
+         * @return ReportDataProviderToAmChartMakerAdapter
+         */
         public function makeReportDataProviderToAmChartMakerAdapter()
         {
             if(ChartRules::isStacked($this->report->getChart()->type))
@@ -59,6 +72,9 @@
             }
         }
 
+        /**
+         * @return array|null
+         */
         public function resolveDisplayAttributes()
         {
             if($this->resolvedDisplayAttributes != null)
@@ -78,20 +94,9 @@
             return $this->resolvedDisplayAttributes;
         }
 
-        protected function isReportValidType()
-        {
-            if($this->report->getType() != Report::TYPE_SUMMATION)
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        protected function fetchChartData()
-        {
-            //todO: $totalItemCount = $this->getTotalItemCount(); if too many rows over 100? then we should block or limit or something not sure...
-            return $this->runQueryAndGetResolveResultsData(null, null);
-        }
-
+        /**
+         * @return mixed
+         */
         public function resolveFirstSeriesLabel()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -103,6 +108,9 @@
             }
         }
 
+        /**
+         * @return mixed
+         */
         public function resolveFirstRangeLabel()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -114,6 +122,30 @@
             }
         }
 
+        /**
+         * @return bool|void
+         * @throws NotSupportedException if the report is not valid for this data provider
+         */
+        protected function isReportValidType()
+        {
+            if($this->report->getType() != Report::TYPE_SUMMATION)
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * @return array
+         */
+        protected function fetchChartData()
+        {
+            //todO: $totalItemCount = $this->getTotalItemCount(); if too many rows over 100? then we should block or limit or something not sure...
+            return $this->runQueryAndGetResolveResultsData(null, null);
+        }
+
+        /**
+         * @return null | string
+         */
         protected function resolveChartFirstSeriesAttributeNameForReportResultsRowData()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -125,6 +157,9 @@
             }
         }
 
+        /**
+         * @return null | string
+         */
         protected function resolveChartFirstRangeAttributeNameForReportResultsRowData()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -136,6 +171,9 @@
             }
         }
 
+        /**
+         * @return null | string
+         */
         protected function resolveChartSecondSeriesAttributeNameForReportResultsRowData()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -147,6 +185,9 @@
             }
         }
 
+        /**
+         * @return null | string
+         */
         protected function resolveChartSecondRangeAttributeNameForReportResultsRowData()
         {
             foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
@@ -158,6 +199,9 @@
             }
         }
 
+        /**
+         * @return ReportDataProviderToAmChartMakerAdapter
+         */
         protected function makeNonStackedReportDataProviderToAmChartMakerAdapter()
         {
             $resultsData              = $this->fetchChartData();
@@ -174,11 +218,13 @@
             return new ReportDataProviderToAmChartMakerAdapter($this->report, $chartData);
         }
 
+        /**
+         * @return ReportDataProviderToAmChartMakerAdapter
+         */
         protected function makeStackedReportDataProviderToAmChartMakerAdapter()
         {
             $resultsData                     = $this->fetchChartData();
             $firstRangeAttributeName         = $this->resolveChartFirstRangeAttributeNameForReportResultsRowData();
-            $secondSeriesAttributeName       = $this->resolveChartSecondSeriesAttributeNameForReportResultsRowData();
             $secondRangeAttributeName        = $this->resolveChartSecondRangeAttributeNameForReportResultsRowData();
             $chartData                       = array();
             $secondSeriesValueData           = array();
@@ -263,7 +309,6 @@
                     $this->resolvedDisplayAttributes[$index]->valueUsedAsDrillDownFilter = true;
                 }
             }
-
         }
     }
 ?>

@@ -172,6 +172,10 @@
                                                DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType, $value) . " limit 1))";
         }
 
+        /**
+         * @param null $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForRelatedId($onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -217,6 +221,11 @@
             }
         }
 
+        /**
+         * @param $tableAliasName
+         * @param $columnName
+         * @return string
+         */
         protected function resolveWhereColumnContentForModifier($tableAliasName, $columnName)
         {
             assert('is_string($tableAliasName)');
@@ -247,6 +256,9 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @return string
+         */
         protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier()
         {
             $attributeType = ModelAttributeToMixedTypeUtil::getType(

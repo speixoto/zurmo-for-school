@@ -24,18 +24,43 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for constructing a ReportDataProvider
+     */
     abstract class ReportDataProvider extends CDataProvider
     {
+        /**
+         * In each child class, this method can be used to determine if the report specified is valid for this
+         * reportDataProvider
+         * @return boolean
+         */
         abstract protected function isReportValidType();
 
+        /**
+         * @var Report
+         */
         protected $report;
 
+        /**
+         * Set to true if you want the data provider to get data.
+         * @var bool
+         */
         protected $runReport = false;
 
+        /**
+         * @var integer | null
+         */
         protected $offset;
 
+        /**
+         * @var array
+         */
         private $_rowsData;
 
+        /**
+         * @param Report $report
+         * @param array $config
+         */
         public function __construct(Report $report, array $config = array())
         {
             $this->report = $report;
@@ -46,22 +71,34 @@
             }
         }
 
+        /**
+         * @param bool $runReport
+         */
         public function setRunReport($runReport)
         {
             assert('is_bool($runReport)');
             $this->runReport = $runReport;
         }
 
-        public function getReport() //todo: can we avoid needing this from the outside? just have wrapper methods here in the data provider? would be cleaner
+        /**
+         * @return Report
+         */
+        public function getReport()
         {
             return $this->report;
         }
 
+        /**
+         * @return array
+         */
         public function resolveDisplayAttributes()
         {
             return $this->report->getDisplayAttributes();
         }
 
+        /**
+         * @return array
+         */
         public function resolveGroupBys()
         {
             return $this->report->getGroupBys();
@@ -69,6 +106,7 @@
 
         /**
          * See the yii documentation. This function is made public for unit testing.
+         * @return int|string
          */
         public function calculateTotalItemCount()
         {
@@ -82,12 +120,18 @@
             return $count;
         }
 
+        /**
+         * @return string
+         */
         public function makeTotalCountSqlQueryForDisplay()
         {
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             return $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, true);
         }
 
+        /**
+         * @return string
+         */
         public function makeSqlQueryForDisplay()
         {
             $offset                 = $this->resolveOffset();
@@ -96,6 +140,96 @@
             return $this->makeSqlQueryForFetchingData($selectQueryAdapter, $offset, $limit);
         }
 
+        /**
+         * Public for testing purposes only
+         * @param $filters
+         * @param $filtersStructure
+         * @return array
+         */
+        public function resolveFiltersForReadPermissions(array $filters, & $filtersStructure)
+        {
+            $attributeIndexes     = $this->makeReadPermissionsAttributeIndexes($filters);
+            $existingFiltersCount = count($filters);
+            $structurePosition    = $existingFiltersCount + 1;
+            $readStructure        = null;
+            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $attributeOrDerivedAttributeTypes)
+            {
+                $structure = null;
+                foreach($attributeOrDerivedAttributeTypes as $attributeOrDerivedAttributeType)
+                {
+                    if($structure != null)
+                    {
+                        $structure .= ' or ';
+                    }
+                    $structure .= $structurePosition;
+                    $structurePosition ++;
+                    $filters[]  = $this->resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix,
+                        $attributeOrDerivedAttributeType);
+                }
+                if($structure != null)
+                {
+                    if($readStructure != null)
+                    {
+                        $readStructure .= ' and ';
+                    }
+                    $readStructure .= '(' . $structure . ')';
+                }
+            }
+            if($readStructure != null)
+            {
+                if($filtersStructure != null)
+                {
+                    $filtersStructure .= ' and (' . $readStructure . ')';
+                }
+                else
+                {
+                    $filtersStructure .= $readStructure;
+                }
+            }
+            return $filters;
+        }
+
+        /**
+         * Public for testing purposes only
+         * @param $filters
+         * @param $filtersStructure
+         * @return array
+         */
+        public function resolveFiltersForVariableStates($filters, & $filtersStructure)
+        {
+            $attributeIndexes     = $this->makeVariableStatesAttributeIndexes($filters);
+            $existingFiltersCount = count($filters);
+            $structurePosition    = $existingFiltersCount + 1;
+            $readStructure        = null;
+            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $variableStateData)
+            {
+                $structure = $structurePosition;
+                $structurePosition ++;
+                $filters[]  = $this->resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix,
+                    $variableStateData);
+                if($readStructure != null)
+                {
+                    $readStructure .= ' and ';
+                }
+                $readStructure .= $structure;
+            }
+            if($readStructure != null)
+            {
+                if($filtersStructure != null)
+                {
+                    $filtersStructure .= ' and (' . $readStructure . ')';
+                }
+                else
+                {
+                    $filtersStructure .= $readStructure;
+                }
+            }
+            return $filters;
+        }
+
+        /**
+         * @return array
+         */
         protected function fetchData()
         {
             $offset = $this->resolveOffset();
@@ -107,6 +241,9 @@
             return $this->runQueryAndGetResolveResultsData($offset, $limit);
         }
 
+        /**
+         * @return int|null
+         */
         protected function resolveOffset()
         {
             $pagination = $this->getPagination();
@@ -127,6 +264,9 @@
             return $offset;
         }
 
+        /**
+         * @return int|null
+         */
         protected function resolveLimit()
         {
             $pagination = $this->getPagination();
@@ -143,6 +283,11 @@
             return $limit;
         }
 
+        /**
+         * @param $offset
+         * @param $limit
+         * @return array
+         */
         protected function runQueryAndGetResolveResultsData($offset, $limit)
         {
             assert('is_int($offset) || $offset == null');
@@ -175,6 +320,10 @@
             return $resultsData;
         }
 
+        /**
+         * @param $offset
+         * @return int
+         */
         protected static function resolveIdByOffset($offset)
         {
             assert('is_int($offset) || $offset == null');
@@ -185,6 +334,10 @@
             return $offset;
         }
 
+        /**
+         * @param $sql
+         * @return array
+         */
         protected function getRowsData($sql)
         {
             assert('is_string($sql)');
@@ -197,6 +350,7 @@
 
         /**
          * See the yii documentation.
+         * @return array
          */
         protected function fetchKeys()
         {
@@ -208,6 +362,12 @@
             return $keys;
         }
 
+        /**
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param $offset
+         * @param $limit
+         * @return string
+         */
         protected function makeSqlQueryForFetchingData(RedBeanModelSelectQueryAdapter $selectQueryAdapter, $offset, $limit)
         {
             assert('is_int($offset) || $offset == null');
@@ -224,6 +384,11 @@
                                       $selectQueryAdapter, $joinTablesAdapter, $offset, $limit, $where, $orderBy, $groupBy);
         }
 
+        /**
+         * @param $selectQueryAdapter
+         * @param bool $selectJustCount
+         * @return string
+         */
         protected function makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter, $selectJustCount = false)
         {
             $moduleClassName        = $this->report->getModuleClassName();
@@ -236,7 +401,8 @@
             //Make a fresh selectQueryAdapter that only has a count clause
             if($selectJustCount)
             {
-                //todo: if distinct we shouldn't actually do a NonSpecificCountClause, but this means distinct should know what table/col it is distincting on... so we need to add that
+                //todo: if distinct we shouldn't actually do a NonSpecificCountClause,
+                //but this means distinct should know what table/col it is distincting on... so we need to add that
                 $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
@@ -244,6 +410,10 @@
                                       $selectQueryAdapter, $joinTablesAdapter, null, null, $where, $orderBy, $groupBy);
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         */
         protected function makeDisplayAttributes(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                                  RedBeanModelSelectQueryAdapter $selectQueryAdapter)
         {
@@ -252,6 +422,10 @@
             $builder->makeQueryContent($this->resolveDisplayAttributes());
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
         protected function makeFiltersContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             $filters          = $this->report->getFilters();
@@ -262,72 +436,41 @@
             return $builder->makeQueryContent($resolvedFilters);
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
         protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             $builder = new OrderBysReportQueryBuilder($joinTablesAdapter, $this->report->getCurrencyConversionType());
             return $builder->makeQueryContent($this->report->getOrderBys());
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
         protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             $builder = new GroupBysReportQueryBuilder($joinTablesAdapter);
             return $builder->makeQueryContent($this->resolveGroupBys());
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
         protected function makeGroupBysContentForCount(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             return $this->makeGroupBysContent($joinTablesAdapter);
         }
 
         /**
-         * Public for testing purposes only
-         * @param $filters
-         * @param $filtersStructure
-         * @return array
+         * @param $attributeIndexOrDerivedTypePrefix
+         * @param $attributeOrDerivedAttributeType
+         * @return FilterForReportForm
+         * @throws NotSupportedException
          */
-        public function resolveFiltersForReadPermissions(array $filters, & $filtersStructure)
-        {
-            $attributeIndexes     = $this->makeReadPermissionsAttributeIndexes($filters);
-            $existingFiltersCount = count($filters);
-            $structurePosition    = $existingFiltersCount + 1;
-            $readStructure        = null;
-            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $attributeOrDerivedAttributeTypes)
-            {
-                $structure = null;
-                foreach($attributeOrDerivedAttributeTypes as $attributeOrDerivedAttributeType)
-                {
-                    if($structure != null)
-                    {
-                        $structure .= ' or ';
-                    }
-                    $structure .= $structurePosition;
-                    $structurePosition ++;
-                    $filters[]  = $this->resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix,
-                                                                                      $attributeOrDerivedAttributeType);
-                }
-                if($structure != null)
-                {
-                    if($readStructure != null)
-                    {
-                        $readStructure .= ' and ';
-                    }
-                    $readStructure .= '(' . $structure . ')';
-                }
-            }
-            if($readStructure != null)
-            {
-                if($filtersStructure != null)
-                {
-                    $filtersStructure .= ' and (' . $readStructure . ')';
-                }
-                else
-                {
-                    $filtersStructure .= $readStructure;
-                }
-            }
-            return $filters;
-        }
-
         protected function resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix, $attributeOrDerivedAttributeType)
         {
             assert('is_string($attributeIndexOrDerivedTypePrefix) || $attributeIndexOrDerivedTypePrefix == null');
@@ -354,6 +497,10 @@
             return $filter;
         }
 
+        /**
+         * @param array $filters
+         * @return array
+         */
         protected function makeReadPermissionsAttributeIndexes(array $filters)
         {
             $moduleClassName = $this->report->getModuleClassName();
@@ -372,43 +519,10 @@
         }
 
         /**
-         * Public for testing purposes only
-         * @param $filters
-         * @param $filtersStructure
-         * @return array
+         * @param $attributeIndexOrDerivedTypePrefix
+         * @param $variableStateData
+         * @return FilterForReportForm
          */
-        public function resolveFiltersForVariableStates($filters, & $filtersStructure)
-        {
-            $attributeIndexes     = $this->makeVariableStatesAttributeIndexes($filters);
-            $existingFiltersCount = count($filters);
-            $structurePosition    = $existingFiltersCount + 1;
-            $readStructure        = null;
-            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $variableStateData)
-            {
-                $structure = $structurePosition;
-                $structurePosition ++;
-                $filters[]  = $this->resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix,
-                              $variableStateData);
-                if($readStructure != null)
-                {
-                    $readStructure .= ' and ';
-                }
-                $readStructure .= $structure;
-            }
-            if($readStructure != null)
-            {
-                if($filtersStructure != null)
-                {
-                    $filtersStructure .= ' and (' . $readStructure . ')';
-                }
-                else
-                {
-                    $filtersStructure .= $readStructure;
-                }
-            }
-            return $filters;
-        }
-
         protected function resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix, $variableStateData)
         {
             assert('is_string($attributeIndexOrDerivedTypePrefix) || $attributeIndexOrDerivedTypePrefix == null');
@@ -423,6 +537,10 @@
             return $filter;
         }
 
+        /**
+         * @param array $filters
+         * @return array
+         */
         protected function makeVariableStatesAttributeIndexes(array $filters)
         {
             $moduleClassName = $this->report->getModuleClassName();
@@ -440,7 +558,10 @@
             return $attributeIndexes;
         }
 
-
+        /**
+         * @param $attribute
+         * @return mixed
+         */
         protected function getDisplayAttributeByAttribute($attribute)
         {
             foreach($this->resolveDisplayAttributes() as $displayAttribute)
@@ -452,6 +573,10 @@
             }
         }
 
+        /**
+         * @param $attribute
+         * @return int|string
+         */
         protected function getDisplayAttributeKeyByAttribute($attribute)
         {
             foreach($this->resolveDisplayAttributes() as $key =>  $displayAttribute)

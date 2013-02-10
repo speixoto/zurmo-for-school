@@ -34,6 +34,11 @@
     {
         public $expandableRows = false;
 
+        /**
+         * Used by matrix reporting or when there are headers that are for columns with values but for columns that
+         * also have header labels in them.
+         * @var array
+         */
         public $leadingHeaders;
 
         public function renderTableHeader()
@@ -81,6 +86,9 @@
             echo "</tbody>\n";
         }
 
+        /**
+         * @param $id
+         */
         protected function renderExpandableRow($id)
         {
             echo '<tr style="display:none;"><td class="hasDrillDownContent" colspan="' . (count($this->columns)) . '">';

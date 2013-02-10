@@ -24,8 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for creating ReportDataProvider objects
+     */
     class ReportDataProviderFactory
     {
+        /**
+         * @param Report $report
+         * @param $pageSize
+         * @return MatrixReportDataProvider|RowsAndColumnsReportDataProvider|SummationReportDataProvider
+         * @throws NotSupportedException
+         */
         public static function makeByReport(Report $report, $pageSize)
         {
             $config   = array(
@@ -51,6 +60,11 @@
             return $dataProvider;
         }
 
+        /**
+         * @param Report $report
+         * @param $pageSize
+         * @return SummationDrillDownReportDataProvider
+         */
         public static function makeForSummationDrillDown(Report $report, $pageSize)
         {
             $config   = array(
