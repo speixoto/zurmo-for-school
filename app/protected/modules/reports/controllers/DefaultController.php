@@ -232,7 +232,7 @@
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-            $model                              = ComponentForReportFormFactory::makeByTreeType($moduleClassName,
+            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
                                                       $modelClassName, $report->getType(), $treeType);
             $form->modelClassNameForError       = $wizardFormClassName;
             $attribute                          = ReportRelationsAndAttributesToTreeAdapter::

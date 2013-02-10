@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Summation report form used to manage interaction between a Report and the user interface.
+     */
     class SummationReportWizardForm extends ReportWizardForm
     {
+        /**
+         * Validates that at least one groupBy has been selected, since this is required for a summation report
+         * @return bool
+         */
         public function validateGroupBys()
         {
             $validated = parent::validateGroupBys();

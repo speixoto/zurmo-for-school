@@ -24,12 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * ActiveForm used for report forms.  This is needed because report forms are dynamic and can have different
+     * quantity of rows and have similar inputs for different components.  The report wizard posts the all definitions
+     * for a report in a single POST and this class helps manage the names/ids effectively of those form inputs
+     */
     class ReportActiveForm extends ZurmoActiveForm
     {
         /**
-         * @var array
+         * @var array array
          */
         protected $inputPrefixData;
+
+        /**
+         * @param array $inputPrefixData
+         */
+        public function setInputPrefixData(Array $inputPrefixData)
+        {
+            $this->inputPrefixData = $inputPrefixData;
+        }
+
+        public function clearInputPrefixData()
+        {
+            $this->inputPrefixData = null;
+        }
 
         protected function resolveId($model, $attribute)
         {
@@ -40,16 +58,6 @@
             }
             $inputIdPrefix  = Element::resolveInputIdPrefixIntoString($this->inputPrefixData);
             return str_replace(get_class($model), $inputIdPrefix, $id);
-        }
-
-        public function setInputPrefixData(Array $inputPrefixData)
-        {
-            $this->inputPrefixData = $inputPrefixData;
-        }
-
-        public function clearInputPrefixData()
-        {
-            $this->inputPrefixData = null;
         }
     }
 ?>

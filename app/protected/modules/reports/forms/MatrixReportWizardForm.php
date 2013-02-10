@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Matrix report form used to manage interaction between a Report and the user interface
+     */
     class MatrixReportWizardForm extends ReportWizardForm
     {
+        /**
+         * Validates that at least one x and y axis groupBy has been selected.
+         * @return bool
+         */
         public function validateGroupBys()
         {
             $validated  = parent::validateGroupBys();

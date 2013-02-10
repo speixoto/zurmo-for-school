@@ -291,7 +291,7 @@
             }
             if($this->isDerivedAttribute($attribute))
             {
-                throw new NotSupportedException($message, $code, $previous);
+                throw new NotSupportedException();
             }
             $resolvedAttribute = $this->resolveRealAttributeName($attribute);
             if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,

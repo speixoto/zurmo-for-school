@@ -24,15 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for order by definitions
+     */
     class OrderByForReportForm extends ComponentForReportForm
     {
+        /**
+         * Default sorting order is ascending
+         * @var string
+         */
         public $order = 'asc';
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_ORDER_BYS;
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -42,6 +55,9 @@
             ));
         }
 
+        /**
+         * @return bool
+         */
         public function validateOrder()
         {
             if($this->order == null)
@@ -56,6 +72,10 @@
             return true;
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException if the attributeIndexOrDerivedType is null
+         */
         public function getOrderValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)

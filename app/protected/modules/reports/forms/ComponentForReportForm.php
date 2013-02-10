@@ -24,42 +24,95 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for managing report components.  Filters, group bys, order bys, display attributes, Drill down
+     * display attributes all extend this class
+     */
     abstract class ComponentForReportForm extends ConfigurableMetadataModel
     {
+        /**
+         * Divider used for displaying labels that cross relations. An example is Account's >> Opportunities
+         */
         const DISPLAY_LABEL_RELATION_DIVIDER     = '>>';
 
+        /**
+         * Component type for filters
+         */
         const TYPE_FILTERS                       = 'Filters';
 
+        /**
+         * Component type for display attributes
+         */
         const TYPE_DISPLAY_ATTRIBUTES            = 'DisplayAttributes';
 
+        /**
+         * Component type for order bys
+         */
         const TYPE_ORDER_BYS                     = 'OrderBys';
 
+        /**
+         * Component type for group bys
+         */
         const TYPE_GROUP_BYS                     = 'GroupBys';
 
+        /**
+         * Component type for drill down display attributes
+         */
         const TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES = 'DrillDownDisplayAttributes';
 
+        /**
+         * @var string
+         */
         protected $moduleClassName;
 
+        /**
+         * @var string
+         */
         protected $modelClassName;
 
+        /**
+         * @var array
+         */
         protected $attributeAndRelationData;
 
+        /**
+         * @var string
+         */
         protected $reportType;
 
+        /**
+         * @var string
+         */
         private   $attribute;
 
+        /**
+         * @var string
+         */
         private   $_attributeIndexOrDerivedType;
 
+        /**
+         * Override in children class to @return the correct component type
+         * @throws NotImplementedException
+         */
         public static function getType()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * @return array
+         */
         public function attributeNames()
         {
             return array_merge(parent::attributeNames(), array('attributeIndexOrDerivedType'));
         }
 
+        /**
+         * Special override to handle setting attributeIndexOrDerivedType
+         * @param string $name
+         * @param mixed $value
+         * @return mixed|void
+         */
         public function __set($name, $value)
         {
             if ($name == 'attributeIndexOrDerivedType')
@@ -73,16 +126,27 @@
             }
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array(array('attributeIndexOrDerivedType', 'safe'));
         }
 
+        /**
+         * @return array
+         */
         public function attributeLabels()
         {
             return array();
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $reportType
+         */
         public function __construct($moduleClassName, $modelClassName, $reportType)
         {
             assert('is_string($moduleClassName)');
@@ -93,26 +157,43 @@
             $this->reportType      = $reportType;
         }
 
+        /**
+         * @return string
+         */
         public function getModelClassName()
         {
             return $this->modelClassName;
         }
 
+        /**
+         * @return string
+         */
         public function getModuleClassName()
         {
             return $this->moduleClassName;
         }
 
+        /**
+         * @return string
+         */
         public function getReportType()
         {
             return $this->reportType;
         }
 
+        /**
+         * @return string
+         */
         public function getAttributeIndexOrDerivedType()
         {
             return $this->_attributeIndexOrDerivedType;
         }
 
+        /**
+         * If the attribute is on a relation then attributeAndRelationData should be populated otherwise it will
+         * return the $this->attribute
+         * @return array|string
+         */
         public function getAttributeAndRelationData()
         {
             if($this->attributeAndRelationData == null)
@@ -122,6 +203,11 @@
             return $this->attributeAndRelationData;
         }
 
+        /**
+         * An attribute on a relation such as from an Account, opportunities name would return true. whereas just
+         * from an Account, name would return false.
+         * @return bool
+         */
         public function hasRelatedData()
         {
             if($this->attribute != null)
@@ -131,6 +217,11 @@
             return true;
         }
 
+        /**
+         * Resolves the attribute name for the relation.  Both account name and account's opportunities name would
+         * resolve as just 'name'
+         * @return mixed|string
+         */
         public function getResolvedAttribute()
         {
             if($this->attribute != null)
@@ -140,6 +231,10 @@
             return $this->resolveAttributeFromData($this->attributeAndRelationData);
         }
 
+        /**
+         * In the case of account's opportunities name, the returned ModuleClassName would be OpportunitiesModule
+         * @return string
+         */
         public function getResolvedAttributeModuleClassName()
         {
             if($this->attribute != null)
@@ -150,6 +245,10 @@
                                                                   $this->moduleClassName, $this->modelClassName);
         }
 
+        /**
+         * In the case of account's opportunities name, the returned ModelClassName would be Opportunity
+         * @return string
+         */
         public function getResolvedAttributeModelClassName()
         {
             if($this->attribute != null)
@@ -159,6 +258,12 @@
             return $this->resolveAttributeModelClassNameFromData($this->attributeAndRelationData, $this->moduleClassName, $this->modelClassName);
         }
 
+        /**
+         * An example where the attribute is not the real attribute would be for a summation report with 'Count' defined
+         * as the attribute which corresponds to ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT
+         * In this case the real attribute returned would be 'id'
+         * @return string
+         */
         public function getResolvedAttributeRealAttributeName()
         {
             $moduleClassName      = $this->getResolvedAttributeModuleClassName();
@@ -168,6 +273,11 @@
             return $modelToReportAdapter->resolveRealAttributeName($this->getResolvedAttribute());
         }
 
+        /**
+         * An example of coming from Account -> opportunities name, the penultimate model would be Account
+         * @return mixed
+         * @throws NotSupportedException
+         */
         public function getPenultimateModelClassName()
         {
             if($this->attribute != null)
@@ -177,6 +287,11 @@
             return $this->resolvePenultimateModelClassNameFromData($this->attributeAndRelationData, $this->modelClassName);
         }
 
+        /**
+         * An example of coming from Account -> opportunities name, the penultimate relation would be opportunities
+         * @return mixed
+         * @throws NotSupportedException
+         */
         public function getPenultimateRelation()
         {
             if($this->attribute != null)
@@ -186,6 +301,11 @@
             return $this->resolvePenultimateRelationFromData($this->attributeAndRelationData);
         }
 
+        /**
+         * Builds the display label based on either the attribute or attributeAndRelationData and returns the string
+         * content.
+         * @return string.
+         */
         public function getDisplayLabel()
         {
             $modelClassName       = $this->modelClassName;
@@ -236,6 +356,9 @@
             return $content;
         }
 
+        /**
+         * @return ModelRelationsAndAttributesToReportAdapter based object
+         */
         public function makeResolvedAttributeModelRelationsAndAttributesToReportAdapter()
         {
             $moduleClassName      = $this->getResolvedAttributeModuleClassName();
@@ -243,9 +366,13 @@
             return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName, $this->reportType);
         }
 
+        /**
+         * Based on the attribute, what kind of display element should be utilized to render the attribute's value.
+         * @return string
+         * @throws NotSupportedException
+         */
         public function getDisplayElementType()
         {
-            //todo: probably adding caching for this?
             if($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
@@ -254,6 +381,10 @@
             return $modelToReportAdapter->getDisplayElementType($this->getResolvedAttribute());
         }
 
+        /**
+         * Based on the attribute's displayElementType, is the displayElementType a currency type of display
+         * @return bool
+         */
         public function isATypeOfCurrencyValue()
         {
             $displayElementType = $this->getDisplayElementType();
@@ -281,12 +412,22 @@
             $this->setAttributeAndRelationData($attributeOrRelationAndAttributeData);
         }
 
+        /**
+         * @param array $attributeAndRelationData
+         * @return string
+         */
         protected function resolveAttributeFromData(Array $attributeAndRelationData)
         {
             assert(count($attributeAndRelationData) > 0);
             return end($attributeAndRelationData);
         }
 
+        /**
+         * @param array $attributeAndRelationData
+         * @param $moduleClassName
+         * @param $modelClassName
+         * @return string $moduleClassName
+         */
         protected function resolveAttributeModuleClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
                                                                    $modelClassName)
         {
@@ -304,6 +445,12 @@
             return $moduleClassName;
         }
 
+        /**
+         * @param array $attributeAndRelationData
+         * @param $moduleClassName
+         * @param $modelClassName
+         * @return string $modelClassName
+         */
         protected function resolveAttributeModelClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
                                                                   $modelClassName)
         {
@@ -321,6 +468,11 @@
             return $modelClassName;
         }
 
+        /**
+         * @param array $attributeAndRelationData
+         * @param $modelClassName
+         * @return string $lastModelClassName
+         */
         protected function resolvePenultimateModelClassNameFromData(Array $attributeAndRelationData, $modelClassName)
         {
             assert(count($attributeAndRelationData) > 0);
@@ -338,6 +490,10 @@
             return $lastModelClassName;
         }
 
+        /**
+         * @param array $attributeAndRelationData
+         * @return string
+         */
         protected function resolvePenultimateRelationFromData(Array $attributeAndRelationData)
         {
             assert(count($attributeAndRelationData) > 0);
@@ -345,6 +501,9 @@
             return array_pop($attributeAndRelationData);
         }
 
+        /**
+         * @param $attributeOrRelationAndAttributeData
+         */
         private function setAttributeAndRelationData($attributeOrRelationAndAttributeData)
         {
             assert('is_string($attributeOrRelationAndAttributeData) || is_array($attributeOrRelationAndAttributeData)');

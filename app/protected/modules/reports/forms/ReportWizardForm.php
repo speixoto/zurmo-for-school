@@ -25,25 +25,26 @@
      ********************************************************************************/
 
     /**
-     * Base class for all report wizard form models
+     * Base class for all report wizard form models.  Manages the interaction between the Report object and the
+     * user interface.
      */
     abstract class ReportWizardForm extends CFormModel
     {
-        const MODULE_VALIDATION_SCENARIO             = 'ValidateForModule';
+        const MODULE_VALIDATION_SCENARIO                        = 'ValidateForModule';
 
-        const FILTERS_VALIDATION_SCENARIO            = 'ValidateForFilters';
+        const FILTERS_VALIDATION_SCENARIO                       = 'ValidateForFilters';
 
-        const DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
+        const DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO            = 'ValidateForDisplayAttributes';
 
         const DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO = 'ValidateForDisplayAttributes';
 
-        const ORDER_BYS_VALIDATION_SCENARIO          = 'ValidateForOrderBys';
+        const ORDER_BYS_VALIDATION_SCENARIO                     = 'ValidateForOrderBys';
 
-        const GROUP_BYS_VALIDATION_SCENARIO          = 'ValidateForGroupBys';
+        const GROUP_BYS_VALIDATION_SCENARIO                     = 'ValidateForGroupBys';
 
-        const CHART_VALIDATION_SCENARIO              = 'ValidateForChart';
+        const CHART_VALIDATION_SCENARIO                         = 'ValidateForChart';
 
-        const GENERAL_DATA_VALIDATION_SCENARIO       = 'ValidateForGeneralData';
+        const GENERAL_DATA_VALIDATION_SCENARIO                  = 'ValidateForGeneralData';
 
         public $description;
 
@@ -53,32 +54,78 @@
          */
         public $id;
 
+        /**
+         * @var string
+         */
         public $moduleClassName;
 
+        /**
+         * Name of report
+         * @var string
+         */
         public $name;
 
+        /**
+         * Type of report
+         * @var string
+         */
         public $type;
 
+        /**
+         * @var integer
+         */
         public $ownerId;
 
+        /**
+         * @var string
+         */
         public $ownerName;
 
+        /**
+         * @var string
+         */
         public $filtersStructure;
 
+        /**
+         * @var array
+         */
         public $filters                    = array();
 
+        /**
+         * @var array
+         */
         public $groupBys                   = array();
 
+        /**
+         * @var array
+         */
         public $orderBys                   = array();
 
+        /**
+         * @var array
+         */
         public $displayAttributes          = array();
 
+        /**
+         * @var array
+         */
         public $drillDownDisplayAttributes = array();
 
+        /**
+         * @var object ChartForReportForm
+         */
         public $chart;
 
+        /**
+         * @see Report->currencyConversionType
+         * @var integer
+         */
         public $currencyConversionType;
 
+        /**
+         * @see Report->spotConversionCurrencyCode
+         * @var string
+         */
         public $spotConversionCurrencyCode;
 
         protected $isNew = false;
@@ -100,6 +147,10 @@
             return $this->id;
         }
 
+        /**
+         * If the report has not been saved yet, then this returns true
+         * @return bool
+         */
         public function isNew()
         {
             return $this->isNew;
@@ -155,21 +206,33 @@
             );
         }
 
+        /**
+         * @return object
+         */
         public function getExplicitReadWriteModelPermissions()
         {
             return $this->explicitReadWriteModelPermissions;
         }
 
+        /**
+         * @param ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions
+         */
         public function setExplicitReadWriteModelPermissions(ExplicitReadWriteModelPermissions $explicitReadWriteModelPermissions)
         {
             $this->explicitReadWriteModelPermissions = $explicitReadWriteModelPermissions;
         }
 
+        /**
+         * @return bool
+         */
         public function validateFilters()
         {
             return $this->validateComponent(ComponentForReportForm::TYPE_FILTERS, 'filters');
         }
 
+        /**
+         * Validates if the filter structure is valid.
+         */
         public function validateFiltersStructure()
         {
             if(count($this->filters) > 0)
@@ -183,11 +246,17 @@
             }
         }
 
+        /**
+         * @return bool
+         */
         public function validateOrderBys()
         {
             return $this->validateComponent(ComponentForReportForm::TYPE_ORDER_BYS, 'orderBys');
         }
 
+        /**
+         * @return bool
+         */
         public function validateDisplayAttributes()
         {
             $validated = $this->validateComponent(ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES, 'displayAttributes');
@@ -199,11 +268,17 @@
             return $validated;
         }
 
+        /**
+         * @return bool
+         */
         public function validateDrillDownDisplayAttributes()
         {
             return $this->validateComponent(ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES, 'drillDownDisplayAttributes');
         }
 
+        /**
+         * @return bool
+         */
         public function validateGroupBys()
         {
             $validated = $this->validateComponent(ComponentForReportForm::TYPE_GROUP_BYS, 'groupBys');
@@ -228,6 +303,9 @@
             return $validated;
         }
 
+        /**
+         * @return bool
+         */
         public function validateChart()
         {
             $passedValidation = true;
@@ -246,6 +324,9 @@
             return $passedValidation;
         }
 
+        /**
+         * @return bool
+         */
         public function validateSpotConversionCurrencyCode()
         {
             $passedValidation = true;
@@ -258,6 +339,29 @@
             return $passedValidation;
         }
 
+        /**
+         * @return array
+         */
+        public function getCurrencyConversionTypeDataAndLabels()
+        {
+            $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
+            return array(
+                Report::CURRENCY_CONVERSION_TYPE_ACTUAL =>
+                    Zurmo::t('ReportsModule', 'Do not convert (Can produce mixed results)'),
+                Report::CURRENCY_CONVERSION_TYPE_BASE   =>
+                    Zurmo::t('ReportsModule', 'Convert to base currency ({baseCurrencyCode})',
+                        array('{baseCurrencyCode}' => $baseCurrencyCode)),
+                Report::CURRENCY_CONVERSION_TYPE_SPOT   =>
+                    Zurmo::t('ReportsModule', 'Convert to base currency ({baseCurrencyCode}) and then to a spot currency',
+                                      array('{baseCurrencyCode}' => $baseCurrencyCode))
+            );
+        }
+
+        /**
+         * @param $componentType
+         * @param $componentName
+         * @return bool
+         */
         protected function validateComponent($componentType, $componentName)
         {
             assert('is_string($componentType)');
@@ -280,37 +384,16 @@
             return $passedValidation;
         }
 
+        /**
+         * @param $treeType string
+         * @param $count integer
+         * @return string
+         */
         protected static function resolveErrorAttributePrefix($treeType, $count)
         {
             assert('is_string($treeType)');
             assert('is_int($count)');
             return $treeType . '_' . $count . '_';
-        }
-
-        public function getTypeDataAndLabels()
-        {
-            $data  = array();
-            $types = ChartRules::availableTypes();
-            foreach($types as $type)
-            {
-                $data[$type] = ChartRules::getTranslatedTypeLabel($type);
-            }
-            return $data;
-        }
-
-        public function getCurrencyConversionTypeDataAndLabels()
-        {
-            $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
-            return array(
-                Report::CURRENCY_CONVERSION_TYPE_ACTUAL =>
-                    Zurmo::t('ReportsModule', 'Do not convert (Can produce mixed results)'),
-                Report::CURRENCY_CONVERSION_TYPE_BASE   =>
-                    Zurmo::t('ReportsModule', 'Convert to base currency ({baseCurrencyCode})',
-                        array('{baseCurrencyCode}' => $baseCurrencyCode)),
-                Report::CURRENCY_CONVERSION_TYPE_SPOT   =>
-                    Zurmo::t('ReportsModule', 'Convert to base currency ({baseCurrencyCode}) and then to a spot currency',
-                                      array('{baseCurrencyCode}' => $baseCurrencyCode))
-            );
         }
     }
 ?>

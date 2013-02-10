@@ -24,36 +24,76 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for filter definitions
+     */
     class FilterForReportForm extends ComponentForReportForm
     {
-        public $availableAtRunTime;
+        /**
+         * True if the filter is to be available as a run time filter that can be changed when running the report
+         * @var bool
+         */
+        public $availableAtRunTime = false;
 
+        /**
+         * If the filter attribute is a currency attribute, then this property should be populated
+         * @var string
+         */
         public $currencyIdForValue;
 
-        private $_operator;
-
+        /**
+         * @var mixed
+         */
         public $value;
 
+        /**
+         * Depending on the operator, if it is between for example, there will be 2 values.
+         * @var mixed
+         */
         public $secondValue;
 
+        /**
+         * owner__User for example uses this property to define the owner's name which can then be used in the user
+         * interface
+         * @var string
+         */
         public $stringifiedModelForValue;
 
+        /**
+         * Some attributes like date and DateTime use valueType to define the type of filter instead of using the
+         * operator.
+         * @var string
+         */
         public $valueType;
 
+        /**
+         * @var string
+         */
+        private $_operator;
+
+        /**
+         * @var array
+         */
         private $_availableOperatorsType;
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_FILTERS;
         }
 
+        /**
+         * @return array
+         */
         public function attributeNames()
         {
             return array_merge(parent::attributeNames(), array('operator'));
         }
 
         /**
-         * Reset availabelOperatorsType cache whenever a new attribute is set
+         * Reset availableOperatorsType cache whenever a new attribute is set
          * (non-PHPdoc)
          * @see ComponentForReportForm::__set()
          */
@@ -66,6 +106,10 @@
             }
         }
 
+        /**
+         * @param $value
+         * @throws NotSupportedException
+         */
         public function setOperator($value)
         {
             if(!in_array($value, OperatorRules::availableTypes()) && $value != null)
@@ -75,11 +119,17 @@
             $this->_operator = $value;
         }
 
+        /**
+         * @return string
+         */
         public function getOperator()
         {
             return $this->_operator;
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -97,6 +147,9 @@
             ));
         }
 
+        /**
+         * @return bool
+         */
         public function validateOperator()
         {
             if($this->getAvailableOperatorsType() != null && $this->operator == null)
@@ -106,6 +159,9 @@
             }
         }
 
+        /**
+         * @return bool
+         */
         public function validateValue()
         {
             if((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
@@ -141,6 +197,8 @@
         /**
          * When the operator type is Between the secondValue is required. Also if the valueType, which is used by
          * date/datetime attributes is set to Between than the secondValue is required.
+         * @return bool
+         * @throws NotSupportedException
          */
         public function validateSecondValue()
         {
@@ -162,6 +220,9 @@
             return $passedValidation;
         }
 
+        /**
+         * @return bool
+         */
         public function validateValueType()
         {
             if($this->getValueElementType() == 'MixedDateTypesForReport' && $this->valueType == null)
@@ -171,42 +232,9 @@
             }
         }
 
-        private function createValueValidatorsByRules(Array $rules)
-        {
-            $validators=new CList;
-            foreach($rules as $rule)
-            {
-                if(isset($rule[0],$rule[1]))
-                {
-                    $validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
-                }
-                else
-                {
-                    throw new CException(Zurmo::t('ReportsModule','{class} has an invalid validation rule. The rule must specify ' .
-                                                      'attributes to be validated and the validator name.' ,
-                        array('{class}'=>get_class($this))));
-                }
-            }
-            return $validators;
-        }
-
-        private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
-        {
-            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            $rules                = array_merge($rules,
-                                    $modelToReportAdapter->getFilterRulesByAttribute(
-                                    $this->getResolvedAttribute(), $ruleAttributeName));
-            $validators           = $this->createValueValidatorsByRules($rules);
-            foreach($validators as $validator)
-            {
-                $validated = $validator->validate($this);
-                if(!$validated)
-                {
-                    $passedValidation = false;
-                }
-            }
-        }
-
+        /**
+         * @return bool
+         */
         public function hasAvailableOperatorsType()
         {
             if($this->getAvailableOperatorsType() != null)
@@ -216,22 +244,10 @@
             return false;
         }
 
-        protected function getAvailableOperatorsType()
-        {
-            if($this->attributeIndexOrDerivedType == null)
-            {
-                throw new NotSupportedException();
-            }
-            if($this->_availableOperatorsType != null)
-            {
-                return $this->_availableOperatorsType;
-            }
-            $modelToReportAdapter          = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            $availableOperatorsType        = $modelToReportAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
-            $this->_availableOperatorsType = $availableOperatorsType;
-            return $availableOperatorsType;
-        }
-
+        /**
+         * @return array
+         * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
+         */
         public function getOperatorValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)
@@ -282,6 +298,10 @@
             return $data;
         }
 
+        /**
+         * @return null|string
+         * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
+         */
         public function getValueElementType()
         {
             if($this->attributeIndexOrDerivedType == null)
@@ -292,6 +312,10 @@
             return $modelToReportAdapter->getFilterValueElementType($this->getResolvedAttribute());
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException if the resolved attribute is invalid and not on the resolved model
+         */
         public function getCustomFieldDataAndLabels()
         {
             $modelClassName       = $this->getResolvedAttributeModelClassName();
@@ -309,6 +333,29 @@
             }
         }
 
+        /**
+         * @return array|null|string
+         * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
+         */
+        protected function getAvailableOperatorsType()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            if($this->_availableOperatorsType != null)
+            {
+                return $this->_availableOperatorsType;
+            }
+            $modelToReportAdapter          = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            $availableOperatorsType        = $modelToReportAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
+            $this->_availableOperatorsType = $availableOperatorsType;
+            return $availableOperatorsType;
+        }
+
+        /**
+         * @return array
+         */
         protected static function getValueTypesWhereValueIsRequired()
         {
             return array(MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE,
@@ -317,11 +364,17 @@
                          MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN);
         }
 
+        /**
+         * @return array
+         */
         protected static function getValueTypesWhereSecondValueIsRequired()
         {
             return array(MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN);
         }
 
+        /**
+         * @return array
+         */
         protected static function getOperatorsWhereValueIsRequired()
         {
             return array(OperatorRules::TYPE_EQUALS,
@@ -337,9 +390,58 @@
                          OperatorRules::TYPE_BETWEEN);
         }
 
+        /**
+         * @return array
+         */
         protected static function getOperatorsWhereSecondValueIsRequired()
         {
             return array(OperatorRules::TYPE_BETWEEN);
+        }
+
+        /**
+         * @param array $rules
+         * @return CList
+         * @throws CException
+         */
+        private function createValueValidatorsByRules(Array $rules)
+        {
+            $validators=new CList;
+            foreach($rules as $rule)
+            {
+                if(isset($rule[0],$rule[1]))
+                {
+                    $validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
+                }
+                else
+                {
+                    throw new CException(Zurmo::t('ReportsModule','{class} has an invalid validation rule. The rule must specify ' .
+                        'attributes to be validated and the validator name.' ,
+                        array('{class}'=>get_class($this))));
+                }
+            }
+            return $validators;
+        }
+
+        /**
+         * @param array $rules
+         * @param $passedValidation
+         * @param $ruleAttributeName
+         */
+        private function resolveAndValidateValueData(Array $rules, & $passedValidation, $ruleAttributeName)
+        {
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            $rules                = array_merge($rules,
+                $modelToReportAdapter->getFilterRulesByAttribute(
+                    $this->getResolvedAttribute(), $ruleAttributeName));
+            $validators           = $this->createValueValidatorsByRules($rules);
+            foreach($validators as $validator)
+            {
+                $validated = $validator->validate($this);
+                if(!$validated)
+                {
+                    $passedValidation = false;
+                }
+            }
         }
     }
 ?>
