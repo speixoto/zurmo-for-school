@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base kelper class for managing adapting model relations and attributes into a summable report
+     */
     abstract class ModelRelationsAndAttributesToSummableReportAdapter extends ModelRelationsAndAttributesToReportAdapter
     {
         const DISPLAY_CALCULATION_COUNT      = 'Count';
@@ -46,8 +49,15 @@
 
         const GROUP_BY_CALCULATION_YEAR      = 'Year';
 
+        /**
+         * @var bool
+         */
         protected $shouldIncludeIdAsGroupByAttribute = true;
 
+        /**
+         * @param $type
+         * @return string
+         */
         protected static function getTranslatedDisplayCalculationShortLabel($type)
         {
             assert('is_string($type)');
@@ -55,6 +65,9 @@
             return $labels[$type];
         }
 
+        /**
+         * @return array
+         */
         protected static function getDisplayCalculationTypes()
         {
             return array(
@@ -66,6 +79,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         protected static function translatedDisplayCalculationShortLabels()
         {
             return array(
@@ -77,6 +93,10 @@
             );
         }
 
+        /**
+         * @param $type
+         * @return string
+         */
         protected static function getTranslatedGroupByCalculationShortLabel($type)
         {
             assert('is_string($type)');
@@ -84,6 +104,9 @@
             return $labels[$type];
         }
 
+        /**
+         * @return array
+         */
         protected static function translatedGroupByCalculationShortLabels()
         {
             return array(
@@ -95,6 +118,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function getAttributesForFilters()
         {
             $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
@@ -104,8 +130,6 @@
         }
 
         /**
-         *
-         * Enter description here ...
          * @param string $attribute
          */
         public function getAttributeLabel($attribute)
@@ -124,6 +148,14 @@
             return parent::getAttributeLabel($attribute);
         }
 
+        /**
+         * @param array $existingGroupBys
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return array
+         * @throws NotSupportedException if there the preceding model and relation are not either both defined or both
+         * null
+         */
         public function getAttributesForDisplayAttributes($existingGroupBys = array(),
                                                           RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
@@ -145,6 +177,14 @@
             return $sortedAttributes;
         }
 
+        /**
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param string $attribute
+         * @param string $tableName
+         * @param string $columnName
+         * @param string $columnAliasName
+         * @param null|string $queryStringExtraPart
+         */
         public function resolveDisplayAttributeTypeAndAddSelectClause(RedBeanModelSelectQueryAdapter $selectQueryAdapter,
                                                                       $attribute, $tableName, $columnName,
                                                                       $columnAliasName, $queryStringExtraPart = null)
@@ -204,6 +244,14 @@
             }
         }
 
+        /**
+         * @param string $attribute
+         * @param string $tableName
+         * @param string $columnName
+         * @param null|string $queryStringExtraPart
+         * @return string
+         * @throws NotSupportedException if the type is invalid or null
+         */
         public function resolveOrderByStringForCalculationOrModifier($attribute, $tableName, $columnName, $queryStringExtraPart = null)
         {
             assert('is_string($attribute)');
@@ -261,17 +309,10 @@
             }
         }
 
-//todo: should we really call resolveReal in here? or have that outside and then call this method? make it a bit cleaner
-        private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
-        {
-            assert('is_string($attribute)');
-            if($this->getRealModelAttributeType($this->resolveRealAttributeName($attribute)) == 'DateTime')
-            {
-                return true;
-            }
-            return false;
-        }
-
+        /**
+         * @param string $relation
+         * @return bool
+         */
         public function relationIsReportedAsAttribute($relation)
         {
             assert('is_string($relation)');
@@ -282,7 +323,10 @@
             return parent::relationIsReportedAsAttribute($relation);
         }
 
-
+        /**
+         * @param string $attribute
+         * @return bool
+         */
         public function isAttributeACalculationOrModifier($attribute)
         {
             assert('is_string($attribute)');
@@ -295,6 +339,10 @@
             return false;
         }
 
+        /**
+         * @param string $attribute
+         * @return bool
+         */
         public function isAttributeACalculatedGroupByModifier($attribute)
         {
             assert('is_string($attribute)');
@@ -306,6 +354,10 @@
             return false;
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         */
         public function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
@@ -316,6 +368,10 @@
             return parent::resolveRealAttributeName($attribute);
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         */
         public function getCalculationOrModifierType($attribute)
         {
             $parts = explode(FormModelUtil::DELIMITER, $attribute);
@@ -326,7 +382,9 @@
             return $attribute;
         }
 
-
+        /**
+         * @return array
+         */
         public function getAttributesForGroupBys()
         {
             $attributes       = array();
@@ -340,6 +398,10 @@
             return $sortedAttributes;
         }
 
+        /**
+         * @param string $attributeIndexOrDerivedType
+         * @return bool
+         */
         public function isAttributeIndexOrDerivedTypeADisplayCalculation($attributeIndexOrDerivedType)
         {
             assert('is_string($attributeIndexOrDerivedType)');
@@ -355,6 +417,10 @@
             return false;
         }
 
+        /**
+         * @param string $attribute
+         * @return bool
+         */
         public function isDisplayAttributeMadeViaSelect($attribute)
         {
             $displayCalculationAttributes = $this->getDisplayCalculationAttributes();
@@ -367,6 +433,11 @@
             return parent::isDisplayAttributeMadeViaSelect($attribute);
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         * @throws NotSupportedException if the attribute is an invalid display calculation
+         */
         public function getDisplayElementType($attribute)
         {
             assert('is_string($attribute)');
@@ -407,6 +478,17 @@
             return parent::getDisplayElementType($attribute);
         }
 
+        /**
+         * @return array
+         */
+        protected static function getAttributeTypesToExcludeAsGroupByModifiers()
+        {
+            return array('MultiSelectDropDown', 'TagCloud', 'TextArea', 'Date', 'DateTime');
+        }
+
+        /**
+         * @return array
+         */
         protected function getDisplayCalculationAttributes()
         {
             $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Zurmo::t('ReportsModule', 'Count')));
@@ -417,6 +499,10 @@
             return $attributes;
         }
 
+        /**
+         * @param array $attributes
+         * @param string $attribute
+         */
         protected function getDisplayCalculationAttribute(& $attributes, $attribute)
         {
             $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
@@ -442,6 +528,12 @@
             }
         }
 
+        /**
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @param array $attributes
+         * @param array $existingGroupBys
+         */
         protected function resolveGroupByAttributesForDisplayAttributes(RedBeanModel $precedingModel = null,
                                                                         $precedingRelation = null,
                                                                         & $attributes,
@@ -482,6 +574,11 @@
             }
         }
 
+        /**
+         * @param array $attributes
+         * @param string $attribute
+         * @param string $type
+         */
         protected function resolveDisplayCalculationAttributeData(& $attributes, $attribute, $type)
         {
             assert('is_array($attributes)');
@@ -491,6 +588,11 @@
                         array('label' => $this->resolveDisplayCalculationLabel($attribute, $type));
         }
 
+        /**
+         * @param string $attribute
+         * @param string $type
+         * @return string
+         */
         protected function resolveDisplayCalculationLabel($attribute, $type)
         {
             assert('is_string($type)');
@@ -498,6 +600,9 @@
                    ' -(' . static::getTranslatedDisplayCalculationShortLabel($type) . ')';
         }
 
+        /**
+         * @return array
+         */
         protected function getGroupByModifierAttributes()
         {
             $attributes = array();
@@ -512,11 +617,9 @@
             return array_merge($this->getGroupByCalculatedModifierAttributes(), $attributes);
         }
 
-        protected static function getAttributeTypesToExcludeAsGroupByModifiers()
-        {
-            return array('MultiSelectDropDown', 'TagCloud', 'TextArea', 'Date', 'DateTime');
-        }
-
+        /**
+         * @return array
+         */
         protected function getGroupByCalculatedModifierAttributes()
         {
             $attributes = array();
@@ -535,7 +638,11 @@
             return $attributes;
         }
 
-
+        /**
+         * @param array $attributes
+         * @param string $attribute
+         * @param string $type
+         */
         protected function resolveGroupByCalculationAttributeData(& $attributes, $attribute, $type)
         {
             assert('is_array($attributes)');
@@ -545,6 +652,11 @@
                         array('label' => $this->resolveGroupByCalculationLabel($attribute, $type));
         }
 
+        /**
+         * @param string $attribute
+         * @param string $type
+         * @return string
+         */
         protected function resolveGroupByCalculationLabel($attribute, $type)
         {
             assert('is_string($type)');
@@ -552,6 +664,10 @@
                    ' -(' . static::getTranslatedGroupByCalculationShortLabel($type) . ')';
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         */
         protected function getDisplayAttributeForMakingViaSelectType($attribute)
         {
             assert('is_string($attribute)');
@@ -566,6 +682,21 @@
                 $parts = explode(FormModelUtil::DELIMITER, $attribute);
                 return $parts[1];
             }
+        }
+
+    //todo: should we really call resolveReal in here? or have that outside and then call this method? make it a bit cleaner
+        /**
+         * @param string $attribute
+         * @return bool
+         */
+        private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->getRealModelAttributeType($this->resolveRealAttributeName($attribute)) == 'DateTime')
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>
