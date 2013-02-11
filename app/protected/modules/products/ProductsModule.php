@@ -26,9 +26,9 @@
 
     class ProductsModule extends SecurableModule
     {
-        const RIGHT_CREATE_ACCOUNTS = 'Create Accounts';
-        const RIGHT_DELETE_ACCOUNTS = 'Delete Accounts';
-        const RIGHT_ACCESS_ACCOUNTS = 'Access Accounts Tab';
+        const RIGHT_CREATE_PRODUCTS = 'Create Products';
+        const RIGHT_DELETE_PRODUCTS = 'Delete Products';
+        const RIGHT_ACCESS_PRODUCTS = 'Access Products Tab';
 
         public function getDependencies()
         {
@@ -40,15 +40,15 @@
 
         public function getRootModelNames()
         {
-            return array('Account');
+            return array('Product');
         }
 
         public static function getUntranslatedRightsLabels()
         {
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_ACCOUNTS] = 'Create AccountsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_ACCOUNTS] = 'Delete AccountsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_ACCOUNTS] = 'Access AccountsModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_PRODUCTS] = 'Create ProductsModulePluralLabel';
+            $labels[self::RIGHT_DELETE_PRODUCTS] = 'Delete ProductsModulePluralLabel';
+            $labels[self::RIGHT_ACCESS_PRODUCTS] = 'Access ProductsModulePluralLabel Tab';
             return $labels;
         }
 
@@ -64,21 +64,19 @@
                 ),
                 'globalSearchAttributeNames' => array(
                     'name',
-                    'anyEmail',
-                    'officePhone',
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'AccountsModulePluralLabel',
-                        'url'   => array('/accounts/default'),
-                        'right' => self::RIGHT_ACCESS_ACCOUNTS,
+                        'label' => 'ProductsModulePluralLabel',
+                        'url'   => array('/products/default'),
+                        'right' => self::RIGHT_ACCESS_PRODUCTS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'AccountsModuleSingularLabel',
-                        'url'   => array('/accounts/default/create'),
-                        'right' => self::RIGHT_CREATE_ACCOUNTS,
+                        'label' => 'ProductsModuleSingularLabel',
+                        'url'   => array('/products/default/create'),
+                        'right' => self::RIGHT_CREATE_PRODUCTS,
                     ),
                 )
             );
@@ -87,37 +85,37 @@
 
         public static function getPrimaryModelName()
         {
-            return 'Account';
+            return 'Product';
         }
 
         public static function getAccessRight()
         {
-            return self::RIGHT_ACCESS_ACCOUNTS;
+            return self::RIGHT_ACCESS_PRODUCTS;
         }
 
         public static function getCreateRight()
         {
-            return self::RIGHT_CREATE_ACCOUNTS;
+            return self::RIGHT_CREATE_PRODUCTS;
         }
 
         public static function getDeleteRight()
         {
-            return self::RIGHT_DELETE_ACCOUNTS;
+            return self::RIGHT_DELETE_PRODUCTS;
         }
 
         public static function getDefaultDataMakerClassName()
         {
-            return 'AccountsDefaultDataMaker';
+            return 'ProductsDefaultDataMaker';
         }
 
         public static function getDemoDataMakerClassName()
         {
-            return 'AccountsDemoDataMaker';
+            return 'ProductsDemoDataMaker';
         }
 
         public static function getGlobalSearchFormClassName()
         {
-            return 'AccountsSearchForm';
+            return 'ProductsSearchForm';
         }
 
         public static function hasPermissions()
