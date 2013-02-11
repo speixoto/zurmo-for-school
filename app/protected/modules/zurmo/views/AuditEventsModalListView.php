@@ -31,7 +31,8 @@
         public function __construct($controllerId, $moduleId, $modelClassName, $dataProvider, $gridIdSuffix = null)
         {
             parent::__construct($controllerId, $moduleId, self::AUDIT_EVENTS_MODAL_LIST_ACTION_ID,
-                                                $modelClassName, null, $dataProvider, $gridIdSuffix);
+                                                $modelClassName, new NullModalListLinkProvider(),
+                                                $dataProvider, $gridIdSuffix);
         }
 
         public static function getDefaultMetadata()
