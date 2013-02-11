@@ -243,7 +243,7 @@
             $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
                                                       resolveAttributeByNodeId($nodeIdWithoutTreeType);
             $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                                      resolveInputPrefixData($wizardFormClassName,
                                                       $treeType, (int)$rowNumber);
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                       $form, $treeType);

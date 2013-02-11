@@ -24,12 +24,73 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for adapting relation and attribute data into tree data
+     */
     class ReportRelationsAndAttributesToTreeAdapter
     {
+        /**
+         * @var Report
+         */
         protected $report;
 
+        /**
+         * @var string
+         */
         protected $treeType;
 
+        /**
+         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
+         * The nodeId has the treeType as a prefix in order to distinguish from other nodes in the user interface.
+         * @param string $nodeId
+         * @param string $treeType
+         * @return string nodeId without the prefixed treeType
+         */
+        public static function removeTreeTypeFromNodeId($nodeId, $treeType)
+        {
+            assert('is_string($nodeId)');
+            assert('is_string($treeType)');
+            $nodeIdParts  = explode($treeType . '_', $nodeId);
+            return $nodeIdParts[1];
+        }
+
+        /**
+         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
+         * @param string $formModelClassName
+         * @param string $treeType
+         * @param integer $rowNumber
+         * @return array of input prefix parts.  Excludes the last element which is typically an attribute since this
+         * is not part of the prefix for an Element.  Adds in the formModelClassName, a treeType, and then the rowNumber
+         * as the first 2 elements.
+         */
+        public static function resolveInputPrefixData($formModelClassName, $treeType, $rowNumber)
+        {
+            assert('is_string($formModelClassName)');
+            assert('is_string($treeType)');
+            assert('is_int($rowNumber)');
+            $inputPrefixData   = array();
+            $inputPrefixData[] = $formModelClassName;
+            $inputPrefixData[] = $treeType;
+            $inputPrefixData[] = $rowNumber;
+            return $inputPrefixData;
+        }
+
+        /**
+         * Extracts the attribute which is the last part of the nodeId and @returns the attribute string.
+         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
+         * @param string $nodeIdWithoutTreeType
+         * @return string
+         */
+        public static function resolveAttributeByNodeId($nodeIdWithoutTreeType)
+        {
+            assert('is_string($nodeIdWithoutTreeType)');
+            return $nodeIdWithoutTreeType;
+        }
+
+        /**
+         * @param Report $report
+         * @param string $treeType
+         */
         public function __construct(Report $report, $treeType)
         {
             assert('is_string($treeType)');
@@ -37,11 +98,18 @@
             $this->treeType = $treeType;
         }
 
+        /**
+         * @return string
+         */
         public function getTreeType()
         {
             return $this->treeType;
         }
 
+        /**
+         * @param string $nodeId
+         * @return array
+         */
         public function getData($nodeId)
         {
             assert('is_string($nodeId)');
@@ -80,6 +148,10 @@
             return $data;
         }
 
+        /**
+         * @param $nodeId
+         * @return string
+         */
         protected function resolveNodeIdByRemovingTreeType($nodeId)
         {
             assert('is_string($nodeId)');
@@ -91,6 +163,15 @@
             return $nodeIdParts[1];
         }
 
+        /**
+         * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
+         * @param RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @param null|string $nodeIdPrefix
+         * @return array
+         * @throws NotSupportedException if one of the relations for the selectable data does not have a module class name
+         * defined
+         */
         protected function getChildrenNodeData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                                RedBeanModel $precedingModel = null,
                                                $precedingRelation = null, $nodeIdPrefix = null)
@@ -127,6 +208,12 @@
             return $childrenNodeData;
         }
 
+        /**
+         * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
+         * @param RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @throws NotSupportedException if the treeType is invalid or null
+         */
         protected function getAttributesData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                              RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
@@ -159,6 +246,11 @@
             }
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @return ModelRelationsAndAttributesToReportAdapter based object
+         */
         protected function makeModelRelationsAndAttributesToReportAdapter($moduleClassName, $modelClassName)
         {
             assert('is_string($moduleClassName)');
@@ -167,6 +259,11 @@
                                                                     $this->report->getType());
         }
 
+        /**
+         * @param string $relation
+         * @param null|string  $nodeIdPrefix
+         * @return string
+         */
         protected function makeNodeId($relation, $nodeIdPrefix = null)
         {
             assert('is_string($relation)');
@@ -180,7 +277,10 @@
             return $this->treeType . '_' . $content;
         }
 
-
+        /**
+         * @param string $nodeId
+         * @return null|string
+         */
         protected function resolveNodeIdPrefixByNodeId($nodeId)
         {
             assert('is_string($nodeId)');
@@ -192,9 +292,16 @@
             return implode(FormModelUtil::RELATION_DELIMITER, $relations) . FormModelUtil::RELATION_DELIMITER;
         }
 
+        /**
+         * @param string $nodeId
+         * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
+         * @param RedBeanModel $precedingModel
+         * @param string $precedingRelation
+         */
         protected function resolvePrecedingModelRelationAndAdapterByNodeId(
                                 $nodeId, & $modelToReportAdapter, & $precedingModel, & $precedingRelation)
         {
+            assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             if($nodeId == 'source')
             {
                 return;
@@ -216,49 +323,6 @@
                 $modelToReportAdapter  = $this->makeModelRelationsAndAttributesToReportAdapter(
                                          $relationModelClassName::getModuleClassName(), $relationModelClassName);
             }
-        }
-
-        /**
-         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
-         * The nodeId has the treeType as a prefix in order to distinguish from other nodes in the user interface.
-         * @return a string nodeId without the prefixed treeType
-         */
-        public static function removeTreeTypeFromNodeId($nodeId, $treeType)
-        {
-            assert('is_string($nodeId)');
-            assert('is_string($treeType)');
-            $nodeIdParts  = explode($treeType . '_', $nodeId);
-            return $nodeIdParts[1];
-        }
-
-        /**
-         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
-         * @return array of input prefix parts.  Excludes the last element which is typically an attribute since this
-         * is not part of the prefix for an Element.  Adds in the formModelClassName, a treeType, and then the rowNumber
-         * as the first 2 elements.
-         */
-        public static function resolveInputPrefixData($nodeIdWithoutTreeType, $formModelClassName, $treeType, $rowNumber)
-        {
-            assert('is_string($nodeIdWithoutTreeType)');
-            assert('is_string($formModelClassName)');
-            assert('is_string($treeType)');
-            assert('is_int($rowNumber)');
-
-            $inputPrefixData = array();
-            $inputPrefixData[] = $formModelClassName;
-            $inputPrefixData[] = $treeType;
-            $inputPrefixData[] = $rowNumber;
-            return $inputPrefixData;
-        }
-
-        /**
-         * Extracts the attribute which is the last part of the nodeId and @returns the attribute string.
-         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
-         */
-        public static function resolveAttributeByNodeId($nodeIdWithoutTreeType)
-        {
-            assert('is_string($nodeIdWithoutTreeType)');
-            return $nodeIdWithoutTreeType;
         }
     }
 ?>

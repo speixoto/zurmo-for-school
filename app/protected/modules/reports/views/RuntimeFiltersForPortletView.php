@@ -100,7 +100,7 @@
                 {
                     $nodeIdWithoutTreeType      = $filterForReportForm->attributeIndexOrDerivedType;
                     $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
-                                                  resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                                  resolveInputPrefixData($wizardFormClassName,
                                                   $treeType, $rowCount);
                     $adapter                    = new RuntimeReportAttributeToElementAdapter($inputPrefixData, $filterForReportForm,
                                                   $form, $treeType);

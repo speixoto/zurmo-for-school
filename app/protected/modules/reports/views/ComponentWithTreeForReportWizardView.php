@@ -128,7 +128,7 @@
             {
                 $nodeIdWithoutTreeType      = $component->attributeIndexOrDerivedType;
                 $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
-                                              resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                              resolveInputPrefixData($wizardFormClassName,
                                               $this->getTreeType(), $rowCount);
                 $adapter                    = new ReportAttributeToElementAdapter($inputPrefixData, $component,
                                               $this->form, $this->getTreeType());

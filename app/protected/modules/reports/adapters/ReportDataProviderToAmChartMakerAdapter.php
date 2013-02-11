@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for adapting the ReportDataProvider data to an AmChartMakerAdapter
+     */
     class ReportDataProviderToAmChartMakerAdapter
     {
         const FIRST_SERIES_VALUE_PREFIX     = 'FirstSeriesValue';
@@ -40,60 +43,113 @@
 
         const SECOND_SERIES_FORMATTED_VALUE = 'SecondSeriesFormattedValue';
 
+        /**
+         * @var Report
+         */
         protected $report;
 
+        /**
+         * @var array
+         */
         protected $data;
 
+        /**
+         * @var array
+         */
         protected $secondSeriesValueData     = array();
 
+        /**
+         * @var array
+         */
         protected $secondSeriesDisplayLabels = array();
 
+        /**
+         * @var null | integer
+         */
         protected $secondSeriesValueCount;
 
+        /**
+         * @var
+         */
         protected $formattedData;
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveFirstSeriesValueName($key)
         {
             assert('is_int($key)');
             return self::FIRST_SERIES_VALUE_PREFIX . $key;
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveFirstSeriesDisplayLabelName($key)
         {
             assert('is_int($key)');
             return self::FIRST_SERIES_DISPLAY_LABEL . $key;
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveFirstRangeDisplayLabelName($key)
         {
             assert('is_int($key)');
             return self::FIRST_RANGE_DISPLAY_LABEL . $key;
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveFirstSeriesFormattedValueName($key)
         {
             assert('is_int($key)');
             return self::FIRST_SERIES_FORMATTED_VALUE . $key;
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveSecondSeriesValueName($key)
         {
             assert('is_int($key)');
             return self::SECOND_SERIES_VALUE . $key;
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveSecondSeriesDisplayLabelName($key)
         {
             assert('is_int($key)');
             return self::SECOND_SERIES_DISPLAY_LABEL . $key;
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveSecondSeriesFormattedValueName($key)
         {
             assert('is_int($key)');
             return self::SECOND_SERIES_FORMATTED_VALUE . $key;
         }
 
+        /**
+         * @param Report $report
+         * @param array $data
+         * @param array $secondSeriesValueData
+         * @param array $secondSeriesDisplayLabels
+         * @param null | integer $secondSeriesValueCount
+         */
         public function __construct(Report $report, Array $data, Array $secondSeriesValueData = array(),
                                     Array $secondSeriesDisplayLabels = array(),
                                     $secondSeriesValueCount = null)
@@ -106,11 +162,17 @@
             $this->secondSeriesValueCount     = $secondSeriesValueCount;
         }
 
+        /**
+         * @return string
+         */
         public function getType()
         {
             return $this->report->getChart()->type;
         }
 
+        /**
+         * @return array
+         */
         public function getData()
         {
             if($this->formattedData == null)
@@ -120,22 +182,36 @@
             return  $this->formattedData;
         }
 
+        /**
+         * @return null|integer
+         */
         public function getSecondSeriesValueCount()
         {
             return $this->secondSeriesValueCount;
         }
 
+        /**
+         * @return bool
+         */
         public function isStacked()
         {
             return ChartRules::isStacked($this->getType());
         }
 
+        /**
+         * @param $key
+         * @return string
+         */
         public function getSecondSeriesDisplayLabelByKey($key)
         {
             assert('is_int($key)');
             return $this->secondSeriesDisplayLabels[$key];
         }
 
+        /**
+         * @param $data
+         * @return array
+         */
         protected function formatData($data)
         {
             if(!$this->isStacked())
@@ -167,6 +243,13 @@
             return $data;
         }
 
+        /**
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @param mixed $value
+         * @return mixed
+         * @throws NotSupportedException if the currencyConversionType is invalid or null, when the displayAttribute
+         * is a currency type
+         */
         protected function formatValue(DisplayAttributeForReportForm $displayAttribute, $value)
         {
             if($displayAttribute->isATypeOfCurrencyValue())

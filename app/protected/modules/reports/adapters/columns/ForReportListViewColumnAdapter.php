@@ -24,8 +24,14 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
+    /**
+     * Base class for working with report grid columns and adapting them to properly display content
+     */
     abstract class ForReportListViewColumnAdapter extends ListViewColumnAdapter
     {
+        /**
+         * @return int
+         */
         protected function getCurrencyValueConversionType()
         {
             if (isset($this->params['currencyValueConversionType']))
@@ -35,6 +41,10 @@
             return Report::CURRENCY_CONVERSION_TYPE_ACTUAL;
         }
 
+        /**
+         * @return mixed
+         * @throws NotSupportedException
+         */
         protected function getSpotConversionCurrencyCode()
         {
             if (isset($this->params['spotConversionCurrencyCode']))
@@ -44,6 +54,10 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @return mixed
+         * @throws NotSupportedException
+         */
         protected function getFromBaseToSpotRate()
         {
             if (isset($this->params['fromBaseToSpotRate']))

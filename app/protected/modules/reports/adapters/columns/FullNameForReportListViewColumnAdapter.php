@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with full name derived attribute and displaying it in a report results grid
+     */
     class FullNameForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
             if ($this->getIsLink())

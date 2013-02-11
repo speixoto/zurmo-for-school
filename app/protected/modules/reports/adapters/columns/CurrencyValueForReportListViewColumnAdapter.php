@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with a currency value attribute and displaying it in a report results grid
+     */
     class CurrencyValueForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
+        /**
+         * @return array
+         * @throws NotSupportedException if the currencyValueConversionType is invalid or null
+         */
         public function renderGridViewData()
         {
             if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
