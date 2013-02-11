@@ -24,8 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    abstract class CombinedInboxRules
+    /**
+     * Form to help manage the mashable inbox
+     */
+    class MashableInboxForm extends CFormModel
     {
-        
+        /**
+         * Value to be used to signal that the filtering is for all models and not a specific one.
+         * @var string
+         */
+        const  FILTERED_BY_ALL = 'all';
+
+        public $searchTerm = '';
+
+        /**
+         * What model to filter by if any for the latest activity feed.  Defaults to not filtering on anything, thus
+         * showing all available models that implement the MashableActivityInterface.
+         * @var string
+         */
+        public $filteredByModelName = self::FILTERED_BY_ALL;
+
+        /**
+         * Models that implement the CombinedInboxInterface and the current user has
+         * rights to see, this array contains the model class names as the indexes and the translated model labels
+         * as the values.
+         * @var array
+         */
+        public $mashableModelClassNamesAndDisplayLabels;
+
+
+        public function rules()
+        {
+            return array(
+                array('searchTerm',          'type',    'type' => 'string'),
+                array('filteredByModelName', 'type',    'type' => 'string'),
+            );
+        }
     }
 ?>

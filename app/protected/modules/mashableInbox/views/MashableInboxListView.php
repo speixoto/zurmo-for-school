@@ -24,25 +24,49 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Conversations Module User Walkthrough.
-     * Walkthrough for the users of all possible controller actions.
-     */
-    class CombinedInboxesUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class MashableInboxListView extends ListView
     {
-        public static function setUpBeforeClass()
+        protected $rowsAreSelectable = true;
+
+        public static function getDefaultMetadata()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+            $metadata = array(
+                'global' => array(
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'description', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'latestDateTime', 'type' => 'DateTime'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+
+            );
+            return $metadata;
         }
 
-        public function testSuperUserAllSimpleControllerActions()
+        protected function getCGridViewLastColumn()
         {
-            $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $content = $this->runControllerWithNoExceptionsAndGetContent('combinedInboxes/default');
-            $this->assertContains('CombinedInboxesListView', $content);
+            return array();
         }
+
+
     }
 ?>

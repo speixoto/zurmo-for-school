@@ -24,7 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CombinedInboxesUtil
+    class MashableUtilTest extends ZurmoBaseTest
     {
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $billy = UserTestHelper::createBasicUser('billy');
+        }
+
+        public function testGetModelDataForCurrentUserByInterfaceName()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $mashableModelData = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
+            $this->assertEquals(1, count($mashableModelData));
+            Yii::app()->user->userModel = User::getByUsername('billy');
+            $mashableModelData = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
+            $this->assertEquals(0, count($mashableModelData));
+        }
+
+        public function testCreateMashableInboxRulesByModel()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $mashableInboxRules = MashableUtil::createMashableInboxRulesByModel('conversation');
+            $this->assertEquals('ConversationMashableInboxRules', get_class($mashableInboxRules));
+        }
     }
 ?>

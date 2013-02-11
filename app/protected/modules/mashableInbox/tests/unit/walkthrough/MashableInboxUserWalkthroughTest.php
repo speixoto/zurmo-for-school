@@ -24,8 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    interface CombinedInboxInterface
+    class MashableInboxUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        public static function getCombinedInboxRulesType();
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+        }
+
+        public function testSuperUserAllSimpleControllerActions()
+        {
+            $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default');
+            $this->assertContains('MashableInboxListView', $content);
+        }
     }
 ?>

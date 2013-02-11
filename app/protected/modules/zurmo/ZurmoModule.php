@@ -140,7 +140,7 @@
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',
-                    'combinedInboxes',
+                    'mashableInbox',
                     'accounts',
                     'leads',
                     'contacts',

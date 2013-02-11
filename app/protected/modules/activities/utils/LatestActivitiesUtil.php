@@ -42,7 +42,7 @@
          */
         public static function getMashableModelDataForCurrentUser($includeHavingRelatedItems = true)
         {
-            return ActivitiesAndCombinedInboxesUtil::getInterfaceModelDataForCurrentUser('MashableActivityInterface', $includeHavingRelatedItems);
+            return MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableActivityInterface', $includeHavingRelatedItems);
         }
 
         /**

@@ -24,49 +24,49 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CombinedInboxesListView extends ListView
+    class MashableInboxActionBarAndSearchForListView extends ConfigurableMetadataView
     {
-        protected $rowsAreSelectable = true;
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'description', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'latestDateTime', 'type' => 'DateTime'),
-                                            ),
-                                        ),
-                                    )
-                                ),
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'          => 'MashableInboxCreate',
+                                'htmlOptions'     => array('class' => 'icon-create'),
                             ),
                         ),
                     ),
                 ),
-
             );
             return $metadata;
         }
 
-        protected function getCGridViewLastColumn()
+        public function __construct($controllerId, $moduleId)
         {
-            return array();
+            $this->controllerId              = $controllerId;
+            $this->moduleId                  = $moduleId;
         }
 
+        protected function renderContent()
+        {
+            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= $this->renderActionElementBar(false);
+            $content .= $this->renderCombinedInboxModels();
+            $content .= '</div></div>';
+            return $content;
+        }
 
+        protected function renderCombinedInboxModels()
+        {
+            $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
+            $items = array();
+            $content = '';
+            foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
+            {
+                $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
+                $content .= ZurmoHtml::link($modelLabel . ' (' . $unreadCount . ')');
+            }
+            return $content;
+        }
     }
-?>

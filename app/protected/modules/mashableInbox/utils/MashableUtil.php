@@ -24,9 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ActivitiesAndCombinedInboxesUtil
+    class MashableUtil
     {
-        public static function getInterfaceModelDataForCurrentUser($interfaceClassName, $includeHavingRelatedItems = true)
+
+        public static function createMashableInboxRulesByModel($modelClassName)
+        {
+            assert('is_string($modelClassName)');
+            $mashableInboxRulesType = $modelClassName::getMashableInboxRulesType();
+            assert('$mashableInboxRulesType !== null');
+            $mashableInboxRulesClassName = $mashableInboxRulesType . 'MashableInboxRules';
+            return new $mashableInboxRulesClassName();
+        }
+
+        public static function getModelDataForCurrentUserByInterfaceName($interfaceClassName, $includeHavingRelatedItems = true)
         {
             assert('is_string($interfaceClassName)');
             $interfaceModelClassNames = array();
@@ -53,6 +63,13 @@
                 }
             }
             return $interfaceModelClassNames;
+        }
+
+        public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
+        {
+            $mashableInboxRules =
+                    MashableUtil::createMashableInboxRulesByModel($modelClassName);
+            return $mashableInboxRules->getUnreadCountForCurrentUser();
         }
     }
 ?>

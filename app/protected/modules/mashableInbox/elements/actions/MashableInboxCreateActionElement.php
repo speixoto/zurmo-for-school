@@ -27,7 +27,7 @@
     /**
      * Class to render link user configuration
      */
-    class CombinedInboxesCreateActionElement extends LinkActionElement
+    class MashableInboxCreateActionElement extends LinkActionElement
     {
         public function getActionType()
         {
@@ -36,12 +36,12 @@
 
         public function render()
         {
-            $combinedInboxesModels = ActivitiesAndCombinedInboxesUtil::getInterfaceModelDataForCurrentUser('CombinedInboxInterface');
+            $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             $items = array();
-            foreach ($combinedInboxesModels as $key => $combinedInboxesModel)
+            foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
-                $items[] = array('label'   => $key,
-                                       'url'     => $this->getRouteForItem($combinedInboxesModel));
+                $items[] = array('label'   => $modelClassName,
+                                 'url'     => $this->getRouteForItem($modelClassName));
             }
             $menuItems = array('label' => $this->getLabel(),
                                'url'   => null,
@@ -66,9 +66,10 @@
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/');
         }
 
-        private function getRouteForItem($moduleId)
+        private function getRouteForItem($modelClassName)
         {
-            $moduleId = strtolower($moduleId); //TODO: Check how to get the module name => rules???
+            $moduleClassName = $modelClassName::getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
             return Yii::app()->createUrl($moduleId . '/' . $this->controllerId . '/create');
         }
     }

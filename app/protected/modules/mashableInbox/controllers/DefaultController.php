@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CombinedInboxesDefaultController extends ZurmoModuleController
+    class MashableInboxDefaultController extends ZurmoModuleController
     {
         public function actionList()
         {
@@ -43,12 +43,12 @@
             $dataProvider = new RedBeanModelsDataProvider('CombinedInboxes', $modelClassNamesAndSortAttributes,
                                                           true, $modelClassNamesAndSearchAttributeData,
                                                           array('pagination' => array('pageSize' => $pageSize)));
-            $listView      = new CombinedInboxesListView($this->getId(), $this->getModule()->getId(), 'CombinedInboxes', $dataProvider, array());
-            $actionBarView = new CombinedInboxesActionBarAndSearchForListView($this->getId(), $this->getModule()->getId());
+            $listView      = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'CombinedInboxes', $dataProvider, array());
+            $actionBarView = new MashableInboxActionBarAndSearchForListView($this->getId(), $this->getModule()->getId());
             $gridView      = new GridView(1,2);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView($listView, 0, 1);
-            $view          = new CombinedInboxesPageView(ZurmoDefaultViewUtil::
+            $view          = new MashableInboxPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $gridView));
             echo $view->render();
         }

@@ -24,48 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CombinedInboxesActionBarAndSearchForListView extends ConfigurableMetadataView
+    class MashableInboxModule extends Module
     {
+        public function getDependencies()
+        {
+            return array();
+        }
+
         public static function getDefaultMetadata()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'          => 'CombinedInboxesCreate',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                        ),
+            $metadata = array();
+            $metadata['global'] = array(
+                'tabMenuItems' => array(
+                    array(
+                        'label' => 'MashableInboxModuleSingularLabel',
+                        'url'   => array('/mashableInbox/default'),
                     ),
                 ),
             );
             return $metadata;
         }
-
-        public function __construct($controllerId, $moduleId)
+        protected static function getSingularModuleLabel()
         {
-            $this->controllerId              = $controllerId;
-            $this->moduleId                  = $moduleId;
+            return 'Inbox';
         }
 
-        protected function renderContent()
-        {
-            $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= $this->renderCombinedInboxModels();
-            $content .= '</div></div>';
-            return $content;
-        }
-
-        protected function renderCombinedInboxModels()
-        {
-            $combinedInboxesModels = ActivitiesAndCombinedInboxesUtil::getInterfaceModelDataForCurrentUser('CombinedInboxInterface');
-            $items = array();
-            $content = '';
-            foreach ($combinedInboxesModels as $combinedInboxesModel)
-            {
-                $content .= ZurmoHtml::link($combinedInboxesModel);
-            }
-            return $content;
-        }
     }
+?>
