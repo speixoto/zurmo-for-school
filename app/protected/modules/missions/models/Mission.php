@@ -24,6 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for creating Mission models.  A mission is similar to a task except a user can only have one mission at
+     * a time and a mission cannot be assigned.  A user must take a mission.
+     */
     class Mission extends OwnedSecurableItem implements MashableActivityInterface
     {
         const STATUS_AVAILABLE = 1;
