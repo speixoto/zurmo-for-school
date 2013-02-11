@@ -24,13 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class used by reporting result grid to show a checkbox
+     */
     class BooleanForReportStaticDropDownElement extends BooleanStaticDropDownElement
     {
+        /**
+         * @return string
+         */
         public function getIdForSelectInput()
         {
             return $this->getEditableInputId($this->attribute);
         }
 
+        /**
+         * @return string
+         */
         protected function getNameForSelectInput()
         {
             return $this->getEditableInputName($this->attribute);

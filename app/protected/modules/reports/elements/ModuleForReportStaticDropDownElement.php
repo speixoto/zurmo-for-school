@@ -29,11 +29,17 @@
      */
     class ModuleForReportStaticDropDownElement extends StaticDropDownFormElement
     {
+        /**
+         * @return array
+         */
         protected function getDropDownArray()
         {
             return Report::getReportableModulesAndLabelsForCurrentUser();
         }
 
+        /**
+         * @return string
+         */
         protected function getFormattedAttributeLabel()
         {
             return Yii::app()->format->text(Zurmo::t('ReportsModule', 'Module'));

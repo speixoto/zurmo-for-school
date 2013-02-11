@@ -29,7 +29,10 @@
      */
     class StickyReportUtil extends StickyUtil
     {
-
+        /**
+         * @param Report $report
+         * @param array $stickyData
+         */
         public static function resolveStickyDataToReport(Report $report, array $stickyData)
         {
             if(!isset($stickyData[ComponentForReportForm::TYPE_FILTERS]))

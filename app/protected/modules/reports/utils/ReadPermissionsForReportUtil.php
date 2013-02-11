@@ -24,8 +24,16 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
+    /**
+     * Helper class for working with read permissions on report results
+     */
     class ReadPermissionsForReportUtil extends ComponentTraversalUtil
     {
+        /**
+         * @param string $modelClassName
+         * @param null | string $attributeIndexes
+         * @param null | string $attributeIndexPrefix
+         */
         public static function resolveAttributeIndexes($modelClassName, & $attributeIndexes, $attributeIndexPrefix = null)
         {
             assert('is_string($modelClassName)');

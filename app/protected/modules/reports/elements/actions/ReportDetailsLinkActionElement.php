@@ -25,15 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to export from a listview.
+     * Class to render a fly-out link from the report detailsview.  When this link is clicked, a little div will
+     * open up that display additional information about the report
      */
     class ReportDetailsLinkActionElement extends LinkActionElement
     {
+        /**
+         * @return string
+         */
         public function getActionType()
         {
             return 'Detail';
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
@@ -50,11 +57,17 @@
             return $cClipWidget->getController()->clips['ActionMenu'];
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('ReportsModule', 'Details');
         }
 
+        /**
+         * @return null
+         */
         protected function getDefaultRoute()
         {
             return null;

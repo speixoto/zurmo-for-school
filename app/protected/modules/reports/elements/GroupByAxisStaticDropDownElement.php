@@ -29,6 +29,9 @@
      */
     class GroupByAxisStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getAxisValuesAndLabels';

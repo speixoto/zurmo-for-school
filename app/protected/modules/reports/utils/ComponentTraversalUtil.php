@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ComponentTraversalUtil
+    /**
+     * Base class for working with component collections
+     */
+    abstract class ComponentTraversalUtil
     {
+        /**
+         * @param array $attributeIndexes
+         * @param array $componentForms
+         */
         public static function resolveAttributeIndexesByComponents(array & $attributeIndexes, Array $componentForms)
         {
             foreach($componentForms as $componentForm)

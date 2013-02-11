@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class to render link to toggle portlets for a report grid view
+     */
     class ReportDeleteLinkActionElement extends DeleteLinkActionElement
     {
+        /**
+         * @param $htmlOptions
+         * @return array
+         */
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('ReportsModule', 'Are you sure you want to delete this report?');

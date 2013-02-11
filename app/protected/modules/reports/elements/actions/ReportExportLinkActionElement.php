@@ -29,11 +29,17 @@
      */
     class ReportExportLinkActionElement extends LinkActionElement
     {
+        /**
+         * @return string
+         */
         public function getActionType()
         {
             return 'Export';
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
@@ -52,11 +58,17 @@
             return $cClipWidget->getController()->clips['ActionMenu'];
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('ReportsModule', 'Export');
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/export/';

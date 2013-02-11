@@ -25,15 +25,21 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to export from a listview.
+     * Class to render link to toggle portlets for a report grid view
      */
     class ReportTogglePortletsLinkActionElement extends LinkActionElement
     {
+        /**
+         * @return null
+         */
         public function getActionType()
         {
             return null;
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             $content  = null;
@@ -58,16 +64,25 @@
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
-            return Zurmo::t('ReportsModule', 'Toggle Results'); //todo: better label? where does this even show up? designer only?
+            return Zurmo::t('ReportsModule', 'Toggle Results');
         }
 
+        /**
+         * @return null
+         */
         protected function getDefaultRoute()
         {
             return null;
         }
 
+        /**
+         * @return bool
+         */
         protected function hasRuntimeFilters()
         {
             if (!isset($this->params['hasRuntimeFilters']))
@@ -77,6 +92,9 @@
             return $this->params['hasRuntimeFilters'];
         }
 
+        /**
+         * @return bool
+         */
         protected function hasChart()
         {
             if (!isset($this->params['hasChart']))
