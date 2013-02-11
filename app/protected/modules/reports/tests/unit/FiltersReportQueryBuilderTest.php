@@ -1285,5 +1285,8 @@
             //todo: test polymorphics too? maybe we wouldnt have any for now? but we should still mark fail test here...
             $this->fail();
         }
+
+
+    //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown.. multiples need to be sub-query
     }
 ?>

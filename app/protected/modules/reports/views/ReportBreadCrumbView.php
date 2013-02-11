@@ -29,6 +29,9 @@
      */
     class ReportBreadCrumbView extends BreadCrumbView
     {
+        /**
+         * @return string
+         */
         protected function getHomeLinkLabel()
         {
             return Zurmo::t('ReportsModule', 'Reports');

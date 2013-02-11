@@ -24,8 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Factory class to make ReportDetailsAndResultsView objects
+     */
     class ReportDetailsAndResultsViewFactory
     {
+        /**
+         * @param SavedReport $savedReport
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param string $redirectUrl
+         * @return ReportDetailsAndResultsView based object
+         * @throws NotSupportedException if the report type is invalid or null
+         */
         public static function makeView(SavedReport $savedReport, $controllerId, $moduleId, $redirectUrl)
         {
             assert('is_string($controllerId)');

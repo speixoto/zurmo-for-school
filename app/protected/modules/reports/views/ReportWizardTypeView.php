@@ -24,8 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for selecting a type of report to create
+     */
     class ReportWizardTypeView extends MetadataView
     {
+        /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Report Wizard');
+        }
+
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content  = $this->renderTitleContent();
@@ -37,11 +51,9 @@
             return $content;
         }
 
-        public function getTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
+        /**
+         * @return array
+         */
         protected function getReportTypeData()
         {
             $categories = array();
@@ -57,6 +69,10 @@
             return $categories;
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function renderMenu($items)
         {
             $content = '<ul class="configuration-list">';
@@ -76,11 +92,17 @@
             return $content;
         }
 
+        /**
+         * @param $text
+         */
         protected function setLinkText($text)
         {
             $this->linkText = $text;
         }
 
+        /**
+         * @return string
+         */
         protected function getLinkText()
         {
             return Zurmo::t('ReportsModule', 'Create');

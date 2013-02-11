@@ -24,19 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for working with report results in a grid
+     */
     abstract class ReportResultsGridView extends View implements ListViewInterface
     {
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
+        /**
+         * @var ReportDataProvider
+         */
         protected $dataProvider;
 
+        /**
+         * @var bool
+         */
         protected $rowsAreExpandable = false;
 
         /**
          * Unique identifier of the list view widget. Allows for multiple list view
          * widgets on a single page.
+         *  @var null|string
          */
         protected $gridId;
 
@@ -51,17 +67,26 @@
          */
         protected $gridViewPagerParams = array();
 
+        /**
+         * @var null|string
+         */
         protected $emptyText = null;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param ReportDataProvider $dataProvider
+         * @param null|string $gridIdSuffix
+         * @param array $gridViewPagerParams
+         */
         public function __construct(
             $controllerId,
             $moduleId,
-            $dataProvider,
+            ReportDataProvider $dataProvider,
             $gridIdSuffix = null,
             $gridViewPagerParams = array()
         )
         {
-            assert('$dataProvider instanceof ReportDataProvider');
             assert('is_array($gridViewPagerParams)');
             $this->controllerId           = $controllerId;
             $this->moduleId               = $moduleId;
@@ -71,6 +96,65 @@
             $this->gridId                 = 'report-results-grid-view';
         }
 
+        /**
+         * @return string
+         */
+        public function getGridViewId()
+        {
+            return $this->gridId . $this->gridIdSuffix;
+        }
+
+        /**
+         * @param string $attributeString
+         * @param string $attribute
+         * @return string
+         */
+        public function getLinkString($attributeString, $attribute)
+        {
+            $string  = 'ZurmoHtml::link(';
+            $string .=  $attributeString . ', ';
+            $string .= 'ReportResultsGridUtil::makeUrlForLink("' . $attribute . '", $data)';
+            $string .= ', array("target" => "new"))';
+            return $string;
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>'; //todo: do we need this , maybe it is for pagination?
+            return "{summary}\n{items}\n{pager}" . $preloader;
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getPagerCssClass()
+        {
+            return 'pager horizontal';
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getSummaryText()
+        {
+            return Zurmo::t('ReportsModule', '{count} result(s)');
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getSummaryCssClass()
+        {
+            return 'summary';
+        }
+
+        /**
+         * @return string
+         * @throws NotSupportedException if the data provider is not valid
+         */
         protected function renderContent()
         {
             if(!$this->isDataProviderValid())
@@ -80,6 +164,9 @@
             return $this->renderResultsGridContent();
         }
 
+        /**
+         * @return string
+         */
         protected function renderResultsGridContent()
         {
             $cClipWidget = new CClipWidget();
@@ -91,11 +178,17 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getGridViewWidgetPath()
         {
             return 'application.modules.reports.widgets.ReportResultsExtendedGridView';
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewParams()
         {
             $columns = $this->getCGridViewColumns();
@@ -124,27 +217,9 @@
             );
         }
 
-        protected static function getGridTemplate()
-        {
-            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>'; //todo: do we need this , maybe it is for pagination?
-            return "{summary}\n{items}\n{pager}" . $preloader;
-        }
-
-        protected static function getPagerCssClass()
-        {
-            return 'pager horizontal';
-        }
-
-        protected static function getSummaryText()
-        {
-            return Zurmo::t('ReportsModule', '{count} result(s)');
-        }
-
-        protected static function getSummaryCssClass()
-        {
-            return 'summary';
-        }
-
+        /**
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
             $defaultGridViewPagerParams = array(
@@ -159,6 +234,10 @@
             return $this->resolveDefaultGridViewPagerParams($defaultGridViewPagerParams);
         }
 
+        /**
+         * @param $defaultGridViewPagerParams
+         * @return array
+         */
         protected function resolveDefaultGridViewPagerParams($defaultGridViewPagerParams)
         {
             if (empty($this->gridViewPagerParams))
@@ -171,24 +250,26 @@
             }
         }
 
+        /**
+         * @return bool
+         */
         protected function getShowTableOnEmpty()
         {
             return true;
         }
 
+        /**
+         * @return null|string
+         */
         protected function getEmptyText()
         {
             return $this->emptyText;
         }
 
-        public function getGridViewId()
-        {
-            return $this->gridId . $this->gridIdSuffix;
-        }
-
         /**
          * Get the meta data and merge with standard CGridView column elements
          * to create a column array that fits the CGridView columns API
+         * @return array
          */
         protected function getCGridViewColumns()
         {
@@ -223,7 +304,11 @@
             return $columns;
         }
 
-        protected function resolveColumnClassNameForListViewColumnAdapter($displayAttribute)
+        /**
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @return string
+         */
+        protected function resolveColumnClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
             $displayElementType = $displayAttribute->getDisplayElementType();
             if(@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
@@ -236,7 +321,11 @@
             }
         }
 
-        protected function resolveParamsForColumnElement($displayAttribute)
+        /**
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @return array
+         */
+        protected function resolveParamsForColumnElement(DisplayAttributeForReportForm $displayAttribute)
         {
             $params  = array();
             if($displayAttribute->isALinkableAttribute() == 'name')
@@ -252,6 +341,9 @@
             return $params;
         }
 
+        /**
+         * @return string
+         */
         protected function getCGridViewBeforeAjaxUpdate()
         {
             return 'js:function(id, options) {makeSmallLoadingSpinner(id, options); }';
@@ -271,15 +363,6 @@
             // End Not Coding Standard
         }
 
-        public function getLinkString($attributeString, $attribute)
-        {
-            $string  = 'ZurmoHtml::link(';
-            $string .=  $attributeString . ', ';
-            $string .= 'ReportResultsGridUtil::makeUrlForLink("' . $attribute . '", $data)';
-            $string .= ', array("target" => "new"))';
-            return $string;
-        }
-
         protected function renderScripts()
         {
             Yii::app()->clientScript->registerScriptFile(
@@ -287,6 +370,9 @@
                     Yii::getPathOfAlias('application.core.views.assets')) . '/ListViewUtils.js');
         }
 
+        /**
+         * @return bool
+         */
         protected function rowsAreExpandable()
         {
             if(count($this->dataProvider->getReport()->getDrillDownDisplayAttributes()) > 0)
@@ -296,9 +382,11 @@
             return false;
         }
 
+        /**
+         * Override in child as neededs
+         */
         protected function getLeadingHeaders()
         {
-
         }
     }
 ?>

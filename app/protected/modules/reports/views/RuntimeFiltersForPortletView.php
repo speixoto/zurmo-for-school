@@ -29,16 +29,25 @@
      */
     class RuntimeFiltersForPortletView extends ReportResultsComponentForPortletView
     {
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             return $this->renderForm();
         }
 
+        /**
+         * @return string
+         */
         public static function getFormId()
         {
             return 'edit-form';
         }
 
+        /**
+         * @return string
+         */
         protected function renderForm()
         {
             $content  = $this->renderRefreshLink();
@@ -65,11 +74,19 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getWizardFormClassName()
         {
             return ReportToWizardFormAdapter::getFormClassNameByType($this->params['relationModel']->getType());
         }
 
+        /**
+         * @param integer $rowCount
+         * @param ReportActiveForm $form
+         * @return array
+         */
         protected function renderItems(& $rowCount, ReportActiveForm $form)
         {
             assert('is_int($rowCount)');
@@ -100,6 +117,10 @@
             return $items;
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
@@ -110,6 +131,9 @@
             return ZurmoHtml::tag('ul', array(), $content);
         }
 
+        /**
+         * @return array
+         */
         protected function getClientOptions()
         {
             return array(
@@ -121,12 +145,19 @@
                     );
         }
 
+        /**
+         * @return string
+         */
         protected function getFormActionUrl()
         {
             return Yii::app()->createUrl('reports/default/applyRuntimeFilters',
                                          array('id' => $this->params["relationModel"]->getId()));
         }
 
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function renderConfigSaveAjax($formName)
         {
             return     "$('#apply-runtime-filters').removeClass('loading');
@@ -137,6 +168,10 @@
                        ";
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderViewToolBarContainer($form)
         {
             $content  = '<div class="view-toolbar-container clearfix">';
@@ -146,6 +181,10 @@
             return $content;
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderViewToolBarLinks($form)
         {
             $params                = array();

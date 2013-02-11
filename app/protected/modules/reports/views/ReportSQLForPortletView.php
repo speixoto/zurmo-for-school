@@ -29,6 +29,9 @@
      */
     class ReportSQLForPortletView extends ReportResultsComponentForPortletView
     {
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = $this->renderRefreshLink();
@@ -36,6 +39,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function makeSQLViewAndRender()
         {
             $dataProvider = null;

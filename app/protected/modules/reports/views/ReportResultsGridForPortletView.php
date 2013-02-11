@@ -29,6 +29,9 @@
      */
     class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
     {
+        /**
+         * @return string
+         */
         public function renderContent()
         {
 
@@ -37,6 +40,9 @@
             return $content;
         }
 
+        /**
+         * @return null|string
+         */
         protected function makeViewAndRender()
         {
             $dataProvider = null;

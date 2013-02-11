@@ -24,59 +24,90 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the group by components for the report wizard user interface
+     */
     class GroupBysForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        /**
+         * @return string
+         */
+        public static function getTreeType()
+        {
+            return GroupByForReportForm::getType();
+        }
+
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Select Groupings');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'groupBysPreviousLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'groupBysNextLink';
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getZeroComponentsClassName()
+        {
+            return 'ZeroGroupBys';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderRightSideContent()
         {
             $hiddenInputId       = get_class($this->model) . '_groupBys';
             $hiddenInputName     = get_class($this->model) . '[groupBys]';
             $idInputHtmlOptions  = array('id' => $hiddenInputId);
             $content             = ZurmoHtml::hiddenField($hiddenInputName, null,
-                                   $idInputHtmlOptions);
+                $idInputHtmlOptions);
             $content            .= $this->form->error($this->model, 'groupBys',
-                                        array('inputID' => $hiddenInputId));
+                array('inputID' => $hiddenInputId));
             $content            .= parent::renderRightSideContent();
             return $content;
         }
 
-        public static function getTreeType()
-        {
-            return GroupByForReportForm::getType();
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Select Groupings');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'groupBysPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'groupBysNextLink';
-        }
-
+        /**
+         * @return int
+         */
         protected function getItemsCount()
         {
             return count($this->model->groupBys);
         }
 
+        /**
+         * @param int $rowCount
+         * @return array|string
+         */
         protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->groupBys);
         }
 
-        protected static function getZeroComponentsClassName()
-        {
-            return 'ZeroGroupBys';
-        }
-
+        /**
+         * @return string
+         */
         protected function getZeroComponentsMessageContent()
         {
-            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your groupings here</h2>');
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('ReportsModule', 'Drag or double click your groupings here') . '</h2>';
         }
     }
 ?>

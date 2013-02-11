@@ -24,8 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the general data component for the report wizard user interface
+     */
     class GeneralDataForReportWizardView extends ComponentForReportWizardView
     {
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Save Report');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'generalDataPreviousLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'generalDataSaveAndRunLink';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderFormContent()
         {
             $content           = '<div class="attributesContainer">';
@@ -49,6 +79,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRightSideFormLayout()
         {
             $content  = '<h3>' . Zurmo::t('ReportsModule', 'Rights and Permissions') . '</h3><div id="owner-box">';
@@ -62,11 +95,9 @@
             return $content;
         }
 
-        public static function getWizardStepTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Save Report');
-        }
-
+        /**
+         * @return string
+         */
         protected function renderNextPageLinkContent()
         {
             $params = array();
@@ -74,16 +105,6 @@
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'generalDataPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'generalDataSaveAndRunLink';
         }
 
         protected function registerScripts()

@@ -29,16 +29,37 @@
      */
     class ReportChartView extends View
     {
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
+        /**
+         * @var SummationReportDataProvider
+         */
         protected $dataProvider;
 
+        /**
+         * @var string
+         */
         protected $uniqueLayoutId;
 
+        /**
+         * @var int
+         */
         protected $maximumGroupsPerChart = 100;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param SummationReportDataProvider $dataProvider
+         * @param string $uniqueLayoutId
+         */
         public function __construct($controllerId, $moduleId, SummationReportDataProvider $dataProvider, $uniqueLayoutId)
         {
             assert('is_string($controllerId)');
@@ -50,6 +71,9 @@
             $this->uniqueLayoutId         = $uniqueLayoutId;
         }
 
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             if($this->dataProvider->calculateTotalItemCount() > $this->maximumGroupsPerChart)
@@ -59,6 +83,9 @@
             return $this->renderChartContent();
         }
 
+        /**
+         * @return string
+         */
         protected function renderChartContent()
         {
             $reportDataProviderToAmChartMakerAdapter = $this->dataProvider->makeReportDataProviderToAmChartMakerAdapter();
@@ -99,6 +126,9 @@
             return $cClipWidget->getController()->clips['Chart' . $this->uniqueLayoutId];
         }
 
+        /**
+         * @return string
+         */
         protected function renderMaximumGroupsContent()
         {
             $content  = '<div class="a-class-we-can-call-something-else">';
@@ -109,6 +139,10 @@
             return $content;
         }
 
+        /**
+         * @return null
+         * @throws NotSupportedException if the currency conversion type is invalid
+         */
         protected function resolveYAxisUnitContent()
         {
             if($this->dataProvider->getReport()->getCurrencyConversionType() ==

@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with the row and column reports in the report wizard
+     */
     class RowsAndColumnsReportWizardView extends ReportWizardView
     {
+        /**
+         * @param ReportActiveForm $form
+         * @return string
+         */
         protected function renderContainingViews(ReportActiveForm $form)
         {
             $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
@@ -43,6 +50,10 @@
             return $gridView->render();
         }
 
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');

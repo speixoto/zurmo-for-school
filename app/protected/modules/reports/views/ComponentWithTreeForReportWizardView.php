@@ -24,22 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base view class for components that appear in the report wizard and have a tree widget to select attributes
+     */
     abstract class ComponentWithTreeForReportWizardView extends ComponentForReportWizardView
     {
+        /**
+         * @return integer
+         */
         abstract protected function getItemsCount();
 
+        /**
+         * @param integer $rowCount
+         * @return string
+         */
         abstract protected function getItemsContent(& $rowCount);
 
+        /**
+         * Override in child class
+         * @throws NotImplementedException
+         */
         public static function getTreeType()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * @return string
+         */
         public static function getTreeDivId()
         {
             return static::getTreeType() . 'TreeArea';
         }
 
+        /**
+         * @return string
+         */
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
@@ -48,6 +68,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRightSideContent()
         {
             $rowCount                    = 0;
@@ -62,9 +85,8 @@
             }
             $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId());
             $hiddenInputName             = static::getTreeType() . 'RowCounter';
-            $splashContent               = $this->renderSplashArea();
             $dropZone                    = $this->renderRightSideDropZoneContent();
-            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $splashContent . $itemsContent);
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
             $droppableAttributesContent .= $this->renderExtraDroppableAttributesContent();
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
@@ -74,20 +96,27 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRightSideDropZoneContent()
         {
             return ZurmoHtml::tag('div', array('class' => 'drop-zone'), ZurmoHtml::tag('div', array(), Zurmo::t('ReportsModule', 'Drop Here')));
         }
 
+        /**
+         * Override in child class as needed
+         */
         protected function renderExtraDroppableAttributesContent()
         {
         }
 
-        protected function renderSplashArea()
-        {
-            //return ZurmoHtml::tag('div', array('class' => 'splash'), 'Splash');
-        }
-
+        /**
+         * @param integer $rowCount
+         * @param array $componentData
+         * @param bool $trackableStructurePosition
+         * @return array
+         */
         protected function renderItems(& $rowCount, $componentData, $trackableStructurePosition = false)
         {
             assert('is_int($rowCount)');
@@ -115,6 +144,10 @@
             return $items;
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
@@ -125,6 +158,10 @@
             return ZurmoHtml::tag('ul', array(), $content);
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function getSortableListContent(Array $items)
         {
             $cClipWidget = new CClipWidget();
@@ -146,6 +183,9 @@
             return $cClipWidget->getController()->clips[static::getTreeType() . 'ReportComponentSortable'];
         }
 
+        /**
+         * @return string
+         */
         protected function getRowCounterInputId()
         {
             return static::getTreeType() . 'RowCounter';
@@ -175,6 +215,9 @@
             Yii::app()->getClientScript()->registerScript(static::getTreeType() . 'ReportComponentForTreeScript', $script);
         }
 
+        /**
+         * @return string
+         */
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
@@ -182,6 +225,9 @@
                                                  'treeType' => static::getTreeType())));
         }
 
+        /**
+         * @return string
+         */
         protected function getAjaxForDroppedAttribute()
         {
             return ZurmoHtml::ajax(array(
@@ -203,6 +249,9 @@
             ));
         }
 
+        /**
+         * @return string
+         */
         protected function getAjaxForDoubleClickedAttribute()
         {
             return ZurmoHtml::ajax(array(
@@ -222,15 +271,24 @@
             ));
         }
 
+        /**
+         * Override in child class as needed
+         */
         protected function getReportAttributeRowAddOrRemoveExtraScript()
         {
         }
 
+        /**
+         * @return bool
+         */
         protected function isListContentSortable()
         {
             return false;
         }
 
+        /**
+         * @return string
+         */
         protected function getZeroComponentsContent()
         {
             if($this->getItemsCount() > 0)

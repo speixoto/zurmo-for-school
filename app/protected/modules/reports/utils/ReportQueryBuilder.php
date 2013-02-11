@@ -34,10 +34,21 @@
          */
         protected $joinTablesAdapter;
 
+        /**
+         * @var null | integer
+         */
         protected $currencyConversionType;
 
+        /**
+         * @param array $components
+         * @return string
+         */
         abstract public function makeQueryContent(Array $components);
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | integer $currencyConversionType
+         */
         public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     $currencyConversionType = null)
         {
@@ -46,6 +57,10 @@
             $this->currencyConversionType = $currencyConversionType;
         }
 
+        /**
+         * @param ComponentForReportForm $componentForm
+         * @return ModelRelationsAndAttributesToReportAdapter
+         */
         protected static function makeModelToReportAdapterByComponentForm(ComponentForReportForm $componentForm)
         {
             return ModelRelationsAndAttributesToReportAdapter::make(

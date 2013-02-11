@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for showing a search panel to create a filtered list of reports
+     */
     class ReportsSearchView extends SavedDynamicSearchView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -60,6 +66,9 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getModelForMetadataClassName()
         {
             return 'ReportsSearchForm';

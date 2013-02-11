@@ -29,6 +29,9 @@
      */
     class ReportChartForPortletView extends ReportResultsComponentForPortletView
     {
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = $this->renderRefreshLink();
@@ -36,6 +39,9 @@
             return $content;
         }
 
+        /**
+         * @return null|string
+         */
         protected function makeChartViewAndRender()
         {
             $dataProvider = null;

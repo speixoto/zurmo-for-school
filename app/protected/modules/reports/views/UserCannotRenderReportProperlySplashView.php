@@ -31,11 +31,17 @@
      */
     class UserCannotRenderReportProperlySplashView extends SplashView
     {
+        /**
+         * @return null|string
+         */
         protected function getIconName()
         {
             return 'Report'; //todo: we should have an image for this. montage of something related to reports plus an exclamation or some error
         }
 
+        /**
+         * @return string
+         */
         protected function getMessageContent()
         {
             return Zurmo::t('ReportsModule', '<h2>Someone messed with the flux capacitor!</h2><div class="large-icon"></div>' .
