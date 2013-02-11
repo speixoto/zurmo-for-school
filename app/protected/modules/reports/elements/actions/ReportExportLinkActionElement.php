@@ -41,11 +41,36 @@
          * @return string
          */
         public function render()
-        {
+        {   
+            Yii::app()->clientScript->registerScript( 'exportToCsv', "
+                $('#exportToCsv').unbind('click.action');
+                $('#exportToCsv').bind('click.action', function()
+                    {
+                        var options =
+                        {
+                            url     : $.fn.yiiGridView.getUrl('report-results-grid-view'),
+                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
+                        }
+                        if (options.url.split( '?' ).length == 2)
+                        {                            
+                            options.url = options.baseUrl +'/'+ 'export' + '?' + options.url.split( '?' )[1];
+                        }
+                        else
+                        {
+                            options.url = options.baseUrl +'/'+ 'export';
+                        }                                                                        
+                        var data = '' + 'export=' + '&ajax='; " . // Not Coding Standard
+                        "url = $.param.querystring(options.url, data);                         
+                        window.location.href = url;
+                        return false;
+                    }
+                );
+            ");            
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
                                         array(  'label'   => Zurmo::t('ReportsModule', 'to CSV'),
-                                                'url'     => '#'), //todo: make sure to use default route method.
+                                                'url'     => '#',    //todo: make sure to use default route method.
+                                                'itemOptions' => array( 'id'   => 'exportToCsv')), 
                                         array(  'label'   => Zurmo::t('ReportsModule', 'to PDF'),
                                                 'url'     => '#'))); //todo: make sure to use default route method.
             $cClipWidget = new CClipWidget();
@@ -55,7 +80,7 @@
                 'items'                   => array($menuItems),
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return $cClipWidget->getController()->clips['ActionMenu'];                                 
         }
 
         /**

@@ -450,5 +450,106 @@
             $gridView->setView($reportDetailsAndRelationsView, 1, 0);
             return $gridView;
         }
+        
+        public function actionExport($id, $stickySearchKey = null)
+        {                           
+            assert('$stickySearchKey == null || is_string($stickySearchKey)');
+            assert('is_int($id)');            
+            $savedReport             = SavedReport::getById((int)$id);
+            $report                  = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $savedReport                    = new SavedReport(false);
+            $searchForm                     = new ReportsSearchForm($savedReport);
+            
+
+            //will work on this below lines
+            $dataProvider                   = $this->resolveSearchDataProvider(
+                $searchForm,
+                $pageSize,
+                null,
+                'ReportsSearchView',
+                $stickySearchKey
+            );
+
+            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
+
+            $data = array();
+            if ($totalItems > 0)
+            {
+                if ($totalItems <= ExportModule::$asynchronusTreshold)
+                {
+                    // Output csv file directly to user browser
+                    if ($dataProvider)
+                    {
+                        $modelsToExport = $dataProvider->getData();
+                        foreach ($modelsToExport as $model)
+                        {
+                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                            {
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $data[] = $modelToExportAdapter->getData();
+                            }
+                        }
+                    }
+                    else
+                    {
+                        foreach ($idsToExport as $idToExport)
+                        {
+                            $model = $modelClassName::getById(intval($idToExport));
+                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
+                            {
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $data[] = $modelToExportAdapter->getData();
+                            }
+                        }
+                    }
+                    // Output data
+                    if (count($data))
+                    {
+                        $fileName = $this->getModule()->getName() . ".csv";
+                        $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('notification',
+                            Zurmo::t('ZurmoModule', 'There is no data to export.')
+                        );
+                    }
+                }
+                else
+                {
+                    if ($dataProvider)
+                    {
+                        $serializedData = serialize($dataProvider);
+                    }
+                    else
+                    {
+                        $serializedData = serialize($idsToExport);
+                    }
+
+                    // Create background job
+                    $exportItem = new ExportItem();
+                    $exportItem->isCompleted     = 0;
+                    $exportItem->exportFileType  = 'csv';
+                    $exportItem->exportFileName  = $this->getModule()->getName();
+                    $exportItem->modelClassName = $modelClassName;
+                    $exportItem->serializedData  = $serializedData;
+                    $exportItem->save();
+                    $exportItem->forget();
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'A large amount of data has been requested for export.  You will receive ' .
+                        'a notification with the download link when the export is complete.')
+                    );
+                }
+            }
+            else
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('ZurmoModule', 'There is no data to export.')
+                );
+            }
+            $this->redirect(array($this->getId() . '/index'));
+        }                    
     }
 ?>
