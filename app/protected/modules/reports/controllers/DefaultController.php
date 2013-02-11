@@ -455,25 +455,16 @@
         {                           
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             assert('is_int($id)');            
-            $savedReport             = SavedReport::getById((int)$id);
-            $report                  = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $savedReport                    = SavedReport::getById((int)$id);
+            $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
             
-
-            //will work on this below lines
-            $dataProvider                   = $this->resolveSearchDataProvider(
-                $searchForm,
-                $pageSize,
-                null,
-                'ReportsSearchView',
-                $stickySearchKey
-            );
-
-            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
-
+            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);
+            
+            $totalItems = intval($dataProvider->calculateTotalItemCount());            
             $data = array();
             if ($totalItems > 0)
             {
@@ -481,28 +472,13 @@
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)
-                    {
-                        $modelsToExport = $dataProvider->getData();
-                        foreach ($modelsToExport as $model)
-                        {
-                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
-                            {
-                                $modelToExportAdapter  = new ModelToExportAdapter($model);
-                                $data[] = $modelToExportAdapter->getData();
-                            }
-                        }
-                    }
-                    else
-                    {
-                        foreach ($idsToExport as $idToExport)
-                        {
-                            $model = $modelClassName::getById(intval($idToExport));
-                            if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
-                            {
-                                $modelToExportAdapter  = new ModelToExportAdapter($model);
-                                $data[] = $modelToExportAdapter->getData();
-                            }
-                        }
+                    {     
+                         $reportResultsRowData = $dataProvider->getData(); 
+                        foreach ($reportResultsRowData as $results)
+                        {                          
+                          $reportToExportAdapter  = new ReportToExportAdapter($results); 
+                          $data[] = $reportToExportAdapter->getData();  
+                        }                                                                          
                     }
                     // Output data
                     if (count($data))
@@ -550,6 +526,25 @@
                 );
             }
             $this->redirect(array($this->getId() . '/index'));
-        }                    
+        }
+
+        protected function getDataProviderForExport(Report $report, $stickyKey, $runReport)
+        {
+            assert('is_string($stickyKey) || is_int($stickyKey)');
+            assert('is_bool($runReport)');
+            $getData   = GetUtil::getData();
+            if (null != $stickyData = StickyReportUtil::getDataByKey($stickyKey))
+            {
+                StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            }
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'reportResultsListPageSize', get_class($this->getModule()));
+            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
+            if($runReport)
+            {
+                $dataProvider->setRunReport($runReport);
+            }
+            return $dataProvider;
+        }        
     }
 ?>
