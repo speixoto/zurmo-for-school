@@ -202,6 +202,10 @@
 
         protected function afterSave()
         {
+            if ($this->isNewModel && $this->getScenario() != 'autoBuildDatabase')
+            {
+                MissionsUtil::makeAndSubmitNewMissionNotificationMessage($this);
+            }
             if (((isset($this->originalAttributeValues['status'])) && !$this->isNewModel) &&
                 $this->originalAttributeValues['status'] != $this->status)
             {

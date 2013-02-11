@@ -24,8 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Factory class to create ReportResultsGridView objects
+      */
     class ReportResultsGridViewFactory
     {
+        /**
+         * @param Report $report
+         * @param ReportDataProvider $dataProvider
+         * @return ReportResultsGridView based object
+         * @throws NotSupportedException if the report type is not valid or null
+         */
         public static function makeByReportAndDataProvider(Report $report, ReportDataProvider $dataProvider = null)
         {
 

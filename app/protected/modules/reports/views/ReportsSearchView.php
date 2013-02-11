@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportsSearchView extends SearchView
+    /**
+     * View for showing a search panel to create a filtered list of reports
+     */
+    class ReportsSearchView extends SavedDynamicSearchView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -51,21 +57,8 @@
                             ),
                         ),
                         array(
-                            'title' => 'Advanced Search',
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'moduleClassName',
-                                                      'type' => 'ModuleForReportStaticDropDown', 'addBlank' => true),
-                                                array('attributeName' => 'type',
-                                                      'type' => 'ReportTypeStaticDropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
+                            'advancedSearchType' => static::ADVANCED_SEARCH_TYPE_DYNAMIC,
+                            'rows'   => array(),
                         ),
                     ),
                 ),
@@ -73,6 +66,9 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getModelForMetadataClassName()
         {
             return 'ReportsSearchForm';

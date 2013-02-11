@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Data provider a report that is a rows and columns report
+     */
     class RowsAndColumnsReportDataProvider extends ReportDataProvider
     {
+        /**
+         * @return bool|void
+         * @throws NotSupportedException if the report is not valid for this data provider
+         */
         protected function isReportValidType()
         {
             if($this->report->getType() != Report::TYPE_ROWS_AND_COLUMNS)

@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with matrix report results in a grid
+     */
     class MatrixReportResultsGridView extends ReportResultsGridView
     {
+        /**
+         * @return bool
+         */
         protected function isDataProviderValid()
         {
             if(!$this->dataProvider instanceof MatrixReportDataProvider)
@@ -35,6 +41,9 @@
             return true;
         }
 
+        /**
+         * @return array
+         */
         protected function getCGridViewColumns()
         {
             $columns        = array();
@@ -80,6 +89,9 @@
             return $columns;
         }
 
+        /**
+         * @return array
+         */
         protected function getLeadingHeaders()
         {
             return $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();

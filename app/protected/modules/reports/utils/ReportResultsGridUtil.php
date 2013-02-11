@@ -24,8 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for working with report results grid data and views
+     */
     class ReportResultsGridUtil
     {
+        /**
+         * @param string $attribute
+         * @param ReportResultsRowData $data
+         * @return null | string
+         */
         public static function makeUrlForLink($attribute, ReportResultsRowData $data)
         {
             assert('is_string($attribute)');

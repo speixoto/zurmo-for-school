@@ -25,10 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Class used by reporting to show group by axis.  Can choose either X or Y
+     * Class used by reporting to show a currency conversion type dropdown.
      */
     class CurrencyConversionTypeStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getCurrencyConversionTypeDataAndLabels';

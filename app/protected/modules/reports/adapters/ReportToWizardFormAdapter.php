@@ -24,15 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for adapting a Report to a ReportWizardForm
+     */
     class ReportToWizardFormAdapter
     {
+        /**
+         * @var Report
+         */
         protected $report;
 
-        public function __construct(Report $report)
-        {
-            $this->report = $report;
-        }
-
+        /**
+         * @param $type
+         * @return string
+         * @throws NotSupportedException if the type is invalid or null
+         */
         public static function getFormClassNameByType($type)
         {
             assert('is_string($type)');
@@ -54,6 +60,18 @@
             }
         }
 
+        /**
+         * @param Report $report
+         */
+        public function __construct(Report $report)
+        {
+            $this->report = $report;
+        }
+
+        /**
+         * @return MatrixReportWizardForm|RowsAndColumnsReportWizardForm|SummationReportWizardForm
+         * @throws NotSupportedException if the report type is invalid or null
+         */
         public function makeFormByType()
         {
             if($this->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
@@ -74,6 +92,9 @@
             }
         }
 
+        /**
+         * @return RowsAndColumnsReportWizardForm
+         */
         public function makeRowsAndColumnsWizardForm()
         {
             $formModel       = new RowsAndColumnsReportWizardForm();
@@ -81,6 +102,9 @@
             return $formModel;
         }
 
+        /**
+         * @return SummationReportWizardForm
+         */
         public function makeSummationWizardForm()
         {
             $formModel             = new SummationReportWizardForm();
@@ -88,6 +112,9 @@
             return $formModel;
         }
 
+        /**
+         * @return MatrixReportWizardForm
+         */
         public function makeMatrixWizardForm()
         {
             $formModel       = new MatrixReportWizardForm();
@@ -95,6 +122,9 @@
             return $formModel;
         }
 
+        /**
+         * @param ReportWizardForm $formModel
+         */
         protected function setCommonAttributes(ReportWizardForm $formModel)
         {
             $formModel->id               = $this->report->getId();

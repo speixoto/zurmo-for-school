@@ -25,6 +25,11 @@
      ********************************************************************************/
     Yii::import('zii.widgets.grid.CGridColumn');
 
+    /**
+     * Column class for managing the drill down link column.  This is used by summation drill down reports when rendering
+     * the each row.  There is a drill down column, that when clicked will expand the drill down results grid for that
+     * row
+     */
     class DrillDownColumn extends CGridColumn
     {
         public function init()
@@ -83,6 +88,10 @@ END;
             echo $expandAndLoadLinkContent . $expandLinkContent . $collapseLinkContent;
         }
 
+        /**
+         * @param array $dataParams
+         * @return string
+         */
         protected function getDrillDownLoadUrl(Array $dataParams)
         {
             return Yii::app()->createUrl('/reports/default/drillDownDetails/',

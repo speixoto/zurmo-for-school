@@ -25,10 +25,14 @@
      ********************************************************************************/
 
     /**
-     * Create the query string part for the SQL group by
+     * Create the query string part for the SQL group by components
      */
     class GroupBysReportQueryBuilder extends ReportQueryBuilder
     {
+        /**
+         * @param array $components
+         * @return null|string
+         */
         public function makeQueryContent(Array $components)
         {
             $content = null;

@@ -24,10 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for drill down display attribute definitions
+     */
     class DrillDownDisplayAttributeForReportForm extends DisplayAttributeForReportForm
     {
+        /**
+         * @var integer the counter for generating automatic column alias names
+         */
         protected static $count = 0;
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;

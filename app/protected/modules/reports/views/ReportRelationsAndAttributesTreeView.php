@@ -24,12 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for displaying a tree view widget for certain tree type and based on the report type
+     */
     class ReportRelationsAndAttributesTreeView extends View
     {
+        /**
+         * @var string
+         */
         protected $type;
 
+        /**
+         * @var string
+         */
         protected $treeType;
 
+        /**
+         * @var string
+         */
         protected $formName;
 
         public function __construct($type, $treeType, $formName)
@@ -42,11 +54,17 @@
             $this->formName = $formName;
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return false;
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content      = null;
@@ -64,12 +82,18 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getDataUrl()
         {
             return  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
                         array_merge($_GET, array('type' => $this->type, 'treeType' => $this->treeType)));
         }
 
+        /**
+         * @return string
+         */
         protected function getTreeId()
         {
             return $this->treeType . 'TreeView';

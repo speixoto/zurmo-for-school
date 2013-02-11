@@ -25,12 +25,21 @@
      ********************************************************************************/
 
     /**
-     *
+     * A class used to render a drop down for selecting a chart type in the report wizard
     */
     class ChartTypeRadioStaticDropDownForReportElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @var string
+         */
         public $editableTemplate = '<td colspan="{colspan}">{content}{error}</td>';
 
+        /**
+         * @param ChartForReportForm $model
+         * @param string $attribute
+         * @param null $form
+         * @param array $params
+         */
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
             assert('$model instanceof ChartForReportForm');
@@ -53,6 +62,9 @@
             return $content;
         }
 
+        /**
+         * @return array
+         */
         protected function makeDataAndResolveEmptyValue()
         {
             $data = array();
@@ -63,11 +75,17 @@
             return array_merge($data, $this->getDropDownArray());
         }
 
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getTypeDataAndLabels';
         }
 
+        /**
+         * @return array
+         */
         protected function getEditableHtmlOptions()
         {
             $htmlOptions              = parent::getEditableHtmlOptions();

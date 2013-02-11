@@ -24,26 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the chart component for the report wizard user interface
+     */
     class ChartForReportWizardView extends ComponentForReportWizardView
     {
-        protected function renderFormContent()
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
         {
-            $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
-            $this->form->setInputPrefixData($inputPrefixData);
-            $params            = array('inputPrefix' => $inputPrefixData);
-            $content           = '<div class="attributesContainer">';
-            $element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
-                                 array_merge($params, array('addBlank' => true)));
-            $leftSideContent   = $element->render();
-            $element           = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
-            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
-            $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
-            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
-            $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
-            $content          .= '</div>';
-            $this->form->clearInputPrefixData();
-            $this->registerScripts();
-            return $content;
+            return Zurmo::t('ReportsModule', 'Select a Chart');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'chartPreviousLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'chartNextLink';
         }
 
         public function registerScripts()
@@ -86,24 +93,35 @@
             Yii::app()->getClientScript()->registerScript('ChartChangingScript', $script);
         }
 
-        public static function getWizardStepTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Select a Chart');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'chartPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'chartNextLink';
-        }
-
+        /**
+         * @return bool
+         */
         protected function isListContentSortable()
         {
             return true;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderFormContent()
+        {
+            $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
+            $this->form->setInputPrefixData($inputPrefixData);
+            $params            = array('inputPrefix' => $inputPrefixData);
+            $content           = '<div class="attributesContainer">';
+            $element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
+                array_merge($params, array('addBlank' => true)));
+            $leftSideContent   = $element->render();
+            $element           = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
+            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
+            $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
+            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
+            $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
+            $content          .= '</div>';
+            $this->form->clearInputPrefixData();
+            $this->registerScripts();
+            return $content;
         }
     }
 ?>

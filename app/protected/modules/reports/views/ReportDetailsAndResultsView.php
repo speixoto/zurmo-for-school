@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base view class for managing the details and results views of a report.
+     */
     abstract class ReportDetailsAndResultsView extends DetailsAndRelationsView
     {
         /**
@@ -31,28 +34,44 @@
          */
         protected $report;
 
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param array $params
+         * @param Report $report
+         */
         public function __construct($controllerId, $moduleId, $params, Report $report)
         {
             parent::__construct($controllerId, $moduleId, $params);
             $this->report = $report;
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
+        protected static function getModelRelationsSecuredPortletFrameViewClassName()
+        {
+            return 'ReportResultsSecuredPortletFrameView';
+        }
+
+        /**
+         * @param $metadata
+         * @return view
+         */
         protected function makeLeftTopView($metadata)
         {
             $detailsViewClassName = $metadata['global']['leftTopView']['viewClassName'];
             return new $detailsViewClassName($this->params["controllerId"],
                                              $this->params["relationModuleId"],
                                              $this->report);
-        }
-
-        protected static function getModelRelationsSecuredPortletFrameViewClassName()
-        {
-            return 'ReportResultsSecuredPortletFrameView';
         }
 
         protected function renderScripts()

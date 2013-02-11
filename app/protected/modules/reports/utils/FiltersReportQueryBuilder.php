@@ -25,20 +25,31 @@
      ********************************************************************************/
 
     /**
-     * Create the query string part for the SQL where part
+     * Create the query string part for the SQL where part (filter components)
      */
     class FiltersReportQueryBuilder extends ReportQueryBuilder
     {
+        /**
+         * @var null | string
+         */
         protected $filtersStructure;
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | string $filtersStructure
+         */
         public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     $filtersStructure)
         {
             assert('is_string($filtersStructure)');
             parent::__construct($joinTablesAdapter);
-            $this->filtersStructure     = $filtersStructure;
+            $this->filtersStructure = $filtersStructure;
         }
 
+        /**
+         * @param array $components
+         * @return null|string
+         */
         public function makeQueryContent(Array $components)
         {
             $whereContent = array();

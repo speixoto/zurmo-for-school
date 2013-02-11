@@ -25,13 +25,15 @@
      ********************************************************************************/
 
     /**
-     *
-     * Enter description here ...
-     * @author Jason
-     *
+     * Extended view to handle securable management for the portlets in a report details and results view
      */
     class ReportResultsSecuredPortletFrameView extends ModelRelationsSecuredPortletFrameView
     {
+        /**
+         * @param string $uniqueLayoutId
+         * @param array $metadata
+         * @return array
+         */
         protected function getPortlets($uniqueLayoutId, $metadata)
         {
             $portlets = parent::getPortlets($uniqueLayoutId, $metadata);

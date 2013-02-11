@@ -29,6 +29,9 @@
      */
     class OpportunitiesReportRules extends SecuredReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();

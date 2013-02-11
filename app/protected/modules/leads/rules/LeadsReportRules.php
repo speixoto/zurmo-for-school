@@ -29,6 +29,9 @@
      */
     class LeadsReportRules extends ContactsReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();

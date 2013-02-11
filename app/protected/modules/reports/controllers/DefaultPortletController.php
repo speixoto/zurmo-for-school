@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Default portlet controller for all portlet actions for reporting.
+     */
     class ReportsDefaultPortletController extends ZurmoPortletController
     {
         public function actionDetails($id, $runReport = false)

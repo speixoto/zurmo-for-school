@@ -30,6 +30,11 @@
      */
     class ReportWizardViewFactory
     {
+        /**
+         * @param Report $report
+         * @return View
+         * @throws NotSupportedException if the type provided is not valid
+         */
         public static function makeViewFromReport(Report $report)
         {
             $type                      = $report->getType();

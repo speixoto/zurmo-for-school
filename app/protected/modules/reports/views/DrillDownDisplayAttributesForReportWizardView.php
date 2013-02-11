@@ -24,23 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the drill down display attribute components for the report wizard user interface
+     */
     class DrillDownDisplayAttributesForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        /**
+         * @return string
+         */
         public static function getTreeType()
         {
             return DrillDownDisplayAttributeForReportForm::getType();
         }
 
+        /**
+         * @return string
+         */
         public static function getWizardStepTitle()
         {
             return Zurmo::t('ReportsModule', 'Select Drill Down Display Columns');
         }
 
+        /**
+         * @return string
+         */
         public static function getPreviousPageLinkId()
         {
             return 'drillDownDisplayAttributesPreviousLink';
         }
 
+        /**
+         * @return string|void
+         */
         public static function getNextPageLinkId()
         {
             return 'drillDownDisplayAttributesNextLink';
@@ -51,24 +66,37 @@
             return true;
         }
 
+        /**
+         * @return int
+         */
         protected function getItemsCount()
         {
             return count($this->model->drillDownDisplayAttributes);
         }
 
+        /**
+         * @param int $rowCount
+         * @return array|string
+         */
         protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->drillDownDisplayAttributes);
         }
 
+        /**
+         * @return string
+         */
         protected static function getZeroComponentsClassName()
         {
             return 'ZeroDrillDownDisplayAttributes';
         }
 
+        /**
+         * @return string
+         */
         protected function getZeroComponentsMessageContent()
         {
-            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your drill down display columns here</h2>');
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('ReportsModule', 'Drag or double click your display columns here') . '</h2>';
         }
     }
 ?>

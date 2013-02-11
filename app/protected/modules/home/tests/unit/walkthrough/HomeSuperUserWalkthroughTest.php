@@ -249,7 +249,7 @@
                 'uniqueLayoutId' => $uniqueLayoutId,
             ));
             $this->resetPostArray();
-            $this->runControllerWithNoExceptionsAndGetContent('home/defaultPortlet/modalConfigSave');                        
+            $this->runControllerWithNoExceptionsAndGetContent('home/default');                        
         }
     }
 ?>

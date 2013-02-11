@@ -25,12 +25,15 @@
      ********************************************************************************/
     Yii::import('zii.widgets.grid.CGridColumn');
 
+    /**
+     * Column class for managing Y-Axis headers
+     */
     class YAxisHeaderColumn extends CGridColumn
     {
         public $name;
 
         /**
-         * Override because.. //todo: document
+         * Override to handle spanning of columns.  Used primarily by matrix reports to render a grid
          */
         public function renderDataCell($row)
         {

@@ -24,12 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Module used to create and run reports
+     */
     class ReportsModule extends SecurableModule
     {
         const RIGHT_CREATE_REPORTS = 'Create Reports';
+
         const RIGHT_DELETE_REPORTS = 'Delete Reports';
+
         const RIGHT_ACCESS_REPORTS = 'Access Reports Tab';
 
+        /**
+         * @return array
+         */
         public function getDependencies()
         {
             return array(
@@ -38,11 +46,17 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function getRootModelNames()
         {
             return array('SavedReport');
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();
@@ -76,16 +90,25 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         */
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_REPORTS;
         }
 
+        /**
+         * @return string
+         */
         public static function getCreateRight()
         {
             return self::RIGHT_CREATE_REPORTS;
         }
 
+        /**
+         * @return string
+         */
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_REPORTS;
@@ -111,11 +134,17 @@
             return 'ReportsSearchForm';
         }
 
+        /**
+         * @return bool
+         */
         public static function modelsAreNeverGloballySearched()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function hasPermissions()
         {
             return true;

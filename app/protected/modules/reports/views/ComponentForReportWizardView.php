@@ -24,26 +24,71 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base view class for components that appear in the report wizard
+     */
     abstract class ComponentForReportWizardView extends MetadataView
     {
+        /**
+         * @var ReportWizardForm
+         */
         protected $model;
 
+        /**
+         * @var ReportActiveForm
+         */
         protected $form;
 
+        /**
+         * @var bool
+         */
         protected $hideView;
 
+        /**
+         * @return string
+         */
         abstract protected function renderFormContent();
 
-        public function getTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
-        }
-
+        /**
+         * Override in child class as needed
+         * @throws NotImplementedException
+         */
         public static function getWizardStepTitle()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * Override in child class as needed
+         * @throws NotSupportedException
+         */
+        public static function getPreviousPageLinkId()
+        {
+            throw new NotSupportedException();
+        }
+
+        /**
+         * Override in child class as needed
+         * @throws NotImplementedException
+         */
+        public static function getNextPageLinkId()
+        {
+            throw new NotSupportedException();
+        }
+
+        /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
+        }
+
+        /**
+         * @param ReportWizardForm $model
+         * @param ReportActiveForm $form
+         * @param bool $hideView
+         */
         public function __construct(ReportWizardForm $model, ReportActiveForm $form, $hideView = false)
         {
             assert('is_bool($hideView)');
@@ -52,11 +97,17 @@
             $this->hideView = $hideView;
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content              = $this->renderTitleContent();
@@ -77,15 +128,17 @@
         {
         }
 
+        /**
+         * @param $renderedInForm
+         * @return null|string
+         */
         protected function renderActionElementBar($renderedInForm)
         {
             return $this->renderActionLinksContent();
         }
 
         /**
-         * Given a form, render the content for the action links at the bottom of the view and return the content as
-         * a string.
-         * @param object $form
+         * @return null|string
          */
         protected function renderActionLinksContent()
         {
@@ -125,16 +178,9 @@
             return $searchElement->render();
         }
 
-        public static function getPreviousPageLinkId()
-        {
-            throw new NotSupportedException();
-        }
-
-        public static function getNextPageLinkId()
-        {
-            throw new NotSupportedException();
-        }
-
+        /**
+         * @return null|string
+         */
         protected function getViewStyle()
         {
             if($this->hideView)
@@ -143,11 +189,17 @@
             }
         }
 
+        /**
+         * @return string
+         */
         protected function renderTitleContent()
         {
             return ZurmoHtml::tag('h3',   array(), $this->getTitle());
         }
 
+        /**
+         * @return string
+         */
         protected function renderAttributesAndRelationsTreeContent()
         {
             $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), '');

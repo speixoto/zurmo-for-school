@@ -24,24 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for managing report details
+      */
     class ReportDetailsView extends DetailsView
     {
+        /**
+         * @param $model
+         */
         public static function assertModelIsValid($model)
         {
             assert('$model instanceof Report');
         }
 
-        protected function renderContent()
-        {
-            $content = $this->renderTitleContent();
-//todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
-            $this->registerScripts();
-            return $content;
-        }
-
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -66,6 +64,10 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the Report is new
+         */
         public function getTitle()
         {
             if ($this->model->id > 0)
@@ -87,6 +89,20 @@
         {
             $script = '$(".ReportSQLForPortletView").hide();';
             Yii::app()->getClientScript()->registerScript('ReportPortletsDefaultHideScript', $script);
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = $this->renderTitleContent();
+            //todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
+            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= $this->renderActionElementBar(false);
+            $content .= '</div></div>';
+            $this->registerScripts();
+            return $content;
         }
     }
 ?>

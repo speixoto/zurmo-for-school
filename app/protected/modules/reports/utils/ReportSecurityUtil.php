@@ -24,8 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for working with security operations on report results and for working with the report wizard
+     * in the user interface
+     */
     class ReportSecurityUtil
     {
+        /**
+         * @param $moduleClassName
+         * @return bool
+         */
         public static function canCurrentUserCanAccessModule($moduleClassName)
         {
             assert('is_string($moduleClassName)');
@@ -40,6 +48,10 @@
             }
         }
 
+        /**
+         * @param array $componentForms
+         * @return bool
+         */
         public static function canCurrentUserAccessAllComponents(Array $componentForms)
         {
             foreach($componentForms as $componentForm)
@@ -52,6 +64,13 @@
             return true;
         }
 
+        /**
+         * Resolves for a given component whether the user has necessary rights to access the component information.
+         * An example is if a component is account's opportunities and the current user cannot access the opportunities
+         * module.
+         * @param ComponentForReportForm $componentForm
+         * @return bool
+         */
         protected static function canCurrentUserAccessComponent(ComponentForReportForm $componentForm)
         {
             $modelClassName       = $componentForm->getModelClassName();

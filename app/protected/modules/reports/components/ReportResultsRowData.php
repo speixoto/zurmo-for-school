@@ -24,30 +24,64 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
+    /**
+     * For each row of data generated using the data provider, a ReportResultsRowData object is created.  The methods
+     * in this class allow ListViewColumnAdapters to easily retrieve the values of display attributes to display.
+     * There are 2 types of data, raw data such as SUM(amount) and model data such as $account->name.  The columnAliasNames
+     * on the display attributes are accessed internally so if you call $reportResultsRowsData->col1, the object will
+     * resolve the value either from the raw data or from an attribute on a model.
+     */
     class ReportResultsRowData extends CComponent
     {
-        const ATTRIBUTE_NAME_PREFIX = 'attribute';
+        const ATTRIBUTE_NAME_PREFIX            = 'attribute';
 
         const DRILL_DOWN_GROUP_BY_VALUE_PREFIX = 'groupByRowValue';
 
+        /**
+         * @var int
+         */
         protected $id;
 
+        /**
+         * @var array
+         */
         protected $displayAttributes;
 
-        protected $modelsByAliases  = array();
+        /**
+         * RedBeanModels indexed by aliases.
+         * @var array
+         */
+        protected $modelsByAliases                = array();
 
+        /**
+         * @var array
+         */
         protected $selectedColumnNamesAndValues   = array();
 
+        /**
+         * @var array
+         */
         protected $selectedColumnNamesAndRowSpans = array();
 
+        /**
+         * @var array
+         */
         protected $selectedColumnNamesAndLabels   = array();
 
+        /**
+         * @param $key
+         * @return string
+         */
         public static function resolveAttributeNameByKey($key)
         {
             assert('is_numeric($key) || is_string($key)');
             return self::ATTRIBUTE_NAME_PREFIX . $key;
         }
 
+        /**
+         * @param array $displayAttributes
+         * @param int $id
+         */
         public function __construct(array $displayAttributes, $id)
         {
             assert('is_int($id)');
@@ -55,6 +89,23 @@
             $this->id                = $id;
         }
 
+        /**
+         * @param string $name
+         * @return bool
+         */
+        public function __isset($name)
+        {
+            if($this->$name !== null)
+            {
+                return true;
+            }
+            return parent::__isset($name);
+        }
+
+        /**
+         * @param string $name
+         * @return mixed
+         */
         public function __get($name)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $name);
@@ -69,6 +120,11 @@
             return parent::__get($name);
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $alias
+         * @throws NotSupportedException if the alias does not have a corresponding model
+         */
         public function addModelAndAlias(RedBeanModel $model, $alias)
         {
             assert('is_string($alias)');
@@ -79,36 +135,61 @@
             $this->modelsByAliases[$alias] = $model;
         }
 
+        /**
+         * @param string $columnName
+         * @param mixed $value
+         */
         public function addSelectedColumnNameAndValue($columnName, $value)
         {
             $this->selectedColumnNamesAndValues[$columnName] = $value;
         }
 
+        /**
+         * @param string $columnName
+         * @param string $label
+         */
         public function addSelectedColumnNameAndLabel($columnName, $label)
         {
             assert('is_string($label)');
             $this->selectedColumnNamesAndLabels[$columnName] = $label;
         }
 
+        /**
+         * @param string $columnName
+         * @return string
+         */
         public function getLabel($columnName)
         {
             assert('is_string($columnName)');
             return $this->selectedColumnNamesAndLabels[$columnName];
         }
 
+        /**
+         * @param string $columnName
+         * @param mixed $value
+         */
         public function addSelectedColumnNameAndRowSpan($columnName, $value)
         {
             assert('is_int($value)');
             $this->selectedColumnNamesAndRowSpans[$columnName] = $value;
         }
 
+        /**
+         * @param  string $columnName
+         * @return string
+         */
         public function getSelectedColumnRowSpan($columnName)
         {
             assert('is_string($columnName)');
             return $this->selectedColumnNamesAndRowSpans[$columnName];
         }
 
-
+        /**
+         * @param string $attribute
+         * @return null
+         * @throws NotSupportedException if the displayAttributeKey can not be extracted from the string $attribute
+         * passed as a parameter
+         */
         public function getModel($attribute)
         {
             list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
@@ -119,11 +200,17 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @return int
+         */
         public function getId()
         {
             return $this->id;
         }
 
+        /**
+         * @return array
+         */
         public function getDataParamsForDrillDownAjaxCall()
         {
             $dataParams = array();
@@ -156,11 +243,19 @@
             return $dataParams;
         }
 
+        /**
+         * @param string $attributeIndexOrDerivedType
+         * @return string
+         */
         public static function resolveDataParamKeyForDrillDown($attributeIndexOrDerivedType)
         {
             return self::DRILL_DOWN_GROUP_BY_VALUE_PREFIX . $attributeIndexOrDerivedType;
         }
 
+        /**
+         * @param string $displayAttributeKey
+         * @return A
+         */
         public function resolveRawValueByDisplayAttributeKey($displayAttributeKey)
         {
             assert('is_int($displayAttributeKey)');
@@ -168,6 +263,10 @@
             return $this->resolveRawValueByModel($this->displayAttributes[$displayAttributeKey], $model);
         }
 
+        /**
+         * @param string $attributeAlias
+         * @return bool
+         */
         protected function shouldResolveValueFromModel($attributeAlias)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
@@ -178,6 +277,11 @@
             return false;
         }
 
+        /**
+         * @param $displayAttributeKey
+         * @return null
+         * @throws NotSupportedException if the key specified does not exist
+         */
         protected function resolveModel($displayAttributeKey)
         {
             if(!isset($this->displayAttributes[$displayAttributeKey]))
@@ -193,6 +297,11 @@
             return $this->getModelByAlias($modelAlias);
         }
 
+        /**
+         * @param string $displayAttributeKey
+         * @return mixed $value
+         * @throws NotSupportedException if the key specified does not exist
+         */
         protected function resolveValueFromModel($displayAttributeKey)
         {
             if(!isset($this->displayAttributes[$displayAttributeKey]))
@@ -215,6 +324,13 @@
             return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @return mixedg $value
+         * @throws NotSupportedException
+         */
         protected function resolveModelAttributeValueForPenultimateRelation(RedBeanModel $model, $attribute,
                                                                             DisplayAttributeForReportForm $displayAttribute)
         {
@@ -230,6 +346,11 @@
             return $model->$penultimateRelation->$attribute;
         }
 
+        /**
+         * @param DisplayAttributeForReportForm $displayAttribute
+         * @param RedBeanModel $model
+         * @return mixed $value
+         */
         protected function resolveRawValueByModel(DisplayAttributeForReportForm $displayAttribute, RedBeanModel $model)
         {
             $type                 = $displayAttribute->getDisplayElementType();
@@ -257,6 +378,11 @@
             }
         }
 
+        /**
+         * @param string $alias
+         * @return RedBeanModel
+         * @throws NotSupportedException if the $alias does not exist
+         */
         protected function getModelByAlias($alias)
         {
             if(!isset($this->modelsByAliases[$alias]))

@@ -24,24 +24,61 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for displaying a row of attribute information for a component
+     */
     class AttributeRowForReportComponentView extends View
     {
+        /**
+         * @var bool
+         */
         public    $addWrapper = true;
 
+        /**
+         * @var ReportAttributeToElementAdapter
+         */
         protected $elementAdapter;
 
+        /**
+         * @var int
+         */
         protected $rowNumber;
 
+        /**
+         * @var array
+         */
         protected $inputPrefixData;
 
+        /**
+         * @var string
+         */
         protected $attribute;
 
+        /**
+         * @var bool
+         */
         protected $hasTrackableStructurePosition;
 
+        /**
+         * @var bool
+         */
         protected $showRemoveLink;
 
+        /**
+         * @var string
+         */
         protected $treeType;
 
+        /**
+         * @param $elementAdapter
+         * @param integer $rowNumber
+         * @param array $inputPrefixData
+         * @param string $attribute
+         * @param bool $hasTrackableStructurePosition
+         * @param bool $showRemoveLink
+         * @param string $treeType
+         * @throws NotSupportedException if the remove link should be shown but the tree type is null
+         */
         public function __construct($elementAdapter, $rowNumber, $inputPrefixData, $attribute,
                                     $hasTrackableStructurePosition, $showRemoveLink = true, $treeType)
         {
@@ -76,6 +113,9 @@
          * properly.  This method replaces the id and model elements with the correctly needed values.
          * Only adds inputs that have not been added already
          * @param ReportActiveForm $form
+         * @param string $wizardFormClassName
+         * @param string $componentFormClassName
+         * @param array $inputPrefixData
          */
         public function renderAddAttributeErrorSettingsScript(ReportActiveForm $form, $wizardFormClassName,
                                                               $componentFormClassName, $inputPrefixData)
@@ -108,6 +148,9 @@
             Yii::app()->getClientScript()->registerScript('AddAttributeErrorSettingsScript', $script);
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content  = '<div>';
@@ -132,12 +175,18 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderReportAttributeRowNumberLabel()
         {
             return ZurmoHtml::tag('span', array('class' => 'dynamic-attribute-row-number-label'),
                                           ($this->rowNumber + 1) . '.');
         }
 
+        /**
+         * @return string
+         */
         protected function renderHiddenStructurePositionInput()
         {
             $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
@@ -148,6 +197,9 @@
             return ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
         }
 
+        /**
+         * @return string
+         */
         protected function renderAttributeContent()
         {
             $content = $this->elementAdapter->getContent();

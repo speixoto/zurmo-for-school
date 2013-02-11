@@ -24,36 +24,94 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for working with the report wizard
+     */
     abstract class ReportWizardView extends View
     {
+        /**
+         * @var ReportWizardForm
+         */
         protected $model;
 
+        /**
+         * @return mixed
+         */
         abstract protected function registerClickFlowScript();
 
+        /**
+         * @param ReportActiveForm $form
+         * @return mixed
+         */
         abstract protected function renderContainingViews(ReportActiveForm $form);
 
+        /**
+         * @param string $formName
+         * @return mixed
+         */
         abstract protected function renderConfigSaveAjax($formName);
 
+        /**
+         * @param ReportWizardForm $model
+         */
         public function __construct(ReportWizardForm $model)
         {
             $this->model = $model;
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return true;
         }
 
+        /**
+         * @return string
+         */
         public static function getFormId()
         {
             return 'edit-form';
         }
 
+        /**
+         * @return string
+         */
         public function getTitle()
         {
             return Zurmo::t('ReportsModule', 'Report Wizard');
         }
 
+        /**
+         * @return string
+         */
+        protected static function renderValidationScenarioInputContent()
+        {
+            $idInputHtmlOptions  = array('id' => static::getValidationScenarioInputId());
+            $hiddenInputName     = 'validationScenario';
+            return ZurmoHtml::hiddenField($hiddenInputName, static::getStartingValidationScenario(), $idInputHtmlOptions);
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getStartingValidationScenario()
+        {
+            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getValidationScenarioInputId()
+        {
+            return 'componentType';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content  = $this->renderForm();
@@ -62,6 +120,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderForm()
         {
             $content  = '<div class="wrapper">';
@@ -85,6 +146,9 @@
             return $content;
         }
 
+        /**
+         * @return array
+         */
         protected function getClientOptions()
         {
             return array(
@@ -96,6 +160,9 @@
                     );
         }
 
+        /**
+         * @return mixed
+         */
         protected function getFormActionUrl()
         {
             return Yii::app()->createUrl('reports/default/save',
@@ -117,25 +184,13 @@
                                                            '/treeview/jquery.treeview.css');
         }
 
-        protected static function renderValidationScenarioInputContent()
-        {
-            $idInputHtmlOptions  = array('id' => static::getValidationScenarioInputId());
-            $hiddenInputName     = 'validationScenario';
-            return ZurmoHtml::hiddenField($hiddenInputName, static::getStartingValidationScenario(), $idInputHtmlOptions);
-        }
-
-        protected static function getStartingValidationScenario()
-        {
-            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
-        }
-
-        protected static function getValidationScenarioInputId()
-        {
-            return 'componentType';
-        }
-
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function getSaveAjaxString($formName)
         {
+            assert('is_string($formName)');
             $saveRedirectToDetailsUrl = Yii::app()->createUrl('reports/default/details');
             $saveRedirectToListUrl    = Yii::app()->createUrl('reports/default/list');
             return ZurmoHtml::ajax(array(
@@ -157,6 +212,11 @@
                                           ));
         }
 
+        /**
+         * @param string $formName
+         * @param string $componentViewClassName
+         * @return string
+         */
         protected function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
         {
             assert('is_string($formName)');

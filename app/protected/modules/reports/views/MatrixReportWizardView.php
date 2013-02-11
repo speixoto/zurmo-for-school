@@ -24,9 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with the matrix reports in the report wizard
+     */
     class MatrixReportWizardView extends ReportWizardView
     {
-            protected function renderContainingViews(ReportActiveForm $form)
+        /**
+         * @param ReportActiveForm $form
+         * @return string
+         */
+        protected function renderContainingViews(ReportActiveForm $form)
         {
             $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
@@ -43,6 +50,10 @@
             return $gridView->render();
         }
 
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');

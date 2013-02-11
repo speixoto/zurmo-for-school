@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Default controller for all report actions
+      */
     class ReportsDefaultController extends ZurmoBaseController
     {
         public function filters()
@@ -232,7 +235,7 @@
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
             $wizardFormClassName                = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-            $model                              = ComponentForReportFormFactory::makeByTreeType($moduleClassName,
+            $model                              = ComponentForReportFormFactory::makeByComponentType($moduleClassName,
                                                       $modelClassName, $report->getType(), $treeType);
             $form->modelClassNameForError       = $wizardFormClassName;
             $attribute                          = ReportRelationsAndAttributesToTreeAdapter::
@@ -240,7 +243,7 @@
             $model->attributeIndexOrDerivedType = ReportRelationsAndAttributesToTreeAdapter::
                                                       resolveAttributeByNodeId($nodeIdWithoutTreeType);
             $inputPrefixData                    = ReportRelationsAndAttributesToTreeAdapter::
-                                                      resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                                      resolveInputPrefixData($wizardFormClassName,
                                                       $treeType, (int)$rowNumber);
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                       $form, $treeType);
@@ -339,10 +342,10 @@
 
         public function actionDelete($id)
         {
-            $report = SavedReport::GetById(intval($id));
+            $savedReport = SavedReport::GetById(intval($id));
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($report);
-            $report->delete();
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($savedReport);
+            $savedReport->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
 

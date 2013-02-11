@@ -29,6 +29,9 @@
      */
     class UsersReportRules extends PermitableReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(

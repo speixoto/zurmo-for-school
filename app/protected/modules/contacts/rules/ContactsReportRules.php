@@ -29,6 +29,9 @@
      */
     class ContactsReportRules extends SecuredReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -52,6 +55,11 @@
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
 
+        /**
+         * @param User $user
+         * @return null|string|void
+         * @throws NotSupportedException
+         */
         public static function getVariableStateModuleLabel(User $user)
         {
             assert('$user->id > 0');
@@ -80,6 +88,10 @@
             }
         }
 
+        /**
+         * @param User $user
+         * @return bool
+         */
         public static function canUserAccessModuleInAVariableState(User $user)
         {
             assert('$user->id > 0');
@@ -91,6 +103,10 @@
             return false;
         }
 
+        /**
+         * @param User $user
+         * @return null | string
+         */
         public static function resolveStateAdapterUserHasAccessTo(User $user)
         {
             assert('$user->id > 0');

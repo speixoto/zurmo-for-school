@@ -24,8 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for managing adapting model relations and attributes into a summation report
+     */
     class ModelRelationsAndAttributesToSummationReportAdapter extends ModelRelationsAndAttributesToSummableReportAdapter
     {
+        /**
+         * @param array $existingGroupBys
+         * @param array $existingDisplayAttributes
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return array
+         * @throws NotSupportedException if there the preceding model and relation are not either both defined or both
+         * null
+         */
         public function getAttributesForOrderBys($existingGroupBys = array(), $existingDisplayAttributes = array(),
                                                  RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
@@ -94,6 +106,9 @@
             return $attributes;
         }
 
+        /**
+         * @return array
+         */
         public function getForDrillDownAttributes()
         {
             $attributes = $this->getAttributesNotIncludingDerivedAttributesData();
@@ -102,6 +117,11 @@
             return $attributes;
         }
 
+        /**
+         * @param array $existingGroupBys
+         * @param array $existingDisplayAttributes
+         * @return array
+         */
         public function getAttributesForChartSeries($existingGroupBys = array(), $existingDisplayAttributes = array())
         {
             $attributes = array();
@@ -119,6 +139,10 @@
             return $attributes;
         }
 
+        /**
+         * @param array $existingDisplayAttributes
+         * @return array
+         */
         public function getAttributesForChartRange ($existingDisplayAttributes = array())
         {
             $attributes = array();

@@ -24,9 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Action bar view for the report search and list user interface. Provides buttons like export and update
+     */
     class SecuredActionBarForReportsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-            public static function getDefaultMetadata()
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(

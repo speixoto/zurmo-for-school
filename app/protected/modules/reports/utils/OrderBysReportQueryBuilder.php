@@ -29,6 +29,10 @@
      */
     class OrderBysReportQueryBuilder extends ReportQueryBuilder
     {
+        /**
+         * @param array $components
+         * @return null|string
+         */
         public function makeQueryContent(Array $components)
         {
             $content = null;

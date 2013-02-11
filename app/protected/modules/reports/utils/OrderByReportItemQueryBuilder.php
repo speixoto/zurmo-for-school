@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Create the query string part for the SQL order by components
+     */
     class OrderByReportItemQueryBuilder extends ReportItemQueryBuilder
     {
+        /**
+         * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
+         * @return string
+         */
         protected static function resolveSortColumnName(RedBeanModelAttributeToDataProviderAdapter
                                                         $modelAttributeToDataProviderAdapter)
         {
@@ -39,6 +46,12 @@
             }
         }
 
+        /**
+         * @param string $tableAliasName
+         * @param string $resolvedSortColumnName
+         * @param null | string $queryStringExtraPart
+         * @return string
+         */
         protected function resolveOrderByString($tableAliasName, $resolvedSortColumnName, $queryStringExtraPart)
         {
             if($this->modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
@@ -54,6 +67,11 @@
             }
         }
 
+        /**
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         * @return string
+         */
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -61,6 +79,11 @@
             return $content . ' ' . $this->componentForm->order;
         }
 
+        /**
+         * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         * @return string
+         */
         protected function resolveSortAttributeContent(RedBeanModelAttributeToDataProviderAdapter
                                                        $modelAttributeToDataProviderAdapter,
                                                        $onTableAliasName = null)
@@ -73,6 +96,12 @@
             return $this->resolveOrderByString($tableAliasName, $resolvedSortColumnName, $queryStringExtraPart);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter |
+         * RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -88,6 +117,11 @@
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected static function makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
             $modelToReportAdapter, $attribute)
         {
@@ -96,6 +130,11 @@
                 $modelToReportAdapter->resolveRealAttributeName($attribute), 'lastName');
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
             $modelToReportAdapter, $attribute)
         {

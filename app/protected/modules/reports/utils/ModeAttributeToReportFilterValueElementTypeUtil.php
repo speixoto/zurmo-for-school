@@ -30,8 +30,15 @@
      */
     class ModeAttributeToReportFilterValueElementTypeUtil
     {
+        /**
+         * @param $model
+         * @param string $attributeName
+         * @return null|string
+         * @throws NotSupportedException if the attributeName is a relation on the model
+         */
         public static function getType($model, $attributeName)
         {
+            assert('is_string($attributeName)');
             if ($attributeName == 'id')
             {
                 return 'Text';
@@ -109,10 +116,14 @@
             throw new NotSupportedException();
         }
 
-        protected static function getAvailableOperatorsTypeFromModelMetadataElement($element)
+        /**
+         * @param string $elementType
+         * @return null|string
+         */
+        protected static function getAvailableOperatorsTypeFromModelMetadataElement($elementType)
         {
-            assert('is_string($element)');
-            switch ($element)
+            assert('is_string($elementType)');
+            switch ($elementType)
             {
                 case 'CurrencyValue':
                     return 'MixedCurrencyValueTypes';

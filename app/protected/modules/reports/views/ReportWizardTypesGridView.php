@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Wrapper view for selecting a type of report to create
+     */
     class ReportWizardTypesGridView extends GridView
     {
+        /**
+         * @var array
+         */
         protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
 
         public function __construct()
@@ -34,6 +40,9 @@
             $this->setView(new ReportWizardTypeView(), 0, 0);
         }
 
+        /**
+         * @return bool
+         */
         public function isUniqueToAPage()
         {
             return true;

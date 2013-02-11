@@ -24,18 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the order by components for the report wizard user interface
+     */
     class OrderBysForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        /**
+         * @return string
+         */
         public static function getTreeType()
         {
             return OrderByForReportForm::getType();
         }
 
+        /**
+         * @return string
+         */
         public static function getWizardStepTitle()
         {
             return Zurmo::t('ReportsModule', 'Select Ordering');
         }
 
+        /**
+         * @return string
+         */
         public static function getPreviousPageLinkId()
         {
             return 'orderBysPreviousLink';
@@ -46,24 +58,37 @@
             return 'orderBysDataNextLink';
         }
 
-        protected function getItemsCount()
-        {
-            return count($this->model->orderBys);
-        }
-
-        protected function getItemsContent(& $rowCount)
-        {
-            return $this->renderItems($rowCount, $this->model->orderBys);
-        }
-
+        /**
+         * @return string
+         */
         protected static function getZeroComponentsClassName()
         {
             return 'ZeroOrderBys';
         }
 
+        /**
+         * @return int
+         */
+        protected function getItemsCount()
+        {
+            return count($this->model->orderBys);
+        }
+
+        /**
+         * @param int $rowCount
+         * @return array|string
+         */
+        protected function getItemsContent(& $rowCount)
+        {
+            return $this->renderItems($rowCount, $this->model->orderBys);
+        }
+
+        /**
+         * @return string
+         */
         protected function getZeroComponentsMessageContent()
         {
-            return Zurmo::t('ReportsModule', '<div class="large-icon"></div><h2>Drag or double click your ordering columns here</h2>');
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('ReportsModule', 'Drag or double click your ordering columns here') . '</h2>';
         }
     }
 ?>

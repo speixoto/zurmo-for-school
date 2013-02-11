@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with the report type attribute and displaying it in a report results grid
+     */
     class ReportTypeStaticDropDownListViewColumnAdapter extends ListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
             return array(

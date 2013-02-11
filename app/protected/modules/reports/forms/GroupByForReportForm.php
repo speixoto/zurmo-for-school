@@ -24,15 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for group by definitions
+     */
     class GroupByForReportForm extends ComponentForReportForm
     {
+        /**
+         * Default axis is the x-axis
+         * @var string
+         */
         public $axis = 'x';
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_GROUP_BYS;
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -42,6 +55,9 @@
             ));
         }
 
+        /**
+         * @return bool
+         */
         public function validateAxis()
         {
             if($this->axis == null)
@@ -56,6 +72,10 @@
             return true;
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException if the attributeIndexOrDerivedType is null
+         */
         public function getAxisValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)

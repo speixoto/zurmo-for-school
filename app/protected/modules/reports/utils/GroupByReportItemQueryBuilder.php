@@ -29,6 +29,11 @@
      */
     class GroupByReportItemQueryBuilder extends ReportItemQueryBuilder
     {
+        /**
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null |string $onTableAliasName
+         * @return string
+         */
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName = null)
         {
             $columnContent = ModelDataProviderUtil::resolveGroupByAttributeColumnName(
@@ -36,6 +41,10 @@
             return $this->resolveColumnContentForCalculatedModifier($columnContent);
         }
 
+        /**
+         * @param string $columnContent
+         * @return string
+         */
         protected function resolveColumnContentForCalculatedModifier($columnContent)
         {
             assert('is_string($columnContent)');
@@ -51,6 +60,10 @@
             return $columnContent;
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         */
         protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier($attribute)
         {
             $resolvedAttribute = $this->modelToReportAdapter->resolveRealAttributeName($attribute);
@@ -60,7 +73,12 @@
             }
         }
 
-
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter |
+         * RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -76,6 +94,11 @@
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
                            $modelToReportAdapter, $attribute)
         {

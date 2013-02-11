@@ -25,12 +25,35 @@
      ********************************************************************************/
 
     /**
-     * Popuplate the RedBeanModelSelectQueryAdapter with the necessary columns or calculations to select
+     * Populate the RedBeanModelSelectQueryAdapter with the necessary columns or calculations to select
      */
     class DisplayAttributeReportItemQueryBuilder extends ReportItemQueryBuilder
     {
+        /**
+         * @var RedBeanModelSelectQueryAdapter
+         */
         protected $selectQueryAdapter;
 
+        /**
+         * @param ComponentForReportForm $componentForm
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param null | string $currencyConversionType
+         */
+        public function __construct(ComponentForReportForm $componentForm,
+                                    RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
+                                    ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
+                                    RedBeanModelSelectQueryAdapter $selectQueryAdapter,
+                                    $currencyConversionType = null)
+        {
+            parent::__construct($componentForm, $joinTablesAdapter, $modelToReportAdapter, $currencyConversionType);
+            $this->selectQueryAdapter = $selectQueryAdapter;
+        }
+
+        /**
+         * @return bool
+         */
         protected function isDisplayAttributeMadeViaSelect()
         {
             if($this->componentForm->madeViaSelectInsteadOfViaModel)
@@ -47,21 +70,19 @@
             }
         }
 
-        public function __construct(ComponentForReportForm $componentForm,
-                                    RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
-                                    ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
-                                    RedBeanModelSelectQueryAdapter $selectQueryAdapter,
-                                    $currencyConversionType = null)
-        {
-            parent::__construct($componentForm, $joinTablesAdapter, $modelToReportAdapter, $currencyConversionType);
-            $this->selectQueryAdapter = $selectQueryAdapter;
-        }
-
+        /**
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         */
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName = null)
         {
             $this->resolveDisplayAttributeColumnName($modelAttributeToDataProviderAdapter, $onTableAliasName);
         }
 
+        /**
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         */
         protected function resolveDisplayAttributeColumnName($modelAttributeToDataProviderAdapter, $onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -79,6 +100,10 @@
             }
         }
 
+        /**
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         */
         protected function resolveDisplayAttributeForPrematurelyStoppingJoins($modelAttributeToDataProviderAdapter,
                                                                               $onTableAliasName = null)
         {
@@ -93,6 +118,13 @@
             $this->componentForm->setModelAliasUsingTableAliasName($onTableAliasName);
         }
 
+        /**
+         * @param ModelJoinBuilder $builder
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         * @throws NotSupportedException if the display attribute is made via select like SUM(integer) but the
+         * adapter being used is not a summation adapter
+         */
         protected function resolveDisplayAttributeForProcessingAllJoins(ModelJoinBuilder $builder,
                                                                         $modelAttributeToDataProviderAdapter,
                                                                         $onTableAliasName = null)
@@ -127,6 +159,10 @@
             }
         }
 
+        /**
+         * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
+         * @return string
+         */
         protected function resolveColumnName(RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter)
         {
             if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
@@ -139,6 +175,10 @@
             }
         }
 
+        /**
+         * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
+         * @return string
+         */
         protected function resolvedModelClassName(RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter)
         {
             if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
@@ -151,6 +191,11 @@
             }
         }
 
+        /**
+         * @param RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter
+         * @param ModelJoinBuilder $builder
+         * @return string
+         */
         protected function resolvedTableAliasName(RedBeanModelAttributeToDataProviderAdapter $modelAttributeToDataProviderAdapter,
                                                   ModelJoinBuilder $builder)
         {
@@ -164,6 +209,11 @@
             }
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter|RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -179,6 +229,11 @@
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param $modelAttributeToDataProviderAdapter
+         * @return bool
+         */
         protected function shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
                                                                           $modelAttributeToDataProviderAdapter)
         {
@@ -223,6 +278,12 @@
                                                                           $modelAttributeToDataProviderAdapter);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param $modelAttributeToDataProviderAdapter
+         * @param string $modelClassName
+         * @param string $realAttributeName
+         */
         protected function resolveCastingHintForAttribute($modelToReportAdapter, $modelAttributeToDataProviderAdapter,
                                                           $modelClassName, $realAttributeName)
         {
@@ -234,12 +295,18 @@
             }
         }
 
-//todo: this is lame because it knows that madeViaSelectInsteadOfViaModel true, means it is a group by. try to decouple.
+
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
             $modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
+            //todo: this is lame because it knows that madeViaSelectInsteadOfViaModel true, means it is a group by. try to decouple.
             if($this->componentForm->madeViaSelectInsteadOfViaModel)
             {
                 $resolvedRelatedAttribute = $modelToReportAdapter->getRules()->

@@ -25,15 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to export from a listview.
+     * Class used by reporting detail view user interface to show a options button that when clicked has a dropdown
+     * of links to click
      */
     class ReportOptionsLinkActionElement extends LinkActionElement
     {
+        /**
+         * @return string
+         */
         public function getActionType()
         {
             return 'Delete';
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             //todo securable on these items from the outside coming in?
@@ -55,21 +62,33 @@
             return $cClipWidget->getController()->clips['ActionMenu'];
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('ReportsModule', 'Options');
         }
 
+        /**
+         * @return null
+         */
         protected function getDefaultRoute()
         {
             return null;
         }
 
+        /**
+         * @return string
+         */
         protected function getEditRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/edit/';
         }
 
+        /**
+         * @return string
+         */
         protected function getDeleteRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/delete/';

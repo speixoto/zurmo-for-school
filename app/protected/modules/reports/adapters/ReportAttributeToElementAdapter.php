@@ -24,20 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for adapting an attribute to an Element
+     */
     class ReportAttributeToElementAdapter
     {
+        /**
+         * @var array
+         */
         protected $inputPrefixData;
 
+        /**
+         * @var ComponentForReportForm
+         */
         protected $model;
 
+        /**
+         * @var ReportActiveForm
+         */
         protected $form;
 
-        //protected $attribute;
-
+        /**
+         * @var string
+         */
         protected $treeType;
 
+        /**
+         * @var bool
+         */
         protected $showAvailableRuntimeFilter = true;
 
+        /**
+         * @param array $inputPrefixData
+         * @param ComponentForReportForm $model
+         * @param ReportActiveForm $form
+         * @param string $treeType
+         */
         public function __construct(Array $inputPrefixData, $model, $form, $treeType)
         {
             assert('count($inputPrefixData) > 1');
@@ -50,6 +72,10 @@
             $this->treeType             = $treeType;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the treeType is invalid or null
+         */
         public function getContent()
         {
             $this->form->setInputPrefixData($this->inputPrefixData);
@@ -81,6 +107,30 @@
             return $content;
         }
 
+        /**
+         * @param string $innerContent
+         * @param string $content
+         * @param null|string $class
+         */
+        protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
+        {
+            if($class != null)
+            {
+                $htmlOptions = array('class' => $class);
+            }
+            else
+            {
+                $htmlOptions = array();
+            }
+            if($innerContent != null)
+            {
+                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
+            }
+        }
+
+        /**
+         * @return string
+         */
         protected function renderAttributeIndexOrDerivedType()
         {
             $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
@@ -92,6 +142,10 @@
                                           $idInputHtmlOptions);
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the valueElementType is null
+         */
         protected function getContentForFilter()
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
@@ -156,6 +210,11 @@
             return $content;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the reportType is rows and columns since that report type does not have
+         * group bys
+         */
         protected function getContentForGroupBy()
         {
             if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS)
@@ -180,6 +239,11 @@
             return $content;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the reportType is rows and columns since that report type does not have
+         * order bys
+         */
         protected function getContentForOrderBy()
         {
             if($this->model->getReportType() == Report::TYPE_MATRIX)
@@ -197,6 +261,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getContentForDisplayAttribute()
         {
             $params                                = array('inputPrefix' => $this->inputPrefixData);
@@ -209,6 +276,10 @@
             return $content;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the reportType is not summation, since only summation has drill down.
+         */
         protected function getContentForDrillDownDisplayAttribute()
         {
             if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS ||
@@ -217,22 +288,6 @@
                 throw new NotSupportedException();
             }
             return $this->getContentForDisplayAttribute();
-        }
-
-        protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
-        {
-            if($class != null)
-            {
-                $htmlOptions = array('class' => $class);
-            }
-            else
-            {
-                $htmlOptions = array();
-            }
-            if($innerContent != null)
-            {
-                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
-            }
         }
     }
 ?>
