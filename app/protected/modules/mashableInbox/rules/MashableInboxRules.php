@@ -27,5 +27,74 @@
     abstract class MashableInboxRules
     {
         abstract public function getUnreadCountForCurrentUser();
+
+        abstract public function getMetadataFilteredByFilteredBy($filteredBy);
+
+        abstract public function getMetadataFilteredByOption($option);
+
+        abstract public function getActionViewOptions();
+
+        abstract public function getModelClassName();
+
+        abstract public function getMachableInboxOrderByAttributeName();
+
+        protected function getListViewClassName()
+        {
+            $modelClassName = $this->getModelClassName();
+            return $modelClassName . 's' . 'ListView';
+        }
+
+        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL)
+        {
+            $modelClassName   = $this->getModelClassName();
+            $orderBy          = $this->getMachableInboxOrderByAttributeName();
+            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                'listPageSize', get_class(Yii::app()->controller->module));
+            $metadataByOption = $this->getMetadataFilteredByOption($option);
+            $metadata         = $this->mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadata,
+                $modelClassName,
+                'RedBeanModelDataProvider',
+                $orderBy,
+                true,
+                $pageSize
+            );
+            $listViewClassName = $this->getListViewClassName();
+            $listView = new $listViewClassName(
+                    Yii::app()->controller->id,
+                    Yii::app()->controller->module->id,
+                    $modelClassName,
+                    $dataProvider,
+                    array());
+            return $listView;
+        }
+
+        public function mergeMetada($firstMetadata, $secondMetadata, $isAnd = true)
+        {
+            if ($secondMetadata == null)
+            {
+                return $firstMetadata;
+            }
+            $firstMetadataClausesCount = count($firstMetadata['clauses']);
+            $clauseNumber = count($firstMetadata['clauses']) + 1;
+            foreach ($secondMetadata['clauses'] as $clause)
+            {
+                $patterns[]     = '/' . ($clauseNumber++ - $firstMetadataClausesCount). '/';
+                $replacements[] = (string)$clauseNumber;
+                $firstMetadata['clauses'][$clauseNumber] = $clause;
+            }
+            if ($isAnd)
+            {
+                $operator = ' and ';
+            }
+            else
+            {
+                $operator = ' or ';
+            }
+            $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
+                                          '(' . preg_replace($patterns, $replacements, $secondMetadata['structure']) . ')';
+            return $firstMetadata;
+        }
     }
 ?>

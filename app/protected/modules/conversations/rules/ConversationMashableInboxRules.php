@@ -31,6 +31,16 @@
             return ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
         }
 
+        public function getModelClassName()
+        {
+            return 'Conversation';
+        }
+
+        public function getMachableInboxOrderByAttributeName()
+        {
+            return 'latestDateTime';
+        }
+
         public function getActionViewOptions()
         {
             return array(
@@ -43,69 +53,55 @@
             );
         }
 
-        public function getActionBarAndListView($type, $filteredBy = MashableInboxForm::FILTERED_BY_ALL)
+        public function getMetadataFilteredByOption($option)
         {
-            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                'listPageSize', get_class(Yii::app()->controller->module));
-            if ($type == null)
+            if ($option == null)
             {
-                $type = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
+                $option = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
             }
             $conversation     = new Conversation(false);
-            $searchAttributes = array();
             $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
                 $conversation,
                 Yii::app()->user->userModel->id,
                 array(),
-                $type
+                $option
             );
-            $metaData = $metadataAdapter->getAdaptedMetadata();
+            return $metadataAdapter->getAdaptedMetadata();
+        }
+
+        public function getMetadataFilteredByFilteredBy($filteredBy)
+        {
             if ($filteredBy == MashableInboxForm::FILTERED_BY_UNREAD)
             {
-                $clauseNumber = count($metaData['clauses']);
-                $metaData['clauses'][$clauseNumber + 1] = array(
-                        'attributeName'        => 'ownerHasReadLatest',
-                        'operatorType'         => 'doesNotEqual',
-                        'value'                => (bool)1
-                    );
-                $metaData['clauses'][$clauseNumber + 2] = array(
+                $metadata['clauses'][1] = array(
+                            'attributeName'        => 'ownerHasReadLatest',
+                            'operatorType'         => 'doesNotEqual',
+                            'value'                => (bool)1
+                        );
+                $metadata['clauses'][2] = array(
                         'attributeName'        => 'owner',
                         'operatorType'         => 'equals',
                         'value'                => Yii::app()->user->userModel->id
                     );
-                $metaData['clauses'][$clauseNumber + 3] = array(
+                $metadata['clauses'][3] = array(
                         'attributeName'        => 'conversationParticipants',
                         'relatedAttributeName' => 'person',
                         'operatorType'         => 'equals',
                         'value'                => Yii::app()->user->userModel->getClassId('Item'),
                     );
-                $metaData['clauses'][$clauseNumber + 4] = array(
+                $metadata['clauses'][4] = array(
                         'attributeName'        => 'conversationParticipants',
                         'relatedAttributeName' => 'hasReadLatest',
                         'operatorType'         => 'doesNotEqual',
                         'value'                => (bool)1
                     );
-                $metaData['structure'] .= " and (( " . ($clauseNumber + 1) .
-                                          " and " .  ($clauseNumber + 2) .
-                                          ") or (" . ($clauseNumber + 3) .
-                                          " and " . ($clauseNumber + 4) . "))";
+                $metadata['structure'] = "((1 and 2) or (3 and 4))";
             }
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metaData,
-                'Conversation',
-                'RedBeanModelDataProvider',
-                'latestDateTime',
-                true,
-                $pageSize
-            );
-            $listView = new ConversationsListView(
-                    Yii::app()->controller->id,
-                    Yii::app()->controller->module->id,
-                    'Conversation',
-                    $dataProvider,
-                    array());
-            return $listView;
+            else
+            {
+                $metadata = null;
+            }
+            return $metadata;
         }
-
     }
 ?>

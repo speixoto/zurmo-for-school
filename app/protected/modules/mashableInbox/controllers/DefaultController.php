@@ -45,7 +45,7 @@ class MashableInboxDefaultController extends ZurmoModuleController {
                 $mashableInboxForm->optionForModel = 2;
             }
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-            $listView           = $mashableUtilRules->getActionBarAndListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy);
+            $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy);
             $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
         } else {
             $filteredBy = LatestActivitiesConfigurationForm::FILTERED_BY_ALL;
