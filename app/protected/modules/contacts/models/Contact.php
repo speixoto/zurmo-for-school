@@ -37,7 +37,8 @@
                 array(
                     'state'         => 'Status',
                     'account'       => 'AccountsModuleSingularLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel'
+                    'opportunities' => 'OpportunitiesModulePluralLabel',
+                    'products'      => 'ProductsModulePluralLabel',
                 )
             );
         }
@@ -81,6 +82,7 @@
                 ),
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_ONE,   'Account'),
+                    'products'         => array(RedBeanModel::MANY_MANY, 'Product'),
                     'industry'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
                     'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
                     'secondaryAddress' => array(RedBeanModel::HAS_ONE,   'Address',          RedBeanModel::OWNED),
