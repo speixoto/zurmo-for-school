@@ -36,9 +36,9 @@
 
         public function render()
         {
-            $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
+            $mashableInboxModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             $items = array();
-            foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
+            foreach ($mashableInboxModels as $modelClassName => $modelLabel)
             {
                 $items[] = array('label'   => $modelClassName,
                                  'url'     => $this->getRouteForItem($modelClassName));

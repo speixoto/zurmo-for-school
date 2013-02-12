@@ -26,8 +26,54 @@
 
     class ConversationMashableInboxRules extends MashableInboxRules
     {
-        public function getUnreadCountForCurrentUser() {
+        public function getUnreadCountForCurrentUser()
+        {
             return ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
+        }
+
+        public function getActionViewOptions()
+        {
+            return array(
+                array('label' => Zurmo::t('ConversationsModule', 'Created'),
+                      'type'  => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED),
+                array('label' => Zurmo::t('ConversationsModule', 'Participating In'),
+                      'type'  => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT),
+                array('label' => Zurmo::t('ConversationsModule', 'Closed'),
+                      'type'  => ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED),
+            );
+        }
+
+        public function getActionBarAndListView($type)
+        {
+            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                'listPageSize', get_class(Yii::app()->controller->module));
+            if ($type == null)
+            {
+                $type = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
+            }
+            $conversation     = new Conversation(false);
+            $searchAttributes = array();
+            $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
+                $conversation,
+                Yii::app()->user->userModel->id,
+                $searchAttributes,
+                $type
+            );
+            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
+                $metadataAdapter->getAdaptedMetadata(),
+                'Conversation',
+                'RedBeanModelDataProvider',
+                'latestDateTime',
+                true,
+                $pageSize
+            );
+            $listView = new ConversationsListView(
+                    Yii::app()->controller->id,
+                    Yii::app()->controller->module->id,
+                    'Conversation',
+                    $dataProvider,
+                    array());
+            return $listView;
         }
 
     }

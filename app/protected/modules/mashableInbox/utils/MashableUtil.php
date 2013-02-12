@@ -71,5 +71,16 @@
                     MashableUtil::createMashableInboxRulesByModel($modelClassName);
             return $mashableInboxRules->getUnreadCountForCurrentUser();
         }
+
+        public static function getUnreadCountMashableInboxForCurrentUser()
+        {
+            $unreadCount = 0;
+            $mashableInboxModels = static::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
+            foreach ($mashableInboxModels as $modelClassName => $modelLabel)
+            {
+                $unreadCount += static::getUnreadCountForCurrentUserByModelClassName($modelClassName);
+            }
+            return $unreadCount;
+        }
     }
 ?>
