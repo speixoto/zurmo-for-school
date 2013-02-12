@@ -79,273 +79,37 @@
 
         public function testGetDataWithNoRelationsSet()
         {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            $testItem = new ExportTestModelItem();
-            $testItem->firstName = 'Bob';
-            $testItem->lastName  = 'Bob';
-            $testItem->boolean   = true;
-            $testItem->date      = '2002-04-03';
-            $testItem->dateTime  = '2002-04-03 02:00:43';
-            $testItem->float     = 54.22;
-            $testItem->integer   = 10;
-            $testItem->phone     = '21313213';
-            $testItem->string    = 'aString';
-            $testItem->textArea  = 'Some Text Area';
-            $testItem->url       = 'http://www.asite.com';
-            $testItem->email       = 'a@a.com';
-            $testItem->owner     = $super;
+            $reportModelTestItemX = new ReportModelTestItem();
+            $reportModelTestItemX->string = 'xFirst';
+            $reportModelTestItemX->phone = 'xLast';
+            $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                     Report::TYPE_SUMMATION);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'FullName';
 
-            $customFieldValue = new CustomFieldValue();
-            $customFieldValue->value = 'Multi 1';
-            $testItem->multiDropDown->values->add($customFieldValue);
+            $reportModelTestItemY = new ReportModelTestItem();
+            $reportModelTestItemY->string = 'yFirst';
+            $reportModelTestItemY->phone = 'yLast';
+            $displayAttributeY    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                     Report::TYPE_SUMMATION);
+            $displayAttributeY->setModelAliasUsingTableAliasName('def');
+            $displayAttributeY->attributeIndexOrDerivedType = 'FullName';
 
-            $customFieldValue = new CustomFieldValue();
-            $customFieldValue->value = 'Multi 3';
-            $testItem->multiDropDown->values->add($customFieldValue);
-
-            $customFieldValue = new CustomFieldValue();
-            $customFieldValue->value = 'Cloud 2';
-            $testItem->tagCloud->values->add($customFieldValue);
-
-            $customFieldValue = new CustomFieldValue();
-            $customFieldValue->value = 'Cloud 3';
-            $testItem->tagCloud->values->add($customFieldValue);
-
-            $createStamp         = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-            $this->assertTrue($testItem->save());
-            $id = $testItem->id;
-            $testItem->forget();
-            unset($testItem);
-
-            $testItem    = ExportTestModelItem::getById($id);
-            $adapter     = new ReportToExportAdapter($testItem);
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX, $displayAttributeY), 4);
+            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
+            $reportResultsRowData->addModelAndAlias($reportModelTestItemY, 'def');
+            
+            $adapter     = new ReportToExportAdapter($reportResultsRowData);
             $data        = $adapter->getData();
 
-            $compareData = array(
-                0  => 'aa',
-                1  => 'dd',                
-            );
-                      
-            $this->assertEquals($compareData, $data);
-        }
-
-        public function testGetDataWithAllHasOneOrOwnedRelationsSet()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $values = array(
-                'Test1',
-                'Test2',
-                'Test3',
-                'Sample',
-                'Demo',
-            );
-            $customFieldData = CustomFieldData::getByName('ExportTestDropDown');
-            $customFieldData->serializedData = serialize($values);
-            $saved = $customFieldData->save();
-            $this->assertTrue($saved);
-
-            $currencies                 = Currency::getAll();
-            $currencyValue              = new CurrencyValue();
-            $currencyValue->value       = 100;
-            $currencyValue->currency    = $currencies[0];
-            $this->assertEquals('USD', $currencyValue->currency->code);
-
-            $testItem = new ExportTestModelItem();
-            $testItem->firstName       = 'Bob2';
-            $testItem->lastName        = 'Bob2';
-            $testItem->boolean         = true;
-            $testItem->date            = '2002-04-03';
-            $testItem->dateTime        = '2002-04-03 02:00:43';
-            $testItem->float           = 54.22;
-            $testItem->integer         = 10;
-            $testItem->phone           = '21313213';
-            $testItem->string          = 'aString';
-            $testItem->textArea        = 'Some Text Area';
-            $testItem->url             = 'http://www.asite.com';
-            $testItem->email           = 'a@a.com';
-            $testItem->owner           = $super;
-            $testItem->currencyValue   = $currencyValue;
-            $testItem->dropDown->value = $values[1];
-            $createStamp               = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-            $this->assertTrue($testItem->save());
-            $id = $testItem->id;
-            $testItem->forget();
-            unset($testItem);
-
-            $testItem    = ExportTestModelItem::getById($id);
-            $adapter     = new ReportToExportAdapter($testItem);
+            $model1 = $reportResultsRowData->getModel('attribute0');
+            $this->assertEquals('xFirst xLast', strval($model1));
+            $model2 = $reportResultsRowData->getModel('attribute1');
+            $this->assertEquals('yFirst yLast', strval($model2)); 
+            
+            $adapter     = new ReportToExportAdapter($reportResultsRowData);
             $data        = $adapter->getData();
-            $compareData = array(
-                $testItem->getAttributeLabel('id')                => $id,
-                $testItem->getAttributeLabel('firstName')         => 'Bob2',
-                $testItem->getAttributeLabel('lastName')          => 'Bob2',
-                $testItem->getAttributeLabel('boolean')           => 1,
-                $testItem->getAttributeLabel('date')              => '2002-04-03',
-                $testItem->getAttributeLabel('dateTime')          => '2002-04-03 02:00:43',
-                $testItem->getAttributeLabel('float')             => 54.22,
-                $testItem->getAttributeLabel('integer')           => 10,
-                $testItem->getAttributeLabel('phone')             => '21313213',
-                $testItem->getAttributeLabel('string')            => 'aString',
-                $testItem->getAttributeLabel('textArea')          => 'Some Text Area',
-                $testItem->getAttributeLabel('url')               => 'http://www.asite.com',
-                $testItem->getAttributeLabel('email')             => 'a@a.com',
-                $testItem->getAttributeLabel('currency')          => null,
-                $testItem->getAttributeLabel('currencyValue')     => 100,
-                $testItem->getAttributeLabel('dropDown')          => $values[1],
-                $testItem->getAttributeLabel('radioDropDown')     => null,
-                $testItem->getAttributeLabel('multiDropDown')     => null,
-                $testItem->getAttributeLabel('tagCloud')          => null,
-                $testItem->getAttributeLabel('hasOne')            => null,
-                $testItem->getAttributeLabel('hasOneAlso')        => null,
-
-                'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid'    => null,
-                'Primary Email - Opt Out'       => null,
-
-                'Primary Address - City'        => null,
-                'Primary Address - Country'     => null,
-                'Primary Address - Invalid'     => null,
-                'Primary Address - Latitude'    => null,
-                'Primary Address - Longitude'   => null,
-                'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1'    => null,
-                'Primary Address - Street 2'    => null,
-                'Primary Address - State'       => null,
-
-                'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid'    => null,
-                'Secondary Email - Opt Out'       => null,
-
-                'Currency Value Currency'         => 'USD',
-
-                $testItem->getAttributeLabel('user')              => null,
-                $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdByUser')     => 'super',
-                $testItem->getAttributeLabel('modifiedByUser')    => 'super',
-            );
-
-            $compareData = array(
-                0  => 'aa',
-                1  => 'dd',                
-            );
-                      
-            $this->assertEquals($compareData, $data);
-        }
-
-        public function testGetDataWithHasOneRelatedModel()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $currencies                 = Currency::getAll();
-            $currencyValue              = new CurrencyValue();
-            $currencyValue->value       = 100;
-            $currencyValue->currency    = $currencies[0];
-            $this->assertEquals('USD', $currencyValue->currency->code);
-
-            $testItem2 = new ExportTestModelItem2();
-            $testItem2->name     = 'John';
-            $this->assertTrue($testItem2->save());
-
-            $testItem4 = new ExportTestModelItem4();
-            $testItem4->name     = 'John';
-            $this->assertTrue($testItem4->save());
-
-            //HAS_MANY and MANY_MANY relationships should be ignored.
-            $testItem3_1 = new ExportTestModelItem3();
-            $testItem3_1->name     = 'Kevin';
-            $this->assertTrue($testItem3_1->save());
-
-            $testItem3_2 = new ExportTestModelItem3();
-            $testItem3_2->name     = 'Jim';
-            $this->assertTrue($testItem3_2->save());
-
-            $testItem = new ExportTestModelItem();
-            $testItem->firstName     = 'Bob3';
-            $testItem->lastName      = 'Bob3';
-            $testItem->boolean       = true;
-            $testItem->date          = '2002-04-03';
-            $testItem->dateTime      = '2002-04-03 02:00:43';
-            $testItem->float         = 54.22;
-            $testItem->integer       = 10;
-            $testItem->phone         = '21313213';
-            $testItem->string        = 'aString';
-            $testItem->textArea      = 'Some Text Area';
-            $testItem->url           = 'http://www.asite.com';
-            $testItem->email         = 'a@a.com';
-            $testItem->owner         = $super;
-            $testItem->currencyValue = $currencyValue;
-            $testItem->hasOne        = $testItem2;
-            $testItem->hasMany->add($testItem3_1);
-            $testItem->hasMany->add($testItem3_2);
-            $testItem->hasOneAlso    = $testItem4;
-            $createStamp             = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-            $this->assertTrue($testItem->save());
-            $id = $testItem->id;
-            $testItem->forget();
-            unset($testItem);
-
-            $testItem    = ExportTestModelItem::getById($id);
-            $adapter     = new ReportToExportAdapter($testItem);
-            $data        = $adapter->getData();
-
-            $compareData = array(
-                $testItem->getAttributeLabel('id')                => $id,
-                $testItem->getAttributeLabel('firstName')         => 'Bob3',
-                $testItem->getAttributeLabel('lastName')          => 'Bob3',
-                $testItem->getAttributeLabel('boolean')           => 1,
-                $testItem->getAttributeLabel('date')              => '2002-04-03',
-                $testItem->getAttributeLabel('dateTime')          => '2002-04-03 02:00:43',
-                $testItem->getAttributeLabel('float')             => 54.22,
-                $testItem->getAttributeLabel('integer')           => 10,
-                $testItem->getAttributeLabel('phone')             => '21313213',
-                $testItem->getAttributeLabel('string')            => 'aString',
-                $testItem->getAttributeLabel('textArea')          => 'Some Text Area',
-                $testItem->getAttributeLabel('url')               => 'http://www.asite.com',
-                $testItem->getAttributeLabel('email')             => 'a@a.com',
-                $testItem->getAttributeLabel('currency')          => null,
-                $testItem->getAttributeLabel('currencyValue')     => 100,
-                $testItem->getAttributeLabel('dropDown')          => null,
-                $testItem->getAttributeLabel('radioDropDown')     => null,
-                $testItem->getAttributeLabel('multiDropDown')     => null,
-                $testItem->getAttributeLabel('tagCloud')          => null,
-                $testItem->getAttributeLabel('hasOne') . " - Name"   => strval($testItem2),
-                $testItem->getAttributeLabel('hasOneAlso') . " - Name" => strval($testItem4),
-
-                'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid'    => null,
-                'Primary Email - Opt Out'       => null,
-
-                'Primary Address - City'        => null,
-                'Primary Address - Country'     => null,
-                'Primary Address - Invalid'     => null,
-                'Primary Address - Latitude'    => null,
-                'Primary Address - Longitude'   => null,
-                'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1'    => null,
-                'Primary Address - Street 2'    => null,
-                'Primary Address - State'       => null,
-
-                'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid'    => null,
-                'Secondary Email - Opt Out'       => null,
-
-                'Currency Value Currency'         => 'USD',
-
-                $testItem->getAttributeLabel('user')              => null,
-                $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdByUser')     => 'super',
-                $testItem->getAttributeLabel('modifiedByUser')    => 'super',
-            );
-
-            $compareData = array(
-                0  => 'aa',
-                1  => 'dd',                
-            );
-                      
+            $compareData = array(array('Full Name', 'Full Name'), array('xFirst xLast', 'yFirst yLast'));
             $this->assertEquals($compareData, $data);
         }
     }
