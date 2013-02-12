@@ -46,27 +46,59 @@
             return $metadata;
         }
 
-        public function __construct($controllerId, $moduleId, $listViewModelClassName, Array $actionViewOptions)
+        public function __construct($controllerId, $moduleId, $listViewModelClassName, Array $actionViewOptions, MashableInboxForm $mashableInboxForm)
         {
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
             $this->listViewModelClassName    = $listViewModelClassName;
             $this->actionViewOptions         = $actionViewOptions;
+            $this->mashableInboxForm         = $mashableInboxForm;
         }
 
         protected function renderContent()
         {
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
             $content .= $this->renderActionElementBar(false);
-            $content .= $this->renderCombinedInboxModels();
+            $content .= $this->renderMashableInboxModels();
             $content .= '</div></div>';
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionViewOptions();
-            $content .= '</div></div>';
+            $content .= $this->renderMashableInboxForm();
             return $content;
         }
 
-        private function renderCombinedInboxModels()
+        private function renderMashableInboxForm()
+        {
+            $formName   = 'mashable-inbox-form';
+            $clipWidget = new ClipWidget();
+            list($form, $formStart) = $clipWidget->renderBeginWidget(
+                'ZurmoActiveForm',
+                array(
+                    'id' => $formName,
+                )
+            );
+            $content  = $formStart;
+            $content .= $this->renderMashableInboxFormLayout($form);
+            $formEnd  = $clipWidget->renderEndWidget();
+            $content .= $formEnd;
+            //$this->registerConfigurationFormLayoutScripts($form);
+            return $content;
+        }
+
+        protected function renderMashableInboxFormLayout($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content      = null;
+            $model        = $this->mashableInboxForm;
+            $element      = new MashableInboxOptionsByModelRadioElement($model, 'optionForModel', $form, array(), $this->getArrayForByModelRadioElement());
+            $element->editableTemplate =  '<div id="MashableInboxForm_optionForModel_area">{content}</div>';
+            $content     .= $element->render();
+            $element      = new MashableInboxStatusRadioElement($model, 'filteredBy', $form);
+            $element->editableTemplate =  '<div id="MashableInboxForm_filteredBy_area">{content}</div>';
+            $content     .= $element->render();
+            $content     .= ZurmoHtml::submitButton('Filter', array('id' => 'filter'));
+            return $content;
+        }
+
+        private function renderMashableInboxModels()
         {
             $unreadCount           = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
             $url                   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list');
@@ -83,17 +115,14 @@
             return $content;
         }
 
-        private function renderActionViewOptions()
+        private function getArrayForByModelRadioElement()
         {
-            $content = 'View: ';
+            $options = array();
             foreach ($this->actionViewOptions as $option)
             {
-                $url      = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
-                                              array('type'            => $option['type'],
-                                                    'modelClassName' => $this->listViewModelClassName));
-                $label    = $option['label'];
-                $content .= ZurmoHtml::link($label, $url);
+                $options[$option['type']] = $option['label'];
             }
-            return $content;
+            return $options;
         }
     }
+?>

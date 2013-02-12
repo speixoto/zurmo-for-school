@@ -30,19 +30,23 @@ class MashableInboxDefaultController extends ZurmoModuleController {
         $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                 'listPageSize', get_class($this->getModule()));
         $actionViewOptions      = array();
-        $getData = GetUtil::getData();
+        $getData = PostUtil::getData();
+        $mashableInboxForm = new MashableInboxForm();
+        if(isset($getData["MashableInboxForm"])) {
+            $mashableInboxForm->attributes = $getData["MashableInboxForm"];
+        }
+        else
+        {
+            $mashableInboxForm->filteredBy = MashableInboxForm::FILTERED_BY_ALL;
+        }
         if ($modelClassName != '') {
-            $mashableUtilRules = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-            if (isset($getData['type']))
+            if ($mashableInboxForm->optionForModel == '')
             {
-                $type = $getData['type'];
+                $mashableInboxForm->optionForModel = 2;
             }
-            else
-            {
-                $type = null;
-            }
-            $listView = $mashableUtilRules->getActionBarAndListView($type);
-            $actionViewOptions = $mashableUtilRules->getActionViewOptions();
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+            $listView           = $mashableUtilRules->getActionBarAndListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy);
+            $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
         } else {
             $filteredBy = LatestActivitiesConfigurationForm::FILTERED_BY_ALL;
             $filteredMashableModelClassNames = LatestActivitiesUtil::resolveMashableModelClassNamesByFilteredBy(
@@ -58,7 +62,7 @@ class MashableInboxDefaultController extends ZurmoModuleController {
             $listView = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'CombinedInboxes', $dataProvider, array());
         }
 
-        $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $modelClassName, $actionViewOptions);
+        $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $modelClassName, $actionViewOptions, $mashableInboxForm);
         $gridView = new GridView(1, 2);
         $gridView->setView($actionBarView, 0, 0);
         $gridView->setView($listView, 0, 1);

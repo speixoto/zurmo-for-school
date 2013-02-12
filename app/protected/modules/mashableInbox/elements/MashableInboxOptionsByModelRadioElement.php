@@ -24,41 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Form to help manage the mashable inbox
-     */
-    class MashableInboxForm extends CFormModel
+    class MashableInboxOptionsByModelRadioElement extends Element
     {
-        /**
-         * Value to be used to signal that the filtering is for all models and not a specific one.
-         * @var string
-         */
-        const  FILTERED_BY_ALL = 'all';
 
-        const  FILTERED_BY_UNREAD = 'unread';
+        private $getArray;
 
-        public $searchTerm = '';
+        public function __construct($model, $attribute, $form = null, array $params = array(), $getArray = array()) {
+            parent::__construct($model, $attribute, $form, $params);
+            $this->getArray = $getArray;
+        }
 
-        public $filteredBy = self::FILTERED_BY_ALL;
-
-        public $optionForModel = '';
-
-        /**
-         * Models that implement the CombinedInboxInterface and the current user has
-         * rights to see, this array contains the model class names as the indexes and the translated model labels
-         * as the values.
-         * @var array
-         */
-        public $mashableModelClassNamesAndDisplayLabels;
-
-
-        public function rules()
+        protected function renderControlEditable()
         {
-            return array(
-                array('searchTerm',          'type',    'type' => 'string'),
-                array('filteredBy',          'type',    'type' => 'string'),
-                array('optionForModel',      'type',    'type' => 'string'),
+            $content = $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->getArray,
+                $this->getEditableHtmlOptions()
             );
+            return Zurmo::t('MashableInboxModule', 'View') . ':' . $content;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw new NotImplementedException();
+        }
+
+        public function getEditableHtmlOptions()
+        {
+            $htmlOptions = array(
+                'name'      => $this->getEditableInputName(),
+                'id'        => $this->getEditableInputId(),
+                'separator' => '',
+                'template'  => '{input}{label}',
+            );
+            return $htmlOptions;
         }
     }
 ?>

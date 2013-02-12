@@ -43,7 +43,7 @@
             );
         }
 
-        public function getActionBarAndListView($type)
+        public function getActionBarAndListView($type, $filteredBy = MashableInboxForm::FILTERED_BY_ALL)
         {
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class(Yii::app()->controller->module));
@@ -56,11 +56,42 @@
             $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
                 $conversation,
                 Yii::app()->user->userModel->id,
-                $searchAttributes,
+                array(),
                 $type
             );
+            $metaData = $metadataAdapter->getAdaptedMetadata();
+            if ($filteredBy == MashableInboxForm::FILTERED_BY_UNREAD)
+            {
+                $clauseNumber = count($metaData['clauses']);
+                $metaData['clauses'][$clauseNumber + 1] = array(
+                        'attributeName'        => 'ownerHasReadLatest',
+                        'operatorType'         => 'doesNotEqual',
+                        'value'                => (bool)1
+                    );
+                $metaData['clauses'][$clauseNumber + 2] = array(
+                        'attributeName'        => 'owner',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->id
+                    );
+                $metaData['clauses'][$clauseNumber + 3] = array(
+                        'attributeName'        => 'conversationParticipants',
+                        'relatedAttributeName' => 'person',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->getClassId('Item'),
+                    );
+                $metaData['clauses'][$clauseNumber + 4] = array(
+                        'attributeName'        => 'conversationParticipants',
+                        'relatedAttributeName' => 'hasReadLatest',
+                        'operatorType'         => 'doesNotEqual',
+                        'value'                => (bool)1
+                    );
+                $metaData['structure'] .= " and (( " . ($clauseNumber + 1) .
+                                          " and " .  ($clauseNumber + 2) .
+                                          ") or (" . ($clauseNumber + 3) .
+                                          " and " . ($clauseNumber + 4) . "))";
+            }
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter->getAdaptedMetadata(),
+                $metaData,
                 'Conversation',
                 'RedBeanModelDataProvider',
                 'latestDateTime',
