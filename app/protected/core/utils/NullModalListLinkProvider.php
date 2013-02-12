@@ -25,23 +25,14 @@
      ********************************************************************************/
 
     /**
-     * Class for showing a message and create link when there are no conversations visible to the logged in user when
-     * going to the conversations list view.
+     * Helper class for ModalListViews where we need a ModalListLinkViewProvider for conformance reasons but have
+     * no real use of it.
      */
-    class ConversationsZeroModelsYetView extends ZeroModelsYetView
+    class NullModalListLinkProvider extends ModalListLinkProvider
     {
-        protected function getCreateLinkDisplayLabel()
+        public function getLinkString($attributeString)
         {
-            return Zurmo::t('ConversationsModule', 'Create Conversation');
-        }
-
-        protected function getMessageContent()
-        {
-            return Zurmo::t('ConversationsModule', '<h2>"A single conversation with a wise man is better than ten years of study."' .
-                                     '</h2><i>- Chinese proverb</i></i><div class="large-icon"></div><p>' .
-                                     'Start a conversation with someone "wise" in your organization about a record ' .
-                                     'in the CRM or perhaps something unrelated.  When you are conversing within the ' .
-                                     'CRM, it is better than "ten" replies in email.</p>');
+            throw new NotSupportedException;
         }
     }
 ?>

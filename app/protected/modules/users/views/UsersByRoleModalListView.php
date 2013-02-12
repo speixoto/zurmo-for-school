@@ -65,7 +65,7 @@
 
         public static function getDesignerRulesType()
         {
-            return null;
+            return get_called_class();
         }
     }
 ?>
