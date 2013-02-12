@@ -42,7 +42,6 @@
             assert('$demoDataHelper->isSetRange("User")');
             assert('$demoDataHelper->isSetRange("Account")');
             assert('$demoDataHelper->isSetRange("Contact")');
-            $currencies = Currency::getAll('id');
             $products = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
@@ -50,11 +49,6 @@
                 $product->contacts->add($demoDataHelper->getRandomByModelName('Contact'));
                 $product->account          = $product->contacts[0]->account;
                 $product->owner            = $product->contacts[0]->owner;
-                $currencyValue             = new CurrencyValue();
-                $currencyValue->currency   = $currencies[array_rand($currencies)];
-                $product->cost             = $currencyValue;
-                $product->listPrice        = $currencyValue;
-                $product->sellPrice        = $currencyValue;
                 $this->populateModel($product);
                 $saved = $product->save();
                 assert('$saved');

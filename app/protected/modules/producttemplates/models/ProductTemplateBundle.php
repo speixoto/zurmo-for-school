@@ -26,48 +26,62 @@
 
     class ProductTemplateBundle extends Item
     {
-        public static function getByDescription($description)
+        public static function getByName($name)
         {
-            assert('is_string($description) && $description != ""');
-            return self::getSubset(null, null, null, "description = '$description'");
+            return self::getByNameOrEquivalent('name', $name);
+        }
+
+        protected function untranslatedAttributeLabels()
+        {
+            return array_merge(parent::untranslatedAttributeLabels(),
+                array(
+                    'productTemplates' => 'Parent ProductTemplatesModuleSingularLabel',
+                )
+            );
         }
 
         public function __toString()
         {
-            if (trim($this->description) == '')
+            try
             {
-                return Zurmo::t('CommentsModule', '(Unnamed)');
+                if (trim($this->name) == '')
+                {
+                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
+                }
+                return $this->name;
             }
-            return $this->description;
-        }
-
-        /**
-         * Given a related model type, a related model id, and a page size, return a list of comment models.
-         * @param string $type
-         * @param integer $relatedId
-         * @param integer $pageSize
-         */
-        public static function getCommentsByRelatedModelTypeIdAndPageSize($type,  $relatedId, $pageSize)
-        {
-            assert('is_string($type)');
-            assert('is_int($relatedId)');
-            assert('is_int($pageSize) || $pageSize = null');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Comment');
-            $orderByColumnName = RedBeanModelDataProvider::
-                                 resolveSortAttributeColumnName('Comment', $joinTablesAdapter, 'createdDateTime');
-            $where             = "relatedmodel_type = '" . strtolower($type) . "' AND relatedmodel_id = '" . $relatedId . "'";
-            $orderBy           = $orderByColumnName . ' desc';
-            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $orderBy);
+            catch (AccessDeniedSecurityException $e)
+            {
+                return '';
+            }
         }
 
         public static function getModuleClassName()
         {
-            return 'CommentsModule';
+            return 'ProductTemplatesModule';
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel()
+        {
+            return 'ProductTemplateBundlesModuleSingularLabel';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel()
+        {
+            return 'ProductTemplateBundlesModulePluralLabel';
         }
 
         public static function canSaveMetadata()
         {
-            return false;
+            return true;
         }
 
         public static function getDefaultMetadata()
@@ -101,9 +115,19 @@
             return true;
         }
 
+        public static function getRollUpRulesType()
+        {
+            return 'ProductTemplateBundle';
+        }
+
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
+
         public static function getGamificationRulesType()
         {
-            return 'CommentGamification';
+            //return 'ProductTemplateGamification';
         }
     }
 ?>

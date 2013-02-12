@@ -80,7 +80,6 @@
         {
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($productTemplate), 'ProductTemplatesModule'), $productTemplate);
             $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'AccountsSearchView', $productTemplate);
             $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplate, 'ProductTemplatesModule',
                                                                           'ProductTemplateDetailsAndRelationsView',

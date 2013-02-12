@@ -35,8 +35,7 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productCatalog' => 'Parent ProductCatalogsModulesSingularLabel',
-                    'contacts'       => 'ContactsModulePluralLabel'
+                    'productCategory' => 'Parent ProductCategoryModulesSingularLabel',
                 )
             );
         }
@@ -47,7 +46,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductCatalogsModule', '(Unnamed)');
+                    return Zurmo::t('ProductTemplatesModule', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -59,7 +58,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ProductCatalogsModule';
+            return 'ProductTemplatesModule';
         }
 
         /**

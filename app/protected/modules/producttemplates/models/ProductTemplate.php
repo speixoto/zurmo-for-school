@@ -35,8 +35,10 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'producttemplates' => 'Parent ProductTemplatesModuleSingularLabel',
-                    'contacts'         => 'ContactsModulePluralLabel'
+                    'product'                => 'Parent ProductsModuleSingularLabel',
+                    'sellPriceFormula'       => 'Parent SellPriceFormulasModuleSingularLabel',
+                    'productTemplateBundles' => 'Parent ProductTemplateBundlesModuleSingularLabel',
+                    'productCategories'      => 'ContactsModulePluralLabel',
                 )
             );
         }
@@ -98,14 +100,15 @@
                     'sellPrice',
                 ),
                 'relations' => array(
-                    'product'            => array(RedBeanModel::HAS_ONE,              'Product'),
-                    'selfPriceFormula'   => array(RedBeanModel::HAS_ONE,              'SelfPriceFormula'),
-                    'productCategories'  => array(RedBeanModel::MANY_MANY,            'ProductCategory'),
-                    'type'               => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
-                    'priceFrequency'     => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
-                    'cost'               => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
-                    'listPrice'          => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
-                    'sellPrice'          => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'product'                => array(RedBeanModel::HAS_ONE,              'Product'),
+                    'sellPriceFormula'       => array(RedBeanModel::HAS_ONE,              'SellPriceFormula'),
+                    'productTemplateBundles' => array(RedBeanModel::MANY_MANY,            'ProductTemplateBundle'),
+                    'productCategories'      => array(RedBeanModel::MANY_MANY,            'ProductCategory'),
+                    'type'                   => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'priceFrequency'         => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'cost'                   => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'listPrice'              => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'sellPrice'              => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('name',           'required'),

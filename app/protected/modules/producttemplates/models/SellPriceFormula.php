@@ -28,11 +28,11 @@
     {
         public function __toString()
         {
-            if (trim($this->value) == '')
+            if (trim($this->name) == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('ProductTemplatesModule', '(None)');
             }
-            return strval($this->value);
+            return $this->name;
         }
 
         public static function getDefaultMetadata()
@@ -40,6 +40,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
+                    'name',
                     'type',
                     'percentage',
                     'discount',
@@ -49,10 +50,13 @@
                     'type'               => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('percentage',  'required'),
-                    array('discount',    'type', 'type' => 'float'),
+                    array('name',           'required'),
+                    array('name',           'type',    'type' => 'string'),
+                    array('name',           'length',  'min'  => 3, 'max' => 64),
+                    array('percentage',     'type', 'type' => 'float'),
+                    array('discount',       'type', 'type' => 'float'),
                 ),
-                'defaultSortAttribute' => 'discount',
+                'defaultSortAttribute' => 'name',
                 'customFields' => array(
                     'type'     => 'ProductTemplateTypes',
                 ),
@@ -65,43 +69,8 @@
             return true;
         }
 
-        /**
-         * Given an id of a currency model, determine if any currency values are using this currency.
-         * @return true if at least one currency value model is using this currency.
-         * @param integer $currencyId
-         */
-        public static function isCurrencyInUseById($currencyId)
+        public static function canSaveMetadata()
         {
-            assert('is_int($currencyId)');
-            $columnName = RedBeanModel::getForeignKeyName('SellPriceFormula', 'currency');
-            $quote      = DatabaseCompatibilityUtil::getQuote();
-            $where      = "{$quote}{$columnName}{$quote} = '{$currencyId}'";
-            $count      = SellPriceFormula::getCount(null, $where);
-            if ($count > 0)
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Get the rateToBase from the currency model.
-         * @return true to signal success and that validate can proceed.
-         */
-        public function beforeValidate()
-        {
-            if (!parent::beforeValidate())
-            {
-                return false;
-            }
-            if ($this->currency->rateToBase !== null &&
-                    ($this->rateToBase === null                     ||
-                     array_key_exists('value', $this->originalAttributeValues) ||
-                     array_key_exists('currency', $this->originalAttributeValues)))
-            {
-                $this->rateToBase = $this->currency->rateToBase;
-                assert('$this->rateToBase !== null');
-            }
             return true;
         }
     }
