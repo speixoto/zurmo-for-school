@@ -308,6 +308,7 @@
             'notifications',
             'opportunities',
             'products',
+            'producttemplates',
             'rssReader',
             'socialItems',
             'tasks',
