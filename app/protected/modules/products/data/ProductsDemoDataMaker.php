@@ -59,12 +59,18 @@
             assert('$model instanceof Product');
             parent::populateModel($model);
             $productRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
-            $name = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
-            $type = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTypes'));
+            $name    = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
+            $type    = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTypes'));
+            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('Stages'));
 
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);
+            $model->priceFrequency  = mt_rand(1, 95);
+            $model->cost            = mt_rand(5, 350) * 1000;
+            $model->listPrice       = mt_rand(5, 350) * 1000;
+            $model->sellPrice       = mt_rand(5, 350) * 1000;
             $model->type->value     = $type;
+            $model->type->stage     = $stage;
         }
     }
 ?>

@@ -46,7 +46,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer', 'isLink' => true),
+                                                array('attributeName' => 'quantity', 'type' => 'Integer', 'isLink' => false),
                                             ),
                                         ),
                                     )

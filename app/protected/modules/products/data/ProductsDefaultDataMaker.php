@@ -32,6 +32,13 @@
         public function make()
         {
             $values = array(
+                'Open',
+                'Lost',
+                'Won',
+            );
+            static::makeCustomFieldDataByValuesAndDefault('ProductStages', $values);
+
+            $values = array(
                 'Product',
                 'Service',
                 'Subscription',

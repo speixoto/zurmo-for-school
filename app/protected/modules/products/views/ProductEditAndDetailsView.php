@@ -59,7 +59,25 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'cost', 'type' => 'SellPriceFormula'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'quantity', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'stage', 'type' => 'DropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
