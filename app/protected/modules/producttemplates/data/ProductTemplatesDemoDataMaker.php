@@ -40,16 +40,25 @@
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
             assert('$demoDataHelper->isSetRange("User")');
-
+            assert('$demoDataHelper->isSetRange("Account")');
+            assert('$demoDataHelper->isSetRange("Contact")');
+            $currencies = Currency::getAll('id');
             $productTemplates = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productTemplate = new ProductTemplate();
-                $productTemplate->owner = $demoDataHelper->getRandomByModelName('User');
+                $productTemplate->contacts->add($demoDataHelper->getRandomByModelName('Contact'));
+                $productTemplate->account          = $productTemplate->contacts[0]->account;
+                $productTemplate->owner            = $productTemplate->contacts[0]->owner;
+                $currencyValue                      = new CurrencyValue();
+                $currencyValue->currency            = $currencies[array_rand($currencies)];
+                $productTemplate->cost             = $currencyValue;
+                $productTemplate->listPrice        = $currencyValue;
+                $productTemplate->sellPrice        = $currencyValue;
                 $this->populateModel($productTemplate);
                 $saved = $productTemplate->save();
                 assert('$saved');
-                $productTemplates[] = $productTemplate->id;
+                $productTemplates[]           = $productTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }

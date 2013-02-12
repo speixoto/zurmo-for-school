@@ -40,21 +40,22 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'rateToBase',
-                    'value',
+                    'type',
+                    'percentage',
+                    'discount',
                 ),
                 'relations' => array(
-                    'currency' => array(RedBeanModel::HAS_ONE, 'Currency'),
+                    'productTemplate'    => array(RedBeanModel::HAS_ONE,              'ProductTemplate'),
+                    'type'               => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('currency',    'required'),
-                    array('rateToBase',  'required'),
-                    array('rateToBase',  'type', 'type' => 'float'),
-                    array('value',       'required'),
-                    array('value',       'type',    'type' => 'float'),
-                    array('value',       'default', 'value' => 0),
+                    array('percentage',  'required'),
+                    array('discount',    'type', 'type' => 'float'),
                 ),
-                'defaultSortAttribute' => 'value'
+                'defaultSortAttribute' => 'discount',
+                'customFields' => array(
+                    'type'     => 'ProductTemplateTypes',
+                ),
             );
             return $metadata;
         }

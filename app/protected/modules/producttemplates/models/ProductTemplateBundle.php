@@ -75,18 +75,22 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'description',
+                    'name',
                 ),
                 'relations' => array(
-                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'productTemplates'  => array(RedBeanModel::HAS_MANY,             'ProductTemplate'),
                 ),
                 'rules' => array(
-                    array('description', 'required'),
-                    array('description', 'type',    'type' => 'string'),
+                    array('name',           'required'),
+                    array('name',           'type',    'type' => 'string'),
+                    array('name',           'length',  'min'  => 3, 'max' => 64),
                 ),
                 'elements' => array(
-                    'description'        => 'TextArea',
-                    'files'              => 'Files',
+                ),
+                'customFields' => array(
+                ),
+                'defaultSortAttribute' => 'name',
+                'noAudit' => array(
                 ),
             );
             return $metadata;

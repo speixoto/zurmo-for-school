@@ -59,7 +59,34 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer'),
+                                                array('attributeName' => 'priceFrequency', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'cost', 'type' => 'CurrencyValue'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'listPrice', 'type' => 'CurrencyValue'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
                                             ),
                                         ),
                                     )

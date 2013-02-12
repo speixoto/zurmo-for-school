@@ -90,51 +90,23 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'quantity',
                     'name',
-                    'description',
-                    'priceFrequency',
-                    'cost',
-                    'listPrice',
-                    'sellPrice',
                 ),
                 'relations' => array(
-                    'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
-                    'stage'            => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
-                    'cost'             => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
-                    'listPrice'        => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
-                    'sellPrice'        => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'productTemplates' => array(RedBeanModel::HAS_MANY,             'ProductTemplate'),
+                    'productCatalogs'  => array(RedBeanModel::HAS_MANY,             'ProductCatalog'),
                 ),
                 'rules' => array(
-                    array('quantity',       'type',    'type' => 'integer'),
                     array('name',           'required'),
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
-                    array('description',    'type',    'type' => 'string'),
-                    array('stage',          'required'),
-                    array('priceFrequency', 'required'),
-                    array('cost',           'required'),
-                    array('listPrice',      'required'),
-                    array('sellPrice',      'required'),
                 ),
                 'elements' => array(
-                    'description'    => 'TextArea',
-                    'cost'           => 'CurrencyValue',
-                    'listPrice'      => 'CurrencyValue',
-                    'sellPrice'      => 'CurrencyValue',
                 ),
                 'customFields' => array(
-                    'type'     => 'ProductTypes',
-                    'stage'    => 'ProductStages',
                 ),
                 'defaultSortAttribute' => 'name',
-                'rollupRelations' => array(
-                    'contacts',
-                ),
                 'noAudit' => array(
-                    'description',
-                    'quantity',
                 ),
             );
             return $metadata;

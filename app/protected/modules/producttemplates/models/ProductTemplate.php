@@ -90,7 +90,6 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'quantity',
                     'name',
                     'description',
                     'priceFrequency',
@@ -99,46 +98,38 @@
                     'sellPrice',
                 ),
                 'relations' => array(
-                    'account'            => array(RedBeanModel::HAS_ONE,              'Account'),
-                    'contact'            => array(RedBeanModel::HAS_ONE,              'Contact'),
-                    'opportunity'        => array(RedBeanModel::HAS_ONE,              'Opportunity'),
+                    'product'            => array(RedBeanModel::HAS_ONE,              'Product'),
+                    'selfPriceFormula'   => array(RedBeanModel::HAS_ONE,              'SelfPriceFormula'),
+                    'productCategories'  => array(RedBeanModel::MANY_MANY,            'ProductCategory'),
                     'type'               => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
-                    'stage'              => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
-                    'cost'               => array(RedBeanModel::HAS_ONE,              'SellPriceFormula', RedBeanModel::OWNED),
-                    'listPrice'          => array(RedBeanModel::HAS_ONE,              'SellPriceFormula', RedBeanModel::OWNED),
-                    'sellPrice'          => array(RedBeanModel::HAS_ONE,              'SellPriceFormula', RedBeanModel::OWNED),
-                    'productCategories'  => array(RedBeanModel::MANY_MANY,            'ProductTemplateCategories'),
+                    'priceFrequency'     => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'cost'               => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'listPrice'          => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'sellPrice'          => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('quantity',       'type',    'type' => 'integer'),
                     array('name',           'required'),
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
-                    array('stage',          'required'),
                     array('priceFrequency', 'required'),
                     array('cost',           'required'),
                     array('listPrice',      'required'),
                     array('sellPrice',      'required'),
                 ),
                 'elements' => array(
-                    'producttemplates' => 'ProductTemplate',
-                    'description'      => 'TextArea',
-                    'cost'             => 'SellPriceFormula',
-                    'listPrice'        => 'SellPriceFormula',
-                    'sellPrice'        => 'SellPriceFormula',
+                    'product'        => 'Product',
+                    'description'    => 'TextArea',
+                    'cost'           => 'CurrencyValue',
+                    'listPrice'      => 'CurrencyValue',
+                    'sellPrice'      => 'CurrencyValue',
                 ),
                 'customFields' => array(
                     'type'     => 'ProductTemplateTypes',
-                    'stage'    => 'ProductTemplateStages',
                 ),
                 'defaultSortAttribute' => 'name',
-                'rollupRelations' => array(
-                    'contacts',
-                ),
                 'noAudit' => array(
                     'description',
-                    'quantity',
                 ),
             );
             return $metadata;
