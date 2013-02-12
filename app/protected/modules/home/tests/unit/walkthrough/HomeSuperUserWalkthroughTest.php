@@ -264,7 +264,7 @@
         }
 
         /**
-         * Strange it fails in ui but passes in the test. I should fail in both ways.
+         * Strange it fails in ui but passes in the test. It should fail in both ways.
          */
         public function testSuperUserDateSorting()
         {
