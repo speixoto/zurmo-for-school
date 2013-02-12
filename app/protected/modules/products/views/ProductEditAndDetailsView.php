@@ -36,7 +36,6 @@
                             array('type'  => 'SaveButton',    'renderType' => 'Edit'),
                             array('type'  => 'EditLink',      'renderType' => 'Details'),
                             array('type'  => 'AuditEventsModalListLink',  'renderType' => 'Details'),
-                            //array('type'  => 'ProductDeleteLink', 'renderType' => 'Details'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -59,15 +58,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'cost', 'type' => 'SellPriceFormula'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'quantity', 'type' => 'Integer'),
                                             ),
                                         ),
@@ -77,7 +67,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'stage', 'type' => 'DropDown', 'addBlank' => true),
+                                                array('attributeName' => 'account', 'type' => 'Account'),
                                             ),
                                         ),
                                     )
@@ -86,7 +76,25 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
+                                                array('attributeName' => 'contact', 'type' => 'Contact'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'opportunity', 'type' => 'Opportunity'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'stage', 'type' => 'DropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
