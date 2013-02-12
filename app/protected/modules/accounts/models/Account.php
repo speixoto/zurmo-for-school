@@ -38,6 +38,7 @@
                     'account'       => 'Parent AccountsModuleSingularLabel',
                     'contacts'      => 'ContactsModulePluralLabel',
                     'opportunities' => 'OpportunitiesModulePluralLabel',
+                    'products'      => 'ProductsModulePluralLabel',
                 )
             );
         }
@@ -102,6 +103,7 @@
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'Account'),
                     'accounts'         => array(RedBeanModel::HAS_MANY,             'Account'),
+                    'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
                     'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
                     'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
                     'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
