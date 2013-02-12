@@ -63,9 +63,13 @@
 
         public function untranslatedAttributeLabels()
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
-                'account'  => 'AccountsModuleSingularLabel',
-                'contacts' => 'ContactsModulePluralLabel'));
+            return array_merge(parent::untranslatedAttributeLabels(),
+                array(
+                    'account'  => 'AccountsModuleSingularLabel',
+                    'contacts' => 'ContactsModulePluralLabel',
+                    'products' => 'ProductsModulePluralLabel',
+                )
+            );
         }
 
         /**
@@ -103,6 +107,7 @@
                 ),
                 'relations' => array(
                     'account'       => array(RedBeanModel::HAS_ONE,   'Account'),
+                    'products'      => array(RedBeanModel::MANY_MANY, 'Product'),
                     'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
                     'contacts'      => array(RedBeanModel::MANY_MANY, 'Contact'),
                     'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
@@ -111,15 +116,15 @@
                 'rules' => array(
                     array('amount',        'required'),
                     array('closeDate',     'required'),
-                    array('closeDate',     'type', 'type' => 'date'),
-                    array('description',   'type',    'type' => 'string'),
+                    array('closeDate',     'type',      'type' => 'date'),
+                    array('description',   'type',      'type' => 'string'),
                     array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
+                    array('name',          'type',      'type' => 'string'),
+                    array('name',          'length',    'min'  => 3, 'max' => 64),
                     array('probability',   'type',      'type' => 'integer'),
                     array('probability',   'numerical', 'min' => 0, 'max' => 100),
                     array('probability',   'required'),
-                    array('probability',   'default', 'value' => 0),
+                    array('probability',   'default',   'value' => 0),
                     array('stage',         'required'),
                 ),
                 'elements' => array(
