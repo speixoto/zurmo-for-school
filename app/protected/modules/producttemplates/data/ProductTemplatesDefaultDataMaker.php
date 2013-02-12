@@ -25,22 +25,25 @@
      ********************************************************************************/
 
     /**
-     * Class for showing a message and create link when there are no products visible to the logged in user when
-     * going to the products list view.
+     * Class to make default data that needs to be created upon an installation.
      */
-    class ProductsZeroModelsYetView extends ZeroModelsYetView
+    class ProductTemplatesDefaultDataMaker extends DefaultDataMaker
     {
-        protected function getCreateLinkDisplayLabel()
+        public function make()
         {
-            return Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel', LabelUtil::getTranslationParamsForAllModules());
-        }
+            $values = array(
+                'Open',
+                'Lost',
+                'Won',
+            );
+            static::makeCustomFieldDataByValuesAndDefault('ProductTemplateStages', $values);
 
-        protected function getMessageContent()
-        {
-            return Zurmo::t('ProductsModule', '<h2>"As we must Product for every idle word, so must we Product for every idle ' .
-                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an Product and, ' .
-                                     'as Ben would say, "So must we Product for every company, organization, or ' .
-                                     'customer we interact with."</p>');
+            $values = array(
+                'Product',
+                'Service',
+                'Subscription',
+            );
+            static::makeCustomFieldDataByValuesAndDefault('ProductTemplateTypes', $values);
         }
     }
 ?>

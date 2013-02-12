@@ -24,11 +24,23 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsPageView extends ZurmoDefaultPageView
+    /**
+     * Class for showing a message and create link when there are no product templates visible to the logged in user when
+     * going to the product templates list view.
+     */
+    class ProductTemplatesZeroModelsYetView extends ZeroModelsYetView
     {
-        protected function getSubtitle()
+        protected function getCreateLinkDisplayLabel()
         {
-            return Zurmo::t('ProductsModule', 'Products');
+            return Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModuleSingularLabel', LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function getMessageContent()
+        {
+            return Zurmo::t('ProductTemplatesModule', '<h2>"As we must ProductTemplate for every idle word, so must we ProductTemplate for every idle ' .
+                                     'silence."</h2><i>- Benjamin Franklin</i></i><div class="large-icon"></div><p>Be the first to create an ProductTemplate and, ' .
+                                     'as Ben would say, "So must we ProductTemplate for every company, organization, or ' .
+                                     'customer we interact with."</p>');
         }
     }
 ?>

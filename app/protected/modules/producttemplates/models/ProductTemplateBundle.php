@@ -26,63 +26,48 @@
 
     class ProductTemplateBundle extends Item
     {
-        public static function getByName($name)
+        public static function getByDescription($description)
         {
-            return self::getByNameOrEquivalent('name', $name);
-        }
-
-        protected function untranslatedAttributeLabels()
-        {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                    'product'       => 'Parent ProductsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel'
-                )
-            );
+            assert('is_string($description) && $description != ""');
+            return self::getSubset(null, null, null, "description = '$description'");
         }
 
         public function __toString()
         {
-            try
+            if (trim($this->description) == '')
             {
-                if (trim($this->name) == '')
-                {
-                    return Zurmo::t('ProductsModule', '(Unnamed)');
-                }
-                return $this->name;
+                return Zurmo::t('CommentsModule', '(Unnamed)');
             }
-            catch (AccessDeniedSecurityException $e)
-            {
-                return '';
-            }
+            return $this->description;
+        }
+
+        /**
+         * Given a related model type, a related model id, and a page size, return a list of comment models.
+         * @param string $type
+         * @param integer $relatedId
+         * @param integer $pageSize
+         */
+        public static function getCommentsByRelatedModelTypeIdAndPageSize($type,  $relatedId, $pageSize)
+        {
+            assert('is_string($type)');
+            assert('is_int($relatedId)');
+            assert('is_int($pageSize) || $pageSize = null');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Comment');
+            $orderByColumnName = RedBeanModelDataProvider::
+                                 resolveSortAttributeColumnName('Comment', $joinTablesAdapter, 'createdDateTime');
+            $where             = "relatedmodel_type = '" . strtolower($type) . "' AND relatedmodel_id = '" . $relatedId . "'";
+            $orderBy           = $orderByColumnName . ' desc';
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, $orderBy);
         }
 
         public static function getModuleClassName()
         {
-            return 'ProductsModule';
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'ProductsModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'ProductsModulePluralLabel';
+            return 'CommentsModule';
         }
 
         public static function canSaveMetadata()
         {
-            return true;
+            return false;
         }
 
         public static function getDefaultMetadata()
@@ -90,36 +75,18 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'quantity',
-                    'name',
                     'description',
                 ),
                 'relations' => array(
-                    'product'          => array(RedBeanModel::HAS_ONE,              'Product'),
-                    'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
-                    'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'files' => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
                 ),
                 'rules' => array(
-                    array('quantity',      'type',    'type' => 'integer'),
-                    array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
-                    array('description',   'type',    'type' => 'string'),
+                    array('description', 'required'),
+                    array('description', 'type',    'type' => 'string'),
                 ),
                 'elements' => array(
-                    'product'      => 'Product',
-                    'description'  => 'TextArea',
-                ),
-                'customFields' => array(
-                    'type'     => 'ProductTypes',
-                ),
-                'defaultSortAttribute' => 'name',
-                'rollupRelations' => array(
-                    'contacts',
-                ),
-                'noAudit' => array(
-                    'description',
+                    'description'        => 'TextArea',
+                    'files'              => 'Files',
                 ),
             );
             return $metadata;
@@ -130,19 +97,9 @@
             return true;
         }
 
-        public static function getRollUpRulesType()
-        {
-            return 'Product';
-        }
-
-        public static function hasReadPermissionsOptimization()
-        {
-            return true;
-        }
-
         public static function getGamificationRulesType()
         {
-            //return 'ProductGamification';
+            return 'CommentGamification';
         }
     }
 ?>

@@ -24,56 +24,32 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductEditAndDetailsView extends SecuredEditAndDetailsView
+    class ProductTemplatesSearchView extends SavedDynamicSearchView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type'  => 'EditLink',      'renderType' => 'Details'),
-                            array('type'  => 'AuditEventsModalListLink',  'renderType' => 'Details'),
-                            //array('type'  => 'ProductDeleteLink', 'renderType' => 'Details'),
-                        ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
-                            'rows' => array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows'   => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
                                             ),
                                         ),
                                     )
                                 ),
                             ),
+                        ),
+                        array(
+                            'advancedSearchType' => static::ADVANCED_SEARCH_TYPE_DYNAMIC,
+                            'rows'   => array(),
                         ),
                     ),
                 ),
@@ -81,10 +57,9 @@
             return $metadata;
         }
 
-        protected function getNewModelTitleLabel()
+        public static function getModelForMetadataClassName()
         {
-            return Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
+            return 'ProductTemplatesSearchForm';
         }
     }
 ?>

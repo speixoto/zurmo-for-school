@@ -26,63 +26,13 @@
 
     class SellPriceFormula extends OwnedModel
     {
-        public static function getByName($name)
-        {
-            return self::getByNameOrEquivalent('name', $name);
-        }
-
-        protected function untranslatedAttributeLabels()
-        {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                    'product'       => 'Parent ProductsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel'
-                )
-            );
-        }
-
         public function __toString()
         {
-            try
+            if (trim($this->value) == '')
             {
-                if (trim($this->name) == '')
-                {
-                    return Zurmo::t('ProductsModule', '(Unnamed)');
-                }
-                return $this->name;
+                return Zurmo::t('ZurmoModule', '(None)');
             }
-            catch (AccessDeniedSecurityException $e)
-            {
-                return '';
-            }
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'ProductsModule';
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'ProductsModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'ProductsModulePluralLabel';
-        }
-
-        public static function canSaveMetadata()
-        {
-            return true;
+            return strval($this->value);
         }
 
         public static function getDefaultMetadata()
@@ -90,37 +40,21 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'quantity',
-                    'name',
-                    'description',
+                    'rateToBase',
+                    'value',
                 ),
                 'relations' => array(
-                    'product'          => array(RedBeanModel::HAS_ONE,              'Product'),
-                    'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
-                    'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'currency' => array(RedBeanModel::HAS_ONE, 'Currency'),
                 ),
                 'rules' => array(
-                    array('quantity',      'type',    'type' => 'integer'),
-                    array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
-                    array('description',   'type',    'type' => 'string'),
+                    array('currency',    'required'),
+                    array('rateToBase',  'required'),
+                    array('rateToBase',  'type', 'type' => 'float'),
+                    array('value',       'required'),
+                    array('value',       'type',    'type' => 'float'),
+                    array('value',       'default', 'value' => 0),
                 ),
-                'elements' => array(
-                    'product'      => 'Product',
-                    'description'  => 'TextArea',
-                ),
-                'customFields' => array(
-                    'type'     => 'ProductTypes',
-                ),
-                'defaultSortAttribute' => 'name',
-                'rollupRelations' => array(
-                    'contacts',
-                ),
-                'noAudit' => array(
-                    'description',
-                ),
+                'defaultSortAttribute' => 'value'
             );
             return $metadata;
         }
@@ -130,19 +64,44 @@
             return true;
         }
 
-        public static function getRollUpRulesType()
+        /**
+         * Given an id of a currency model, determine if any currency values are using this currency.
+         * @return true if at least one currency value model is using this currency.
+         * @param integer $currencyId
+         */
+        public static function isCurrencyInUseById($currencyId)
         {
-            return 'Product';
+            assert('is_int($currencyId)');
+            $columnName = RedBeanModel::getForeignKeyName('SellPriceFormula', 'currency');
+            $quote      = DatabaseCompatibilityUtil::getQuote();
+            $where      = "{$quote}{$columnName}{$quote} = '{$currencyId}'";
+            $count      = SellPriceFormula::getCount(null, $where);
+            if ($count > 0)
+            {
+                return true;
+            }
+            return false;
         }
 
-        public static function hasReadPermissionsOptimization()
+        /**
+         * Get the rateToBase from the currency model.
+         * @return true to signal success and that validate can proceed.
+         */
+        public function beforeValidate()
         {
+            if (!parent::beforeValidate())
+            {
+                return false;
+            }
+            if ($this->currency->rateToBase !== null &&
+                    ($this->rateToBase === null                     ||
+                     array_key_exists('value', $this->originalAttributeValues) ||
+                     array_key_exists('currency', $this->originalAttributeValues)))
+            {
+                $this->rateToBase = $this->currency->rateToBase;
+                assert('$this->rateToBase !== null');
+            }
             return true;
-        }
-
-        public static function getGamificationRulesType()
-        {
-            //return 'ProductGamification';
         }
     }
 ?>

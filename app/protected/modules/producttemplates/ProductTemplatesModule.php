@@ -24,11 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsModule extends SecurableModule
+    class ProductTemplatesModule extends SecurableModule
     {
-        const RIGHT_CREATE_PRODUCTS = 'Create Products';
-        const RIGHT_DELETE_PRODUCTS = 'Delete Products';
-        const RIGHT_ACCESS_PRODUCTS = 'Access Products Tab';
+        const RIGHT_CREATE_PRODUCTTEMPLATES = 'Create ProductTemplates';
+        const RIGHT_DELETE_PRODUCTTEMPLATES = 'Delete ProductTemplates';
+        const RIGHT_ACCESS_PRODUCTTEMPLATES = 'Access ProductTemplates Tab';
 
         public function getDependencies()
         {
@@ -40,15 +40,15 @@
 
         public function getRootModelNames()
         {
-            return array('Product');
+            return array('ProductTemplate');
         }
 
         public static function getUntranslatedRightsLabels()
         {
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_PRODUCTS] = 'Create ProductsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_PRODUCTS] = 'Delete ProductsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_PRODUCTS] = 'Access ProductsModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_PRODUCTTEMPLATES] = 'Create ProductTemplatesModulePluralLabel';
+            $labels[self::RIGHT_DELETE_PRODUCTTEMPLATES] = 'Delete ProductTemplatesModulePluralLabel';
+            $labels[self::RIGHT_ACCESS_PRODUCTTEMPLATES] = 'Access ProductTemplatesModulePluralLabel Tab';
             return $labels;
         }
 
@@ -67,16 +67,16 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'ProductsModulePluralLabel',
-                        'url'   => array('/products/default'),
-                        'right' => self::RIGHT_ACCESS_PRODUCTS,
+                        'label' => 'ProductTemplatesModulePluralLabel',
+                        'url'   => array('/producttemplates/default'),
+                        'right' => self::RIGHT_ACCESS_PRODUCTTEMPLATES,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'ProductsModuleSingularLabel',
-                        'url'   => array('/products/default/create'),
-                        'right' => self::RIGHT_CREATE_PRODUCTS,
+                        'label' => 'ProductTemplatesModuleSingularLabel',
+                        'url'   => array('/producttemplates/default/create'),
+                        'right' => self::RIGHT_CREATE_PRODUCTTEMPLATES,
                     ),
                 )
             );
@@ -85,37 +85,37 @@
 
         public static function getPrimaryModelName()
         {
-            return 'Product';
+            return 'ProductTemplate';
         }
 
         public static function getAccessRight()
         {
-            return self::RIGHT_ACCESS_PRODUCTS;
+            return self::RIGHT_ACCESS_PRODUCTTEMPLATES;
         }
 
         public static function getCreateRight()
         {
-            return self::RIGHT_CREATE_PRODUCTS;
+            return self::RIGHT_CREATE_PRODUCTTEMPLATES;
         }
 
         public static function getDeleteRight()
         {
-            return self::RIGHT_DELETE_PRODUCTS;
+            return self::RIGHT_DELETE_PRODUCTTEMPLATES;
         }
 
         public static function getDefaultDataMakerClassName()
         {
-            return 'ProductsDefaultDataMaker';
+            return 'ProductTemplatesDefaultDataMaker';
         }
 
         public static function getDemoDataMakerClassName()
         {
-            return 'ProductsDemoDataMaker';
+            return 'ProductTemplatesDemoDataMaker';
         }
 
         public static function getGlobalSearchFormClassName()
         {
-            return 'ProductsSearchForm';
+            return 'ProductTemplatesSearchForm';
         }
 
         public static function hasPermissions()

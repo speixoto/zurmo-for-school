@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo products.
+     * Class that builds demo product templates.
      */
-    class ProductsDemoDataMaker extends DemoDataMaker
+    class ProductTemplatesDemoDataMaker extends DemoDataMaker
     {
         protected $ratioToLoad = 1;
 
@@ -41,30 +41,36 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             assert('$demoDataHelper->isSetRange("User")');
 
-            $products = array();
+            $productTemplates = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $product = new Product();
-                $product->owner = $demoDataHelper->getRandomByModelName('User');
-                $this->populateModel($product);
-                $saved = $product->save();
+                $productTemplate = new ProductTemplate();
+                $productTemplate->owner = $demoDataHelper->getRandomByModelName('User');
+                $this->populateModel($productTemplate);
+                $saved = $productTemplate->save();
                 assert('$saved');
-                $products[] = $product->id;
+                $productTemplates[] = $productTemplate->id;
             }
-            $demoDataHelper->setRangeByModelName('Product', $products[0], $products[count($products)-1]);
+            $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof Product');
+            assert('$model instanceof ProductTemplate');
             parent::populateModel($model);
-            $productRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
-            $name = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
-            $type = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTypes'));
+            $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplate');
+            $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
+            $type    = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplateTypes'));
+            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('Stages'));
 
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);
+            $model->priceFrequency  = mt_rand(1, 95);
+            $model->cost            = mt_rand(5, 350) * 1000;
+            $model->listPrice       = mt_rand(5, 350) * 1000;
+            $model->sellPrice       = mt_rand(5, 350) * 1000;
             $model->type->value     = $type;
+            $model->type->stage     = $stage;
         }
     }
 ?>

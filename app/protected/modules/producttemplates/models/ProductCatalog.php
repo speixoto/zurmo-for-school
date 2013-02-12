@@ -35,8 +35,8 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'product'       => 'Parent ProductsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel'
+                    'productCatalog' => 'Parent ProductCatalogsModulesSingularLabel',
+                    'contacts'       => 'ContactsModulePluralLabel'
                 )
             );
         }
@@ -47,7 +47,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Zurmo::t('ProductsModule', '(Unnamed)');
+                    return Zurmo::t('ProductCatalogsModule', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -59,7 +59,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ProductsModule';
+            return 'ProductCatalogsModule';
         }
 
         /**
@@ -68,7 +68,7 @@
          */
         protected static function getLabel()
         {
-            return 'ProductsModuleSingularLabel';
+            return 'ProductCatalogsModuleSingularLabel';
         }
 
         /**
@@ -77,7 +77,7 @@
          */
         protected static function getPluralLabel()
         {
-            return 'ProductsModulePluralLabel';
+            return 'ProductCatalogsModulePluralLabel';
         }
 
         public static function canSaveMetadata()
@@ -93,26 +93,40 @@
                     'quantity',
                     'name',
                     'description',
+                    'priceFrequency',
+                    'cost',
+                    'listPrice',
+                    'sellPrice',
                 ),
                 'relations' => array(
-                    'product'          => array(RedBeanModel::HAS_ONE,              'Product'),
-                    'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
                     'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
                     'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'stage'            => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'cost'             => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'listPrice'        => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
+                    'sellPrice'        => array(RedBeanModel::HAS_ONE,              'CurrencyValue',    RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('quantity',      'type',    'type' => 'integer'),
-                    array('name',          'required'),
-                    array('name',          'type',    'type' => 'string'),
-                    array('name',          'length',  'min'  => 3, 'max' => 64),
-                    array('description',   'type',    'type' => 'string'),
+                    array('quantity',       'type',    'type' => 'integer'),
+                    array('name',           'required'),
+                    array('name',           'type',    'type' => 'string'),
+                    array('name',           'length',  'min'  => 3, 'max' => 64),
+                    array('description',    'type',    'type' => 'string'),
+                    array('stage',          'required'),
+                    array('priceFrequency', 'required'),
+                    array('cost',           'required'),
+                    array('listPrice',      'required'),
+                    array('sellPrice',      'required'),
                 ),
                 'elements' => array(
-                    'product'      => 'Product',
-                    'description'  => 'TextArea',
+                    'description'    => 'TextArea',
+                    'cost'           => 'CurrencyValue',
+                    'listPrice'      => 'CurrencyValue',
+                    'sellPrice'      => 'CurrencyValue',
                 ),
                 'customFields' => array(
                     'type'     => 'ProductTypes',
+                    'stage'    => 'ProductStages',
                 ),
                 'defaultSortAttribute' => 'name',
                 'rollupRelations' => array(
@@ -120,6 +134,7 @@
                 ),
                 'noAudit' => array(
                     'description',
+                    'quantity',
                 ),
             );
             return $metadata;
@@ -132,7 +147,7 @@
 
         public static function getRollUpRulesType()
         {
-            return 'Product';
+            return 'ProductCatalog';
         }
 
         public static function hasReadPermissionsOptimization()
@@ -142,7 +157,7 @@
 
         public static function getGamificationRulesType()
         {
-            //return 'ProductGamification';
+            //return 'ProductCatalogGamification';
         }
     }
 ?>

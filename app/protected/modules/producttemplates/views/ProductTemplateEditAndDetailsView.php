@@ -24,12 +24,25 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsListView extends SecuredListView
+    class ProductTemplateEditAndDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
+                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type'  => 'EditLink',      'renderType' => 'Details'),
+                            array('type'  => 'AuditEventsModalListLink',  'renderType' => 'Details'),
+                            //array('type'  => 'ProductTemplateDeleteLink', 'renderType' => 'Details'),
+                        ),
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'owner',
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -37,7 +50,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
+                                                array('attributeName' => 'name', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -46,7 +59,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer', 'isLink' => true),
+                                                array('attributeName' => 'quantity', 'type' => 'Integer'),
                                             ),
                                         ),
                                     )
@@ -55,7 +68,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
                                             ),
                                         ),
                                     )
@@ -64,9 +77,14 @@
                         ),
                     ),
                 ),
-
             );
             return $metadata;
+        }
+
+        protected function getNewModelTitleLabel()
+        {
+            return Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModuleSingularLabel',
+                                     LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>
