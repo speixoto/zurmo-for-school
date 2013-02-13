@@ -27,8 +27,13 @@
     /**
      * A class for creating notification models.
      */
-    class Notification extends Item
+    class Notification extends Item implements MashableInboxInterface
     {
+        public static function getMashableInboxRulesType()
+        {
+            return 'Notification';
+        }
+
         public function __toString()
         {
             if ($this->type == null)
@@ -91,9 +96,8 @@
             );
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Notification');
-            $where = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
-            return count($models);
+            $where  = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
+            return self::getCount($joinTablesAdapter, $where, null, true);
         }
 
         public static function getDefaultMetadata()
@@ -128,6 +132,11 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'NotificationsModule';
         }
     }
 ?>

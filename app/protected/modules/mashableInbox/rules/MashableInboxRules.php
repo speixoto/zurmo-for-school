@@ -26,6 +26,9 @@
 
     abstract class MashableInboxRules
     {
+
+        public $shouldRenderCreateAction = true;
+
         abstract public function getUnreadCountForCurrentUser();
 
         abstract public function getMetadataFilteredByFilteredBy($filteredBy);

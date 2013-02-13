@@ -40,8 +40,12 @@
             $items = array();
             foreach ($mashableInboxModels as $modelClassName => $modelLabel)
             {
-                $items[] = array('label'   => $modelClassName,
+                $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                if ($mashableUtilRules->shouldRenderCreateAction)
+                {
+                    $items[] = array('label'   => $modelClassName,
                                  'url'     => $this->getRouteForItem($modelClassName));
+                }
             }
             $menuItems = array('label' => $this->getLabel(),
                                'url'   => null,
@@ -58,7 +62,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('CombinedInboxes', 'Create');
+            return Zurmo::t('MashableInboxModule', 'Create');
         }
 
         protected function getDefaultRoute()

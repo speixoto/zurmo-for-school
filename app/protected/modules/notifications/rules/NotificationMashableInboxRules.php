@@ -24,45 +24,53 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MashableInboxOptionsByModelRadioElement extends Element
+    class NotificationMashableInboxRules extends MashableInboxRules
     {
 
-        private $getArray;
+        public $shouldRenderCreateAction = false;
 
-        public function __construct($model, $attribute, $form = null, array $params = array(), $getArray = array()) {
-            parent::__construct($model, $attribute, $form, $params);
-            $this->getArray = $getArray;
+        public function getUnreadCountForCurrentUser()
+        {
+            return Notification::getCountByUser(Yii::app()->user->userModel);
         }
 
-        protected function renderControlEditable()
+        public function getModelClassName()
         {
-            $content = $this->form->radioButtonList(
-                $this->model,
-                $this->attribute,
-                $this->getArray,
-                $this->getEditableHtmlOptions()
+            return 'Notification';
+        }
+
+        protected function getListViewClassName()
+        {
+            return 'NotificationsForUserListView';
+        }
+
+        public function getMachableInboxOrderByAttributeName()
+        {
+            return null;
+        }
+
+        public function getActionViewOptions()
+        {
+            return array();
+        }
+
+        public function getMetadataFilteredByOption($option)
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id,
+                ),
             );
-            if (empty($this->getArray))
-            {
-                return null;
-            }
-            return Zurmo::t('MashableInboxModule', 'View') . ':' . $content;
+            $searchAttributeData['structure'] = '1';
+            return $searchAttributeData;
         }
 
-        protected function renderControlNonEditable()
+        public function getMetadataFilteredByFilteredBy($filteredBy)
         {
-            throw new NotImplementedException();
-        }
-
-        public function getEditableHtmlOptions()
-        {
-            $htmlOptions = array(
-                'name'      => $this->getEditableInputName(),
-                'id'        => $this->getEditableInputId(),
-                'separator' => '',
-                'template'  => '{input}{label}',
-            );
-            return $htmlOptions;
+            return null;
         }
     }
 ?>

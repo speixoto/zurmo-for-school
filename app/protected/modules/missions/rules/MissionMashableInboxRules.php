@@ -65,7 +65,6 @@
             $searchAttributeData = $this->getMetadataForUnreadForCurrentUser();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Mission');
             $where  = RedBeanModelDataProvider::makeWhere('Mission', $searchAttributeData, $joinTablesAdapter);
-            echo Mission::getCount($joinTablesAdapter, $where, null, true);
             return Mission::getCount($joinTablesAdapter, $where, null, true);
         }
 
