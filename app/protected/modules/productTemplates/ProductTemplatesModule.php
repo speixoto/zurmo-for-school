@@ -26,9 +26,9 @@
 
     class ProductTemplatesModule extends SecurableModule
     {
-        const RIGHT_CREATE_PRODUCTTEMPLATES = 'Create ProductTemplates';
-        const RIGHT_DELETE_PRODUCTTEMPLATES = 'Delete ProductTemplates';
-        const RIGHT_ACCESS_PRODUCTTEMPLATES = 'Access ProductTemplates Tab';
+        const RIGHT_CREATE_PRODUCT_TEMPLATES = 'Create ProductTemplates';
+        const RIGHT_DELETE_PRODUCT_TEMPLATES = 'Delete ProductTemplates';
+        const RIGHT_ACCESS_PRODUCT_TEMPLATES = 'Access ProductTemplates Tab';
 
         public function getDependencies()
         {
@@ -46,9 +46,9 @@
         public static function getUntranslatedRightsLabels()
         {
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_PRODUCTTEMPLATES] = 'Create ProductTemplatesModulePluralLabel';
-            $labels[self::RIGHT_DELETE_PRODUCTTEMPLATES] = 'Delete ProductTemplatesModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_PRODUCTTEMPLATES] = 'Access ProductTemplatesModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_PRODUCT_TEMPLATES] = 'Create ProductTemplatesModulePluralLabel';
+            $labels[self::RIGHT_DELETE_PRODUCT_TEMPLATES] = 'Delete ProductTemplatesModulePluralLabel';
+            $labels[self::RIGHT_ACCESS_PRODUCT_TEMPLATES] = 'Access ProductTemplatesModulePluralLabel Tab';
             return $labels;
         }
 
@@ -69,14 +69,14 @@
                     array(
                         'label' => 'ProductTemplatesModulePluralLabel',
                         'url'   => array('/productTemplates/default'),
-                        'right' => self::RIGHT_ACCESS_PRODUCTTEMPLATES,
+                        'right' => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
                         'label' => 'ProductTemplatesModuleSingularLabel',
                         'url'   => array('/productTemplates/default/create'),
-                        'right' => self::RIGHT_CREATE_PRODUCTTEMPLATES,
+                        'right' => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
                     ),
                 )
             );
@@ -90,17 +90,17 @@
 
         public static function getAccessRight()
         {
-            return self::RIGHT_ACCESS_PRODUCTTEMPLATES;
+            return self::RIGHT_ACCESS_PRODUCT_TEMPLATES;
         }
 
         public static function getCreateRight()
         {
-            return self::RIGHT_CREATE_PRODUCTTEMPLATES;
+            return self::RIGHT_CREATE_PRODUCT_TEMPLATES;
         }
 
         public static function getDeleteRight()
         {
-            return self::RIGHT_DELETE_PRODUCTTEMPLATES;
+            return self::RIGHT_DELETE_PRODUCT_TEMPLATES;
         }
 
         public static function getDefaultDataMakerClassName()
