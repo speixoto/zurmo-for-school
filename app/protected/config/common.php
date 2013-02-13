@@ -71,6 +71,9 @@
             'emailHelper' => array(
                 'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
+            'authenticationHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoAuthenticationHelper',
+            ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
             ),
@@ -100,11 +103,11 @@
                     ),
 
                     'js' => array(
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yii.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yiiactiveform.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.yii.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.ba-bbq.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '../yii/framework/web/js/source/jquery.yiiactiveform.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/qtip/assets/jquery.qtip-2.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/widgets/assets/extendedGridView/jquery.yiigridview.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/core/elements/assets/Modal.js',
@@ -179,8 +182,7 @@
                 'importPageSize'             => 50,
                 'dashboardListPageSize'      => 5,
                 'apiListPageSize'            => 10,
-                'massDeleteProgressPageSize' => 5,
-                'unlimitedPageSize'          => 1000000000
+                'massDeleteProgressPageSize' => 5
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',
@@ -233,6 +235,7 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
+                'loginRequiredAjaxResponse' => 'sessionTimeout',
                 'behaviors' => array(
                     'onAfterLogin' => array(
                         'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
@@ -269,9 +272,11 @@
             'application.modules.zurmo.components.BeginRequestBehavior',
             'application.core.utils.ArrayUtil',
             'application.core.utils.FileUtil',
+            'application.core.utils.ZurmoCache',
             'application.core.utils.GeneralCache',
             'application.core.exceptions.NotFoundException',
             'application.core.components.ZurmoLocale',
+            'application.core.utils.Zurmo',
             'application.modules.api.tests.unit.models.*',
             'application.modules.api.tests.unit.forms.*',
             'application.modules.install.serviceHelpers.MemcacheServiceHelper',
@@ -320,7 +325,7 @@
 
         'params' => array(
             'redBeanVersion'    => '3.2',
-            'yiiVersion'        => '1.1.12',
+            'yiiVersion'        => '1.1.13',
             'memcacheServers'   => $memcacheServers,
             'supportedLanguages' => array(
                 'en' => 'English',

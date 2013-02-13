@@ -47,14 +47,14 @@
         {
             if ($this->type == IdValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
-                $label   = Yii::t('Default', '{found} record(s) will be updated ' .
+                $label   = Zurmo::t('ImportModule', '{found} record(s) will be updated ' .
                                              'and {unfound} record(s) will be skipped during import.',
                                              array('{found}' => $this->messageCountData[static::FOUND],
                                                    '{unfound}' => $this->messageCountData[static::UNFOUND]));
             }
             else
             {
-                $label   = Yii::t('Default', '{found} record(s) will be updated and ' .
+                $label   = Zurmo::t('ImportModule', '{found} record(s) will be updated and ' .
                                              '{unfound} record(s) will be created during the import.',
                                              array('{found}' => $this->messageCountData[static::FOUND],
                                                    '{unfound}' => $this->messageCountData[static::UNFOUND]));

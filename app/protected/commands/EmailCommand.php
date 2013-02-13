@@ -169,11 +169,11 @@ EOD;
 
         if (!$emailMessage->hasSendError())
         {
-            echo Yii::t('Default', 'Message successfully sent') . "\n";
+            echo Zurmo::t('Commands', 'Message successfully sent') . "\n";
         }
         else
         {
-            echo Yii::t('Default', 'Message failed to send') . "\n";
+            echo Zurmo::t('Commands', 'Message failed to send') . "\n";
             echo $emailMessage->error     . "\n";
         }
         $saved = $emailMessage->save();

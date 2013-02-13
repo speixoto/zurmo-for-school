@@ -48,7 +48,7 @@
 
         public function getTitle()
         {
-            return Yii::t('Default', 'Administration');
+            return Zurmo::t('ConfigurationModule', 'Administration');
         }
 
         protected function getCategoryData()
@@ -87,7 +87,7 @@
                 $content .= '<li>';
                 $content .= '<h4>' . $item['titleLabel'] . '</h4>';
                 $content .= ' - ' . $item['descriptionLabel'];
-                $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLinkText()),
+                $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel($this->getLinkText()),
                                         Yii::app()->createUrl($item['route']));
                 $content .= '</li>';
             }
@@ -98,7 +98,7 @@
         protected function getCategoriesArray()
         {
             return array(
-                ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL   => Yii::t('Default', 'General'),
+                ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL   => Zurmo::t('ConfigurationModule', 'General'),
             );
         }
 
@@ -115,7 +115,7 @@
             }
             else
             {
-                return Yii::t('Default', 'Configure');
+                return Zurmo::t('ConfigurationModule', 'Configure');
             }
         }
     }

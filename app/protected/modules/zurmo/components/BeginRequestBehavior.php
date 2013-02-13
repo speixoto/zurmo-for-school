@@ -61,6 +61,7 @@
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBrowserCheck'));
@@ -97,7 +98,7 @@
                 Yii::import('application.extensions.sentrylog.RSentryLog');
                 $rSentryLog = Yii::createComponent(
                     array('class' => 'RSentryLog', 'dsn' => Yii::app()->params['sentryDsn']));
-                //Have to invoke component init(), because it is not caled automatically
+                // Have to invoke component init(), because it is not called automatically
                 $rSentryLog->init();
                 $component   = Yii::app()->getComponent('log');
                 $allRoutes   = $component->getRoutes();
@@ -116,12 +117,20 @@
         {
             if (MEMCACHE_ON)
             {
+                //Yii::import('application.core.components.ZurmoMemCache');
                 $memcacheServiceHelper = new MemcacheServiceHelper();
                 if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
                 {
-                    $cacheComponent = Yii::createComponent('CMemCache',
-                        array('servers' => Yii::app()->params['memcacheServers']));
+                    $cacheComponent = Yii::createComponent(array(
+                        'class' => 'CMemCache',
+                        'servers' => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
+                }
+                // todo: Find better way to append this prefix for tests.
+                // We can't put this code only in BeginRequestTestBehavior, because for API tests we are using  BeginRequestBehavior
+                if (defined('IS_TEST'))
+                {
+                    ZurmoCache::setAdditionalStringForCachePrefix('Test');
                 }
             }
         }
@@ -173,7 +182,7 @@
         {
             if (!RedBeanDatabaseBuilderUtil::isAutoBuildStateValid())
             {
-                echo Yii::t('Default', 'Database upgrade not completed. Please try again later.');
+                echo Zurmo::t('ZurmoModule', 'Database upgrade not completed. Please try again later.');
                 Yii::app()->end(0, false);
             }
         }
@@ -245,6 +254,7 @@
                 $allowedTimeZoneConfirmBypassUrls = array (
                     Yii::app()->createUrl('users/default/confirmTimeZone'),
                     Yii::app()->createUrl('min/serve'),
+                    Yii::app()->createUrl('zurmo/default/logout'),
                 );
                 $reqestedUrl = Yii::app()->getRequest()->getUrl();
                 $isUrlAllowedToByPass = false;
@@ -298,13 +308,13 @@
                         $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
                         if (!$group->users->contains(Yii::app()->user->userModel))
                         {
-                            echo Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
+                            echo Zurmo::t('ZurmoModule', 'Application is in maintenance mode. Please try again later.');
                             exit;
                         }
                         else
                         {
                             // Super Administrators can access all pages, but inform them that application is in maintenance mode.
-                            Yii::app()->user->setFlash('notification', Yii::t('Default', 'Application is in maintenance mode, and only Super Administrators can access it.'));
+                            Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Application is in maintenance mode, and only Super Administrators can access it.'));
                         }
                     }
                 }
@@ -315,7 +325,7 @@
         {
             if (Yii::app()->isApplicationInMaintenanceMode())
             {
-                $message = Yii::t('Default', 'Application is in maintenance mode. Please try again later.');
+                $message = Zurmo::t('ZurmoModule', 'Application is in maintenance mode. Please try again later.');
                 $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                 Yii::app()->apiHelper->sendResponse($result);
                 exit;
@@ -338,7 +348,7 @@
 
                 if (!$isUrlAllowedToGuests)
                 {
-                    $message = Yii::t('Default', 'Sign in required.');
+                    $message = Zurmo::t('ZurmoModule', 'Sign in required.');
                     $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $message, null);
                     Yii::app()->apiHelper->sendResponse($result);
                     exit;
@@ -354,14 +364,14 @@
             $yiiVersion     =  YiiBase::getVersion();
             if ( $redBeanVersion != Yii::app()->params['redBeanVersion'])
             {
-                echo Yii::t('Default', 'Your RedBean version is currentVersion and it should be acceptableVersion.',
+                echo Zurmo::t('ZurmoModule', 'Your RedBean version is currentVersion and it should be acceptableVersion.',
                                 array(  'currentVersion' => $redBeanVersion,
                                         'acceptableVersion' => Yii::app()->params['redBeanVersion']));
                 Yii::app()->end(0, false);
             }
             if ( $yiiVersion != Yii::app()->params['yiiVersion'])
             {
-                echo Yii::t('Default', 'Your Yii version is currentVersion and it should be acceptableVersion.',
+                echo Zurmo::t('ZurmoModule', 'Your Yii version is currentVersion and it should be acceptableVersion.',
                                 array(  'currentVersion' => $yiiVersion,
                                         'acceptableVersion' => Yii::app()->params['yiiVersion']));
                 Yii::app()->end(0, false);

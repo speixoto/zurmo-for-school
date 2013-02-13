@@ -78,11 +78,6 @@
         protected $_massDeleteProgressPageSize;
 
         /**
-        * Default list page size for api calls.
-        */
-        protected $_unlimitedPageSize;
-
-        /**
          * This is set from the value in the application common config file. It is used as the final fall back
          * if no other configuration settings are found.
          */
@@ -157,15 +152,6 @@
         * This is set from the value in the application common config file. It is used as the final fall back
         * if no other configuration settings are found.
         */
-        public function setUnlimitedPageSize($value)
-        {
-            $this->_unlimitedPageSize = $value;
-        }
-
-        /**
-        * This is set from the value in the application common config file. It is used as the final fall back
-        * if no other configuration settings are found.
-        */
         public function setApiListPageSize($value)
         {
             $this->_apiListPageSize = $value;
@@ -215,7 +201,6 @@
          * Also sets value as active state value by key.
          * @param $type - pagination type
          * @param $moduleName - optional. Module class name.
-         * @return $pageSize - integer.
          */
         public function setForCurrentUserByType($type, $value, $moduleName = null)
         {
@@ -305,7 +290,7 @@
         {
             return array('listPageSize', 'subListPageSize', 'modalListPageSize', 'massEditProgressPageSize',
                          'autoCompleteListPageSize', 'importPageSize', 'dashboardListPageSize', 'apiListPageSize',
-                         'massDeleteProgressPageSize', 'unlimitedPageSize');
+                         'massDeleteProgressPageSize');
         }
     }
 ?>

@@ -695,7 +695,7 @@
                             $label = 'Relations of type HAS_MANY_BELONGS_TO must have the relation name ' .
                                      'the same as the related model class name. Relation: {relationName} ' .
                                      'Relation model class name: {relationModelClassName}';
-                            throw new NotSupportedException(Yii::t('Default', $label,
+                            throw new NotSupportedException(Zurmo::t('Core', $label,
                                       array('{relationName}' => $relationName,
                                             '{relationModelClassName}' => $relationModelClassName)));
                         }
@@ -765,7 +765,7 @@
                                 {
                                     unset($hints[$columnName]);
                                 }
-                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string')))
+                                if (in_array($validator->type, array('date', 'datetime', 'blob', 'longblob', 'string', 'text', 'longtext')))
                                 {
                                     $hints[$columnName] = $validator->type;
                                 }
@@ -802,44 +802,51 @@
                             foreach ($metadata[$modelClassName]['members'] as $memberName)
                             {
                                 $allValidators = $this->getValidators($memberName);
-                                foreach ($allValidators as $validator)
+                                if (!empty($allValidators))
                                 {
-                                    if ((get_class($validator) == 'RedBeanModelTypeValidator' ||
-                                        get_class($validator) == 'TypeValidator') &&
-                                        $validator->type == 'string')
+                                    foreach ($allValidators as $validator)
                                     {
-                                        $columnName = strtolower($validator->attributes[0]);
-                                        if (count($allValidators) > 1)
+                                        if ((get_class($validator) == 'RedBeanModelTypeValidator' ||
+                                            get_class($validator) == 'TypeValidator') &&
+                                            $validator->type == 'string')
                                         {
-                                            $haveCStringValidator = false;
-                                            foreach ($allValidators as $innerValidator)
+                                            $columnName = strtolower($validator->attributes[0]);
+                                            if (count($allValidators) > 1)
                                             {
-                                                if (get_class($innerValidator) == 'CStringValidator' &&
-                                                    isset($innerValidator->max) &&
-                                                    $innerValidator->max > 255)
+                                                $haveCStringValidator = false;
+                                                foreach ($allValidators as $innerValidator)
                                                 {
-                                                    if ($innerValidator->max > 65535)
+                                                    if (get_class($innerValidator) == 'CStringValidator' &&
+                                                        isset($innerValidator->max) &&
+                                                        $innerValidator->max > 0)
                                                     {
-                                                        $hints[$columnName] = 'longtext';
+                                                        if ($innerValidator->max > 65535)
+                                                        {
+                                                            $hints[$columnName] = 'longtext';
+                                                        }
+                                                        elseif ($innerValidator->max < 255)
+                                                        {
+                                                            $hints[$columnName] = "string({$innerValidator->max})";
+                                                        }
+                                                        else
+                                                        {
+                                                            $hints[$columnName] = 'text';
+                                                        }
                                                     }
-                                                    else
+                                                    if (get_class($innerValidator) == 'CStringValidator')
                                                     {
-                                                        $hints[$columnName] = 'text';
+                                                        $haveCStringValidator = true;
                                                     }
                                                 }
-                                                if (get_class($innerValidator) == 'CStringValidator')
+                                                if (!$haveCStringValidator)
                                                 {
-                                                    $haveCStringValidator = true;
+                                                    $hints[$columnName] = 'text';
                                                 }
                                             }
-                                            if (!$haveCStringValidator)
+                                            else
                                             {
                                                 $hints[$columnName] = 'text';
                                             }
-                                        }
-                                        else
-                                        {
-                                            $hints[$columnName] = 'text';
                                         }
                                     }
                                 }
@@ -1166,7 +1173,7 @@
          */
         public function __toString()
         {
-            return Yii::t('Default', '(None)');
+            return Zurmo::t('Core', '(None)');
         }
 
         /**
@@ -1635,7 +1642,7 @@
             $attributeLabels = array();
             foreach ($this->untranslatedAttributeLabels() as $attributeName => $label)
             {
-                $attributeLabels[$attributeName] = Yii::t('Default', $label);
+                $attributeLabels[$attributeName] = Zurmo::t('Core', $label);
             }
             return $attributeLabels;
         }
@@ -1666,7 +1673,7 @@
             $abbreviatedAttributeLabels = array();
             foreach ($this->untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
             {
-                $abbreviatedAttributeLabels[$attributeName] = Yii::t('Default', $label);
+                $abbreviatedAttributeLabels[$attributeName] = Zurmo::t('Core', $label);
             }
             return $abbreviatedAttributeLabels;
         }
@@ -1962,7 +1969,7 @@
                                     $label = 'Relations of type HAS_MANY_BELONGS_TO OR HAS_ONE_BELONGS_TO must have the relation name ' .
                                              'the same as the related model class name. Relation: {relationName} ' .
                                              'Relation model class name: {relationModelClassName}';
-                                    throw new NotSupportedException(Yii::t('Default', $label,
+                                    throw new NotSupportedException(Zurmo::t('Core', $label,
                                               array('{relationName}' => $linkName,
                                                     '{relationModelClassName}' => $relatedModelClassName)));
                                 }
@@ -2423,22 +2430,22 @@
             assert('in_array($type, array("Singular", "SingularLowerCase", "Plural", "PluralLowerCase"))');
             if ($type == 'Singular')
             {
-               return Yii::t('Default', static::getLabel(),
+               return Zurmo::t('Core', static::getLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language);
             }
             if ($type == 'SingularLowerCase')
             {
-               return strtolower(Yii::t('Default', static::getLabel(),
+               return strtolower(Zurmo::t('Core', static::getLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
             if ($type == 'Plural')
             {
-               return Yii::t('Default', static::getPluralLabel(),
+               return Zurmo::t('Core', static::getPluralLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language);
             }
             if ($type == 'PluralLowerCase')
             {
-               return strtolower(Yii::t('Default', static::getPluralLabel(),
+               return strtolower(Zurmo::t('Core', static::getPluralLabel(),
                         LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
         }
@@ -2474,7 +2481,7 @@
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => $this->generateAttributeLabel($attributeName)),
-                                  Yii::t('Default', $labels[$attributeName],
+                                  Zurmo::t('Core', $labels[$attributeName],
                                   LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
             else
@@ -2508,13 +2515,13 @@
             }
             elseif (isset($labels[$attributeName]))
             {
-                return Yii::t('Default', $labels[$attributeName],
+                return Zurmo::t('Core', $labels[$attributeName],
                               LabelUtil::getTranslationParamsForAllModules(), null, $language);
             }
             else
             {
                 //should do a T:: wrapper here too.
-                return Yii::t('Default', $this->generateAttributeLabel($attributeName), array(), null, $language);
+                return Zurmo::t('Core', $this->generateAttributeLabel($attributeName), array(), null, $language);
             }
         }
 
@@ -2931,7 +2938,7 @@
         {
             if (YII_DEBUG)
             {
-                Yii::log(Yii::t('yii', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
+                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
             }
         }
 

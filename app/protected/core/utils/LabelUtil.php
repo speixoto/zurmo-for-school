@@ -38,9 +38,9 @@
             assert('is_int($count)');
             if ($count > 1 || $count == 0)
             {
-                return Yii::t('Default', 'records');
+                return Zurmo::t('Core', 'records');
             }
-            return Yii::t('Default', 'record');
+            return Zurmo::t('Core', 'record');
         }
 
         /**
@@ -57,7 +57,7 @@
         }
 
         /**
-         * Module translation parameters are used by Yii::t as the third parameter to define the module labels.  These
+         * Module translation parameters are used by Zurmo::t as the third parameter to define the module labels.  These
          * parameter values resolve any custom module label names that have been specified in the module metadata.
          * @return array of key/value module label pairings.
          * TODO: cache results after first retrieval on each page load. Potentially across mulitple page loads

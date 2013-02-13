@@ -53,9 +53,10 @@
         protected function renderControlEditable()
         {
             $this->assertModelIsValid();
+            list($attributeName, $relationAttributeName) = $this->resolveAttributeNameAndRelatedAttributes();
             list($data, $dataSelectOption)  = $this->resolveData();
             $content                        = ZurmoHtml::radioButtonList(
-                                                        $this->getEditableInputName($this->getAttributeName(), 'type'),
+                                                        $this->getEditableInputName($attributeName, $relationAttributeName),
                                                         $this->resolveSelectedType(),
                                                         $data,
                                                         $this->getEditableHtmlOptions(),
@@ -102,7 +103,7 @@
             {
                 throw new NotImplementedException();
             }
-            return ZurmoHtml::label(Yii::t('Default', 'Who can read and write'), false);
+            return ZurmoHtml::label(Zurmo::t('ZurmoModule', 'Who can read and write'), false);
         }
 
         /**
@@ -116,8 +117,9 @@
 
         public function getEditableHtmlOptions()
         {
+            list($attributeName, $relationAttributeName) = $this->resolveAttributeNameAndRelatedAttributes();
             $htmlOptions = array(
-                'id'   => $this->getEditableInputId($this->getAttributeName(), 'type'),
+                'id'   => $this->getEditableInputId($attributeName, $relationAttributeName),
             );
             $htmlOptions['template']  = '<div class="radio-input">{input}{label}</div>';
             $htmlOptions['separator'] = '';
@@ -200,18 +202,19 @@
         protected function getPermissionTypes()
         {
             return array(
-                null                                                                 => Yii::t('Default', 'Owner'),
-                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP  => Yii::t('Default', 'Owner and users in'),
-                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP     => Yii::t('Default', 'Everyone'));
+                null                                                                 => Zurmo::t('ZurmoModule', 'Owner'),
+                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_NONEVERYONE_GROUP  => Zurmo::t('ZurmoModule', 'Owner and users in'),
+                ExplicitReadWriteModelPermissionsUtil::MIXED_TYPE_EVERYONE_GROUP     => Zurmo::t('ZurmoModule', 'Everyone'));
         }
 
         protected function renderSelectableGroupsContent()
         {
+            list($selectableAttributeName, $selectableRelationAttributeName) = $this->resolveSelectableAttributeNameAndRelatedAttributes();
             $htmlOptions = array(
-                'id'        => $this->getEditableInputId   ($this->getAttributeName(), 'nonEveryoneGroup'),
+                'id'        => $this->getEditableInputId   ($selectableAttributeName, $selectableRelationAttributeName),
                 'onclick'   => 'document.getElementById("{bindId}").checked="checked";',
             );
-            $name        = $this->getEditableInputName($this->getAttributeName(), 'nonEveryoneGroup');
+            $name        = $this->getEditableInputName($selectableAttributeName, $selectableRelationAttributeName);
             $dropDownArray = $this->getSelectableGroupsData();
             if ($dropDownArray == null)
             {
@@ -232,6 +235,21 @@
                 }
             }
             return $groupsData;
+        }
+
+        protected function resolveAttributeNameAndRelatedAttributes()
+        {
+            return array($this->getAttributeName(), 'type');
+        }
+
+        protected function resolveSelectableAttributeNameAndRelatedAttributes()
+        {
+            return array($this->getSelectableAttributeName(), 'nonEveryoneGroup');
+        }
+
+        protected function getSelectableAttributeName()
+        {
+            return $this->getAttributeName();
         }
     }
 ?>

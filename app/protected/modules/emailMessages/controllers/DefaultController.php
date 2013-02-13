@@ -31,6 +31,9 @@
     {
         const USER_EMAIL_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.UserEmailConfigurationCheckControllerFilter';
+              
+        const EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH =
+              'application.modules.emailMessages.controllers.filters.EmailMessagesRequiringArchivingCheckControllerFilter';
 
         public function filters()
         {
@@ -47,6 +50,9 @@
                     'rightName' => $moduleClassName::getCreateRight(),
                 ),
                 array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + createEmailMessage',
+                     'controller' => $this,
+                ),                
+                array(self::EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH . ' + matchingList' ,
                      'controller' => $this,
                 )
             );
@@ -80,7 +86,7 @@
                 {
                     EmailSmtpConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Email configuration saved successfully.')
+                        Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
@@ -107,7 +113,7 @@
                 {
                     EmailArchivingConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Email configuration saved successfully.')
+                        Zurmo::t('EmailMessagesModule', 'Email configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
@@ -161,17 +167,17 @@
                     $messageContent  = null;
                     if (!$emailMessage->hasSendError())
                     {
-                        $messageContent .= Yii::t('Default', 'Message successfully sent') . "\n";
+                        $messageContent .= Zurmo::t('EmailMessagesModule', 'Message successfully sent') . "\n";
                     }
                     else
                     {
-                        $messageContent .= Yii::t('Default', 'Message failed to send') . "\n";
+                        $messageContent .= Zurmo::t('EmailMessagesModule', 'Message failed to send') . "\n";
                         $messageContent .= $emailMessage->error     . "\n";
                     }
                 }
                 else
                 {
-                    $messageContent = Yii::t('Default', 'A test email address must be entered before you can send a test email.') . "\n";
+                    $messageContent = Zurmo::t('EmailMessagesModule', 'A test email address must be entered before you can send a test email.') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
                 $messageView = new TestEmailMessageView($messageContent);
@@ -211,16 +217,16 @@
                 catch (Exception $e)
                 {
                     $connect = false;
-                    $messageContent = Yii::t('Default', 'Could not connect to IMAP server.') . "\n";
+                    $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
 
                 if (isset($connect) && $connect == true)
                 {
-                    $messageContent = Yii::t('Default', 'Successfully connected to IMAP server.') . "\n";
+                    $messageContent = Zurmo::t('EmailMessagesModule', 'Successfully connected to IMAP server.') . "\n";
                 }
                 else
                 {
-                    $messageContent = Yii::t('Default', 'Could not connect to IMAP server.') . "\n";
+                    $messageContent = Zurmo::t('EmailMessagesModule', 'Could not connect to IMAP server.') . "\n";
                 }
 
                 Yii::app()->getClientScript()->setToAjaxMode();
@@ -228,7 +234,7 @@
                 $view = new ModalView($this,
                                       $messageView,
                                       'modalContainer',
-                                      Yii::t('Default', 'Test Message Results')
+                                      Zurmo::t('EmailMessagesModule', 'Test Message Results')
                 );
                 echo $view->render();
             }
@@ -268,7 +274,7 @@
                                         'EmailMessage',
                                         $dataProvider,
                                         'ArchivedEmailMatchingListView',
-                                        Yii::t('Default', 'Unmatched Archived Emails'),
+                                        Zurmo::t('EmailMessagesModule', 'Unmatched Archived Emails'),
                                         array(),
                                         false);
             $view = new EmailMessagesPageView(ZurmoDefaultViewUtil::
@@ -289,7 +295,7 @@
             $selectForm            = self::makeSelectForm($userCanAccessLeads, $userCanAccessContacts);
 
             if (isset($_POST[get_class($selectForm)]))
-            { 
+            {
                 if (isset($_POST['ajax']) && $_POST['ajax'] === 'select-contact-form-' . $id)
                 {
                     $selectForm->setAttributes($_POST[get_class($selectForm)][$id]);
@@ -416,8 +422,8 @@
                 }
                 Yii::app()->end(false);
             }
-        }
-
+        }        
+        
         public function actionCreateEmailMessage($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
             $postData         = PostUtil::getData();

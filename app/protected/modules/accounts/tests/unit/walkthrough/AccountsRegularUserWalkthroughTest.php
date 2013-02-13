@@ -613,7 +613,7 @@
         }
 
          /**
-         * @deletes selected accounts. 
+         * @deletes selected accounts.
          */
 
         public function testMassDeleteActionsForSelectedIds()
@@ -626,7 +626,7 @@
             //Load MassDelete view for the 3 accounts.
             $accounts = Account::getAll();
             $this->assertEquals(8, count($accounts));
- 
+
             $account1 = AccountTestHelper::createAccountByNameForOwner('canDelete1', $confused);
             $account2 = AccountTestHelper::createAccountByNameForOwner('canDelete2', $confused);
             $account3 = AccountTestHelper::createAccountByNameForOwner('canDelete3', $billy);
@@ -634,45 +634,43 @@
             $account5 = AccountTestHelper::createAccountByNameForOwner('canDelete5', $confused);
             $account6 = AccountTestHelper::createAccountByNameForOwner('canDelete6', $billy);
 
-
             $selectedIds = $account1->id . ',' . $account2->id . ',' . $account3->id ;    // Not Coding Standard
             $this->setGetArray(array('selectedIds' => $selectedIds,'selectAll' => ''));  // Not Coding Standard
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDelete');
             $this->assertFalse(strpos($content, '<strong>3</strong>&#160;Accounts selected for removal') === false);
             $pageSize = Yii::app()->pagination->getForCurrentUserByType('massDeleteProgressPageSize');
-            $this->assertEquals(5, $pageSize);            
+            $this->assertEquals(5, $pageSize);
             //calculating accounts after adding 6 new records
             $accounts = Account::getAll();
             $this->assertEquals(14, count($accounts));
 
             //Deleting 6 accounts for pagination scenario
             //Run Mass Delete using progress save for page1
-            $selectedIds = $account1->id . ',' . $account2->id . ',' .
-                           $account3->id . ',' . $account4->id . ',' . 
-                           $account5->id . ',' . $account6->id;
+            $selectedIds = $account1->id . ',' . $account2->id . ',' . // Not Coding Standard
+                           $account3->id . ',' . $account4->id . ',' . // Not Coding Standard
+                           $account5->id . ',' . $account6->id;        // Not Coding Standard
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Account_page' => 1));
             $this->setPostArray(array('selectedRecordCount' => 6));
-            $content = $this->runControllerWithExitExceptionAndGetContent('accounts/default/massDelete');            
+            $content = $this->runControllerWithExitExceptionAndGetContent('accounts/default/massDelete');
             $accounts = Account::getAll();
             $this->assertEquals(9, count($accounts));
 
             //Run Mass Delete using progress save for page2
-            $selectedIds = $account1->id . ',' . $account2->id . ',' .
-                           $account3->id . ',' . $account4->id . ',' . 
-                           $account5->id . ',' . $account6->id;
+            $selectedIds = $account1->id . ',' . $account2->id . ',' . // Not Coding Standard
+                           $account3->id . ',' . $account4->id . ',' . // Not Coding Standard
+                           $account5->id . ',' . $account6->id;        // Not Coding Standard
             $this->setGetArray(array(
                 'selectedIds' => $selectedIds, // Not Coding Standard
                 'selectAll' => '',
                 'Account_page' => 2));
             $this->setPostArray(array('selectedRecordCount' => 6));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDeleteProgress');            
+            $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/default/massDeleteProgress');
             $accounts = Account::getAll();
             $this->assertEquals(8, count($accounts));
-            
         }
 
          /**
@@ -683,13 +681,13 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $confused = User::getByUsername('confused');
             $billy = User::getByUsername('billy');
-           
+
             //Load MassDelete view for the 8 accounts.
             $accounts = Account::getAll();
             $this->assertEquals(8, count($accounts));
              //Deleting all accounts
 
-            //mass Delete pagination scenario 
+            //mass Delete pagination scenario
             //Run Mass Delete using progress save for page1
             $this->setGetArray(array(
                 'selectAll' => '1',
