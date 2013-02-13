@@ -160,7 +160,7 @@
 
         public function actionSave($type, $id = null)
         {
-            $postData                  = PostUtil::getData();
+            $postData                  = PostUtil::getData();            
             $savedReport               = null;
             $report                    = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
@@ -462,8 +462,7 @@
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
             
-            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);
-            
+            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);            
             $totalItems = intval($dataProvider->calculateTotalItemCount());            
             $data = array();
             if ($totalItems > 0)
@@ -471,12 +470,12 @@
                 if ($totalItems <= ExportModule::$asynchronusTreshold)
                 {
                     // Output csv file directly to user browser
-                    if ($dataProvider)
+                    if ($dataProvider)                    
                     {     
-                         $reportResultsRowData = $dataProvider->getData(); 
-                        foreach ($reportResultsRowData as $results)
+                        $data = $dataProvider->getData();                      
+                        foreach ($data as $reportResultsRowData)
                         {                          
-                          $reportToExportAdapter  = new ReportToExportAdapter($results); 
+                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData); 
                           $data[] = $reportToExportAdapter->getData();  
                         }                                                                          
                     }
@@ -498,10 +497,6 @@
                     if ($dataProvider)
                     {
                         $serializedData = serialize($dataProvider);
-                    }
-                    else
-                    {
-                        $serializedData = serialize($idsToExport);
                     }
 
                     // Create background job
