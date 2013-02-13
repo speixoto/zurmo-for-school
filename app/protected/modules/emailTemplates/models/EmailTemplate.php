@@ -94,6 +94,8 @@
                     array('subject',              'length',  'min'  => 3, 'max' => 64),
                     array('htmlContent',          'type',    'type' => 'string'),
                     array('textContent',          'type',    'type' => 'string'),
+                    // TODO: @Shoaibi: add rule to check at least one of the content field is not empty.
+                    // TODO: @Shoaibi: also add client side validation for above if needed
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',
