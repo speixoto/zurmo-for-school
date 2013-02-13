@@ -268,7 +268,7 @@
          */
         public function testSuperUserDateSorting()
         {
- /**
+/**
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $superDashboard = Dashboard::getByLayoutIdAndUser(Dashboard::DEFAULT_USER_LAYOUT_ID, $super);
             $uniqueLayoutId = 'HomeDashboard' . $superDashboard->layoutId;
