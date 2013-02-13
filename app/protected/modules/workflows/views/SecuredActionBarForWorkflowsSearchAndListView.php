@@ -25,34 +25,27 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * Action bar view for the workflow search and list user interface. Provides buttons like export and update
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class SecuredActionBarForWorkflowsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
         /**
          * @return array
          */
-        protected function getTypeData()
+        public static function getDefaultMetadata()
         {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

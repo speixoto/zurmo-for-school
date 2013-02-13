@@ -25,34 +25,35 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * Factory for creating workflow wizard views of
+     * the appropriate type.
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class WorkflowWizardViewFactory
     {
         /**
-         * @return string
+         * @param Workflow $workflow
+         * @return View
+         * @throws NotSupportedException if the type provided is not valid
          */
-        public function getTitle()
+        public static function makeViewFromWorkflow(Workflow $workflow)
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
-        /**
-         * @return array
-         */
-        protected function getTypeData()
-        {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            $type                      = $workflow->getType();
+            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($$workflow);
+            if($type == Workflow::TYPE_ON_SAVE)
+            {
+                $viewClassName = 'OnSaveWorkflowWizardView';
+                $form          = $workflowToWizardFormAdapter->makeOnSaveWizardForm();
+            }
+            elseif($type == Workflow::TYPE_BY_TIME)
+            {
+                $viewClassName = 'ByTimeWorkflowWizardView';
+                $form          = $workflowToWizardFormAdapter->makeByTimeWizardForm();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return new $viewClassName($form);
         }
     }
 ?>

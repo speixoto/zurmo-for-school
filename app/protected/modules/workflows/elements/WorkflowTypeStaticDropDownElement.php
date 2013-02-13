@@ -25,34 +25,16 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * Element for displaying the available workflow types
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class WorkflowTypeStaticDropDownElement extends StaticDropDownFormElement
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
         /**
          * @return array
          */
-        protected function getTypeData()
+        protected function getDropDownArray()
         {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            return Workflow::getTypeDropDownArray();
         }
     }
 ?>

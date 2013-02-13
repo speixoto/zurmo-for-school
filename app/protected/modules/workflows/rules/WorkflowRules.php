@@ -26,7 +26,7 @@
 
     /**
      * Base class of workflow rules that assist with workflow management.  Extend this class to make
-     * a set of WorkflowtRules that is for a specific module or a combination of modules and/or models.
+     * a set of WorkflowRules that is for a specific module or a combination of modules and/or models.
      */
     abstract class WorkflowRules //todo: extend some base rules, so getMetadata and setMetadata can be shared by reporting rules too.
     {
@@ -41,10 +41,9 @@
 
         /**
          * Returns metadata for use in the rules.  Will attempt to retrieve from cache if
-         * available, otherwill retrieve from database and cache.
+         * available, otherwise retrieve from database and cache.
          * @see getDefaultMetadata()
-         * @param $user The current user.
-         * @returns An array of metadata.
+         * @return An array of metadata.
          */
         public static function getMetadata()
         {
@@ -67,8 +66,7 @@
 
         /**
          * Sets new metadata.
-         * @param $metadata An array of metadata.
-         * @param $user The current user.
+         * @param array $metadata
          */
         public static function setMetadata(array $metadata)
         {

@@ -25,34 +25,41 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * Helper class to create ComponentForWorkflowForm based objects
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class ComponentForWorkflowFormFactory
     {
         /**
-         * @return string
+         * Make and return the correct ComponentForWorkflowForm based object
+         * @param $moduleClassName string
+         * @param $modelClassName string
+         * @param $type string
+         * @param $componentType string
+         * @return TimeTriggerForWorkflowForm|TriggerForWorkflowForm|ActionForWorkflowForm
+         * @throws NotSupportedException
          */
-        public function getTitle()
+        public static function makeByComponentType($moduleClassName, $modelClassName, $type, $componentType)
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
-        /**
-         * @return array
-         */
-        protected function getTypeData()
-        {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($type)');
+            assert('is_string($componentType)');
+            if($componentType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
+            {
+                return new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
+            }
+            elseif($componentType == ComponentForWorkflowForm::TYPE_TRIGGERS)
+            {
+                return new TriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
+            }
+            elseif($componentType == ComponentForWorkflowForm::TYPE_ACTION)
+            {
+                return new ActionForWorkflowForm($moduleClassName, $modelClassName, $type);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

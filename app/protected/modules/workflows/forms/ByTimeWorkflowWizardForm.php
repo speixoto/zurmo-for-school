@@ -25,34 +25,23 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * By-time workflow form used to manage interaction between a Workflow and the user interface.
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class ByTimeWorkflowWizardForm extends WorkflowWizardForm
     {
         /**
-         * @return string
+         * Validates that at least one timeTrigger has been selected, since this is required for a by-time workflow
+         * @return bool
          */
-        public function getTitle()
+        public function validateTimeTrigger()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
-        /**
-         * @return array
-         */
-        protected function getTypeData()
-        {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            $validated = parent::validateTimeTrigger();
+            if(count($this->timeTrigger) == 0)
+            {
+                $this->addError('timeTrigger', Zurmo::t('WorkflowsModule', 'At least one time-based trigger must be selected'));
+                $validated = false;
+            }
+            return $validated;
         }
     }
 ?>

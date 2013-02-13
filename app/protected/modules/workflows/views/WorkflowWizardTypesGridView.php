@@ -25,34 +25,27 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * Wrapper view for selecting a type of workflow to create
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class WorkflowWizardTypesGridView extends GridView
     {
         /**
-         * @return string
+         * @var array
          */
-        public function getTitle()
+        protected $cssClasses =  array( 'AdministrativeArea' , 'TableOfContentsView' );
+
+        public function __construct()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
+            parent::__construct(1, 1);
+            $this->setView(new WorkflowWizardTypeView(), 0, 0);
         }
 
         /**
-         * @return array
+         * @return bool
          */
-        protected function getTypeData()
+        public function isUniqueToAPage()
         {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            return true;
         }
     }
 ?>

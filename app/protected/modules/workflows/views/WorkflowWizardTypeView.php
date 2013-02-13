@@ -25,16 +25,16 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * View for selecting a type of workflow to create
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class WorkflowWizardTypeView extends WizardTypeView
     {
         /**
          * @return string
          */
         public function getTitle()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
+            return Zurmo::t('WorkflowsModule', 'Workflow Wizard');
         }
 
         /**
@@ -43,14 +43,11 @@
         protected function getTypeData()
         {
             $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('WorkflowsModule', 'On Save Workflow'),
+                                                'route'               => 'workflows/default/create?type=' . Workflow::TYPE_ON_SAVE // Not Coding Standard
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('WorkflowsModule', 'By Time Workflow'),
+                                                'route'               => 'workflows/default/create?type=' . Workflow::TYPE_BY_TIME // Not Coding Standard
                                             );
             return $categories;
         }

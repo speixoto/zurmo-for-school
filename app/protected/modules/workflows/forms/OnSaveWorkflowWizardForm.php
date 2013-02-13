@@ -25,34 +25,9 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * On-save report form used to manage interaction between a Workflow and the user interface.
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class OnSaveWorkflowWizardForm extends WorkflowWizardForm
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
-        /**
-         * @return array
-         */
-        protected function getTypeData()
-        {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
-        }
     }
 ?>

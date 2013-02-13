@@ -25,34 +25,49 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * View for showing a search panel to create a filtered list of workflow rules
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class WorkflowsSearchView extends SearchView
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
-        {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
         /**
          * @return array
          */
-        protected function getTypeData()
+        public static function getDefaultMetadata()
         {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            $metadata = array(
+                'global' => array(
+                    'nonPlaceableAttributeNames' => array(
+                        'serializedData',
+                    ),
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
+        }
+
+        /**
+         * @return string
+         */
+        public static function getModelForMetadataClassName()
+        {
+            return 'WorkflowsSearchForm';
         }
     }
 ?>

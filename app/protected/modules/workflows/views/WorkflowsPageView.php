@@ -25,34 +25,13 @@
      ********************************************************************************/
 
     /**
-     * View for selecting a type of report to create
+     * View for showing any workflow view
      */
-    class ReportWizardTypeView extends WizardTypeView
+    class WorkflowsPageView extends ZurmoDefaultPageView
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        protected function getSubtitle()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
-        }
-
-        /**
-         * @return array
-         */
-        protected function getTypeData()
-        {
-            $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
-                                            );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
-                                                'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
-                                            );
-            return $categories;
+            return Zurmo::t('WorkflowsModule', 'Workflows');
         }
     }
 ?>
