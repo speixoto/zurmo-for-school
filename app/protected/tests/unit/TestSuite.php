@@ -80,7 +80,7 @@
 
             if ($freeze == false && FORCE_NO_FREEZE == true)
             {
-                echo "It doesn't have sense to run \"--no-freeze\" while 'forceNoFreeze' is set to TRUE in debugTest.php\n\n";
+                echo "\n\nBecause forceNoFreeze is set to TRUE in debugTest, you cannot run in no-freeze mode\n\n";
                 exit;
             }
 
