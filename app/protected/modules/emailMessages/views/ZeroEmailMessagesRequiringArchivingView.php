@@ -34,7 +34,7 @@
 
         protected function renderContent()
         {            
-            $content  = '<h2>' . Zurmo::t('EmailMessagesModule', '<h2>Nothing to see here</h2>') . '</h2>';
+            $content  = '<h2>' . Zurmo::t('EmailMessagesModule', 'Nothing to see here') . '</h2>';
             $content .= '<div class="' . $this->getIconName() . '">';            
             $content .= '<div class="large-icon"></div>';
             $content .= $this->getMessageContent();            
@@ -49,7 +49,7 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('EmailMessagesModule', '<p>There are no unmatched emails</p>');
+            return '<p>' . Zurmo::t('EmailMessagesModule', 'There are no unmatched emails') . '</p>';
         }
     }
 ?>
