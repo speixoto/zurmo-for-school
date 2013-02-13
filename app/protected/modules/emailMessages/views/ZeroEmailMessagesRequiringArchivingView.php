@@ -34,7 +34,7 @@
 
         protected function renderContent()
         {            
-            $content  = '<h2>Nothing to see here</h2>';
+            $content  = '<h2>' . Zurmo::t('EmailMessagesModule', '<h2>Nothing to see here</h2>') . '</h2>';
             $content .= '<div class="' . $this->getIconName() . '">';            
             $content .= '<div class="large-icon"></div>';
             $content .= $this->getMessageContent();            
