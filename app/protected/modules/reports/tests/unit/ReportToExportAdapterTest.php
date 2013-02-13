@@ -78,114 +78,80 @@
         }
 
         public function testGetDataWithNoRelationsSet()
-        {            
-            $reportModelTestItemF = new ReportModelTestItem();
-            $reportModelTestItemF->firstName = 'xFirst';
-            $reportModelTestItemF->lastName = 'xLast';
+        {           
+            //for fullname attribute  
+            $reportModelTestItem = new ReportModelTestItem();
+            $reportModelTestItem->firstName = 'xFirst';
+            $reportModelTestItem->lastName = 'xLast';
             $displayAttributeF    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeF->setModelAliasUsingTableAliasName('abc');  
+            $displayAttributeF->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeF->attributeIndexOrDerivedType = 'FullName';            
-
-            $reportModelTestItemB = new ReportModelTestItem();
-            $reportModelTestItemB->boolean = true;
+            
+            //for boolean attribute
+            $reportModelTestItem->boolean = true;
             $displayAttributeB    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeB->setModelAliasUsingTableAliasName('def');  
+            $displayAttributeB->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeB->attributeIndexOrDerivedType = 'boolean'; 
-            
-            $reportModelTestItemD = new ReportModelTestItem();
-            $reportModelTestItemD->date = '2013-02-12';
+                    
+            //for date attribute                  
+            $reportModelTestItem->date = '2013-02-12';
             $displayAttributeD    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeD->setModelAliasUsingTableAliasName('lmn');  
-            $displayAttributeD->attributeIndexOrDerivedType = 'date'; 
-            
-            $reportModelTestItemDT = new ReportModelTestItem();
-            $reportModelTestItemDT->dateTime = '2013-02-12 10:15';
+            $displayAttributeD->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributeD->attributeIndexOrDerivedType = 'date';             
+
+            //for datetime attribute
+            $reportModelTestItem->dateTime = '2013-02-12 10:15';
             $displayAttributeDT    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeDT->setModelAliasUsingTableAliasName('pqr');  
+            $displayAttributeDT->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeDT->attributeIndexOrDerivedType = 'dateTime'; 
             
-            $reportModelTestItemFT = new ReportModelTestItem();
-            $reportModelTestItemFT->float = 10.5;
+            //for float attribute
+            $reportModelTestItem->float = 10.5;
             $displayAttributeFT    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeFT->setModelAliasUsingTableAliasName('stu');  
+            $displayAttributeFT->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeFT->attributeIndexOrDerivedType = 'float'; 
             
-            $reportModelTestItemI = new ReportModelTestItem();
-            $reportModelTestItemI->integer = 10;
+            //for integer attribute
+            $reportModelTestItem->integer = 10;
             $displayAttributeI    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeI->setModelAliasUsingTableAliasName('uvw');  
-            $displayAttributeI->attributeIndexOrDerivedType = 'float';             
-
-            $reportModelTestItemP = new ReportModelTestItem();
-            $reportModelTestItemP->phone = '7842151012';
+            $displayAttributeI->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributeI->attributeIndexOrDerivedType = 'integer';             
+            
+            //for phone attribute
+            $reportModelTestItem->phone = '7842151012';
             $displayAttributeP    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeP->setModelAliasUsingTableAliasName('xyz');  
+            $displayAttributeP->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeP->attributeIndexOrDerivedType = 'phone'; 
-            
-            $reportModelTestItemS = new ReportModelTestItem();
-            $reportModelTestItemS->string = 'xString';
+                        
+            //for string attribute                        
+            $reportModelTestItem->string = 'xString';
             $displayAttributeS    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeS->setModelAliasUsingTableAliasName('hqq');  
+            $displayAttributeS->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeS->attributeIndexOrDerivedType = 'string'; 
             
-            $reportModelTestItemTA = new ReportModelTestItem();
-            $reportModelTestItemTA->textArea = 'xtextAreatest';
+            //for textArea attribute            
+            $reportModelTestItem->textArea = 'xtextAreatest';
             $displayAttributeTA    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeTA->setModelAliasUsingTableAliasName('tqq');  
+            $displayAttributeTA->setModelAliasUsingTableAliasName('model1');  
             $displayAttributeTA->attributeIndexOrDerivedType = 'textArea'; 
             
-            
-            $reportModelTestItemU = new ReportModelTestItem();
-            $reportModelTestItemU->url = 'http://www.test.com'; 
+            //for url attribute            
+            $reportModelTestItem->url = 'http://www.test.com'; 
             $displayAttributeU    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeU->setModelAliasUsingTableAliasName('sqq');  
-            $displayAttributeU->attributeIndexOrDerivedType = 'url';                         
+            $displayAttributeU->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributeU->attributeIndexOrDerivedType = 'url'; 
 
-            $reportResultsRowData = new ReportResultsRowData(array(
-                                        $displayAttributeF, $displayAttributeB, $displayAttributeD,
-                                        $displayAttributeDT, $displayAttributeFT, $displayAttributeI,
-                                        $displayAttributeP, $displayAttributeS, $displayAttributeTA,
-                                        $displayAttributeU), 24);
-                                                                    
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemF,  'abc');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemB,  'def');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemD,  'lmn');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemDT, 'pqr');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemFT, 'stu');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemI,  'uvw');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemP,  'xyz');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemS,  'hqq');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemTA, 'tqq');
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemU,  'sqq');
-            
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();
-            
-            $headerdata  = array('Full Name', 'Boolean', 'Date', 'DateTime', 'Float'
-                                 ,'Integer', 'Phone', 'String', 'TextArea', 'Url');
-            $content     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
-                                 10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
-                                 'http://www.test.com');
-            
-            $compareData = array($headerdata, $content);
-            $this->assertEquals($compareData, $data);
-        }
-
-        public function testGetDataWithAllHasOneOrOwnedRelationsSet()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
+            //for dropdown attribute
             $values = array(
                 'Test1',
                 'Test2',
@@ -196,129 +162,74 @@
             $customFieldData = CustomFieldData::getByName('ReportTestDropDown');
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
-            $this->assertTrue($saved); 
+            $this->assertTrue($saved);               
+            $reportModelTestItem->dropDown->value = $values[1];  
+            $displayAttributeCD    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttributeCD->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributeCD->attributeIndexOrDerivedType = 'dropDown';             
 
+            //for currency attribute
             $currencies                 = Currency::getAll();
             $currencyValue              = new CurrencyValue();
             $currencyValue->value       = 100;
             $currencyValue->currency    = $currencies[0];
-            $this->assertEquals('USD', $currencyValue->currency->code);            
+            $this->assertEquals('USD', $currencyValue->currency->code);  
             
-            $reportModelTestItemX = new ReportModelTestItem();
-            $reportModelTestItemX->firstName = 'yFirst';
-            $reportModelTestItemX->lastName = 'yLast';
-            $reportModelTestItemX->boolean = true;
-            $reportModelTestItemX->date = '2013-02-14';
-            $reportModelTestItemX->dateTime = '2013-02-12 10:15';
-            $reportModelTestItemX->float = 10.5;
-            $reportModelTestItemX->integer = 10;
-            $reportModelTestItemX->nonReportable = 'xNr';
-            $reportModelTestItemX->phone = '7842151012';
-            $reportModelTestItemX->string = 'yString';
-            $reportModelTestItemX->textArea = 'ytextArea test';
-            $reportModelTestItemX->url = 'http://www.test.com';
-            $reportModelTestItemX->currencyValue   = $currencyValue;
-            $reportModelTestItemX->dropDown->value = $values[1];            
-        
-            $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $reportModelTestItem->currencyValue   = $currencyValue;
+            $displayAttributeC    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
-            $displayAttributeX->attributeIndexOrDerivedType = 'likeContactState';             
-
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 14);
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');            
-
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();    
-            $compareData = array(array('Contact State'), array('someString someName'));
-            $this->assertEquals($compareData, $data);                        
-        } 
-        
-        public function testGetDataWithHasOneOrOwnedRelationsSet()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
+            $displayAttributeC->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributeC->attributeIndexOrDerivedType = 'currencyValue'; 
             
-            $reportModelTestItem7         = new ReportModelTestItem7;
-            $reportModelTestItem7->name   = 'someName';                
-        
-            $reportModelTestItemX = new ReportModelTestItem();
-            $reportModelTestItemX->primaryAddress->street1 = 'someString';
-            $reportModelTestItemX->likeContactState = $reportModelTestItem7;        
-            $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            //for primaryAddress attribute
+            $reportModelTestItem->primaryAddress->street1 = 'someString';
+            $displayAttributePA   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
-            $displayAttributeX->attributeIndexOrDerivedType = 'likeContactState';             
+            $displayAttributePA->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributePA->attributeIndexOrDerivedType = 'primaryAddress';
 
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 2);
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');            
-
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();    
-            $compareData = array(array('Contact State'), array('someString someName'));
-            $this->assertEquals($compareData, $data);                        
-        } 
-
-        public function testGetDataWithHasOneRelatedModel()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $currencies                 = Currency::getAll();
-            $currencyValue              = new CurrencyValue();
-            $currencyValue->value       = 100;
-            $currencyValue->currency    = $currencies[0];
-            $this->assertEquals('USD', $currencyValue->currency->code);
-
-            $reportModelTestItem2 = new ReportModelTestItem2();
-            $reportModelTestItem2->name     = 'John';
-            $this->assertTrue($reportModelTestItem2->save());
-
-            $reportModelTestItem4 = new ReportModelTestItem4();
-            $reportModelTestItem4->name     = 'John';
-            $this->assertTrue($reportModelTestItem4->save());
-
-            //HAS_MANY and MANY_MANY relationships should be ignored.
-            $reportModelTestItem3_1 = new ReportModelTestItem3();
-            $reportModelTestItem3_1->name     = 'Kevin';
-            $this->assertTrue($reportModelTestItem3_1->save());
-
-            $reportModelTestItem3_2 = new ReportModelTestItem3();
-            $reportModelTestItem3_2->name     = 'Jim';
-            $this->assertTrue($reportModelTestItem3_2->save());
-
-            $reportModelTestItemX = new ReportModelTestItem();
-            $reportModelTestItemX->firstName = 'yFirst';
-            $reportModelTestItemX->lastName = 'yLast';
-            $reportModelTestItemX->boolean = true;
-            $reportModelTestItemX->date = '2013-02-14';
-            $reportModelTestItemX->dateTime = '2013-02-12 10:15';
-            $reportModelTestItemX->float = 10.5;
-            $reportModelTestItemX->integer = 10;
-            $reportModelTestItemX->nonReportable = 'xNr';
-            $reportModelTestItemX->phone = '7842151012';
-            $reportModelTestItemX->string = 'yString';
-            $reportModelTestItemX->textArea = 'ytextArea test';
-            $reportModelTestItemX->url = 'http://www.test.com';
-            $reportModelTestItemX->currencyValue = $currencyValue;
-            $reportModelTestItemX->hasOne        = $reportModelTestItem2;
-            $reportModelTestItemX->hasMany->add($reportModelTestItem3_1);
-            $reportModelTestItemX->hasMany->add($reportModelTestItem3_2);
-            $reportModelTestItemX->hasOneAlso    = $reportModelTestItem4;
-            
-            $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            //for primaryEmail attribute
+            $reportModelTestItem->primaryEmail = 'test@someString.com';
+            $displayAttributePE   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttributeX->setModelAliasUsingTableAliasName('xyz');
-            $displayAttributeX->attributeIndexOrDerivedType = 'likeContactState'; 
+            $displayAttributePE->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributePE->attributeIndexOrDerivedType = 'email';
             
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 2);
-            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc'); 
+            //for multiDropDown attribute
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Multi 1';
+            $testItem->multiDropDown->values->add($customFieldValue);
+            $customFieldValue = new CustomFieldValue();
+            $customFieldValue->value = 'Multi 2';
+            $testItem->multiDropDown->values->add($customFieldValue);            
+            $displayAttributeMD   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttributeMD->setModelAliasUsingTableAliasName('model1');  
+            $displayAttributeMD->attributeIndexOrDerivedType = 'multiSelectDropDown';            
+            
+            
+            $reportResultsRowData = new ReportResultsRowData(array(
+                                        $displayAttributeF, $displayAttributeB, $displayAttributeD,
+                                        $displayAttributeDT, $displayAttributeFT, $displayAttributeI,
+                                        $displayAttributeP, $displayAttributeS, $displayAttributeTA,
+                                        $displayAttributeU, $displayAttributeCD, $displayAttributeC,
+                                        $displayAttributePA, $displayAttributePE, $displayAttributeMD), 24);
+                                                                    
+            $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
             
             $adapter     = new ReportToExportAdapter($reportResultsRowData);
             $data        = $adapter->getData();
-
-            $compareData = array(array('Contact State'), array('someString someName'));
+            
+            $headerdata  = array('Full Name', 'Boolean', 'Date', 'DateTime', 'Float'
+                                 , 'Integer', 'Phone', 'String', 'TextArea', 'Url', 'Dropdown'
+                                 , 'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown');
+            $content     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
+                                 10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
+                                 'http://www.test.com', 'Test2', 'USD', 'someString', 'test@someString.com',
+                                 'Multi 1 Multi 2');
+            
+            $compareData = array($headerdata, $content);
             $this->assertEquals($compareData, $data);
-        }        
-    }
-?>
+        }
+    }        
