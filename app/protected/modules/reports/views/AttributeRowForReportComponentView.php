@@ -112,12 +112,12 @@
          * add a filter, the inputs need to be added to the yiiactiveform so that validation handling can work
          * properly.  This method replaces the id and model elements with the correctly needed values.
          * Only adds inputs that have not been added already
-         * @param ReportActiveForm $form
+         * @param WizardActiveForm $form
          * @param string $wizardFormClassName
          * @param string $componentFormClassName
          * @param array $inputPrefixData
          */
-        public function renderAddAttributeErrorSettingsScript(ReportActiveForm $form, $wizardFormClassName,
+        public function renderAddAttributeErrorSettingsScript(WizardActiveForm $form, $wizardFormClassName,
                                                               $componentFormClassName, $inputPrefixData)
         {
             assert('is_string($wizardFormClassName)');

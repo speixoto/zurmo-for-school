@@ -27,65 +27,12 @@
     /**
      * Helper class for adapting relation and attribute data into tree data
      */
-    class ReportRelationsAndAttributesToTreeAdapter
+    class ReportRelationsAndAttributesToTreeAdapter extends WizardModelRelationsAndAttributesToTreeAdapter
     {
         /**
          * @var Report
          */
         protected $report;
-
-        /**
-         * @var string
-         */
-        protected $treeType;
-
-        /**
-         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
-         * The nodeId has the treeType as a prefix in order to distinguish from other nodes in the user interface.
-         * @param string $nodeId
-         * @param string $treeType
-         * @return string nodeId without the prefixed treeType
-         */
-        public static function removeTreeTypeFromNodeId($nodeId, $treeType)
-        {
-            assert('is_string($nodeId)');
-            assert('is_string($treeType)');
-            $nodeIdParts  = explode($treeType . '_', $nodeId);
-            return $nodeIdParts[1];
-        }
-
-        /**
-         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
-         * @param string $formModelClassName
-         * @param string $treeType
-         * @param integer $rowNumber
-         * @return array of input prefix parts.  Excludes the last element which is typically an attribute since this
-         * is not part of the prefix for an Element.  Adds in the formModelClassName, a treeType, and then the rowNumber
-         * as the first 2 elements.
-         */
-        public static function resolveInputPrefixData($formModelClassName, $treeType, $rowNumber)
-        {
-            assert('is_string($formModelClassName)');
-            assert('is_string($treeType)');
-            assert('is_int($rowNumber)');
-            $inputPrefixData   = array();
-            $inputPrefixData[] = $formModelClassName;
-            $inputPrefixData[] = $treeType;
-            $inputPrefixData[] = $rowNumber;
-            return $inputPrefixData;
-        }
-
-        /**
-         * Extracts the attribute which is the last part of the nodeId and @returns the attribute string.
-         * @see ReportsDefaultController::actionAddAttributeFromTree for an example of where this is called from
-         * @param string $nodeIdWithoutTreeType
-         * @return string
-         */
-        public static function resolveAttributeByNodeId($nodeIdWithoutTreeType)
-        {
-            assert('is_string($nodeIdWithoutTreeType)');
-            return $nodeIdWithoutTreeType;
-        }
 
         /**
          * @param Report $report
@@ -96,14 +43,6 @@
             assert('is_string($treeType)');
             $this->report   = $report;
             $this->treeType = $treeType;
-        }
-
-        /**
-         * @return string
-         */
-        public function getTreeType()
-        {
-            return $this->treeType;
         }
 
         /**

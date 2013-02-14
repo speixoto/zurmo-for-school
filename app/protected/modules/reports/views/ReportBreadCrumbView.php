@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * View that renders missions module breadcrumb content
+     * View that renders reports module breadcrumb content
      */
     class ReportBreadCrumbView extends BreadCrumbView
     {

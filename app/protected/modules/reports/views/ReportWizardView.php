@@ -27,52 +27,11 @@
     /**
      * Base class for working with the report wizard
      */
-    abstract class ReportWizardView extends View
+    abstract class ReportWizardView extends WizardView
     {
-        /**
-         * @var ReportWizardForm
-         */
-        protected $model;
-
-        /**
-         * @return mixed
-         */
-        abstract protected function registerClickFlowScript();
-
-        /**
-         * @param ReportActiveForm $form
-         * @return mixed
-         */
-        abstract protected function renderContainingViews(ReportActiveForm $form);
-
-        /**
-         * @param string $formName
-         * @return mixed
-         */
-        abstract protected function renderConfigSaveAjax($formName);
-
-        /**
-         * @param ReportWizardForm $model
-         */
-        public function __construct(ReportWizardForm $model)
+        public static function getControllerId()
         {
-            $this->model = $model;
-        }
-
-        /**
-         * @return bool
-         */
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-
-        /**
-         * @return string
-         */
-        public static function getFormId()
-        {
-            return 'edit-form';
+            return 'reports';
         }
 
         /**
@@ -86,162 +45,19 @@
         /**
          * @return string
          */
-        protected static function renderValidationScenarioInputContent()
-        {
-            $idInputHtmlOptions  = array('id' => static::getValidationScenarioInputId());
-            $hiddenInputName     = 'validationScenario';
-            return ZurmoHtml::hiddenField($hiddenInputName, static::getStartingValidationScenario(), $idInputHtmlOptions);
-        }
-
-        /**
-         * @return string
-         */
         protected static function getStartingValidationScenario()
         {
             return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
         }
 
-        /**
-         * @return string
-         */
-        protected static function getValidationScenarioInputId()
-        {
-            return 'componentType';
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content  = $this->renderForm();
-            $this->registerScripts();
-            $this->registerCss();
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderForm()
-        {
-            $content  = '<div class="wrapper">';
-            $content .= $this->renderTitleContent();
-            $content .= '<div class="wide form">';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                            'ReportActiveForm',
-                                                            array('id'                      => static::getFormId(),
-                                                                  'action'                  => $this->getFormActionUrl(),
-                                                                  'enableAjaxValidation'    => true,
-                                                                  'clientOptions'           => $this->getClientOptions(),
-                                                                  'modelClassNameForError'  => get_class($this->model))
-                                                            );
-            $content .= $formStart;
-            $content .= static::renderValidationScenarioInputContent();
-            $content .= $this->renderContainingViews($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $content .= '</div></div>';
-            return $content;
-        }
-
-        /**
-         * @return array
-         */
-        protected function getClientOptions()
-        {
-            return array(
-                        'validateOnSubmit'  => true,
-                        'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
-                        'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
-                    );
-        }
-
-        /**
-         * @return mixed
-         */
-        protected function getFormActionUrl()
-        {
-            return Yii::app()->createUrl('reports/default/save',
-                                         array('type' => $this->model->type, 'id' => $this->model->id));
-        }
-
         protected function registerScripts()
         {
+            parent::registerScripts();
             Yii::app()->getClientScript()->registerCoreScript('treeview');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
             $this->registerClickFlowScript();
-        }
-
-        protected function registerCss()
-        {
-            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() .
-                                                           '/treeview/jquery.treeview.css');
-        }
-
-        /**
-         * @param string $formName
-         * @return string
-         */
-        protected function getSaveAjaxString($formName)
-        {
-            assert('is_string($formName)');
-            $saveRedirectToDetailsUrl = Yii::app()->createUrl('reports/default/details');
-            $saveRedirectToListUrl    = Yii::app()->createUrl('reports/default/list');
-            return ZurmoHtml::ajax(array(
-                                            'type'     => 'POST',
-                                            'data'     => 'js:$("#' . $formName . '").serialize()',
-                                            'url'      =>  $this->getFormActionUrl(),
-                                            'dataType' => 'json',
-                                            'success'  => 'js:function(data){
-                                                if(data.redirectToList)
-                                                {
-                                                    url = "' . $saveRedirectToListUrl . '";
-                                                }
-                                                else
-                                                {
-                                                    url = "' . $saveRedirectToDetailsUrl . '" + "?id=" + data.id
-                                                }
-                                                window.location.href = url;
-                                            }'
-                                          ));
-        }
-
-        /**
-         * @param string $formName
-         * @param string $componentViewClassName
-         * @return string
-         */
-        protected function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
-        {
-            assert('is_string($formName)');
-            assert('is_string($componentViewClassName)');
-            $url    =  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                       array_merge($_GET, array('type' => $this->model->type,
-                                                'treeType' => $componentViewClassName::getTreeType())));
-            $script = "
-                $('#" . FiltersForReportWizardView::getTreeDivId() . "').addClass('loading');
-                makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
-                $.ajax({
-                    url : '" . $url . "',
-                    type : 'POST',
-                    data : $('#" . $formName . "').serialize(),
-                    success : function(data)
-                    {
-                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
-                    },
-                    error : function()
-                    {
-                        //todo: error call
-                    }
-                });
-            ";
-            return $script;
         }
     }
 ?>

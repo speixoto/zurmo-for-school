@@ -25,11 +25,13 @@
      ********************************************************************************/
 
     /**
-     * ActiveForm used for report forms.  This is needed because report forms are dynamic and can have different
-     * quantity of rows and have similar inputs for different components.  The report wizard posts the all definitions
-     * for a report in a single POST and this class helps manage the names/ids effectively of those form inputs
+     * ActiveForm used for wizard forms.  This is needed because report forms are dynamic and can have different
+     * quantity of rows and have similar inputs for different components.  The report wizard, for example posts the
+     * all definitions for a report in a single POST and this class helps manage the names/ids effectively of those
+     * form inputs. Both reporting and workflow utilize this form since they both use wizards in the
+     * administrative interface
      */
-    class ReportActiveForm extends ZurmoActiveForm
+    class WizardActiveForm extends ZurmoActiveForm
     {
         /**
          * @var array array

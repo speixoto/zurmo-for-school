@@ -27,76 +27,11 @@
     /**
      * View for displaying a tree view widget for certain tree type and based on the report type
      */
-    class ReportRelationsAndAttributesTreeView extends View
+    class ReportRelationsAndAttributesTreeView extends WizardModelRelationsAndAttributesTreeView
     {
-        /**
-         * @var string
-         */
-        protected $type;
-
-        /**
-         * @var string
-         */
-        protected $treeType;
-
-        /**
-         * @var string
-         */
-        protected $formName;
-
-        public function __construct($type, $treeType, $formName)
+        public static function getControllerId()
         {
-            assert('is_string($type)');
-            assert('is_string($treeType)');
-            assert('is_string($formName)');
-            $this->type     = $type;
-            $this->treeType = $treeType;
-            $this->formName = $formName;
-        }
-
-        /**
-         * @return bool
-         */
-        public function isUniqueToAPage()
-        {
-            return false;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content      = null;
-            $cClipWidget  = new CClipWidget();
-            $cClipWidget->beginClip("ZurmoTreeView");
-            $cClipWidget->widget('application.core.widgets.ZurmoTreeView', array(
-            'id'          => $this->getTreeId(),
-            'url'         => $this->getDataUrl(),
-            'options' => array('formName' => $this->formName),
-            'htmlOptions' => array(
-                'class'   => 'treeview-red' //todo: use different theme class.
-            )));
-            $cClipWidget->endClip();
-            $content .= $cClipWidget->getController()->clips['ZurmoTreeView'];
-            return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDataUrl()
-        {
-            return  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                        array_merge($_GET, array('type' => $this->type, 'treeType' => $this->treeType)));
-        }
-
-        /**
-         * @return string
-         */
-        protected function getTreeId()
-        {
-            return $this->treeType . 'TreeView';
+            return 'reports';
         }
     }
 ?>
