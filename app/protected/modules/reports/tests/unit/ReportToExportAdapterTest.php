@@ -236,152 +236,32 @@
             $compareData = array($headerdata, $content);
             $this->assertEquals($compareData, $data);
         }
-        
+                
         public function testSummationfields()
         {  
-
-
-            //for summation 
-            
+            //for summation only viaSelect       
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                                  Report::TYPE_SUMMATION);            
-            $displayAttribute1->setModelAliasUsingTableAliasName('model1');  
-            $displayAttribute1->attributeIndexOrDerivedType = 'SUM(Amount)';
-            $displayAttribute1->label                       = 'Amount';  
+                                                                  Report::TYPE_SUMMATION);
+            $displayAttribute1->attributeIndexOrDerivedType = 'integer__Summation';
+            $displayAttribute1->label                       = 'Amount';
 
             $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                                  Report::TYPE_SUMMATION);            
-            $displayAttribute2->setModelAliasUsingTableAliasName('model1');  
-            $displayAttribute2->attributeIndexOrDerivedType = 'MAX(closeDate)';
-            $displayAttribute2->label                       = 'Close Date';                
-
-            $groupBy = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', Report::TYPE_SUMMATION);
-            $groupBy->attributeIndexOrDerivedType = 'stage';
-            $groupBy->axis                        = 'y';            
-            $report->addGroupBy($groupBy);
+                                                                  Report::TYPE_SUMMATION);
+            $displayAttribute2->attributeIndexOrDerivedType = 'date__Maximum';
+            $displayAttribute2->label                       = 'Date';             
+                                                                  
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttribute1, $displayAttribute2), 4);
+            $reportResultsRowData->addSelectedColumnNameAndValue('col1', 5000);
+            $reportResultsRowData->addSelectedColumnNameAndValue('col2', '2013-02-14');
+                        
             
-            //
-
-            //            
-            //for date summation
-            $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute1->attributeIndexOrDerivedType = 'date__Maximum';                        
-            $displayAttribute1->setModelAliasUsingTableAliasName('model2');
+            $adapter     = new ReportToExportAdapter($reportResultsRowData);
+            $data        = $adapter->getData();
             
-            $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute2->attributeIndexOrDerivedType = 'date__Minimum';                        
-            $displayAttribute2->setModelAliasUsingTableAliasName('model2');
+            $headerdata  = array('col1', 'col2');
+            $content     = array(5000, '2013-02-14');
             
-            //for dateTime summation
-            $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute2->attributeIndexOrDerivedType = 'dateTime__Minimum';                        
-            $displayAttribute2->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute2->attributeIndexOrDerivedType = 'date__Minimum';                        
-            $displayAttribute2->setModelAliasUsingTableAliasName('dateTime__Maximum');
-            
-            
-            //for createdDateTime summation 
-            $displayAttribute3 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute3->attributeIndexOrDerivedType = 'createdDateTime__Maximum';                        
-            $displayAttribute3->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute4 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute4->attributeIndexOrDerivedType = 'createdDateTime__Minimum';                        
-            $displayAttribute4->setModelAliasUsingTableAliasName('model2');
-            
-            
-            //for modifiedDateTime summation
-            $displayAttribute5 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute5->attributeIndexOrDerivedType = 'modifiedDateTime__Maximum';                        
-            $displayAttribute5->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute6 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute6->attributeIndexOrDerivedType = 'modifiedDateTime__Minimum';                        
-            $displayAttribute6->setModelAliasUsingTableAliasName('model2');
-            
-            //for count summation
-            $displayAttribute7 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute7->attributeIndexOrDerivedType = 'count';                        
-            $displayAttribute7->setModelAliasUsingTableAliasName('model2');
-            
-            //for float summation
-            $displayAttribute8 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute8->attributeIndexOrDerivedType = 'float__Minimum';                        
-            $displayAttribute8->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute9 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute9->attributeIndexOrDerivedType = 'float__Maximum';                        
-            $displayAttribute9->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute10 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute10->attributeIndexOrDerivedType = 'float__Summation';                        
-            $displayAttribute10->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute11 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute11->attributeIndexOrDerivedType = 'float__Average';                        
-            $displayAttribute11->setModelAliasUsingTableAliasName('model2');
-            
-            
-            //for integer summation
-            $displayAttribute12 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute12->attributeIndexOrDerivedType = 'integer__Minimum';                        
-            $displayAttribute12->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute13 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute13->attributeIndexOrDerivedType = 'integer__Maximum';                        
-            $displayAttribute13->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute14 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute14->attributeIndexOrDerivedType = 'integer__Summation';                        
-            $displayAttribute14->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute15 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute15->attributeIndexOrDerivedType = 'integer__Average';                        
-            $displayAttribute15->setModelAliasUsingTableAliasName('model2');
-            
-            //for currency summation
-            $displayAttribute16 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute16->attributeIndexOrDerivedType = 'currencyValue__Minimum';                        
-            $displayAttribute16->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute17 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute17->attributeIndexOrDerivedType = 'currencyValue__Maximum';                        
-            $displayAttribute17->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute18 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute18->attributeIndexOrDerivedType = 'currencyValue__Summation';                        
-            $displayAttribute18->setModelAliasUsingTableAliasName('model2');
-            
-            $displayAttribute19 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_SUMMATION);
-            $displayAttribute19->attributeIndexOrDerivedType = 'currencyValue__Average';                        
-            $displayAttribute19->setModelAliasUsingTableAliasName('model2');            
-            
-            
-            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
-            $reportResultsRowData->addSelectedColumnNameAndValue('col1', '2013-02-14 00:00');
-        
+            $compareData = array($headerdata, $content);
+            $this->assertEquals($compareData, $data);
         }
     }        
