@@ -25,39 +25,41 @@
      ********************************************************************************/
 
     /**
-     * Base class for working with the report wizard
+     * ActiveForm used for wizard forms.  This is needed because report forms are dynamic and can have different
+     * quantity of rows and have similar inputs for different components.  The report wizard, for example posts the
+     * all definitions for a report in a single POST and this class helps manage the names/ids effectively of those
+     * form inputs. Both reporting and workflow utilize this form since they both use wizards in the
+     * administrative interface
      */
-    abstract class ReportWizardView extends WizardView
+    class WizardActiveForm extends ZurmoActiveForm
     {
-        public static function getControllerId()
-        {
-            return 'reports';
-        }
+        /**
+         * @var array array
+         */
+        protected $inputPrefixData;
 
         /**
-         * @return string
+         * @param array $inputPrefixData
          */
-        public function getTitle()
+        public function setInputPrefixData(Array $inputPrefixData)
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard');
+            $this->inputPrefixData = $inputPrefixData;
         }
 
-        /**
-         * @return string
-         */
-        protected static function getStartingValidationScenario()
+        public function clearInputPrefixData()
         {
-            return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
+            $this->inputPrefixData = null;
         }
 
-        protected function registerScripts()
+        protected function resolveId($model, $attribute)
         {
-            parent::registerScripts();
-            Yii::app()->getClientScript()->registerCoreScript('treeview');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
-            $this->registerClickFlowScript();
+            $id = CHtml::activeId($model, $attribute);
+            if($this->inputPrefixData == null)
+            {
+                return $id;
+            }
+            $inputIdPrefix  = Element::resolveInputIdPrefixIntoString($this->inputPrefixData);
+            return str_replace(get_class($model), $inputIdPrefix, $id);
         }
     }
 ?>

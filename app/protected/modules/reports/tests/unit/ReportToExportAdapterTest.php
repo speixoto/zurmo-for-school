@@ -187,26 +187,26 @@
             $displayAttributePA   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttributePA->setModelAliasUsingTableAliasName('model1');  
-            $displayAttributePA->attributeIndexOrDerivedType = 'primaryAddress';
+            $displayAttributePA->attributeIndexOrDerivedType = 'primaryAddress___street1';
 
             //for primaryEmail attribute
-            $reportModelTestItem->primaryEmail = 'test@someString.com';
+            $reportModelTestItem->primaryEmail->emailAddress = "test@someString.com";
             $displayAttributePE   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttributePE->setModelAliasUsingTableAliasName('model1');  
-            $displayAttributePE->attributeIndexOrDerivedType = 'email';
+            $displayAttributePE->attributeIndexOrDerivedType = 'primaryEmail___emailAddress';
             
             //for multiDropDown attribute
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
-            $testItem->multiDropDown->values->add($customFieldValue);
+            $reportModelTestItem->multiDropDown->values->add($customFieldValue);
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 2';
-            $testItem->multiDropDown->values->add($customFieldValue);            
+            $reportModelTestItem->multiDropDown->values->add($customFieldValue);            
             $displayAttributeMD   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttributeMD->setModelAliasUsingTableAliasName('model1');  
-            $displayAttributeMD->attributeIndexOrDerivedType = 'multiSelectDropDown';            
+            $displayAttributeMD->attributeIndexOrDerivedType = 'multiDropDown';            
             
             
             $reportResultsRowData = new ReportResultsRowData(array(

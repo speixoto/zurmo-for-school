@@ -28,7 +28,7 @@
      * Base class for all report wizard form models.  Manages the interaction between the Report object and the
      * user interface.
      */
-    abstract class ReportWizardForm extends CFormModel
+    abstract class ReportWizardForm extends WizardForm
     {
         const MODULE_VALIDATION_SCENARIO                        = 'ValidateForModule';
 
@@ -47,12 +47,6 @@
         const GENERAL_DATA_VALIDATION_SCENARIO                  = 'ValidateForGeneralData';
 
         public $description;
-
-        /**
-         * Id of the SavedReport model if available.
-         * @var integer
-         */
-        public $id;
 
         /**
          * @var string
@@ -128,8 +122,6 @@
          */
         public $spotConversionCurrencyCode;
 
-        protected $isNew = false;
-
         /**
          * Object containing information on how to setup permissions for the new models that are created during the
          * import process.
@@ -137,29 +129,6 @@
          * @see ExplicitReadWriteModelPermissions
          */
         protected $explicitReadWriteModelPermissions;
-
-        /**
-         * Mimics the expected interface by the views when calling into
-         * a form or model.
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
-
-        /**
-         * If the report has not been saved yet, then this returns true
-         * @return bool
-         */
-        public function isNew()
-        {
-            return $this->isNew;
-        }
-
-        public function setIsNew()
-        {
-            $this->isNew = true;
-        }
 
         public function rules()
         {

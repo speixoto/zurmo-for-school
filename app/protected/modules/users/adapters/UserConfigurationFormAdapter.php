@@ -97,7 +97,6 @@
         public static function setValue(User $user, $value, $key, $saveBoolean = true)
         {
             assert('is_bool($saveBoolean)');
-            assert('$saveBoolean && is_bool($value)');
             assert('is_string($key)');
             $value = ($saveBoolean)? (bool) $value : $value;
             ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', $key, $value);
@@ -119,8 +118,8 @@
 
         public static function setDefaultPermissionGroupSetting(User $user, $value, $defaultPermissionSetting)
         {
-            assert('is_int($value)');
-            assert('is_int($defaultPermissionSetting)');
+            assert('is_null($value) || is_int($value)');
+            assert('is_null($defaultPermissionSetting) || is_int($defaultPermissionSetting)');
             if ($defaultPermissionSetting == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
             {
                 ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',
