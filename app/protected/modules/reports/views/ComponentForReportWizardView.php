@@ -35,7 +35,7 @@
         protected $model;
 
         /**
-         * @var ReportActiveForm
+         * @var WizardActiveForm
          */
         protected $form;
 
@@ -86,10 +86,10 @@
 
         /**
          * @param ReportWizardForm $model
-         * @param ReportActiveForm $form
+         * @param WizardActiveForm $form
          * @param bool $hideView
          */
-        public function __construct(ReportWizardForm $model, ReportActiveForm $form, $hideView = false)
+        public function __construct(ReportWizardForm $model, WizardActiveForm $form, $hideView = false)
         {
             assert('is_bool($hideView)');
             $this->model    = $model;

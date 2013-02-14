@@ -25,19 +25,14 @@
      ********************************************************************************/
 
     /**
-     * Display either the sent date time or a message saying it is in queue.
+     * Helper class for ModalListViews where we need a ModalListLinkViewProvider for conformance reasons but have
+     * no real use of it.
      */
-    class EmailMessageSentDateTimeElement extends DateTimeElement
+    class NullModalListLinkProvider extends ModalListLinkProvider
     {
-        protected function renderControlNonEditable()
+        public function getLinkString($attributeString)
         {
-            assert('$this->model instanceof EmailMessage');
-            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
-            {
-                return parent::renderControlNonEditable();
-            }
-            return Zurmo::t('EmailMessagesModule', 'Currently in the {folderType} folder',
-                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
+            throw new NotSupportedException;
         }
     }
 ?>

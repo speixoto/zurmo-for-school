@@ -27,50 +27,13 @@
     /**
      * Helper class for adapting an attribute to an Element
      */
-    class ReportAttributeToElementAdapter
+    class ReportAttributeToElementAdapter extends WizardModelAttributeToElementAdapter
     {
-        /**
-         * @var array
-         */
-        protected $inputPrefixData;
-
-        /**
-         * @var ComponentForReportForm
-         */
-        protected $model;
-
-        /**
-         * @var ReportActiveForm
-         */
-        protected $form;
-
-        /**
-         * @var string
-         */
-        protected $treeType;
 
         /**
          * @var bool
          */
         protected $showAvailableRuntimeFilter = true;
-
-        /**
-         * @param array $inputPrefixData
-         * @param ComponentForReportForm $model
-         * @param ReportActiveForm $form
-         * @param string $treeType
-         */
-        public function __construct(Array $inputPrefixData, $model, $form, $treeType)
-        {
-            assert('count($inputPrefixData) > 1');
-            assert('$model instanceof ComponentForReportForm');
-            assert('$form instanceof ReportActiveForm');
-            assert('is_string($treeType)');
-            $this->inputPrefixData      = $inputPrefixData;
-            $this->model                = $model;
-            $this->form                 = $form;
-            $this->treeType             = $treeType;
-        }
 
         /**
          * @return string
@@ -105,41 +68,6 @@
             }
             $this->form->clearInputPrefixData();
             return $content;
-        }
-
-        /**
-         * @param string $innerContent
-         * @param string $content
-         * @param null|string $class
-         */
-        protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
-        {
-            if($class != null)
-            {
-                $htmlOptions = array('class' => $class);
-            }
-            else
-            {
-                $htmlOptions = array();
-            }
-            if($innerContent != null)
-            {
-                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
-            }
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderAttributeIndexOrDerivedType()
-        {
-            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
-            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
-            $idInputHtmlOptions  = array('id' => $hiddenInputId);
-            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->getAttributeIndexOrDerivedType(),
-                                          $idInputHtmlOptions);
         }
 
         /**

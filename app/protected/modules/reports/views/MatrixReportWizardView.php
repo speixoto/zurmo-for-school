@@ -30,10 +30,10 @@
     class MatrixReportWizardView extends ReportWizardView
     {
         /**
-         * @param ReportActiveForm $form
+         * @param WizardActiveForm $form
          * @return string
          */
-        protected function renderContainingViews(ReportActiveForm $form)
+        protected function renderContainingViews(WizardActiveForm $form)
         {
             $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);

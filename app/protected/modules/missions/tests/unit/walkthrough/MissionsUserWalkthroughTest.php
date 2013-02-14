@@ -122,7 +122,9 @@
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
             $emailMessages = EmailMessage::getAll();
+            //Dont send message to super neither to steven (he has turned off)
             $this->assertEquals(2, count($emailMessages[0]->recipients));
+            $this->assertEquals(4, count(User::getAll()));
         }
 
         /**

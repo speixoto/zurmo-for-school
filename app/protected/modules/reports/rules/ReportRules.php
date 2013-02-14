@@ -28,66 +28,11 @@
      * Base class of report rules that assist with reporting data.  Extend this class to make
      * a set of ReportRules that is for a specific module or a combiniation of modules and/or models.
      */
-    abstract class ReportRules
+    abstract class ReportRules extends ModelToComponentRules
     {
-        /**
-         * @var string
-         */
-        protected $modelClassName;
-
-        /**
-         * @param $moduleClassName
-         * @return ReportRules based object
-         */
-        public static function makeByModuleClassName($moduleClassName)
+        public static function getRulesName()
         {
-            assert('is_string($moduleClassName)');
-            $rulesClassName = $moduleClassName::getPluralCamelCasedName() . 'ReportRules';
-            return new $rulesClassName();
-        }
-
-        /**
-         * @return array
-         */
-        public static function getMetadata()
-        {
-            $className = get_called_class();
-            try
-            {
-                return GeneralCache::getEntry($className . 'Metadata');
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            $metadata = MetadataUtil::getMetadata($className);
-            if (YII_DEBUG)
-            {
-                $className::assertMetadataIsValid($metadata);
-            }
-            GeneralCache::cacheEntry($className . 'Metadata', $metadata);
-            return $metadata;
-        }
-
-        /**
-         * @param array $metadata
-         */
-        public static function setMetadata(array $metadata)
-        {
-            $className = get_called_class();
-            if (YII_DEBUG)
-            {
-                $className::assertMetadataIsValid($metadata);
-            }
-            MetadataUtil::setMetadata($className, $metadata);
-            GeneralCache::cacheEntry($className . 'Metadata', $metadata);
-        }
-
-        /**
-         * Returns default metadata for use in automatically generating the rules.
-         */
-        public static function getDefaultMetadata()
-        {
-            return array();
+            return 'ReportRules';
         }
 
         /**
@@ -136,50 +81,6 @@
                 return false;
             }
             return true;
-        }
-
-        /**
-         * @param RedBeanModel $model
-         * @return array
-         */
-        public function getDerivedAttributeTypesData(RedBeanModel $model)
-        {
-            $derivedAttributeTypesData = array();
-            $metadata = static::getMetadata();
-            foreach (array_reverse(RuntimeUtil::getClassHierarchy(
-                                   get_class($model), $model::getLastClassInBeanHeirarchy())) as $modelClassName)
-            {
-                if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['derivedAttributeTypes']))
-                {
-                    foreach($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
-                    {
-
-                        $elementClassName          = $derivedAttributeType . 'Element';
-                        $derivedAttributeTypesData
-                        [$derivedAttributeType]    = array('label'                => $elementClassName::getDisplayName(),
-                                                           'derivedAttributeType' => $derivedAttributeType);
-                    }
-                }
-            }
-            return $derivedAttributeTypesData;
-        }
-
-        /**
-         * @param RedBeanModel $model
-         * @param $attribute
-         * @return null | string
-         */
-        public function getAvailableOperatorsTypes(RedBeanModel $model, $attribute)
-        {
-            assert('is_string($attribute)');
-            $modelClassName = $model->getAttributeModelClassName($attribute);
-            $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['availableOperatorsTypes']) &&
-               isset($attribute, $metadata[$modelClassName]['availableOperatorsTypes'][$attribute]))
-            {
-                return $metadata[$modelClassName]['availableOperatorsTypes'][$attribute];
-            }
-            return null;
         }
 
         /**
@@ -288,58 +189,6 @@
                     return $metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation];
                 }
             }
-        }
-
-        /**
-         * Override in children classes as necessary.  @see ContactReportRules
-         * @param User $user
-         * @throws NotImplementedException
-         */
-        public static function getVariableStateModuleLabel(User $user)
-        {
-            assert('$user->id > 0');
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override in children classes as necessary.  @see ContactReportRules
-         * @param User $user
-         * @throws NotImplementedException
-         */
-        public static function canUserAccessModuleInAVariableState(User $user)
-        {
-            assert('$user->id > 0');
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override in children classes as necessary.  @see ContactReportRules
-         * @param User $user
-         * @throws NotImplementedException
-         */
-        public static function resolveStateAdapterUserHasAccessTo(User $user)
-        {
-            assert('$user->id > 0');
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override in children classes as necessary.  @see ContactReportRules
-         * @param $modelClassName
-         * @param User $user
-         */
-        public static function getVariableStateValuesForUser($modelClassName, User $user)
-        {
-            assert('is_string($modelClassName)');
-            assert('$user->id > 0');
-        }
-
-        /**
-         * Override in children classes as necessary.
-         * @param array $metadata
-         */
-        protected static function assertMetadataIsValid(array $metadata)
-        {
         }
     }
 ?>

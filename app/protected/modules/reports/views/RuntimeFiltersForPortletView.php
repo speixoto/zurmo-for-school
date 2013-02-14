@@ -55,7 +55,7 @@
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                            'ReportActiveForm',
+                                                            'WizardActiveForm',
                                                             array('id'                      => static::getFormId(),
                                                                   'action'                  => $this->getFormActionUrl(),
                                                                   'enableAjaxValidation'    => true,
@@ -84,10 +84,10 @@
 
         /**
          * @param integer $rowCount
-         * @param ReportActiveForm $form
+         * @param WizardActiveForm $form
          * @return array
          */
-        protected function renderItems(& $rowCount, ReportActiveForm $form)
+        protected function renderItems(& $rowCount, WizardActiveForm $form)
         {
             assert('is_int($rowCount)');
             $items                      = array();

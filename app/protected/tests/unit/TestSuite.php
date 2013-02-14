@@ -78,6 +78,12 @@
             $reuse                =  self::customOptionSet('--reuse-schema',          $argv);
             $freeze               = !self::customOptionSet('--no-freeze',             $argv);
 
+            if ($freeze == false && FORCE_NO_FREEZE == true)
+            {
+                echo "\n\nBecause forceNoFreeze is set to TRUE in debugTest, you cannot run in no-freeze mode\n\n";
+                exit;
+            }
+
             if ($argv[count($argv) - 2] != 'TestSuite.php')
             {
                 echo $usage;
