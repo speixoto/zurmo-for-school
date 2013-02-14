@@ -29,7 +29,6 @@
      */
     class SavedWorkflowUtil
     {
-        //todo: refactor this class to extend same class as SavedReportUtil since they use the exact same method
         /**
          * Given an array of moduleClassNames, construct the searchAttributeData
          * @param $searchAttributeData

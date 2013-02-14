@@ -28,7 +28,7 @@
      * Base class for all workflow wizard form models.  Manages the interaction between the Workflow object and the
      * user interface.
      */
-    abstract class WorkflowWizardForm extends CFormModel
+    abstract class WorkflowWizardForm extends WizardForm
     {
         //todO: refactor this class with ReportWizardForm into a base class that we can move methods and properties into
         const MODULE_VALIDATION_SCENARIO            = 'ValidateForModule';
@@ -42,12 +42,6 @@
         const GENERAL_DATA_VALIDATION_SCENARIO      = 'ValidateForGeneralData';
 
         public $description;
-
-        /**
-         * Id of the SavedReport model if available.
-         * @var integer
-         */
-        public $id;
 
         /**
          * @var string
@@ -85,31 +79,6 @@
          * @var array
          */
         public $actions                   = array();
-
-        protected $isNew = false;
-
-        /**
-         * Mimics the expected interface by the views when calling into
-         * a form or model.
-         */
-        public function getId()
-        {
-            return $this->id;
-        }
-
-        /**
-         * If the workflow has not been saved yet, then this returns true
-         * @return bool
-         */
-        public function isNew()
-        {
-            return $this->isNew;
-        }
-
-        public function setIsNew()
-        {
-            $this->isNew = true;
-        }
 
         public function rules()
         {
@@ -199,45 +168,6 @@
                 $validated = false;
             }
             return $validated;
-        }
-
-        /**
-         * @param $componentType
-         * @param $componentName
-         * @return bool
-         */
-        protected function validateComponent($componentType, $componentName)
-        {
-            assert('is_string($componentType)');
-            assert('is_string($componentName)');
-            $passedValidation = true;
-            $count            = 0;
-            foreach($this->{$componentName} as $model)
-            {
-                if(!$model->validate())
-                {
-                    foreach($model->getErrors() as $attribute => $error)
-                    {
-                        $attributePrefix = static::resolveErrorAttributePrefix($componentType, $count);
-                        $this->addError( $attributePrefix . $attribute, $error);
-                    }
-                    $passedValidation = false;
-                }
-                $count ++;
-            }
-            return $passedValidation;
-        }
-
-        /**
-         * @param $treeType string
-         * @param $count integer
-         * @return string
-         */
-        protected static function resolveErrorAttributePrefix($treeType, $count)
-        {
-            assert('is_string($treeType)');
-            assert('is_int($count)');
-            return $treeType . '_' . $count . '_';
         }
     }
 ?>

@@ -27,47 +27,8 @@
     /**
      * Helper class for adapting an attribute to an Element
      */
-    class WorkflowAttributeToElementAdapter
+    class WorkflowAttributeToElementAdapter extends WizardModelAttributeToElementAdapter
     {
-        //todo: i think we could refactor this with report to have a base class that has most of these methods/properties
-        /**
-         * @var array
-         */
-        protected $inputPrefixData;
-
-        /**
-         * @var ComponentForWorkflowForm
-         */
-        protected $model;
-
-        /**
-         * @var WorkflowActiveForm
-         */
-        protected $form;
-
-        /**
-         * @var string
-         */
-        protected $treeType;
-
-        /**
-         * @param array $inputPrefixData
-         * @param ComponentForWorkflowForm $model
-         * @param WorkflowActiveForm $form
-         * @param string $treeType
-         */
-        public function __construct(Array $inputPrefixData, $model, $form, $treeType)
-        {
-            assert('count($inputPrefixData) > 1');
-            assert('$model instanceof ComponentForWorkflowForm');
-            assert('$form instanceof WorkflowActiveForm');
-            assert('is_string($treeType)');
-            $this->inputPrefixData      = $inputPrefixData;
-            $this->model                = $model;
-            $this->form                 = $form;
-            $this->treeType             = $treeType;
-        }
-
         /**
          * @return string
          * @throws NotSupportedException if the treeType is invalid or null
@@ -93,41 +54,6 @@
             }
             $this->form->clearInputPrefixData();
             return $content;
-        }
-
-        /**
-         * @param string $innerContent
-         * @param string $content
-         * @param null|string $class
-         */
-        protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
-        {
-            if($class != null)
-            {
-                $htmlOptions = array('class' => $class);
-            }
-            else
-            {
-                $htmlOptions = array();
-            }
-            if($innerContent != null)
-            {
-                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
-            }
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderAttributeIndexOrDerivedType()
-        {
-            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
-            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
-            $idInputHtmlOptions  = array('id' => $hiddenInputId);
-            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->getAttributeIndexOrDerivedType(),
-                                          $idInputHtmlOptions);
         }
 
         /**
