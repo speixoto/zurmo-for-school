@@ -123,5 +123,20 @@
             $relations    = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
             return implode(FormModelUtil::RELATION_DELIMITER, $relations) . FormModelUtil::RELATION_DELIMITER;
         }
+
+        /**
+         * @param $nodeId
+         * @return string
+         */
+        protected function resolveNodeIdByRemovingTreeType($nodeId)
+        {
+            assert('is_string($nodeId)');
+            if($nodeId == 'source')
+            {
+                return $nodeId;
+            }
+            $nodeIdParts  = explode($this->treeType . '_', $nodeId);
+            return $nodeIdParts[1];
+        }
     }
 ?>
