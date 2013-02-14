@@ -88,21 +88,6 @@
         }
 
         /**
-         * @param $nodeId
-         * @return string
-         */
-        protected function resolveNodeIdByRemovingTreeType($nodeId)
-        {
-            assert('is_string($nodeId)');
-            if($nodeId == 'source')
-            {
-                return $nodeId;
-            }
-            $nodeIdParts  = explode($this->treeType . '_', $nodeId);
-            return $nodeIdParts[1];
-        }
-
-        /**
          * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
          * @param RedBeanModel $precedingModel
          * @param null|string $precedingRelation
@@ -196,39 +181,6 @@
             assert('is_string($modelClassName)');
             return ModelRelationsAndAttributesToReportAdapter::make($moduleClassName, $modelClassName,
                                                                     $this->report->getType());
-        }
-
-        /**
-         * @param string $relation
-         * @param null|string  $nodeIdPrefix
-         * @return string
-         */
-        protected function makeNodeId($relation, $nodeIdPrefix = null)
-        {
-            assert('is_string($relation)');
-            assert('$nodeIdPrefix == null || is_string($nodeIdPrefix)');
-            $content = null;
-            if($nodeIdPrefix != null)
-            {
-                $content .= $nodeIdPrefix;
-            }
-            $content .= $relation;
-            return $this->treeType . '_' . $content;
-        }
-
-        /**
-         * @param string $nodeId
-         * @return null|string
-         */
-        protected function resolveNodeIdPrefixByNodeId($nodeId)
-        {
-            assert('is_string($nodeId)');
-            if($nodeId == 'source')
-            {
-                return null;
-            }
-            $relations    = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
-            return implode(FormModelUtil::RELATION_DELIMITER, $relations) . FormModelUtil::RELATION_DELIMITER;
         }
 
         /**
