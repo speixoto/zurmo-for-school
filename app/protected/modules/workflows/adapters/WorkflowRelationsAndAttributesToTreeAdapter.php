@@ -141,28 +141,9 @@
         protected function getAttributesData(ModelRelationsAndAttributesToWorkflowAdapter $modelToWorkflowAdapter,
                                              RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if($this->treeType == ComponentForWorkflowForm::TYPE_FILTERS)
+            if($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
             {
-                return $modelToWorkflowAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
-            }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_DISPLAY_ATTRIBUTES)
-            {
-                return $modelToWorkflowAdapter->getAttributesForDisplayAttributes($this->workflow->getGroupBys(),
-                                                                                $precedingModel, $precedingRelation);
-            }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_ORDER_BYS)
-            {
-                return $modelToWorkflowAdapter->getAttributesForOrderBys($this->workflow->getGroupBys(),
-                                                                       $this->workflow->getDisplayAttributes(),
-                                                                       $precedingModel, $precedingRelation);
-            }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_GROUP_BYS)
-            {
-                return $modelToWorkflowAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
-            }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
-            {
-                return $modelToWorkflowAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
+                return $modelToWorkflowAdapter->getAttributesForTriggers($precedingModel, $precedingRelation);
             }
             else
             {

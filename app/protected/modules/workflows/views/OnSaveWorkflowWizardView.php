@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class for working with the row and column reports in the report wizard
+     * Class for working with the on-save workflow in the workflow wizard
      */
-    class RowsAndColumnsReportWizardView extends ReportWizardView
+    class OnSaveWorkflowWizardView extends WorkflowWizardView
     {
         /**
          * @param WizardActiveForm $form
@@ -35,18 +35,16 @@
          */
         protected function renderContainingViews(WizardActiveForm $form)
         {
-            $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
-            $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
-            $displayAttributesForReportWizardView = new DisplayAttributesForReportWizardView($this->model, $form, true);
-            $orderBysForReportWizardView          = new OrderBysForReportWizardView($this->model, $form, true);
-            $generalDataForReportWizardView       = new GeneralDataForReportWizardView($this->model, $form, true);
+            $moduleForWorkflowWizardView        = new ModuleForWorkflowWizardView ($this->model,     $form);
+            $triggersForWorkflowWizardView      = new TriggersForWorkflowWizardView($this->model,    $form, true);
+            $actionsForWorkflowWizardView       = new ActionsForWorkflowWizardView($this->model,     $form, true);
+            $generalDataForWorkflowWizardView   = new GeneralDataForWorkflowWizardView($this->model, $form, true);
 
-            $gridView = new GridView(5,1);
-            $gridView->setView($moduleForReportWizardView, 0, 0);
-            $gridView->setView($filtersForReportWizardView, 1, 0);
-            $gridView->setView($displayAttributesForReportWizardView, 2, 0);
-            $gridView->setView($orderBysForReportWizardView, 3, 0);
-            $gridView->setView($generalDataForReportWizardView, 4, 0);
+            $gridView = new GridView(4,1);
+            $gridView->setView($moduleForWorkflowWizardView, 0, 0);
+            $gridView->setView($triggersForWorkflowWizardView, 1, 0);
+            $gridView->setView($actionsForWorkflowWizardView, 2, 0);
+            $gridView->setView($generalDataForWorkflowWizardView, 3, 0);
             return $gridView->render();
         }
 
@@ -58,40 +56,32 @@
         {
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
-                        if(linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
+                        if(linkId == '" . ModuleForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
-                            $('#ModuleForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
-                            $('#FiltersForReportWizardView').show();
+                                WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
+                            $('#ModuleForWorkflowWizardView').hide();
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
+                            $('#TriggersForWorkflowWizardView').show();
 
                         }
-                        if(linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
+                        if(linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
-                            $('#FiltersForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
-                            $('#DisplayAttributesForReportWizardView').show();
+                                WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
+                            $('#TriggersForWorkflowWizardView').hide();
+                            " . $this->renderTreeViewAjaxScriptContent($formName, 'ActionsForWorkflowWizardView') . "
+                            $('#ActionsForWorkflowWizardView').show();
 
                         }
-                        if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
-                            $('#DisplayAttributesForReportWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
-                            $('#OrderBysForReportWizardView').show();
+                                WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
+                            $('#ActionsForWorkflowWizardView').hide();
+                            $('#GeneralDataForWorkflowWizardView').show();
                         }
-                        if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
-                        {
-                            $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
-                            $('#OrderBysForReportWizardView').hide();
-                            $('#GeneralDataForReportWizardView').show();
-                        }
-                        if(linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
+                        if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
                         }
@@ -107,47 +97,38 @@
         protected function registerClickFlowScript()
         {
             Yii::app()->clientScript->registerScript('clickflow', "
-                $('#" . ModuleForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
-                $('#" . ModuleForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . ModuleForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        url = '" . Yii::app()->createUrl('reports/default/index') . "';
+                        url = '" . Yii::app()->createUrl('workflows/default/index') . "';
                         window.location.href = url;
                         return false;
                     }
                 );
-                $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
-                $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                $('#" . TriggersForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . TriggersForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::MODULE_VALIDATION_SCENARIO . "');
-                        $('#ModuleForReportWizardView').show();
-                        $('#FiltersForReportWizardView').hide();
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::MODULE_VALIDATION_SCENARIO . "');
+                        $('#ModuleForWorkflowWizardView').show();
+                        $('#TriggersForWorkflowWizardView').hide();
                         return false;
                     }
                 );
-                $('#" . DisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
-                $('#" . DisplayAttributesForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                $('#" . ActionsForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . ActionsForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
-                        $('#FiltersForReportWizardView').show();
-                        $('#DisplayAttributesForReportWizardView').hide();
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
+                        $('#TriggersForWorkflowWizardView').show();
+                        $('#ActionsForWorkflowWizardView').hide();
                         return false;
                     }
                 );
-                $('#" . OrderBysForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
-                $('#" . OrderBysForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                $('#" . GeneralDataForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . GeneralDataForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
-                        $('#DisplayAttributesForReportWizardView').show();
-                        $('#OrderBysForReportWizardView').hide();
-                        return false;
-                    }
-                );
-                $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').unbind('click');
-                $('#" . GeneralDataForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
-                    {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
-                        $('#OrderBysForReportWizardView').show();
-                        $('#GeneralDataForReportWizardView').hide();
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
+                        $('#ActionsForWorkflowWizardView').show();
+                        $('#GeneralDataForWorkflowWizardView').hide();
                         return false;
                     }
                 );
