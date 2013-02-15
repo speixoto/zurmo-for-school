@@ -49,7 +49,6 @@
                 $opportunity               = $demoDataHelper->getRandomByModelName('Opportunity');
                 $product->contact          = $demoDataHelper->getRandomByModelName('Contact');
                 $product->account          = $demoDataHelper->getRandomByModelName('Account');
-                $product->productTemplate  = $demoDataHelper->getRandomByModelName('ProductTemplate');
                 $product->opportunity      = $opportunity;
                 $product->owner            = $demoDataHelper->getRandomByModelName('User');
                 $this->populateModel($product);
