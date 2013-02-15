@@ -194,6 +194,30 @@
         /**
          * @return array
          */
+        public static function getTimeBasedValueTypesAndLabels()
+        {
+            return array( self::TYPE_BEFORE       => Zurmo::t('Core', 'Before'),
+                          self::TYPE_AFTER        => Zurmo::t('Core', 'After'),
+                          self::TYPE_ON           => Zurmo::t('Core', 'On{date}', array('{date}' => null)),
+                          self::TYPE_BETWEEN      => Zurmo::t('Core', 'Between'),
+                          self::TYPE_IS_EMPTY     => Zurmo::t('Core', 'Is Empty'),
+                          self::TYPE_IS_NOT_EMPTY => Zurmo::t('Core', 'Is Not Empty'),
+            );
+        }
+
+        /**
+         * @return array
+         */
+        public static function getTimeOnlyValueTypesAndLabels()
+        {
+            return array(self::TYPE_IS_TIME_FOR   => Zurmo::t('Core', 'Is'),
+                         self::TYPE_WAS_TIME_FOR  => Zurmo::t('Core', 'Was'),
+            );
+        }
+
+        /**
+         * @return array
+         */
         public static function getValueTypesRequiringFirstDateInput()
         {
             return array(self::TYPE_BEFORE, self::TYPE_AFTER, self::TYPE_ON, self::TYPE_BETWEEN, self::TYPE_WAS_ON,
