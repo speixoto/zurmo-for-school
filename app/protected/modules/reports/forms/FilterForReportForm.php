@@ -256,45 +256,7 @@
             }
             $type = $this->getAvailableOperatorsType();
             $data = array();
-            $data[OperatorRules::TYPE_EQUALS] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
-            $data[OperatorRules::TYPE_DOES_NOT_EQUAL] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_EQUAL);
-            $data[OperatorRules::TYPE_IS_NULL] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);
-            $data[OperatorRules::TYPE_IS_NOT_NULL] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_NULL);
-            if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
-            {
-                $data[OperatorRules::TYPE_STARTS_WITH] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_STARTS_WITH);
-                $data[OperatorRules::TYPE_ENDS_WITH] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ENDS_WITH);
-                $data[OperatorRules::TYPE_CONTAINS] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CONTAINS);
-            }
-            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
-            {
-                $data[OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO);
-                $data[OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO);
-                $data[OperatorRules::TYPE_GREATER_THAN] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN);
-                $data[OperatorRules::TYPE_LESS_THAN] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN);
-                $data[OperatorRules::TYPE_BETWEEN] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BETWEEN);
-            }
-            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
-            {
-                $data[OperatorRules::TYPE_ONE_OF] =
-                        OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ONE_OF);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            ModelAttributeToOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
             return $data;
         }
 
@@ -358,10 +320,7 @@
          */
         protected static function getValueTypesWhereValueIsRequired()
         {
-            return array(MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE,
-                         MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
-                         MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON,
-                         MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN);
+            return MixedDateTypesSearchFormAttributeMappingRules::getValueTypesWhereValueIsRequired();
         }
 
         /**
@@ -369,7 +328,7 @@
          */
         protected static function getValueTypesWhereSecondValueIsRequired()
         {
-            return array(MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN);
+            return MixedDateTypesSearchFormAttributeMappingRules::getValueTypesWhereSecondValueIsRequired();
         }
 
         /**
@@ -377,17 +336,7 @@
          */
         protected static function getOperatorsWhereValueIsRequired()
         {
-            return array(OperatorRules::TYPE_EQUALS,
-                         OperatorRules::TYPE_DOES_NOT_EQUAL,
-                         OperatorRules::TYPE_STARTS_WITH,
-                         OperatorRules::TYPE_ENDS_WITH,
-                         OperatorRules::TYPE_CONTAINS,
-                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
-                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
-                         OperatorRules::TYPE_GREATER_THAN,
-                         OperatorRules::TYPE_LESS_THAN,
-                         OperatorRules::TYPE_ONE_OF,
-                         OperatorRules::TYPE_BETWEEN);
+            return OperatorRules::getOperatorsWhereValueIsRequired();
         }
 
         /**
@@ -395,7 +344,7 @@
          */
         protected static function getOperatorsWhereSecondValueIsRequired()
         {
-            return array(OperatorRules::TYPE_BETWEEN);
+            return OperatorRules:: getOperatorsWhereSecondValueIsRequired();
         }
 
         /**

@@ -55,6 +55,18 @@
 
         const TYPE_IS_NOT_NULL                    = 'isNotNull';
 
+        const TYPE_BECOMES                        = 'becomes';
+
+        const TYPE_WAS                            = 'was';
+
+        const TYPE_BECOMES_ONE_OF                 = 'becomesOneOf';
+
+        const TYPE_WAS_ONE_OF                     = 'wasOneOf';
+
+        const TYPE_CHANGES                        = 'changes';
+
+        const TYPE_DOES_NOT_CHANGE                = 'doesNotChange';
+
         public static function getTranslatedTypeLabel($type)
         {
             assert('is_string($type)');
@@ -81,6 +93,12 @@
                          OperatorRules::TYPE_BETWEEN                     => Zurmo::t('Core', 'Between'),
                          OperatorRules::TYPE_IS_NULL                     => Zurmo::t('Core', 'Is Null'),
                          OperatorRules::TYPE_IS_NOT_NULL                 => Zurmo::t('Core', 'Is Not Null'),
+                         OperatorRules::TYPE_BECOMES                     => Zurmo::t('Core', 'Becomes'),
+                         OperatorRules::TYPE_WAS                         => Zurmo::t('Core', 'Was'),
+                         OperatorRules::TYPE_BECOMES_ONE_OF              => Zurmo::t('Core', 'Becomes One Of'),
+                         OperatorRules::TYPE_WAS_ONE_OF                  => Zurmo::t('Core', 'Was One Of'),
+                         OperatorRules::TYPE_CHANGES                     => Zurmo::t('Core', 'Changes'),
+                         OperatorRules::TYPE_DOES_NOT_CHANGE             => Zurmo::t('Core', 'Does Not Change'),
             );
         }
 
@@ -99,7 +117,38 @@
                          OperatorRules::TYPE_BETWEEN,
                          OperatorRules::TYPE_IS_NULL,
                          OperatorRules::TYPE_IS_NOT_NULL,
+                         OperatorRules::TYPE_BECOMES,
+                         OperatorRules::TYPE_WAS,
+                         OperatorRules::TYPE_BECOMES_ONE_OF,
+                         OperatorRules::TYPE_WAS_ONE_OF,
+                         OperatorRules::TYPE_CHANGES,
+                         OperatorRules::TYPE_DOES_NOT_CHANGE,
             );
+        }
+
+        public static function getOperatorsWhereValueIsRequired()
+        {
+            return array(   OperatorRules::TYPE_EQUALS,
+                            OperatorRules::TYPE_DOES_NOT_EQUAL,
+                            OperatorRules::TYPE_STARTS_WITH,
+                            OperatorRules::TYPE_ENDS_WITH,
+                            OperatorRules::TYPE_CONTAINS,
+                            OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
+                            OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
+                            OperatorRules::TYPE_GREATER_THAN,
+                            OperatorRules::TYPE_LESS_THAN,
+                            OperatorRules::TYPE_ONE_OF,
+                            OperatorRules::TYPE_BETWEEN,
+                            OperatorRules::TYPE_BECOMES,
+                            OperatorRules::TYPE_WAS,
+                            OperatorRules::TYPE_BECOMES_ONE_OF,
+                            OperatorRules::TYPE_WAS_ONE_OF,
+            );
+        }
+
+        public static function getOperatorsWhereSecondValueIsRequired()
+        {
+            return array(OperatorRules::TYPE_BETWEEN);
         }
     }
 ?>
