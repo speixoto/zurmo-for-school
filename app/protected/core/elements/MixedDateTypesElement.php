@@ -202,7 +202,7 @@
 
         protected function getValueTypeDropDownArray()
         {
-            return MixedDateTimeTypesSearchFormAttributeMappingRules::getValidValueTypesAndLabels();
+            return MixedDateTimeTypesSearchFormAttributeMappingRules::getValueTypesAndLabels();
         }
 
         /**
