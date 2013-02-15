@@ -166,7 +166,7 @@
         {
             if((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
                in_array($this->valueType, self::getValueTypesWhereValueIsRequired()) ||
-               ($this->getValueElementType() == 'BooleanForReportStaticDropDown' ||
+               ($this->getValueElementType() == 'BooleanForWizardStaticDropDown' ||
                $this->getValueElementType()  == 'UserNameId' ||
                ($this->getValueElementType()  == 'MixedDateTypesForReport' && $this->valueType == null))) &&
                $this->value == null)

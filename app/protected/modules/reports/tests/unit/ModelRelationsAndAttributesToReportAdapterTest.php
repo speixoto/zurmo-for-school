@@ -1328,7 +1328,7 @@
             $model              = new ReportModelTestItem();
             $rules              = new ReportsTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
-            $this->assertEquals('BooleanForReportStaticDropDown', $adapter->getFilterValueElementType('boolean'));
+            $this->assertEquals('BooleanForWizardStaticDropDown', $adapter->getFilterValueElementType('boolean'));
             $this->assertEquals('MixedCurrencyValueTypes',        $adapter->getFilterValueElementType('currencyValue'));
             $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('date'));
             $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('dateTime'));
@@ -1368,7 +1368,7 @@
             $model              = new ReportModelTestItem();
             $rules              = new ReportsTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
-            $this->assertEquals('BooleanForReportStaticDropDown', $adapter->getFilterValueElementType('boolean'));
+            $this->assertEquals('BooleanForWizardStaticDropDown', $adapter->getFilterValueElementType('boolean'));
             $this->assertEquals('MixedCurrencyValueTypes',        $adapter->getFilterValueElementType('currencyValue'));
             $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('date'));
             $this->assertEquals('MixedDateTypesForReport',        $adapter->getFilterValueElementType('dateTime'));

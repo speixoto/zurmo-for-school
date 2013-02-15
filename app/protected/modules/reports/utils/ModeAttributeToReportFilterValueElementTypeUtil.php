@@ -77,7 +77,7 @@
                     switch(get_class($validator))
                     {
                         case 'CBooleanValidator':
-                            return 'BooleanForReportStaticDropDown';
+                            return 'BooleanForWizardStaticDropDown';
 
                         case 'CEmailValidator':
                             return 'Text';

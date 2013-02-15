@@ -43,7 +43,7 @@
         public function testGetValidOperatorTypesForAllAttributeTypes()
         {
             $model              = new ReportModelTestItem();
-            $this->assertEquals('BooleanForReportStaticDropDown',
+            $this->assertEquals('BooleanForWizardStaticDropDown',
                                 ModeAttributeToReportFilterValueElementTypeUtil::getType($model, 'boolean'));
             $this->assertEquals('MixedCurrencyValueTypes',
                                 ModeAttributeToReportFilterValueElementTypeUtil::getType($model, 'currencyValue'));
