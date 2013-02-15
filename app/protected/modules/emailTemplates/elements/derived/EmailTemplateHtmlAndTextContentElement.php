@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     
+
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
@@ -45,44 +45,44 @@
 
         protected function renderControlEditable()
         {
-          $content = '<div class="email-template-textcontent">';
-          $content .= $this->renderTextContentArea();
-          $content .= '<div>';
-          $content .= '<div class="email-template-htmlcontent">';
-          $content .= $this->renderHtmlContentArea();
-          $content .= '<div>';
+          $content  = '<div class="email-template-textcontent">';
+          $content  .= $this->renderTextContentArea();
+          $content  .= '</div>';
+          $content  .= '<div class="email-template-htmlcontent">';
+          $content  .= $this->renderHtmlContentArea();
+          $content  .= '</div>';
           return $content;
         }
 
         protected function renderHtmlContentArea()
         {
-            $inputNameIdPrefix       = $this->attribute;
+            //$inputNameIdPrefix       = $this->attribute;
             $attribute               = 'htmlContent';
-            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, $attribute);
+            $id                      = $this->getEditableInputId($attribute);
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
-            $cClipWidget   = new CClipWidget();
+            $htmlOptions['name']     = $this->getEditableInputName($attribute);
+            $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $this->model->htmlContent,
             ));
             $cClipWidget->endClip();
-            $content  = $cClipWidget->getController()->clips['Redactor'];
-            $content .= $this->form->error($this->model, $attribute);
+            $content                = $cClipWidget->getController()->clips['Redactor'];
+            $content                .= $this->form->error($this->model, $attribute);
             return $content;
         }
 
          protected function renderTextContentArea()
          {
-            $inputNameIdPrefix       = $this->attribute;
-            $attribute               = 'textContent';
-            $content = null;
-            $textContentElement  = new TextAreaElement($this->model, 'textContent');
-            $textContentElement->nonEditableTemplate = '<div class="text-content">{content}</div>';
-            $content .= $textContentElement->render();
-            $content .= $this->form->error($this->model, $attribute);
+            //$inputNameIdPrefix                        = $this->attribute; // TODO: @Shoaibi: why do we need this?
+            $attribute                                  = 'textContent';
+            $content                                    = null;
+            $textContentElement                         = new TextAreaElement($this->model, 'textContent', $this->form);
+            $textContentElement->nonEditableTemplate    = '<div class="text-content">{content}</div>';
+            $content                                    .= $textContentElement->render();
+            $content                                    .= $this->form->error($this->model, $attribute);
             return $content;
          }
         public static function getModelAttributeNames()

@@ -83,19 +83,18 @@
                     'textContent',
                 ),
                 'rules' => array(
-                    array('type',                 'required'),
-                    array('type',                 'type',    'type' => 'integer'),
-                    array('type',                 'length',  'min'  => 1),
-                    array('name',                 'required'),
-                    array('name',                 'type',    'type' => 'string'),
-                    array('name',                 'length',  'min'  => 3, 'max' => 64),
-                    array('subject',              'required'),
-                    array('subject',              'type',    'type' => 'string'),
-                    array('subject',              'length',  'min'  => 3, 'max' => 64),
-                    array('htmlContent',          'type',    'type' => 'string'),
-                    array('textContent',          'type',    'type' => 'string'),
-                    // TODO: @Shoaibi: add rule to check at least one of the content field is not empty.
-                    // TODO: @Shoaibi: also add client side validation for above if needed
+                    array('type',                       'required'),
+                    array('type',                       'type',    'type' => 'integer'),
+                    array('type',                       'length',  'min'  => 1),
+                    array('name',                       'required'),
+                    array('name',                       'type',    'type' => 'string'),
+                    array('name',                       'length',  'min'  => 3, 'max' => 64),
+                    array('subject',                    'required'),
+                    array('subject',                    'type',    'type' => 'string'),
+                    array('subject',                    'length',  'min'  => 3, 'max' => 64),
+                    array('htmlContent',                'type',    'type' => 'string'),
+                    array('textContent',                'type',    'type' => 'string'),
+                    array('htmlContent, textContent',   'validateHtmlContentAndTextContent'),
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',
@@ -103,6 +102,17 @@
                 ),
             );
             return $metadata;
+        }
+
+        public function validateHtmlContentAndTextContent($attribute, $params)
+        {
+            if (empty($this->textContent) && empty($this->htmlContent))
+            {
+                $this->addError($attribute, 'Please provide at least one of the contents field.' );
+            }
+            else
+            {
+            }
         }
     }
 ?>
