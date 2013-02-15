@@ -39,26 +39,16 @@
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
-            assert('$demoDataHelper->isSetRange("Account")');
-            assert('$demoDataHelper->isSetRange("Contact")');
             $currencies = Currency::getAll('id');
             $productTemplates = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productTemplate = new ProductTemplate();
-                $productTemplate->contacts->add($demoDataHelper->getRandomByModelName('Contact'));
-                $productTemplate->account          = $productTemplate->contacts[0]->account;
-                $productTemplate->owner            = $productTemplate->contacts[0]->owner;
-                $currencyValue                      = new CurrencyValue();
-                $currencyValue->currency            = $currencies[array_rand($currencies)];
-                $productTemplate->cost             = $currencyValue;
-                $productTemplate->listPrice        = $currencyValue;
-                $productTemplate->sellPrice        = $currencyValue;
+                //$productTemplate->owner = $demoDataHelper->getRandomByModelName('User');
                 $this->populateModel($productTemplate);
                 $saved = $productTemplate->save();
                 assert('$saved');
-                $productTemplates[]           = $productTemplate->id;
+                $productTemplates[] = $productTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('ProductTemplate', $productTemplates[0], $productTemplates[count($productTemplates)-1]);
         }
@@ -70,16 +60,14 @@
             $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplate');
             $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
             $type    = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplateTypes'));
-            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('Stages'));
 
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);
-            $model->priceFrequency  = mt_rand(1, 95);
+            $model->priceFrequency  = mt_rand(5, 350) * 1000;
             $model->cost            = mt_rand(5, 350) * 1000;
             $model->listPrice       = mt_rand(5, 350) * 1000;
             $model->sellPrice       = mt_rand(5, 350) * 1000;
             $model->type->value     = $type;
-            $model->type->stage     = $stage;
         }
     }
 ?>

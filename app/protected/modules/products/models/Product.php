@@ -35,10 +35,10 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productTemplate'      => 'Parent ProductTemplatesModuleSingularLabel',
-                    'contact'              => 'ContactsModulePluralLabel',
-                    'account'              => 'AccountsModulePluralLabel',
-                    'opportunity'          => 'OpportunityModulePluralLabel',
+                    'productTemplate'      => 'ProductTemplatesModuleSingularLabel',
+                    'contact'              => 'ContactsModuleSingularLabel',
+                    'account'              => 'AccountsModuleSingularLabel',
+                    'opportunity'          => 'OpportunityModuleSingularLabel',
                 )
             );
         }

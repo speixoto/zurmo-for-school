@@ -46,13 +46,16 @@
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $product = new Product();
-                $product->contacts->add($demoDataHelper->getRandomByModelName('Contact'));
-                $product->account          = $product->contacts[0]->account;
-                $product->owner            = $product->contacts[0]->owner;
+                $opportunity               = $demoDataHelper->getRandomByModelName('Opportunity');
+                $product->contact          = $demoDataHelper->getRandomByModelName('Contact');
+                $product->account          = $demoDataHelper->getRandomByModelName('Account');
+                $product->productTemplate  = $demoDataHelper->getRandomByModelName('ProductTemplate');
+                $product->opportunity      = $opportunity;
+                $product->owner            = $opportunity->owner;
                 $this->populateModel($product);
                 $saved = $product->save();
                 assert('$saved');
-                $products[]           = $product->id;
+                $products[]                = $product->id;
             }
             $demoDataHelper->setRangeByModelName('Product', $products[0], $products[count($products)-1]);
         }
@@ -63,17 +66,11 @@
             parent::populateModel($model);
             $productRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
             $name    = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
-            $type    = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTypes'));
-            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('Stages'));
+            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplateStages'));
 
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);
-            $model->priceFrequency  = mt_rand(1, 95);
-            $model->cost            = mt_rand(5, 350) * 1000;
-            $model->listPrice       = mt_rand(5, 350) * 1000;
-            $model->sellPrice       = mt_rand(5, 350) * 1000;
-            $model->type->value     = $type;
-            $model->type->stage     = $stage;
+            $model->stage->value    = $stage;
         }
     }
 ?>

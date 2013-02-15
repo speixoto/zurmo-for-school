@@ -35,7 +35,7 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productTemplates' => 'Parent ProductTemplatesModuleSingularLabel',
+                    'productTemplates' => 'ProductTemplatesModulePluralLabel',
                 )
             );
         }
