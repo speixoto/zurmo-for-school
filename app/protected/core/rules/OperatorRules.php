@@ -67,6 +67,10 @@
 
         const TYPE_DOES_NOT_CHANGE                = 'doesNotChange';
 
+        const TYPE_IS_EMPTY                       = 'isEmpty';
+
+        const TYPE_IS_NOT_EMPTY                   = 'isNotEmpty';
+
         public static function getTranslatedTypeLabel($type)
         {
             assert('is_string($type)');
@@ -99,6 +103,8 @@
                          OperatorRules::TYPE_WAS_ONE_OF                  => Zurmo::t('Core', 'Was One Of'),
                          OperatorRules::TYPE_CHANGES                     => Zurmo::t('Core', 'Changes'),
                          OperatorRules::TYPE_DOES_NOT_CHANGE             => Zurmo::t('Core', 'Does Not Change'),
+                         OperatorRules::TYPE_IS_EMPTY                    => Zurmo::t('Core', 'Is Empty'),
+                         OperatorRules::TYPE_IS_NOT_EMPTY                => Zurmo::t('Core', 'Is Not Empty'),
             );
         }
 
@@ -123,6 +129,8 @@
                          OperatorRules::TYPE_WAS_ONE_OF,
                          OperatorRules::TYPE_CHANGES,
                          OperatorRules::TYPE_DOES_NOT_CHANGE,
+                         OperatorRules::TYPE_IS_EMPTY,
+                         OperatorRules::TYPE_IS_NOT_EMPTY,
             );
         }
 
