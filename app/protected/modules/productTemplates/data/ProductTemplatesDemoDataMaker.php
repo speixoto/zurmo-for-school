@@ -45,6 +45,7 @@
             {
                 $productTemplate = new ProductTemplate();
                 $productTemplate->product  = $demoDataHelper->getRandomByModelName('Product');
+                //$productTemplate->sellPriceFormula = $demoDataHelper->getRandomByModelName('SellPriceFormula');
                 $productTemplate->productTemplateBundles->add($demoDataHelper->getRandomByModelName('ProductTemplateBundle'));
                 $productTemplate->productCategories->add($demoDataHelper->getRandomByModelName('ProductCategory'));
                 $this->populateModel($productTemplate);

@@ -42,20 +42,20 @@
         /**
          * @depends testCreateAndGetProductById
          */
-        public function testGetAll()
+        public function testCreateAndGetProductById()
         {
-            $user = User::getByUsername('steven');
-
+            $user = UserTestHelper::createBasicUser('Steven');
+            $this->assertNotEquals('7788', '33333333');
             $product = new Product();
-            $product->owner = $user;
-            $product->name  = 'Test Product 2';
-            $this->assertTrue($product->save());
-            $products = Product::getAll();
-            $this->assertEquals(2, count($products));
-            $this->assertTrue('Test Product'   == $products[0]->name &&
-                              'Test Product 2' == $products[1]->name ||
-                              'Test Product 2' == $products[0]->name &&
-                              'Test Product'   == $products[1]->name);
+            $opportunity               = $demoDataHelper->getRandomByModelName('Opportunity');
+            $product->contact          = $demoDataHelper->getRandomByModelName('Contact');
+            $product->account          = $demoDataHelper->getRandomByModelName('Account');
+            $product->opportunity      = $opportunity;
+            $product->owner            = $demoDataHelper->getRandomByModelName('User');
+            $this->populateModel($product);
+            $saved = $product->save();
+            assert('$saved');
+            $products[]                = $product->id;
         }
     }
 ?>

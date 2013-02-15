@@ -24,38 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTest extends ZurmoBaseTest
+    class ProductsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            SecurityTestHelper::createUsers();
-        }
-
-        public function setUp()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
         /**
          * @depends testCreateAndGetProductById
          */
-        public function testGetAll()
+        public function testSuperUserAllDefaultControllerActions()
         {
-            $user = User::getByUsername('steven');
-
-            $product = new Product();
-            $product->owner = $user;
-            $product->name  = 'Test Product 2';
-            $this->assertTrue($product->save());
-            $products = Product::getAll();
-            $this->assertEquals(2, count($products));
-            $this->assertTrue('Test Product'   == $products[0]->name &&
-                              'Test Product 2' == $products[1]->name ||
-                              'Test Product 2' == $products[0]->name &&
-                              'Test Product'   == $products[1]->name);
         }
     }
 ?>
