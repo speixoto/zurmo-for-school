@@ -46,13 +46,13 @@
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $product = new Product();
-                $opportunity               = $demoDataHelper->getRandomByModelName('Opportunity');
                 $product->contact          = $demoDataHelper->getRandomByModelName('Contact');
                 $product->account          = $demoDataHelper->getRandomByModelName('Account');
-                $product->opportunity      = $opportunity;
+                $product->opportunity      = $demoDataHelper->getRandomByModelName('Opportunity');
                 $product->owner            = $demoDataHelper->getRandomByModelName('User');
+                $product->productTemplate  = $demoDataHelper->getRandomByModelName('ProductTemplate');
                 $this->populateModel($product);
-                $saved = $product->save();
+                $saved                     = $product->save();
                 assert('$saved');
                 $products[]                = $product->id;
             }

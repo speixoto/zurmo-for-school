@@ -119,7 +119,6 @@
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
-                    'description',
                 ),
             );
             return $metadata;

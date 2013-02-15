@@ -39,15 +39,13 @@
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            $currencies = Currency::getAll('id');
             $productTemplates = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productTemplate = new ProductTemplate();
-                $productTemplate->product  = $demoDataHelper->getRandomByModelName('Product');
                 //$productTemplate->sellPriceFormula = $demoDataHelper->getRandomByModelName('SellPriceFormula');
-                $productTemplate->productTemplateBundles->add($demoDataHelper->getRandomByModelName('ProductTemplateBundle'));
-                $productTemplate->productCategories->add($demoDataHelper->getRandomByModelName('ProductCategory'));
+                //$productTemplate->productTemplateBundles->add($demoDataHelper->getRandomByModelName('ProductTemplateBundle'));
+                //$productTemplate->productCategories->add($demoDataHelper->getRandomByModelName('ProductCategory'));
                 $this->populateModel($productTemplate);
                 $saved = $productTemplate->save();
                 assert('$saved');

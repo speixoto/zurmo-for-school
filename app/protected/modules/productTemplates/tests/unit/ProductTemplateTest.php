@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTest extends ZurmoBaseTest
+    class ProductTemplateTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -39,24 +39,20 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testCreateAndGetProductById()
+        public function testCreateAndGetProductTemplateById()
         {
-            $user                            = UserTestHelper::createBasicUser('Steven');
-            $product                         = ProductTestHelper::createProductByNameForOwner('Product', $user);
-            $product->contact                = ContactTestHelper::createContactByNameForOwner('Contact', $user);
-            $product->account                = AccountTestHelper::createAccountByNameForOwner('Account', $user);
-            $product->opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('Opportunity', $user);
-            $productTemplate1                = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate 1');
-            $productTemplate2                = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate 2');
-            $productTemplate                 = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
-            $productTemplateBundle           = ProductTemplateBundleTestHelper::createProductTemplateBundleWithProductTemplatesByName('ProductTemplateBundle', $productTemplate1, $productTemplate2);
-            $productTemplate->productTemplateBundles->add($productTemplateBundle);
-            $product->productTemplate        = $productTemplate;
-            $this->assertTrue($product->save());
-            $id                              = $product->id;
-            unset($product);
-            $product                         = Product::getById($id);
-            $this->assertEquals('Product', $product->name);
+            $user                                    = UserTestHelper::createBasicUser('Steven');
+            $productTemplate                         = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
+            $productTemplate->product                = ProductTestHelper::createProductByNameForOwner('Product', $user);
+            $productTemplates[]                      = ProductTemplatesTestHelper::createProductTemplateByName('Product Template 1');
+            $productTemplates[]                      = ProductTemplatesTestHelper::createProductTemplateByName('Product Template 2');
+            $productTemplates[]                      = ProductTemplatesTestHelper::createProductTemplateByName('Product Template 3');
+            $productTemplate->productTemplateBundles = ProductTemplateBundleTestHelper::createProductTemplateBundleWithProductsByName('ProductTemplateBundle', $productTemplates);
+            $this->assertTrue($productTemplate->save());
+            $id                                      = $productTemplate->id;
+            unset($productTemplate);
+            $productTemplate                         = ProductTemplate::getById($id);
+            $this->assertEquals('ProductTemplate', $productTemplate->name);
         }
     }
 ?>
