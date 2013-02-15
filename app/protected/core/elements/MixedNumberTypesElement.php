@@ -39,7 +39,9 @@
             $secondValueSpanAreaId              = $this->getSecondValueEditableInputId() . '-second-value-area';
             $startingDivStyleFirstValue  = null;
             $startingDivStyleSecondValue  = null;
-            if (in_array($this->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
+            if (in_array($this->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL,
+                                                     OperatorRules::TYPE_CHANGES, OperatorRules::TYPE_DOES_NOT_CHANGE,
+                                                     OperatorRules::TYPE_IS_EMPTY, OperatorRules::TYPE_IS_NOT_EMPTY)))
             {
                 $startingDivStyleFirstValue = "display:none;";
             }
