@@ -252,6 +252,25 @@
             $type = $this->getAvailableOperatorsType();
             $data = array();
             ModelAttributeToOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
+            if($this->workflowType == Workflow::TYPE_ON_SAVE && $this->attribute != null)
+            {
+                $data[OperatorRules::TYPE_BECOMES]         = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES);
+                $data[OperatorRules::TYPE_WAS]             = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS);
+                $data[OperatorRules::TYPE_CHANGES]         = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CHANGES);
+                $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
+            }
+            elseif($this->workflowType == Workflow::TYPE_BY_SAVE && $this->attribute != null)
+            {
+                $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
+            }
+            if($this->workflowType == Workflow::TYPE_ON_SAVE && $this->attribute != null &&
+               $type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
+            {
+                $data[OperatorRules::TYPE_BECOMES_ONE_OF]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES_ONE_OF);
+                $data[OperatorRules::TYPE_WAS_ONE_OF]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS_ONE_OF);
+            }
+            $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
+            $data[OperatorRules::TYPE_IS_NOT_EMPTY]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);
             return $data;
         }
 
