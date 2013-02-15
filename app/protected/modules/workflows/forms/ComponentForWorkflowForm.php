@@ -112,6 +112,11 @@
             }
         }
 
+        public function getAttribute()
+        {
+            return $this->attribute;
+        }
+
         /**
          * @return array
          */
