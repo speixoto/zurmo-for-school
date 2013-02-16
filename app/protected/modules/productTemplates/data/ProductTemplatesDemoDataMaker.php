@@ -70,7 +70,7 @@
             $model->cost->value            = mt_rand(5, 350) * 1000;
             $model->listPrice->value       = mt_rand(5, 350) * 1000;
             $model->sellPrice->value       = mt_rand(5, 350) * 1000;
-            $model->type->value->value     = $type;
+            $model->type->value            = $type;
         }
     }
 ?>
