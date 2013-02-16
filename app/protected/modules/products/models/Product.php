@@ -129,11 +129,6 @@
             return true;
         }
 
-        public static function getRollUpRulesType()
-        {
-            return 'Product';
-        }
-
         public static function hasReadPermissionsOptimization()
         {
             return true;

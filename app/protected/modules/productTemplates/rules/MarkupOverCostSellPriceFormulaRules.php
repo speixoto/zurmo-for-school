@@ -24,25 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplateTestHelper
+    /**
+     *
+     */
+    class MarkupOverCostSellPriceFormulaRules extends SellPriceFormulaRules
     {
-        public static function createProductTemplateByName($name)
+        public static function isSellPriceEditable()
         {
-            $currencies                      = Currency::getAll();
-            $currencyValue                   = new CurrencyValue();
-            $currencyValue->value            = 500.54;
-            $currencyValue->currency         = $currencies[0];
-            $productTemplate                 = new ProductTemplate();
-            $productTemplate->name           = $name;
-            $productTemplate->description    = 'Description';
-            $productTemplate->priceFrequency = 2;
-            $productTemplate->cost           = $currencyValue;
-            $productTemplate->listPrice      = $currencyValue;
-            $productTemplate->sellPrice      = $currencyValue;
-            $productTemplate->type->value    = 'Physical';
-            $saved                           = $productTemplate->save();
-            assert('$saved');
-            return $productTemplate;
+            return true;
+        }
+
+        public static function getDisplayLabel()
+        {
+        }
+
+        public static function getType()
+        {
         }
     }
 ?>

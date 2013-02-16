@@ -54,17 +54,17 @@
             $this->assertEquals('ProductTemplate', $productTemplate->name);
         }
 
-        public function testCreate()
+        public function testDemoDataMaker()
         {
             $productTemplate = new ProductTemplate();
             $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplate');
             $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
             $type    = 'Product';
             $productTemplate->name                   = $name;
-            $productTemplate->priceFrequency->value  = mt_rand(5, 350) * 1000;
-            $productTemplate->cost->value            = mt_rand(5, 350) * 1000;
-            $productTemplate->listPrice->value       = mt_rand(5, 350) * 1000;
-            $productTemplate->sellPrice->value       = mt_rand(5, 350) * 1000;
+            $productTemplate->priceFrequency->value  = 2;
+            $productTemplate->cost->value            = 200;
+            $productTemplate->listPrice->value       = 200;
+            $productTemplate->sellPrice->value       = 200;
             $productTemplate->type->value            = $type;
             $this->assertTrue($productTemplate->save());
             $productTemplates[] = $productTemplate->id;

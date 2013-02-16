@@ -46,7 +46,6 @@
                 $productTemplate = new ProductTemplate();
                 $currencyValue                   = new CurrencyValue();
                 $currencyValue->currency         = $currencies[array_rand($currencies)];
-                $productTemplate->priceFrequency = $currencyValue;
                 $productTemplate->cost           = $currencyValue;
                 $productTemplate->listPrice      = $currencyValue;
                 $productTemplate->sellPrice      = $currencyValue;
@@ -67,7 +66,7 @@
             $type                          = 'Product';//RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplatesTypes'));
 
             $model->name                   = $name;
-            $model->priceFrequency->value  = mt_rand(5, 350) * 1000;
+            $model->priceFrequency         = 2;
             $model->cost->value            = mt_rand(5, 350) * 1000;
             $model->listPrice->value       = mt_rand(5, 350) * 1000;
             $model->sellPrice->value       = mt_rand(5, 350) * 1000;

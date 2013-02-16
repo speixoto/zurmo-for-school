@@ -42,23 +42,20 @@
                 'members' => array(
                     'name',
                     'type',
-                    'percentage',
-                    'discount',
+                    'discountOrMarkupPercentage',
                 ),
                 'relations' => array(
                     'productTemplate'    => array(RedBeanModel::HAS_ONE,              'ProductTemplate'),
-                    'type'               => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('name',           'required'),
-                    array('name',           'type',    'type' => 'string'),
-                    array('name',           'length',  'min'  => 3, 'max' => 64),
-                    array('percentage',     'type', 'type' => 'float'),
-                    array('discount',       'type', 'type' => 'float'),
+                    array('name',                        'required'),
+                    array('name',                        'type',    'type' => 'string'),
+                    array('name',                        'length',  'min'  => 3, 'max' => 64),
+                    array('type',                        'type',    'type' => 'string'),
+                    array('discountOrMarkupPercentage',  'type', 'type' => 'float'),
                 ),
                 'defaultSortAttribute' => 'name',
                 'customFields' => array(
-                    'type'     => 'ProductTemplateTypes',
                 ),
             );
             return $metadata;
