@@ -50,7 +50,6 @@
                 $product->account          = $demoDataHelper->getRandomByModelName('Account');
                 $product->opportunity      = $demoDataHelper->getRandomByModelName('Opportunity');
                 $product->owner            = $demoDataHelper->getRandomByModelName('User');
-                $product->productTemplate  = $demoDataHelper->getRandomByModelName('ProductTemplate');
                 $this->populateModel($product);
                 $saved                     = $product->save();
                 assert('$saved');

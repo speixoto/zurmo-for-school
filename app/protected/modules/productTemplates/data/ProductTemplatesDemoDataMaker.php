@@ -39,20 +39,17 @@
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-//            $currencies = Currency::getAll('id');
+            $currencies = Currency::getAll('id');
             $productTemplates = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productTemplate = new ProductTemplate();
-//                $productTemplate->sellPriceFormula = $demoDataHelper->getRandomByModelName('SellPriceFormula');
-//                $productTemplate->productTemplateBundles->add($demoDataHelper->getRandomByModelName('ProductTemplateBundle'));
-//                $productTemplate->productCategories->add($demoDataHelper->getRandomByModelName('ProductCategory'));
-//                $currencyValue                   = new CurrencyValue();
-//                $currencyValue->currency         = $currencies[array_rand($currencies)];
-//                $productTemplate->priceFrequency = $currencyValue;
-//                $productTemplate->cost           = $currencyValue;
-//                $productTemplate->listPrice      = $currencyValue;
-//                $productTemplate->sellPrice      = $currencyValue;
+                $currencyValue                   = new CurrencyValue();
+                $currencyValue->currency         = $currencies[array_rand($currencies)];
+                $productTemplate->priceFrequency = $currencyValue;
+                $productTemplate->cost           = $currencyValue;
+                $productTemplate->listPrice      = $currencyValue;
+                $productTemplate->sellPrice      = $currencyValue;
                 $this->populateModel($productTemplate);
                 $saved = $productTemplate->save();
                 assert('$saved');

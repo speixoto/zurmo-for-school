@@ -43,7 +43,6 @@
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productCatalog = new ProductCatalog();
-                $productCatalog->productCategories->add($demoDataHelper->getRandomByModelName('ProductCategory'));
                 $this->populateModel($productCatalog);
                 $saved = $productCatalog->save();
                 assert('$saved');
