@@ -38,7 +38,7 @@
                     'productTemplate'      => 'ProductTemplatesModuleSingularLabel',
                     'contact'              => 'ContactsModuleSingularLabel',
                     'account'              => 'AccountsModuleSingularLabel',
-                    'opportunity'          => 'OpportunityModuleSingularLabel',
+                    'opportunity'          => 'OpportunitiesModuleSingularLabel',
                 )
             );
         }

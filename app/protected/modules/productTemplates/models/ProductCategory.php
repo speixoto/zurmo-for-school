@@ -36,7 +36,7 @@
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
                     'productTemplates'        => 'ProductTemplatesModulePluralLabel',
-                    'productCatalogs'         => 'ProductCatalogsModulePluralLabel'
+                    'productCatalogs'         => 'ProductTemplatesModulePluralLabel'
                 )
             );
         }
