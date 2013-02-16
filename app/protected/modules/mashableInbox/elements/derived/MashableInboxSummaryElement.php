@@ -24,40 +24,44 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MashableInboxListView extends ListView
+    /**
+     * Display the details of an MashableInbox.
+     */
+    class MashableInboxSummaryElement extends Element implements DerivedElementInterface
     {
-        protected $rowsAreSelectable = true;
-
-        public static function getDefaultMetadata()
+        protected function renderEditable()
         {
-            $metadata = array(
-                'global' => array(
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MashableInboxSummary'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-
-            );
-            return $metadata;
+            throw NotSupportedException();
         }
 
-        protected function getCGridViewLastColumn()
+        protected function renderControlEditable()
+        {
+            throw NotSupportedException();
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw NotSupportedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Zurmo::t('MashableInboxModule', 'Combined Inbox');
+        }
+
+        public static function getDisplayName()
+        {
+            return Zurmo::t('MashableInboxModule', 'Summary');
+        }
+
+        /**
+         * Get the attributeNames of attributes used in
+         * the derived element.
+         * @return array of model attributeNames used.
+         */
+        public static function getModelAttributeNames()
         {
             return array();
         }
-
-
     }
 ?>

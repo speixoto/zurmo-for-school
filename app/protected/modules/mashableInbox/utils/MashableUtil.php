@@ -82,5 +82,140 @@
             }
             return $unreadCount;
         }
+
+        public static function getSearchAttributesDataByModelClassNames($modelClassNames, $filteredBy)
+        {
+            assert('is_array($modelClassNames)');
+            assert('$filteredBy == MashableInboxForm::FILTERED_BY_ALL || $filteredBy == MashableInboxForm::FILTERED_BY_UNREAD');
+            $modelClassNamesAndSearchAttributeData = array();
+            foreach ($modelClassNames as $modelClassName)
+            {
+                $mashableActivityRules =
+                        MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                $searchAttributesData =
+                        $mashableActivityRules->getSearchAttributeData();
+                $metadataFilteredBy =
+                        $mashableActivityRules->getMetadataFilteredByFilteredBy($filteredBy);
+                $searchAttributesDataAndByFiltered = static::mergeMetada($searchAttributesData, $metadataFilteredBy);
+                $modelClassNamesAndSearchAttributeData[] = array($modelClassName => $searchAttributesDataAndByFiltered);
+            }
+            return $modelClassNamesAndSearchAttributeData;
+        }
+
+        public static function getSortAttributesByMashableInboxModelClassNames($modelClassNames)
+        {
+            assert('is_array($modelClassNames)');
+            $modelClassNamesAndSortAttributes = array();
+            foreach ($modelClassNames as $modelClassName)
+            {
+                $mashableActivityRules =
+                        MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                $modelClassNamesAndSortAttributes[$modelClassName] =
+                        $mashableActivityRules->getMachableInboxOrderByAttributeName();
+            }
+            return $modelClassNamesAndSortAttributes;
+        }
+
+        public static function renderSummaryContent(RedBeanModel $model)
+        {
+            $mashableInboxRules                 = MashableUtil::createMashableInboxRulesByModel(get_class($model));
+            $summaryContentTemplate             = $mashableInboxRules->getSummaryContentTemplate();
+            $data                               = array();
+            $data['modelStringContent']         = self::renderModelStringContent($model, $mashableInboxRules);
+            $data['modelCreationTimeContent']   = self::renderModelCreationTimeContent($model, $mashableInboxRules);
+            $content = self::resolveContentTemplate($summaryContentTemplate, $data);
+            return $content;
+        }
+
+        protected static function renderModelStringContent(RedBeanModel $model, $mashableInboxRules)
+        {
+            return $mashableInboxRules->getModelStringContent($model);
+        }
+
+        protected static function renderModelCreationTimeContent(RedBeanModel $model, $mashableInboxRules)
+        {
+            return $mashableInboxRules->getModelCreationTimeContent($model);
+        }
+
+        public static function resolveContentTemplate($template, $data)
+        {
+            assert('is_string($template)');
+            assert('is_array($data)');
+            $preparedContent = array();
+            foreach ($data as $templateVar => $content)
+            {
+                $preparedContent["{" . $templateVar . "}"] = $content;
+            }
+            return strtr($template, $preparedContent);
+        }
+
+        public static function getTimeSinceLatestUpdate($latestDateTime)
+        {
+            $nowTimestamp           = time();
+            $lastUpdatedTimestamp   = DateTimeUtil::convertDbFormatDateTimeToTimestamp($latestDateTime);
+            $timeSinceLatestUpdate  = $nowTimestamp - $lastUpdatedTimestamp;
+            $timeForString = array(
+                    'days'  => $timeSinceLatestUpdate / 86400 % 7,
+                    'hours' => $timeSinceLatestUpdate / 3600 % 24,
+                );
+            if ($timeForString['days'] == 0)
+            {
+                if ($timeForString['hours'] == 1)
+                {
+                    $string = Zurmo::t('MashableInboxModule', '{hours} hour ago', array('{hours}' => $timeForString['hours']));
+                }
+                else
+                {
+                    $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
+                }
+            }
+            else if (($timeForString['days'] == 1))
+            {
+                $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
+            }
+            else
+            {
+                $string = Zurmo::t('MashableInboxModule', '{days} days ago', array('{days}' => $timeForString['days']));
+            }
+            return $string;
+        }
+
+        public static function mergeMetada($firstMetadata, $secondMetadata, $isAnd = true)
+        {
+            if ($firstMetadata == null && $secondMetadata == null)
+            {
+                $metadata['clauses']    = array();
+                $metadata['structure']  = null;
+                return $metadata;
+            }
+            if ($firstMetadata == null)
+            {
+                return $secondMetadata;
+            }
+            if ($secondMetadata == null)
+            {
+                return $firstMetadata;
+            }
+
+            $firstMetadataClausesCount = count($firstMetadata['clauses']);
+            $clauseNumber = count($firstMetadata['clauses']) + 1;
+            foreach ($secondMetadata['clauses'] as $clause)
+            {
+                $patterns[]     = '/' . ($clauseNumber++ - $firstMetadataClausesCount). '/';
+                $replacements[] = (string)$clauseNumber;
+                $firstMetadata['clauses'][$clauseNumber] = $clause;
+            }
+            if ($isAnd)
+            {
+                $operator = ' and ';
+            }
+            else
+            {
+                $operator = ' or ';
+            }
+            $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
+                                          '(' . preg_replace($patterns, $replacements, $secondMetadata['structure']) . ')';
+            return $firstMetadata;
+        }
     }
 ?>

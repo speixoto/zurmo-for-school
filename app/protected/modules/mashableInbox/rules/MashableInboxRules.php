@@ -41,6 +41,11 @@
 
         abstract public function getMachableInboxOrderByAttributeName();
 
+        public function getSearchAttributeData()
+        {
+            return null;
+        }
+
         protected function getListViewClassName()
         {
             $modelClassName = $this->getModelClassName();
@@ -54,7 +59,7 @@
             $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                 'listPageSize', get_class(Yii::app()->controller->module));
             $metadataByOption = $this->getMetadataFilteredByOption($option);
-            $metadata         = $this->mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
+            $metadata         = MashableUtil::mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $modelClassName,
@@ -73,31 +78,24 @@
             return $listView;
         }
 
-        public function mergeMetada($firstMetadata, $secondMetadata, $isAnd = true)
+        public function getModelStringContent(RedBeanModel $model)
         {
-            if ($secondMetadata == null)
-            {
-                return $firstMetadata;
-            }
-            $firstMetadataClausesCount = count($firstMetadata['clauses']);
-            $clauseNumber = count($firstMetadata['clauses']) + 1;
-            foreach ($secondMetadata['clauses'] as $clause)
-            {
-                $patterns[]     = '/' . ($clauseNumber++ - $firstMetadataClausesCount). '/';
-                $replacements[] = (string)$clauseNumber;
-                $firstMetadata['clauses'][$clauseNumber] = $clause;
-            }
-            if ($isAnd)
-            {
-                $operator = ' and ';
-            }
-            else
-            {
-                $operator = ' or ';
-            }
-            $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
-                                          '(' . preg_replace($patterns, $replacements, $secondMetadata['structure']) . ')';
-            return $firstMetadata;
+            $modelDisplayString = strval($model);
+            $params          = array('label' => $modelDisplayString, 'wrapLabel' => false);
+            $moduleClassName = $model->getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            $element  = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+            return $element->render();
+        }
+
+        public function getModelCreationTimeContent(RedBeanModel $model)
+        {
+            return MashableUtil::getTimeSinceLatestUpdate($model->latestDateTime);
+        }
+
+        public function getSummaryContentTemplate()
+        {
+            return "<span>{modelStringContent}</span><span>{modelCreationTimeContent}</span>";
         }
     }
 ?>

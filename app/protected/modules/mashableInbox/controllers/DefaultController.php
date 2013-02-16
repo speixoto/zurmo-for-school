@@ -48,18 +48,16 @@ class MashableInboxDefaultController extends ZurmoModuleController {
             $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy);
             $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
         } else {
-            $filteredBy = LatestActivitiesConfigurationForm::FILTERED_BY_ALL;
-            $filteredMashableModelClassNames = LatestActivitiesUtil::resolveMashableModelClassNamesByFilteredBy(
-                            array('Mission', 'Conversation'), $filteredBy);
+            $modelClassNames = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
+
             $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                    LatestActivitiesUtil::
-                    getSearchAttributesDataByModelClassNamesAndRelatedItemIds($filteredMashableModelClassNames, array(), LatestActivitiesConfigurationForm::OWNED_BY_FILTER_ALL);
+                    MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy);
             $modelClassNamesAndSortAttributes = // Not Coding Standard
-                    LatestActivitiesUtil::getSortAttributesByMashableModelClassNames($filteredMashableModelClassNames);
-            $dataProvider = new RedBeanModelsDataProvider('CombinedInboxes', $modelClassNamesAndSortAttributes,
+                    MashableUtil::getSortAttributesByMashableInboxModelClassNames($modelClassNames);
+            $dataProvider = new RedBeanModelsDataProvider('MashableInbox', $modelClassNamesAndSortAttributes,
                             true, $modelClassNamesAndSearchAttributeData,
                             array('pagination' => array('pageSize' => $pageSize)));
-            $listView = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'CombinedInboxes', $dataProvider, array());
+            $listView = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'MashableInbox', $dataProvider, array());
         }
 
         $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $modelClassName, $actionViewOptions, $mashableInboxForm);

@@ -46,7 +46,7 @@
 
         public function getMachableInboxOrderByAttributeName()
         {
-            return null;
+            return 'id';
         }
 
         public function getActionViewOptions()
@@ -55,6 +55,30 @@
         }
 
         public function getMetadataFilteredByOption($option)
+        {
+            return self::getSearchAttributeData();
+        }
+
+        public function getMetadataFilteredByFilteredBy($filteredBy)
+        {
+            return null;
+        }
+
+        public function getModelStringContent(RedBeanModel $model)
+        {
+            $modelDisplayString = strval($model);
+            $params          = array('label' => $modelDisplayString, 'wrapLabel' => false);
+            $moduleClassName = $model->getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            return $modelDisplayString;
+        }
+
+        public function getModelCreationTimeContent(RedBeanModel $model)
+        {
+            return null;
+        }
+
+        public function getSearchAttributeData()
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -66,11 +90,6 @@
             );
             $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
-        }
-
-        public function getMetadataFilteredByFilteredBy($filteredBy)
-        {
-            return null;
         }
     }
 ?>
