@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('users');
+            return array('products, sellPriceFormulas, productTemplateBundleItems, productCategories');
         }
 
         public function makeAll(& $demoDataHelper)
@@ -63,7 +63,7 @@
             parent::populateModel($model);
             $productTemplateRandomData     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplate');
             $name                          = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
-            $type                          = 'Product';//RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplatesTypes'));
+            $type                          = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplatesTypes'));
 
             $model->name                   = $name;
             $model->priceFrequency         = 2;

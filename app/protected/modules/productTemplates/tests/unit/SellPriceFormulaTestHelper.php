@@ -24,41 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class that builds demo product bundles.
-     */
-    class ProductTemplateBundlesDemoDataMaker extends DemoDataMaker
+    class SellPriceFormulaTestHelper
     {
-        protected $ratioToLoad = 1;
-
-        public static function getDependencies()
+        public static function createSellPriceFormulaWithProductTemplateByName($name, $productTemplate)
         {
-            return array('productTemplateBundleItems');
-        }
-
-        public function makeAll(& $demoDataHelper)
-        {
-            assert('$demoDataHelper instanceof DemoDataHelper');
-            $productTemplateBundles = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
-            {
-                $productTemplateBundle = new ProductTemplateBundle();
-                $this->populateModel($productTemplateBundle);
-                $saved = $productTemplateBundle->save();
-                assert('$saved');
-                $productTemplateBundles[] = $productTemplateBundle->id;
-            }
-            $demoDataHelper->setRangeByModelName('ProductTemplateBundle', $productTemplateBundles[0], $productTemplateBundles[count($productTemplateBundles)-1]);
-        }
-
-        public function populateModel(& $model)
-        {
-            assert('$model instanceof ProductTemplateBundle');
-            parent::populateModel($model);
-            $productTemplateBundleRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplateBundle');
-            $name    = RandomDataUtil::getRandomValueFromArray($productTemplateBundleRandomData['names']);
-
-            $model->name            = $name;
+            $sellPriceFormula                             = new SellPriceFormula();
+            $sellPriceFormula->name                       = $name;
+            $sellPriceFormula->type                       = 'Editable';
+            $sellPriceFormula->discountOrMarkupPercentage = 10;
+            $sellPriceFormula->productTemplate            = $productTemplate;
+            $saved                                        = $sellPriceFormula->save();
+            assert('$saved');
+            return $sellPriceFormula;
         }
     }
 ?>

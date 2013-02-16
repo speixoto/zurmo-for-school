@@ -25,40 +25,12 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo product catalogs.
+     * Product related array of random seed data parts.
      */
-    class ProductCatalogsDemoDataMaker extends DemoDataMaker
-    {
-        protected $ratioToLoad = 1;
-
-        public static function getDependencies()
-        {
-            return array('productCategories');
-        }
-
-        public function makeAll(& $demoDataHelper)
-        {
-            assert('$demoDataHelper instanceof DemoDataHelper');
-            $productCatalogs = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
-            {
-                $productCatalog = new ProductCatalog();
-                $this->populateModel($productCatalog);
-                $saved = $productCatalog->save();
-                assert('$saved');
-                $productCatalogs[] = $productCatalog->id;
-            }
-            $demoDataHelper->setRangeByModelName('ProductCatalog', $productCatalogs[0], $productCatalogs[count($productCatalogs)-1]);
-        }
-
-        public function populateModel(& $model)
-        {
-            assert('$model instanceof ProductCatalog');
-            parent::populateModel($model);
-            $productCatalogRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductCatalog');
-            $name    = RandomDataUtil::getRandomValueFromArray($productCatalogRandomData['names']);
-
-            $model->name            = $name;
-        }
-    }
+    return array(
+        'names' => array(
+            'Product 1',
+            'Product 2',
+        )
+    );
 ?>

@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('users');
+            return array('productCatalogs, productTemplates');
         }
 
         public function makeAll(& $demoDataHelper)

@@ -40,6 +40,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
+                    'name',
                     'type',
                     'discountOrMarkupPercentage',
                 ),
@@ -47,6 +48,9 @@
                     'productTemplate'    => array(RedBeanModel::HAS_ONE,              'ProductTemplate'),
                 ),
                 'rules' => array(
+                    array('name',           'required'),
+                    array('name',           'type',    'type' => 'string'),
+                    array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('type',                        'type',    'type' => 'string'),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
                 ),

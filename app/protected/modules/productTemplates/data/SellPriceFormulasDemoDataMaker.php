@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('users');
+            return array('productTemplates');
         }
 
         public function makeAll(& $demoDataHelper)
@@ -55,7 +55,10 @@
         {
             assert('$model instanceof SellPriceFormula');
             parent::populateModel($model);
+            $sellPriceFormulaRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'SellPriceFormula');
+            $name                       = RandomDataUtil::getRandomValueFromArray($sellPriceFormulaRandomData['names']);
 
+            $model->name                          = $name;
             $model->type                          = 'Editable';
             $model->discountOrMarkupPercentage    = 10;
         }

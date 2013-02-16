@@ -40,6 +40,7 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
+                    'name',
                     'quantity',
                 ),
                 'relations' => array(
@@ -47,6 +48,9 @@
                     'productTemplateBundles'    => array(RedBeanModel::HAS_MANY,             'ProductTemplateBundle'),
                 ),
                 'rules' => array(
+                    array('name',           'required'),
+                    array('name',           'type',    'type' => 'string'),
+                    array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('quantity',                    'type',    'type' => 'integer'),
                 ),
                 'defaultSortAttribute' => 'quantity',

@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('users');
+            return array('productTemplateBundles, productTemplates');
         }
 
         public function makeAll(& $demoDataHelper)
@@ -55,7 +55,10 @@
         {
             assert('$model instanceof ProductTemplateBundleItem');
             parent::populateModel($model);
+            $productTemplateBundleItemRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplateBundleItem');
+            $name                                = RandomDataUtil::getRandomValueFromArray($productTemplateBundleItemRandomData['names']);
 
+            $model->name                = $name;
             $model->quantity            = mt_rand(5, 350) * 1000;
         }
     }

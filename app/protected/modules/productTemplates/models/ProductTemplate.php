@@ -35,10 +35,10 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'product'                => 'ProductsModuleSingularLabel',
-                    'sellPriceFormula'       => 'SellPriceFormulasModuleSingularLabel',
-                    'productTemplateBundles' => 'ProductTemplateBundlesModulePluralLabel',
-                    'productCategories'      => 'ContactsModulePluralLabel',
+                    'product'                   => 'ProductsModuleSingularLabel',
+                    'sellPriceFormula'          => 'SellPriceFormulasModuleSingularLabel',
+                    'productTemplateBundleItem' => 'ProductTemplateBundleItemsModuleSingularLabel',
+                    'productCategories'         => 'ContactsModulePluralLabel',
                 )
             );
         }
@@ -102,7 +102,6 @@
                 'relations' => array(
                     'product'                   => array(RedBeanModel::HAS_ONE,              'Product'),
                     'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,              'SellPriceFormula'),
-                    'productTemplateBundles'    => array(RedBeanModel::MANY_MANY,            'ProductTemplateBundle'),
                     'productTemplateBundleItem' => array(RedBeanModel::HAS_ONE,              'ProductTemplateBundleItem'),
                     'productCategories'         => array(RedBeanModel::MANY_MANY,            'ProductCategory'),
                     'type'                      => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),

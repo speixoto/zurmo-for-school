@@ -63,7 +63,7 @@
                     'showMenusLink' => true,
                 ),
                 'globalSearchAttributeNames' => array(
-                    'name',
+                    'quantity',
                 ),
                 'tabMenuItems' => array(
                     array(

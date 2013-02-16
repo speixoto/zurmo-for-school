@@ -39,9 +39,10 @@
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
-            assert('$demoDataHelper->isSetRange("Account")');
             assert('$demoDataHelper->isSetRange("Contact")');
+            assert('$demoDataHelper->isSetRange("Account")');
+            assert('$demoDataHelper->isSetRange("Opportunity")');
+            assert('$demoDataHelper->isSetRange("User")');
             $products = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
@@ -63,9 +64,12 @@
             assert('$model instanceof Product');
             parent::populateModel($model);
             $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
+            $productRandomData     = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
+            $name                  = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
 
-            $model->quantity        = mt_rand(1, 95);
-            $model->stage->value    = $stage;
+            $model->name           = $name;
+            $model->quantity       = mt_rand(1, 95);
+            $model->stage->value   = $stage;
         }
     }
 ?>
