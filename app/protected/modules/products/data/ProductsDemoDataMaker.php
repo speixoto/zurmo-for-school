@@ -65,7 +65,7 @@
             parent::populateModel($model);
             $productRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductsModule', 'Product');
             $name    = RandomDataUtil::getRandomValueFromArray($productRandomData['names']);
-            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductTemplateStages'));
+            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
 
             $model->name            = $name;
             $model->quantity        = mt_rand(1, 95);

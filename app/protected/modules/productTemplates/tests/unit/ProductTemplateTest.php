@@ -44,15 +44,34 @@
             $user                                    = UserTestHelper::createBasicUser('Steven');
             $productTemplate                         = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
             $productTemplate->product                = ProductTestHelper::createProductByNameForOwner('Product', $user);
-            $productTemplates[]                      = ProductTemplatesTestHelper::createProductTemplateByName('Product Template 1');
-            $productTemplates[]                      = ProductTemplatesTestHelper::createProductTemplateByName('Product Template 2');
-            $productTemplates[]                      = ProductTemplatesTestHelper::createProductTemplateByName('Product Template 3');
-            $productTemplate->productTemplateBundles = ProductTemplateBundleTestHelper::createProductTemplateBundleWithProductsByName('ProductTemplateBundle', $productTemplates);
+            $productTemplate1                        = ProductTemplateTestHelper::createProductTemplateByName('Product Template 1');
+            $productTemplate2                        = ProductTemplateTestHelper::createProductTemplateByName('Product Template 2');
+            $productTemplate->productTemplateBundles->add(ProductTemplateBundleTestHelper::createProductTemplateBundleWithProductTemplatesByName('ProductTemplateBundle', $productTemplate1, $productTemplate2));
             $this->assertTrue($productTemplate->save());
             $id                                      = $productTemplate->id;
             unset($productTemplate);
             $productTemplate                         = ProductTemplate::getById($id);
             $this->assertEquals('ProductTemplate', $productTemplate->name);
+        }
+
+        public function testCreate()
+        {
+            $productTemplate = new ProductTemplate();
+            assert('$productTemplate instanceof ProductTemplate');
+            $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplate');
+            $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
+            $type    = 'Product';
+
+            $productTemplate->name                   = $name;
+            $productTemplate->priceFrequency->value  = mt_rand(5, 350) * 1000;
+            $productTemplate->cost->value            = mt_rand(5, 350) * 1000;
+            $productTemplate->listPrice->value       = mt_rand(5, 350) * 1000;
+            $productTemplate->sellPrice->value       = mt_rand(5, 350) * 1000;
+            $productTemplate->type->value            = $type;
+
+            $saved = $productTemplate->save();
+            assert('$saved');
+            $productTemplates[] = $productTemplate->id;
         }
     }
 ?>

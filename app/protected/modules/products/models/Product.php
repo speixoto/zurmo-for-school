@@ -115,7 +115,7 @@
                     'description'    => 'TextArea',
                 ),
                 'customFields' => array(
-                    'stage'    => 'ProductTemplateStages',
+                    'stage'    => 'ProductStages',
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(

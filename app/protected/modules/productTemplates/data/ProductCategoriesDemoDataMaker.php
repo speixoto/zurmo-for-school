@@ -39,7 +39,6 @@
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            $currencies = Currency::getAll('id');
             $productCategories = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
@@ -56,7 +55,7 @@
         {
             assert('$model instanceof ProductCategory');
             parent::populateModel($model);
-            $productCategoryRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductCategoriesModule', 'ProductCategory');
+            $productCategoryRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductCategory');
             $name    = RandomDataUtil::getRandomValueFromArray($productCategoryRandomData['names']);
 
             $model->name            = $name;

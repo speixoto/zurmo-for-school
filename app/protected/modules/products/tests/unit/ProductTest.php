@@ -58,5 +58,6 @@
             $product                         = Product::getById($id);
             $this->assertEquals('Product', $product->name);
         }
+
     }
 ?>

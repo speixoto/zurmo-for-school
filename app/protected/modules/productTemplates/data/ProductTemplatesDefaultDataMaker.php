@@ -32,18 +32,11 @@
         public function make()
         {
             $values = array(
-                'Open',
-                'Lost',
-                'Won',
-            );
-            static::makeCustomFieldDataByValuesAndDefault('ProductTemplateStages', $values);
-
-            $values = array(
                 'Product',
                 'Service',
                 'Subscription',
             );
-            static::makeCustomFieldDataByValuesAndDefault('ProductTemplateTypes', $values);
+            static::makeCustomFieldDataByValuesAndDefault('ProductTemplatesTypes', $values);
         }
     }
 ?>
