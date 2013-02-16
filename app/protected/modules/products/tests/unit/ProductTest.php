@@ -42,7 +42,7 @@
         public function testCreateAndGetProductById()
         {
             $user                            = UserTestHelper::createBasicUser('Steven');
-            $product                         = ProductTestHelper::createProductByNameForOwner('Product', $user);
+            $product                         = ProductTestHelper::createProductForOwner($user);
             $product->contact                = ContactTestHelper::createContactByNameForOwner('Contact', $user);
             $product->account                = AccountTestHelper::createAccountByNameForOwner('Account', $user);
             $product->opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('Opportunity', $user);
@@ -56,7 +56,7 @@
             $id                              = $product->id;
             unset($product);
             $product                         = Product::getById($id);
-            $this->assertEquals('Product', $product->name);
+            $this->assertEquals(2, $product->quantity);
         }
 
     }

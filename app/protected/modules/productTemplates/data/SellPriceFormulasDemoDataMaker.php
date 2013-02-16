@@ -25,12 +25,39 @@
      ********************************************************************************/
 
     /**
-     * Product related array of random seed data parts.
+     * Class that builds demo sell price formulas.
      */
-    return array(
-        'names' => array(
-            'Product 1',
-            'Product 2',
-        )
-    );
+    class SellPriceFormulasDemoDataMaker extends DemoDataMaker
+    {
+        protected $ratioToLoad = 1;
+
+        public static function getDependencies()
+        {
+            return array('users');
+        }
+
+        public function makeAll(& $demoDataHelper)
+        {
+            assert('$demoDataHelper instanceof DemoDataHelper');
+            $sellPriceFormulas = array();
+            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            {
+                $sellPriceFormula = new SellPriceFormula();
+                $this->populateModel($sellPriceFormula);
+                $saved = $sellPriceFormula->save();
+                assert('$saved');
+                $sellPriceFormulas[] = $sellPriceFormula->id;
+            }
+            $demoDataHelper->setRangeByModelName('ProductTemplateBundle', $sellPriceFormulas[0], $sellPriceFormulas[count($sellPriceFormulas)-1]);
+        }
+
+        public function populateModel(& $model)
+        {
+            assert('$model instanceof SellPriceFormula');
+            parent::populateModel($model);
+
+            $model->type                          = 'Editable';
+            $model->discountOrMarkupPercentage    = 10;
+        }
+    }
 ?>

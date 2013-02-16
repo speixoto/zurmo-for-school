@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class SellPriceFormula extends OwnedModel
+    class ProductTemplateBundleItem extends OwnedModel
     {
         public function __toString()
         {
@@ -40,17 +40,16 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'type',
-                    'discountOrMarkupPercentage',
+                    'quantity',
                 ),
                 'relations' => array(
-                    'productTemplate'    => array(RedBeanModel::HAS_ONE,              'ProductTemplate'),
+                    'productTemplate'           => array(RedBeanModel::HAS_ONE,              'ProductTemplate'),
+                    'productTemplateBundles'    => array(RedBeanModel::HAS_MANY,             'ProductTemplateBundle'),
                 ),
                 'rules' => array(
-                    array('type',                        'type',    'type' => 'string'),
-                    array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
+                    array('quantity',                    'type',    'type' => 'integer'),
                 ),
-                'defaultSortAttribute' => 'type',
+                'defaultSortAttribute' => 'quantity',
                 'customFields' => array(
                 ),
             );

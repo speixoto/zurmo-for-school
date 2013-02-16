@@ -92,7 +92,6 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
                     'description',
                     'quantity',
                 ),
@@ -104,9 +103,6 @@
                     'stage'              => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('name',           'required'),
-                    array('name',           'type',    'type' => 'string'),
-                    array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
                     array('quantity',       'type',    'type' => 'integer'),
                     array('stage',          'required'),
@@ -117,7 +113,7 @@
                 'customFields' => array(
                     'stage'    => 'ProductStages',
                 ),
-                'defaultSortAttribute' => 'name',
+                'defaultSortAttribute' => 'quantity',
                 'noAudit' => array(
                 ),
             );

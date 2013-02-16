@@ -25,47 +25,38 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo products.
+     * Class that builds demo product bundle items.
      */
-    class ProductsDemoDataMaker extends DemoDataMaker
+    class ProductTemplateBundleItemsDemoDataMaker extends DemoDataMaker
     {
         protected $ratioToLoad = 1;
 
         public static function getDependencies()
         {
-            return array('opportunities');
+            return array('users');
         }
 
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
-            assert('$demoDataHelper->isSetRange("Account")');
-            assert('$demoDataHelper->isSetRange("Contact")');
-            $products = array();
+            $productTemplateBundleItems = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $product = new Product();
-                $product->contact          = $demoDataHelper->getRandomByModelName('Contact');
-                $product->account          = $demoDataHelper->getRandomByModelName('Account');
-                $product->opportunity      = $demoDataHelper->getRandomByModelName('Opportunity');
-                $product->owner            = $demoDataHelper->getRandomByModelName('User');
-                $this->populateModel($product);
-                $saved                     = $product->save();
+                $productTemplateBundleItem = new ProductTemplateBundleItem();
+                $this->populateModel($productTemplateBundleItem);
+                $saved = $productTemplateBundleItem->save();
                 assert('$saved');
-                $products[]                = $product->id;
+                $productTemplateBundleItems[] = $productTemplateBundleItem->id;
             }
-            $demoDataHelper->setRangeByModelName('Product', $products[0], $products[count($products)-1]);
+            $demoDataHelper->setRangeByModelName('ProductTemplateBundleItem', $productTemplateBundleItems[0], $productTemplateBundleItems[count($productTemplateBundleItems)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof Product');
+            assert('$model instanceof ProductTemplateBundleItem');
             parent::populateModel($model);
-            $stage   = RandomDataUtil::getRandomValueFromArray(static::getCustomFieldDataByName('ProductStages'));
 
-            $model->quantity        = mt_rand(1, 95);
-            $model->stage->value    = $stage;
+            $model->quantity            = mt_rand(5, 350) * 1000;
         }
     }
 ?>

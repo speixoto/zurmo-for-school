@@ -26,11 +26,10 @@
 
     class ProductTestHelper
     {
-        public static function createProductByNameForOwner($name, $owner)
+        public static function createProductForOwner($owner)
         {
             $product                         = new Product();
             $product->owner                  = $owner;
-            $product->name                   = $name;
             $product->description            = 'Description';
             $product->quantity               = 2;
             $product->stage->value           = 'Open';
