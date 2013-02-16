@@ -42,21 +42,16 @@
         public function testCreateAndGetProductById()
         {
             $user                            = UserTestHelper::createBasicUser('Steven');
-            $product                         = ProductTestHelper::createProductForOwner($user);
+            $product                         = ProductTestHelper::createProductByNameForOwner('Product', $user);
             $product->contact                = ContactTestHelper::createContactByNameForOwner('Contact', $user);
             $product->account                = AccountTestHelper::createAccountByNameForOwner('Account', $user);
             $product->opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('Opportunity', $user);
-            $productTemplate1                = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate 1');
-            $productTemplate2                = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate 2');
-            $productTemplate                 = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
-            $productTemplateBundle           = ProductTemplateBundleTestHelper::createProductTemplateBundleWithProductTemplatesByName('ProductTemplateBundle', $productTemplate1, $productTemplate2);
-            $productTemplate->productTemplateBundles->add($productTemplateBundle);
-            $product->productTemplate        = $productTemplate;
+            $product->productTemplate        = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
             $this->assertTrue($product->save());
             $id                              = $product->id;
             unset($product);
             $product                         = Product::getById($id);
-            $this->assertEquals(2, $product->quantity);
+            $this->assertEquals('Product', $product->name);
         }
 
     }

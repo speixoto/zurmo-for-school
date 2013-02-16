@@ -39,21 +39,6 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testCreateAndGetProductTemplateById()
-        {
-            $user                                    = UserTestHelper::createBasicUser('Steven');
-            $productTemplate                         = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
-            $productTemplate->product                = ProductTestHelper::createProductByNameForOwner('Product', $user);
-            $productTemplate1                        = ProductTemplateTestHelper::createProductTemplateByName('Product Template 1');
-            $productTemplate2                        = ProductTemplateTestHelper::createProductTemplateByName('Product Template 2');
-            $productTemplate->productTemplateBundles->add(ProductTemplateBundleTestHelper::createProductTemplateBundleWithProductTemplatesByName('ProductTemplateBundle', $productTemplate1, $productTemplate2));
-            $this->assertTrue($productTemplate->save());
-            $id                                      = $productTemplate->id;
-            unset($productTemplate);
-            $productTemplate                         = ProductTemplate::getById($id);
-            $this->assertEquals('ProductTemplate', $productTemplate->name);
-        }
-
         public function testDemoDataMaker()
         {
             $productTemplate = new ProductTemplate();
@@ -61,13 +46,27 @@
             $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
             $type    = 'Product';
             $productTemplate->name                   = $name;
-            $productTemplate->priceFrequency->value  = 2;
+            $productTemplate->priceFrequency         = 2;
             $productTemplate->cost->value            = 200;
             $productTemplate->listPrice->value       = 200;
             $productTemplate->sellPrice->value       = 200;
             $productTemplate->type->value            = $type;
             $this->assertTrue($productTemplate->save());
             $productTemplates[] = $productTemplate->id;
+        }
+
+        public function testCreateAndGetProductTemplateById()
+        {
+            $user                                       = UserTestHelper::createBasicUser('Steven');
+            $productTemplate                            = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
+            $productTemplate->product                   = ProductTestHelper::createProductByNameForOwner('Product', $user);
+            $productTemplate->productTemplateBundleItem = new ProductTemplateBundleItem();
+            $productTemplate->sellPriceFormula          = new SellPriceFormula();
+            $this->assertTrue($productTemplate->save());
+            $id                                         = $productTemplate->id;
+            unset($productTemplate);
+            $productTemplate                            = ProductTemplate::getById($id);
+            $this->assertEquals('ProductTemplate', $productTemplate->name);
         }
     }
 ?>

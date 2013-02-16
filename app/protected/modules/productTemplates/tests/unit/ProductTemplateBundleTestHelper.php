@@ -26,12 +26,21 @@
 
     class ProductTemplateBundleTestHelper
     {
-        public static function createProductTemplateBundleWithProductTemplatesByName($name, $productTemplate1, $productTemplate2)
+        public static function createProductTemplateBundleByName($name)
         {
             $productTemplateBundle                          = new ProductTemplateBundle();
             $productTemplateBundle->name                    = $name;
-            $productTemplateBundle->productTemplates->add($productTemplate1);
-            $productTemplateBundle->productTemplates->add($productTemplate2);
+            $saved                                          = $productTemplateBundle->save();
+            assert('$saved');
+            return $productTemplateBundle;
+        }
+
+        public static function createProductTemplateBundleWithProductTemplateBundleItemsByName($name, $productTemplateBundleItem1, $productTemplateBundleItem2)
+        {
+            $productTemplateBundle                          = new ProductTemplateBundle();
+            $productTemplateBundle->name                    = $name;
+            $productTemplateBundle->productTemplateBundleItems->add($productTemplateBundleItem1);
+            $productTemplateBundle->productTemplateBundleItems->add($productTemplateBundleItem2);
             $saved                                          = $productTemplateBundle->save();
             assert('$saved');
             return $productTemplateBundle;
