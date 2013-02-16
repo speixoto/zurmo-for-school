@@ -57,20 +57,16 @@
         public function testCreate()
         {
             $productTemplate = new ProductTemplate();
-            assert('$productTemplate instanceof ProductTemplate');
             $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplate');
             $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
             $type    = 'Product';
-
             $productTemplate->name                   = $name;
             $productTemplate->priceFrequency->value  = mt_rand(5, 350) * 1000;
             $productTemplate->cost->value            = mt_rand(5, 350) * 1000;
             $productTemplate->listPrice->value       = mt_rand(5, 350) * 1000;
             $productTemplate->sellPrice->value       = mt_rand(5, 350) * 1000;
             $productTemplate->type->value            = $type;
-
-            $saved = $productTemplate->save();
-            assert('$saved');
+            $this->assertTrue($productTemplate->save());
             $productTemplates[] = $productTemplate->id;
         }
     }
