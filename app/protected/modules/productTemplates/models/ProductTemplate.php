@@ -26,6 +26,13 @@
 
     class ProductTemplate extends Item
     {
+        const TYPE_PRODUCT      = 1;
+        const TYPE_SERVICE      = 2;
+        const TYPE_SUBSCRIPTION = 3;
+
+        const STATUS_INACTIVE   = 4;
+        const STATUS_ACTIVE     = 5;
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -96,13 +103,13 @@
                     'cost',
                     'listPrice',
                     'sellPrice',
+                    'status',
+                    'type',
                 ),
                 'relations' => array(
-                    'product'                   => array(RedBeanModel::HAS_ONE,   'Product'),
+                    'products'                  => array(RedBeanModel::MANY_MANY, 'Product'),
                     'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
-                    'productTemplateBundleItem' => array(RedBeanModel::HAS_ONE,   'ProductTemplateBundleItem', RedBeanModel::OWNED),
                     'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
-                    'type'                      => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
                     'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
                     'listPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
                     'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
@@ -112,6 +119,8 @@
                     array('name',           'type',    'type' => 'string'),
                     array('name',           'length',  'min'  => 3, 'max' => 64),
                     array('description',    'type',    'type' => 'string'),
+                    array('status',         'type',    'type' => 'integer'),
+                    array('type',           'type',    'type' => 'integer'),
                     array('priceFrequency', 'type',    'type' => 'integer'),
                     array('cost',           'required'),
                     array('listPrice',      'required'),
@@ -125,7 +134,6 @@
                     'sellPrice'      => 'CurrencyValue',
                 ),
                 'customFields' => array(
-                    'type'     => 'ProductTemplateTypes',
                 ),
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(

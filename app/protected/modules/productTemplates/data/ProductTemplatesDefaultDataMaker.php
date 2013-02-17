@@ -29,14 +29,5 @@
      */
     class ProductTemplatesDefaultDataMaker extends DefaultDataMaker
     {
-        public function make()
-        {
-            $values = array(
-                'Product',
-                'Service',
-                'Subscription',
-            );
-            static::makeCustomFieldDataByValuesAndDefault('ProductTemplatesTypes', $values);
-        }
     }
 ?>

@@ -117,7 +117,7 @@
                 'customFields' => array(
                     'stage'    => 'ProductStages',
                 ),
-                'defaultSortAttribute' => 'quantity',
+                'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
             );

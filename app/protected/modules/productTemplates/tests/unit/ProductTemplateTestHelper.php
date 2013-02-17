@@ -39,7 +39,8 @@
             $productTemplate->cost           = $currencyValue;
             $productTemplate->listPrice      = $currencyValue;
             $productTemplate->sellPrice      = $currencyValue;
-            $productTemplate->type->value    = 'Physical';
+            $productTemplate->type           = ProductTemplate::TYPE_PRODUCT;
+            $productTemplate->status         = ProductTemplate::STATUS_ACTIVE;
             $saved                           = $productTemplate->save();
             assert('$saved');
             return $productTemplate;

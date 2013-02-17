@@ -45,7 +45,6 @@
                 ),
                 'relations' => array(
                     'productTemplate'        => array(RedBeanModel::HAS_ONE,  'ProductTemplate'),
-                    'productTemplateBundles' => array(RedBeanModel::HAS_MANY, 'ProductTemplateBundle'),
                 ),
                 'rules' => array(
                     array('name',      'required'),

@@ -64,14 +64,13 @@
             $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
                                             'ProductTemplatesModule', 'ProductTemplate');
             $name                      = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
-            $type                      = RandomDataUtil::getRandomValueFromArray(
-                                            static::getCustomFieldDataByName('ProductTemplatesTypes'));
             $model->name               = $name;
             $model->priceFrequency     = 2;
             $model->cost->value        = mt_rand(5, 350) * 1000;
             $model->listPrice->value   = mt_rand(5, 350) * 1000;
             $model->sellPrice->value   = mt_rand(5, 350) * 1000;
-            $model->type->value        = $type;
+            $model->status             = ProductTemplate::STATUS_ACTIVE;
+            $model->type               = ProductTemplate::TYPE_PRODUCT;
         }
     }
 ?>

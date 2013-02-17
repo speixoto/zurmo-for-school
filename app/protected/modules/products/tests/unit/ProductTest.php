@@ -30,41 +30,44 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
-            SecurityTestHelper::createUsers();
-        }
-
-        public function setUp()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            //Setup test data owned by the super user.
+            $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('superOpportunity', $super);
+            $productTemplate = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
         }
 
         public function testCreateAndGetProductById()
         {
-            $user                     = UserTestHelper::createBasicUser('Steven');
+            $accounts         = Account::getByName('superAccount');
+            $opportunities    = Opportunity::getByName('superOpportunity');
+            $productTemplates = ProductTemplate::getByName('superProductTemplate');
+            $account          = $accounts[0];
+            $user             = $account->owner;
+
             $product                  = new Product();
-            $product->name            = 'Product';
+            $product->name            = 'Product 1';
             $product->owner           = $user;
             $product->description     = 'Description';
             $product->quantity        = 2;
             $product->stage->value    = 'Open';
-            $product->contact         = ContactTestHelper::createContactByNameForOwner('Contact', $user);
-            $product->account         = AccountTestHelper::createAccountByNameForOwner('Account', $user);
-            $product->opportunity     = OpportunityTestHelper::createOpportunityByNameForOwner('Opportunity', $user);
-            $product->productTemplate = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
+            $product->account         = $accounts[0];
+            $product->opportunity     = $opportunities[0];
+            $product->productTemplate = $productTemplates[0];
             $this->assertTrue($product->save());
             $id                       = $product->id;
+            $product->forget();
             unset($product);
             $product                  = Product::getById($id);
-            $this->assertEquals('Product', $product->name);
+            $this->assertEquals('Product 1', $product->name);
             $this->assertEquals(2, $product->quantity);
             $this->assertEquals('Description', $product->description);
             $this->assertEquals('Open', $product->stage->value);
-            $this->assertEquals('Steven', $product->owner->firstName);
-            $this->assertEquals('Steven', $product->contact->owner->firstName);
-            $this->assertEquals('Steven', $product->account->owner->firstName);
-            $this->assertEquals('Steven', $product->opportunity->owner->firstName);
-            $this->assertEquals('ProductTemplate', $product->productTemplate->name);
+            $this->assertEquals($user->id, $product->owner->id);
+            $this->assertTrue($product->account->isSame($accounts[0]));
+            $this->assertTrue($product->opportunity->isSame($opportunities[0]));
+            $this->assertTrue($product->productTemplate->isSame($productTemplates[0]));
         }
 
     }
