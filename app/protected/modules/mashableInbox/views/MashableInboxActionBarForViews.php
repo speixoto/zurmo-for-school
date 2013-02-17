@@ -79,7 +79,7 @@
             $content .= $this->renderMashableInboxFormLayout($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
-            //$this->registerConfigurationFormLayoutScripts($form);
+            $this->registerFormScript($form);
             return $content;
         }
 
@@ -94,7 +94,6 @@
             $element      = new MashableInboxStatusRadioElement($model, 'filteredBy', $form);
             $element->editableTemplate =  '<div id="MashableInboxForm_filteredBy_area">{content}</div>';
             $content     .= $element->render();
-            $content     .= ZurmoHtml::submitButton('Filter', array('id' => 'filter'));
             return $content;
         }
 
@@ -123,6 +122,40 @@
                 $options[$option['type']] = $option['label'];
             }
             return $options;
+        }
+
+        private function registerFormScript($form)
+        {
+
+            $url = "";
+            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+                        'type'       => 'GET',
+                        'data'       => 'js:$("#' . $form->getId() . '").serialize()',
+                        'url'        =>  $url,
+                        'update'     => '.ListView',
+                        'beforeSend' => 'js:function(){makeSmallLoadingSpinner(); $(".ListView").addClass("loading");}',
+                        'complete'   => 'js:function()
+                                            {
+                                                $(".ListView").removeClass("loading");
+                                            }'
+                    ));
+            $script = "
+                    $('#MashableInboxForm_optionForModel_area').buttonset();
+                    $('#MashableInboxForm_filteredBy_area').buttonset();
+                    $('#MashableInboxForm_optionForModel_area').change(
+                        function()
+                        {
+                            " . $ajaxSubmitScript . "
+                        }
+                    );
+                    $('#MashableInboxForm_filteredBy_area').change(
+                        function()
+                        {
+                            " . $ajaxSubmitScript . "
+                        }
+                    );
+                ";
+             Yii::app()->clientScript->registerScript('MashableInboxForm', $script);
         }
     }
 ?>
