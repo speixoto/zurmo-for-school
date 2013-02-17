@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('productTemplateBundleItems');
+            return array();
         }
 
         public function makeAll(& $demoDataHelper)
