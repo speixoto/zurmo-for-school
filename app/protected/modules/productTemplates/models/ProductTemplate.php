@@ -36,9 +36,9 @@
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
                     'product'                   => 'ProductsModuleSingularLabel',
-                    'sellPriceFormula'          => 'ProductTemplatesModuleSingularLabel',
-                    'productTemplateBundleItem' => 'ProductTemplatesModuleSingularLabel',
-                    'productCategories'         => 'ProductTemplatesModulePluralLabel',
+                    'sellPriceFormula'          => 'SellPriceFormulasModuleSingularLabel',
+                    'productTemplateBundleItem' => 'ProductTemplateBundleItemsModuleSingularLabel',
+                    'productCategories'         => 'ProductCategoriesModulePluralLabel',
                 )
             );
         }
