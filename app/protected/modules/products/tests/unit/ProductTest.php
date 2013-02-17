@@ -36,10 +36,12 @@
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
             $opportunity = OpportunityTestHelper::createOpportunityByNameForOwner('superOpportunity', $super);
             $productTemplate = ProductTemplateTestHelper::createProductTemplateByName('superProductTemplate');
+            $contactWithNoAccount = ContactTestHelper::createContactByNameForOwner('noAccountContact', $super);
         }
 
         public function testCreateAndGetProductById()
         {
+            $contacts         = contact::getAll();
             $accounts         = Account::getByName('superAccount');
             $opportunities    = Opportunity::getByName('superOpportunity');
             $productTemplates = ProductTemplate::getByName('superProductTemplate');
@@ -53,6 +55,7 @@
             $product->quantity        = 2;
             $product->stage->value    = 'Open';
             $product->account         = $accounts[0];
+            $product->contact         = $contacts[0];
             $product->opportunity     = $opportunities[0];
             $product->productTemplate = $productTemplates[0];
             $this->assertTrue($product->save());
@@ -65,6 +68,7 @@
             $this->assertEquals('Description', $product->description);
             $this->assertEquals('Open', $product->stage->value);
             $this->assertEquals($user->id, $product->owner->id);
+            $this->assertTrue($product->contact->isSame($contacts[0]));
             $this->assertTrue($product->account->isSame($accounts[0]));
             $this->assertTrue($product->opportunity->isSame($opportunities[0]));
             $this->assertTrue($product->productTemplate->isSame($productTemplates[0]));
