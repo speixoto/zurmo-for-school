@@ -35,8 +35,8 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productTemplates'        => 'ProductTemplatesModulePluralLabel',
-                    'productCatalogs'         => 'ProductCatalogsModulePluralLabel'
+                    'productTemplates' => 'ProductTemplatesModulePluralLabel',
+                    'productCatalogs'  => 'ProductCatalogsModulePluralLabel'
                 )
             );
         }
@@ -93,13 +93,13 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productTemplates' => array(RedBeanModel::HAS_MANY,             'ProductTemplate'),
-                    'productCatalogs'  => array(RedBeanModel::HAS_MANY,             'ProductCatalog'),
+                    'productTemplates' => array(RedBeanModel::HAS_MANY, 'ProductTemplate'),
+                    'productCatalogs'  => array(RedBeanModel::HAS_MANY, 'ProductCatalog'),
                 ),
                 'rules' => array(
-                    array('name',           'required'),
-                    array('name',           'type',    'type' => 'string'),
-                    array('name',           'length',  'min'  => 3, 'max' => 64),
+                    array('name',  'required'),
+                    array('name',  'type',    'type' => 'string'),
+                    array('name',  'length',  'min'  => 3,  'max' => 64),
                 ),
                 'elements' => array(
                 ),

@@ -35,7 +35,8 @@
             return $productTemplateBundle;
         }
 
-        public static function createProductTemplateBundleWithProductTemplateBundleItemsByName($name, $productTemplateBundleItem1, $productTemplateBundleItem2)
+        public static function createProductTemplateBundleWithProductTemplateBundleItemsByName(
+                                $name, $productTemplateBundleItem1, $productTemplateBundleItem2)
         {
             $productTemplateBundle                          = new ProductTemplateBundle();
             $productTemplateBundle->name                    = $name;

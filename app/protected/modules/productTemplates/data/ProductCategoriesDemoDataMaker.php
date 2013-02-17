@@ -55,10 +55,10 @@
         {
             assert('$model instanceof ProductCategory');
             parent::populateModel($model);
-            $productCategoryRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductCategory');
-            $name    = RandomDataUtil::getRandomValueFromArray($productCategoryRandomData['names']);
-
-            $model->name            = $name;
+            $productCategoryRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                        'ProductTemplatesModule', 'ProductCategory');
+            $name        = RandomDataUtil::getRandomValueFromArray($productCategoryRandomData['names']);
+            $model->name = $name;
         }
     }
 ?>

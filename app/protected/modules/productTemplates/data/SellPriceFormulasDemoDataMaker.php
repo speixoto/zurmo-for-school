@@ -55,12 +55,12 @@
         {
             assert('$model instanceof SellPriceFormula');
             parent::populateModel($model);
-            $sellPriceFormulaRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'SellPriceFormula');
+            $sellPriceFormulaRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                            'ProductTemplatesModule', 'SellPriceFormula');
             $name                       = RandomDataUtil::getRandomValueFromArray($sellPriceFormulaRandomData['names']);
-
-            $model->name                          = $name;
-            $model->type                          = 'Editable';
-            $model->discountOrMarkupPercentage    = 10;
+            $model->name                       = $name;
+            $model->type                       = 'Editable';
+            $model->discountOrMarkupPercentage = 10;
         }
     }
 ?>

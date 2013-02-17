@@ -55,11 +55,11 @@
         {
             assert('$model instanceof ProductTemplateBundleItem');
             parent::populateModel($model);
-            $productTemplateBundleItemRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('ProductTemplatesModule', 'ProductTemplateBundleItem');
-            $name                                = RandomDataUtil::getRandomValueFromArray($productTemplateBundleItemRandomData['names']);
-
-            $model->name                = $name;
-            $model->quantity            = mt_rand(5, 350) * 1000;
+            $productTemplateBundleItemRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                                    'ProductTemplatesModule', 'ProductTemplateBundleItem');
+            $name            = RandomDataUtil::getRandomValueFromArray($productTemplateBundleItemRandomData['names']);
+            $model->name     = $name;
+            $model->quantity = mt_rand(5, 350) * 1000;
         }
     }
 ?>

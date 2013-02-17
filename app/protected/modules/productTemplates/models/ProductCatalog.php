@@ -92,12 +92,12 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productCategories'  => array(RedBeanModel::HAS_MANY,             'ProductCategory'),
+                    'productCategories' => array(RedBeanModel::HAS_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
-                    array('name',           'required'),
-                    array('name',           'type',    'type' => 'string'),
-                    array('name',           'length',  'min'  => 3, 'max' => 64),
+                    array('name',  'required'),
+                    array('name',  'type',    'type' => 'string'),
+                    array('name',  'length',  'min'  => 3,  'max' => 64),
                 ),
                 'elements' => array(
                 ),

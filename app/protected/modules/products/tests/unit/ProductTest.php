@@ -41,21 +41,21 @@
 
         public function testCreateAndGetProductById()
         {
-            $user                            = UserTestHelper::createBasicUser('Steven');
-            $product                         = new Product();
-            $product->name                   = 'Product';
-            $product->owner                  = $user;
-            $product->description            = 'Description';
-            $product->quantity               = 2;
-            $product->stage->value           = 'Open';
-            $product->contact                = ContactTestHelper::createContactByNameForOwner('Contact', $user);
-            $product->account                = AccountTestHelper::createAccountByNameForOwner('Account', $user);
-            $product->opportunity            = OpportunityTestHelper::createOpportunityByNameForOwner('Opportunity', $user);
-            $product->productTemplate        = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
+            $user                     = UserTestHelper::createBasicUser('Steven');
+            $product                  = new Product();
+            $product->name            = 'Product';
+            $product->owner           = $user;
+            $product->description     = 'Description';
+            $product->quantity        = 2;
+            $product->stage->value    = 'Open';
+            $product->contact         = ContactTestHelper::createContactByNameForOwner('Contact', $user);
+            $product->account         = AccountTestHelper::createAccountByNameForOwner('Account', $user);
+            $product->opportunity     = OpportunityTestHelper::createOpportunityByNameForOwner('Opportunity', $user);
+            $product->productTemplate = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
             $this->assertTrue($product->save());
-            $id                              = $product->id;
+            $id                       = $product->id;
             unset($product);
-            $product                         = Product::getById($id);
+            $product                  = Product::getById($id);
             $this->assertEquals('Product', $product->name);
             $this->assertEquals(2, $product->quantity);
             $this->assertEquals('Description', $product->description);

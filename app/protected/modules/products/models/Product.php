@@ -35,10 +35,10 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productTemplate'      => 'ProductTemplatesModuleSingularLabel',
-                    'contact'              => 'ContactsModuleSingularLabel',
-                    'account'              => 'AccountsModuleSingularLabel',
-                    'opportunity'          => 'OpportunitiesModuleSingularLabel',
+                    'productTemplate' => 'ProductTemplatesModuleSingularLabel',
+                    'contact'         => 'ContactsModuleSingularLabel',
+                    'account'         => 'AccountsModuleSingularLabel',
+                    'opportunity'     => 'OpportunitiesModuleSingularLabel',
                 )
             );
         }
@@ -97,19 +97,19 @@
                     'quantity',
                 ),
                 'relations' => array(
-                    'productTemplate'    => array(RedBeanModel::HAS_ONE,              'ProductTemplate'),
-                    'account'            => array(RedBeanModel::HAS_ONE,              'Account'),
-                    'contact'            => array(RedBeanModel::HAS_ONE,              'Contact'),
-                    'opportunity'        => array(RedBeanModel::HAS_ONE,              'Opportunity'),
-                    'stage'              => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'productTemplate' => array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
+                    'account'         => array(RedBeanModel::HAS_ONE, 'Account'),
+                    'contact'         => array(RedBeanModel::HAS_ONE, 'Contact'),
+                    'opportunity'     => array(RedBeanModel::HAS_ONE, 'Opportunity'),
+                    'stage'           => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
-                    array('name',           'required'),
-                    array('name',           'type',    'type' => 'string'),
-                    array('name',           'length',  'min'  => 3, 'max' => 64),
-                    array('description',    'type',    'type' => 'string'),
-                    array('quantity',       'type',    'type' => 'integer'),
-                    array('stage',          'required'),
+                    array('name',         'required'),
+                    array('name',         'type',    'type' => 'string'),
+                    array('name',         'length',  'min'  => 3, 'max' => 64),
+                    array('description',  'type',    'type' => 'string'),
+                    array('quantity',     'type',    'type' => 'integer'),
+                    array('stage',        'required'),
                 ),
                 'elements' => array(
                     'description'    => 'TextArea',
