@@ -36,8 +36,6 @@
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
                     'product'                   => 'ProductsModuleSingularLabel',
-                    'sellPriceFormula'          => 'SellPriceFormulasModuleSingularLabel',
-                    'productTemplateBundleItem' => 'ProductTemplateBundleItemsModuleSingularLabel',
                     'productCategories'         => 'ProductCategoriesModulePluralLabel',
                 )
             );
@@ -101,8 +99,8 @@
                 ),
                 'relations' => array(
                     'product'                   => array(RedBeanModel::HAS_ONE,   'Product'),
-                    'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula'),
-                    'productTemplateBundleItem' => array(RedBeanModel::HAS_ONE,   'ProductTemplateBundleItem'),
+                    'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
+                    'productTemplateBundleItem' => array(RedBeanModel::HAS_ONE,   'ProductTemplateBundleItem', RedBeanModel::OWNED),
                     'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
                     'type'                      => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
                     'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),

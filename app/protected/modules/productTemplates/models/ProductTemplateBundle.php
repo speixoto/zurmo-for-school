@@ -35,7 +35,6 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productTemplateBundleItems' => 'ProductTemplateBundleItemsModulePluralLabel',
                 )
             );
         }
@@ -92,7 +91,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productTemplateBundleItems' => array(RedBeanModel::HAS_MANY, 'ProductTemplateBundleItem'),
+                    'productTemplateBundleItems' => array(RedBeanModel::HAS_MANY, 'ProductTemplateBundleItem', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('name',  'required'),
