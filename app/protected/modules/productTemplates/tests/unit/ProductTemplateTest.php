@@ -58,7 +58,18 @@
         public function testCreateAndGetProductTemplateById()
         {
             $user                                       = UserTestHelper::createBasicUser('Steven');
-            $productTemplate                            = ProductTemplateTestHelper::createProductTemplateByName('ProductTemplate');
+            $currencies                                 = Currency::getAll();
+            $currencyValue                              = new CurrencyValue();
+            $currencyValue->value                       = 500.54;
+            $currencyValue->currency                    = $currencies[0];
+            $productTemplate                            = new ProductTemplate();
+            $productTemplate->name                      = 'ProductTemplate';
+            $productTemplate->description               = 'Description';
+            $productTemplate->priceFrequency            = 2;
+            $productTemplate->cost                      = $currencyValue;
+            $productTemplate->listPrice                 = $currencyValue;
+            $productTemplate->sellPrice                 = $currencyValue;
+            $productTemplate->type->value               = 'Physical';
             $productTemplate->product                   = ProductTestHelper::createProductByNameForOwner('Product', $user);
             $productTemplate->productTemplateBundleItem = new ProductTemplateBundleItem();
             $productTemplate->sellPriceFormula          = new SellPriceFormula();
@@ -67,6 +78,13 @@
             unset($productTemplate);
             $productTemplate                            = ProductTemplate::getById($id);
             $this->assertEquals('ProductTemplate', $productTemplate->name);
+            $this->assertEquals('Description', $productTemplate->description);
+            $this->assertEquals(2, $productTemplate->priceFrequency);
+            $this->assertEquals(500.54, $productTemplate->cost->value);
+            $this->assertEquals(500.54, $productTemplate->listPrice->value);
+            $this->assertEquals(500.54, $productTemplate->sellPrice->value);
+            $this->assertEquals('Physical', $productTemplate->type->value);
+            $this->assertEquals('Product', $productTemplate->product->name);
         }
     }
 ?>
