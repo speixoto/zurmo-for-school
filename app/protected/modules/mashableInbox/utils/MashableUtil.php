@@ -83,7 +83,7 @@
             return $unreadCount;
         }
 
-        public static function getSearchAttributesDataByModelClassNames($modelClassNames, $filteredBy)
+        public static function getSearchAttributesDataByModelClassNames($modelClassNames, $filteredBy, $searchTerm = '')
         {
             assert('is_array($modelClassNames)');
             assert('$filteredBy == MashableInboxForm::FILTERED_BY_ALL || $filteredBy == MashableInboxForm::FILTERED_BY_UNREAD');
@@ -93,7 +93,7 @@
                 $mashableActivityRules =
                         MashableUtil::createMashableInboxRulesByModel($modelClassName);
                 $searchAttributesData =
-                        $mashableActivityRules->getSearchAttributeData();
+                        $mashableActivityRules->getSearchAttributeData($searchTerm);
                 $metadataFilteredBy =
                         $mashableActivityRules->getMetadataFilteredByFilteredBy($filteredBy);
                 $searchAttributesDataAndByFiltered = static::mergeMetada($searchAttributesData, $metadataFilteredBy);

@@ -118,5 +118,16 @@
             }
             return $metadata;
         }
+        
+        public function getSearchAttributeData($searchTerm)
+        {
+            $metadata['clauses'][1] = array(
+                            'attributeName'        => 'description',
+                            'operatorType'         => 'contains',
+                            'value'                => $searchTerm
+                        );
+            $metadata['structure'] = "1";
+            return $metadata;
+        }
     }
 ?>

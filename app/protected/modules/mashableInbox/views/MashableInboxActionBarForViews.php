@@ -28,7 +28,7 @@
     {
         private $actionViewOptions;
 
-        private $listViewModelClassName;
+        private $listView;
 
         public static function getDefaultMetadata()
         {
@@ -46,11 +46,11 @@
             return $metadata;
         }
 
-        public function __construct($controllerId, $moduleId, $listViewModelClassName, Array $actionViewOptions, MashableInboxForm $mashableInboxForm)
+        public function __construct($controllerId, $moduleId, $listView, Array $actionViewOptions, MashableInboxForm $mashableInboxForm)
         {
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
-            $this->listViewModelClassName    = $listViewModelClassName;
+            $this->listView                  = $listView;
             $this->actionViewOptions         = $actionViewOptions;
             $this->mashableInboxForm         = $mashableInboxForm;
         }
@@ -62,6 +62,7 @@
             $content .= $this->renderMashableInboxModels();
             $content .= '</div></div>';
             $content .= $this->renderMashableInboxForm();
+            $content .= ZurmoHtml::tag('div', array('id' => 'MashableInboxListViewWrapper'), $this->listView->render());
             return $content;
         }
 
@@ -88,6 +89,7 @@
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
             $model        = $this->mashableInboxForm;
+            $content      = $this->renderSearchView($model, $form);
             $element      = new MashableInboxOptionsByModelRadioElement($model, 'optionForModel', $form, array(), $this->getArrayForByModelRadioElement());
             $element->editableTemplate =  '<div id="MashableInboxForm_optionForModel_area">{content}</div>';
             $content     .= $element->render();
@@ -95,6 +97,19 @@
             $element->editableTemplate =  '<div id="MashableInboxForm_filteredBy_area">{content}</div>';
             $content     .= $element->render();
             return $content;
+        }
+
+        private function renderSummaryCloneContent()
+        {
+            return "<div class='list-view-items-summary-clone'></div>";
+        }
+
+        private function renderSearchView($model, $form)
+        {
+            $element  = new MashableInboxSearchElement($model, 'searchTerm', $form);
+            $content  = $element->render();
+            $content .= $this->renderSummaryCloneContent();
+            return ZurmoHtml::tag('div', array('class' => 'SearchView'), $content);
         }
 
         private function renderMashableInboxModels()
@@ -126,22 +141,23 @@
 
         private function registerFormScript($form)
         {
-
             $url = "";
             $ajaxSubmitScript = ZurmoHtml::ajax(array(
                         'type'       => 'GET',
                         'data'       => 'js:$("#' . $form->getId() . '").serialize()',
                         'url'        =>  $url,
-                        'update'     => '.ListView',
-                        'beforeSend' => 'js:function(){makeSmallLoadingSpinner(); $(".ListView").addClass("loading");}',
+                        'update'     => '#MashableInboxListViewWrapper',
+                        'beforeSend' => 'js:function(){makeSmallLoadingSpinner(); $("#MashableInboxListViewWrapper").addClass("loading");}',
                         'complete'   => 'js:function()
                                             {
-                                                $(".ListView").removeClass("loading");
+                                                $("#MashableInboxListViewWrapper").removeClass("loading");
+                                                processListViewSummaryClone("MashableInboxListViewWrapper", "summary");
                                             }'
                     ));
             $script = "
                     $('#MashableInboxForm_optionForModel_area').buttonset();
                     $('#MashableInboxForm_filteredBy_area').buttonset();
+                    processListViewSummaryClone('MashableInboxListViewWrapper', 'summary');
                     $('#MashableInboxForm_optionForModel_area').change(
                         function()
                         {

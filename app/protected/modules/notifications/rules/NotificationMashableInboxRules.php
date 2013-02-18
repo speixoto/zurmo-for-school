@@ -78,7 +78,7 @@
             return null;
         }
 
-        public function getSearchAttributeData()
+        public function getSearchAttributeData($searchTerm = '')
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(

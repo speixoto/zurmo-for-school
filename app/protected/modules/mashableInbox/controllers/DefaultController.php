@@ -37,12 +37,12 @@ class MashableInboxDefaultController extends ZurmoModuleController {
             $mashableInboxForm->attributes = $getData["MashableInboxForm"];
             if ($modelClassName != '') {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-                $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy);
+                $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
             } else {
                 $modelClassNames = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
 
                 $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                        MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy);
+                        MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
                 $modelClassNamesAndSortAttributes = // Not Coding Standard
                         MashableUtil::getSortAttributesByMashableInboxModelClassNames($modelClassNames);
                 $dataProvider = new RedBeanModelsDataProvider('MashableInbox', $modelClassNamesAndSortAttributes,
@@ -67,7 +67,7 @@ class MashableInboxDefaultController extends ZurmoModuleController {
                 $modelClassNames = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
 
                 $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                        MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy);
+                        MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
                 $modelClassNamesAndSortAttributes = // Not Coding Standard
                         MashableUtil::getSortAttributesByMashableInboxModelClassNames($modelClassNames);
                 $dataProvider = new RedBeanModelsDataProvider('MashableInbox', $modelClassNamesAndSortAttributes,
@@ -75,12 +75,9 @@ class MashableInboxDefaultController extends ZurmoModuleController {
                                 array('pagination' => array('pageSize' => $pageSize)));
                 $listView = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'MashableInbox', $dataProvider, array());
             }
-            $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), 'MashableInboxListView', $actionViewOptions, $mashableInboxForm);
-            $gridView = new GridView(1, 2);
-            $gridView->setView($actionBarView, 0, 0);
-            $gridView->setView($listView, 0, 1);
+            $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $listView, $actionViewOptions, $mashableInboxForm);
             $view = new MashableInboxPageView(ZurmoDefaultViewUtil::
-                            makeStandardViewForCurrentUser($this, $gridView));
+                            makeStandardViewForCurrentUser($this, $actionBarView));
             echo $view->render();
         }
     }

@@ -41,7 +41,7 @@
 
         abstract public function getMachableInboxOrderByAttributeName();
 
-        public function getSearchAttributeData()
+        public function getSearchAttributeData($searchTerm)
         {
             return null;
         }
@@ -52,14 +52,15 @@
             return $modelClassName . 's' . 'ListView';
         }
 
-        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL)
+        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = '')
         {
-            $modelClassName   = $this->getModelClassName();
-            $orderBy          = $this->getMachableInboxOrderByAttributeName();
-            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                'listPageSize', get_class(Yii::app()->controller->module));
-            $metadataByOption = $this->getMetadataFilteredByOption($option);
-            $metadata         = MashableUtil::mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
+            $modelClassName             = $this->getModelClassName();
+            $orderBy                    = $this->getMachableInboxOrderByAttributeName();
+            $pageSize                   = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                                'listPageSize', get_class(Yii::app()->controller->module));
+            $metadataByOption           = $this->getMetadataFilteredByOption($option);
+            $metadataByOptionAndFilter  = MashableUtil::mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
+            $metadata                   = MashableUtil::mergeMetada($metadataByOptionAndFilter, $this->getSearchAttributeData($searchTerm));
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $modelClassName,
