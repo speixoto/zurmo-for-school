@@ -26,6 +26,8 @@
 
     class ProductCategory extends Item
     {
+        const EVERYONE_CATEGORY_NAME           = 'Everyone';
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);

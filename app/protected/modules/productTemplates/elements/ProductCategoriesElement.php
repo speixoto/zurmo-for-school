@@ -25,9 +25,47 @@
      ********************************************************************************/
 
     /**
-     * Class to make default data that needs to be created upon an installation.
+     * Display the productCategories selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on productCategories.  Also includes a hidden input for the user
+     * id.
      */
-    class ProductTemplatesDefaultDataMaker extends DefaultDataMaker
+    class ProductCategoriesElement extends RelatedItemsElement
     {
+        /**
+         * The action type of the related model
+         * for which the autocomplete/select popup are calling.
+         */
+        protected static $editableActionType = 'ActivityItemsModalList';
+
+        protected static function getRelatedItemsModelClassNames()
+        {
+            $metadata       = Activity::getMetadata();
+            return $metadata['Activity']['activityItemsModelClassNames'];
+        }
+
+        protected static function getRelatedItemFormClassName()
+        {
+            return 'ProductCategoryForm';
+        }
+
+        protected function getRelatedItemsFromModel()
+        {
+            return $this->model->activityItems;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            assert('$this->model instanceof Category');
+            return parent::renderControlNonEditable();
+        }
+
+        protected function renderControlEditable()
+        {
+            assert('$this->model instanceof Category');
+            assert('!isset($this->params["inputPrefix"])'); //Not supported at this time.
+            return parent::renderControlEditable();
+        }
     }
 ?>

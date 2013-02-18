@@ -54,7 +54,7 @@
                     array('type',                        'type',    'type' => 'string'),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
                 ),
-                'defaultSortAttribute' => 'type',
+                'defaultSortAttribute' => 'name',
                 'customFields' => array(
                 ),
             );

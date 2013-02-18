@@ -89,6 +89,7 @@
                                         ),
                                     )
                                 ),
+/*
                                 array('cells' =>
                                     array(
                                         array(
@@ -103,6 +104,25 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'status', 'type' => 'DropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'categories', 'type' => 'ProductCategory'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+*/
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProductTemplate'),
                                             ),
                                         ),
                                     )

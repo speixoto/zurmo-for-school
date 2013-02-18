@@ -286,5 +286,103 @@
         {
             $this->export('ProductTemplatesSearchView');
         }
+
+        public function actionAutoCompleteAllProductCategoriesForMultiSelectAutoComplete($term)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'autoCompleteListPageSize', get_class($this->getModule()));
+            $adapterName  = self::resolveProductCategoryStateAdapterByModulesUserHasAccessTo('ProductTemplatesModule',
+                                                                                        'ProductTemplatesModule',
+                                                                                         Yii::app()->user->userModel);
+            if ($adapterName === false)
+            {
+                $messageView = new AccessFailureView();
+                $view        = new AccessFailurePageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
+            $productCategories = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
+            $autoCompleteResults  = array();
+            foreach ($productCategories as $productCategory)
+            {
+                $autoCompleteResults[] = array(
+                    'id'   => $productCategory->id,
+                    'name' => self::renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $term)
+                );
+            }
+            echo CJSON::encode($autoCompleteResults);
+        }
+
+        public static function getProductCategoriesByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        {
+            assert('is_string($partialName)');
+            assert('is_int($pageSize)');
+            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('ProductCategory');
+            $metadata = array('clauses' => array(), 'structure' => '');
+            if ($stateMetadataAdapterClassName != null)
+            {
+                $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);
+                $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
+                $metadata['structure'] = '(' . $metadata['structure'] . ')';
+            }
+            $where  = RedBeanModelDataProvider::makeWhere('ProductCategory', $metadata, $joinTablesAdapter);
+            if ($where != null)
+            {
+                $where .= 'and';
+            }
+            $where .= self::getWherePartForPartialNameSearchByPartialName($partialName);
+            return ProductCategory::getSubset($joinTablesAdapter, null, $pageSize, $where, "productcategory.name");
+        }
+
+        protected static function getWherePartForPartialNameSearchByPartialName($partialName)
+        {
+            assert('is_string($partialName)');
+            return "      (productcategory.name      like '$partialName%') ";
+        }
+
+        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
+        {
+            assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
+            assert('$keyword == null || is_string($keyword)');
+
+            if ($productCategory->name != null)
+            {
+                return strval($productCategory) . '&#160&#160<b>'. '</b>';
+            }
+            else
+            {
+                return strval($productCategory);
+            }
+        }
+
+        public static function resolveProductCategoryStateAdapterByModulesUserHasAccessTo( $moduleClassNameFirstStates,
+                                                                                    $moduleClassNameLaterStates,
+                                                                                    $user)
+        {
+            assert('is_string($moduleClassNameFirstStates)');
+            assert('is_string($moduleClassNameLaterStates)');
+            assert('$user instanceof User && $user->id > 0');
+            $canAccessFirstStatesModule  = RightsUtil::canUserAccessModule($moduleClassNameFirstStates, $user);
+            $canAccessLaterStatesModule = RightsUtil::canUserAccessModule($moduleClassNameLaterStates, $user);
+            if ($canAccessFirstStatesModule && $canAccessLaterStatesModule)
+            {
+                return null;
+            }
+            elseif (!$canAccessFirstStatesModule && $canAccessLaterStatesModule)
+            {
+                $prefix = substr($moduleClassNameLaterStates, 0, strlen($moduleClassNameLaterStates) - strlen('Module'));
+                return $prefix . 'StateMetadataAdapter';
+            }
+            elseif ($canAccessFirstStatesModule && !$canAccessLaterStatesModule)
+            {
+                $prefix = substr($moduleClassNameFirstStates, 0, strlen($moduleClassNameFirstStates) - strlen('Module'));
+                return $prefix . 'StateMetadataAdapter';
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 ?>

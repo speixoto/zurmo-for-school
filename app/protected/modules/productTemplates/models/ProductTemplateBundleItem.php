@@ -52,7 +52,7 @@
                     array('name',      'length',  'min'  => 3,  'max' => 64),
                     array('quantity',  'type',    'type' => 'integer'),
                 ),
-                'defaultSortAttribute' => 'quantity',
+                'defaultSortAttribute' => 'name',
                 'customFields' => array(
                 ),
             );

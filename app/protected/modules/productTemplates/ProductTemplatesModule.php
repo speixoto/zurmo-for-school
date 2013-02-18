@@ -68,14 +68,14 @@
                 'tabMenuItems' => array(
                     array(
                         'label' => 'ProductTemplatesModulePluralLabel',
-                        'url'   => array('/productTemplates/default'),
+                        'url'   => array('/producttemplates/default'),
                         'right' => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
                         'label' => 'ProductTemplatesModuleSingularLabel',
-                        'url'   => array('/productTemplates/default/create'),
+                        'url'   => array('/producttemplates/default/create'),
                         'right' => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
                     ),
                 )
@@ -101,11 +101,6 @@
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_PRODUCT_TEMPLATES;
-        }
-
-        public static function getDefaultDataMakerClassName()
-        {
-            return 'ProductTemplatesDefaultDataMaker';
         }
 
         public static function getDemoDataMakerClassName()
