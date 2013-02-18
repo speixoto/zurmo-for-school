@@ -106,15 +106,18 @@
             $metadata = $this::getMetadata();
             $content = null;
             $first = true;
+            $dropDownItems = array();
+            $dropDownItemHtmlOptions = array('prompt' => 'Actions'); // TODO: Use Better phrase with translation
             if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
                 {
+                    $renderedContent = null;
                     $this->resolveActionElementInformationDuringRender($elementInformation);
-                    $elementclassname = $elementInformation['type'] . 'ActionElement';
+                    $elementClassName = $elementInformation['type'] . 'ActionElement';
                     $params = array_slice($elementInformation, 1);
                     array_walk($params, array($this, 'resolveEvaluateSubString'));
-                    $element  = new $elementclassname($this->controllerId, $this->moduleId, $this->modelId, $params);
+                    $element  = new $elementClassName($this->controllerId, $this->moduleId, $this->modelId, $params);
                     if (!$this->shouldRenderToolBarElement($element, $elementInformation))
                     {
                         continue;
@@ -123,7 +126,15 @@
                     {
                         throw new NotSupportedException();
                     }
-                    $renderedContent = $element->render();
+                    $continueRendering = $this->resolveMassActionLinkActionElementDuringRender($elementClassName,
+                                                                                            $element,
+                                                                                            $dropDownItems,
+                                                                                            $dropDownItemHtmlOptions
+                                                                                            );
+                    if ($continueRendering)
+                    {
+                        $renderedContent = $element->render();
+                    }
                     if (!$first && !empty($renderedContent))
                     {
                        // $content .= '&#160;|&#160;';
@@ -132,7 +143,40 @@
                     $content .= $renderedContent;
                 }
             }
+            if (!empty($dropDownItems))
+            {
+                $content .= ZurmoHtml::dropDownList(MassActionLinkActionElement::getDropdownId(), '', $dropDownItems, $dropDownItemHtmlOptions);
+            }
             return $content;
+        }
+
+        /**
+         * Resolves how MassActionLinkElements should be rendered on Mobile Devices
+         * @param $elementClassName
+         * @param $element
+         * @param $dropDownItems
+         * @param $dropDownItemHtmlOptions
+         * @return bool whether or not to continue rendering this element
+         */
+        protected function resolveMassActionLinkActionElementDuringRender($elementClassName, & $element, & $dropDownItems, & $dropDownItemHtmlOptions)
+        {
+            $class = new ReflectionClass($elementClassName);
+            if ($class->implementsInterface('SupportsRenderingDropDownInterface') && Yii::app()->userInterface->isMobile())
+            {
+                if (empty($dropDownItems))
+                {
+                    $element->registerDropDownScripts();
+                }
+                $items = $element->getOptions();
+                foreach ($items as $item)
+                {
+                    $value = $element->getActionNameForCurrentElement().'_'.$item['label'];
+                    $dropDownItems[$element->getOptGroup()][$value] = $item['label'];
+                    $dropDownItemHtmlOptions['options'][$value] = $item['itemOptions'];
+                }
+                return false;
+            }
+            return true;
         }
 
         /**
@@ -210,10 +254,10 @@
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
                 {
-                    $elementclassname  = $elementInformation['type'] . 'ActionElement';
+                    $elementClassName  = $elementInformation['type'] . 'ActionElement';
                     $params            = array_slice($elementInformation, 1);
                     array_walk($params, array($this, 'resolveEvaluateSubString'));
-                    $element  = new $elementclassname($this->controllerId, $this->moduleId, $this->modelId, $params);
+                    $element  = new $elementClassName($this->controllerId, $this->moduleId, $this->modelId, $params);
                     if (!$this->shouldRenderToolBarElement($element, $elementInformation))
                     {
                         continue;

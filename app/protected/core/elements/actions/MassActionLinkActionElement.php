@@ -1,4 +1,5 @@
 <?php
+
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
@@ -27,82 +28,244 @@
     /**
      * Parent class for all LinkActionElements that may apply to all or selected records.
      */
-    abstract class MassActionLinkActionElement extends LinkActionElement
+    abstract class MassActionLinkActionElement extends LinkActionElement implements SupportsRenderingDropDownInterface
     {
+        const SELECTED_MENU_TYPE = 1;
+
+        const ALL_MENU_TYPE      = 0;
+
+        const MENU_ID            = 'ListViewExportActionMenu';
+
+        protected $gridId;
+
+        protected $selectedMenuItemName;
+
+        protected $allMenuItemName;
+
+        abstract protected function getActionName();
+
+        abstract protected function getSelectedMenuNameSuffix();
+
+        abstract protected function getAllMenuNameSuffix();
+
+        abstract protected function getScriptNameSuffixForSelectedMenu();
+
+        abstract protected function getScriptNameSuffixForAllMenu();
+
+        public function __construct($controllerId, $moduleId, $modelId, $params = array())
+        {
+            parent::__construct($controllerId, $moduleId, $moduleId, $params);
+            $this->gridId = $this->getListViewGridId();
+            $this->selectedMenuItemName = $this->gridId . $this->getSelectedMenuNameSuffix();
+            $this->allMenuItemName = $this->gridId . $this->getAllMenuNameSuffix();
+            $this->registerUnifiedEventHandler();
+        }
+
         public function render()
         {
-            $gridId         = $this->getListViewGridId();
-            $selectedName   = $gridId . $this->getSelectedMenuNameSuffix();
-            $allName        = $gridId . $this->getAllMenuNameSuffix();
-            Yii::app()->clientScript->registerScript($gridId . $this->getScriptNameSuffixForSelectedMenu(), "
-                $('#" . $selectedName . "').unbind('click.action');
-                $('#" . $selectedName . "').bind('click.action', function()
-                    {
-                        if ($('#" . $gridId . "-selectedIds').val() == '')
+            $this->registerMenuScripts();
+            $menuItems = array('label' => $this->getMenuHeader(), 'url' => null,
+                                'items' => $this->getMenuItems());
+            return $this->renderMenuWidget($menuItems);
+        }
+
+        public function getActionNameForCurrentElement()
+        {
+            return $this->getActionName();
+        }
+
+        public function getActionType()
+        {
+            throw new NotSupportedException();
+        }
+
+        public function registerUnifiedEventHandler()
+        {
+            if (Yii::app()->clientScript->isScriptRegistered('massActionLinkActionElementEventHandler'))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript('massActionLinkActionElementEventHandler', "
+                        function massActionLinkActionElementEventHandler(elementType, gridId, baseUrl, actionId, pageVarName)
                         {
-                            alert('" . Zurmo::t('Core', 'You must select at least one record') . "');
-                            $(this).val('');
+                            selectAll = '';
+                            if (elementType == " . static::SELECTED_MENU_TYPE . ")
+                            {
+                                if ($('#' + gridId + '-selectedIds').val() == '')
+                                {
+                                    alert('You must select at least one record');
+                                    $(this).val('');
+                                    return false;
+                                }
+                            }
+                            else
+                            {
+                                selectAll = 1;
+                            }
+                            var options =
+                            {
+                                url     : $.fn.yiiGridView.getUrl(gridId),
+                                baseUrl : baseUrl
+                            }
+                            if (options.url.split( '?' ).length == 2)
+                            {
+                                options.url = options.baseUrl + '/' + actionId + '?' + options.url.split( '?' )[1];
+                            }
+                            else
+                            {
+                                options.url = options.baseUrl + '/' + actionId;
+                            }
+                            if (elementType == " . static::SELECTED_MENU_TYPE . ")
+                            {
+                                addListViewSelectedIdsToUrl(gridId, options);
+                            }
+                            var data = '' + actionId + '=' + '&selectAll=' + selectAll + '&ajax=&' + pageVarName + '=1';
+                            url = $.param.querystring(options.url, data);
+                            window.location.href = url;
                             return false;
                         }
-                        var options =
+                ");
+            }
+        }
+
+        public function getOptGroup()
+        {
+            return $this->getMenuHeader();
+        }
+
+        public function getOptions()
+        {
+            return $this->getMenuItems();
+        }
+
+        public function registerDropDownScripts($dropDownId = null, $scriptName = null)
+        {
+            $dropDownId = ($dropDownId)? $dropDownId : static::getDropDownId();
+            $scriptName = ($scriptName)? $scriptName : $dropDownId;
+            if (Yii::app()->clientScript->isScriptRegistered($scriptName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($scriptName, "
+                        $('#" . $dropDownId . "').unbind('change.action').bind('change.action', function()
                         {
-                            url     : $.fn.yiiGridView.getUrl('" . $gridId . "'),
-                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
+                            selectedOption      = $(this).find(':selected');
+                            selectedOptionId    = selectedOption.attr('id');
+                            if (selectedOptionId)
+                            {
+                                selectedOptionValue = selectedOption.val();
+                                optionType          = selectedOptionId.slice(-3);
+                                actionName          = selectedOptionValue.slice(0, selectedOptionValue.indexOf('_'));
+                                if (optionType == 'All')
+                                {
+                                    menuType = " . static::ALL_MENU_TYPE . ";
+                                }
+                                else
+                                {
+                                    menuType = " . static::SELECTED_MENU_TYPE . ";
+                                }
+                                massActionLinkActionElementEventHandler(".
+                                        "menuType, ".
+                                        " '" . $this->gridId. "',".
+                                        " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "',".
+                                        " actionName,".
+                                        " '" . $this->getPageVarName() ."'".
+                                        ");
+                            }
+                            else
+                            {
+                            }
                         }
-                        if (options.url.split( '?' ).length == 2)
-                        {
-                            options.url = options.baseUrl +'/'+ '" . $this->getActionName() . "' + '?' + options.url.split( '?' )[1];
-                        }
-                        else
-                        {
-                            options.url = options.baseUrl +'/'+ '" . $this->getActionName() . "';
-                        }
-                        addListViewSelectedIdsToUrl('" . $gridId . "', options);
-                        var data = '' + '" . $this->getActionName() . "=' + '&selectAll=&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-            ");
-            Yii::app()->clientScript->registerScript($gridId . $this->getScriptNameSuffixForAllMenu(), "
-                $('#" . $allName . "').unbind('click.action');
-                $('#" . $allName . "').bind('click.action', function()
-                    {
-                        var options =
-                        {
-                            url     : $.fn.yiiGridView.getUrl('" . $gridId . "'),
-                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
-                        }
-                        if (options.url.split( '?' ).length == 2)
-                        {
-                            options.url = options.baseUrl +'/'+ '" . $this->getActionName() . "' + '?' + options.url.split( '?' )[1];
-                        }
-                        else
-                        {
-                            options.url = options.baseUrl +'/'+ '" . $this->getActionName() . "';
-                        }
-                        var data = '' + '" . $this->getActionName() . "=' + '&selectAll=1&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-            ");
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                                    'items' => array(
-                                        array(  'label'   => Zurmo::t('Core', 'Selected'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $selectedName)),
-                                        array(  'label'   => Zurmo::t('Core', 'All Results'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $allName))));
+                        );
+                    ");
+            }
+        }
+
+        public static function getDropDownId()
+        {
+            return static::MENU_ID;
+        }
+
+        protected function registerMenuScripts()
+        {
+            $this->registerScriptForAllMenu();
+            $this->registerScriptForSelectedMenu();
+        }
+
+        protected function registerScriptForSelectedMenu()
+        {
+            $this->registerScriptForMenuType(static::SELECTED_MENU_TYPE);
+        }
+
+        protected function registerScriptForAllMenu()
+        {
+            $this->registerScriptForMenuType(static::ALL_MENU_TYPE);
+        }
+
+        protected function registerScriptForMenuType($menuType)
+        {
+            if ($menuType === static::SELECTED_MENU_TYPE)
+            {
+                $scriptNameSuffix       = $this->getScriptNameSuffixForSelectedMenu();
+                $menuItemName           = $this->selectedMenuItemName;
+            }
+            else
+            {
+                $scriptNameSuffix       = $this->getScriptNameSuffixForAllMenu();
+                $menuItemName           = $this->allMenuItemName;
+            }
+            Yii::app()->clientScript->registerScript($this->gridId . $scriptNameSuffix,
+                            "$('#" . $menuItemName . "').unbind('click.action').bind('click.action', function()
+                                {
+                                    " . $this->getEventHandlerScriptContentForMenuType($menuType) ."
+                                }
+                            );");
+        }
+
+        protected function getEventHandlerScriptContentForMenuType($menuType)
+        {
+            return "massActionLinkActionElementEventHandler(".
+                            $menuType . ",".
+                            " '" . $this->gridId. "',".
+                            " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "',".
+                            " '" . $this->getActionName(). "',".
+                            " '" . $this->getPageVarName() ."'".
+                            ")";
+        }
+
+        protected function getMenuItems()
+        {
+            return array(
+                array('label'   => Zurmo::t('Core', 'Selected'),
+                        'url'     => '#',
+                        'itemOptions' => array( 'id'   => $this->selectedMenuItemName)),
+                array('label'   => Zurmo::t('Core', 'All Results'),
+                        'url'     => '#',
+                        'itemOptions' => array( 'id'   => $this->allMenuItemName)));
+        }
+
+        protected function getMenuHeader()
+        {
+            return $this->getLabel();
+        }
+
+        protected function getMenuId()
+        {
+            return static::MENU_ID;
+        }
+
+        protected function renderMenuWidget($items)
+        {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ListViewMassActionMenu'),
-                'items'                   => array($menuItems),
-            ));
+                                    'htmlOptions'   => array('id' => $this->getMenuId()),
+                                    'items'         => array($items),
+                                    ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ActionMenu'];
         }
@@ -130,29 +293,9 @@
             return $this->moduleId . '/' . $this->controllerId . '/' . $this->getActionName() . '/';
         }
 
-        protected function renderCompressedOnMobile()
-        {
-            return true;
-        }
-
         protected function getDefaultLabel()
         {
             throw new NotSupportedException;
         }
-
-        public function getActionType()
-        {
-            throw new NotSupportedException;
-        }
-
-        abstract protected function getActionName();
-
-        abstract protected function getSelectedMenuNameSuffix();
-
-        abstract protected function getAllMenuNameSuffix();
-
-        abstract protected function getScriptNameSuffixForSelectedMenu();
-
-        abstract protected function getScriptNameSuffixForAllMenu();
     }
 ?>
