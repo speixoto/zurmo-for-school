@@ -87,8 +87,20 @@
                     'operatorType'         => 'equals',
                     'value'                => Yii::app()->user->userModel->id,
                 ),
+                2 => array(
+                        'attributeName'        => 'notificationMessage',
+                        'relatedAttributeName' => 'htmlContent',
+                        'operatorType'         => 'contains',
+                        'value'                => $searchTerm,
+                ),
+                3 => array(
+                        'attributeName'        => 'notificationMessage',
+                        'relatedAttributeName' => 'textContent',
+                        'operatorType'         => 'contains',
+                        'value'                => $searchTerm,
+                )
             );
-            $searchAttributeData['structure'] = '1';
+            $searchAttributeData['structure'] = '1 and (2 or 3)';
             return $searchAttributeData;
         }
     }

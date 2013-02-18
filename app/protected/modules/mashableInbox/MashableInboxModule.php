@@ -37,8 +37,9 @@
             $metadata['global'] = array(
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'MashableInboxModuleSingularLabel',
-                        'url'   => array('/mashableInbox/default'),
+                        'label'               => 'MashableInboxModuleSingularLabel',
+                        'url'                 => array('/mashableInbox/default'),
+                        'dynamicLabelContent' => 'eval:MashableUtil::getUnreadCountMashableInboxForCurrentUser()'
                     ),
                 ),
             );

@@ -85,7 +85,7 @@
             $params          = array('label' => $modelDisplayString, 'wrapLabel' => false);
             $moduleClassName = $model->getModuleClassName();
             $moduleId        = $moduleClassName::getDirectoryName();
-            $element  = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+            $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
             return $element->render();
         }
 
