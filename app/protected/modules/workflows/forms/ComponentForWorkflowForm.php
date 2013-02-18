@@ -39,7 +39,7 @@
         /**
          * Component type for time trigger
          */
-        const TYPE_TIME_TIRGGER                  = 'TimeTrigger';
+        const TYPE_TIME_TRIGGER                  = 'TimeTrigger';
 
         /**
          * Component type for display attributes

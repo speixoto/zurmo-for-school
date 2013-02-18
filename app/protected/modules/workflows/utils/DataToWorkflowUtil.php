@@ -113,7 +113,12 @@
             return $triggerData;
         }
 
-        protected static function resolveActions($data, Workflow $workflow)
+        /**
+         * Public for testing purposes
+         * @param $data
+         * @param Workflow $workflow
+         */
+        public static function resolveActions($data, Workflow $workflow)
         {
             //todo: we need to sanitize action data too since we can be populating things like static dates..
             $workflow->removeAllActions();

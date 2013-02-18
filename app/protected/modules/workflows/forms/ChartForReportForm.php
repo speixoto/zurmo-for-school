@@ -104,6 +104,11 @@
             $this->availableRangeDataAndLabels  = $availableRangeDataAndLabels;
         }
 
+        public function setAttributes()
+        {
+            //todo: need to handle creating ActionAttributeForms etc.. that means $this->attributeForms needs to be private.
+        }
+
         /**
          * @return string
          */
