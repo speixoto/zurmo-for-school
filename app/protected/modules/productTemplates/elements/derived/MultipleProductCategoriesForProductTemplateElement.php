@@ -111,15 +111,15 @@
         protected function getExistingCategoriesRelationsIdsAndLabels()
         {
             $existingCategories = array();
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('Category');
-            foreach ($this->model->activityItems as $item)
+            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('ProductCategory');
+/*            foreach ($this->model->activityItems as $item)
             {
                 try
                 {
                     $contact = $item->castDown(array($modelDerivationPathToItem));
                     if (get_class($contact) == 'Contact')
                     {
-                        $existingContacts[] = array('id' => $contact->id,
+                        $existingProductCategories[] = array('id' => $contact->id,
                                                     'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
                     }
                 }
@@ -128,7 +128,9 @@
                     //do nothing
                 }
             }
-            return $existingContacts;
+*/
+            $existingProductCategories = array();
+            return $existingProductCategories;
         }
 
         public static function renderHtmlContentLabelFromContactAndKeyword($contact, $keyword)
