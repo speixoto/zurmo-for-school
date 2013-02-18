@@ -70,6 +70,8 @@
                                               'listPageSize', get_class($this->getModule()));
             $user                           = new User(false);
             $searchForm                     = new UsersSearchForm($user);
+            $listAttributesSelector         = new ListAttributesSelector('UsersListView', get_class($this->getModule()));
+            $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,

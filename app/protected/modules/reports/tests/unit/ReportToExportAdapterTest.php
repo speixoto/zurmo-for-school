@@ -570,8 +570,8 @@
             $reportResultsRowData->addSelectedColumnNameAndValue('col18', 6000);
             $reportResultsRowData->addSelectedColumnNameAndValue('col19', 7000);
             $reportResultsRowData->addSelectedColumnNameAndValue('col20', 8000);
-            //$this->assertTrue($displayattribute1->columnNameAlias == 'col1');
-            //$this->assertTrue($displayattribute2->columnNameAlias == 'col2');
+            $this->assertTrue($displayAttribute1->columnNameAlias == 'col1');
+            $this->assertTrue($displayAttribute2->columnNameAlias == 'col2');
                         
             
             $adapter     = new ReportToExportAdapter($reportResultsRowData);

@@ -43,9 +43,29 @@
             $filter->attributeIndexOrDerivedType     = 'string';
             $filter->operator                        = OperatorRules::TYPE_EQUALS;
             $filter->value                           = 'Zurmo';
-            $rowsAndColumnsReportWizardForm->filters = $filter;
+            $rowsAndColumnsReportWizardForm->filters = array($filter);
             
             $rowsAndColumnsReportWizardForm->validateFilters();           
+        }
+        
+        public function testValidateFiltersStructure()
+        {
+        }
+        
+        public function testValidateOrderBys()
+        {
+        }
+        
+        public function testValidateDisplayAttributes()
+        {
+        }        
+        
+        public function testValidateDrillDownDisplayAttributes()
+        {
+        }
+
+        public function testValidateGroupBys()
+        {
         }        
     }
 ?>    
