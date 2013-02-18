@@ -24,20 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Display either the sent date time or a message saying it is in queue.
-     */
-    class EmailMessageSentDateTimeElement extends DateTimeElement
+    abstract class ModalListLinkActionElement extends LinkActionElement
     {
-        protected function renderControlNonEditable()
+        public function getActionType()
         {
-            assert('$this->model instanceof EmailMessage');
-            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
-            {
-                return parent::renderControlNonEditable();
-            }
-            return Zurmo::t('EmailMessagesModule', 'Currently in the {folderType} folder',
-                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
+            return 'Details';
         }
+
+        public function render()
+        {
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
+        }
+
+        public function renderMenuItem()
+        {
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return array('label'           => $this->getLabel(),
+                             'url'             => $this->getDefaultRoute(),
+                             'linkOptions'     => $this->getHtmlOptions(),
+                             'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+                );
+            }
+        }
+
+        protected function getAjaxLinkOptions()
+        {
+            return ModalView::getAjaxOptionsForModalLink($this->getAjaxLinkTitle());
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(),
+                                         array('id' => $this->modelId));
+        }
+
+        abstract protected function getAjaxLinkTitle();
+
+        abstract protected function getRouteAction();
     }
 ?>

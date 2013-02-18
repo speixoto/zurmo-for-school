@@ -68,5 +68,23 @@
             );
             return $metadata;
         }
+
+        /**
+         * $param string $language
+         * @return translated name string if available.
+         */
+        public function resolveTranslatedNameByLanguage($language)
+        {
+            assert('is_string($language)');
+            if ($this->serializedLabels !== null)
+            {
+                $unserializedLabels = unserialize($this->serializedLabels);
+                if (isset($unserializedLabels[$language]))
+                {
+                    return $unserializedLabels[$language];
+                }
+            }
+            return Zurmo::t('ContactsModule', $this->name, array(), null, $language);
+        }
     }
 ?>

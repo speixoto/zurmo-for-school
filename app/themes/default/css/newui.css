@@ -6868,9 +6868,9 @@ div.wide.form label.hasCheckBox {
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
   font-weight: normal;
-  font-size: 250px;
+  font-size: 325px;
   font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 60%;
+  line-height: 52%;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;

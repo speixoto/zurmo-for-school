@@ -254,6 +254,7 @@
                 $allowedTimeZoneConfirmBypassUrls = array (
                     Yii::app()->createUrl('users/default/confirmTimeZone'),
                     Yii::app()->createUrl('min/serve'),
+                    Yii::app()->createUrl('zurmo/default/logout'),
                 );
                 $reqestedUrl = Yii::app()->getRequest()->getUrl();
                 $isUrlAllowedToByPass = false;
