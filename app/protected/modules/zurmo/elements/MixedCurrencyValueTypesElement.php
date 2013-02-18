@@ -37,7 +37,7 @@
            $content      = parent::renderControlEditable();
             $htmlOptions = array(
                 'id'              => $this->getCurrencyIdForValueEditableInputId(),
-                'empty'           => Zurmo::t('ReportsModule', '(None)'),
+                'empty'           => Zurmo::t('Core', '(None)'),
            );
            $data         = Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(
                                                            (int)$this->model->currencyIdForValue);

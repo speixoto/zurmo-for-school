@@ -146,7 +146,7 @@
             {
                 $this->resolveNumericAttributeClauseAndStructure();
             }
-            elseif($this->filter->getValueElementType() == 'BooleanForReportStaticDropDown')
+            elseif($this->filter->getValueElementType() == 'BooleanForWizardStaticDropDown')
             {
                 $this->resolveBooleanAttributeClauseAndStructure();
             }

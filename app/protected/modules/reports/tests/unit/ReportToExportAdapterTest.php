@@ -227,32 +227,41 @@
             
             $headerdata  = array('Full Name', 'Boolean', 'Date', 'DateTime', 'Float'
                                  , 'Integer', 'Phone', 'String', 'TextArea', 'Url', 'Dropdown'
-                                 , 'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown');
+                                 , 'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown'
+                                 , 'tagCloud', 'radioDropDown');
             $content     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
                                  10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
                                  'http://www.test.com', 'Test2', 'USD', 'someString', 'test@someString.com',
-                                 'Multi 1 Multi 2');
+                                 'Multi 1 Multi 2', 'Cloud 2 Cloud 3', 'Test2');
             
             $compareData = array($headerdata, $content);
             $this->assertEquals($compareData, $data);
         }
-                
+        
+        public function testRelationalFields()
+        {
+        
+        
+        }
+        
         public function testSummationfields()
         {  
             //for summation only viaSelect       
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                   Report::TYPE_SUMMATION);
             $displayAttribute1->attributeIndexOrDerivedType = 'integer__Summation';
-            $displayAttribute1->label                       = 'Amount';
+            $displayAttribute1->madeViaSelectInsteadOfViaModel = true;            
 
             $displayAttribute2 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                   Report::TYPE_SUMMATION);
-            $displayAttribute2->attributeIndexOrDerivedType = 'date__Maximum';
-            $displayAttribute2->label                       = 'Date';             
+            $displayAttribute2->attributeIndexOrDerivedType = 'date__Maximum';            
+            $displayAttribute2->madeViaSelectInsteadOfViaModel = true;
                                                                   
             $reportResultsRowData = new ReportResultsRowData(array($displayAttribute1, $displayAttribute2), 4);
             $reportResultsRowData->addSelectedColumnNameAndValue('col1', 5000);
             $reportResultsRowData->addSelectedColumnNameAndValue('col2', '2013-02-14');
+            $this->assertTrue($displayattribute1->columnNameAlias == 'col1');
+            $this->assertTrue($displayattribute2->columnNameAlias == 'col2');
                         
             
             $adapter     = new ReportToExportAdapter($reportResultsRowData);
@@ -264,4 +273,5 @@
             $compareData = array($headerdata, $content);
             $this->assertEquals($compareData, $data);
         }
+        
     }        

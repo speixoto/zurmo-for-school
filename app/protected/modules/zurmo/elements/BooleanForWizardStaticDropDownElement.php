@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class used by reporting result grid to show a checkbox
+     * Class used by wizard based models to show a checkbox.  Used by reporting and workflow for example.
      */
-    class BooleanForReportStaticDropDownElement extends BooleanStaticDropDownElement
+    class BooleanForWizardStaticDropDownElement extends BooleanStaticDropDownElement
     {
         /**
          * @return string

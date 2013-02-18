@@ -467,13 +467,13 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusTreshold)
+                if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)                    
                     {     
-                        $data = $dataProvider->getData();                      
-                        foreach ($data as $reportResultsRowData)
+                        $data1 = $dataProvider->getData();                      
+                        foreach ($data1 as $reportResultsRowData)
                         {                          
                           $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData); 
                           $data[] = $reportToExportAdapter->getData();  
@@ -482,7 +482,7 @@
                     // Output data
                     if (count($data))
                     {
-                        $fileName = $this->getModule()->getName() . ".csv";
+                        $fileName = $this->getModule()->getName() . ".csv";                        
                         $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
                     }
                     else

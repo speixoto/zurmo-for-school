@@ -154,7 +154,6 @@
             $displayAttribute4->attributeIndexOrDerivedType = 'createdDateTime__Day';
             $displayAttribute4->valueUsedAsDrillDownFilter = true;
 
-
             $displayAttribute5 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                  Report::TYPE_SUMMATION);
             $displayAttribute5->attributeIndexOrDerivedType = 'owner__User';
