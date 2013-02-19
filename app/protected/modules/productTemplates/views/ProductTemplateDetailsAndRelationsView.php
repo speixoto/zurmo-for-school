@@ -43,13 +43,9 @@
                         'columns' => array(
                             array(
                                 'rows' => array(
-/*                                    array(
-                                        'type' => 'NoteInlineEditForPortlet'
-                                    ),
                                     array(
-                                        'type' => 'AccountLatestActivtiesForPortlet'
+                                        'type' => 'NoteInlineEditForPortlet'
                                     )
-*/
                                 )
                             )
                         )
@@ -58,7 +54,7 @@
                         'columns' => array(
                             array(
                                 'rows' => array(
-    /*                                array(
+                                    array(
                                         'type' => 'UpcomingMeetingsForAccountCalendar',
                                     ),
                                     array(
@@ -70,7 +66,6 @@
                                     array(
                                         'type' => 'OpportunitiesForAccountRelatedList',
                                     )
-    */
                                 )
                             )
                         )
