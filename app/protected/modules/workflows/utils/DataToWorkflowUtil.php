@@ -127,8 +127,7 @@
             {
                 foreach($actionsData as $actionData)
                 {
-                    $action = new ActionForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                        $workflow->getType());
+                    $action = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName());
                     $action->setAttributes($actionData);
                     $workflow->addAction($action);
                 }

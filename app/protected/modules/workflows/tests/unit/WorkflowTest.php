@@ -85,7 +85,7 @@
         public function testSetAndGetWorkflow()
         {
             $timeTrigger = new TimeTriggerForWorkflowForm();
-            $action      = new ActionForWorkflowForm();
+            $action      = new ActionForWorkflowForm('WorkflowModelTestItem');
             $trigger     = new TriggerForWorkflowForm();
             $workflow = new Workflow();
             $workflow->setModuleClassName('SomeModule');

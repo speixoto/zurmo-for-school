@@ -25,41 +25,19 @@
      ********************************************************************************/
 
     /**
-     * Helper class to create ComponentForWorkflowForm based objects
+     * Helper functionality for finding the type to be used for creating a WorkflowActionAttributeForm
+     * associated with a model's attribute
      */
-    class ComponentForWorkflowFormFactory
+    class ModelAttributeToWorkflowActionAttributeFormTypeUtil
     {
         /**
-         * Make and return the correct ComponentForWorkflowForm based object
-         * @param $moduleClassName string
-         * @param $modelClassName string
-         * @param $type string
-         * @param $componentType string
-         * @return TimeTriggerForWorkflowForm|TriggerForWorkflowForm|ActionForWorkflowForm
-         * @throws NotSupportedException
+         * @param $model
+         * @param $attributeName
+         * @return string
          */
-        public static function makeByComponentType($moduleClassName, $modelClassName, $type, $componentType)
+        public static function getType($model, $attributeName)
         {
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
-            assert('is_string($type)');
-            assert('is_string($componentType)');
-            if($componentType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
-            {
-                return new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
-            }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_TRIGGERS)
-            {
-                return new TriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
-            }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_ACTION)
-            {
-                return new ActionForWorkflowForm($modelClassName);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return ModelAttributeToMixedTypeUtil::getType($model, $attributeName);
         }
     }
 ?>

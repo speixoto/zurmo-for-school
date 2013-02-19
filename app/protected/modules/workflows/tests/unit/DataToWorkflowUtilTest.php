@@ -100,8 +100,8 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTestModule');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0] = array('attributes' =>
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
                 array(
                     'boolean'       => array('set'    => '1',
                         'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -162,8 +162,7 @@
                     'url'      => array('set'    => '1',
                         'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                         'value'  => 'http://www.zurmo.com'),
-                )
-            );
+                );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
             $actions = $workflow->getActions();
@@ -171,11 +170,11 @@
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_SELF, $actions[0]->type);
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean') instanceof BooleanWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('boolean') instanceof CheckBoxWorkflowActionAttributeForm);
             $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean')->type);
             $this->assertTrue($actions[0]->getAttributeFormByName('boolean')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean2') instanceof BooleanWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('boolean2') instanceof CheckBoxWorkflowActionAttributeForm);
             $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean2')->type);
             $this->assertFalse($actions[0]->getAttributeFormByName('boolean2')->value);
 
@@ -221,19 +220,19 @@
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('phone')->type);
             $this->assertEquals('8471112222',  $actions[0]->getAttributeFormByName('phone')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('primaryAddress___street1') instanceof StringWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('primaryAddress___street1') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryAddress___street1')->type);
-            $this->assertEquals('info@zurmo.com',  $actions[0]->getAttributeFormByName('primaryAddress___street1')->value);
+            $this->assertEquals('123 Main Street',  $actions[0]->getAttributeFormByName('primaryAddress___street1')->value);
 
             $this->assertTrue($actions[0]->getAttributeFormByName('primaryEmail___EmailAddress') instanceof EmailAddressWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryEmail___EmailAddress')->type);
-            $this->assertEquals('123 Main Street',  $actions[0]->getAttributeFormByName('primaryEmail___EmailAddress')->value);
+            $this->assertEquals('info@zurmo.com',  $actions[0]->getAttributeFormByName('primaryEmail___EmailAddress')->value);
 
             $this->assertTrue($actions[0]->getAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('radioDropDown')->type);
             $this->assertEquals('Radio Value 1',  $actions[0]->getAttributeFormByName('radioDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof StringWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
             $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
 
@@ -257,8 +256,8 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTestModule');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0] = array('attributes' =>
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
             array(
                 'date'          => array('set'    => '1',
                     'type'   => DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE,
@@ -296,7 +295,6 @@
                     'type'   => UserWorkflowActionAttributeForm::TYPE_DYNAMIC_MODIFIED_BY_USER),
                 'user2'         => array('set'    => '1',
                     'type'   => UserWorkflowActionAttributeForm::TYPE_DYNAMIC_TRIGGERED_BY_USER),
-            )
             );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
@@ -362,10 +360,10 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('type'     => ActionForWorkflowForm::TYPE_UPDATE_RELATED);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relation'       => 'workflowModelTestItem');
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relationFilter' => ActionForWorkflowForm::RELATION_FILTER_ALL);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0] = array('attributes' =>
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'workflowModelTestItem';
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
             array(
                 'boolean'       => array('set'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -426,7 +424,6 @@
                 'url'      => array('set'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                     'value'  => 'http://www.zurmo.com'),
-            )
             );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
@@ -438,11 +435,11 @@
 
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean') instanceof BooleanWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('boolean') instanceof CheckBoxWorkflowActionAttributeForm);
             $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean')->type);
             $this->assertTrue($actions[0]->getAttributeFormByName('boolean')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean2') instanceof BooleanWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('boolean2') instanceof CheckBoxWorkflowActionAttributeForm);
             $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean2')->type);
             $this->assertFalse($actions[0]->getAttributeFormByName('boolean2')->value);
 
@@ -488,19 +485,19 @@
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('phone')->type);
             $this->assertEquals('8471112222',  $actions[0]->getAttributeFormByName('phone')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('primaryAddress___street1') instanceof StringWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('primaryAddress___street1') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryAddress___street1')->type);
-            $this->assertEquals('info@zurmo.com',  $actions[0]->getAttributeFormByName('primaryAddress___street1')->value);
+            $this->assertEquals('123 Main Street',  $actions[0]->getAttributeFormByName('primaryAddress___street1')->value);
 
             $this->assertTrue($actions[0]->getAttributeFormByName('primaryEmail___EmailAddress') instanceof EmailAddressWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryEmail___EmailAddress')->type);
-            $this->assertEquals('123 Main Street',  $actions[0]->getAttributeFormByName('primaryEmail___EmailAddress')->value);
+            $this->assertEquals('info@zurmo.com',  $actions[0]->getAttributeFormByName('primaryEmail___EmailAddress')->value);
 
             $this->assertTrue($actions[0]->getAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('radioDropDown')->type);
             $this->assertEquals('Radio Value 1',  $actions[0]->getAttributeFormByName('radioDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof StringWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
             $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
 
@@ -524,10 +521,10 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('type'     => ActionForWorkflowForm::TYPE_UPDATE_RELATED);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relation'       => 'workflowModelTestItem');
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relationFilter' => ActionForWorkflowForm::RELATION_FILTER_ALL);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0] = array('attributes' =>
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'workflowModelTestItem';
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
             array(
                 'date'          => array('set'    => '1',
                     'type'   => DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE,
@@ -565,7 +562,6 @@
                     'type'   => UserWorkflowActionAttributeForm::TYPE_DYNAMIC_MODIFIED_BY_USER),
                 'user2'         => array('set'    => '1',
                     'type'   => UserWorkflowActionAttributeForm::TYPE_DYNAMIC_TRIGGERED_BY_USER),
-            )
             );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
@@ -631,14 +627,13 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('type'     => ActionForWorkflowForm::TYPE_CREATE);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relation'       => 'workflowModelTestItem');
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0] = array('attributes' =>
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']       = ActionForWorkflowForm::TYPE_CREATE;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']   = 'workflowModelTestItem';
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
             array(
                 'string'        => array('set'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                     'value'  => 'jason'),
-            )
             );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
@@ -649,7 +644,7 @@
 
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof StringWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
             $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
         }
@@ -663,16 +658,15 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('type'     => ActionForWorkflowForm::TYPE_CREATE_RELATED);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relation'       => 'workflowModelTestItem');
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relationFilter' => ActionForWorkflowForm::RELATION_FILTER_ALL);
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][]  = array('relatedModelRelation' => 'workflowModelTestItem3');
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0] = array('attributes' =>
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']     = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'workflowModelTestItem';
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relatedModelRelation'] = 'workflowModelTestItem3';
+            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
             array(
                 'string'        => array('set'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                     'value'  => 'jason'),
-            )
             );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
@@ -685,7 +679,7 @@
 
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof StringWorkflowActionAttributeForm);
+            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
             $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
         }

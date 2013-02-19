@@ -25,41 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Helper class to create ComponentForWorkflowForm based objects
+     * Helper class to build workflow attribute forms
      */
-    class ComponentForWorkflowFormFactory
+    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
     {
-        /**
-         * Make and return the correct ComponentForWorkflowForm based object
-         * @param $moduleClassName string
-         * @param $modelClassName string
-         * @param $type string
-         * @param $componentType string
-         * @return TimeTriggerForWorkflowForm|TriggerForWorkflowForm|ActionForWorkflowForm
-         * @throws NotSupportedException
-         */
-        public static function makeByComponentType($moduleClassName, $modelClassName, $type, $componentType)
+        public static function make($resolvedModelClassName, $resolvedAttributeName)
         {
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
-            assert('is_string($type)');
-            assert('is_string($componentType)');
-            if($componentType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
-            {
-                return new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
-            }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_TRIGGERS)
-            {
-                return new TriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
-            }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_ACTION)
-            {
-                return new ActionForWorkflowForm($modelClassName);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            assert('is_string($resolvedModelClassName)');
+            assert('is_string($resolvedAttributeName)');
+            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
+            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
+            $formClassName = $type . 'WorkflowActionAttributeForm';
+            return new $formClassName($model, $resolvedAttributeName);
         }
     }
 ?>
