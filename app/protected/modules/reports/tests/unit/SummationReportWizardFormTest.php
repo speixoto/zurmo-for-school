@@ -70,7 +70,7 @@
         }
         
         public function testValidateDisplayAttributes()
-        {                       
+        {     
             $summationReportWizardForm            = new SummationReportWizardForm();
             $reportModelTestItem                  = new ReportModelTestItem();
             $reportModelTestItem->date            = '2013-02-12';
