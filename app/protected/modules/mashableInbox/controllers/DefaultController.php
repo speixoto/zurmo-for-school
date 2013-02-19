@@ -31,7 +31,7 @@ class MashableInboxDefaultController extends ZurmoModuleController {
                 'listPageSize', get_class($this->getModule()));
         $actionViewOptions      = array();
         $mashableInboxForm = new MashableInboxForm();
-        if(Yii::app()->request->isAjaxRequest)
+        if(Yii::app()->request->isAjaxRequest && isset($_GET['MashableInboxForm']))
         {
             $getData = GetUtil::getData();
             $mashableInboxForm->attributes = $getData["MashableInboxForm"];
@@ -39,16 +39,7 @@ class MashableInboxDefaultController extends ZurmoModuleController {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
                 $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
             } else {
-                $modelClassNames = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
-
-                $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                        MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
-                $modelClassNamesAndSortAttributes = // Not Coding Standard
-                        MashableUtil::getSortAttributesByMashableInboxModelClassNames($modelClassNames);
-                $dataProvider = new RedBeanModelsDataProvider('MashableInbox', $modelClassNamesAndSortAttributes,
-                                true, $modelClassNamesAndSearchAttributeData,
-                                array('pagination' => array('pageSize' => $pageSize)));
-                $listView = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'MashableInbox', $dataProvider, array());
+                $listView = $this->getMashableInboxListView($mashableInboxForm, $pageSize);
             }
             echo $listView->render();
         }
@@ -64,22 +55,30 @@ class MashableInboxDefaultController extends ZurmoModuleController {
                 $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy);
                 $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
             } else {
-                $modelClassNames = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
-
-                $modelClassNamesAndSearchAttributeData = // Not Coding Standard
-                        MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
-                $modelClassNamesAndSortAttributes = // Not Coding Standard
-                        MashableUtil::getSortAttributesByMashableInboxModelClassNames($modelClassNames);
-                $dataProvider = new RedBeanModelsDataProvider('MashableInbox', $modelClassNamesAndSortAttributes,
-                                true, $modelClassNamesAndSearchAttributeData,
-                                array('pagination' => array('pageSize' => $pageSize)));
-                $listView = new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'MashableInbox', $dataProvider, array());
+                $listView = $this->getMashableInboxListView($mashableInboxForm, $pageSize);
             }
             $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $listView, $actionViewOptions, $mashableInboxForm);
             $view = new MashableInboxPageView(ZurmoDefaultViewUtil::
                             makeStandardViewForCurrentUser($this, $actionBarView));
             echo $view->render();
         }
+    }
+
+    private function getMashableInboxListView($mashableInboxForm, $pageSize)
+    {
+        $modelClassNames =
+                array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
+        $modelClassNamesAndSearchAttributeData =
+                MashableUtil::getSearchAttributesDataByModelClassNames($modelClassNames, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
+        $modelClassNamesAndSortAttributes =
+                MashableUtil::getSortAttributesByMashableInboxModelClassNames($modelClassNames);
+        $dataProvider =
+                new RedBeanModelsDataProvider('MashableInbox', $modelClassNamesAndSortAttributes,
+                        true, $modelClassNamesAndSearchAttributeData,
+                        array('pagination' => array('pageSize' => $pageSize)));
+        $listView =
+                new MashableInboxListView($this->getId(), $this->getModule()->getId(), 'MashableInbox', $dataProvider, array());
+        return $listView;
     }
 }
 ?>

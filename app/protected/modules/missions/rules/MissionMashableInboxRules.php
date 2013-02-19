@@ -50,13 +50,8 @@
                     'operatorType'         => 'doesNotEqual',
                     'value'                => (bool)1
                 ),
-                5 => array(
-                    'attributeName'        => 'takenByUser',
-                    'operatorType'         => 'isNull',
-                    'value'                => null
-                ),
             );
-            $searchAttributeData['structure'] = '((1 and 2) or (3 and 4) or (5 and 6))';
+            $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
             return $searchAttributeData;
         }
 
@@ -118,7 +113,7 @@
             }
             return $metadata;
         }
-        
+
         public function getSearchAttributeData($searchTerm)
         {
             $metadata['clauses'][1] = array(
