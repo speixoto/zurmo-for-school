@@ -50,7 +50,8 @@
             $filter->operator                        = OperatorRules::TYPE_EQUALS;
             $filter->value                           = 'Zurmo';
             $rowsAndColumnsReportWizardForm->filters = array($filter);            
-            $rowsAndColumnsReportWizardForm->validateFilters();           
+            $rowsAndColumnsReportWizardForm->validateFilters(); 
+            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }
         
         public function testValidateFiltersStructure()
@@ -63,21 +64,23 @@
             $filter->value                           = '2013-02-19 00:00';
             $filter->secondValue                     = '2013-02-20 00:00';                   
             $rowsAndColumnsReportWizardForm->filters = array($filter);  
-            $rowsAndColumnsReportWizardForm->filtersStructure  = '1 and 2';            
-            $rowsAndColumnsReportWizardForm->validateFiltersStructure();              
+            $rowsAndColumnsReportWizardForm->filtersStructure  = '1';            
+            $rowsAndColumnsReportWizardForm->validateFiltersStructure();            
+            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }
         
         public function testValidateDisplayAttributes()
         {                       
             $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
-            $reportModelTestItem = new ReportModelTestItem();
-            $reportModelTestItem->date = '2013-02-12';
-            $displayAttribute    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $reportModelTestItem                     = new ReportModelTestItem();
+            $reportModelTestItem->date               = '2013-02-12';
+            $displayAttribute                        = new DisplayAttributeForReportForm('ReportsTestModule', 
+                                                            'ReportModelTestItem', Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->setModelAliasUsingTableAliasName('model1');  
-            $displayAttribute->attributeIndexOrDerivedType = 'date';
+            $displayAttribute->attributeIndexOrDerivedType     = 'date';
             $rowsAndColumnsReportWizardForm->displayAttributes = array($displayAttribute);
             $rowsAndColumnsReportWizardForm->validateDisplayAttributes();
+            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }
         
         public function testValidateOrderBys()
@@ -85,16 +88,20 @@
             $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
             $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy->attributeIndexOrDerivedType = 'modifiedDateTime';
+            $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
             $this->assertEquals('asc', $orderBy->order);
-            $orderBy->order                       = 'desc';
+            $orderBy->order                           = 'desc';
             $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);
             $rowsAndColumnsReportWizardForm->validateOrderBys();
+            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }        
 
         public function testValidateSpotConversionCurrencyCode()
         {
-        
+           $rowsAndColumnsReportWizardForm                         = new RowsAndColumnsReportWizardForm();
+           $rowsAndColumnsReportWizardForm->currencyConversionType = 'CAD';
+           $rowsAndColumnsReportWizardForm->validateSpotConversionCurrencyCode();
+           $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }        
     }
 ?>    

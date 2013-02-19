@@ -41,28 +41,93 @@
             Yii::app()->user->userModel = User::getByUsername('super');            
         }
         
+        public function testValidateFilters()
+        {
+            $summationReportWizardForm               = new SummationReportWizardForm();                  
+            $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_SUMMATION);
+            $filter->attributeIndexOrDerivedType     = 'string';
+            $filter->operator                        = OperatorRules::TYPE_EQUALS;
+            $filter->value                           = 'Zurmo';
+            $summationReportWizardForm->filters = array($filter);            
+            $summationReportWizardForm->validateFilters();
+            $this->assertFalse($summationReportWizardForm->hasErrors());            
+        }
+        
+        public function testValidateFiltersStructure()
+        {
+            $summationReportWizardForm                    = new SummationReportWizardForm();
+            $filter                                       = new FilterForReportForm('ReportsTestModule', 
+                                                                'ReportModelTestItem', Report::TYPE_SUMMATION);
+            $filter->attributeIndexOrDerivedType          = 'createdDateTime';
+            $filter->operator                             = OperatorRules::TYPE_BETWEEN;            
+            $filter->value                                = '2013-02-19 00:00';
+            $filter->secondValue                          = '2013-02-20 00:00';                   
+            $summationReportWizardForm->filters           = array($filter);  
+            $summationReportWizardForm->filtersStructure  = '1';            
+            $summationReportWizardForm->validateFiltersStructure();            
+            $this->assertFalse($summationReportWizardForm->hasErrors());
+        }
+        
+        public function testValidateDisplayAttributes()
+        {                       
+            $summationReportWizardForm            = new SummationReportWizardForm();
+            $reportModelTestItem                  = new ReportModelTestItem();
+            $reportModelTestItem->date            = '2013-02-12';
+            $displayAttribute                     = new DisplayAttributeForReportForm('ReportsTestModule', 
+                                                        'ReportModelTestItem', Report::TYPE_SUMMATION);
+            $displayAttribute->setModelAliasUsingTableAliasName('model1');  
+            $displayAttribute->attributeIndexOrDerivedType = 'date';
+            $summationReportWizardForm->displayAttributes  = array($displayAttribute);
+            $summationReportWizardForm->validateDisplayAttributes();
+            $this->assertFalse($summationReportWizardForm->hasErrors());
+        }
+        
+        public function testValidateOrderBys()
+        {
+            $summationReportWizardForm               = new SummationReportWizardForm();
+            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_SUMMATION);
+            $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
+            $this->assertEquals('asc', $orderBy->order);
+            $orderBy->order                          = 'desc';
+            $summationReportWizardForm->orderBys     = array($orderBy);
+            $summationReportWizardForm->validateOrderBys();
+            $this->assertFalse($summationReportWizardForm->hasErrors());
+        }        
+
+        public function testValidateSpotConversionCurrencyCode()
+        {
+           $summationReportWizardForm                         = new SummationReportWizardForm();
+           $summationReportWizardForm->currencyConversionType = 'CAD';
+           $summationReportWizardForm->validateSpotConversionCurrencyCode();
+           $this->assertFalse($summationReportWizardForm->hasErrors());
+        }
+        
         public function testValidateGroupBys()
         {
-            $summationReportWizardForm          = new SummationReportWizardForm();
-            $groupBy                                 = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $summationReportWizardForm            = new SummationReportWizardForm();
+            $groupBy                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType = 'string';
             $this->assertEquals('x', $groupBy->axis);
             $groupBy->axis                        = 'y';
-            $summationReportWizardForm->groupBys = array($groupBy);
+            $summationReportWizardForm->groupBys  = array($groupBy);
             $summationReportWizardForm->validateGroupBys();
+            $this->assertFalse($summationReportWizardForm->hasErrors());
         }
 
         public function testValidateDrillDownDisplayAttributes()
         {
             $summationReportWizardForm          = new SummationReportWizardForm();
-            $drillDownDisplayAttributes                   = new DrillDownDisplayAttributeForReportForm('ReportsTestModule', 
+            $drillDownDisplayAttributes         = new DrillDownDisplayAttributeForReportForm('ReportsTestModule', 
                                                         'ReportModelTestItem',Report::TYPE_SUMMATION);
-            $drillDownDisplayAttributes->attributeIndexOrDerivedType = 'integer__Maximum';
+            $drillDownDisplayAttributes->attributeIndexOrDerivedType    = 'integer__Maximum';
             $drillDownDisplayAttributes->madeViaSelectInsteadOfViaModel = true;            
             $this->assertTrue($drillDownDisplayAttributes->columnAliasName == 'col0');            
-            $summationReportWizardForm->drillDownDisplayAttributes = array($drillDownDisplayAttributes);
-            $summationReportWizardForm->validateDrillDownDisplayAttributes();                       
+            $summationReportWizardForm->drillDownDisplayAttributes         = array($drillDownDisplayAttributes);
+            $summationReportWizardForm->validateDrillDownDisplayAttributes(); 
+            $this->assertFalse($summationReportWizardForm->hasErrors());            
         }
 
         public function testValidateChart()
@@ -74,7 +139,8 @@
             $validated                          = $chart->validate();
             $this->assertTrue($validated);
             $summationReportWizardForm->chart = $chart;
-            $summationReportWizardForm->validateChart();      
+            $summationReportWizardForm->validateChart();
+            $this->assertFalse($summationReportWizardForm->hasErrors());            
         }        
     }
 ?>    
