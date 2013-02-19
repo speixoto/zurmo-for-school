@@ -52,6 +52,11 @@
 
         abstract protected function getScriptNameSuffixForAllMenu();
 
+        public static function getDropDownId()
+        {
+            return static::MENU_ID;
+        }
+
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
             parent::__construct($controllerId, $moduleId, $moduleId, $params);
@@ -183,11 +188,6 @@
                         );
                     ");
             }
-        }
-
-        public static function getDropDownId()
-        {
-            return static::MENU_ID;
         }
 
         protected function registerMenuScripts()
