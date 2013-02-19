@@ -110,6 +110,12 @@
             echo $view->render();
         }
 
+        protected static function getZurmoControllerUtil()
+        {
+            return new ProductTemplateZurmoControllerUtil('productTemplateItems', 'ProductTemplateItemForm',
+                                                            'ProductTemplateCategoriesForm');
+        }
+
         /**
          * Action for displaying a mass edit form and also action when that form is first submitted.
          * When the form is submitted, in the event that the quantity of models to update is greater
