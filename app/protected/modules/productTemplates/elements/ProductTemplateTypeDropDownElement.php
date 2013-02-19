@@ -24,48 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Display the productCategories selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on productCategories.  Also includes a hidden input for the user
-     * id.
-     */
-    class ProductCategoriesElement extends RelatedItemsElement
+    class ProductTemplateTypeDropDownElement extends StaticDropDownFormElement
     {
-        /**
-         * The action type of the related model
-         * for which the autocomplete/select popup are calling.
-         */
-        protected static $editableActionType = 'ActivityItemsModalList';
-
-        protected static function getRelatedItemsModelClassNames()
+        protected function getDropDownArray()
         {
-            $metadata       = Activity::getMetadata();
-            return $metadata['Activity']['activityItemsModelClassNames'];
-        }
-
-        protected static function getRelatedItemFormClassName()
-        {
-            return 'ProductCategoryForm';
-        }
-
-        protected function getRelatedItemsFromModel()
-        {
-            return $this->model->activityItems;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            assert('$this->model instanceof Category');
-            return parent::renderControlNonEditable();
-        }
-
-        protected function renderControlEditable()
-        {
-            assert('$this->model instanceof Category');
-            assert('!isset($this->params["inputPrefix"])'); //Not supported at this time.
-            return parent::renderControlEditable();
+            return array(
+                null                                => Yii::t('Default', '--'),
+                ProductTemplate::TYPE_PRODUCT       => Yii::t('Default', 'Product'),
+                ProductTemplate::TYPE_SERVICE       => Yii::t('Default', 'Service'),
+                ProductTemplate::TYPE_SUBSCRIPTION  => Yii::t('Default', 'Subscription'),
+            );
         }
     }
 ?>

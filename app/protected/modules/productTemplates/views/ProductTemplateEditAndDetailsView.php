@@ -57,6 +57,42 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'description', 'type' => 'TextArea'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProductTemplate'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'ProductTemplateStatusDropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'priceFrequency', 'type' => 'Integer'),
                                             ),
                                         ),
@@ -85,44 +121,6 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-/*
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'DropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'status', 'type' => 'DropDown', 'addBlank' => true),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'categories', 'type' => 'ProductCategory'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-*/
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProductTemplate'),
                                             ),
                                         ),
                                     )

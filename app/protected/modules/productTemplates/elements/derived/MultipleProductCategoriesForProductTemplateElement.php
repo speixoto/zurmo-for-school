@@ -34,14 +34,14 @@
         protected function renderControlNonEditable()
         {
             $content  = null;
-            $contacts = $this->getExistingCategoriesRelationsIdsAndLabels();
-            foreach ($contacts as $contactData)
+            $productCategories = $this->getExistingProductCategoriesRelationsIdsAndLabels();
+            foreach ($productCategories as $productCategoryData)
             {
                 if ($content != null)
                 {
                     $content .= ', ';
                 }
-                $content .= $contactData['name'];
+                $content .= $productCategoryData['name'];
             }
             return $content;
         }
@@ -54,7 +54,7 @@
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
                 'name'        => $this->getNameForIdField(),
                 'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => '', //'CJSON::encode($this->getExistingCategoriesRelationsIdsAndLabels()),
+                'jsonEncodedIdsAndLabels'   => '', //'CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
                 'sourceUrl'   => Yii::app()->createUrl('producttemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
@@ -108,7 +108,7 @@
             return 'ActivityItemForm_Contact_ids';
         }
 
-        protected function getExistingCategoriesRelationsIdsAndLabels()
+        protected function getExistingProductCategoriesRelationsIdsAndLabels()
         {
             $existingCategories = array();
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('ProductCategory');

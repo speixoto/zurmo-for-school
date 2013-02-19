@@ -127,11 +127,13 @@
                     array('sellPrice',      'required'),
                 ),
                 'elements' => array(
-                    'product'           => 'Product',
-                    'description'       => 'TextArea',
-                    'cost'              => 'CurrencyValue',
-                    'listPrice'         => 'CurrencyValue',
-                    'sellPrice'         => 'CurrencyValue',
+                    'product'             => 'Product',
+                    'description'         => 'TextArea',
+                    'cost'                => 'CurrencyValue',
+                    'listPrice'           => 'CurrencyValue',
+                    'sellPrice'           => 'CurrencyValue',
+                    'type'                => 'ProductTemplateTypeDropDown',
+                    'status'              => 'ProductTemplateStatusDropDown',
                 ),
                 'customFields' => array(
                 ),
