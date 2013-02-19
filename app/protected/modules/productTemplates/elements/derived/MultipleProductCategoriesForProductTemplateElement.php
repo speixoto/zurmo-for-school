@@ -54,13 +54,12 @@
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(
                 'name'        => $this->getNameForIdField(),
                 'id'          => $this->getIdForIdField(),
-                'jsonEncodedIdsAndLabels'   => '', //'CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
+                'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
                 'sourceUrl'   => Yii::app()->createUrl('producttemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
-                'hintText' => Zurmo::t('MeetingsModule', 'Type a ContactsModuleSingularLowerCaseLabel ' .
-                                                'or LeadsModuleSingularLowerCaseLabel: name or email address',
+                'hintText' => Zurmo::t('ProductTemplatesModule', 'Type a ProductCategoriesModuleSingularLowerCaseLabel',
                                 LabelUtil::getTranslationParamsForAllModules())
             ));
             $cClipWidget->endClip();
@@ -79,12 +78,12 @@
 
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('MeetingsModule', 'Categories'));
+            return Yii::app()->format->text(Zurmo::t('ProductTemplatesModule', 'Categories'));
         }
 
          public static function getDisplayName()
         {
-            return Zurmo::t('MeetingsModule', 'Related ContactsModulePluralLabel and LeadsModulePluralLabel',
+            return Zurmo::t('ProductTemplatesModule', 'Related ProductTemplatesModulePluralLabel',
                        LabelUtil::getTranslationParamsForAllModules());
         }
 
@@ -100,59 +99,37 @@
 
         protected function getNameForIdField()
         {
-                return 'ActivityItemForm[Contact][ids]';
+                return 'ActivityItemForm[ProductCategory][ids]';
         }
 
         protected function getIdForIdField()
         {
-            return 'ActivityItemForm_Contact_ids';
+            return 'ActivityItemForm_ProductCategory_ids';
         }
 
         protected function getExistingProductCategoriesRelationsIdsAndLabels()
         {
-            $existingCategories = array();
-            $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem('ProductCategory');
-/*            foreach ($this->model->activityItems as $item)
-            {
-                try
-                {
-                    $contact = $item->castDown(array($modelDerivationPathToItem));
-                    if (get_class($contact) == 'Contact')
-                    {
-                        $existingProductCategories[] = array('id' => $contact->id,
-                                                    'name' => self::renderHtmlContentLabelFromContactAndKeyword($contact, null));
-                    }
-                }
-                catch (NotFoundException $e)
-                {
-                    //do nothing
-                }
-            }
-*/
             $existingProductCategories = array();
+            for ($i = 0; $i < count($this->model->productCategories); $i++)
+            {
+                $existingProductCategories[] = array('id' => $this->model->productCategories[$i]->id,
+                                                     'name' => $this->model->productCategories[$i]->name);
+            }
             return $existingProductCategories;
         }
 
-        public static function renderHtmlContentLabelFromContactAndKeyword($contact, $keyword)
+        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
         {
-            assert('$contact instanceof Contact && $contact->id > 0');
+            assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
             assert('$keyword == null || is_string($keyword)');
 
-            if (substr($contact->secondaryEmail->emailAddress, 0, strlen($keyword)) === $keyword)
+            if ($productCategory->name != null)
             {
-                $emailAddressToUse = $contact->secondaryEmail->emailAddress;
+                return strval($productCategory) . '&#160&#160<b>'. '</b>';
             }
             else
             {
-                $emailAddressToUse = $contact->primaryEmail->emailAddress;
-            }
-            if ($emailAddressToUse != null)
-            {
-                return strval($contact) . '&#160&#160<b>' . strval($emailAddressToUse) . '</b>';
-            }
-            else
-            {
-                return strval($contact);
+                return strval($productCategory);
             }
         }
     }

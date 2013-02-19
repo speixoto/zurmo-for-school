@@ -37,5 +37,15 @@
                 SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List'),
             );
         }
+
+        protected function getFormattedAttributeLabel()
+        {
+            return Yii::app()->format->text(Zurmo::t('ProductTemplatesModule', 'Sell Price Formula'));
+        }
+
+        protected function renderLabel()
+        {
+            return $this->resolveNonActiveFormFormattedLabel($this->getFormattedAttributeLabel());
+        }
     }
 ?>
