@@ -24,22 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     *
-     */
-    class DiscountFromListSellPriceFormulaRules extends SellPriceFormulaRules
+    class SameAsListSellPriceFormulaRules extends SellPriceFormulaRules
     {
         public static function isSellPriceEditable()
         {
-            return true;
+            return false;
         }
 
         public static function getDisplayLabel()
         {
+            return Zurmo::t('ProductTemplateModule', 'Same As List');
         }
 
         public static function getType()
         {
+            return SellPriceFormula::TYPE_SAME_AS_LIST;
         }
     }
 ?>

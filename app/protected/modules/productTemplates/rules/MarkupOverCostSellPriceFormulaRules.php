@@ -24,22 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     *
-     */
     class MarkupOverCostSellPriceFormulaRules extends SellPriceFormulaRules
     {
         public static function isSellPriceEditable()
         {
-            return true;
+            return false;
         }
 
         public static function getDisplayLabel()
         {
+            return Zurmo::t('ProductTemplateModule', 'Markup Over Cost');
         }
 
         public static function getType()
         {
+            return SellPriceFormula::TYPE_MARKUP_OVER_COST;
         }
     }
 ?>

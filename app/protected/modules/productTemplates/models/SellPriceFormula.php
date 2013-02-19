@@ -26,6 +26,12 @@
 
     class SellPriceFormula extends OwnedModel
     {
+        const TYPE_EDITABLE           = 1;
+        const TYPE_PROFIT_MARGIN      = 2;
+        const TYPE_MARKUP_OVER_COST   = 3;
+        const TYPE_DISCOUNT_FROM_LIST = 4;
+        const TYPE_SAME_AS_LIST       = 5;
+
         public function __toString()
         {
             if (trim($this->name) == '')
@@ -51,8 +57,10 @@
                     array('name',                        'required'),
                     array('name',                        'type',    'type' => 'string'),
                     array('name',                        'length',  'min'  => 3,  'max' => 64),
-                    array('type',                        'type',    'type' => 'string'),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
+                ),
+                'elements' => array(
+                    'type'                => 'SellPriceFormulaTypeDropDown',
                 ),
                 'defaultSortAttribute' => 'name',
                 'customFields' => array(

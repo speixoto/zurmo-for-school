@@ -24,21 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProfitMarginSellPriceFormulaRules extends SellPriceFormulaRules
+    class SellPriceFormulaTypeDropDownElement extends StaticDropDownFormElement
     {
-        public static function isSellPriceEditable()
+        protected function getDropDownArray()
         {
-            return false;
-        }
-
-        public static function getDisplayLabel()
-        {
-            return Zurmo::t('ProductTemplateModule', 'Profit Margin');
-        }
-
-        public static function getType()
-        {
-            return SellPriceFormula::TYPE_PROFIT_MARGIN;
+            return array(
+                null                                       => Yii::t('Default', '--'),
+                SellPriceFormula::TYPE_EDITABLE            => Yii::t('Default', 'Editable'),
+                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'Discount From List'),
+                SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', 'Markup Over Cost'),
+                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Profit Margin'),
+                SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List'),
+            );
         }
     }
 ?>

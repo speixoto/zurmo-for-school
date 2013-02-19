@@ -93,6 +93,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'SellPriceFormulaTypeDropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'priceFrequency', 'type' => 'Integer'),
                                             ),
                                         ),
