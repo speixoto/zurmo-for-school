@@ -95,7 +95,7 @@
 
         protected function getNewModelTitleLabel()
         {
-            return Yii::t('Default', 'Create EmailTemplatesModuleSingularLabel',
+            return Zurmo::t('Default', 'Create EmailTemplatesModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
         }
 

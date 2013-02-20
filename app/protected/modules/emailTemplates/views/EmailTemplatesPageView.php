@@ -28,7 +28,7 @@
     {
         protected function getSubtitle()
         {
-            return Yii::t('Default', 'EmailTemplatesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('Default', 'EmailTemplatesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

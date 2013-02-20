@@ -42,9 +42,9 @@
 
         public static function getTypeDropDownArray()
         {
-             return array( // TODO: @Shoaibi this need translation, change module.
-                 self::TYPE_WORKFLOW     => Yii::t('Default', 'Workflow'),
-                 self::TYPE_CONTACT      => Yii::t('Default', 'Contact'),
+             return array(
+                 self::TYPE_WORKFLOW     => Zurmo::t('EmailTemplatesModule', 'Workflow'),
+                 self::TYPE_CONTACT      => Zurmo::t('EmailTemplatesModule', 'Contact'),
              );
         }
 
@@ -64,7 +64,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Zurmo::t('Default', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -131,7 +131,7 @@
         {
             if (empty($this->textContent) && empty($this->htmlContent))
             {
-                $this->addError($attribute, 'Please provide at least one of the contents field.' ); // TODO: @Shoaibi needs translation.
+                $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.'));
             }
             else
             {
