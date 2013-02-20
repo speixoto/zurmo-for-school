@@ -111,7 +111,7 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
                     'nonReportable2'      => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5'),
                     'reportedAsAttribute' => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem6', RedBeanModel::NOT_OWNED),
-                    'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem7', RedBeanModel::NOT_OWNED),
+                    'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ContactState', RedBeanModel::NOT_OWNED),
 
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
@@ -127,7 +127,9 @@
                     array('date',      'type', 'type' => 'date'),
                     array('dateTime',  'type', 'type' => 'datetime'),
                     array('float',     'type',    'type' => 'float'),
+                    array('float',     'length',  'min'  => 3, 'max' => 64),
                     array('integer',   'type',    'type' => 'integer'),
+                    array('integer',   'length',  'min'  => 3, 'max' => 64),
                     array('nonReportable',    'type',  'type' => 'string'),
                     array('nonReportable',    'length',  'min'  => 3, 'max' => 64),
                     array('phone',     'type',    'type' => 'string'),

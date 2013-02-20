@@ -138,7 +138,7 @@
                 foreach($values['attributes'] as $attribute => $attributeData)
                 {
                     $resolvedAttributeName  = $this->resolveRealAttributeName($attribute);
-                    $resolvedModelClassName = resolveRealModelClassName($attribute);
+                    $resolvedModelClassName = $this->resolveRealModelClassName($attribute);
                     $form = WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
                     $form->setAttributes($attributeData);
                     $this->_attributes[$attribute] = $form;

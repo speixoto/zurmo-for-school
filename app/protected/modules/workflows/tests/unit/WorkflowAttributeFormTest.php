@@ -30,6 +30,9 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            ContactsModule::loadStartingData();
+            Currency::getAll(); //make base currency
+            UserTestHelper::createBasicUser('bobby');
         }
 
         public function setup()
@@ -40,162 +43,369 @@
 
         public function testCheckBoxWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new CheckBoxWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = true;
-            $validated   = $form->validate();
+            $form                 = new CheckBoxWorkflowActionAttributeForm('WorkflowModelTestItem', 'boolean');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = true;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->value          = true;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->value          = 'invalid';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            $form->shouldSetValue = false;
+            $form->value          = 'invalid, but not required to be set';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            $form->shouldSetValue = false;
+            $form->value          = null;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testCheckBoxWorkflowAttributeFormSetGetAndValidate
+         */
         public function testContactStateWorkflowAttributeFormSetGetAndValidate()
         {
-            $contactStates = ContactState::getAll();
+            $contactStates        = ContactState::getAll();
             $this->assertTrue($contactStates[0]->id > 0);
-            $contactState  = $contactStates[0];
-            $form        = new ContactStateWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = $contactState->id;
-            $validated   = $form->validate();
+            $contactState         = $contactStates[0];
+            $form                 = new ContactStateWorkflowActionAttributeForm('WorkflowModelTestItem', 'likeContactState');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = $contactState->id;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testContactStateWorkflowAttributeFormSetGetAndValidate
+         */
         public function testCurrencyValueWorkflowAttributeFormSetGetAndValidate()
         {
             $currency             = Currency::getByCode('USD');
-            $form                 = new CurrencyValueWorkflowActionAttributeForm();
+            $form                 = new CurrencyValueWorkflowActionAttributeForm('WorkflowModelTestItem', 'currencyValue');
             $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
             $form->value          = 362.24;
             $form->currencyId     = $currency->id;
             $form->currencyIdType = CurrencyValueWorkflowActionAttributeForm::CURRENCY_ID_TYPE_STATIC;
             $validated            = $form->validate();
             $this->assertTrue($validated);
+
+            $form->currencyId     = null;
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
         }
 
+        /**
+         * @depends testCurrencyValueWorkflowAttributeFormSetGetAndValidate
+         */
         public function testDateWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new DateWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = '12-02-24';
-            $validated   = $form->validate();
+            $form                 = new DateWorkflowActionAttributeForm('WorkflowModelTestItem', 'date');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = '2012-02-24';
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            //Test invalid date
+            $form->value          = 'invalid date';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //test valid date, but not correct format for dynamic type
+            $form->type           = DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE;
+            $form->value          = '2012-02-24';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //Test valid date and valid format for dynamic type
+            $form->value          = -8600;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->value          = 3000;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testDateWorkflowAttributeFormSetGetAndValidate
+         */
         public function testDateTimeWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new DateTimeWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = '12-02-24 03:00:00';
-            $validated   = $form->validate();
+            $form                 = new DateTimeWorkflowActionAttributeForm('WorkflowModelTestItem', 'dateTime');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = '2012-02-24 03:00:04';
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            //Test invalid dateTime
+            $form->value          = 'invalid date';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //test valid date, but not correct format for dynamic type
+            $form->type           = DateTimeWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATETIME;
+            $form->value          = '2012-02-24 03:00:04';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //Test valid date and valid format for dynamic type
+            $form->value          = -8600;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->value          = 3000;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testDateTimeWorkflowAttributeFormSetGetAndValidate
+         */
         public function testDecimalWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new DecimalWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 44.12;
-            $validated   = $form->validate();
+            $form                 = new DecimalWorkflowActionAttributeForm('WorkflowModelTestItem', 'float');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = 444.12;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
+
+            //set the value with a length too short
+            $form->value = 4;
+            $validated   = $form->validate();
+            $this->assertFalse($validated);
         }
 
+        /**
+         * @depends testDecimalWorkflowAttributeFormSetGetAndValidate
+         */
         public function testDropDownWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new DropDownWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'Static 1';
-            $validated   = $form->validate();
+            $form                 = new DropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'dropDown');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = 'Static 1';
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            //Test invalid dropDown value
+            $form->value          = 123123;
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //test valid date, but not correct format for dynamic type
+            $form->type           = DropDownWorkflowActionAttributeForm::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS;
+            $form->value          = 'Static 1';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //Test valid date and valid format for dynamic type
+            $form->value          = -8600;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->value          = 3000;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testDropDownWorkflowAttributeFormSetGetAndValidate
+         */
         public function testEmailAddressWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new EmailAddressWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form                 = new EmailAddressWorkflowActionAttributeForm('Email', 'emailAddress');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
             $form->value = 'info@zurmo.com';
             $validated   = $form->validate();
             $this->assertTrue($validated);
+
+            //try with an invalid email address
+            $form->value = 'somethingNotAnEmail';
+            $validated   = $form->validate();
+            $this->assertFalse($validated);
         }
 
+        /**
+         * @depends testEmailAddressWorkflowAttributeFormSetGetAndValidate
+         */
         public function testIntegerWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new IntegerWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 12;
+            $form                 = new IntegerWorkflowActionAttributeForm('WorkflowModelTestItem', 'integer');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value = 12412;
             $validated   = $form->validate();
             $this->assertTrue($validated);
+
+            //set the value with a length too short
+            $form->value = 4;
+            $validated   = $form->validate();
+            $this->assertFalse($validated);
         }
 
-        public function testMultiDropDownWorkflowAttributeFormSetGetAndValidate()
+        /**
+         * @depends testIntegerWorkflowAttributeFormSetGetAndValidate
+         */
+        public function testMultiSelectDropDownWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new MultiDropDownWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form                 = new MultiSelectDropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'radioDropDown');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
             $form->value = array('Multi Value 1', 'Multi Value 2');
             $validated   = $form->validate();
             $this->assertTrue($validated);
+
+            //invalid string, needs to be array
+            $form->value = 'should be an array';
+            $validated   = $form->validate();
+            $this->assertFalse($validated);
         }
 
+        /**
+         * @depends testMultiSelectDropDownWorkflowAttributeFormSetGetAndValidate
+         */
         public function testPhoneWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new PhoneWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form                 = new PhoneWorkflowActionAttributeForm('WorkflowModelTestItem', 'radioDropDown');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
             $form->value = '1112223344';
             $validated   = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testPhoneWorkflowAttributeFormSetGetAndValidate
+         */
         public function testRadioDropDownWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new RadioDropDownWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'Radio Static 1';
-            $validated   = $form->validate();
+            $form                 = new RadioDropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'radioDropDown');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = 'Radio Static 1';
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            //Test invalid radioDropDown value
+            $form->value          = 123123;
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //test valid date, but not correct format for dynamic type
+            $form->type           = DropDownWorkflowActionAttributeForm::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS;
+            $form->value          = 'Static 1';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //Test valid date and valid format for dynamic type
+            $form->value          = -8600;
+            $validated            = $form->validate();
+            $this->assertTrue($validated);
+
+            $form->value          = 3000;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testRadioDropDownWorkflowAttributeFormSetGetAndValidate
+         */
         public function testTagCloudWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new TagCloudWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = array('Tag Value 1', 'Tag Value 2');
-            $validated   = $form->validate();
+            $form                 = new TagCloudWorkflowActionAttributeForm('WorkflowModelTestItem', 'tagCloud');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = array('Tag Value 1', 'Tag Value 2');
+            $validated            = $form->validate();
             $this->assertTrue($validated);
+
+            //invalid string, needs to be array
+            $form->value = 'should be an array';
+            $validated   = $form->validate();
+            $this->assertFalse($validated);
         }
 
-
+        /**
+         * @depends testTagCloudWorkflowAttributeFormSetGetAndValidate
+         */
         public function testTextWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new TextWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'jason';
-            $validated   = $form->validate();
+            $form                 = new TextWorkflowActionAttributeForm('WorkflowModelTestItem', 'string');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = 'jason';
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testTextWorkflowAttributeFormSetGetAndValidate
+         */
         public function testUserWorkflowAttributeFormSetGetAndValidate()
         {
-            $bobby       = User::getByUsername('bobby');
-            $form        = new UserWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = $bobby;
-            $validated   = $form->validate();
+            $bobby                           = User::getByUsername('bobby');
+            $form                            = new UserWorkflowActionAttributeForm('WorkflowModelTestItem', 'owner');
+            $form->type                      = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue            = true;
+            $form->value                     = $bobby->id;
+            $form->stringifiedModelForValue  = strval($bobby);
+            $validated                       = $form->validate();
+            $this->assertTrue($validated);
+
+            //Test invalid value
+            $form->value          = 'invalid value, should be integer';
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //test with a value still, it shouldn't validate because with dynamic user, it doesn't need a value
+            $form->type           = UserWorkflowActionAttributeForm::TYPE_DYNAMIC_CREATED_BY_USER;
+            $validated            = $form->validate();
+            $this->assertFalse($validated);
+
+            //Test without a value and it should pass
+            $form->value          = null;
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testUserWorkflowAttributeFormSetGetAndValidate
+         */
         public function testTextAreaWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new TextAreaWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'a description';
-            $validated   = $form->validate();
+            $form                 = new TextAreaWorkflowActionAttributeForm('WorkflowModelTestItem', 'textArea');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = 'a description';
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
 
+        /**
+         * @depends testTextAreaWorkflowAttributeFormSetGetAndValidate
+         */
         public function testUrlWorkflowAttributeFormSetGetAndValidate()
         {
-            $form        = new UrlWorkflowActionAttributeForm();
-            $form->type  = WorkflowActionAttributeForm::TYPE_STATIC;
-            $form->value = 'http://www.zurmo.com';
-            $validated   = $form->validate();
+            $form                 = new UrlWorkflowActionAttributeForm('WorkflowModelTestItem', 'url');
+            $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
+            $form->shouldSetValue = true;
+            $form->value          = 'http://www.zurmo.com';
+            $validated            = $form->validate();
             $this->assertTrue($validated);
         }
     }

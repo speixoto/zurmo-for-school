@@ -43,7 +43,7 @@
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem');
             $action->type                 = ActionForWorkflowForm::TYPE_UPDATE;
             $attributes                   = array(
-                                            'string'        => array('set'    => '1',
+                                            'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
             $action->setAttributes($attributes);
@@ -66,7 +66,7 @@
             $action->relation             = 'workflowModelTestItem';
             $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $attributes                   = array(
-                                            'string'     => array('set'    => '1',
+                                            'string'     => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
             $action->setAttributes($attributes);
@@ -90,7 +90,7 @@
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
             $action->relation             = 'workflowModelTestItem';
             $attributes                   = array(
-                                            'string'        => array('set'    => '1',
+                                            'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
             $action->setAttributes($attributes);
@@ -115,7 +115,7 @@
             $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $action->relatedModelRelation = 'workflowModelTestItem3';
             $attributes                   = array(
-                                            'string'        => array('set'    => '1',
+                                            'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
             $action->setAttributes($attributes);
