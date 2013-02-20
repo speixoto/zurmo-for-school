@@ -54,6 +54,20 @@
             $this->assertFalse($summationReportWizardForm->hasErrors());            
         }
         
+        public function testValidateFiltersForErrors()
+        {
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            
+            $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType     = 'string';
+            $filter->operator                        = OperatorRules::TYPE_EQUALS;            
+            $summationReportWizardForm->filters = array($filter);            
+            $content = $summationReportWizardForm->validateFilters();             
+            $this->assertTrue(strpos($content,  'Value cannot be blank.')           === false);
+            $this->assertTrue($summationReportWizardForm->hasErrors()); 
+        }
+        
         public function testValidateFiltersStructure()
         {
             $summationReportWizardForm                    = new SummationReportWizardForm();
@@ -68,6 +82,22 @@
             $summationReportWizardForm->validateFiltersStructure();            
             $this->assertFalse($summationReportWizardForm->hasErrors());
         }
+
+        public function testValidateFiltersStructureForError()
+        {
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType     = 'createdDateTime';
+            $filter->operator                        = OperatorRules::TYPE_BETWEEN;            
+            $filter->value                           = '2013-02-19 00:00';
+            $filter->secondValue                     = '2013-02-20 00:00';                   
+            $summationReportWizardForm->filters = array($filter);  
+            $summationReportWizardForm->filtersStructure  = '2';            
+            $content = $summationReportWizardForm->validateFiltersStructure();            
+            $this->assertTrue(strpos($content,  'The structure is invalid. Please use only integers less than 2.')           === false);            
+            $this->assertTrue($summationReportWizardForm->hasErrors());
+        }         
         
         public function testValidateDisplayAttributes()
         {     
@@ -83,6 +113,18 @@
             $this->assertFalse($summationReportWizardForm->hasErrors());
         }
         
+        public function testValidateDisplayAttributesForError()
+        {                       
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            
+            $displayAttribute                     = new DisplayAttributeForReportForm('ReportsTestModule', 
+                                                        'ReportModelTestItem', Report::TYPE_SUMMATION);
+            $summationReportWizardForm->displayAttributes = array();                                                        
+            $content = $summationReportWizardForm->validateDisplayAttributes();            
+            $this->assertTrue(strpos($content,  'At least one display column must be selected')           === false);            
+            $this->assertTrue($summationReportWizardForm->hasErrors());
+        }        
+        
         public function testValidateOrderBys()
         {
             $summationReportWizardForm               = new SummationReportWizardForm();
@@ -94,15 +136,51 @@
             $summationReportWizardForm->orderBys     = array($orderBy);
             $summationReportWizardForm->validateOrderBys();
             $this->assertFalse($summationReportWizardForm->hasErrors());
-        }        
+        }
+        
+        public function testValidateOrderBysForErrorsButIssueNoOrderByColumn()
+        {
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);            
+            $this->assertEquals('asc', $orderBy->order);
+            $orderBy->order                           = 'desc';
+            $summationReportWizardForm->orderBys = array($orderBy);            
+            $summationReportWizardForm->validateOrderBys();             
+            $this->assertFalse($summationReportWizardForm->hasErrors());
+        }
+
+        public function testValidateOrderBysForErrors()
+        {
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);            
+            $this->assertEquals('asc', $orderBy->order);
+            $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
+            $orderBy->order                           = 'desc1';
+            $summationReportWizardForm->orderBys = array($orderBy);            
+            $content = $summationReportWizardForm->validateOrderBys();
+            $this->assertTrue(strpos($content,  'Order must be asc or desc.')           === false);            
+            $this->assertTrue($summationReportWizardForm->hasErrors());
+        }         
 
         public function testValidateSpotConversionCurrencyCode()
         {
            $summationReportWizardForm                         = new SummationReportWizardForm();
-           $summationReportWizardForm->currencyConversionType = 'CAD';
+           $summationReportWizardForm->currencyConversionType = 2;
+           $summationReportWizardForm->spotConversionCurrencyCode = 'CAD';
            $summationReportWizardForm->validateSpotConversionCurrencyCode();
            $this->assertFalse($summationReportWizardForm->hasErrors());
         }
+        
+        public function testValidateSpotConversionCurrencyCodeForErrors()
+        {
+           $summationReportWizardForm                         = new SummationReportWizardForm();
+           $summationReportWizardForm->currencyConversionType = 3;           
+           $summationReportWizardForm->spotConversionCurrencyCode = null;
+           $summationReportWizardForm->validateSpotConversionCurrencyCode();           
+           $this->assertTrue($summationReportWizardForm->hasErrors());
+        }  
         
         public function testValidateGroupBys()
         {
@@ -115,6 +193,25 @@
             $summationReportWizardForm->groupBys  = array($groupBy);
             $summationReportWizardForm->validateGroupBys();
             $this->assertFalse($summationReportWizardForm->hasErrors());
+        }
+        
+        public function testValidateGroupBysForErrors()
+        {
+            $summationReportWizardForm            = new SummationReportWizardForm();
+            $groupByX                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_SUMMATION);
+            $groupByX->attributeIndexOrDerivedType = 'string';
+            $this->assertEquals('x', $groupByX->axis);
+            $groupByX->axis                        = 'y';            
+            $groupByY                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_SUMMATION);
+            $groupByY->attributeIndexOrDerivedType = 'string';
+            $this->assertEquals('x', $groupByY->axis);
+            $groupByY->axis                        = 'y';
+            $summationReportWizardForm->groupBys  = array($groupByX,$groupByY);
+            $content = $summationReportWizardForm->validateGroupBys();            
+            $this->assertTrue(strpos($content,  'Each grouping must be unique')           === false);
+            $this->assertTrue($summationReportWizardForm->hasErrors());
         }
 
         public function testValidateDrillDownDisplayAttributes()
@@ -129,6 +226,17 @@
             $summationReportWizardForm->validateDrillDownDisplayAttributes(); 
             $this->assertFalse($summationReportWizardForm->hasErrors());            
         }
+        
+        public function testValidateDrillDownDisplayAttributesForErrors()
+        {
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            $drillDownDisplayAttributes         = new DrillDownDisplayAttributeForReportForm('ReportsTestModule', 
+                                                        'ReportModelTestItem',Report::TYPE_SUMMATION);                                                       
+            $summationReportWizardForm->drillDownDisplayAttributes         = array($drillDownDisplayAttributes);
+            $content = $summationReportWizardForm->validateDrillDownDisplayAttributes(); 
+            $this->assertTrue(strpos($content,  'Label cannot be blank.')           === false);
+            $this->assertTrue($summationReportWizardForm->hasErrors());           
+        }
 
         public function testValidateChart()
         {
@@ -141,6 +249,17 @@
             $summationReportWizardForm->chart = $chart;
             $summationReportWizardForm->validateChart();
             $this->assertFalse($summationReportWizardForm->hasErrors());            
-        }        
+        }
+
+        public function testValidateChartForErrorsButIssue()
+        {
+            $summationReportWizardForm          = new SummationReportWizardForm();
+            $chart                              = new ChartForReportForm();            
+            $summationReportWizardForm->chart = $chart;
+            $chart->firstSeries                 = '';
+            $summationReportWizardForm->validateChart();
+            $summationReportWizardForm->chart->validate();
+            $this->assertFalse($summationReportWizardForm->hasErrors());            
+        }         
     }
 ?>    

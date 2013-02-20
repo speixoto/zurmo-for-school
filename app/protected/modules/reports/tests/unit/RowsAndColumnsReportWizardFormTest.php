@@ -43,7 +43,8 @@
         
         public function testValidateFilters()
         {
-            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();                  
+            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();                         
+            
             $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType     = 'string';
@@ -53,6 +54,20 @@
             $rowsAndColumnsReportWizardForm->validateFilters(); 
             $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }
+        
+        public function testValidateFiltersForErrors()
+        {
+            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
+            
+            $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType     = 'string';
+            $filter->operator                        = OperatorRules::TYPE_EQUALS;            
+            $rowsAndColumnsReportWizardForm->filters = array($filter);            
+            $content = $rowsAndColumnsReportWizardForm->validateFilters();             
+            $this->assertTrue(strpos($content,  'Value cannot be blank.')           === false);
+            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors()); 
+        }        
         
         public function testValidateFiltersStructure()
         {
@@ -69,6 +84,22 @@
             $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }
         
+        public function testValidateFiltersStructureForError()
+        {
+            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
+            $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType     = 'createdDateTime';
+            $filter->operator                        = OperatorRules::TYPE_BETWEEN;            
+            $filter->value                           = '2013-02-19 00:00';
+            $filter->secondValue                     = '2013-02-20 00:00';                   
+            $rowsAndColumnsReportWizardForm->filters = array($filter);  
+            $rowsAndColumnsReportWizardForm->filtersStructure  = '2';            
+            $content = $rowsAndColumnsReportWizardForm->validateFiltersStructure();            
+            $this->assertTrue(strpos($content,  'The structure is invalid. Please use only integers less than 2.')           === false);            
+            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
+        }        
+        
         public function testValidateDisplayAttributes()
         {                       
             $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
@@ -83,6 +114,15 @@
             $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }
         
+        public function testValidateDisplayAttributesForError()
+        {                       
+            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
+            $rowsAndColumnsReportWizardForm->displayAttributes = array();
+            $content = $rowsAndColumnsReportWizardForm->validateDisplayAttributes();            
+            $this->assertTrue(strpos($content,  'At least one display column must be selected')           === false);            
+            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
+        }
+        
         public function testValidateOrderBys()
         {
             $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
@@ -91,17 +131,53 @@
             $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
             $this->assertEquals('asc', $orderBy->order);
             $orderBy->order                           = 'desc';
-            $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);
+            $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);            
             $rowsAndColumnsReportWizardForm->validateOrderBys();
             $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
+        }  
+
+        public function testValidateOrderBysForErrorsButIssueNoOrderByColumn()
+        {
+            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
+            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);            
+            $this->assertEquals('asc', $orderBy->order);
+            $orderBy->order                           = 'desc';
+            $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);            
+            $rowsAndColumnsReportWizardForm->validateOrderBys();             
+            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
+        }
+
+        public function testValidateOrderBysForErrors()
+        {
+            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
+            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                                           Report::TYPE_ROWS_AND_COLUMNS);            
+            $this->assertEquals('asc', $orderBy->order);
+            $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
+            $orderBy->order                           = 'desc1';
+            $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);            
+            $content = $rowsAndColumnsReportWizardForm->validateOrderBys();
+            $this->assertTrue(strpos($content,  'Order must be asc or desc.')           === false);            
+            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
         }        
 
         public function testValidateSpotConversionCurrencyCode()
         {
            $rowsAndColumnsReportWizardForm                         = new RowsAndColumnsReportWizardForm();
-           $rowsAndColumnsReportWizardForm->currencyConversionType = 'CAD';
+           $rowsAndColumnsReportWizardForm->currencyConversionType = 2;
+           $rowsAndColumnsReportWizardForm->spotConversionCurrencyCode = 'CAD';
            $rowsAndColumnsReportWizardForm->validateSpotConversionCurrencyCode();
            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
+        }
+        
+        public function testValidateSpotConversionCurrencyCodeForErrors()
+        {
+           $rowsAndColumnsReportWizardForm                         = new RowsAndColumnsReportWizardForm();
+           $rowsAndColumnsReportWizardForm->currencyConversionType = 3;           
+           $rowsAndColumnsReportWizardForm->spotConversionCurrencyCode = null;
+           $rowsAndColumnsReportWizardForm->validateSpotConversionCurrencyCode();           
+           $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
         }        
     }
 ?>    
