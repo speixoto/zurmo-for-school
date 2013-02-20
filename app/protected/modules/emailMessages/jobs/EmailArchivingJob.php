@@ -29,7 +29,7 @@
      */
     class EmailArchivingJob extends BaseJob
     {
-        public static $jobOwnerUserModel;
+        protected $jobOwnerUserModel;
 
         /**
          * @returns Translated label that describes this job type.
@@ -69,7 +69,7 @@
          */
         public function run()
         {
-            self::$jobOwnerUserModel = Yii::app()->user->userModel;
+            $this->jobOwnerUserModel = Yii::app()->user->userModel;
             if (Yii::app()->imap->connect())
             {
                 $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
@@ -90,7 +90,7 @@
                 {
                    foreach ($messages as $message)
                    {
-                       Yii::app()->user->userModel = self::$jobOwnerUserModel;
+                       Yii::app()->user->userModel = $this->jobOwnerUserModel;
                        $lastMessageCreatedTime = strtotime($message->createdDate);
                        if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                        {
@@ -98,7 +98,7 @@
                        }
                        $this->saveEmailMessage($message);
                    }
-                   Yii::app()->user->userModel = self::$jobOwnerUserModel;
+                   Yii::app()->user->userModel = $this->jobOwnerUserModel;
                    Yii::app()->imap->expungeMessages();
                    if ($lastCheckTime != '')
                    {
@@ -253,8 +253,7 @@
             }
             catch (CException $e)
             {
-                // User not found, or few users share same primary email address,
-                // so inform user about issue and continue with next email.
+                // User not found, so inform user about issue and continue with next email.
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                 return false;
             }
@@ -290,7 +289,7 @@
                 }
             }
 
-            Yii::app()->user->userModel = self::$jobOwnerUserModel;
+            Yii::app()->user->userModel = $this->jobOwnerUserModel;
             $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
             if (!$recipientsInfo)
             {

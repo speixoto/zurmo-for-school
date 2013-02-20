@@ -1042,7 +1042,7 @@
             unset($user);
         }
 
-        public function testEmailUnquesValidation()
+        public function testEmailUniquenessValidation()
         {
             $user = new User();
             $user->username = 'usera';
