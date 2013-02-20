@@ -40,7 +40,7 @@
 
         public function testCreateAndGetEmailTemplateById()
         {
-            $emailTemplate = new EmailTemplate();
+            $emailTemplate              = new EmailTemplate();
             $emailTemplate->type        = 1;
             $emailTemplate->subject     = 'Test subject';
             $emailTemplate->name        = 'Test Email Template';
@@ -55,6 +55,15 @@
             $this->assertEquals('Test Email Template', $emailTemplate->name);
             $this->assertEquals('Test html Content', $emailTemplate->htmlContent);
             $this->assertEquals('Test text Content',   $emailTemplate->textContent);
+        }
+
+        public function testAtLeastOneContentFieldIsRequired()
+        {
+            $emailTemplate              = new EmailTemplate();
+            $emailTemplate->type        = 1;
+            $emailTemplate->subject     = 'Another Test subject';
+            $emailTemplate->name        = 'Another Test Email Template';
+            $this->assertFalse($emailTemplate->save());
         }
 
         /**

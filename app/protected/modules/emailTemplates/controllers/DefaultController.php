@@ -66,6 +66,7 @@
 
         public function actionEdit($id, $redirectUrl = null)
         {
+            // TODO: @Shoaibi needs walkthrough test
             $template = EmailTemplate::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($template);
             $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::
@@ -77,6 +78,7 @@
 
         public function actionDetails($id)
         {
+            // TODO: @Shoaibi needs walkthrough test
             $template = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($template);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($template),
@@ -98,6 +100,7 @@
 
         public function actionDelete($id)
         {
+            // TODO: @Shoaibi needs walkthrough test
             $emailTemplate = EmailTemplate::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailTemplate);
             $emailTemplate->delete();
