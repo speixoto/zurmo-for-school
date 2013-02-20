@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -25,26 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Helper class for working with Email Template models.
+     * Element for displaying the email template type options.
      */
-    class EmailTemplateUtil
+    class EmailTemplateTypeElement extends StaticDropDownFormElement
     {
-
-        public static function getTypeDropDownArray()
+        protected function getDropDownArray()
         {
-            return array(
-                null                 => Yii::t('Default', '--'),
-            );
-        }
-
-        public static function renderNonEditableTypeStringContent($isHotType)
-        {
-            assert('is_int($isHotType) || $isHotType == null');
-            $dropDownArray = self::getIsHotTypeDropDownArray();
-            if (!empty($dropDownArray[$isHotType]))
-            {
-                return Yii::app()->format->text($dropDownArray[$isHotType]);
-            }
+            return EmailTemplate::getTypeDropDownArray();
         }
     }
 ?>
