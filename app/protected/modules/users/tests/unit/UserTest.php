@@ -766,7 +766,7 @@
             $identity = new UserIdentity('abcdefg', 'abcdefgN4');
             $this->assertFalse($identity->authenticate());
             $this->assertEquals(UserIdentity::ERROR_NO_RIGHT_WEB_LOGIN, $identity->errorCode);
-        }		        
+        }
 
         /**
          * @depends testPasswordUserNamePolicyChangesValidationAndLogin
@@ -1008,7 +1008,7 @@
             $this->assertContains($avatarUrl, $user->getAvatarImage(2500));
             unset($user);
         }
-        
+
         /*
         * test for checking isActive attribute
         */
@@ -1020,26 +1020,61 @@
             $user->firstName          = 'My';
             $user->lastName           = 'activeuserson';
             $user->setPassword('myuser');
-            $this->assertTrue($user->save());            
+            $this->assertTrue($user->save());
             unset($user);
-            
+
             $user = User::getByUsername('activeuser');
             $this->assertEquals(1,$user->isActive);
             unset($user);
-            
+
             //Change the user's status to inactive and confirm the changes in rights and isActive attribute.
             $user = User::getByUsername('activeuser');
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::DENY);
             $this->assertTrue($user->save());
             $this->assertEquals(0,$user->isActive);
             unset($user);
-            
+
             //Now change the user's status back to active.
             $user = User::getByUsername('activeuser');
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
             $this->assertTrue($user->save());
             $this->assertEquals(1,$user->isActive);
             unset($user);
+        }
+
+        public function testEmailUnquesValidation()
+        {
+            $user = new User();
+            $user->username = 'usera';
+            $user->lastName = 'UserA';
+            $user->setPassword('myuser');
+            $emailAddress = 'userA@example.com';
+            $user->primaryEmail->emailAddress = $emailAddress;
+            $saved = $user->save();
+            $this->assertTrue($saved);
+
+            $user2 = new User();
+            $user2->username = 'userb';
+            $user2->lastName = 'UserB';
+            $user2->setPassword('myuser');
+            $emailAddress = 'userA@example.com';
+            $user2->primaryEmail->emailAddress = $emailAddress;
+            $saved = $user2->save();
+            $this->assertFalse($saved);
+
+            $validationErrors = $user2->getErrors();
+            $this->assertTrue(count($validationErrors) > 0);
+            // Todo: fix array keys below
+            $this->assertTrue(isset($validationErrors['']));
+            $this->assertEquals('Email address already exist in system.', $validationErrors[''][0]);
+
+            // Try to save user without email address
+            $user3 = new User();
+            $user3->username = 'userc';
+            $user3->lastName = 'UserC';
+            $user3->setPassword('myuser');
+            $saved = $user3->save();
+            $this->assertTrue($saved);
         }
     }
 ?>
