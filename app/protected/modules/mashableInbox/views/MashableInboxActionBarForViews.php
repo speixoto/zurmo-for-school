@@ -37,7 +37,7 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type'          => 'MashableInboxCreate',
-                                'htmlOptions'     => array('class' => 'icon-create'),
+                                  'htmlOptions'   => array('class' => 'icon-create'),
                             ),
                         ),
                     ),
@@ -46,13 +46,14 @@
             return $metadata;
         }
 
-        public function __construct($controllerId, $moduleId, $listView, Array $actionViewOptions, MashableInboxForm $mashableInboxForm)
+        public function __construct($controllerId, $moduleId, $listView, Array $actionViewOptions, MashableInboxForm $mashableInboxForm, $modelClassName)
         {
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;
             $this->listView                  = $listView;
             $this->actionViewOptions         = $actionViewOptions;
             $this->mashableInboxForm         = $mashableInboxForm;
+            $this->modelClassName            = $modelClassName;
         }
 
         protected function renderContent()
@@ -60,10 +61,23 @@
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
             $content .= $this->renderActionElementBar(false);
             $content .= $this->renderMashableInboxModels();
+            $content .= $this->renderMassActionElement();
             $content .= '</div></div>';
             $content .= $this->renderMashableInboxForm();
             $content .= ZurmoHtml::tag('div', array('id' => 'MashableInboxListViewWrapper'), $this->listView->render());
             return $content;
+        }
+
+        private function renderMassActionElement()
+        {
+            $params = array('type'           => 'MashableInboxMass',
+                            'htmlOptions'    => array('class' => 'icon-create'),
+                            'listViewGridId' => 'list-view',
+                            'modelClassName' => $this->modelClassName,
+                            'formName'       => 'mashable-inbox-form',
+                        );
+            $massActionElement = new MashableInboxMassActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
+            return $massActionElement->render();
         }
 
         private function renderMashableInboxForm()
@@ -96,6 +110,8 @@
             $element      = new MashableInboxStatusRadioElement($model, 'filteredBy', $form);
             $element->editableTemplate =  '<div id="MashableInboxForm_filteredBy_area">{content}</div>';
             $content     .= $element->render();
+            $content     .= ZurmoHtml::activeHiddenField($model, 'selectedIds');
+            $content     .= ZurmoHtml::activeHiddenField($model, 'massAction');
             return $content;
         }
 

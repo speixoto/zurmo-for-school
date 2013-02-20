@@ -41,6 +41,10 @@
 
         abstract public function getMachableInboxOrderByAttributeName();
 
+        abstract public function resolveMarkRead($modelId);
+
+        abstract public function resolveMarkUnread($modelId);
+
         public function getSearchAttributeData($searchTerm)
         {
             return null;
@@ -98,5 +102,11 @@
         {
             return "<span>{modelStringContent}</span><span>{modelCreationTimeContent}</span>";
         }
+
+        public function getMassOptions()
+        {
+            return array();
+        }
+
     }
 ?>

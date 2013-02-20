@@ -35,6 +35,17 @@ class MashableInboxDefaultController extends ZurmoModuleController {
         {
             $getData = GetUtil::getData();
             $mashableInboxForm->attributes = $getData["MashableInboxForm"];
+            if ($mashableInboxForm->massAction != '')
+            {
+                $method = 'resolve' . ucfirst($mashableInboxForm->massAction);
+                $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                $selectedIds = explode(',', $mashableInboxForm->selectedIds);
+                foreach ($selectedIds as $modelId)
+                {
+                   $mashableUtilRules->$method((int)$modelId);
+                }
+            }
+
             if ($modelClassName != '') {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
                 $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel, $mashableInboxForm->filteredBy, $mashableInboxForm->searchTerm);
@@ -57,7 +68,7 @@ class MashableInboxDefaultController extends ZurmoModuleController {
             } else {
                 $listView = $this->getMashableInboxListView($mashableInboxForm, $pageSize);
             }
-            $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $listView, $actionViewOptions, $mashableInboxForm);
+            $actionBarView = new MashableInboxActionBarForViews($this->getId(), $this->getModule()->getId(), $listView, $actionViewOptions, $mashableInboxForm, $modelClassName);
             $view = new MashableInboxPageView(ZurmoDefaultViewUtil::
                             makeStandardViewForCurrentUser($this, $actionBarView));
             echo $view->render();

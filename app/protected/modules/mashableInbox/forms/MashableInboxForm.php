@@ -43,6 +43,10 @@
 
         public $optionForModel = '';
 
+        public $selectedIds;
+
+        public $massAction;
+
         /**
          * Models that implement the CombinedInboxInterface and the current user has
          * rights to see, this array contains the model class names as the indexes and the translated model labels
@@ -58,6 +62,8 @@
                 array('searchTerm',          'type',    'type' => 'string'),
                 array('filteredBy',          'type',    'type' => 'string'),
                 array('optionForModel',      'type',    'type' => 'string'),
+                array('selectedIds',         'type',    'type' => 'string'),
+                array('massAction',          'type',    'type' => 'string'),
             );
         }
     }

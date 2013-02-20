@@ -114,5 +114,38 @@
             $metadata['structure'] = "1";
             return $metadata;
         }
+
+        public function resolveMarkRead($modelId)
+        {
+            assert('$modelId > 0');
+            $this->resolveChangeHasReadLatestStatus($modelId, true);
+        }
+
+        public function resolveMarkUnread($modelId)
+        {
+            assert('$modelId > 0');
+            $this->resolveChangeHasReadLatestStatus($modelId, false);
+
+        }
+
+        private function resolveChangeHasReadLatestStatus($modelId, $newStatus)
+        {
+            assert('$modelId > 0');
+            assert('is_bool($newStatus)');
+            $modelClassName = $this->getModelClassName();
+            $model = $modelClassName::getById($modelId);
+            if (Yii::app()->user->userModel == $model->owner)
+            {
+                $model->ownerHasReadLatest = $newStatus;
+            }
+            foreach ($model->conversationParticipants as $position => $participant)
+            {
+                if ($participant->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
+                {
+                    $model->conversationParticipants[$position]->hasReadLatest = $newStatus;
+                }
+            }
+            $model->save();
+        }
     }
 ?>

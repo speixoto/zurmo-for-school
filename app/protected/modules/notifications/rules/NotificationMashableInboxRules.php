@@ -103,5 +103,23 @@
             $searchAttributeData['structure'] = '1 and (2 or 3)';
             return $searchAttributeData;
         }
+
+        public function resolveMarkRead($modelId)
+        {
+            assert('$modelId > 0');
+            $this->resolveChangeHasReadLatestStatus($modelId, true);
+        }
+
+        public function resolveMarkUnread($modelId)
+        {
+            assert('$modelId > 0');
+            $this->resolveChangeHasReadLatestStatus($modelId, false);
+
+        }
+
+        private function resolveChangeHasReadLatestStatus($modelId, $newStatus)
+        {
+            throw new NotImplementedException();
+        }
     }
 ?>
