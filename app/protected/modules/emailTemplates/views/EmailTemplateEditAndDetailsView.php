@@ -34,8 +34,8 @@
                         'elements' => array(
                             array('type'  => 'EmailTemplateCancelLink',    'renderType' => 'Edit'),
                             array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type'  => 'EmailTemplateDeleteLink'),
                             array('type' => 'EditLink',       'renderType' => 'Details'),
+                            array('type'  => 'EmailTemplateDeleteLink'),
                         ),
                     ),
                     'panels' => array(

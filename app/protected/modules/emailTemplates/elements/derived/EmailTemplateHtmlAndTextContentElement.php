@@ -39,7 +39,7 @@
 
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
-            // TODO: @Shoaibi Display both of them in separate divs, we need a toggle here, ask amit.
+            // TODO: @Shoaibi/@Amit Display both of them in separate divs, we need a toggle here.
             $content   = '<div class="email-template-content">' .
                             '<div class="email-template-textcontent">' .
                             $plainTextContent .
@@ -77,7 +77,9 @@
                                         'content'     => $this->model->htmlContent,
             ));
             $cClipWidget->endClip();
-            $content                = $cClipWidget->getController()->clips['Redactor'];
+                            // TODO: @Shoaibi/@Amit <label> either needs a line break at the end or margin-bottom.
+            $content                 = '<label for="EmailTemplate_htmlContent">HTML Content</label>';
+            $content                .= $cClipWidget->getController()->clips['Redactor'];
             $content                .= $this->form->error($this->model, $attribute);
             return $content;
         }
@@ -92,5 +94,10 @@
             $content                                    .= $this->form->error($this->model, $attribute);
             return $content;
          }
+
+        protected function renderLabel()
+        {
+            return null;
+        }
      }
 ?>
