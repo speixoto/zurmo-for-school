@@ -124,11 +124,13 @@
           $stickySearchKey          = null;
           $dataProvider             = $this->getDataProviderForExport($report,$stickySearchKey,false);            
           $totalItems               = intval($dataProvider->calculateTotalItemCount());  
-          if($totalItems > 2500)
+          if($totalItems > ExportModule::$asynchronusThreshold)
           {
             $this->setGetArray(array('id' => $savedReport->id));
             $this->resetPostArray();
-            $this->runControllerWithRedirectExceptionAndGetContent     ('reports/default/export');
+            $content = $this->runControllerWithRedirectExceptionAndGetContent     ('reports/default/export');
+            $this->assertEquals('A large amount of data has been requested for export.  You will receive ' .
+                        'a notification with the download link when the export is complete.', Yii::app()->user->getFlash('notification'));
           }
           else
           {
