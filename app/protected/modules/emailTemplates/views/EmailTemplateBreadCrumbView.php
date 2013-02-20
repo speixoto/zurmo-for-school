@@ -25,30 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Cancel Email Template link.
+     * View that renders email template module breadcrumb content
      */
-    class CancelEmailTemplatesLinkActionElement extends LinkActionElement
+    class EmailTemplateBreadCrumbView extends BreadCrumbView
     {
-        public function getActionType()
+        protected function getHomeLinkLabel()
         {
-            return 'Details';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Cancel');
-        }
-
-        protected function getDefaultRoute()
-        {
-            if (!empty($this->modelId))
-            {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return Yii::t('Default', 'Email Templates');
         }
     }
 ?>

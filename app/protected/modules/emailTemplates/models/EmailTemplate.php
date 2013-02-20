@@ -26,6 +26,10 @@
 
     class EmailTemplate extends OwnedSecurableItem
     {
+        const TYPE_WORKFLOW = 1;
+
+        const TYPE_CONTACT  = 2;
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -34,6 +38,24 @@
         public static function getModuleClassName()
         {
             return 'EmailTemplatesModule';
+        }
+
+        public static function getTypeDropDownArray()
+        {
+             return array( // TODO: @Shoaibi this need translation, change module.
+                 self::TYPE_WORKFLOW     => Yii::t('Default', 'Workflow'),
+                 self::TYPE_CONTACT      => Yii::t('Default', 'Contact'),
+             );
+        }
+
+        public static function renderNonEditableTypeStringContent($type)
+        {
+            assert('is_int($type) || $type == null');
+            $dropDownArray = self::getTypeDropDownArray();
+            if (!empty($dropDownArray[$type]))
+            {
+                return Yii::app()->format->text($dropDownArray[$type]);
+            }
         }
 
         public function __toString()
@@ -85,7 +107,8 @@
                 'rules' => array(
                     array('type',                       'required'),
                     array('type',                       'type',    'type' => 'integer'),
-                    array('type',                       'length',  'min'  => 1),
+                    array('type',                       'numerical', 'min' => self::TYPE_WORKFLOW,
+                                                                'max' => self::TYPE_CONTACT),
                     array('name',                       'required'),
                     array('name',                       'type',    'type' => 'string'),
                     array('name',                       'length',  'min'  => 3, 'max' => 64),
@@ -108,7 +131,7 @@
         {
             if (empty($this->textContent) && empty($this->htmlContent))
             {
-                $this->addError($attribute, 'Please provide at least one of the contents field.' );
+                $this->addError($attribute, 'Please provide at least one of the contents field.' ); // TODO: @Shoaibi needs translation.
             }
             else
             {

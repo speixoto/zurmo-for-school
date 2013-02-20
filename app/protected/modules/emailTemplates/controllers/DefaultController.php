@@ -64,11 +64,38 @@
             echo $view->render();
         }
 
+        public function actionEdit($id, $redirectUrl = null)
+        {
+            $template = EmailTemplate::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($template);
+            $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::
+                                            makeStandardViewForCurrentUser($this,
+                                                $this->makeEditAndDetailsView(
+                                                $this->attemptToSaveModelFromPost($template, $redirectUrl), 'Edit')));
+            echo $view->render();
+        }
+
+        public function actionDetails($id)
+        {
+            $template = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($template);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($template),
+                                        'EmailTemplatesModule'), $template);
+            $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
+                                                                            $this->getModule()->getId(), $template);
+            $breadcrumbLinks          = array(StringUtil::getChoppedStringContent(strval($template), 25));
+            $view                     = new EmailTemplatesPageView((ZurmoDefaultViewUtil::
+                                                makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
+                                                    $breadcrumbLinks, 'EmailTemplateBreadCrumbView')));
+
+            echo $view->render();
+        }
+
         protected static function getSearchFormClassName()
         {
             return 'EmailTemplatesSearchForm';
         }
-        
+
         public function actionDelete($id)
         {
             $emailTemplate = EmailTemplate::GetById(intval($id));

@@ -29,34 +29,42 @@
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
+        public static function getModelAttributeNames()
+        {
+            return array(
+                'htmlContent',
+                'textContent',
+            );
+        }
+
+        protected function resolveTabbedContent($plainTextContent, $htmlContent)
+        {
+            // TODO: @Shoaibi Display both of them in separate divs, we need a toggle here, ask amit.
+            $content   = '<div class="email-template-content">' .
+                            '<div class="email-template-textcontent">' .
+                            $plainTextContent .
+                            '</div>' .
+                            '<div class="email-template-htmlcontent">'  .
+                            $htmlContent .
+                            '</div>' .
+                        '</div>';
+            return $content;
+
+        }
+
         protected function renderControlNonEditable()
         {
-            $emailMessageTemplate = new EmailTemplate();
             assert('$this->attribute == null');
-            if ($emailMessageTemplate->htmlContent != null)
-            {
-                return Yii::app()->format->html($emailMessageTemplate->htmlContent);
-            }
-            elseif ($emailMessageTemplate->textContent != null)
-            {
-                return Yii::app()->format->text($emailMessageTemplate->textContent);
-            }
+            return $this->resolveTabbedContent($this->model->textContent, $this->model->htmlContent);
         }
 
         protected function renderControlEditable()
         {
-          $content  = '<div class="email-template-textcontent">';
-          $content  .= $this->renderTextContentArea();
-          $content  .= '</div>';
-          $content  .= '<div class="email-template-htmlcontent">';
-          $content  .= $this->renderHtmlContentArea();
-          $content  .= '</div>';
-          return $content;
+            return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea());
         }
 
         protected function renderHtmlContentArea()
         {
-            //$inputNameIdPrefix       = $this->attribute;
             $attribute               = 'htmlContent';
             $id                      = $this->getEditableInputId($attribute);
             $htmlOptions             = array();
@@ -76,7 +84,6 @@
 
          protected function renderTextContentArea()
          {
-            //$inputNameIdPrefix                        = $this->attribute; // TODO: @Shoaibi: why do we need this?
             $attribute                                  = 'textContent';
             $content                                    = null;
             $textContentElement                         = new TextAreaElement($this->model, 'textContent', $this->form);
@@ -85,12 +92,5 @@
             $content                                    .= $this->form->error($this->model, $attribute);
             return $content;
          }
-        public static function getModelAttributeNames()
-        {
-            return array(
-                'htmlContent',
-                'textContent',
-            );
-        }
      }
 ?>

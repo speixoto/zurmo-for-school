@@ -32,13 +32,24 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
+                            array('type'  => 'EmailTemplateCancelLink',    'renderType' => 'Edit'),
                             array('type'  => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type'  => 'EmailTemplateDeleteLink'),
+                            array('type' => 'EditLink',       'renderType' => 'Details'),
                         ),
                     ),
                     'panels' => array(
                         array(
                             'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'EmailTemplateType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
                                 array('cells' =>
                                     array(
                                         array(
@@ -74,7 +85,7 @@
         protected function renderAfterFormLayout($form)
         {
             $content = null;
-            $content .= '<div class="email-template-comtent"></div>' . "\n";
+            $content .= '<div class="email-template-content"></div>' . "\n";
             $content .= '<div>' . "\n";
             $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , $form);
             $content .= $element->render();
@@ -86,6 +97,18 @@
         {
             return Yii::t('Default', 'Create EmailTemplatesModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            $content  = null;
+            $content .= '<div class="email-template-content"></div>' . "\n";
+            $content .= '<div>' . "\n";
+            $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , null);
+            $content .= $element->render();
+            $content .= '</div>' . "\n";
+            $content .= parent::renderAfterFormLayoutForDetailsContent();
+            return $content;
         }
     }
 ?>
