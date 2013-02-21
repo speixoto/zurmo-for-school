@@ -24,32 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class helps support adding/removing product categories while saving a product template from a post.
-     */
-    class ProductTemplateZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
+    class ProductTemplateTypeDropDownListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        protected $productTemplateProductCategoryFormName;
-
-        protected $peopleAddedAsProductTemplateProductCategories;
-
-        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productTemplateProductCategoryFormName)
+        public function renderGridViewData()
         {
-            assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName)');
-            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
-            $this->productTemplateProductCategoryFormName = $productTemplateProductCategoryFormName;
-        }
-
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
-        {
-            assert('$model instanceof ProductTemplate');
-            $postData = PostUtil::getData();
-            if (isset($postData[$this->productTemplateProductCategoryFormName]))
+            if ($this->getIsLink())
             {
-                $this->peopleAddedAsProductTemplateProductCategories = ProductTemplateProductCategoriesUtil::
-                                                               resolveProductTemplateHasManyProductCategoriesFromPost($model,
-                                                               $postData[$this->productTemplateProductCategoryFormName]);
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'productTemplates'),
+                );
+            }
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
             }
         }
     }

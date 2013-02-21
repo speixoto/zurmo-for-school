@@ -24,33 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class helps support adding/removing product categories while saving a product template from a post.
-     */
-    class ProductTemplateZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
+    class ProductTemplatesSearchForm extends OwnedSearchForm
     {
-        protected $productTemplateProductCategoryFormName;
-
-        protected $peopleAddedAsProductTemplateProductCategories;
-
-        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productTemplateProductCategoryFormName)
+        public function rules()
         {
-            assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName)');
-            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
-            $this->productTemplateProductCategoryFormName = $productTemplateProductCategoryFormName;
+            return array_merge(parent::rules(), array(
+            ));
         }
 
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
+        public function attributeLabels()
         {
-            assert('$model instanceof ProductTemplate');
-            $postData = PostUtil::getData();
-            if (isset($postData[$this->productTemplateProductCategoryFormName]))
-            {
-                $this->peopleAddedAsProductTemplateProductCategories = ProductTemplateProductCategoriesUtil::
-                                                               resolveProductTemplateHasManyProductCategoriesFromPost($model,
-                                                               $postData[$this->productTemplateProductCategoryFormName]);
-            }
+            return array_merge(parent::attributeLabels(), array(
+            ));
+        }
+
+        public function getAttributesMappedToRealAttributesMetadata()
+        {
         }
     }
 ?>

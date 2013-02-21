@@ -46,7 +46,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer', 'isLink' => true),
+                                                array('attributeName' => 'cost', 'type' => 'CurrencyValue', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -55,7 +55,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
+                                                array('attributeName' => 'listPrice', 'type' => 'CurrencyValue', 'isLink' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue', 'isLink' => true),
                                             ),
                                         ),
                                     )
