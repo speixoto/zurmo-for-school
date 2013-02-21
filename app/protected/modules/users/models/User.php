@@ -716,11 +716,26 @@
                     'value'                => $email,
                 )
             );
-            $searchAttributeData['structure'] = '1';
+
+            if ($this->getClassId('User') > 0)
+            {
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'        => 'id',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => $this->getClassId('User'),
+                );
+                $searchAttributeData['structure'] = '(1 AND 2)';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
+
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
             $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
 
+            /*
             if (count($models) > 0)
             {
                 foreach ($models as $model)
@@ -728,10 +743,17 @@
                     if ($model->id != $this->getClassId('User'))
                     {
                         // Todo: fix form element name below
-                        $this->addError('', Zurmo::t('UsersModule', 'Email address already exist in system.'));
+                        $this->primaryEmail->addError('emailMessage', Zurmo::t('UsersModule', 'Email address already exist in system.'));
                         return false;
                     }
                 }
+            }
+            */
+            if (count($models) > 0)
+            {
+                // Todo: fix form element name below
+                $this->primaryEmail->addError('emailMessage', Zurmo::t('UsersModule', 'Email address already exist in system.'));
+                return false;
             }
             return true;
         }

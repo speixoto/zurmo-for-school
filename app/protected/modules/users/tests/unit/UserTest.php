@@ -40,6 +40,7 @@
 
         public function testSetTitleValuesAndRetrieveTitleValuesFromUser()
         {
+            exit;
             $titles = array('Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Swami');
             $customFieldData = CustomFieldData::getByName('Titles');
             $customFieldData->serializedData = serialize($titles);
@@ -1044,6 +1045,9 @@
 
         public function testEmailUniquenessValidation()
         {
+            $user = User::getByUsername('super');
+            Yii::app()->user->userModel = $user;
+
             $user = new User();
             $user->username = 'usera';
             $user->lastName = 'UserA';
@@ -1064,9 +1068,11 @@
 
             $validationErrors = $user2->getErrors();
             $this->assertTrue(count($validationErrors) > 0);
+
             // Todo: fix array keys below
-            $this->assertTrue(isset($validationErrors['']));
-            $this->assertEquals('Email address already exist in system.', $validationErrors[''][0]);
+            $this->assertTrue(isset($validationErrors['primaryEmail']));
+            $this->assertTrue(isset($validationErrors['primaryEmail']['emailMessage']));
+            $this->assertEquals('Email address already exist in system.', $validationErrors['primaryEmail']['emailMessage'][0]);
 
             // Try to save user without email address
             $user3 = new User();
