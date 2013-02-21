@@ -61,58 +61,18 @@
         /**
          * Overrides the parent implementation to prefix the value of selectable checkBox with modelClassName
          */
-         protected function getCGridViewColumns()
-         {
-            $columns = array();
-            if ($this->rowsAreSelectable)
-            {
-                $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
-                $checkBoxHtmlOptions = array();
-                $firstColumn = array(
+        protected function getCGridViewFirstColumn()
+        {
+            $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
+            $checkBoxHtmlOptions = array();
+            $firstColumn = array(
                     'class'               => 'CheckBoxColumn',
                     'checked'             => $checked,
                     'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
                     'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
                     'value'               => 'get_class($data). "_" . $data->id',
                 );
-                array_push($columns, $firstColumn);
-            }
-
-            $metadata = $this->getResolvedMetadata();
-            foreach ($metadata['global']['panels'] as $panel)
-            {
-                foreach ($panel['rows'] as $row)
-                {
-                    foreach ($row['cells'] as $cell)
-                    {
-                        foreach ($cell['elements'] as $columnInformation)
-                        {
-                            $columnClassName = $columnInformation['type'] . 'ListViewColumnAdapter';
-                            $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
-                            $column = $columnAdapter->renderGridViewData();
-                            if (!isset($column['class']))
-                            {
-                                $column['class'] = 'DataColumn';
-                            }
-                            array_push($columns, $column);
-                        }
-                    }
-                }
-            }
-            $menuColumn = $this->getGridViewMenuColumn();
-            if ($menuColumn == null)
-            {
-                $lastColumn = $this->getCGridViewLastColumn();
-                if (!empty($lastColumn))
-                {
-                    array_push($columns, $lastColumn);
-                }
-            }
-            else
-            {
-                array_push($columns, $menuColumn);
-            }
-            return $columns;
+            return $firstColumn;
         }
     }
 ?>

@@ -225,6 +225,19 @@
             return $this->gridId . $this->gridIdSuffix;
         }
 
+        protected function getCGridViewFirstColumn()
+        {
+            $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
+            $checkBoxHtmlOptions = array();
+            $firstColumn = array(
+                    'class'               => 'CheckBoxColumn',
+                    'checked'             => $checked,
+                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
+                    'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
+                );
+            return $firstColumn;
+        }
+
         /**
          * Get the meta data and merge with standard CGridView column elements
          * to create a column array that fits the CGridView columns API
@@ -234,14 +247,7 @@
             $columns = array();
             if ($this->rowsAreSelectable)
             {
-                $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
-                $checkBoxHtmlOptions = array();
-                $firstColumn = array(
-                    'class'               => 'CheckBoxColumn',
-                    'checked'             => $checked,
-                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
-                    'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
-                );
+                $firstColumn = $this->getCGridViewFirstColumn();
                 array_push($columns, $firstColumn);
             }
 
