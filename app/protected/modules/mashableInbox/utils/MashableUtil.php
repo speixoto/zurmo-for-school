@@ -29,11 +29,12 @@
 
         public static function createMashableInboxRulesByModel($modelClassName)
         {
-            assert('is_string($modelClassName)');
+            assert('is_string($modelClassName) && $modelClassName != ""');
             $mashableInboxRulesType = $modelClassName::getMashableInboxRulesType();
             assert('$mashableInboxRulesType !== null');
             $mashableInboxRulesClassName = $mashableInboxRulesType . 'MashableInboxRules';
-            return new $mashableInboxRulesClassName();
+            $mashableInboxRules = new $mashableInboxRulesClassName();
+            return $mashableInboxRules;
         }
 
         public static function getModelDataForCurrentUserByInterfaceName($interfaceClassName, $includeHavingRelatedItems = true)

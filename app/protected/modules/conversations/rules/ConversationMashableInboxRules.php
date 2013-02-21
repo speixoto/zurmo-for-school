@@ -147,5 +147,28 @@
             }
             $model->save();
         }
+
+        public function getMassOptions()
+        {
+            return array(
+                          'closeSelected' => Zurmo::t('MashableInboxModule', 'Closed selected'),
+                    );
+        }
+
+        public function resolveCloseSelected($modelId)
+        {
+            assert('$modelId > 0');
+            $modelClassName = $this->getModelClassName();
+            $model          = $modelClassName::getById($modelId);
+            if (!$model->resolveIsClosedForNull())
+            {
+                $model->isClosed = true;
+                $saved           = $model->save();
+                if (!$saved)
+                {
+                    throw new NotSupportedException();
+                }
+            }
+        }
     }
 ?>

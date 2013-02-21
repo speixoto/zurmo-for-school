@@ -33,14 +33,20 @@
 
         public function render()
         {
-            $massOptions = array(
+            $defaultMassOptions  = array(
                           'markRead'      => Zurmo::t('MashableInboxModule', 'Mark selected read'),
                           'markUnread'    => Zurmo::t('MashableInboxModule', 'Mark selected unread'),
                     );
-            $gridId           = $this->getListViewGridId();
-            $formName         = $this->getFormName();
-            $formClassName    = $this->modelId;
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+            $massOptions = $defaultMassOptions;
+            if ($this->getModelClassName() != "")
+            {
+                $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
+                $massOptions        = array_merge($defaultMassOptions, $mashableUtilRules->getMassOptions());
+            }
+            $gridId             = $this->getListViewGridId();
+            $formName           = $this->getFormName();
+            $formClassName      = $this->modelId;
+            $ajaxSubmitScript   = ZurmoHtml::ajax(array(
                         "type"       => "GET",
                         "data"       => "js:$('#{$formName}').serialize()",
                         "update"     => "#MashableInboxListViewWrapper",
