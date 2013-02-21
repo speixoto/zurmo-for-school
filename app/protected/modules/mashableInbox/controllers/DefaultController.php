@@ -37,12 +37,26 @@ class MashableInboxDefaultController extends ZurmoModuleController {
             $mashableInboxForm->attributes = $getData["MashableInboxForm"];
             if ($mashableInboxForm->massAction != '')
             {
-                $method = 'resolve' . ucfirst($mashableInboxForm->massAction);
-                $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-                $selectedIds = explode(',', $mashableInboxForm->selectedIds);
-                foreach ($selectedIds as $modelId)
+                if($modelClassName != "")
                 {
-                   $mashableUtilRules->$method((int)$modelId);
+                    $method = 'resolve' . ucfirst($mashableInboxForm->massAction);
+                    $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                    $selectedIds = explode(',', $mashableInboxForm->selectedIds);
+                    foreach ($selectedIds as $modelId)
+                    {
+                       $mashableUtilRules->$method((int)$modelId);
+                    }
+                }
+                else
+                {
+                    $selectedIds = explode(',', $mashableInboxForm->selectedIds);
+                    foreach ($selectedIds as $selectedId)
+                    {
+                       list($modelClassNameForMassAction, $modelId) = explode("_", $selectedId);
+                       $method = 'resolve' . ucfirst($mashableInboxForm->massAction);
+                       $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassNameForMassAction);
+                       $mashableUtilRules->$method((int)$modelId);
+                    }
                 }
             }
 
