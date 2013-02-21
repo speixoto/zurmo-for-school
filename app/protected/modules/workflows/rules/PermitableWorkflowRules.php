@@ -25,18 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow attribute forms
+     * Base class for modules that have rules for models that are permitables
      */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    abstract class PermitableWorkflowRules extends WorkflowRules
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            $metadata = array(
+                'Permitable' => array(
+                    'cannotTrigger' =>
+                        array('policies', 'rights'),
+                    ),
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

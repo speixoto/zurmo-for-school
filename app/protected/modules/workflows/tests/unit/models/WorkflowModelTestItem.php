@@ -33,7 +33,7 @@
                 $fullName = $this->getFullName();
                 if ($fullName == '')
                 {
-                    return Zurmo::t('ReportsModule', '(Unnamed)');
+                    return Zurmo::t('WorkflowsModule', '(Unnamed)');
                 }
                 return $fullName;
             }
@@ -78,7 +78,7 @@
                     'dateTime',
                     'float',
                     'integer',
-                    'nonReportable',
+                    'cannotTrigger',
                     'phone',
                     'string',
                     'textArea',
@@ -96,12 +96,12 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
                     'tagCloud'            => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
-                    'hasOne'              => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
+                    'hasOne'              => array(RedBeanModel::HAS_ONE,   'WorkflowModelTestItem2', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
-                    'hasOneAgain'         => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem2', RedBeanModel::NOT_OWNED,
+                    'hasOneAgain'         => array(RedBeanModel::HAS_ONE,   'WorkflowModelTestItem2', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAgain'),
-                    'hasMany'             => array(RedBeanModel::HAS_MANY,  'ReportModelTestItem3'),
-                    'hasOneAlso'          => array(RedBeanModel::HAS_ONE,   'ReportModelTestItem4', RedBeanModel::NOT_OWNED,
+                    'hasMany'             => array(RedBeanModel::HAS_MANY,  'WorkflowModelTestItem3'),
+                    'hasOneAlso'          => array(RedBeanModel::HAS_ONE,   'WorkflowModelTestItem4', RedBeanModel::NOT_OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAlso'),
                     'primaryEmail'        => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
@@ -109,13 +109,13 @@
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
                     'secondaryEmail'      => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
-                    'nonReportable2'      => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5'),
-                    'reportedAsAttribute' => array(RedBeanModel::HAS_ONE, 'ReportModelTestItem6', RedBeanModel::NOT_OWNED),
+                    'cannotTrigger2'      => array(RedBeanModel::MANY_MANY, 'WorkflowModelTestItem5'),
+                    'usedAsAttribute' => array(RedBeanModel::HAS_ONE, 'WorkflowModelTestItem6', RedBeanModel::NOT_OWNED),
                     'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ContactState', RedBeanModel::NOT_OWNED),
 
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
-                    'model5ViaItem' => array(RedBeanModel::MANY_MANY, 'ReportModelTestItem5', 'reportItems')
+                    'model5ViaItem' => array(RedBeanModel::MANY_MANY, 'WorkflowModelTestItem5', 'workflowItems')
                 ),
                 'rules' => array(
                     array('firstName', 'type',   'type' => 'string'),
@@ -130,8 +130,8 @@
                     array('float',     'length',  'min'  => 3, 'max' => 64),
                     array('integer',   'type',    'type' => 'integer'),
                     array('integer',   'length',  'min'  => 3, 'max' => 64),
-                    array('nonReportable',    'type',  'type' => 'string'),
-                    array('nonReportable',    'length',  'min'  => 3, 'max' => 64),
+                    array('cannotTrigger',    'type',  'type' => 'string'),
+                    array('cannotTrigger',    'length',  'min'  => 3, 'max' => 64),
                     array('phone',     'type',    'type' => 'string'),
                     array('phone',     'length',  'min'  => 1, 'max' => 14),
                     array('string',    'required'),
@@ -159,10 +159,10 @@
                     'tagCloud'            => 'TagCloud',
                 ),
                 'customFields' => array(
-                    'dropDown'        => 'ReportTestDropDown',
-                    'radioDropDown'   => 'ReportTestRadioDropDown',
-                    'multiDropDown'   => 'ReportTestMultiDropDown',
-                    'tagCloud'        => 'ReportTestTagCloud',
+                    'dropDown'        => 'WorkflowTestDropDown',
+                    'radioDropDown'   => 'WorkflowTestRadioDropDown',
+                    'multiDropDown'   => 'WorkflowTestMultiDropDown',
+                    'tagCloud'        => 'WorkflowTestTagCloud',
                 ),
             );
             return $metadata;
@@ -175,7 +175,7 @@
 
         public static function getModuleClassName()
         {
-            return 'ReportsTestModule';
+            return 'WorkflowsTestModule';
         }
 
         public static function hasReadPermissionsOptimization()

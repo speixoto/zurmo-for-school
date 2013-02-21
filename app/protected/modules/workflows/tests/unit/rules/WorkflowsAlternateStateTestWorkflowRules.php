@@ -24,19 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to build workflow attribute forms
-     */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class WorkflowsAlternateStateTestWorkflowRules extends WorkflowsTestWorkflowRules
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        public static function getDefaultMetadata()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            $metadata = parent::getDefaultMetadata();
+            $metadata['WorkflowModelTestItem']['triggerValueElementTypes']
+                                                   ['likeContactState'] = 'LeadStateStaticDropDownForWorkflow';
+            return $metadata;
         }
     }
 ?>

@@ -34,5 +34,71 @@
         {
             return 'WorkflowRules';
         }
+
+        /**
+         * Some relations such as a CustomField are shown as non-related nodes in the workflow wizard. For a custom field
+         * this method would return true for example.  Whereas account -> opportunities would return false.
+         * @param RedBeanModel $model
+         * @param $relation
+         * @return bool
+         */
+        public function relationIsUsedAsAttribute(RedBeanModel $model, $relation)
+        {
+            assert('is_string($relation)');
+            $modelClassName = $model->getAttributeModelClassName($relation);
+            $metadata       = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationIsUsedAsAttributes']) &&
+                in_array($relation, $metadata[$modelClassName]['relationIsUsedAsAttributes']))
+            {
+                return true;
+            }
+
+            if(in_array($model->getRelationModelClassName($relation),
+                array('OwnedCustomField',
+                    'CustomField',
+                    'OwnedMultipleValuesCustomField',
+                    'MultipleValuesCustomField',
+                    'CurrencyValue')))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+        * @param RedBeanModel $model
+        * @param $attribute
+        * @return bool
+        */
+        public function attributeCanBeTriggered(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($attribute)');
+            $modelClassName = $model->getAttributeModelClassName($attribute);
+            $metadata = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['cannotTrigger']) &&
+                in_array($attribute, $metadata[$modelClassName]['cannotTrigger']))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @return null | string
+         */
+        public function getTriggerValueElementType(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($attribute)');
+            $modelClassName = $model->getAttributeModelClassName($attribute);
+            $metadata = static::getMetadata();
+            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['triggerValueElementTypes']) &&
+                isset($attribute, $metadata[$modelClassName]['triggerValueElementTypes'][$attribute]))
+            {
+                return $metadata[$modelClassName]['triggerValueElementTypes'][$attribute];
+            }
+            return null;
+        }
     }
 ?>

@@ -47,6 +47,11 @@
         const TYPE_TRIGGERS                      = 'Triggers';
 
         /**
+         * Component type for actions
+         */
+        const TYPE_ACTIONS                       = 'Actions';
+
+        /**
          * @var string
          */
         protected $moduleClassName;

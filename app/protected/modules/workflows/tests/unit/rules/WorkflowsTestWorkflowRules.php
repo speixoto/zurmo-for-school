@@ -25,18 +25,30 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow attribute forms
+     * Report rules to be used with the WorkflowModelTestItems.  Rules are module based and should store the rules
+     * for all the module's models.
      */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class WorkflowsTestWorkflowRules extends SecuredWorkflowRules
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        public static function getDefaultMetadata()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            $metadata = array(
+                'WorkflowModelTestItem' => array(
+                    'relationIsUsedAsAttributes' =>
+                        array('usedAsAttribute',
+                              'likeContactState'),
+                    'cannotTrigger' =>
+                        array('cannotTrigger',
+                              'cannotTrigger2'),
+                    'derivedAttributeTypes' =>
+                        array('FullName'),
+                    'availableOperatorsTypes' =>
+                        array('likeContactState' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'triggerValueElementTypes' =>
+                        array('likeContactState' => 'ContactStateStaticDropDownForWorkflow'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

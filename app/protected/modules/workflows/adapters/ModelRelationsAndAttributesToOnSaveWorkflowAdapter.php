@@ -25,18 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow attribute forms
+     * Helper class for managing adapting model relations and attributes into a on-save workflow rule
      */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class ModelRelationsAndAttributesToOnSaveWorkflowAdapter extends ModelRelationsAndAttributesToWorkflowAdapter
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        /**
+         * @return array
+         */
+        public function getAttributesForTriggers()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
+            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        {
+            return $this->getSelectableRelationsDataForTriggers($precedingModel, $precedingRelation);
         }
     }
 ?>

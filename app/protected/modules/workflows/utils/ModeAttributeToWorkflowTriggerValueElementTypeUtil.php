@@ -45,7 +45,7 @@
             }
             if ($model->$attributeName instanceof MultipleValuesCustomField || $model->$attributeName instanceof CustomField)
             {
-                return 'StaticDropDownForReport';
+                return 'StaticDropDownForWorkflow';
             }
             $metadata = $model->getMetadata();
             foreach ($metadata as $className => $perClassMetadata)

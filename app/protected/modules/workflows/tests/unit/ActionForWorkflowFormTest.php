@@ -63,7 +63,7 @@
         {
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2');
             $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
-            $action->relation             = 'workflowModelTestItem';
+            $action->relation             = 'hasMany2';
             $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $attributes                   = array(
                                             'string'     => array('shouldSetValue'    => '1',
@@ -72,7 +72,7 @@
             $action->setAttributes($attributes);
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED,     $action->type);
-            $this->assertEquals('workflowModelTestItem',                        $action->relation );
+            $this->assertEquals('hasMany2',                        $action->relation );
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL,     $action->relationFilter);
             $this->assertEquals(1, $action->getAttributeFormsCount());
 
@@ -88,7 +88,7 @@
         {
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2');
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
-            $action->relation             = 'workflowModelTestItem';
+            $action->relation             = 'hasMany2';
             $attributes                   = array(
                                             'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -96,7 +96,7 @@
             $action->setAttributes($attributes);
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE,     $action->type);
-            $this->assertEquals('workflowModelTestItem',                $action->relation );
+            $this->assertEquals('hasMany2',                $action->relation );
             $this->assertEquals(1, $action->getAttributeFormsCount());
 
             $this->assertTrue($action->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
@@ -111,9 +111,9 @@
         {
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2');
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE_RELATED;
-            $action->relation             = 'workflowModelTestItem';
+            $action->relation             = 'hasMany2';
             $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $action->relatedModelRelation = 'workflowModelTestItem3';
+            $action->relatedModelRelation = 'hasMany';
             $attributes                   = array(
                                             'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -121,9 +121,9 @@
             $action->setAttributes($attributes);
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE_RELATED,     $action->type);
-            $this->assertEquals('workflowModelTestItem',                        $action->relation );
+            $this->assertEquals('hasMany2',  $action->relation );
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL,     $action->relationFilter);
-            $this->assertEquals('workflowModelTestItem3',                       $action->relatedModelRelation);
+            $this->assertEquals('hasMany',   $action->relatedModelRelation);
             $this->assertEquals(1, $action->getAttributeFormsCount());
 
             $this->assertTrue($action->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
@@ -158,7 +158,7 @@
             $compareErrors                       = array('relation'        => array('Relation cannot be blank.'),
                                                          'relationFilter'  => array('Relation Filter cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $action->relation                    = 'workflowModelTestItem';
+            $action->relation                    = 'hasMany2';
             $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $validated                           = $action->validate();
             $this->assertTrue($validated);
@@ -173,21 +173,21 @@
             $errors                              = $action->getErrors();
             $compareErrors                       = array('relation'  => array('Relation cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $action->relation                    = 'workflowModelTestItem';
+            $action->relation                    = 'hasMany2';
             $validated                           = $action->validate();
             $this->assertTrue($validated);
 
             //When the type is create related, additional related information is required
             $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2');
             $action->type                        = ActionForWorkflowForm::TYPE_CREATE_RELATED;
-            $action->relation                    = 'workflowModelTestItem';
+            $action->relation                    = 'hasMany2';
             $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $validated = $action->validate();
             $this->assertFalse($validated);
             $errors                              = $action->getErrors();
             $compareErrors                       = array('relatedModelRelation'  => array('Related Model Relation cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $action->relatedModelRelation        = 'workflowModelTestItem2';
+            $action->relatedModelRelation        = 'hasOne';
             $validated                           = $action->validate();
             $this->assertTrue($validated);
         }

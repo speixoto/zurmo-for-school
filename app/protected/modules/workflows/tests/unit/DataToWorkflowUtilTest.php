@@ -31,8 +31,7 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             ContactsModule::loadStartingData();
-
-            //todo: create bobby and set his timezone and datetime format.
+            UserTestHelper::createBasicUser('bobby');
         }
 
         public function setUp()
@@ -50,6 +49,12 @@
         }
 
         public function testResolveTriggers()
+        {
+            //todo: test each filter type.
+            $this->fail();
+        }
+
+        public function testResolveTimeTrigger()
         {
             //todo: test each filter type.
             $this->fail();
@@ -100,8 +105,8 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTestModule');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
                 array(
                     'boolean'       => array('shouldSetValue'    => '1',
                         'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -256,8 +261,8 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTestModule');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
             array(
                 'date'          => array('shouldSetValue'    => '1',
                     'type'   => DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE,
@@ -360,10 +365,10 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'workflowModelTestItem';
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasOne';
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
             array(
                 'boolean'       => array('shouldSetValue'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -431,7 +436,7 @@
             $actions = $workflow->getActions();
             $this->assertCount(1, $actions);
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED, $actions[0]->type);
-            $this->assertEquals('workflowModelTestItem', $actions[0]->relation);
+            $this->assertEquals('hasMany2', $actions[0]->relation);
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
 
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
@@ -522,10 +527,10 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'workflowModelTestItem';
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
             array(
                 'date'          => array('shouldSetValue'    => '1',
                     'type'   => DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE,
@@ -569,7 +574,7 @@
             $actions = $workflow->getActions();
             $this->assertCount(1, $actions);
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED, $actions[0]->type);
-            $this->assertEquals('workflowModelTestItem', $actions[0]->relation);
+            $this->assertEquals('hasMany2', $actions[0]->relation);
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
             $this->assertEquals(11,        $actions[0]->getAttributeFormsCount());
 
@@ -628,9 +633,9 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']       = ActionForWorkflowForm::TYPE_CREATE;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']   = 'workflowModelTestItem';
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']       = ActionForWorkflowForm::TYPE_CREATE;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']   = 'hasMany2';
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
             array(
                 'string'        => array('shouldSetValue'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -641,7 +646,7 @@
             $actions = $workflow->getActions();
             $this->assertCount(1, $actions);
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE, $actions[0]->type);
-            $this->assertEquals('workflowModelTestItem', $actions[0]->relation);
+            $this->assertEquals('hasMany2', $actions[0]->relation);
 
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
 
@@ -659,11 +664,11 @@
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setModuleClassName('WorkflowsTest2Module');
             $data   = array();
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['type']     = ActionForWorkflowForm::TYPE_CREATE_RELATED;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'workflowModelTestItem';
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['relatedModelRelation'] = 'workflowModelTestItem3';
-            $data[ActionForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']     = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relatedModelRelation'] = 'hasMany';
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
             array(
                 'string'        => array('shouldSetValue'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -674,9 +679,9 @@
             $actions = $workflow->getActions();
             $this->assertCount(1, $actions);
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE_RELATED, $actions[0]->type);
-            $this->assertEquals('workflowModelTestItem', $actions[0]->relation);
+            $this->assertEquals('hasMany2', $actions[0]->relation);
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
-            $this->assertEquals('workflowModelTestItem3', $actions[0]->relatedModelRelation);
+            $this->assertEquals('hasMany', $actions[0]->relatedModelRelation);
 
             $this->assertEquals(4,        $actions[0]->getAttributeFormsCount());
 

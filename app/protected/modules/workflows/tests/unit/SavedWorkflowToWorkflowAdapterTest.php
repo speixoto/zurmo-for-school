@@ -47,13 +47,13 @@
             $workflow->setType           (Report::TYPE_ROWS_AND_COLUMNS);
             $workflow->setTriggersStructure('1 and 2 or 3');
 
-            $trigger = new TriggerForReportForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'string';
             $trigger->value                       = 'aValue';
             $trigger->operator                    = 'Equals';
             $workflow->addTrigger($trigger);
 
-            $trigger = new TriggerForReportForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'currencyValue';
             $trigger->value                       = 'aValue';
             $trigger->secondValue                 = 'bValue';
@@ -61,13 +61,13 @@
             $trigger->currencyIdForValue          = '4';
             $workflow->addTrigger($trigger);
 
-            $trigger = new TriggerForReportForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'owner__User';
             $trigger->value                       = 'aValue';
             $trigger->stringifiedModelForValue    = 'someName';
             $workflow->addTrigger($trigger);
 
-            $trigger = new TriggerForReportForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'createdDateTime';
             $trigger->value                       = 'aValue';
             $trigger->secondValue                 = 'bValue';

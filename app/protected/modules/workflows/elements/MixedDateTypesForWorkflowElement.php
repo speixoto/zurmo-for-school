@@ -31,13 +31,13 @@
     {
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            assert('$model instanceof TriggerForReportForm || $model instanceof TimeTriggerForReportForm');
+            assert('$model instanceof FilterForWorkflowForm || $model instanceof TimeTriggerForWorkflowForm');
             parent::__construct($model, $attribute, $form, $params);
         }
 
         protected function getValueTypeDropDownArray()
         {
-            if($this->model instanceof TimeTriggerForReportForm)
+            if($this->model instanceof TimeTriggerForWorkflowForm)
             {
                 return MixedDateTimeTypesSearchFormAttributeMappingRules::getTimeOnlyValueTypesAndLabels();
             }

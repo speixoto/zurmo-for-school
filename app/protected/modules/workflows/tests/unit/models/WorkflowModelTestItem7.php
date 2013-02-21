@@ -24,19 +24,43 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to build workflow attribute forms
-     */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class WorkflowModelTestItem7 extends OwnedSecurableItem
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        public function __toString()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            if (trim($this->name) == '')
+            {
+                return Zurmo::t('WorkflowsModule', '(Unnamed)');
+            }
+            return $this->name;
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'relations' => array(
+                    'model5' => array(RedBeanModel::HAS_MANY, 'WorkflowModelTestItem5'),
+                ),
+                'rules' => array(
+                    array('name',  'type',   'type' => 'string'),
+                    array('name',  'length', 'max' => 32),
+                ),
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'WorkflowsTestModule';
         }
     }
 ?>

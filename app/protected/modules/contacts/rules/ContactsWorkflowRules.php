@@ -25,10 +25,30 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the Contacts module.
+     * Workflow rules to be used with the Contacts module.
      */
-    class ContactsWorkflowRules extends WorkflowRules
+    class ContactsWorkflowRules extends SecuredWorkflowRules
     {
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'Contact' => array(
+                    'relationIsUsedAsAttributes' =>
+                    array('state'),
+                    'derivedAttributeTypes' =>
+                    array('FullName'),
+                    'availableOperatorsTypes' =>
+                    array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                    'triggerValueElementTypes' =>
+                    array('state' => 'ContactStateStaticDropDownForReport'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
+        }
+
         //todo: since ContactsReportRules has the same exact methods we should think about this
         public static function getVariableStateModuleLabel(User $user)
         {

@@ -123,7 +123,7 @@
                 {
                     foreach($this->timeTrigger->getErrors() as $attribute => $error)
                     {
-                        $this->addError( 'TimeTriggerForReportForm_' . $attribute, $error);
+                        $this->addError( 'TimeTriggerForWorkflowForm_' . $attribute, $error);
                     }
                     $passedValidation = false;
                 }

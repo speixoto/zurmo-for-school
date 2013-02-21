@@ -30,6 +30,31 @@
     class ActionForWorkflowForm extends ConfigurableMetadataModel
     {
         /**
+         * This action is if you trigger an account and then update attributes in that same account for example.
+         */
+        const TYPE_UPDATE_SELF      = 'Update';
+
+        /**
+         * This action is if you trigger an account and then update attributes in the related contacts
+         */
+        const TYPE_UPDATE_RELATED   = 'UpdateRelated';
+
+        /**
+         * This action is if you trigger an account and then create a related task
+         */
+        const TYPE_CREATE           = 'Create';
+
+        /**
+         * This action is if you trigger an account and then create a task against a related contact
+         */
+        const TYPE_CREATE_RELATED   = 'CreateRelated';
+
+        /**
+         * When performing actions on related models, if there are MANY related models RELATION_FILTER_ALL means the
+         * action will be performed on all related models
+         */
+        const RELATION_FILTER_ALL   = 'RelationFilterAll';
+        /**
          * Type of chart
          * @var string
          */
@@ -127,15 +152,26 @@
         }
 
         /**
+         * Process all attributes except 'attributes' first since the 'attributes' requires the 'type' to be set
          * @param $values
          * @param bool $safeOnly
          */
         public function setAttributes($values, $safeOnly=true)
         {
-
+            $valuesAttributes = null;
             if(isset($values['attributes']))
             {
-                foreach($values['attributes'] as $attribute => $attributeData)
+                $valuesAttributes = $values['attributes'];
+                unset($values['attributes']);
+            }
+            else
+            {
+                $this->_attributes = array();
+            }
+            parent::setAttributes($values, $safeOnly);
+            if($valuesAttributes != null)
+            {
+                foreach($valuesAttributes as $attribute => $attributeData)
                 {
                     $resolvedAttributeName  = $this->resolveRealAttributeName($attribute);
                     $resolvedModelClassName = $this->resolveRealModelClassName($attribute);
@@ -143,13 +179,7 @@
                     $form->setAttributes($attributeData);
                     $this->_attributes[$attribute] = $form;
                 }
-                unset($values['attributes']);
             }
-            else
-            {
-                $this->_attributes = array();
-            }
-            $this->setAttributes($values, $safeOnly);
         }
 
         /**
@@ -300,21 +330,44 @@
             assert('is_string($attribute)');
             $delimiter                  = FormModelUtil::RELATION_DELIMITER;
             $attributeAndRelationData   = explode($delimiter, $attribute);
+            $model                      = $this->makeModelAndResolveForRelations();
             if(count($attributeAndRelationData) == 2)
             {
                 list($relation, $notUsed) =  $attributeAndRelationData;
-                $modelClassName = $this->_modelClassName;
-                $model = new $modelClassName(false); //todo: once performance3 is done, don't need to instantiate this
                 return $model->getRelationModelClassName($relation);
             }
             elseif(count( $attributeAndRelationData) == 1)
             {
-                return $this->_modelClassName;
+                return get_class($model);
             }
             else
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function makeModelAndResolveForRelations()
+        {
+            //todo: once performance3 is done, don't need to instantiate this
+            $modelClassName = $this->_modelClassName;
+            $model = new $modelClassName(false);
+            if($this->type == self::TYPE_UPDATE_SELF)
+            {
+                return $model;
+            }
+            elseif($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_UPDATE_RELATED)
+            {
+                $relationModelClassName = $model->getRelationModelClassName($this->relation);
+                return new $relationModelClassName(false);
+            }
+            elseif($this->type == self::TYPE_CREATE_RELATED)
+            {
+                $relationModelClassName = $model->getRelationModelClassName($this->relation);
+                $relationModel          = new $relationModelClassName(false);
+                $relationModelRelatedModelClassName = $relationModel->getRelationModelClassName($this->relatedModelRelation);
+                return new $relationModelRelatedModelClassName(false);
+            }
+            throw new NotSupportedException();
         }
     }
 ?>

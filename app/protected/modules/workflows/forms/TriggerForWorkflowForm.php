@@ -285,7 +285,7 @@
                 throw new NotSupportedException();
             }
             $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
-            return $modelToWorkflowAdapter->getFilterValueElementType($this->getResolvedAttribute());
+            return $modelToWorkflowAdapter->getTriggerValueElementType($this->getResolvedAttribute());
         }
 
         /**

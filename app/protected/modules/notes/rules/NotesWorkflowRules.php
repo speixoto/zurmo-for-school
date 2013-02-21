@@ -25,18 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow attribute forms
+     * Workflow rules to be used with the Notes module.
      */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class NotesWorkflowRules extends ActivitiesWorkflowRules
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            $metadata = array(
+                'Note' => array(
+                    'cannotTrigger' =>
+                        array('files', 'socialItems'),
+                )
+            );
+            return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
 ?>

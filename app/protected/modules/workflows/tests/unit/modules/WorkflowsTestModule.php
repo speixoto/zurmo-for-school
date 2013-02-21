@@ -24,19 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to build workflow attribute forms
-     */
-    class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
+    class WorkflowsTestModule extends SecurableModule
     {
-        public static function make($resolvedModelClassName, $resolvedAttributeName)
+        const RIGHT_ACCESS_WORKFLOWS_TESTS = 'Access Workflows Test Tab';
+
+        public function getDependencies()
         {
-            assert('is_string($resolvedModelClassName)');
-            assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
-            return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+            return array(
+            );
+        }
+
+        public static function getDefaultMetadata()
+        {
+            $metadata = array();
+            $metadata['global'] = array(
+                'tabMenuItems' => array(
+                ),
+                'designerMenuItems' => array(
+                ),
+                'a' => 1,
+                'b' => 2,
+                'c' => 3,
+                //globalSearchAttributeNames is used by A model.
+                'globalSearchAttributeNames' => array('a', 'name')
+            );
+            return $metadata;
+        }
+
+        public static function getPrimaryModelName()
+        {
+            return 'WorkflowModelTestItem';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'WorkflowModelTestItem';
+        }
+
+        public static function hasPermissions()
+        {
+            return true;
         }
     }
 ?>
