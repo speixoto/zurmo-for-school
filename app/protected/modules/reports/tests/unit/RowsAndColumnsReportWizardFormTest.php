@@ -64,9 +64,11 @@
             $filter->attributeIndexOrDerivedType     = 'string';
             $filter->operator                        = OperatorRules::TYPE_EQUALS;            
             $rowsAndColumnsReportWizardForm->filters = array($filter);            
-            $content = $rowsAndColumnsReportWizardForm->validateFilters();             
-            $this->assertTrue(strpos($content,  'Value cannot be blank.')           === false);
-            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors()); 
+            $validated                               = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                                  = $filter->getErrors();
+            $compareErrors                           = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
         }        
         
         public function testValidateFiltersStructure()
@@ -95,8 +97,10 @@
             $filter->secondValue                     = '2013-02-20 00:00';                   
             $rowsAndColumnsReportWizardForm->filters = array($filter);  
             $rowsAndColumnsReportWizardForm->filtersStructure  = '2';            
-            $content = $rowsAndColumnsReportWizardForm->validateFiltersStructure();            
-            $this->assertTrue(strpos($content,  'The structure is invalid. Please use only integers less than 2.')           === false);            
+            $rowsAndColumnsReportWizardForm->validateFiltersStructure();
+            $errors                                  = $rowsAndColumnsReportWizardForm->getErrors();            
+            $compareErrors                           = array('filtersStructure'     => array('The structure is invalid. Please use only integers less than 2.'));
+            $this->assertEquals($compareErrors, $errors);
             $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
         }        
         
@@ -118,8 +122,10 @@
         {                       
             $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
             $rowsAndColumnsReportWizardForm->displayAttributes = array();
-            $content = $rowsAndColumnsReportWizardForm->validateDisplayAttributes();            
-            $this->assertTrue(strpos($content,  'At least one display column must be selected')           === false);            
+            $content = $rowsAndColumnsReportWizardForm->validateDisplayAttributes();
+            $errors  = $rowsAndColumnsReportWizardForm->getErrors();             
+            $compareErrors                           = array('displayAttributes'     => array('At least one display column must be selected'));                      
+            $this->assertEquals($compareErrors, $errors);
             $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
         }
         
@@ -136,30 +142,20 @@
             $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
         }  
 
-        public function testValidateOrderBysForErrorsButIssueNoOrderByColumn()
-        {
-            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
-            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                                                                           Report::TYPE_ROWS_AND_COLUMNS);            
-            $this->assertEquals('asc', $orderBy->order);
-            $orderBy->order                           = 'desc';
-            $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);            
-            $rowsAndColumnsReportWizardForm->validateOrderBys();             
-            $this->assertFalse($rowsAndColumnsReportWizardForm->hasErrors());
-        }
-
         public function testValidateOrderBysForErrors()
         {
-            $rowsAndColumnsReportWizardForm          = new RowsAndColumnsReportWizardForm();
-            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $rowsAndColumnsReportWizardForm           = new RowsAndColumnsReportWizardForm();
+            $orderBy                                  = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);            
             $this->assertEquals('asc', $orderBy->order);
-            $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
+            $orderBy->attributeIndexOrDerivedType     = 'modifiedDateTime';
             $orderBy->order                           = 'desc1';
             $rowsAndColumnsReportWizardForm->orderBys = array($orderBy);            
-            $content = $rowsAndColumnsReportWizardForm->validateOrderBys();
-            $this->assertTrue(strpos($content,  'Order must be asc or desc.')           === false);            
-            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
+            $rowsAndColumnsReportWizardForm->validateOrderBys();
+            $errors  = $orderBy->getErrors();             
+            $compareErrors                            = array('order'     => array('Order must be asc or desc.'));                      
+            $this->assertEquals($compareErrors, $errors);
+            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());            
         }        
 
         public function testValidateSpotConversionCurrencyCode()
@@ -176,7 +172,10 @@
            $rowsAndColumnsReportWizardForm                         = new RowsAndColumnsReportWizardForm();
            $rowsAndColumnsReportWizardForm->currencyConversionType = 3;           
            $rowsAndColumnsReportWizardForm->spotConversionCurrencyCode = null;
-           $rowsAndColumnsReportWizardForm->validateSpotConversionCurrencyCode();           
+           $rowsAndColumnsReportWizardForm->validateSpotConversionCurrencyCode();
+           $errors  = $rowsAndColumnsReportWizardForm->getErrors();             
+           $compareErrors                            = array('spotConversionCurrencyCode'     => array('Spot Currency cannot be blank.'));                      
+           $this->assertEquals($compareErrors, $errors);                      
            $this->assertTrue($rowsAndColumnsReportWizardForm->hasErrors());
         }        
     }

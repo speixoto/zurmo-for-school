@@ -56,16 +56,17 @@
         
         public function testValidateFiltersForErrors()
         {
-            $matrixReportWizardForm          = new MatrixReportWizardForm();
-            
+            $matrixReportWizardForm                  = new MatrixReportWizardForm();            
             $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType     = 'string';
             $filter->operator                        = OperatorRules::TYPE_EQUALS;            
             $matrixReportWizardForm->filters = array($filter);            
-            $content = $matrixReportWizardForm->validateFilters();             
-            $this->assertTrue(strpos($content,  'Value cannot be blank.')           === false);
-            $this->assertTrue($matrixReportWizardForm->hasErrors()); 
+            $validated                               = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                                  = $filter->getErrors();
+            $compareErrors                           = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
         }
 
         public function testValidateFiltersStructure()
@@ -85,17 +86,19 @@
         
         public function testValidateFiltersStructureForError()
         {
-            $matrixReportWizardForm          = new MatrixReportWizardForm();
-            $filter                                  = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $matrixReportWizardForm                       = new MatrixReportWizardForm();
+            $filter                                       = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);
-            $filter->attributeIndexOrDerivedType     = 'createdDateTime';
-            $filter->operator                        = OperatorRules::TYPE_BETWEEN;            
-            $filter->value                           = '2013-02-19 00:00';
-            $filter->secondValue                     = '2013-02-20 00:00';                   
-            $matrixReportWizardForm->filters = array($filter);  
-            $matrixReportWizardForm->filtersStructure  = '2';            
-            $content = $matrixReportWizardForm->validateFiltersStructure();            
-            $this->assertTrue(strpos($content,  'The structure is invalid. Please use only integers less than 2.')           === false);            
+            $filter->attributeIndexOrDerivedType          = 'createdDateTime';
+            $filter->operator                             = OperatorRules::TYPE_BETWEEN;            
+            $filter->value                                = '2013-02-19 00:00';
+            $filter->secondValue                          = '2013-02-20 00:00';                   
+            $matrixReportWizardForm->filters              = array($filter);  
+            $matrixReportWizardForm->filtersStructure     = '2';            
+            $matrixReportWizardForm->validateFiltersStructure();
+            $errors                                       = $matrixReportWizardForm->getErrors();            
+            $compareErrors                                = array('filtersStructure'     => array('The structure is invalid. Please use only integers less than 2.'));
+            $this->assertEquals($compareErrors, $errors);
             $this->assertTrue($matrixReportWizardForm->hasErrors());
         } 
         
@@ -125,9 +128,11 @@
             $groupByX->attributeIndexOrDerivedType = 'string';
             $groupByX->axis                        = 'x';
             $this->assertEquals('x', $groupByX->axis);            
-            $matrixReportWizardForm->groupBys      = array($groupByX);
-            $content = $matrixReportWizardForm->validateGroupBys();            
-            $this->assertTrue(strpos($content,  'At least one x-axis and one y-axis grouping must be selected')           === false);            
+            $matrixReportWizardForm->groupBys      = array($groupByX);            
+            $content = $matrixReportWizardForm->validateGroupBys(); 
+            $errors  = $matrixReportWizardForm->getErrors();
+            $compareErrors                         = array('groupBys'     => array('At least one x-axis and one y-axis grouping must be selected'));
+            $this->assertEquals($compareErrors, $errors);
             $this->assertTrue($matrixReportWizardForm->hasErrors());
         }
         
@@ -147,15 +152,14 @@
         
         public function testValidateDisplayAttributesForError()
         {                       
-            $matrixReportWizardForm          = new MatrixReportWizardForm();
-            
-            $displayAttribute                     = new DisplayAttributeForReportForm('ReportsTestModule', 
-                                                        'ReportModelTestItem', Report::TYPE_SUMMATION);
-            $matrixReportWizardForm->displayAttributes = array();                                                        
-            $content = $matrixReportWizardForm->validateDisplayAttributes();            
-            $this->assertTrue(strpos($content,  'At least one display column must be selected')           === false);            
+            $matrixReportWizardForm                    = new MatrixReportWizardForm();
+            $matrixReportWizardForm->displayAttributes = array();
+            $matrixReportWizardForm->validateDisplayAttributes();
+            $errors  = $matrixReportWizardForm->getErrors();             
+            $compareErrors                             = array('displayAttributes'     => array('At least one display column must be selected'));                      
+            $this->assertEquals($compareErrors, $errors);
             $this->assertTrue($matrixReportWizardForm->hasErrors());
-        } 
+        }
         
         public function testValidateOrderBys()
         {
@@ -172,22 +176,27 @@
 
         public function testValidateOrderBysForErrors()
         {
-            $matrixReportWizardForm          = new MatrixReportWizardForm();
-            $orderBy                                 = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+            $matrixReportWizardForm                   = new MatrixReportWizardForm();
+            $orderBy                                  = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                                            Report::TYPE_ROWS_AND_COLUMNS);            
             $this->assertEquals('asc', $orderBy->order);
-            $orderBy->attributeIndexOrDerivedType    = 'modifiedDateTime';
-            $orderBy->order                           = 'desc1';
-            $matrixReportWizardForm->orderBys = array($orderBy);            
-            $content = $matrixReportWizardForm->validateOrderBys();
-            $this->assertTrue(strpos($content,  'Order must be asc or desc.')           === false);            
-            $this->assertTrue($matrixReportWizardForm->hasErrors());
+            $orderBy->attributeIndexOrDerivedType     = 'modifiedDateTime';
+            $orderBy->order                           = null;
+            $validated                                = $orderBy->validate();
+            $this->assertFalse($validated);
+            $errors = $orderBy->getErrors(); 
+            $matrixReportWizardForm->orderBys         = array($orderBy);            
+            $matrixReportWizardForm->validateOrderBys();
+            $errors  = $orderBy->getErrors();             
+            $compareErrors                            = array('order'     => array('Order cannot be blank.'));                      
+            $this->assertEquals($compareErrors, $errors);
+            $this->assertTrue($matrixReportWizardForm->hasErrors());            
         }         
 
         public function testValidateSpotConversionCurrencyCode()
         {
-           $matrixReportWizardForm                         = new MatrixReportWizardForm();
-           $matrixReportWizardForm->currencyConversionType = 2;
+           $matrixReportWizardForm                             = new MatrixReportWizardForm();
+           $matrixReportWizardForm->currencyConversionType     = 2;
            $matrixReportWizardForm->spotConversionCurrencyCode = 'CAD';
            $matrixReportWizardForm->validateSpotConversionCurrencyCode();
            $this->assertFalse($matrixReportWizardForm->hasErrors());
@@ -195,10 +204,13 @@
         
         public function testValidateSpotConversionCurrencyCodeForErrors()
         {
-           $matrixReportWizardForm                         = new MatrixReportWizardForm();
-           $matrixReportWizardForm->currencyConversionType = 3;           
+           $matrixReportWizardForm                             = new MatrixReportWizardForm();
+           $matrixReportWizardForm->currencyConversionType     = 3;           
            $matrixReportWizardForm->spotConversionCurrencyCode = null;
-           $matrixReportWizardForm->validateSpotConversionCurrencyCode();           
+           $matrixReportWizardForm->validateSpotConversionCurrencyCode();
+           $errors  = $matrixReportWizardForm->getErrors();             
+           $compareErrors                                      = array('spotConversionCurrencyCode'     => array('Spot Currency cannot be blank.'));                      
+           $this->assertEquals($compareErrors, $errors);                      
            $this->assertTrue($matrixReportWizardForm->hasErrors());
         }
               
