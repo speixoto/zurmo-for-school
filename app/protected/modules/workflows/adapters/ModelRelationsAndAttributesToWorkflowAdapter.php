@@ -969,6 +969,32 @@
                             array('label' => $this->model->getAttributeLabel($attribute));
                     }
                 }
+                if($this->model->isRelation($attribute) && $this->model->isOwnedRelation($attribute) &&
+                   $this->isRelationASingularRelation($attribute) &&
+                    ($this->model->getRelationModelClassName($attribute) == 'Address' ||
+                     $this->model->getRelationModelClassName($attribute) == 'Email'))
+                {
+                    $relatedModel = $this->model->$attribute;
+                    //Assumes only Email or Address are possible owned models here
+                    $zurmoRules   = WorkflowRules::makeByModuleClassName('ZurmoModule');
+                    foreach($relatedModel->getAttributes() as $relatedAttribute => $notUsed)
+                    {
+                        if (!$relatedModel->isAttributeReadOnly($relatedAttribute) &&
+                            !$relatedModel->isRelation($relatedAttribute) &&
+                            $zurmoRules->attributeCanBeTriggered($relatedModel, $relatedAttribute))
+                        {
+                            $relatedAttributeIsRequired = $relatedModel->isAttributeRequired($relatedAttribute);
+                            if((!$requiredAttributesOnly && !$relatedAttributeIsRequired) ||
+                                ($requiredAttributesOnly && $relatedAttributeIsRequired))
+                            {
+                                $attributes[$attribute . FormModelUtil::RELATION_DELIMITER . $relatedAttribute] =
+                                    array('label' => $this->model->getAttributeLabel($attribute)
+                                                     . ' ' . ComponentForWorkflowForm::DISPLAY_LABEL_RELATION_DIVIDER
+                                                     . ' ' . $relatedModel->getAttributeLabel($relatedAttribute));
+                            }
+                        }
+                    }
+                }
             }
             return $attributes;
         }
@@ -1033,6 +1059,30 @@
                 $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
                 $attributes = array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
             }
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        /**
+         * Exclude User relations and Owned relations.
+         * @return sorted array
+         */
+        public function getSelectableRelationsDataForActionTypeRelation()
+        {
+            $attributes = array();
+            foreach ($this->model->getAttributes() as $attribute => $notUsed)
+            {
+                if ($this->model->isRelation($attribute) &&
+                    !$this->rules->relationIsUsedAsAttribute($this->model, $attribute) &&
+                    $this->rules->attributeCanBeTriggered($this->model, $attribute)  &&
+                    !$this->model->isOwnedRelation($attribute) &&
+                    $this->model->getRelationModelClassName($attribute) != 'User')
+                {
+                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
+                }
+            }
+            $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData());
+            $attributes = array_merge($attributes, $this->getInferredRelationsData());
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
             return $sortedAttributes;
         }
