@@ -474,7 +474,7 @@
                     {     
                         $data1 = $dataProvider->getData();                      
                         foreach ($data1 as $reportResultsRowData)
-                        {                          
+                        {                             
                           $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData); 
                           $data[] = $reportToExportAdapter->getData();  
                         }                                                                          

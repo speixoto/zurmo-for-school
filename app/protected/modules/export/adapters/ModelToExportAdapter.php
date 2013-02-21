@@ -104,7 +104,7 @@
                         $data[$this->model->getAttributeLabel($attributeName)] = null;
                     }
                 }
-            }
+            }            
             return $data;
         }
 
