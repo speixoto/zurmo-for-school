@@ -114,7 +114,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => null, 'type' => 'DerivedExplicitReadWritePermissionsUserConfig'),
+                                                array('attributeName' => 'null', 'type' => 'DerivedExplicitReadWritePermissionsUserConfig'),
                                             ),
                                         ),
                                     )
