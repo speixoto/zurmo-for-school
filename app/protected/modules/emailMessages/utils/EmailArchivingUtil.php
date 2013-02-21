@@ -55,7 +55,7 @@
                 $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
             }
 
-            if (count($models) == 0)
+            if (count($models) == 1)
             {
                 return $models[0];
             }

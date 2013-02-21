@@ -257,7 +257,7 @@
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('OwnerNotExist', $message);
                 return false;
             }
-            $emailSenderOrRecepientEmailNotFoundInSystem = false;
+            $emailSenderOrRecipientEmailNotFoundInSystem = false;
             Yii::app()->user->userModel = $emailOwner;
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    Yii::app()->user->userModel);
@@ -285,7 +285,7 @@
 
                 if (empty($sender->personOrAccount) || $sender->personOrAccount->id <= 0)
                 {
-                    $emailSenderOrRecepientEmailNotFoundInSystem = true;
+                    $emailSenderOrRecipientEmailNotFoundInSystem = true;
                 }
             }
 
@@ -323,14 +323,14 @@
                 }
             }
 
-            // Override $emailSenderOrRecepientEmailNotFoundInSystem only if there are no errors
-            if ($emailSenderOrRecepientEmailNotFoundInSystem == false)
+            // Override $emailSenderOrRecipientEmailNotFoundInSystem only if there are no errors
+            if ($emailSenderOrRecipientEmailNotFoundInSystem == false)
             {
-                $emailSenderOrRecepientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
+                $emailSenderOrRecipientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
             }
 
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
-            if ($emailSenderOrRecepientEmailNotFoundInSystem)
+            if ($emailSenderOrRecipientEmailNotFoundInSystem)
             {
                 $emailMessage->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
                 $notificationMessage                    = new NotificationMessage();
