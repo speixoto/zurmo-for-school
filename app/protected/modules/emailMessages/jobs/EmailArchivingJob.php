@@ -307,24 +307,32 @@
             $emailMessage->content     = $emailContent;
             $emailMessage->sender      = $sender;
 
+            $emailRecipientNotFoundInSystem = true;
             foreach ($recipientsInfo as $recipientInfo)
             {
                 $recipient = $this->createEmailMessageRecipient($recipientInfo, $userCanAccessContacts,
-                                 $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
+                    $userCanAccessLeads, $userCanAccessAccounts, $userCanAccessUsers);
                 $emailMessage->recipients->add($recipient);
                 // Check if at least one recipient email can't be found in Contacts, Leads, Account and User emails
                 // so we will save email message in EmailFolder::TYPE_ARCHIVED_UNMATCHED folder, and user will
                 // be able to match emails with items(Contacts, Accounts...) emails in systems
-                if (empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0)
+                if (!(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0))
                 {
-                    $emailSenderOrRecepientEmailNotFoundInSystem = true;
+                    $emailRecipientNotFoundInSystem = false;
+                    break;
                 }
+            }
+
+            // Override $emailSenderOrRecepientEmailNotFoundInSystem only if there are no errors
+            if ($emailSenderOrRecepientEmailNotFoundInSystem == false)
+            {
+                $emailSenderOrRecepientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
             }
 
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             if ($emailSenderOrRecepientEmailNotFoundInSystem)
             {
-                $emailMessage->folder      = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
+                $emailMessage->folder  = EmailFolder::getByBoxAndType($box, EmailFolder::TYPE_ARCHIVED_UNMATCHED);
                 $notificationMessage                    = new NotificationMessage();
                 $notificationMessage->htmlContent       = Zurmo::t('EmailMessagesModule', 'At least one archived email message does ' .
                                                                  'not match any records in the system. ' .

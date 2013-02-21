@@ -57,20 +57,16 @@
 
             if (count($models) == 0)
             {
-                throw new NotFoundException();
-            }
-            elseif (count($models) > 1)
-            {
-                return NotSupportedException();
+                return $models[0];
             }
             else
             {
-                return $models[0];
+                throw new NotFoundException();
             }
         }
 
         /**
-         * Get informations from email message, for example sender, recipient, subject...
+         * Get information from email message, for example sender, recipient, subject...
          * It is quite different for forwarded messages, because we need to parse email
          * body to get those information.
          * @param ImapMessage $emailMessage
