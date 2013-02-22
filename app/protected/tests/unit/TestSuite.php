@@ -78,9 +78,9 @@
             $reuse                =  self::customOptionSet('--reuse-schema',          $argv);
             $freeze               = !self::customOptionSet('--no-freeze',             $argv);
 
-            if ($freeze == false && FORCE_NO_FREEZE == false)
+            if ($freeze == true && FORCE_NO_FREEZE == true)
             {
-                echo "\n\nBecause forceNoFreeze is set to FALSE in debugTest, you cannot run unit tests in no-freeze mode\n\n"; // Not Coding Standard
+                echo "\n\nBecause forceNoFreeze is set to TRUE in debugTest, you cannot run unit tests in frozen mode\n\n"; // Not Coding Standard
                 exit;
             }
 

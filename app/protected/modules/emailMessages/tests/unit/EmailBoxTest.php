@@ -311,12 +311,17 @@
             $this->assertTrue($saved);
             Yii::app()->user->userModel = $jimmy;
 
-            $box = EmailBoxUtil::getDefaultEmailBoxByUser($jimmy);
-            $box = EmailBoxUtil::getDefaultEmailBoxByUser($jimmy); // This command shouldn't create new box
+            $jimmysId = $jimmy->id;
+            $this->assertTrue($jimmysId > 0);
+            $this->assertTrue($jimmy->emailBoxes->count() == 0);
+            EmailBoxUtil::getDefaultEmailBoxByUser($jimmy);
+            $this->assertTrue($jimmy->emailBoxes->count() == 1);
+            EmailBoxUtil::getDefaultEmailBoxByUser($jimmy); // This command shouldn't create new box
             $boxes = EmailBox::getAll();
             // Note that two new boxes are created for use jimmy instead one.
             // Probably because $jimmy->emailBoxes->count() return 0
             $this->assertEquals(3, count($boxes));
+
         }
     }
 ?>
