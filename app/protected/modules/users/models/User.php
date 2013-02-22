@@ -189,16 +189,25 @@
             $passwordChanged = array_key_exists('hash', $this->originalAttributeValues);
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
+            //echo "\n\n";
+//echo "Before save: " . $this->id;
+//            echo "\n\n";
             $saved = parent::save($runValidation, $attributeNames);
+//            echo "\n\n";
+//echo "After save:".$this->id;
+//            echo "\n\n";
             if ($saved && $passwordChanged)
             {
                 AuditEvent::
                 logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_PASSWORD_CHANGED, $this->username, $this);
-            }            
+            }
             if($saved)
             {
                 $this->setIsActive();
             }
+//            echo "\n\n";
+//            echo "After save2:".$this->id;
+//            echo "\n\n";
             return $saved;
         }
 
@@ -221,7 +230,7 @@
             {
                 Yii::app()->languageHelper->setActive($this->language);
             }
-            parent::afterSave();                       
+            parent::afterSave();
         }
 
         /**
@@ -232,7 +241,7 @@
         protected function beforeSave()
         {
             if (parent::beforeSave())
-            {                                            
+            {
                 if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
                 {
                     ReadPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
@@ -663,16 +672,84 @@
                 ),
                 'defaultSortAttribute' => 'lastName',
                 'noExport' => array(
-                    'hash'               
+                    'hash'
                 ),
                 'noApiExport' => array(
-                    'hash'              
+                    'hash'
                 ),
                 'noAudit' => array(
-                    'serializedAvatarData',                    
+                    'serializedAvatarData',
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * Check if user's email is unique.
+         * @return boolean
+         */
+        public function beforeValidate()
+        {
+            if (!parent::beforeValidate())
+            {
+                return false;
+            }
+
+            if (isset($this->primaryEmail) &&
+                isset($this->primaryEmail->emailAddress) &&
+                !$this->isUserEmailUnique($this->primaryEmail->emailAddress))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Check if user email is unique in system. Two users can't share same email address.
+         * @param string $email
+         * @return bool
+         */
+        public function isUserEmailUnique($email)
+        {
+            if (!$email)
+            {
+                return true;
+            }
+
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'primaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $email,
+                )
+            );
+
+            if ($this->id > 0)
+            {
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'        => 'id',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => $this->id,
+                );
+                $searchAttributeData['structure'] = '(1 AND 2)';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
+
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
+
+            if (count($models) > 0 && is_array($models))
+            {
+                // Todo: fix form element name below
+                $this->primaryEmail->addError('emailAddress', Zurmo::t('UsersModule', 'Email address already exist in system.'));
+                return false;
+            }
+            return true;
         }
 
         public static function isTypeDeletable()
@@ -700,7 +777,7 @@
             }
             return $emailSignature;
         }
-        
+
         /**
         * to change isActive attribute  properly during save
         */
@@ -709,18 +786,18 @@
             if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
-            {                                        
-                $isActive = false;              
-            }            
+            {
+                $isActive = false;
+            }
             else
-            { 
-                $isActive = true;                              
-            }             
+            {
+                $isActive = true;
+            }
             if($this->isActive != $isActive)
             {
-               $this->unrestrictedSet('isActive', $isActive);   
+               $this->unrestrictedSet('isActive', $isActive);
                $this->save();
-            } 
+            }
         }
     }
 ?>
