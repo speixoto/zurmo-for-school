@@ -33,10 +33,17 @@
         {
             assert('is_string($resolvedModelClassName)');
             assert('is_string($resolvedAttributeName)');
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
-            $type  = ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
-            $formClassName = $type . 'WorkflowActionAttributeForm';
+            $formClassName = self::getType($resolvedModelClassName, $resolvedAttributeName) . 'WorkflowActionAttributeForm';
             return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
+        }
+
+        public static function getType($resolvedModelClassName, $resolvedAttributeName)
+        {
+            assert('is_string($resolvedModelClassName)');
+            assert('is_string($resolvedAttributeName)');
+
+            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
+            return ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
         }
     }
 ?>

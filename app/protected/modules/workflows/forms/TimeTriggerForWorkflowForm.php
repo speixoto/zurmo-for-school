@@ -36,6 +36,17 @@
 
         /**
          * @return array
+         */
+        public function rules()
+        {
+            return array_merge(parent::rules(), array(
+                array('durationSeconds', 'type', 'type' => 'integer'),
+            ));
+        }
+
+
+        /**
+         * @return array
          * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
          */
         public function getOperatorValuesAndLabels()

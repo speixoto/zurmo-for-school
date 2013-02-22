@@ -62,7 +62,7 @@
                 {
                     $trigger = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                           $workflow->getType());
-                    $trigger->setAttributes($triggersData);
+                    $trigger->setAttributes($triggerData);
                     $workflow->addTrigger($trigger);
                 }
             }
@@ -79,38 +79,9 @@
             $sanitizedTriggersData = array();
             foreach($triggersData as $triggerData)
             {
-                $sanitizedTriggersData[] = static::sanitizeTriggerData($moduleClassName,
-                                                                     $moduleClassName::getPrimaryModelName(),
-                                                                     $workflowType,
-                                                                     $triggerData);
+                $sanitizedTriggersData[] = static::sanitizeTriggerData($moduleClassName, $workflowType, $triggerData);
             }
             return $sanitizedTriggersData;
-        }
-
-        protected static function sanitizeTriggerData($moduleClassName, $modelClassName, $workflowType, $triggerData)
-        {
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
-            assert('is_string($workflowType)');
-            assert('is_array($triggerData)');
-            $triggerForSanitizing = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                               $workflowType);
-
-            $triggerForSanitizing->setAttributes($triggerData);
-            $valueElementType = null;
-            $valueElementType    = $triggerForSanitizing->getValueElementType();
-            if($valueElementType == 'MixedDateTypesForWorkflow')
-            {
-                if(isset($triggerData['value']) && $triggerData['value'] !== null)
-                {
-                    $triggerData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['value']);
-                }
-                if(isset($triggerData['secondValue']) && $triggerData['secondValue'] !== null)
-                {
-                    $triggerData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['secondValue']);
-                }
-            }
-            return $triggerData;
         }
 
         /**
@@ -127,8 +98,9 @@
             {
                 foreach($actionsData as $actionData)
                 {
-                    $action = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName());
-                    $action->setAttributes($actionData);
+                    $sanitizedActionData = static::sanitizeActionData($moduleClassName::getPrimaryModelName(), $actionData);
+                    $action              = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName());
+                    $action->setAttributes($sanitizedActionData);
                     $workflow->addAction($action);
                 }
             }
@@ -138,18 +110,81 @@
             }
         }
 
-        protected static function resolveTimeTrigger($data, Workflow $workflow)
+        public static function sanitizeActionData($modelClassName, $actionData)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_array($actionData)');
+
+            if(!isset($actionData['attributes']))
+            {
+                return $actionData;
+            }
+            $actionForSanitizing = new ActionForWorkflowForm($modelClassName);
+            $actionForSanitizing->setAttributes($actionData);
+            foreach($actionData['attributes'] as $attribute => $attributeData)
+            {
+                if(isset($attributeData['value']))
+                {
+                    $type = $actionForSanitizing->getAttributesAttributeFormType($attribute);
+                    if($type == 'Date' && $attributeData['type'] == DateWorkflowActionAttributeForm::TYPE_STATIC)
+                    {
+                        $actionData['attributes'][$attribute]['value'] =
+                            DateTimeUtil::resolveValueForDateDBFormatted($attributeData['value']);
+                    }
+                    elseif($type == 'DateTime' && $attributeData['type'] == DateTimeWorkflowActionAttributeForm::TYPE_STATIC)
+                    {
+                        $actionData['attributes'][$attribute]['value'] =
+                            DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($attributeData['value']);
+                    }
+                }
+            }
+            return $actionData;
+        }
+
+        /**
+         * No need to sanitize for Date and DateTime since those attributes utilize integers for time-based triggers
+         * @param array $data
+         * @param Workflow $workflow
+         */
+        public static function resolveTimeTrigger($data, Workflow $workflow)
         {
             if($workflow->getType() != Workflow::TYPE_BY_TIME)
             {
                 return;
             }
-            $timeTrigger             = new TimeTriggerForWorkflowForm();
-            if(null != $timeTriggerData = ArrayUtil::getArrayValue($data, 'TimeTriggerForWorkflowForm'))
+            $workflow->removeTimeTrigger();
+            $moduleClassName = $workflow->getModuleClassName();
+            $timeTrigger     = new TimeTriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                                                              $workflow->getType());
+            if(null != $timeTriggerData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TIME_TRIGGER))
             {
                 $timeTrigger->setAttributes($timeTriggerData);
             }
             $workflow->setTimeTrigger($timeTrigger);
+        }
+
+        protected static function sanitizeTriggerData($moduleClassName, $workflowType, $triggerData)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($workflowType)');
+            assert('is_array($triggerData)');
+            $triggerForSanitizing = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
+                $workflowType);
+            $triggerForSanitizing->setAttributes($triggerData);
+            $valueElementType = null;
+            $valueElementType    = $triggerForSanitizing->getValueElementType();
+            if($valueElementType == 'MixedDateTypesForWorkflow')
+            {
+                if(isset($triggerData['value']) && $triggerData['value'] !== null)
+                {
+                    $triggerData['value']       = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['value']);
+                }
+                if(isset($triggerData['secondValue']) && $triggerData['secondValue'] !== null)
+                {
+                    $triggerData['secondValue'] = DateTimeUtil::resolveValueForDateDBFormatted($triggerData['secondValue']);
+                }
+            }
+            return $triggerData;
         }
     }
 ?>

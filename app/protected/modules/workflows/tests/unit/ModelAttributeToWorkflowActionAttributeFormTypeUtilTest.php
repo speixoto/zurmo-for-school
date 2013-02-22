@@ -55,6 +55,8 @@
                                 ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, 'dropDown'));
             $this->assertEquals('Decimal',
                                 ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, 'float'));
+            $this->assertEquals('Email',
+                                ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model->primaryEmail, 'emailAddress'));
             $this->assertEquals('Integer',
                                 ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, 'integer'));
             $this->assertEquals('MultiSelectDropDown',

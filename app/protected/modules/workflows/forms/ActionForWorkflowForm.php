@@ -106,7 +106,7 @@
          */
         public function getAttributeFormsCount()
         {
-            return count($this->attributes);
+            return count($this->_attributes);
         }
 
         /**
@@ -117,14 +117,22 @@
         public function getAttributeFormByName($attribute)
         {
             assert('is_string($attribute)');
-            if(!isset($this->attributes[$attribute]))
+            if(!isset($this->_attributes[$attribute]))
             {
                 throw new NotFoundException();
             }
             else
             {
-                return $this->attributes[$attribute];
+                return $this->_attributes[$attribute];
             }
+        }
+
+        public function getAttributesAttributeFormType($attribute)
+        {
+            assert('is_string($attribute)');
+            $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
+            $resolvedModelClassName = $this->resolveRealModelClassName($attribute);
+            return WorkflowActionAttributeFormFactory::getType($resolvedModelClassName, $resolvedAttributeName);
         }
 
         /**
@@ -139,7 +147,7 @@
                 array('relation',  	 		     'type', 'type' => 'string'),
                 array('relation',                    'validateType'),
                 array('relationFilter',  	 	 'type', 'type' => 'string'),
-                array('relationModelRelation',   'type', 'type' => 'string'),
+                array('relatedModelRelation',    'type', 'type' => 'string'),
             ));
         }
 
@@ -156,7 +164,7 @@
          * @param $values
          * @param bool $safeOnly
          */
-        public function setAttributes($values, $safeOnly=true)
+        public function setAttributes($values, $safeOnly = true)
         {
             $valuesAttributes = null;
             if(isset($values['attributes']))
@@ -173,8 +181,9 @@
             {
                 foreach($valuesAttributes as $attribute => $attributeData)
                 {
-                    $resolvedAttributeName  = $this->resolveRealAttributeName($attribute);
-                    $resolvedModelClassName = $this->resolveRealModelClassName($attribute);
+                    $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
+                    $resolvedModelClassName = static::resolveRealModelClassName($attribute, $this->_modelClassName,
+                                              $this->type, $this->relation, $this->relatedModelRelation);
                     $form = WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
                     $form->setAttributes($attributeData);
                     $this->_attributes[$attribute] = $form;
@@ -300,7 +309,7 @@
          * @return real model attribute name.  Parses for primaryAddress___street1 for example
          * @throws NotSupportedException() if invalid $attribute string
          */
-        protected function resolveRealAttributeName($attribute)
+        protected static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             $delimiter                  = FormModelUtil::RELATION_DELIMITER;
@@ -355,7 +364,7 @@
             {
                 return $model;
             }
-            elseif($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_UPDATE_RELATED)
+            elseif($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE)
             {
                 $relationModelClassName = $model->getRelationModelClassName($this->relation);
                 return new $relationModelClassName(false);

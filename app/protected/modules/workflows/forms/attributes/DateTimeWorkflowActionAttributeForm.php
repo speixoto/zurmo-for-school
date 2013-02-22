@@ -31,7 +31,7 @@
     {
         const TYPE_DYNAMIC_FROM_TRIGGERED_DATETIME = 'DynamicFromTriggeredDateTime';
 
-        const TYPE_DYNAMIC_FROM_EXISTING_DATETIME = 'DynamicFromExistingDate';
+        const TYPE_DYNAMIC_FROM_EXISTING_DATETIME = 'DynamicFromExistingDateTime';
 
         /**
          * Value can either be dateTime or if dynamic, then it is an integer

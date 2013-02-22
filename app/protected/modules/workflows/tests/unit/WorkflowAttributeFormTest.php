@@ -225,9 +225,9 @@
         /**
          * @depends testDropDownWorkflowAttributeFormSetGetAndValidate
          */
-        public function testEmailAddressWorkflowAttributeFormSetGetAndValidate()
+        public function testEmailWorkflowAttributeFormSetGetAndValidate()
         {
-            $form                 = new EmailAddressWorkflowActionAttributeForm('Email', 'emailAddress');
+            $form                 = new EmailWorkflowActionAttributeForm('Email', 'emailAddress');
             $form->type           = WorkflowActionAttributeForm::TYPE_STATIC;
             $form->shouldSetValue = true;
             $form->value = 'info@zurmo.com';

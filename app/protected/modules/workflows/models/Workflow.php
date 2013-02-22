@@ -199,6 +199,11 @@
             $this->timeTrigger = null;
         }
 
+        public function getTriggers()
+        {
+            return $this->triggers;
+        }
+
         public function addTrigger(TriggerForWorkflowForm $trigger)
         {
             $this->triggers[] = $trigger;

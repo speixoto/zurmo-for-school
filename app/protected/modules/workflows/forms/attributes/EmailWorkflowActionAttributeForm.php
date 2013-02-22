@@ -27,7 +27,7 @@
     /**
      * Form to work with email address attributes
      */
-    class EmailAddressWorkflowActionAttributeForm extends WorkflowActionAttributeForm
+    class EmailWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
         /**
          * Override to make sure the value attribute is set as an email address value

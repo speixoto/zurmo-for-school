@@ -28,7 +28,7 @@
      * Helper functionality for finding the type to be used for creating a WorkflowActionAttributeForm
      * associated with a model's attribute
      */
-    class ModelAttributeToWorkflowActionAttributeFormTypeUtil
+    class ModelAttributeToWorkflowActionAttributeFormTypeUtil extends ModelAttributeToMixedTypeUtil
     {
         /**
          * @param $model
