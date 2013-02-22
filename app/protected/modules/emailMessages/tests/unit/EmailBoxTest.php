@@ -302,6 +302,21 @@
             Yii::app()->user->userModel = $jane;
             $this->assertEquals(1, $jane->emailBoxes->count());
             $this->assertEquals($jane->emailBoxes->offsetGet(0), $boxes[1]);
+
+            // Check if only one default email box is created for user
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $jimmy = UserTestHelper::createBasicUser('jimmy');
+            $saved = $jimmy->save();
+            $this->assertTrue($saved);
+            Yii::app()->user->userModel = $jimmy;
+
+            $box = EmailBoxUtil::getDefaultEmailBoxByUser($jimmy);
+            $box = EmailBoxUtil::getDefaultEmailBoxByUser($jimmy); // This command shouldn't create new box
+            $boxes = EmailBox::getAll();
+            // Note that two new boxes are created for use jimmy instead one.
+            // Probably because $jimmy->emailBoxes->count() return 0
+            $this->assertEquals(3, count($boxes));
         }
     }
 ?>
