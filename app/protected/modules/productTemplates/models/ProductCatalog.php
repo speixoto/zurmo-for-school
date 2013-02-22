@@ -35,7 +35,6 @@
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
-                    'productCategory' => 'ProductCategoriesModuleSingularLabel',
                 )
             );
         }
@@ -92,7 +91,6 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productCategories' => array(RedBeanModel::HAS_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),
