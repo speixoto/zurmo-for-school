@@ -34,7 +34,7 @@
                         'hash',
                         'currency',
                         'timeZone',
-                        'language',                        
+                        'language',
                         'newPassword',
                         'newPassword_repeat',
                         'serializedAvatarData',

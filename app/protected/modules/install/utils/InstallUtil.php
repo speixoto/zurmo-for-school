@@ -991,7 +991,7 @@
                     $errors = $form->getErrors();
                     foreach ($errors as $fieldErrors)
                     {
-                        foreach($fieldErrors as $fieldError)
+                        foreach ($fieldErrors as $fieldError)
                         {
                             $messageStreamer->add($fieldError);
                         }

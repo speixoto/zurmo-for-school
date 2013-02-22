@@ -80,7 +80,6 @@
 
         public function testSetTitleValuesAndRetrieveTitleValuesFromUser()
         {
-
             $titles = array('Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Swami');
             $customFieldData = CustomFieldData::getByName('Titles');
             $customFieldData->serializedData = serialize($titles);
@@ -1066,21 +1065,21 @@
             unset($user);
 
             $user = User::getByUsername('activeuser');
-            $this->assertEquals(1,$user->isActive);
+            $this->assertEquals(1, $user->isActive);
             unset($user);
 
             //Change the user's status to inactive and confirm the changes in rights and isActive attribute.
             $user = User::getByUsername('activeuser');
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::DENY);
             $this->assertTrue($user->save());
-            $this->assertEquals(0,$user->isActive);
+            $this->assertEquals(0, $user->isActive);
             unset($user);
 
             //Now change the user's status back to active.
             $user = User::getByUsername('activeuser');
             $user->setRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB, RIGHT::ALLOW);
             $this->assertTrue($user->save());
-            $this->assertEquals(1,$user->isActive);
+            $this->assertEquals(1, $user->isActive);
             unset($user);
         }
     }

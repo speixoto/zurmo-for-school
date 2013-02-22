@@ -579,6 +579,5 @@
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->textContent);
         }
-
     }
 ?>

@@ -189,25 +189,17 @@
             $passwordChanged = array_key_exists('hash', $this->originalAttributeValues);
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
-            //echo "\n\n";
-//echo "Before save: " . $this->id;
-//            echo "\n\n";
             $saved = parent::save($runValidation, $attributeNames);
-//            echo "\n\n";
-//echo "After save:".$this->id;
-//            echo "\n\n";
+
             if ($saved && $passwordChanged)
             {
                 AuditEvent::
                 logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_PASSWORD_CHANGED, $this->username, $this);
             }
-            if($saved)
+            if ($saved)
             {
                 $this->setIsActive();
             }
-//            echo "\n\n";
-//            echo "After save2:".$this->id;
-//            echo "\n\n";
             return $saved;
         }
 
@@ -793,7 +785,7 @@
             {
                 $isActive = true;
             }
-            if($this->isActive != $isActive)
+            if ($this->isActive != $isActive)
             {
                $this->unrestrictedSet('isActive', $isActive);
                $this->save();

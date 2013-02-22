@@ -31,7 +31,7 @@
     {
         const USER_EMAIL_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.UserEmailConfigurationCheckControllerFilter';
-              
+
         const EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.EmailMessagesRequiringArchivingCheckControllerFilter';
 
@@ -51,7 +51,7 @@
                 ),
                 array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + createEmailMessage',
                      'controller' => $this,
-                ),                
+                ),
                 array(self::EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH . ' + matchingList' ,
                      'controller' => $this,
                 )
@@ -422,8 +422,8 @@
                 }
                 Yii::app()->end(false);
             }
-        }        
-        
+        }
+
         public function actionCreateEmailMessage($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
             $postData         = PostUtil::getData();

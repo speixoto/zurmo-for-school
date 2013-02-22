@@ -212,14 +212,14 @@
             $compareContent = '[{"href":"","label":"No Results Found","iconClass":""}'; // Not Coding Standard
             $this->assertTrue(strpos($content, $compareContent) !== false);
         }
-        
+
         /*
         * Test for isActive attribute in advance search
         */
         public function testDynamicSearchIsActiveAttribute()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            
+
             //to test whether isActive attribute is in the field list
             $this->setGetArray(array(   'viewClassName'               => 'UsersSearchView',
                                         'modelClassName'              => 'User',
@@ -228,7 +228,7 @@
                                         'attributeIndexOrDerivedType' => 'isActive'));
             $this->resetPostArray();
             $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/dynamicSearchAttributeInput');
-            
+
             //to test whether isActive works efficiently
             $this->setGetArray(array(   'viewClassName'               => 'UsersSearchView',
                                         'modelClassName'              => 'User',
@@ -241,7 +241,7 @@
                                                       'attributeIndexOrDerivedType' => 'isActive',
                                                       'isActive' => '1')))));
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
-            $this->assertEmpty($content);            
-        }       
+            $this->assertEmpty($content);
+        }
     }
 ?>
