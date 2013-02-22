@@ -118,7 +118,7 @@
             Yii::app()->user->userModel = $super;
             $user = User::getByUsername('steve');
             Yii::app()->imap->connect();
-            $this->assertEquals(0, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
+            $this->assertEquals(0, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
 
             $messages = EmailMessage::getAll();
             foreach ($messages as $message)
@@ -179,7 +179,7 @@
                 $this->assertTrue($attachment->size > 0);
             }
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
-            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
         }
 
         /**
@@ -261,7 +261,7 @@
                 $this->assertTrue($attachment->size > 0);
             }
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
-            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
         }
 
         /**
@@ -355,7 +355,7 @@ To: Steve <steve@example.com>
                 $this->assertTrue($attachment->size > 0);
             }
             $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
-            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
         }
 
         /**
@@ -415,7 +415,7 @@ To: Steve <steve@example.com>
             $this->assertTrue(strpos($emailMessages[0]->content->textContent, 'Email address does not exist in system') !== false);
             $this->assertTrue(strpos($emailMessages[0]->content->htmlContent, 'Email address does not exist in system') !== false);
             $this->assertEquals($originalUserAddress, $emailMessages[0]->recipients[0]->toAddress);
-            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
         }
 
         /**
@@ -495,7 +495,7 @@ To: Steve <steve@example.com>
             $imapStats = Yii::app()->imap->getMessageBoxStatsDetailed();
             $this->assertEquals(0, $imapStats->Nmsgs);
             $this->assertEquals(1, count(EmailMessage::getAll()));
-            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMaching', Yii::app()->user->userModel));
+            $this->assertEquals(1, Notification::getCountByTypeAndUser('EmailMessageArchivingEmailAddressNotMatching', Yii::app()->user->userModel));
         }
     }
 ?>
