@@ -38,9 +38,49 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testEmailUniquenessValidation()
+        {
+            $user = User::getByUsername('super');
+            Yii::app()->user->userModel = $user;
+
+            $user = new User();
+            $user->username = 'usera';
+            $user->lastName = 'UserA';
+            $user->setPassword('myuser');
+            $emailAddress = 'userA@example.com';
+            $user->primaryEmail->emailAddress = $emailAddress;
+            $saved = $user->save();
+            $this->assertTrue($saved);
+
+            $user2 = new User();
+            $user2->username = 'userb';
+            $user2->lastName = 'UserB';
+            $user2->setPassword('myuser');
+            $emailAddress = 'userA@example.com';
+            $user2->primaryEmail->emailAddress = $emailAddress;
+            $saved = $user2->save();
+            $this->assertFalse($saved);
+
+            $validationErrors = $user2->getErrors();
+            $this->assertTrue(count($validationErrors) > 0);
+
+            // Todo: fix array keys below
+            $this->assertTrue(isset($validationErrors['primaryEmail']));
+            $this->assertTrue(isset($validationErrors['primaryEmail']['emailAddress']));
+            $this->assertEquals('Email address already exist in system.', $validationErrors['primaryEmail']['emailAddress'][0]);
+
+            // Try to save user without email address
+            $user3 = new User();
+            $user3->username = 'userc';
+            $user3->lastName = 'UserC';
+            $user3->setPassword('myuser');
+            $saved = $user3->save();
+            $this->assertTrue($saved);
+        }
+
         public function testSetTitleValuesAndRetrieveTitleValuesFromUser()
         {
-            exit;
+
             $titles = array('Mr.', 'Mrs.', 'Ms.', 'Dr.', 'Swami');
             $customFieldData = CustomFieldData::getByName('Titles');
             $customFieldData->serializedData = serialize($titles);
@@ -553,6 +593,7 @@
             $user->manager                    = User::getByUsername('bill');
             $user->setPassword('Senhor');
             $user->groups->add($group);
+            $user->save();
             $this->assertTrue($user->save());
 
             $titleId          = $user->title->id;
@@ -1041,46 +1082,6 @@
             $this->assertTrue($user->save());
             $this->assertEquals(1,$user->isActive);
             unset($user);
-        }
-
-        public function testEmailUniquenessValidation()
-        {
-            $user = User::getByUsername('super');
-            Yii::app()->user->userModel = $user;
-
-            $user = new User();
-            $user->username = 'usera';
-            $user->lastName = 'UserA';
-            $user->setPassword('myuser');
-            $emailAddress = 'userA@example.com';
-            $user->primaryEmail->emailAddress = $emailAddress;
-            $saved = $user->save();
-            $this->assertTrue($saved);
-
-            $user2 = new User();
-            $user2->username = 'userb';
-            $user2->lastName = 'UserB';
-            $user2->setPassword('myuser');
-            $emailAddress = 'userA@example.com';
-            $user2->primaryEmail->emailAddress = $emailAddress;
-            $saved = $user2->save();
-            $this->assertFalse($saved);
-
-            $validationErrors = $user2->getErrors();
-            $this->assertTrue(count($validationErrors) > 0);
-
-            // Todo: fix array keys below
-            $this->assertTrue(isset($validationErrors['primaryEmail']));
-            $this->assertTrue(isset($validationErrors['primaryEmail']['emailMessage']));
-            $this->assertEquals('Email address already exist in system.', $validationErrors['primaryEmail']['emailMessage'][0]);
-
-            // Try to save user without email address
-            $user3 = new User();
-            $user3->username = 'userc';
-            $user3->lastName = 'UserC';
-            $user3->setPassword('myuser');
-            $saved = $user3->save();
-            $this->assertTrue($saved);
         }
     }
 ?>

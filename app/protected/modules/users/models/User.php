@@ -189,8 +189,13 @@
             $passwordChanged = array_key_exists('hash', $this->originalAttributeValues);
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
-
+            //echo "\n\n";
+//echo "Before save: " . $this->id;
+//            echo "\n\n";
             $saved = parent::save($runValidation, $attributeNames);
+//            echo "\n\n";
+//echo "After save:".$this->id;
+//            echo "\n\n";
             if ($saved && $passwordChanged)
             {
                 AuditEvent::
@@ -200,6 +205,9 @@
             {
                 $this->setIsActive();
             }
+//            echo "\n\n";
+//            echo "After save2:".$this->id;
+//            echo "\n\n";
             return $saved;
         }
 
@@ -687,7 +695,9 @@
                 return false;
             }
 
-            if (!$this->isUserEmailUnique($this->primaryEmail->emailAddress))
+            if (isset($this->primaryEmail) &&
+                isset($this->primaryEmail->emailAddress) &&
+                !$this->isUserEmailUnique($this->primaryEmail->emailAddress))
             {
                 return false;
             }
@@ -701,9 +711,7 @@
          */
         public function isUserEmailUnique($email)
         {
-            assert('is_string($email)');
-
-            if ($email == '')
+            if (!$email)
             {
                 return true;
             }
@@ -717,12 +725,12 @@
                 )
             );
 
-            if ($this->getClassId('User') > 0)
+            if ($this->id > 0)
             {
                 $searchAttributeData['clauses'][2] = array(
                     'attributeName'        => 'id',
                     'operatorType'         => 'doesNotEqual',
-                    'value'                => $this->getClassId('User'),
+                    'value'                => $this->id,
                 );
                 $searchAttributeData['structure'] = '(1 AND 2)';
             }
@@ -735,24 +743,10 @@
             $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
             $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
 
-            /*
-            if (count($models) > 0)
-            {
-                foreach ($models as $model)
-                {
-                    if ($model->id != $this->getClassId('User'))
-                    {
-                        // Todo: fix form element name below
-                        $this->primaryEmail->addError('emailMessage', Zurmo::t('UsersModule', 'Email address already exist in system.'));
-                        return false;
-                    }
-                }
-            }
-            */
-            if (count($models) > 0)
+            if (count($models) > 0 && is_array($models))
             {
                 // Todo: fix form element name below
-                $this->primaryEmail->addError('emailMessage', Zurmo::t('UsersModule', 'Email address already exist in system.'));
+                $this->primaryEmail->addError('emailAddress', Zurmo::t('UsersModule', 'Email address already exist in system.'));
                 return false;
             }
             return true;
