@@ -29,8 +29,6 @@
      */
     class EmailArchivingJob extends BaseJob
     {
-        protected $jobOwnerUserModel;
-
         /**
          * @returns Translated label that describes this job type.
          */
@@ -69,7 +67,7 @@
          */
         public function run()
         {
-            $this->jobOwnerUserModel = Yii::app()->user->userModel;
+            $jobOwnerUserModel = Yii::app()->user->userModel;
             if (Yii::app()->imap->connect())
             {
                 $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
@@ -90,15 +88,15 @@
                 {
                    foreach ($messages as $message)
                    {
-                       Yii::app()->user->userModel = $this->jobOwnerUserModel;
+                       Yii::app()->user->userModel = $jobOwnerUserModel;
                        $lastMessageCreatedTime = strtotime($message->createdDate);
                        if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                        {
                            $lastCheckTime = $message->createdDate;
                        }
-                       $this->saveEmailMessage($message);
+                       $this->saveEmailMessage($message, $jobOwnerUserModel);
                    }
-                   Yii::app()->user->userModel = $this->jobOwnerUserModel;
+                   Yii::app()->user->userModel = $jobOwnerUserModel;
                    Yii::app()->imap->expungeMessages();
                    if ($lastCheckTime != '')
                    {
@@ -244,7 +242,7 @@
             }
         }
 
-        protected function saveEmailMessage($message)
+        protected function saveEmailMessage($message, $jobOwnerUserModel)
         {
             // Get owner for message
             try
@@ -289,7 +287,7 @@
                 }
             }
 
-            Yii::app()->user->userModel = $this->jobOwnerUserModel;
+            Yii::app()->user->userModel = $jobOwnerUserModel;
             $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
             if (!$recipientsInfo)
             {
@@ -341,8 +339,12 @@
                         '{url}'      => Yii::app()->createUrl('emailMessages/default/matchingList'),
                     )
                 );
-                $rules                      = new EmailMessageArchivingEmailAddressNotMatchingNotificationRules();
-                NotificationsUtil::submit($notificationMessage, $rules);
+                if ($emailOwner instanceof User)
+                {
+                    $rules                      = new EmailMessageArchivingEmailAddressNotMatchingNotificationRules();
+                    $rules->addUser($emailOwner);
+                    NotificationsUtil::submit($notificationMessage, $rules);
+                }
             }
             else
             {

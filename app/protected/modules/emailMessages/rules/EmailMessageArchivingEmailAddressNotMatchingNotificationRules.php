@@ -27,7 +27,7 @@
     /**
      * Inform user that some email address are not matching any account's or person's emails in system
      */
-    class EmailMessageArchivingEmailAddressNotMatchingNotificationRules extends JobsManagerAccessNotificationRules
+    class EmailMessageArchivingEmailAddressNotMatchingNotificationRules extends NotificationRules
     {
         protected $critical    = false;
 
