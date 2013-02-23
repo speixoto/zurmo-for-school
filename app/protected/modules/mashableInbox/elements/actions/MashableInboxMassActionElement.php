@@ -34,8 +34,8 @@
         public function render()
         {
             $defaultMassOptions  = array(
-                          'markRead'      => Zurmo::t('MashableInboxModule', 'Mark selected read'),
-                          'markUnread'    => Zurmo::t('MashableInboxModule', 'Mark selected unread'),
+                          'markRead'      => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected read'), 'isActionForAll' => false),
+                          'markUnread'    => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected unread'), 'isActionForAll' => false),
                     );
             $massOptions = $defaultMassOptions;
             if ($this->getModelClassName() != "")
@@ -59,22 +59,28 @@
                     ));
             $script = '';
             $items  = array();
-            foreach ($massOptions as $massOption => $label)
+            foreach ($massOptions as $massOption => $massOptionParams)
             {
                 $selectedName = $gridId . '-' . $massOption;
-                $items[]      = array('label' => $label,
+                $items[]      = array('label' => $massOptionParams['label'],
                                       'url'   => '#',
                                       'itemOptions' => array( 'id'   => $selectedName));
-                $script      .= "
-                    $('#{$selectedName}').unbind('click.action');
-                    $('#{$selectedName}').bind('click.action', function()
-                        {
+                $isActionForEachScript = '';
+                if (!$massOptionParams['isActionForAll'])
+                {
+                    $isActionForEachScript = "
                             if ($('#" . $gridId . "-selectedIds').val() == '')
                             {
                                 alert('" . Zurmo::t('MashableInboxModule', 'You must select at least one record') . "');
                                 $(this).val('');
                                 return false;
-                            }
+                            }";
+                }
+                $script      .= "
+                    $('#{$selectedName}').unbind('click.action');
+                    $('#{$selectedName}').bind('click.action', function()
+                        {
+                            {$isActionForEachScript}
                             $('#{$formClassName}_massAction').val('{$massOption}');
                             $('#{$formClassName}_selectedIds').val($('#{$gridId}-selectedIds').val());
                             {$ajaxSubmitScript};

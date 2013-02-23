@@ -46,7 +46,7 @@
 
         public function getMachableInboxOrderByAttributeName()
         {
-            return 'id';
+            return 'createdDateTime';
         }
 
         public function getActionViewOptions()
@@ -75,7 +75,7 @@
 
         public function getModelCreationTimeContent(RedBeanModel $model)
         {
-            return null;
+            return MashableUtil::getTimeSinceLatestUpdate($model->createdDateTime);
         }
 
         public function getSearchAttributeData($searchTerm = '')
@@ -120,6 +120,43 @@
         private function resolveChangeHasReadLatestStatus($modelId, $newStatus)
         {
             throw new NotImplementedException();
+        }
+
+        public function getMassOptions()
+        {
+            return array(
+                          'deleteSelected' => array('label' => Zurmo::t('NotificationsModule', 'Delete selected'), 'isActionForAll' => false),
+                          'deleteAll'      => array('label' => Zurmo::t('NotificationsModule', 'Delete all'), 'isActionForAll' => true),
+                    );
+        }
+
+        public function resolveDeleteSelected($modelId)
+        {
+            assert('$modelId > 0');
+            $notification = Notification::GetById(intval($modelId));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($notification);
+            $notification->delete();
+        }
+
+        public function resolveDeleteAll()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Notification');
+            $where  = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
+            $models = Notification::getSubset($joinTablesAdapter, null, null, $where, null);
+            foreach ($models as $model)
+            {
+                ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($model);
+                $model->delete();
+            }
         }
     }
 ?>

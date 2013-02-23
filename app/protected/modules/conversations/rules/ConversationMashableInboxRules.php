@@ -151,7 +151,7 @@
         public function getMassOptions()
         {
             return array(
-                          'closeSelected' => Zurmo::t('MashableInboxModule', 'Closed selected'),
+                          'closeSelected' => array('label' => Zurmo::t('ConversationsModule', 'Close selected'), 'isActionForAll' => false),
                     );
         }
 
@@ -169,6 +169,24 @@
                     throw new NotSupportedException();
                 }
             }
+        }
+
+        public function getModelStringContent(RedBeanModel $model)
+        {
+            $modelDisplayString = strval($model);
+            if (count($model->comments) > 0)
+            {
+                $prefix = Zurmo::t('ConversationsModule', 'A new comment is made on conversation: ');
+            }
+            else
+            {
+                $prefix = Zurmo::t('ConversationsModule', 'A new conversation started: ');
+            }
+            $params          = array('label' => $prefix . ' ' . $modelDisplayString, 'wrapLabel' => false);
+            $moduleClassName = $model->getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+            return $element->render();
         }
     }
 ?>
