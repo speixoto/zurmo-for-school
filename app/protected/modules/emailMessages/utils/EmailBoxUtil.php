@@ -79,7 +79,7 @@
             $saved            = $box->save();
             //Ensures the box is 'seen' from the other side during the request. Otherwise the $user->emailBoxes would
             //still show as empty
-            $user->emailBoxes->add($box);
+            //$user->emailBoxes->add($box);
             if (!$saved)
             {
                 throw new NotSupportedException();
