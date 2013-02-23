@@ -24,50 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplateBundleItem extends OwnedModel
+    class ProductTemplateBundlesListListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public function __toString()
+        public function renderGridViewData()
         {
-            if (trim($this->name) == '')
+            if ($this->getIsLink())
             {
-                return Zurmo::t('ProductTemplatesModule', '(None)');
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'productTemplates'),
+                );
             }
-            return $this->name;
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name',
-                    'quantity',
-                ),
-                'relations' => array(
-                    'productTemplate'        => array(RedBeanModel::HAS_ONE,  'ProductTemplate'),
-                    'productTemplateBundle'  => array(RedBeanModel::HAS_ONE,  'ProductTemplateBundle'),
-                ),
-                'rules' => array(
-                    array('name',      'required'),
-                    array('name',      'type',    'type' => 'string'),
-                    array('name',      'length',  'min'  => 3,  'max' => 64),
-                    array('quantity',  'type',    'type' => 'integer'),
-                ),
-                'defaultSortAttribute' => 'name',
-                'customFields' => array(
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function canSaveMetadata()
-        {
-            return true;
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
         }
     }
 ?>

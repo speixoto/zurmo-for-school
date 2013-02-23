@@ -25,40 +25,40 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo product bundles.
+     * Class that builds demo product bundle items.
      */
-    class ProductTemplateBundlesDemoDataMaker extends DemoDataMaker
+    class ProductTemplateBundleItemsDemoDataMaker extends DemoDataMaker
     {
         protected $ratioToLoad = 1;
 
         public static function getDependencies()
         {
-            return array('productTemplateBundleItems');
+            return array('productTemplates');
         }
 
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            $productTemplateBundles = array();
+            $productTemplateBundleItems = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $productTemplateBundle = new ProductTemplateBundle();
-                $productTemplateBundle->productTemplateBundleItems->add($demoDataHelper->getRandomByModelName('ProductTemplateBundleItem'));
-                $this->populateModel($productTemplateBundle);
-                $saved = $productTemplateBundle->save();
+                $productTemplateBundleItem = new ProductTemplateBundleItem();
+                $productTemplateBundleItem->productTemplate = $demoDataHelper->getRandomByModelName('ProductTemplate');
+                $this->populateModel($productTemplateBundleItem);
+                $saved                                      = $productTemplateBundleItem->save();
                 assert('$saved');
-                $productTemplateBundles[] = $productTemplateBundle->id;
+                $productTemplateBundleItems[]               = $productTemplateBundleItem->id;
             }
-            $demoDataHelper->setRangeByModelName('ProductTemplateBundle', $productTemplateBundles[0], $productTemplateBundles[count($productTemplateBundles)-1]);
+            $demoDataHelper->setRangeByModelName('ProductTemplateBundleItem', $productTemplateBundleItems[0], $productTemplateBundleItems[count($productTemplateBundleItems)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof ProductTemplateBundle');
+            assert('$model instanceof ProductTemplateBundleItem');
             parent::populateModel($model);
-            $productTemplateBundleRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
-                                                'ProductTemplatesModule', 'ProductTemplateBundle');
-            $name        = RandomDataUtil::getRandomValueFromArray($productTemplateBundleRandomData['names']);
+            $productTemplateBundleItemRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+                                                'ProductTemplatesModule', 'ProductTemplateBundleItem');
+            $name        = RandomDataUtil::getRandomValueFromArray($productTemplateBundleItemRandomData['names']);
             $model->name = $name;
         }
     }

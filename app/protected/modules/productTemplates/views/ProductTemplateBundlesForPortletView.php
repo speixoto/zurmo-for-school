@@ -88,7 +88,7 @@
         {
             $uniquePageId  = get_called_class();
             $dataProvider  = $this->getDataProvider($uniquePageId);
-            $view          = new ProductTemplateBundlesListView($dataProvider, 'default', 'socialItems',
+            $view          = new ProductTemplateBundlesListView($dataProvider, 'default', 'productTemplateBundles',
                                                       $this->resolveAndGetPaginationRoute(),
                                                       $this->resolveAndGetPaginationParams(),
                                                       $this->getNonAjaxRedirectUrl(),
@@ -148,7 +148,7 @@
          */
         public static function getModuleClassName()
         {
-            return 'ProductTemplateModule';
+            return 'ProductTemplatesModule';
         }
     }
 ?>
