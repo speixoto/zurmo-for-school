@@ -549,7 +549,11 @@
             $conversations                          = Conversation::getAll();
             $this->assertEquals(2, count($conversations));
             $this->assertEquals(0, $conversations[0]->comments->count());
-            $initalQueued                           = Yii::app()->emailHelper->getQueuedCount();
+            foreach (EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $initalQueued                           = 0;
             $conversation                           = $conversations[0];
             $conversationParticipant                = new ConversationParticipant();
             $conversationParticipant->person        = $steven;
