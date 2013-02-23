@@ -62,7 +62,7 @@
          */
         public function init()
         {
-            if($this->getLogPath() === null)
+            if ($this->getLogPath() === null)
             {
                 $this->setLogPath(Yii::app()->getRuntimePath());
             }
@@ -83,9 +83,9 @@
         public function setLogPath($value)
         {
             $this->logPath = realpath($value);
-            if($this->logPath === false || !is_dir($this->logPath) || !is_writable($this->logPath))
+            if ($this->logPath === false || !is_dir($this->logPath) || !is_writable($this->logPath))
             {
-                throw new CException(Zurmo::t('Default','CFileLogRoute.logPath "{path}" does not point to a valid directory. Make sure the directory exists and is writable by the Web server process.',
+                throw new CException(Zurmo::t('Default', 'CFileLogRoute.logPath "{path}" does not point to a valid directory. Make sure the directory exists and is writable by the Web server process.',
                     array('{path}' => $value)));
             }
         }
@@ -119,7 +119,7 @@
          */
         public function setMaxFileSize($value)
         {
-            if(($this->maxFileSize = (int)$value) < 1)
+            if (($this->maxFileSize = (int)$value) < 1)
             {
                 $this->maxFileSize = 1;
             }
@@ -138,7 +138,7 @@
          */
         public function setMaxLogFiles($value)
         {
-            if(($this->maxLogFiles = (int)$value) < 1)
+            if (($this->maxLogFiles = (int)$value) < 1)
             {
                 $this->maxLogFiles = 1;
             }
@@ -183,7 +183,7 @@
                 {
                     if (is_array($argument))
                     {
-                        $data = print_r($argument,true);
+                        $data = print_r($argument, true);
                     }
                     else
                     {
@@ -200,7 +200,7 @@
         public function processLogs()
         {
             $logFile = $this->getLogPath() . DIRECTORY_SEPARATOR . $this->getLogFile();
-            if(@filesize($logFile) > $this->getMaxFileSize()*1024)
+            if (@filesize($logFile) > $this->getMaxFileSize()*1024)
             {
                 $this->rotateFiles();
             }
@@ -238,15 +238,15 @@
          */
         protected function rotateFiles()
         {
-            $file = $this->getLogPath().DIRECTORY_SEPARATOR.$this->getLogFile();
+            $file = $this->getLogPath() . DIRECTORY_SEPARATOR . $this->getLogFile();
             $max = $this->getMaxLogFiles();
-            for($i = $max; $i>0; --$i)
+            for ($i = $max; $i>0; --$i)
             {
                 $rotateFile = $file . '.' . $i;
-                if(is_file($rotateFile))
+                if (is_file($rotateFile))
                 {
                     // suppress errors because it's possible multiple processes enter into this section
-                    if($i === $max)
+                    if ($i === $max)
                     {
                         @unlink($rotateFile);
                     }
@@ -256,7 +256,7 @@
                     }
                 }
             }
-            if(is_file($file))
+            if (is_file($file))
             {
                 @rename($file, $file . '.1'); // suppress errors because it's possible multiple processes enter into this section
             }

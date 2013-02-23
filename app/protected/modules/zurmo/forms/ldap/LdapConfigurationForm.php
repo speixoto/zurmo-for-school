@@ -33,10 +33,10 @@
         public $port = 389;
         public $bindRegisteredDomain;
         public $bindPassword;
-        public $baseDomain;		
+        public $baseDomain;
         public $testConnection;
         public $enabled;
-		
+
         public function rules()
         {
             return array(

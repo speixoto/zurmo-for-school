@@ -50,19 +50,26 @@
                 $makeNotification = "";
             }
             $script = "
-            var desktopNotifications = {
-                notify:function(image,title,body) {
+            var desktopNotifications =
+            {
+                notify:function(image, title, body)
+                {
                     " . $makeNotification . "
                     return false;
                 },
-                isSupported:function() {
-                    if (typeof window.webkitNotifications != 'undefined') {
+                isSupported:function()
+                {
+                    if (typeof window.webkitNotifications != 'undefined')
+                    {
                         return true
-                    } else {
+                    }
+                    else
+                    {
                         return false
                     }
                 },
-                requestAutorization:function() {
+                requestAutorization:function()
+                {
                     if (typeof window.webkitNotifications != 'undefined')
                     {
                         if (window.webkitNotifications.checkPermission() == 1)
@@ -87,6 +94,7 @@
             ";
             Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_HEAD);
         }
+
         public static function renderAutoUpdaterScript()
         {
             $script = "
@@ -95,8 +103,10 @@
                     var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
                     function startAutoUpdater()
                     {
-                        if(unreadConversations >= 0 && unreadConversations != '') {
-                            $.ajax({
+                        if (unreadConversations >= 0 && unreadConversations != '')
+                        {
+                            $.ajax(
+                            {
                                 type: 'GET',
                                 url: url + '?unreadConversations=' + unreadConversations,
                                 async: true,
@@ -106,10 +116,12 @@
                                     data = JSON.parse(data);
                                     if (data != null)
                                     {
-                                        if (unreadConversations != data.unreadConversations) {
+                                        if (unreadConversations != data.unreadConversations)
+                                        {
                                             unreadConversations = data.unreadConversations;
                                             conversationsPlacer.html(unreadConversations);
-                                            if (desktopNotifications.isSupported()) {
+                                            if (desktopNotifications.isSupported())
+                                            {
                                                 desktopNotifications.notify(data.imgUrl,
                                                                             data.title,
                                                                             data.message);

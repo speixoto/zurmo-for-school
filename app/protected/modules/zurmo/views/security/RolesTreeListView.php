@@ -87,7 +87,7 @@
 
         protected static function resolveRoleIdFromRoute($route)
         {
-            return substr($route, strpos($route, 'id=')+3);
+            return substr($route, strpos($route, 'id=') + 3); // Not Coding Standard
         }
 
         protected static function renderUserCount($userCount, $route)
@@ -99,7 +99,6 @@
                     static::resolveRoleIdFromRoute($route),
                     array('label' => $userCount));
                 return $element->render();
-
             }
             else
             {
