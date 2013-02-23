@@ -567,7 +567,6 @@
         {
             $user = new User();
             $user->username     = $username;
-            $user->title->value = 'Mr.';
             $user->firstName    = 'Super';
             $user->lastName     = 'User';
             $user->setPassword($password);
