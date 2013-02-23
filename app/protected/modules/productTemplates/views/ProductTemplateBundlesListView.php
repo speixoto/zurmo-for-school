@@ -132,7 +132,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'ProductTemplateBundlesList'),
+                                                array('attributeName' => 'null', 'type' => 'ProductTemplateBundleItems'),
                                             ),
                                         ),
                                     )
