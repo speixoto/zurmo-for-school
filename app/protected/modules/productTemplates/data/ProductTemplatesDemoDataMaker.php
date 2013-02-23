@@ -34,7 +34,6 @@
         public static function getDependencies()
         {
             return array();
-            //return array('products, productCategories');
         }
 
         public function makeAll(& $demoDataHelper)

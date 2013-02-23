@@ -44,7 +44,7 @@
                             array(
                                 'rows' => array(
                                     array(
-                                        'type' => 'ProductTemplateBundleItemsForProductTemplateRelatedList'
+                                        'type' => 'ProductTemplateProductTemplateBundlesForPortlet'
                                     )
                                 )
                             )

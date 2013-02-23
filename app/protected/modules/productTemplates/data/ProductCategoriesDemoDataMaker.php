@@ -33,7 +33,7 @@
 
         public static function getDependencies()
         {
-            return array('productCatalogs, productTemplates');
+            return array('productCatalogs');
         }
 
         public function makeAll(& $demoDataHelper)
@@ -43,6 +43,7 @@
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
                 $productCategory = new ProductCategory();
+                $productCategory->productCatalogs->add($demoDataHelper->getRandomByModelName('ProductCatalog'));
                 $this->populateModel($productCategory);
                 $saved = $productCategory->save();
                 assert('$saved');

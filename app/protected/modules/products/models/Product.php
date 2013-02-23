@@ -97,7 +97,6 @@
                     'quantity',
                 ),
                 'relations' => array(
-                    'productTemplate' => array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
                     'account'         => array(RedBeanModel::HAS_ONE, 'Account'),
                     'contact'         => array(RedBeanModel::HAS_ONE, 'Contact'),
                     'opportunity'     => array(RedBeanModel::HAS_ONE, 'Opportunity'),
