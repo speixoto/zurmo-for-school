@@ -39,7 +39,7 @@
             return 'Notification';
         }
 
-        protected function getListViewClassName()
+        public function getListViewClassName()
         {
             return 'NotificationsForUserListView';
         }

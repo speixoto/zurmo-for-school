@@ -27,6 +27,11 @@
     class MashableUtil
     {
 
+        /**
+         * Create the MashableInboxRules for the model
+         * @param type $modelClassName
+         * @return MashableInboxRules
+         */
         public static function createMashableInboxRulesByModel($modelClassName)
         {
             assert('is_string($modelClassName) && $modelClassName != ""');
@@ -37,6 +42,10 @@
             return $mashableInboxRules;
         }
 
+        /**
+         * @param String $interfaceClassName The name of the interface to check model implementation
+         * @return Array Contains the modelClassNames of models that implements the interface
+         */
         public static function getModelDataForCurrentUserByInterfaceName($interfaceClassName, $includeHavingRelatedItems = true)
         {
             assert('is_string($interfaceClassName)');

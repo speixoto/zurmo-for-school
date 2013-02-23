@@ -39,6 +39,15 @@
             $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default');
             $this->assertContains('MashableInboxListView', $content);
+            $modelClassNames =
+                array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
+            foreach ($modelClassNames as $modelClassName)
+            {
+                $this->setGetArray(array('modelClassName' => $modelClassName));
+                $content        = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+                $mashableRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                $this->assertContains($mashableRules->getListViewClassName(), $content);
+            }
         }
     }
 ?>

@@ -50,7 +50,7 @@
             return null;
         }
 
-        protected function getListViewClassName()
+        public function getListViewClassName()
         {
             $modelClassName = $this->getModelClassName();
             return $modelClassName . 's' . 'ListView';
