@@ -315,6 +315,12 @@
             $this->assertTrue($jimmysId > 0);
             $this->assertTrue($jimmy->emailBoxes->count() == 0);
             EmailBoxUtil::getDefaultEmailBoxByUser($jimmy);
+            //still doesn't show from the user side, because it was added via the other side.
+            $this->assertTrue($jimmy->emailBoxes->count() == 0);
+            $jimmysId = $jimmy->id;
+            $jimmy->forget();
+            $jimmy    = User::getById($jimmysId);
+            //now we forgot and re-retrieved so it should still show
             $this->assertTrue($jimmy->emailBoxes->count() == 1);
             EmailBoxUtil::getDefaultEmailBoxByUser($jimmy); // This command shouldn't create new box
             $boxes = EmailBox::getAll();
