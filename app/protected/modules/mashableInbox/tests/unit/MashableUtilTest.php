@@ -34,21 +34,54 @@
             $billy = UserTestHelper::createBasicUser('billy');
         }
 
+        public function testCreateMashableInboxRulesByModel()
+        {
+            $mashableInboxRules = MashableUtil::createMashableInboxRulesByModel('conversation');
+            $this->assertEquals('ConversationMashableInboxRules', get_class($mashableInboxRules));
+        }
+
         public function testGetModelDataForCurrentUserByInterfaceName()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $mashableModelData = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
-            $this->assertEquals(1, count($mashableModelData));
+            $this->assertEquals(3, count($mashableModelData));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $mashableModelData = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
-            $this->assertEquals(0, count($mashableModelData));
+            $this->assertEquals(1, count($mashableModelData));
         }
 
-        public function testCreateMashableInboxRulesByModel()
+        public function testGetUnreadCountForCurrentUserByModelClassName()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $mashableInboxRules = MashableUtil::createMashableInboxRulesByModel('conversation');
-            $this->assertEquals('ConversationMashableInboxRules', get_class($mashableInboxRules));
+            $rules = $this->getMock('ConversationMashableInboxRules', array('getUnreadCountForCurrentUser'));
+            $rules->expects($this->once())
+                  ->method('getUnreadCountForCurrentUser')
+                  ->will($this->returnValue(100));
+            $mashableUtil = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
+            $mashableUtil::staticExpects($this->once())
+                ->method('createMashableInboxRulesByModel')
+                ->will($this->returnValue($rules));
+            $count = $mashableUtil::getUnreadCountForCurrentUserByModelClassName('Conversation');
+            $this->assertEquals(100, $count);
         }
+
+        public function testGetUnreadCountMashableInboxForCurrentUser()
+        {
+            $mashableInboxModels = array(
+                'Conversation'  => 'conversationLabel',
+                'Mission'       => 'missionLabel',
+            );
+            $mashableUtil = $this->getMockClass('MashableUtil', array('getModelDataForCurrentUserByInterfaceName',
+                                                                      'getUnreadCountForCurrentUserByModelClassName'));
+            $mashableUtil::staticExpects($this->once())
+                ->method('getModelDataForCurrentUserByInterfaceName')
+                ->will($this->returnValue($mashableInboxModels));
+            $mashableUtil::staticExpects($this->exactly(2))
+                ->method('getUnreadCountForCurrentUserByModelClassName')
+                ->will($this->onConsecutiveCalls(27, 11));
+            $count = $mashableUtil::GetUnreadCountMashableInboxForCurrentUser();
+            $this->assertEquals(38, $count);
+        }
+
     }
 ?>

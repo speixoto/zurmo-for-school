@@ -78,7 +78,7 @@
         public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
         {
             $mashableInboxRules =
-                    MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                    static::createMashableInboxRulesByModel($modelClassName);
             return $mashableInboxRules->getUnreadCountForCurrentUser();
         }
 
