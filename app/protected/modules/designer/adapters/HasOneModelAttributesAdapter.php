@@ -24,21 +24,29 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountAttributeForm extends HasOneModelAttributeForm
+    /**
+     * Adapter to set attributes from a related model.  For example on the opportunities module, you have a
+     * related account.  The related account attribute would utilize this adapter
+     */
+    class HasOneModelAttributesAdapter extends ModelAttributesAdapter
     {
-        public static function getAttributeTypeDisplayName()
+        public function setAttributeMetadataFromForm(AttributeForm $attributeForm)
         {
-            return Zurmo::t('AccountsModule', 'Account');
-        }
-
-        public static function getAttributeTypeDisplayDescription()
-        {
-            return Zurmo::t('AccountsModule', 'An account field');
-        }
-
-        public function getAttributeTypeName()
-        {
-            return 'Account';
+            assert('$attributeForm instanceof HasOneModelAttributeForm');
+            $modelClassName              = get_class($this->model);
+            $attributeName               = $attributeForm->attributeName;
+            $attributeLabels             = $attributeForm->attributeLabels;
+            $elementType                 = $attributeForm->getAttributeTypeName();
+            $isRequired                  = (boolean)$attributeForm->isRequired;
+            $isAudited                   = (boolean)$attributeForm->isAudited;
+            ModelMetadataUtil::addOrUpdateRelation($modelClassName,
+                $attributeName,
+                $attributeLabels,
+                $elementType,
+                $isRequired,
+                $isAudited,
+                $attributeForm->getHasOneModelClassName());
+            $this->resolveDatabaseSchemaForModel($modelClassName);
         }
     }
 ?>
