@@ -54,6 +54,9 @@
                     array('quantity',  'type',    'type' => 'integer'),
                 ),
                 'defaultSortAttribute' => 'name',
+                'rollupRelations' => array(
+                    'productTemplate',
+                ),
                 'customFields' => array(
                 ),
             );
