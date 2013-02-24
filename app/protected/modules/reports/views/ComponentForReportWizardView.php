@@ -27,133 +27,14 @@
     /**
      * Base view class for components that appear in the report wizard
      */
-    abstract class ComponentForReportWizardView extends MetadataView
+    abstract class ComponentForReportWizardView extends ComponentForWizardModelView
     {
-        /**
-         * @var ReportWizardForm
-         */
-        protected $model;
-
-        /**
-         * @var WizardActiveForm
-         */
-        protected $form;
-
-        /**
-         * @var bool
-         */
-        protected $hideView;
-
-        /**
-         * @return string
-         */
-        abstract protected function renderFormContent();
-
-        /**
-         * Override in child class as needed
-         * @throws NotImplementedException
-         */
-        public static function getWizardStepTitle()
-        {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override in child class as needed
-         * @throws NotSupportedException
-         */
-        public static function getPreviousPageLinkId()
-        {
-            throw new NotSupportedException();
-        }
-
-        /**
-         * Override in child class as needed
-         * @throws NotImplementedException
-         */
-        public static function getNextPageLinkId()
-        {
-            throw new NotSupportedException();
-        }
-
         /**
          * @return string
          */
         public function getTitle()
         {
             return Zurmo::t('ReportsModule', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
-        }
-
-        /**
-         * @param ReportWizardForm $model
-         * @param WizardActiveForm $form
-         * @param bool $hideView
-         */
-        public function __construct(ReportWizardForm $model, WizardActiveForm $form, $hideView = false)
-        {
-            assert('is_bool($hideView)');
-            $this->model    = $model;
-            $this->form     = $form;
-            $this->hideView = $hideView;
-        }
-
-        /**
-         * @return bool
-         */
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content              = $this->renderTitleContent();
-            $content             .= $this->renderFormContent();
-            $actionElementContent = $this->renderActionElementBar(true);
-            if ($actionElementContent != null)
-            {
-                $content .= $this->resolveAndWrapDockableViewToolbarContent($actionElementContent);
-            }
-            $this->registerScripts();
-            return $content;
-        }
-
-        /**
-         * Override if needed
-         */
-        protected function registerScripts()
-        {
-        }
-
-        /**
-         * @param $renderedInForm
-         * @return null|string
-         */
-        protected function renderActionElementBar($renderedInForm)
-        {
-            return $this->renderActionLinksContent();
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function renderActionLinksContent()
-        {
-            $previousPageLinkContent = $this->renderPreviousPageLinkContent();
-            $nextPageLinkContent     = $this->renderNextPageLinkContent();
-            $content                 = null;
-            if ($previousPageLinkContent)
-            {
-                $content .= $previousPageLinkContent;
-            }
-            if ($nextPageLinkContent)
-            {
-                $content .= $nextPageLinkContent;
-            }
-            return $content;
         }
 
         /**
@@ -176,34 +57,6 @@
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function getViewStyle()
-        {
-            if($this->hideView)
-            {
-                return ' style="display:none;"';
-            }
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderTitleContent()
-        {
-            return ZurmoHtml::tag('h3',   array(), $this->getTitle());
-        }
-
-        /**
-         * @return string
-         */
-        protected function renderAttributesAndRelationsTreeContent()
-        {
-            $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), '');
-            return $content;
         }
     }
 ?>

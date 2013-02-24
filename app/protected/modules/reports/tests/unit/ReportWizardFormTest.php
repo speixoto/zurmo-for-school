@@ -26,9 +26,26 @@
 
     class ReportWizardFormTest extends ZurmoBaseTest
     {
-        public function testValidation()
+        /*public function testValidation()
         {
             $this->fail(); //todo: test various validation scenarios, including required on/off for spot currency
+        }*/
+        
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+        }
+        
+        /**
+         * Test valid Model
+         */        
+        public function testValidateForModule()
+        {
+            $form = new ReportWizardForm();  
+            $form->moduleClassName   = 'Accounts';                      
         }
     }
 ?>

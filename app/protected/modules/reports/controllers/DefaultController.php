@@ -160,7 +160,7 @@
 
         public function actionSave($type, $id = null)
         {
-            $postData                  = PostUtil::getData();
+            $postData                  = PostUtil::getData();            
             $savedReport               = null;
             $report                    = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
@@ -450,5 +450,96 @@
             $gridView->setView($reportDetailsAndRelationsView, 1, 0);
             return $gridView;
         }
+        
+        public function actionExport($id, $stickySearchKey = null)
+        {                           
+            assert('$stickySearchKey == null || is_string($stickySearchKey)');
+            assert('is_int($id)');            
+            $savedReport                    = SavedReport::getById((int)$id);
+            $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $savedReport                    = new SavedReport(false);
+            $searchForm                     = new ReportsSearchForm($savedReport);
+            
+            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);            
+            $totalItems = intval($dataProvider->calculateTotalItemCount());            
+            $data = array();
+            if ($totalItems > 0)
+            {
+                if ($totalItems <= ExportModule::$asynchronusThreshold)
+                {
+                    // Output csv file directly to user browser
+                    if ($dataProvider)                    
+                    {     
+                        $data1 = $dataProvider->getData();                      
+                        foreach ($data1 as $reportResultsRowData)
+                        {                             
+                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData); 
+                          $data[] = $reportToExportAdapter->getData();  
+                        }                                                                          
+                    }
+                    // Output data
+                    if (count($data))
+                    {
+                        $fileName = $this->getModule()->getName() . ".csv";                        
+                        $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+                    }
+                    else
+                    {
+                        Yii::app()->user->setFlash('notification',
+                            Zurmo::t('ZurmoModule', 'There is no data to export.')
+                        );
+                    }
+                }
+                else
+                {
+                    if ($dataProvider)
+                    {
+                        $serializedData = serialize($dataProvider);
+                    }
+
+                    // Create background job
+                    $exportItem = new ExportItem();
+                    $exportItem->isCompleted     = 0;
+                    $exportItem->exportFileType  = 'csv';
+                    $exportItem->exportFileName  = $this->getModule()->getName();
+                    $exportItem->modelClassName = $modelClassName;
+                    $exportItem->serializedData  = $serializedData;
+                    $exportItem->save();
+                    $exportItem->forget();
+                    Yii::app()->user->setFlash('notification',
+                        Zurmo::t('ZurmoModule', 'A large amount of data has been requested for export.  You will receive ' .
+                        'a notification with the download link when the export is complete.')
+                    );
+                }
+            }
+            else
+            {
+                Yii::app()->user->setFlash('notification',
+                    Zurmo::t('ZurmoModule', 'There is no data to export.')
+                );
+            }
+            $this->redirect(array($this->getId() . '/index'));
+        }
+
+        protected function getDataProviderForExport(Report $report, $stickyKey, $runReport)
+        {
+            assert('is_string($stickyKey) || is_int($stickyKey)');
+            assert('is_bool($runReport)');
+            $getData   = GetUtil::getData();
+            if (null != $stickyData = StickyReportUtil::getDataByKey($stickyKey))
+            {
+                StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            }
+            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                            'reportResultsListPageSize', get_class($this->getModule()));
+            $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
+            if($runReport)
+            {
+                $dataProvider->setRunReport($runReport);
+            }
+            return $dataProvider;
+        }        
     }
 ?>

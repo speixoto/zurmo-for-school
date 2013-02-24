@@ -189,13 +189,13 @@
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)
-                    {
-                        $modelsToExport = $dataProvider->getData();
+                    {                        
+                        $modelsToExport = $dataProvider->getData();                    
                         foreach ($modelsToExport as $model)
                         {
                             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
                             {
-                                $modelToExportAdapter  = new ModelToExportAdapter($model);
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);                                
                                 $data[] = $modelToExportAdapter->getData();
                             }
                         }

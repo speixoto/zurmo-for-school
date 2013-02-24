@@ -36,7 +36,6 @@
         public static function resolveStickyDataToReport(Report $report, array $stickyData)
         {
             if(!isset($stickyData[ComponentForReportForm::TYPE_FILTERS]))
-
             {
                 return;
             }
