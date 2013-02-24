@@ -139,6 +139,12 @@
             return $content;
         }
 
+        protected static function getGridTemplate()
+        {
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
+            return "\n{items}\n{pager}" . $preloader;
+        }
+
         /**
          * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
          * (non-PHPdoc)
@@ -205,7 +211,7 @@
         protected function registerConfigurationFormLayoutScripts($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-
+            $this->uniquePageId = 'list-viewOpportunityDetailsAndRelationsViewRightBottomView_71';
             $productsConfigurationForm = new ProductsConfigurationForm();
             $mashableModelClassNamesAndDisplayLabels = LatestActivitiesUtil::getMashableModelDataForCurrentUser(false);
             $productsConfigurationForm->mashableModelClassNamesAndDisplayLabels =

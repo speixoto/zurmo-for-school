@@ -52,7 +52,7 @@
                             array(
                                 array(
                                     'elements' => array(
-                                        array('attributeName' => 'account', 'type' => 'Account', 'isLink' => true),
+                                        array('attributeName' => 'name', 'type' => 'Text', 'isLink' => false),
                                     ),
                                 ),
                             )
