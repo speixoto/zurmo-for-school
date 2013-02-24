@@ -38,7 +38,7 @@
         public static function makeViewFromWorkflow(Workflow $workflow)
         {
             $type                      = $workflow->getType();
-            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($$workflow);
+            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             if($type == Workflow::TYPE_ON_SAVE)
             {
                 $viewClassName = 'OnSaveWorkflowWizardView';

@@ -43,36 +43,16 @@
 
         public function getAttributesForTimeTrigger()
         {
-            return $this->getAttributesForTriggers();
+            $attributes       = $this->resolveAttributesForActionsOrTimeTriggerData(true, true, true);
+            $attributes       = array_merge($attributes,
+                $this->resolveDynamicallyDerivedAttributesForActionsOrTimeTriggerData(true, true, true));
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
         }
 
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             return $this->getSelectableRelationsDataForTriggers($precedingModel, $precedingRelation);
-        }
-
-        public function getSelectableRelationsDataForTimeTrigger(RedBeanModel $precedingModel = null, $precedingRelation = null)
-        {
-            if(($precedingModel != null && $precedingRelation == null) ||
-                ($precedingModel == null && $precedingRelation != null))
-            {
-                throw new NotSupportedException();
-            }
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsUsedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeCanBeTriggered($this->model, $attribute) &&
-                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    $this->model->isOwnedRelation($attribute)
-                )
-                {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
-                }
-            }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
         }
     }
 ?>

@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -25,24 +25,36 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the available modules that can be used for workflow rules
+     * Helper class for working with Workflow objects
      */
-    class ModuleForWorkflowStaticDropDownElement extends StaticDropDownFormElement
+    class WorkflowUtil
     {
         /**
-         * @return array
+         * @param $type
+         * @return null | string
          */
-        protected function getDropDownArray()
+        public static function renderNonEditableTypeStringContent($type)
         {
-            return Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
+            assert('is_string($type)');
+            $typesAndLabels = Workflow::getTypeDropDownArray();
+            if(isset($typesAndLabels[$type]))
+            {
+                return $typesAndLabels[$type];
+            }
         }
 
         /**
-         * @return string
+         * @param $moduleClassName
+         * @return null | string
          */
-        protected function getFormattedAttributeLabel()
+        public static function renderNonEditableModuleStringContent($moduleClassName)
         {
-            return Yii::app()->format->text(Zurmo::t('Core', 'Module'));
+            assert('is_string($moduleClassName)');
+            $modulesAndLabels = Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
+            if(isset($modulesAndLabels[$moduleClassName]))
+            {
+                return $modulesAndLabels[$moduleClassName];
+            }
         }
     }
 ?>

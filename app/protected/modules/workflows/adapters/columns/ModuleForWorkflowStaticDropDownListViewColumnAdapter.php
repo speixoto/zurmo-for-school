@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -25,24 +25,21 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the available modules that can be used for workflow rules
+     * Class for working with the moduleClassName attribute for a workflow rule
      */
-    class ModuleForWorkflowStaticDropDownElement extends StaticDropDownFormElement
+    class ModuleForWorkflowStaticDropDownListViewColumnAdapter extends ListViewColumnAdapter
     {
         /**
          * @return array
          */
-        protected function getDropDownArray()
+        public function renderGridViewData()
         {
-            return Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
-        }
-
-        /**
-         * @return string
-         */
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Zurmo::t('Core', 'Module'));
+            return array(
+                'name'   => 'moduleClassName',
+                'header' => Zurmo::t('Core', 'Module'),
+                'type'   => 'raw',
+                'value'  => 'WorkflowUtil::renderNonEditableModuleStringContent($data->moduleClassName)'
+            );
         }
     }
 ?>

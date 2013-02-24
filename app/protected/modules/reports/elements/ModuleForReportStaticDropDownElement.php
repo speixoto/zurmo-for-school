@@ -42,7 +42,7 @@
          */
         protected function getFormattedAttributeLabel()
         {
-            return Yii::app()->format->text(Zurmo::t('ReportsModule', 'Module'));
+            return Yii::app()->format->text(Zurmo::t('Core', 'Module'));
         }
     }
 ?>

@@ -34,7 +34,7 @@
          */
         public static function getWizardStepTitle()
         {
-            return Zurmo::t('ReportsModule', 'Select Module');
+            return Zurmo::t('Core', 'Select Module');
         }
 
         /**
@@ -80,11 +80,11 @@
         {
             if($this->model->isNew())
             {
-                $label = Zurmo::t('ReportsModule', 'Cancel');
+                $label = Zurmo::t('Core', 'Cancel');
             }
             else
             {
-                $label = Zurmo::t('ReportsModule', 'Cancel Changes');
+                $label = Zurmo::t('Core', 'Cancel Changes');
             }
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
         }

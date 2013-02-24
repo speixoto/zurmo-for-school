@@ -25,16 +25,16 @@
      ********************************************************************************/
 
     /**
-     * View class for the actions component for the workflow wizard user interface
+     * View class for selecting the module for the workflow wizard user interface
      */
-    class ActionsForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class ModuleForWorkflowWizardView extends ComponentForWorkflowWizardView
     {
         /**
          * @return string
          */
         public static function getWizardStepTitle()
         {
-            return Zurmo::t('WorkflowsModule', 'Select Actions');
+            return Zurmo::t('Core', 'Select Module');
         }
 
         /**
@@ -42,7 +42,7 @@
          */
         public static function getPreviousPageLinkId()
         {
-            return 'actionsPreviousLink';
+            return 'moduleCancelLink';
         }
 
         /**
@@ -50,23 +50,7 @@
          */
         public static function getNextPageLinkId()
         {
-            return 'actionsNextLink';
-        }
-
-        public function registerScripts()
-        {
-            parent::registerScripts();
-            $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
-            $script = ''; //todO:
-            Yii::app()->getClientScript()->registerScript('xx', $script);
-        }
-
-        /**
-         * @return bool
-         */
-        protected function isListContentSortable()
-        {
-            return true;
+            return 'moduleNextLink';
         }
 
         /**
@@ -74,21 +58,35 @@
          */
         protected function renderFormContent()
         {
-            //$inputPrefixData   = array(get_class($this->model), get_class($this->model->chart)); //todO: cant use chart fix this
-            $inputPrefixData = array();
-            $this->form->setInputPrefixData($inputPrefixData);
-            $params            = array('inputPrefix' => $inputPrefixData);
-            $content           = '<div class="attributesContainer">';
-            //$element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
-            //    array_merge($params, array('addBlank' => true)));
-            //= $element->render();
-            $content          .= 'zero-model image and view<BR>';
-            $content          .= 'existing actions div<BR>';
-            $content          .= 'action picker<BR>';
-            $content          .= '</div>';
-            $this->form->clearInputPrefixData();
-            $this->registerScripts();
+            $element                   = new ModuleForWorkflowRadioDropDownElement($this->model, 'moduleClassName',
+                $this->form);
+            $element->editableTemplate = '{label}{content}';
+
+            $content  = $this->form->errorSummary($this->model);
+            $content .= '<table>'     . "\n";
+            $content .= '<tbody>'     . "\n";
+            $content .= '<tr><td>'    . "\n";
+            $content .= $element->render();
+            $content .= '</td></tr>'  . "\n";
+            $content .= '</tbody>'    . "\n";
+            $content .= '</table>'    . "\n";
             return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderPreviousPageLinkContent()
+        {
+            if($this->model->isNew())
+            {
+                $label = Zurmo::t('Core', 'Cancel');
+            }
+            else
+            {
+                $label = Zurmo::t('Core', 'Cancel Changes');
+            }
+            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
         }
     }
 ?>

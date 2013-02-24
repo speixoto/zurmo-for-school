@@ -302,9 +302,9 @@
          */
         public function getRequiredAttributesForActions()
         {
-            $attributes       = $this->resolveRequiredOrNonRequiredAttributesForActionsData(true);
+            $attributes       = $this->resolveAttributesForActionsOrTimeTriggerData(true);
             $attributes       = array_merge($attributes,
-                                $this->resolveRequiredOrNonRequiredDynamicallyDerivedAttributesForActionsData(true));
+                                $this->resolveDynamicallyDerivedAttributesForActionsOrTimeTriggerData(true));
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
             return $sortedAttributes;
         }
@@ -314,9 +314,9 @@
          */
         public function getNonRequiredAttributesForActions()
         {
-            $attributes       = $this->resolveRequiredOrNonRequiredAttributesForActionsData();
+            $attributes       = $this->resolveAttributesForActionsOrTimeTriggerData(false, true);
             $attributes       = array_merge($attributes,
-                                $this->resolveRequiredOrNonRequiredDynamicallyDerivedAttributesForActionsData());
+                                $this->resolveDynamicallyDerivedAttributesForActionsOrTimeTriggerData(false, true));
             $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
             return $sortedAttributes;
         }
@@ -758,21 +758,26 @@
          *                if false, then just non-required attributes will be included
          * @return array
          */
-        protected function resolveRequiredOrNonRequiredAttributesForActionsData($requiredAttributesOnly = false)
+        protected function resolveAttributesForActionsOrTimeTriggerData($includeRequired = false,
+                                                                        $includeNonRequired = false,
+                                                                        $includeReadOnly = false)
+
         {
-            assert('is_bool($requiredAttributesOnly)');
+            assert('is_bool($includeRequired)');
+            assert('is_bool($includeNonRequired)');
+            assert('is_bool($includeReadOnly)');
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
-                if (!$this->model->isAttributeReadOnly($attribute) &&
+                if ((!$this->model->isAttributeReadOnly($attribute) || $includeReadOnly) &&
                     (($this->model->isRelation($attribute) &&
                     $this->rules->relationIsUsedAsAttribute($this->model, $attribute)) ||
                     !$this->model->isRelation($attribute) &&
                         $this->rules->attributeCanBeTriggered($this->model, $attribute)))
                 {
                     $attributeIsRequired = $this->model->isAttributeRequired($attribute);
-                    if((!$requiredAttributesOnly && !$attributeIsRequired) ||
-                        ($requiredAttributesOnly && $attributeIsRequired))
+                    if(($includeNonRequired && !$attributeIsRequired) ||
+                       ($includeRequired    && $attributeIsRequired))
                     {
                         $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
                     }
@@ -949,21 +954,25 @@
          *                if false, then just non-required attributes will be included
          * @return array
          */
-        protected function resolveRequiredOrNonRequiredDynamicallyDerivedAttributesForActionsData
-                           ($requiredAttributesOnly = false)
+        protected function resolveDynamicallyDerivedAttributesForActionsOrTimeTriggerData($includeRequired = false,
+                                                                                          $includeNonRequired = false,
+                                                                                          $includeReadOnly = false)
+
         {
-            assert('is_bool($requiredAttributesOnly)');
+            assert('is_bool($includeRequired)');
+            assert('is_bool($includeNonRequired)');
+            assert('is_bool($includeReadOnly)');
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
                 if (!$this->model instanceof User &&
                     $this->model->isRelation($attribute) &&
-                    !$this->model->isAttributeReadOnly($attribute) &&
+                    (!$this->model->isAttributeReadOnly($attribute) || $includeReadOnly) &&
                     $this->model->getRelationModelClassName($attribute) == 'User')
                 {
                     $attributeIsRequired = $this->model->isAttributeRequired($attribute);
-                    if((!$requiredAttributesOnly && !$attributeIsRequired) ||
-                        ($requiredAttributesOnly && $attributeIsRequired))
+                    if(($includeNonRequired && !$attributeIsRequired) ||
+                       ($includeRequired    && $attributeIsRequired))
                     {
                         $attributes[$attribute . FormModelUtil::DELIMITER . self::DYNAMIC_ATTRIBUTE_USER] =
                             array('label' => $this->model->getAttributeLabel($attribute));
@@ -984,8 +993,8 @@
                             $zurmoRules->attributeCanBeTriggered($relatedModel, $relatedAttribute))
                         {
                             $relatedAttributeIsRequired = $relatedModel->isAttributeRequired($relatedAttribute);
-                            if((!$requiredAttributesOnly && !$relatedAttributeIsRequired) ||
-                                ($requiredAttributesOnly && $relatedAttributeIsRequired))
+                            if(($includeNonRequired  && !$relatedAttributeIsRequired) ||
+                                ($includeRequired    && $relatedAttributeIsRequired))
                             {
                                 $attributes[$attribute . FormModelUtil::RELATION_DELIMITER . $relatedAttribute] =
                                     array('label' => $this->model->getAttributeLabel($attribute)

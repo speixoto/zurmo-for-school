@@ -27,7 +27,7 @@
     /**
      * View for showing a search panel to create a filtered list of workflow rules
      */
-    class WorkflowsSearchView extends SearchView
+    class WorkflowsSearchView extends SavedDynamicSearchView
     {
         /**
          * @return array
@@ -55,6 +55,10 @@
                                     )
                                 ),
                             ),
+                        ),
+                        array(
+                            'advancedSearchType' => static::ADVANCED_SEARCH_TYPE_DYNAMIC,
+                            'rows'   => array(),
                         ),
                     ),
                 ),

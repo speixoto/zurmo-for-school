@@ -201,7 +201,7 @@
             {
                 return true;
             }
-            $this->addError('type', Zurmo::t('WorkflowModule', 'Invalid Type'));
+            $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Type'));
             return false;
         }
 
@@ -217,7 +217,7 @@
                 {
                     return true;
                 }
-                $this->addError('relation', Zurmo::t('WorkflowModule', 'Relation cannot be blank.'));
+                $this->addError('relation', Zurmo::t('WorkflowsModule', 'Relation cannot be blank.'));
                 return false;
             }
             return true;
@@ -234,7 +234,7 @@
                 {
                     return true;
                 }
-                $this->addError('relationFilter', Zurmo::t('WorkflowModule', 'Invalid Relation Filter'));
+                $this->addError('relationFilter', Zurmo::t('WorkflowsModule', 'Invalid Relation Filter'));
                 return false;
             }
             return true;
@@ -251,7 +251,7 @@
                 {
                     return true;
                 }
-                $this->addError('relatedModelRelation', Zurmo::t('WorkflowModule', 'Related Model Relation cannot be blank.'));
+                $this->addError('relatedModelRelation', Zurmo::t('WorkflowsModule', 'Related Model Relation cannot be blank.'));
                 return false;
             }
             return true;

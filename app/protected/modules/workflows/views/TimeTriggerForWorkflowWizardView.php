@@ -74,7 +74,8 @@
          */
         protected function renderFormContent()
         {
-            $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
+            //$inputPrefixData   = array(get_class($this->model), get_class($this->model->chart)); //todO: cant use chart fix this
+            $inputPrefixData = array();
             $this->form->setInputPrefixData($inputPrefixData);
             $params            = array('inputPrefix' => $inputPrefixData);
             $content           = '<div class="attributesContainer">';

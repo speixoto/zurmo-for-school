@@ -70,7 +70,6 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                             $('#TriggersForWorkflowWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'ActionsForWorkflowWizardView') . "
                             $('#ActionsForWorkflowWizardView').show();
 
                         }

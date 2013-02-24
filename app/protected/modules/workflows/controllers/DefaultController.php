@@ -36,7 +36,7 @@
                    array(
                         self::getRightsFilterPath() . ' + selectType',
                         'moduleClassName' => 'WorkflowsModule',
-                        'rightName' => WorkflowsModule::RIGHT_CREATE_WORKFLOW,
+                        'rightName' => WorkflowsModule::RIGHT_CREATE_WORKFLOWS,
                    )
                 )
             );

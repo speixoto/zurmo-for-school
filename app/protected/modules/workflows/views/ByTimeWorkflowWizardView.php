@@ -63,7 +63,6 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TIME_TRIGGER_VALIDATION_SCENARIO . "');
                             $('#ModuleForWorkflowWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'TimeTriggerForWorkflowWizardView') . "
                             $('#TimeTriggerForWorkflowWizardView').show();
 
                         }
@@ -81,7 +80,6 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                             $('#TriggersForWorkflowWizardView').hide();
-                            " . $this->renderTreeViewAjaxScriptContent($formName, 'ActionsForWorkflowWizardView') . "
                             $('#ActionsForWorkflowWizardView').show();
                         }
                         if(linkId == '" . DisplayAttributesForWorkflowWizardView::getNextPageLinkId() . "')

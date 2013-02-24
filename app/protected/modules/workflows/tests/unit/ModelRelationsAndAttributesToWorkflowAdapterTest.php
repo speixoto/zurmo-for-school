@@ -55,7 +55,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations          = $adapter->getAllRelationsData();
-            $this->assertEquals(20, count($relations));
+            $this->assertEquals(22, count($relations));
         }
 
         /**
@@ -111,7 +111,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData();
-            $this->assertEquals(11, count($relations));
+            $this->assertEquals(13, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
             $compareData        = array('label' => 'Has One Again');
@@ -189,7 +189,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesIncludingDerivedAttributesData();
-            $this->assertEquals(27, count($attributes));
+            $this->assertEquals(36, count($attributes));
             $compareData        = array('label' => 'Id');
             $this->assertEquals($compareData, $attributes['id']);
             $compareData        = array('label' => 'Created Date Time');
@@ -355,7 +355,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'cannotTrigger2');
-            $this->assertEquals(11, count($relations));
+            $this->assertEquals(13, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
             $compareData        = array('label' => 'Has One Again');
@@ -386,7 +386,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'workflowItems');
-            $this->assertEquals(10, count($relations));
+            $this->assertEquals(12, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
             $compareData        = array('label' => 'Has One Again');
@@ -421,7 +421,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
             $relations          = $adapter->getSelectableRelationsData();
-            $this->assertEquals(11, count($relations));
+            $this->assertEquals(13, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
             $compareData        = array('label' => 'Has One Again');
@@ -479,7 +479,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesForTriggers();
-            $this->assertEquals(24, count($attributes));
+            $this->assertEquals(33, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -557,7 +557,7 @@
             $this->assertEquals($compareData, $attributes['owner__User']);
 
             $attributes = $adapter->getNonRequiredAttributesForActions();
-            $this->assertEquals(29, count($attributes));
+            $this->assertEquals(38, count($attributes));
 
             $compareData        = array('label' => 'First Name');
             $this->assertEquals($compareData, $attributes['firstName']);
@@ -652,27 +652,6 @@
         /**
          * @depends testGetAllAvailableOnSaveRelationsForActionTypeRelation
          */
-        public function testGetAllAvailableByTimeTimeTriggerRelations()
-        {
-            $model              = new WorkflowModelTestItem();
-            $rules              = new WorkflowsTestWorkflowRules();
-            $workflow             = new Workflow();
-            $workflow->setType(Workflow::TYPE_BY_TIME);
-            $workflow->setModuleClassName('WorkflowsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules, $workflow->getType());
-            $relations          = $adapter->getSelectableRelationsDataForTimeTrigger();
-            $this->assertEquals(3, count($relations));
-            $compareData        = array('label' => 'Primary Email');
-            $this->assertEquals($compareData, $relations['primaryEmail']);
-            $compareData        = array('label' => 'Primary Address');
-            $this->assertEquals($compareData, $relations['primaryAddress']);
-            $compareData        = array('label' => 'Secondary Email');
-            $this->assertEquals($compareData, $relations['secondaryEmail']);
-        }
-
-        /**
-         * @depends testGetAvailableAttributesForOnSaveActionAttributes
-         */
         public function testGetAllAvailableByTimeTriggersRelations()
         {
             $model              = new WorkflowModelTestItem();
@@ -682,7 +661,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules, $workflow->getType());
             $relations          = $adapter->getSelectableRelationsData();
-            $this->assertEquals(11, count($relations));
+            $this->assertEquals(13, count($relations));
             $compareData        = array('label' => 'Has One');
             $this->assertEquals($compareData, $relations['hasOne']);
             $compareData        = array('label' => 'Has One Again');
@@ -740,7 +719,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesForTriggers();
-            $this->assertEquals(24, count($attributes));
+            $this->assertEquals(33, count($attributes));
 
             $compareData        = array('label' => 'Created Date Time');
             $this->assertEquals($compareData, $attributes['createdDateTime']);
@@ -808,30 +787,51 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $adapter            = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules, $workflow->getType());
             $attributes = $adapter->getAttributesForTimeTrigger();
-            $this->assertEquals(24, count($attributes));
-
-            $compareData        = array('label' => 'Created Date Time');
-            $this->assertEquals($compareData, $attributes['createdDateTime']);
-            $compareData        = array('label' => 'Modified Date Time');
-            $this->assertEquals($compareData, $attributes['modifiedDateTime']);
-            $compareData        = array('label' => 'First Name');
-            $this->assertEquals($compareData, $attributes['firstName']);
+            $this->assertEquals(45, count($attributes));
+            $compareData        = array('label' => 'Owner');
+            $this->assertEquals($compareData, $attributes['owner__User']);
+            $compareData        = array('label' => 'Modified By User');
+            $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            $compareData        = array('label' => 'Created By User');
+            $this->assertEquals($compareData, $attributes['createdByUser__User']);
+            $compareData        = array('label' => 'User');
+            $this->assertEquals($compareData, $attributes['user__User']);
+            $compareData        = array('label' => 'User 2');
+            $this->assertEquals($compareData, $attributes['user2__User']);
             $compareData        = array('label' => 'Last Name');
             $this->assertEquals($compareData, $attributes['lastName']);
+            $compareData        = array('label' => 'String');
+            $this->assertEquals($compareData, $attributes['string']);
+            $compareData        = array('label' => 'First Name');
+            $this->assertEquals($compareData, $attributes['firstName']);
             $compareData        = array('label' => 'Boolean');
             $this->assertEquals($compareData, $attributes['boolean']);
             $compareData        = array('label' => 'Date');
             $this->assertEquals($compareData, $attributes['date']);
+            $compareData        = array('label' => 'Date 2');
+            $this->assertEquals($compareData, $attributes['date2']);
+            $compareData        = array('label' => 'Date 3');
+            $this->assertEquals($compareData, $attributes['date3']);
+            $compareData        = array('label' => 'Date 4');
+            $this->assertEquals($compareData, $attributes['date4']);
             $compareData        = array('label' => 'Date Time');
             $this->assertEquals($compareData, $attributes['dateTime']);
+            $compareData        = array('label' => 'Date Time 2');
+            $this->assertEquals($compareData, $attributes['dateTime2']);
+            $compareData        = array('label' => 'Date Time 3');
+            $this->assertEquals($compareData, $attributes['dateTime3']);
+            $compareData        = array('label' => 'Date Time 4');
+            $this->assertEquals($compareData, $attributes['dateTime4']);
+            $compareData        = array('label' => 'Created Date Time');
+            $this->assertEquals($compareData, $attributes['createdDateTime']);
+            $compareData        = array('label' => 'Modified Date Time');
+            $this->assertEquals($compareData, $attributes['modifiedDateTime']);
             $compareData        = array('label' => 'Float');
             $this->assertEquals($compareData, $attributes['float']);
             $compareData        = array('label' => 'Integer');
             $this->assertEquals($compareData, $attributes['integer']);
             $compareData        = array('label' => 'Phone');
             $this->assertEquals($compareData, $attributes['phone']);
-            $compareData        = array('label' => 'String');
-            $this->assertEquals($compareData, $attributes['string']);
             $compareData        = array('label' => 'Text Area');
             $this->assertEquals($compareData, $attributes['textArea']);
             $compareData        = array('label' => 'Url');
@@ -855,13 +855,32 @@
             //Makes sure the label is using the proper label translation via attributeLabels
             $compareData        = array('label' => 'A name for a state');
             $this->assertEquals($compareData, $attributes['likeContactState']);
-            //Add Dynamically Derived Attributes
-            $compareData        = array('label' => 'Owner');
-            $this->assertEquals($compareData, $attributes['owner__User']);
-            $compareData        = array('label' => 'Created By User');
-            $this->assertEquals($compareData, $attributes['createdByUser__User']);
-            $compareData        = array('label' => 'Modified By User');
-            $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            //Add in owned primaryAddress, and primaryEmail, and secondaryEmail attributes
+            $compareData        = array('label' => 'Primary Address >> City');
+            $this->assertEquals($compareData, $attributes['primaryAddress___city']);
+            $compareData        = array('label' => 'Primary Address >> Country');
+            $this->assertEquals($compareData, $attributes['primaryAddress___country']);
+            $compareData        = array('label' => 'Primary Address >> Postal Code');
+            $this->assertEquals($compareData, $attributes['primaryAddress___postalCode']);
+            $compareData        = array('label' => 'Primary Address >> State');
+            $this->assertEquals($compareData, $attributes['primaryAddress___state']);
+            $compareData        = array('label' => 'Primary Address >> Street 1');
+            $this->assertEquals($compareData, $attributes['primaryAddress___street1']);
+            $compareData        = array('label' => 'Primary Address >> Street 2');
+            $this->assertEquals($compareData, $attributes['primaryAddress___street2']);
+            //Email fields
+            $compareData        = array('label' => 'Primary Email >> Email Address');
+            $this->assertEquals($compareData, $attributes['primaryEmail___emailAddress']);
+            $compareData        = array('label' => 'Primary Email >> Opt Out');
+            $this->assertEquals($compareData, $attributes['primaryEmail___optOut']);
+            $compareData        = array('label' => 'Primary Email >> Is Invalid');
+            $this->assertEquals($compareData, $attributes['primaryEmail___isInvalid']);
+            $compareData        = array('label' => 'Secondary Email >> Email Address');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___emailAddress']);
+            $compareData        = array('label' => 'Secondary Email >> Opt Out');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___optOut']);
+            $compareData        = array('label' => 'Secondary Email >> Is Invalid');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___isInvalid']);
         }
 
         /**
@@ -886,7 +905,7 @@
             $this->assertEquals($compareData, $attributes['owner__User']);
 
             $attributes = $adapter->getNonRequiredAttributesForActions();
-            $this->assertEquals(29, count($attributes));
+            $this->assertEquals(38, count($attributes));
 
             $compareData        = array('label' => 'First Name');
             $this->assertEquals($compareData, $attributes['firstName']);
@@ -1045,7 +1064,13 @@
             $this->assertEquals('BooleanForWizardStaticDropDown', $adapter->getTriggerValueElementType('boolean'));
             $this->assertEquals('MixedCurrencyValueTypes',        $adapter->getTriggerValueElementType('currencyValue'));
             $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date2'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date3'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date4'));
             $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime2'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime3'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime4'));
             $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('dropDown'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('float'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('integer'));
@@ -1085,7 +1110,13 @@
             $this->assertEquals('BooleanForWizardStaticDropDown', $adapter->getTriggerValueElementType('boolean'));
             $this->assertEquals('MixedCurrencyValueTypes',        $adapter->getTriggerValueElementType('currencyValue'));
             $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date2'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date3'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('date4'));
             $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime2'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime3'));
+            $this->assertEquals('MixedDateTypesForWorkflow',        $adapter->getTriggerValueElementType('dateTime4'));
             $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('dropDown'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('float'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('integer'));
@@ -1124,7 +1155,13 @@
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
                                 $adapter->getAvailableOperatorsType('currencyValue'));
             $this->assertNull($adapter->getAvailableOperatorsType('date'));
+            $this->assertNull($adapter->getAvailableOperatorsType('date2'));
+            $this->assertNull($adapter->getAvailableOperatorsType('date3'));
+            $this->assertNull($adapter->getAvailableOperatorsType('date4'));
             $this->assertNull($adapter->getAvailableOperatorsType('dateTime'));
+            $this->assertNull($adapter->getAvailableOperatorsType('dateTime2'));
+            $this->assertNull($adapter->getAvailableOperatorsType('dateTime3'));
+            $this->assertNull($adapter->getAvailableOperatorsType('dateTime4'));
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
                                 $adapter->getAvailableOperatorsType('dropDown'));
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
@@ -1154,7 +1191,7 @@
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
                                 $adapter->getAvailableOperatorsType('likeContactState'));
-
+//todo: go through file and make sure each one that has like 32, is actually confirming all 32, not just 24 for example.
         }
     }
 ?>

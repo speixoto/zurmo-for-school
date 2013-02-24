@@ -25,38 +25,59 @@
      ********************************************************************************/
 
     /**
-     * Base view class for components that appear in the workflow wizard
+     * Display radio buttons for selecting the module for a report.
+     * @see ModuleForWorkflowWizardView
      */
-    abstract class ComponentForWorkflowWizardView extends ComponentForWizardModelView
+    class ModuleForWorkflowRadioDropDownElement extends Element
     {
         /**
-         * @return string
+         * Renders the setting as a radio list.
+         * @return A string containing the element's content.
          */
-        public function getTitle()
+        protected function renderControlEditable()
         {
-            return static::getWizardStepTitle();
+            $content = $this->form->radioButtonList(
+                $this->model,
+                $this->attribute,
+                $this->getArray(),
+                $this->getEditableHtmlOptions()
+            );
+            return $content;
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw new NotImplementedException();
         }
 
         /**
-         * Override if the view should show a previous link.
+         * Override to ensure label is pointing to the right input id
+         * @return A string containing the element's label
          */
-        protected function renderPreviousPageLinkContent()
+        protected function renderLabel()
         {
-            return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'),
-                   Zurmo::t('WorkflowsModule', 'Previous')), '#', array('id' => static::getPreviousPageLinkId()));
+            if ($this->form === null)
+            {
+                throw new NotImplementedException();
+            }
+            return null;
         }
 
-        /**
-         * Override if the view should show a next link.
-         */
-        protected function renderNextPageLinkContent()
+        public function getEditableHtmlOptions()
         {
-            $params = array();
-            $params['label']       = Zurmo::t('WorkflowsModule', 'Next');
-            $params['htmlOptions'] = array('id' => static::getNextPageLinkId(),
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            return $searchElement->render();
+            $htmlOptions = array(
+                'name'           => $this->getEditableInputName(),
+                'id'             => $this->getEditableInputId(),
+                'ignoreIdPrefix' => true,
+                'separator'      => ''
+            );
+            $htmlOptions['template'] =  '<div class="radio-input">{input}{label}</div>';
+            return $htmlOptions;
+        }
+
+        protected function getArray()
+        {
+            return Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
         }
     }
 ?>

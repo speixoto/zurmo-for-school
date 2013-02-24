@@ -65,7 +65,7 @@
         {
             if($this->currencyId == null && $this->shouldSetValue)
             {
-                $this->addError('currencyId', Zurmo::t('WorkflowModule', 'Currency Id cannot be blank.'));
+                $this->addError('currencyId', Zurmo::t('WorkflowsModule', 'Currency Id cannot be blank.'));
                 return false;
             }
             return true;
