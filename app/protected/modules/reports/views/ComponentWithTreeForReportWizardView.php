@@ -285,24 +285,5 @@
         {
             return false;
         }
-
-        /**
-         * @return string
-         */
-        protected function getZeroComponentsContent()
-        {
-            if($this->getItemsCount() > 0)
-            {
-                $style = ' style="display:none;"';
-            }
-            else
-            {
-                $style = null;
-            }
-            $content = '<div class="' . static::getZeroComponentsClassName() . '" ' . $style . '>';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
-        }
     }
 ?>
