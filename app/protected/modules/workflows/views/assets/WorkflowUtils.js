@@ -54,7 +54,7 @@ $(window).ready(function(){
     */
 });
 
-function rebuildReportFiltersAttributeRowNumbersAndStructureInput(divId){
+function rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput(divId){
     rowCount = 1;
     structure = '';
     $('#' + divId).find('.dynamic-attribute-row-number-label').each(function(){
@@ -66,11 +66,11 @@ function rebuildReportFiltersAttributeRowNumbersAndStructureInput(divId){
         $(this).parent().find('.structure-position').val(rowCount);
         rowCount ++;
     });
-    $('#' + divId).find('.filters-structure-input').val(structure);
+    $('#' + divId).find('.triggers-structure-input').val(structure);
     if(rowCount == 1){
         //hmm. not sure exactly how this will be named.
-        $('#show-filters-structure-wrapper').hide();
+        $('#show-triggers-structure-wrapper').hide();
     } else {
-        $('#show-filters-structure-wrapper').show();
+        $('#show-triggers-structure-wrapper').show();
     }
 }
