@@ -112,6 +112,7 @@
                 ),
                 'elements' => array(
                     'description'    => 'TextArea',
+                    'account'        => 'Account',
                 ),
                 'customFields' => array(
                     'stage'    => 'ProductStages',

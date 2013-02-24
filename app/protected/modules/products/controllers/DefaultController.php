@@ -99,6 +99,24 @@
             echo $view->render();
         }
 
+        public function actionCreateFromRelation($relationAttributeName, $relationModelId, $relationModuleId, $redirectUrl)
+        {
+            $product             = $this->resolveNewModelByRelationInformation( new Product(),
+                                                                                $relationAttributeName,
+                                                                                (int)$relationModelId,
+                                                                                $relationModuleId);
+            $this->actionCreateByModel($product, $redirectUrl);
+        }
+
+        protected function actionCreateByModel(Product $product, $redirectUrl = null)
+        {
+            $titleBarAndEditView = $this->makeEditAndDetailsView(
+                                            $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit');
+            $view = new ProductsPageView(ZurmoDefaultViewUtil::
+                                         makeStandardViewForCurrentUser($this, $titleBarAndEditView));
+            echo $view->render();
+        }
+
         public function actionEdit($id, $redirectUrl = null)
         {
             $product = Product::getById(intval($id));

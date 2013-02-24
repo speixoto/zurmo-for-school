@@ -30,15 +30,15 @@
          {
              $metadata = array(
                  'perUser' => array(
-                     'title' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
+                     'title' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplateBundlesModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
                  ),
                  'global' => array(
                      'toolbar' => array(
-                         'elements' => array(
-                             array(  'type'            => 'CreateFromRelatedListLink',
-                                     'routeModuleId'   => 'eval:$this->moduleId',
-                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
-                         ),
+              //           'elements' => array(
+//                             array(  'type'            => 'CreateFromRelatedListLink',
+//                                     'routeModuleId'   => 'eval:$this->moduleId',
+//                                     'routeParameters' => 'eval:$this->getCreateLinkRouteParameters()'),
+//                         ),
                      ),
                      'rowMenu' => array(
                          'elements' => array(
