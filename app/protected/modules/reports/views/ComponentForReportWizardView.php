@@ -34,7 +34,7 @@
          */
         public function getTitle()
         {
-            return Zurmo::t('ReportsModule', 'Report Wizard') . ' - ' . static::getWizardStepTitle();
+            return static::getWizardStepTitle();
         }
 
         /**
