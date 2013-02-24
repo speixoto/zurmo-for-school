@@ -46,7 +46,12 @@
             return $metadata;
         }
 
-        public function __construct($controllerId, $moduleId, $listView, Array $actionViewOptions, MashableInboxForm $mashableInboxForm, $modelClassName)
+        public function __construct($controllerId,
+                                    $moduleId,
+                                    $listView,
+                                    Array $actionViewOptions,
+                                    MashableInboxForm $mashableInboxForm,
+                                    $modelClassName)
         {
             $this->controllerId              = $controllerId;
             $this->moduleId                  = $moduleId;

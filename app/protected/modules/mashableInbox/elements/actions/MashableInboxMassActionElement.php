@@ -38,7 +38,7 @@
                           'markUnread'    => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected unread'), 'isActionForAll' => false),
                     );
             $massOptions = $defaultMassOptions;
-            if ($this->getModelClassName() != "")
+            if ($this->getModelClassName() !== null)
             {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
                 $massOptions        = array_merge($defaultMassOptions, $mashableUtilRules->getMassOptions());
@@ -118,10 +118,6 @@
 
         protected function getModelClassName()
         {
-            if (!isset($this->params['modelClassName']))
-            {
-                throw new NotSupportedException();
-            }
             return $this->params['modelClassName'];
         }
 
