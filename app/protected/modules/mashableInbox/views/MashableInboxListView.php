@@ -74,5 +74,28 @@
                 );
             return $firstColumn;
         }
+
+        protected function getCGridViewParams()
+        {
+            $gridViewParams = parent::getCGridViewParams();
+            $gridViewParams['rowHtmlOptionsExpression'] = 'MashableInboxListView::resolveRowHtmlOptionsExpression($this, $row, $data)';
+            return $gridViewParams;
+        }
+
+        public static function resolveRowHtmlOptionsExpression($grid, $row, $data)
+        {
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel(get_class($data));
+            $hasReadLatest      = $mashableUtilRules->hasUserReadLatest($data->id);
+            $unread             = null;
+            if (!$hasReadLatest)
+            {
+                $unread = ' unread';
+            }
+            $params =
+                array(
+                    "class"=>get_class($data) . $unread
+                );
+            return $params;
+        }
     }
 ?>

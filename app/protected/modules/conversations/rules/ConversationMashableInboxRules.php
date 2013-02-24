@@ -118,34 +118,17 @@
         public function resolveMarkRead($modelId)
         {
             assert('$modelId > 0');
-            $this->resolveChangeHasReadLatestStatus($modelId, true);
+            $modelClassName = $this->getModelClassName();
+            $model          = $modelClassName::getById($modelId);
+            ConversationsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, true);
         }
 
         public function resolveMarkUnread($modelId)
         {
             assert('$modelId > 0');
-            $this->resolveChangeHasReadLatestStatus($modelId, false);
-
-        }
-
-        private function resolveChangeHasReadLatestStatus($modelId, $newStatus)
-        {
-            assert('$modelId > 0');
-            assert('is_bool($newStatus)');
             $modelClassName = $this->getModelClassName();
-            $model = $modelClassName::getById($modelId);
-            if (Yii::app()->user->userModel == $model->owner)
-            {
-                $model->ownerHasReadLatest = $newStatus;
-            }
-            foreach ($model->conversationParticipants as $position => $participant)
-            {
-                if ($participant->person->getClassId('Item') == Yii::app()->user->userModel->getClassId('Item'))
-                {
-                    $model->conversationParticipants[$position]->hasReadLatest = $newStatus;
-                }
-            }
-            $model->save();
+            $model          = $modelClassName::getById($modelId);
+            ConversationsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, false);
         }
 
         public function getMassOptions()
@@ -176,17 +159,25 @@
             $modelDisplayString = strval($model);
             if (count($model->comments) > 0)
             {
-                $prefix = Zurmo::t('ConversationsModule', 'A new comment is made on conversation: ');
+                $prefix = Zurmo::t('ConversationsModule', 'A conversation recent comment on: ');
             }
             else
             {
-                $prefix = Zurmo::t('ConversationsModule', 'A new conversation started: ');
+                $prefix = Zurmo::t('ConversationsModule', 'New conversation started: ');
             }
             $params          = array('label' => $prefix . ' ' . $modelDisplayString, 'wrapLabel' => false);
             $moduleClassName = $model->getModuleClassName();
             $moduleId        = $moduleClassName::getDirectoryName();
             $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
             return $element->render();
+        }
+
+        public function hasUserReadLatest($modelId)
+        {
+            assert('$modelId > 0');
+            $modelClassName = $this->getModelClassName();
+            $model          = $modelClassName::getById($modelId);
+            return ConversationsUtil::hasUserReadConversationLatest($model, Yii::app()->user->userModel);
         }
     }
 ?>

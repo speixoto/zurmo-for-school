@@ -56,21 +56,23 @@
         }
 
         /**
-         * Given a conversation and a user, mark that the user has either read the latest comment as a conversation
+         * Given a conversation and a user, mark that the user has read or not read the latest changes as a conversation
          * participant, or if the user is the owner, than as the owner.
          * @param Conversation $conversation
          * @param User $user
+         * @param Boolean $hasReadLatest
          */
-        public static function markUserHasReadLatest(Conversation $conversation, User $user)
+        public static function markUserHasReadLatest(Conversation $conversation, User $user, $hasReadLatest = true)
         {
             assert('$conversation->id > 0');
             assert('$user->id > 0');
+            assert('is_bool($hasReadLatest)');
             $save = false;
             if ($user == $conversation->owner)
             {
-                if (!$conversation->ownerHasReadLatest)
+                if ($conversation->ownerHasReadLatest != $hasReadLatest)
                 {
-                    $conversation->ownerHasReadLatest = true;
+                    $conversation->ownerHasReadLatest = $hasReadLatest;
                     $save                             = true;
                 }
             }
@@ -78,9 +80,9 @@
             {
                 foreach ($conversation->conversationParticipants as $position => $participant)
                 {
-                    if ($participant->person->getClassId('Item') == $user->getClassId('Item') && !$participant->hasReadLatest)
+                    if ($participant->person->getClassId('Item') == $user->getClassId('Item') && $participant->hasReadLatest != $hasReadLatest)
                     {
-                        $conversation->conversationParticipants[$position]->hasReadLatest = true;
+                        $conversation->conversationParticipants[$position]->hasReadLatest = $hasReadLatest;
                         $save                                                             = true;
                     }
                 }

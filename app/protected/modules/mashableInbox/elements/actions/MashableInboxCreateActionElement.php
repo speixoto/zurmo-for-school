@@ -51,13 +51,17 @@
                                'url'   => null,
                                'itemOptions' => array('class' => 'icon-create'),
                                'items' => $items);
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'items'       => array($menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            if (!empty($items))
+            {
+                $cClipWidget = new CClipWidget();
+                $cClipWidget->beginClip("ActionMenu");
+                $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                    'items'       => array($menuItems),
+                ));
+                $cClipWidget->endClip();
+                return $cClipWidget->getController()->clips['ActionMenu'];
+            }
+            return null;
         }
 
         protected function getDefaultLabel()

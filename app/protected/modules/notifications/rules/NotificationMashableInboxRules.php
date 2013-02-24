@@ -27,8 +27,6 @@
     class NotificationMashableInboxRules extends MashableInboxRules
     {
 
-        public $shouldRenderCreateAction = false;
-
         public function getUnreadCountForCurrentUser()
         {
             return Notification::getCountByUser(Yii::app()->user->userModel);
@@ -157,6 +155,11 @@
                 ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($model);
                 $model->delete();
             }
+        }
+
+        public function hasUserReadLatest($modelId)
+        {
+            return false;
         }
     }
 ?>

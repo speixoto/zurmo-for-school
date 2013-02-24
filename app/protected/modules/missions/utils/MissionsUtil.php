@@ -47,30 +47,31 @@
         }
 
         /**
-         * Given a mission and a user, mark ownerHasReadLatest true if the user is the owner, if the user is the takenByUser
-         * then mark the takenByUserHasReadLatest as true, otherwise do nothing.
+         * Given a mission and a user, mark ownerHasReadLatest as $hasReadLatest if the user is the owner, if the user is the takenByUser
+         * then mark the takenByUserHasReadLatest as $hasReadLatest, otherwise do nothing.
          * @param Mission $mission
          * @param User $user
+         * @param Boolean $hasReadLatest
          */
-        public static function markUserHasReadLatest(Mission $mission, User $user)
+        public static function markUserHasReadLatest(Mission $mission, User $user, $hasReadLatest = true)
         {
             assert('$mission->id > 0');
             assert('$user->id > 0');
             $save = false;
             if ($user == $mission->owner)
             {
-                if (!$mission->ownerHasReadLatest)
+                if ($mission->ownerHasReadLatest != $hasReadLatest)
                 {
-                    $mission->ownerHasReadLatest = true;
+                    $mission->ownerHasReadLatest = $hasReadLatest;
                     $save                        = true;
                 }
             }
             elseif ($user == $mission->takenByUser)
             {
-                if (!$mission->takenByUserHasReadLatest)
+                if ($mission->takenByUserHasReadLatest != $hasReadLatest)
                 {
-                    $mission->takenByUserHasReadLatest = true;
-                    $save                               = true;
+                    $mission->takenByUserHasReadLatest = $hasReadLatest;
+                    $save                              = true;
                 }
             }
             if ($save)

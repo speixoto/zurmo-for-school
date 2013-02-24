@@ -27,9 +27,11 @@
     abstract class MashableInboxRules
     {
 
-        public $shouldRenderCreateAction = true;
+        public $shouldRenderCreateAction = false;
 
         abstract public function getUnreadCountForCurrentUser();
+
+        abstract public function hasUserReadLatest($modelId);
 
         abstract public function getMetadataFilteredByFilteredBy($filteredBy);
 
@@ -52,8 +54,9 @@
 
         public function getListViewClassName()
         {
-            $modelClassName = $this->getModelClassName();
-            return $modelClassName . 's' . 'ListView';
+            $modelClassName  = $this->getModelClassName();
+            $moduleClassName = $modelClassName::getModuleClassName();
+            return $moduleClassName::getPluralCamelCasedName() . 'ListView';
         }
 
         public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = '')
@@ -107,6 +110,5 @@
         {
             return array();
         }
-
     }
 ?>

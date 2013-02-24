@@ -128,31 +128,43 @@
         public function resolveMarkRead($modelId)
         {
             assert('$modelId > 0');
-            $this->resolveChangeHasReadLatestStatus($modelId, true);
+            $modelClassName = $this->getModelClassName();
+            $model          = $modelClassName::getById($modelId);
+            MissionsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, true);
         }
 
         public function resolveMarkUnread($modelId)
         {
             assert('$modelId > 0');
-            $this->resolveChangeHasReadLatestStatus($modelId, false);
-
+            $modelClassName = $this->getModelClassName();
+            $model          = $modelClassName::getById($modelId);
+            MissionsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, false);
         }
 
-        private function resolveChangeHasReadLatestStatus($modelId, $newStatus)
+        public function getModelStringContent(RedBeanModel $model)
+        {
+            $modelDisplayString = strval($model);
+            if (count($model->comments) > 0)
+            {
+                $prefix = Zurmo::t('MissionsModule', 'A mission recent comment on: ');
+            }
+            else
+            {
+                $prefix = Zurmo::t('MissionsModule', 'New mission added: ');
+            }
+            $params          = array('label' => $prefix . ' ' . $modelDisplayString, 'wrapLabel' => false);
+            $moduleClassName = $model->getModuleClassName();
+            $moduleId        = $moduleClassName::getDirectoryName();
+            $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+            return $element->render();
+        }
+
+        public function hasUserReadLatest($modelId)
         {
             assert('$modelId > 0');
-            assert('is_bool($newStatus)');
             $modelClassName = $this->getModelClassName();
-            $model = $modelClassName::getById($modelId);
-            if (Yii::app()->user->userModel == $model->owner)
-            {
-                $model->ownerHasReadLatest = $newStatus;
-            }
-            else if (Yii::app()->user->userModel == $model->takenByUser)
-            {
-                $model->takenByUserHasReadLatest = $newStatus;
-            }
-            $model->save();
+            $model          = $modelClassName::getById($modelId);
+            return MissionsUtil::hasUserReadMissionLatest($model, Yii::app()->user->userModel);
         }
     }
 ?>
