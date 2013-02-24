@@ -81,7 +81,9 @@
             //$element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
             //    array_merge($params, array('addBlank' => true)));
             //= $element->render();
-            $content          .= 'todo';
+            $content          .= 'zero-model image and view<BR>';
+            $content          .= 'existing actions div<BR>';
+            $content          .= 'action picker<BR>';
             $content          .= '</div>';
             $this->form->clearInputPrefixData();
             $this->registerScripts();
