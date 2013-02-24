@@ -24,21 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountAttributeForm extends HasOneModelAttributeForm
+    /**
+     * Base class for working with relations that are hasOne and display in the user interface to be selected. An example
+     * is an account picked from an opportunity.
+     */
+    abstract class HasOneModelAttributeForm extends AttributeForm
     {
-        public static function getAttributeTypeDisplayName()
+        /**
+         * @see AttributeForm::getModelAttributeAdapterNameForSavingAttributeFormData()
+         */
+        public static function getModelAttributeAdapterNameForSavingAttributeFormData()
         {
-            return Zurmo::t('AccountsModule', 'Account');
+            return 'HasOneModelAttributesAdapter';
         }
 
-        public static function getAttributeTypeDisplayDescription()
+        /**
+         * @return string, the type is also the name of the model for children that extend this class. This method
+         * should be refactored if that changes in the future.
+         */
+        public function getHasOneModelClassName()
         {
-            return Zurmo::t('AccountsModule', 'An account field');
-        }
-
-        public function getAttributeTypeName()
-        {
-            return 'Account';
+            return $this->getAttributeTypeName();
         }
     }
 ?>

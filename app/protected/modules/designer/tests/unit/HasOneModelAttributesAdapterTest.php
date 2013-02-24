@@ -24,21 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountAttributeForm extends HasOneModelAttributeForm
+    class HasOneModelAttributesAdapterTest extends ZurmoBaseTest
     {
-        public static function getAttributeTypeDisplayName()
+        public static function setUpBeforeClass()
         {
-            return Zurmo::t('AccountsModule', 'Account');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function getAttributeTypeDisplayDescription()
+        /**
+         * Test account  attribute that is a hasOne relation off of Opportunity
+         */
+        public function testModifyingAHasOneModelRelationDoesNotCreateNewAttribute()
         {
-            return Zurmo::t('AccountsModule', 'An account field');
-        }
+            $opportunity = new Opportunity(false);
+            $this->assertEquals(15, count($opportunity->getAttributes()));
+            $validated   = $opportunity->validate();
+            $this->assertFalse($validated);
+            $this->assertEquals(6, count($opportunity->getErrors()));
 
-        public function getAttributeTypeName()
-        {
-            return 'Account';
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($opportunity, 'account');
+            $this->assertFalse($attributeForm->isRequired);
+            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new Opportunity());
+            $attributeForm->isRequired = true;
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $opportunity = new Opportunity(false);
+            $this->assertEquals(15, count($opportunity->getAttributes()));
+            $validated = $opportunity->validate();
+            $this->assertFalse($validated);
+            $this->assertEquals(7, count($opportunity->getErrors()));
         }
     }
 ?>
