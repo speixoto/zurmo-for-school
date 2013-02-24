@@ -101,7 +101,7 @@
             foreach ($modelClassNames as $modelClassName)
             {
                 $mashableActivityRules =
-                        MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                        static::createMashableInboxRulesByModel($modelClassName);
                 $searchAttributesData =
                         $mashableActivityRules->getSearchAttributeData($searchTerm);
                 $metadataFilteredBy =
@@ -119,7 +119,7 @@
             foreach ($modelClassNames as $modelClassName)
             {
                 $mashableActivityRules =
-                        MashableUtil::createMashableInboxRulesByModel($modelClassName);
+                        static::createMashableInboxRulesByModel($modelClassName);
                 $modelClassNamesAndSortAttributes[$modelClassName] =
                         $mashableActivityRules->getMachableInboxOrderByAttributeName();
             }
@@ -128,11 +128,11 @@
 
         public static function renderSummaryContent(RedBeanModel $model)
         {
-            $mashableInboxRules                 = MashableUtil::createMashableInboxRulesByModel(get_class($model));
+            $mashableInboxRules                 = static::createMashableInboxRulesByModel(get_class($model));
             $summaryContentTemplate             = $mashableInboxRules->getSummaryContentTemplate();
             $data                               = array();
-            $data['modelStringContent']         = self::renderModelStringContent($model, $mashableInboxRules);
-            $data['modelCreationTimeContent']   = self::renderModelCreationTimeContent($model, $mashableInboxRules);
+            $data['modelStringContent']         = static::renderModelStringContent($model, $mashableInboxRules);
+            $data['modelCreationTimeContent']   = static::renderModelCreationTimeContent($model, $mashableInboxRules);
             $content = self::resolveContentTemplate($summaryContentTemplate, $data);
             return $content;
         }
@@ -165,8 +165,8 @@
             $lastUpdatedTimestamp   = DateTimeUtil::convertDbFormatDateTimeToTimestamp($latestDateTime);
             $timeSinceLatestUpdate  = $nowTimestamp - $lastUpdatedTimestamp;
             $timeForString = array(
-                    'days'  => $timeSinceLatestUpdate / 86400 % 7,
-                    'hours' => $timeSinceLatestUpdate / 3600 % 24,
+                    'days'  => floor($timeSinceLatestUpdate / 86400),
+                    'hours' => floor($timeSinceLatestUpdate / 3600),
                 );
             if ($timeForString['days'] == 0)
             {
@@ -211,9 +211,9 @@
             $clauseNumber = count($firstMetadata['clauses']) + 1;
             foreach ($secondMetadata['clauses'] as $clause)
             {
-                $patterns[]     = '/' . ($clauseNumber++ - $firstMetadataClausesCount). '/';
+                $patterns[]     = '/' . ($clauseNumber - $firstMetadataClausesCount). '/';
                 $replacements[] = (string)$clauseNumber;
-                $firstMetadata['clauses'][$clauseNumber] = $clause;
+                $firstMetadata['clauses'][$clauseNumber++] = $clause;
             }
             if ($isAnd)
             {

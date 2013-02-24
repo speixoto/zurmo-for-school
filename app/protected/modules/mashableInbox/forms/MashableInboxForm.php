@@ -37,11 +37,11 @@
 
         const  FILTERED_BY_UNREAD = 'unread';
 
-        public $searchTerm = '';
+        public $searchTerm;
 
         public $filteredBy = self::FILTERED_BY_ALL;
 
-        public $optionForModel = '';
+        public $optionForModel;
 
         public $selectedIds;
 

@@ -52,7 +52,6 @@
 
         public function testGetUnreadCountForCurrentUserByModelClassName()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $rules = $this->getMock('ConversationMashableInboxRules', array('getUnreadCountForCurrentUser'));
             $rules->expects($this->once())
                   ->method('getUnreadCountForCurrentUser')
@@ -62,7 +61,7 @@
                 ->method('createMashableInboxRulesByModel')
                 ->will($this->returnValue($rules));
             $count = $mashableUtil::getUnreadCountForCurrentUserByModelClassName('Conversation');
-            $this->assertEquals(100, $count);
+            $this->assertEquals($count, 100);
         }
 
         public function testGetUnreadCountMashableInboxForCurrentUser()
@@ -80,7 +79,246 @@
                 ->method('getUnreadCountForCurrentUserByModelClassName')
                 ->will($this->onConsecutiveCalls(27, 11));
             $count = $mashableUtil::GetUnreadCountMashableInboxForCurrentUser();
-            $this->assertEquals(38, $count);
+            $this->assertEquals($count, 38);
+        }
+
+        public function testGetSearchAttributesDataByModelClassNames()
+        {
+            $searchAttributeDataForModel1
+                = array(
+                    'clauses'       => array(1 => 'testSearchClauseForModel1'),
+                    'structure'     => '1',
+            );
+            $metadataFilteredByFilteredByForModel1
+                = array(
+                    'clauses'       => array(1 => 'testClauseForFilteredByForModel1'),
+                    'structure'     => '1',
+            );
+            $searchAttributeDataForModel2
+                = array(
+                    'clauses'       => array(1 => 'testSearchClauseForModel2'),
+                    'structure'     => '1',
+            );
+            $metadataFilteredByFilteredByForModel2
+                = array(
+                    'clauses'       => array(1 => 'testClauseForFilteredByForModel2'),
+                    'structure'     => '1',
+            );
+            $rules
+                = $this->getMock('ConversationMashableInboxRules', array('getSearchAttributeData',
+                                                                         'getMetadataFilteredByFilteredBy'));
+            $rules
+                ->expects($this->exactly(2))
+                ->method('getSearchAttributeData')
+                ->will($this->onConsecutiveCalls($searchAttributeDataForModel1, $searchAttributeDataForModel2));
+            $rules
+                ->expects($this->exactly(2))
+                ->method('getMetadataFilteredByFilteredBy')
+                ->will($this->onConsecutiveCalls($metadataFilteredByFilteredByForModel1, $metadataFilteredByFilteredByForModel2));
+            $mashableUtil
+                = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
+            $mashableUtil
+                ::staticExpects($this->exactly(2))
+                ->method('createMashableInboxRulesByModel')
+                ->will($this->returnValue($rules));
+            $searchAttributesData
+                = $mashableUtil::getSearchAttributesDataByModelClassNames(
+                                      array('model1', 'model2'),
+                                      MashableInboxForm::FILTERED_BY_ALL);
+            $this->assertEquals(
+                    array('model1' => array(
+                                        'clauses'   => array(1 => 'testSearchClauseForModel1',
+                                                             2 => 'testClauseForFilteredByForModel1'),
+                                        'structure' => '(1) and (2)')),
+                   $searchAttributesData[0]);
+            $this->assertEquals(
+                    array('model2' => array(
+                                        'clauses'   => array(1 => 'testSearchClauseForModel2',
+                                                             2 => 'testClauseForFilteredByForModel2'),
+                                        'structure' => '(1) and (2)')),
+                   $searchAttributesData[1]);
+        }
+
+        public function testGetSortAttributesByMashableInboxModelClassNames()
+        {
+            $rules
+                = $this->getMock('ConversationMashableInboxRules',
+                                 array('getMachableInboxOrderByAttributeName'));
+            $rules
+                ->expects($this->exactly(2))
+                ->method('getMachableInboxOrderByAttributeName')
+                ->will($this->onConsecutiveCalls('attributeForModel1', 'attributeForModel2'));
+            $mashableUtil
+                = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
+            $mashableUtil
+                ::staticExpects($this->exactly(2))
+                ->method('createMashableInboxRulesByModel')
+                ->will($this->returnValue($rules));
+            $sortAttributes
+                = $mashableUtil::getSortAttributesByMashableInboxModelClassNames(
+                                      array('model1', 'model2'));
+            $this->assertEquals('attributeForModel1', $sortAttributes['model1']);
+            $this->assertEquals('attributeForModel2', $sortAttributes['model2']);
+        }
+
+        public function testRenderSummaryContent()
+        {
+            $model
+                = $this->getMockForAbstractClass('RedBeanModel');
+            $rules
+                = $this->getMock('ConversationMashableInboxRules',
+                                 array('getSummaryContentTemplate',
+                                       'getModelStringContent',
+                                       'getModelCreationTimeContent'));
+            $rules
+                ->expects($this->once())
+                ->method('getSummaryContentTemplate')
+                ->will($this->returnValue('{modelStringContent} - {modelCreationTimeContent}'));
+            $rules
+                ->expects($this->once())
+                ->method('getModelStringContent')
+                ->with($model)
+                ->will($this->returnValue('string'));
+            $rules
+                ->expects($this->once())
+                ->method('getModelCreationTimeContent')
+                ->with($model)
+                ->will($this->returnValue('time'));
+            $mashableUtil
+                = $this->getMockClass('MashableUtil', array('createMashableInboxRulesByModel'));
+            $mashableUtil
+                ::staticExpects($this->once())
+                ->method('createMashableInboxRulesByModel')
+                ->will($this->returnValue($rules));
+            $content
+                = $mashableUtil::renderSummaryContent($model);
+            $this->assertEquals($content, 'string - time');
+        }
+
+        public function testResolveContentTemplate()
+        {
+            $data = array(
+                'testVar1' => 'subVar1',
+                'testVar2' => 'subVar2',
+            );
+            $template = '{testVar1} will be resolved and {testVar2} too';
+            $content = MashableUtil::resolveContentTemplate($template, $data);
+            $this->assertEquals('subVar1 will be resolved and subVar2 too', $content);
+            $data = array(
+                'testVar1' => 'subVar1',
+            );
+            $content = MashableUtil::resolveContentTemplate($template, $data);
+            $this->assertEquals($content, 'subVar1 will be resolved and {testVar2} too');
+        }
+
+        public function testgetTimeSinceLatestUpdate()
+        {
+            //30 minutes ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (30 * 60));
+            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+
+            //58 minutes ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (58 * 60));
+            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '0 hours ago');
+
+            //61 minutes ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (61 * 60));
+            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '1 hour ago');
+
+            //3 hours ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (3 * 60 * 60));
+            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '3 hours ago');
+
+            //27 hours ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (27 * 60 * 60));
+            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '1 day ago');
+
+            //10 days ago
+            $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (10 * 24 * 60 * 60));
+            $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
+            $this->assertEquals($timeSinceLastestUpdate, '10 days ago');
+
+        }
+
+        public function testMergeMetada()
+        {
+            $firstMetadata  = null;
+            $secondMetadata = null;
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $this->assertEquals($mergedMetadata['clauses'],   array());
+            $this->assertEquals($mergedMetadata['structure'], null);
+
+            $firstMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1'),
+                    'structure'     => '1',
+            );
+            $secondMetadata = null;
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $this->assertEquals(array(1 => 'testClause1'), $mergedMetadata['clauses']);
+            $this->assertEquals('1', $mergedMetadata['structure']);
+
+            $firstMetadata  = null;
+            $secondMetadata = array(
+                    'clauses'       => array(1 => 'testClause1'),
+                    'structure'     => '1',
+            );
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $this->assertEquals($mergedMetadata['clauses'],   array(1 => 'testClause1'));
+            $this->assertEquals($mergedMetadata['structure'], '1');
+
+            $firstMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1'),
+                    'structure'     => '1',
+            );
+            $secondMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1ForSecondMetadata'),
+                    'structure'     => '1',
+            );
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $this->assertEquals(array(1 => 'testClause1',
+                                      2 => 'testClause1ForSecondMetadata'),
+                                $mergedMetadata['clauses']);
+            $this->assertEquals('(1) and (2)', $mergedMetadata['structure']);
+
+            $firstMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1',
+                                             2 => 'testClause2',
+                                             3 => 'testClause3',
+                                        ),
+                    'structure'     => '1 and (2 or 3)',
+            );
+            $secondMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1ForSecondMetadata',
+                                             2 => 'testClause2ForSecondMetadata',
+                                        ),
+                    'structure'     => '4 and 5',
+            );
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata, false);
+            $this->assertEquals($mergedMetadata['clauses'],   array(1 => 'testClause1',
+                                                                    2 => 'testClause2',
+                                                                    3 => 'testClause3',
+                                                                    4 => 'testClause1ForSecondMetadata',
+                                                                    5 => 'testClause2ForSecondMetadata'));
+            $this->assertEquals($mergedMetadata['structure'], '(1 and (2 or 3)) or (4 and 5)');
+
+            $firstMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1'),
+                    'structure'     => '1',
+            );
+            $secondMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1ForSecondMetadata'),
+                    'structure'     => '1',
+            );
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $this->assertEquals(array(1 => 'testClause1',
+                                      2 => 'testClause1ForSecondMetadata'),
+                                $mergedMetadata['clauses']);
+            $this->assertEquals('(1) and (2)', $mergedMetadata['structure']);
         }
 
     }
