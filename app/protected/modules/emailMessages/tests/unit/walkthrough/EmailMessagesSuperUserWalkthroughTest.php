@@ -95,7 +95,6 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
-
             //Validate form
             $createEmailMessageFormData = array('recipientsData' => array('to' => 'test@contact.com'),
                                                 'subject'        => 'test subject',

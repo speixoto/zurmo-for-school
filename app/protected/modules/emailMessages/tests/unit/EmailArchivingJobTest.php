@@ -220,7 +220,7 @@
             $filePath_2    = $pathToFiles . DIRECTORY_SEPARATOR . 'image.png';
             $filePath_3    = $pathToFiles . DIRECTORY_SEPARATOR . 'text.txt';
 
-            Yii::app()->emailHelper->sendRawEmail("Email from Steve",
+            Yii::app()->emailHelper->sendRawEmail("Email from Steve 2",
                                                   $user->primaryEmail->emailAddress,
                                                   Yii::app()->params['emailTestAccounts']['testEmailAddress'],
                                                   'Email from Steve',
@@ -242,7 +242,7 @@
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
-            $this->assertEquals('Email from Steve', $emailMessage->subject);
+            $this->assertEquals('Email from Steve 2', $emailMessage->subject);
             $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
             $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
             $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
@@ -420,6 +420,7 @@ To: Steve <steve@example.com>
 
         /**
         * Check if only new messages are pulled from dropdown
+        * Also check case if message will be matched with user primary email
         *
         * @depends testRunCaseFour
         */
@@ -454,7 +455,7 @@ To: Steve <steve@example.com>
             //Now user send email to another user, and to dropbox
             $pathToFiles = Yii::getPathOfAlias('application.modules.emailMessages.tests.unit.files');
 
-            Yii::app()->emailHelper->sendRawEmail("Email from Steve",
+            Yii::app()->emailHelper->sendRawEmail("Email from Steve 3",
                                                    $user->primaryEmail->emailAddress,
                                                   array(Yii::app()->params['emailTestAccounts']['testEmailAddress']),
                                                   'Email from Steve',
@@ -476,7 +477,7 @@ To: Steve <steve@example.com>
             $emailMessages = EmailMessage::getAll();
             $emailMessage = $emailMessages[0];
 
-            $this->assertEquals('Email from Steve', $emailMessage->subject);
+            $this->assertEquals('Email from Steve 3', $emailMessage->subject);
             $this->assertEquals('Email from Steve', trim($emailMessage->content->textContent));
             $this->assertEquals('<strong>Email</strong> from Steve', trim($emailMessage->content->htmlContent));
             $this->assertEquals($user->primaryEmail->emailAddress, $emailMessage->sender->fromAddress);
@@ -487,7 +488,7 @@ To: Steve <steve@example.com>
                 $this->assertEquals($recipient->toAddress, Yii::app()->params['emailTestAccounts']['testEmailAddress']);
                 $this->assertEquals(EmailMessageRecipient::TYPE_TO, $recipient->type);
             }
-            $this->assertEquals(EmailFolder::TYPE_ARCHIVED_UNMATCHED, $emailMessage->folder->type);
+            $this->assertEquals(EmailFolder::TYPE_ARCHIVED, $emailMessage->folder->type);
 
             $job = new EmailArchivingJob();
             $this->assertTrue($job->run());
