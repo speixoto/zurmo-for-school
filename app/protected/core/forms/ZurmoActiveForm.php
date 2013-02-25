@@ -56,10 +56,10 @@
             $errorData = array();
             foreach ($model->getErrors() as $attribute => $errors)
             {
-                if($model->isRelation($attribute) && $model->isOwnedRelation($attribute) &&
+                if ($model->isRelation($attribute) && $model->isOwnedRelation($attribute) &&
                    in_array($model->getRelationModelClassName($attribute), array('Address', 'Email', 'CurrencyValue')))
                 {
-                    foreach($errors as $relatedAttribute => $relatedErrors)
+                    foreach ($errors as $relatedAttribute => $relatedErrors)
                     {
                         $errorData[ZurmoHtml::activeId($model, $attribute . '[' . $relatedAttribute . ']')] = $relatedErrors;
                     }
@@ -72,7 +72,6 @@
             return $errorData;
         }
 
-
         /**
          *
          * Override for special handling of dynamically added attributes.  Allows for overriding the model class name
@@ -82,33 +81,33 @@
          */
         public function error($model, $attribute, $htmlOptions = array(), $enableAjaxValidation = true, $enableClientValidation = true, $id = null)
         {
-            if(!$this->enableAjaxValidation)
+            if (!$this->enableAjaxValidation)
             {
                 $enableAjaxValidation = false;
             }
-            if(!$this->enableClientValidation)
+            if (!$this->enableClientValidation)
             {
                 $enableClientValidation = false;
             }
-            if(!isset($htmlOptions['class']))
+            if (!isset($htmlOptions['class']))
             {
-                $htmlOptions['class']=$this->errorMessageCssClass;
+                $htmlOptions['class'] = $this->errorMessageCssClass;
             }
-            if(!$enableAjaxValidation && !$enableClientValidation)
+            if (!$enableAjaxValidation && !$enableClientValidation)
             {
-                return CHtml::error($model,$attribute,$htmlOptions);
+                return CHtml::error($model, $attribute, $htmlOptions);
             }
-            if($id == null)
+            if ($id == null)
             {
                 $id = $this->resolveId($model, $attribute);
             }
             $inputID = isset($htmlOptions['inputID']) ? $htmlOptions['inputID'] : $id;
             unset($htmlOptions['inputID']);
-            if(!isset($htmlOptions['id']))
+            if (!isset($htmlOptions['id']))
             {
                 $htmlOptions['id'] = $inputID . '_em_';
             }
-            $option=array(
+            $option = array(
                 'id'                   => $id,
                 'inputID'              => $inputID,
                 'errorID'              => $htmlOptions['id'],
@@ -128,42 +127,46 @@
                 'beforeValidateAttribute',
                 'afterValidateAttribute',
             );
-            foreach($optionNames as $name)
+            foreach ($optionNames as $name)
             {
-                if(isset($htmlOptions[$name]))
+                if (isset($htmlOptions[$name]))
                 {
                     $option[$name] = $htmlOptions[$name];
                     unset($htmlOptions[$name]);
                 }
             }
-            if($model instanceof CActiveRecord && !$model->isNewRecord)
+            if ($model instanceof CActiveRecord && !$model->isNewRecord)
             {
                 $option['status'] = 1;
             }
-            if($enableClientValidation)
+            if ($enableClientValidation)
             {
                 $validators    = isset($htmlOptions['clientValidation']) ? array($htmlOptions['clientValidation']) : array();
                 $attributeName = $attribute;
-                if(($pos=strrpos($attribute,']')) !== false && $pos !== strlen($attribute)-1) // e.g. [a]name
+                if (($pos = strrpos($attribute, ']')) !== false && $pos !== strlen($attribute) - 1) // e.g. [a]name
                 {
-                    $attributeName=substr($attribute,$pos+1);
+                    $attributeName = substr($attribute, $pos + 1);
                 }
-                foreach($model->getValidators($attributeName) as $validator)
+                foreach ($model->getValidators($attributeName) as $validator)
                 {
-                    if($validator->enableClientValidation)
+                    if ($validator->enableClientValidation)
                     {
-                        if(($js=$validator->clientValidateAttribute($model,$attributeName))!='')
-                            $validators[]=$js;
+                        if (($js = $validator->clientValidateAttribute($model, $attributeName)) != '')
+                        {
+                            $validators[] = $js;
+                        }
                     }
                 }
-                if($validators!==array())
+                if ($validators !== array())
+                {
                     $option['clientValidation'] = new CJavaScriptExpression("function(value, messages, attribute) {\n" .
-                                                                            implode("\n", $validators)."\n}");
+                                                                            implode("\n", $validators) . "\n}");
+                }
             }
-            $html = CHtml::error($model,$attribute,$htmlOptions);
-            if($html==='')
+            $html = CHtml::error($model, $attribute, $htmlOptions);
+            if ($html === '')
             {
-                if(isset($htmlOptions['style']))
+                if (isset($htmlOptions['style']))
                 {
                     $htmlOptions['style'] = rtrim($htmlOptions['style'], ';') . ';display:none';
                 }
@@ -341,7 +344,7 @@
 
         protected function resolveModelClassNameForError($model)
         {
-            if($this->modelClassNameForError != null)
+            if ($this->modelClassNameForError != null)
             {
                 return $this->modelClassNameForError;
             }
