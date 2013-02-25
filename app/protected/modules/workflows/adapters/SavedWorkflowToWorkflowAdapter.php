@@ -44,15 +44,19 @@
                 {
                     $workflow->setTriggersStructure($unserializedData['triggersStructure']);
                 }
-                self::makeComponentFormAndPopulateReportFromData(
+                self::makeComponentFormAndPopulateWorkflowFromData(
                         $unserializedData[ComponentForWorkflowForm::TYPE_TRIGGERS], $workflow, 'Trigger');
                 self::makeComponentFormAndPopulateWorkflowFromData(
                         $unserializedData[ComponentForWorkflowForm::TYPE_ACTIONS],  $workflow, 'Action');
                 if(isset($unserializedData['timeTrigger']))
                 {
-                    $timeTrigger = new TimeTriggerForWorkflowForm();
+                    $moduleClassName = $workflow->getModuleClassName();
+                    $timeTrigger     = new TimeTriggerForWorkflowForm($moduleClassName,
+                                                                      $moduleClassName::getPrimaryModelName(),
+                                                                      $workflow->getType());
                     $timeTrigger->setAttributes($unserializedData['timeTrigger']);
                     $workflow->setTimeTrigger($timeTrigger);
+                    $workflow->setTimeTriggerAttribute($timeTrigger->getAttributeIndexOrDerivedType());
                 }
             }
             return $workflow;

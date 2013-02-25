@@ -67,7 +67,14 @@
             {
                 throw new NotSupportedException();
             }
-            return $this->getContentForTimeTriggerOrTrigger();
+            $content                            = $this->getContentForTimeTriggerOrTrigger();
+            $params                             = array('inputPrefix' => $this->inputPrefixData);
+            $durationElement                    = new TimeTriggerDurationStaticDropDownElement($this->model,
+                                                  'durationSeconds', $this->form, $params);
+            $durationElement->editableTemplate  = '{content}{error}'; //todo: remove brs just here for now so we can pick from dd in ui
+            $durationContent                    = '<BR><BR><BR>' .$durationElement->render();
+            self::resolveDivWrapperForContent($durationContent, $content, 'dynamic-attribute-duration');
+            return $content;
         }
 
         /**

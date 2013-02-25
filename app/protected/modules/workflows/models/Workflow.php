@@ -46,6 +46,8 @@
 
         private $triggersStructure;
 
+        private $timeTriggerAttribute;
+
         private $timeTrigger                = array();
 
         private $triggers                   = array();
@@ -182,6 +184,17 @@
         {
             //todo:
             return true;
+        }
+
+        public function setTimeTriggerAttribute($timeTriggerAttribute)
+        {
+            assert('is_string($timeTriggerAttribute)');
+            $this->timeTriggerAttribute = $timeTriggerAttribute;
+        }
+
+        public function getTimeTriggerAttribute()
+        {
+            return $this->timeTriggerAttribute;
         }
 
         public function getTimeTrigger()

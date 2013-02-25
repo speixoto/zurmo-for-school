@@ -46,6 +46,10 @@
             {
                 $workflow->setTriggersStructure($data['triggersStructure']);
             }
+            if(isset($data['timeTriggerAttribute']))
+            {
+                $workflow->setTimeTriggerAttribute($data['timeTriggerAttribute']);
+            }
             self::resolveTriggers                   ($data, $workflow);
             self::resolveActions                    ($data, $workflow);
             self::resolveTimeTrigger                ($data, $workflow);

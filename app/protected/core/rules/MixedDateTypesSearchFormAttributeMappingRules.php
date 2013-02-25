@@ -47,9 +47,7 @@
 
         const TYPE_LAST_7_DAYS     = 'Last 7 Days';
 
-        const TYPE_IS_TIME_FOR     = 'Is Time From Now';
-
-        const TYPE_WAS_TIME_FOR    = 'Was Time Ago';
+        const TYPE_IS_TIME_FOR     = 'Is Time For';
 
         const TYPE_IS_EMPTY        = 'Is Empty';
 
@@ -164,7 +162,6 @@
                             self::TYPE_NEXT_7_DAYS,
                             self::TYPE_LAST_7_DAYS,
                             self::TYPE_IS_TIME_FOR,
-                            self::TYPE_WAS_TIME_FOR,
                             self::TYPE_IS_EMPTY,
                             self::TYPE_IS_NOT_EMPTY,
                             self::TYPE_WAS_ON,
@@ -210,9 +207,7 @@
          */
         public static function getTimeOnlyValueTypesAndLabels()
         {
-            return array(self::TYPE_IS_TIME_FOR   => Zurmo::t('Core', 'Is'),
-                         self::TYPE_WAS_TIME_FOR  => Zurmo::t('Core', 'Was'),
-            );
+            return array(self::TYPE_IS_TIME_FOR   => Zurmo::t('Core', 'Is'));
         }
 
         /**

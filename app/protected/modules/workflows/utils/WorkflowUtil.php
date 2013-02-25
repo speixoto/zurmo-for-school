@@ -56,5 +56,39 @@
                 return $modulesAndLabels[$moduleClassName];
             }
         }
+
+        public static function resolveDataAndLabelsForTimeTriggerAvailableAttributes($moduleClassName, $modelClassName,
+                                                                                     $workflowType)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
+            $modelToWorkflowAdapter             = ModelRelationsAndAttributesToWorkflowAdapter::
+                make($moduleClassName, $modelClassName, $workflowType);
+            if(!$modelToWorkflowAdapter instanceof ModelRelationsAndAttributesToByTimeWorkflowAdapter)
+            {
+                throw new NotSupportedException();
+            }
+            $attributes     = $modelToWorkflowAdapter->getAttributesForTimeTrigger();
+            $dataAndLabels  = array('' => Zurmo::t('Core', '(None)'));
+            return array_merge($dataAndLabels, WorkflowUtil::renderDataAndLabelsFromAdaptedAttributes($attributes));
+        }
+
+        /**
+         * Given an array of attributes generated from $modelToWorkflowAdapter->getAttributesForTimeTrigger()
+         * return an array indexed by the attribute and the value is the label
+         * @param array $attributes
+         * @return array
+         */
+        public static function renderDataAndLabelsFromAdaptedAttributes($attributes)
+        {
+            assert('is_array($attributes)');
+            $dataAndLabels = array();
+            foreach($attributes as $attribute => $data)
+            {
+                $dataAndLabels[$attribute] = $data['label'];
+            }
+            return $dataAndLabels;
+        }
     }
 ?>

@@ -246,6 +246,50 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
+        public function actionGetAvailableAttributesForTimeTrigger($type, $id = null)
+        {
+            $postData                           = PostUtil::getData();
+            $savedWorkflow                      = null;
+            $workflow                           = null;
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $moduleClassName                    = $workflow->getModuleClassName();
+            $modelClassName                     = $moduleClassName::getPrimaryModelName();
+            $dataAndLabels                      = WorkflowUtil::resolveDataAndLabelsForTimeTriggerAvailableAttributes(
+                                                  $moduleClassName, $modelClassName, $workflow->getType());
+            echo CJSON::encode($dataAndLabels);
+        }
+
+        public function actionAddOrChangeTimeTriggerAttribute($type, $attributeIndexOrDerivedType, $moduleClassName, $id = null)
+        {
+            $componentType                      = TimeTriggerForWorkflowForm::getType();
+            $postData                           = PostUtil::getData();
+            //Special situation since this is coming form GET
+            $postData['ByTimeWorkflowWizardForm']['moduleClassName'] = $moduleClassName;
+            $savedWorkflow                      = null;
+            $workflow                           = null;
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
+            $moduleClassName                    = $workflow->getModuleClassName();
+            $modelClassName                     = $moduleClassName::getPrimaryModelName();
+            $form                               = new WizardActiveForm();
+            $form->enableAjaxValidation         = true; //ensures error validation populates correctly
+            $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
+            $model                              = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
+                                                  $modelClassName, $workflow->getType(), $componentType);
+            $form->modelClassNameForError       = $wizardFormClassName;
+            $model->attributeIndexOrDerivedType = $attributeIndexOrDerivedType;
+            $inputPrefixData                    = array($wizardFormClassName, $componentType);
+            $adapter                            = new WorkflowAttributeToElementAdapter($inputPrefixData, $model,
+                                                  $form, $componentType);
+            $view                               = new AttributeRowForWorkflowComponentView($adapter,
+                                                  1, $inputPrefixData, $attributeIndexOrDerivedType,
+                                                  false, true, $componentType);
+            $content               = $view->render();
+            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
         protected function resolveCanCurrentUserAccessWorkflows()
         {
             if(!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',
@@ -297,18 +341,6 @@
             }
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
-        }
-
-        protected function makeReportDetailsAndRelationsView(SavedReport $savedReport, $redirectUrl,
-                                                             ReportBreadCrumbView $breadCrumbView)
-        {
-            $wizardDetailsAndRelationsView = ReportDetailsAndResultsViewFactory::makeView($savedReport, $this->getId(),
-                                                                                          $this->getModule()->getId(),
-                                                                                          $redirectUrl);
-            $gridView = new GridView(2, 1);
-            $gridView->setView($breadCrumbView, 0, 0);
-            $gridView->setView($wizardDetailsAndRelationsView, 1, 0);
-            return $gridView;
         }
     }
 ?>

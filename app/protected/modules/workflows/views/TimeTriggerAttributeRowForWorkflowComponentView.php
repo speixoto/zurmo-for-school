@@ -25,42 +25,13 @@
      ********************************************************************************/
 
     /**
-     * By-time workflow form used to manage interaction between a Workflow and the user interface.
+     * View for displaying a row of attribute information for the time trigger attribute
      */
-    class ByTimeWorkflowWizardForm extends WorkflowWizardForm
+    class TimeTriggerAttributeRowForWorkflowComponentView extends AttributeRowForWorkflowComponentView
     {
-        /**
-         * Validates that at least one timeTrigger has been selected, since this is required for a by-time workflow
-         * @return bool
-         */
-        public function validateTimeTrigger()
+        public static function getFormId()
         {
-
-            if($this->timeTriggerAttribute == null)
-            {
-                $this->addError('timeTriggerAttribute',
-                                Zurmo::t('WorkflowsModule', 'At least one time trigger must be selected'));
-                return false;
-            }
-            else
-            {
-                return parent::validateTimeTrigger();
-            }
-        }
-
-        /**
-         * @return array
-         */
-        public function getTimeTriggerAttributeDataAndLabels()
-        {
-            $dataAndLabels = array();
-            if($this->moduleClassName != null)
-            {
-                $moduleClassName = $this->moduleClassName;
-                $dataAndLabels   = WorkflowUtil::resolveDataAndLabelsForTimeTriggerAvailableAttributes(
-                                   $moduleClassName, $moduleClassName::getPrimaryModelName(), $this->type);
-            }
-            return $dataAndLabels;
+            return WorkflowWizardView::getFormId();
         }
     }
 ?>

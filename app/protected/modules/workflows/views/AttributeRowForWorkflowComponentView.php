@@ -29,6 +29,11 @@
      */
     class AttributeRowForWorkflowComponentView extends AttributeRowForWizardModelComponentView
     {
+        /**
+         * @var bool
+         */
+        public    $addWrapper = false;
+
         public static function getFormId()
         {
             return WorkflowWizardView::getFormId();

@@ -60,5 +60,15 @@
             }
             return $valueTypesAndLabels;
         }
+
+        protected function getEditableValueTypeHtmlOptions()
+        {
+            $htmlOptions = parent::getEditableValueTypeHtmlOptions();
+            if($this->model instanceof TimeTriggerForWorkflowForm && isset($htmlOptions['empty']))
+            {
+                unset($htmlOptions['empty']);
+            }
+            return $htmlOptions;
+        }
     }
 ?>

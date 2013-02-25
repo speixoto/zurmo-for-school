@@ -91,6 +91,7 @@
             $workflow->setModuleClassName('SomeModule');
             $workflow->setDescription('a description');
             $workflow->setTriggersStructure('1 AND 2');
+            $workflow->setTimeTriggerAttribute('something');
             $workflow->setId(5);
             $workflow->setName('my workflow rule');
             $workflow->setType(Workflow::TYPE_ON_SAVE);
@@ -100,6 +101,7 @@
             $this->assertEquals('SomeModule',           $workflow->getModuleClassName());
             $this->assertEquals('a description',        $workflow->getDescription());
             $this->assertEquals('1 AND 2',              $workflow->getTriggersStructure());
+            $this->assertEquals('something',            $workflow->getTimeTriggerAttribute());
             $this->assertEquals(5,                      $workflow->getId());
             $this->assertEquals('my workflow rule',     $workflow->getName());
             $this->assertEquals(Workflow::TYPE_ON_SAVE, $workflow->getType());

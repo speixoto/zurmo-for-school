@@ -141,7 +141,7 @@
          */
         public function testMakeReportBySavedWorkflow()
         {
-            //todo: add TimeTrigger
+            //todo: add TimeTrigger and test timeTriggerAttribute gets populated correctly.
             //todo: add Action
             $savedReports               = SavedReport::getAll();
             $this->assertEquals           (1, count($savedReports));

@@ -57,6 +57,9 @@
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.workflows.views.assets')) . '/WorkflowUtils.js');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.elements.assets')) . '/SelectInputUtils.js', CClientScript::POS_END);
             $this->registerClickFlowScript();
         }
     }

@@ -63,6 +63,7 @@
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TIME_TRIGGER_VALIDATION_SCENARIO . "');
                             $('#ModuleForWorkflowWizardView').hide();
+                             " . $this->renderLoadTimeTriggerAttributeScriptContent($formName) . "
                             $('#TimeTriggerForWorkflowWizardView').show();
 
                         }
@@ -82,7 +83,7 @@
                             $('#TriggersForWorkflowWizardView').hide();
                             $('#ActionsForWorkflowWizardView').show();
                         }
-                        if(linkId == '" . DisplayAttributesForWorkflowWizardView::getNextPageLinkId() . "')
+                        if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
@@ -159,10 +160,71 @@
         protected function registerScripts()
         {
             parent::registerScripts();
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.core.elements.assets')) . '/SelectInputUtils.js', CClientScript::POS_END);
-            $this->registerLinkedRemovalScript();
+            $this->registerTimeTriggerAttributeDropDownOnChangeScript();
+        }
+
+        /**
+         * @param $formName
+         * @return string
+         */
+        protected function renderLoadTimeTriggerAttributeScriptContent($formName)
+        {
+            assert('is_string($formName)');
+            $url    =  Yii::app()->createUrl('workflows/default/getAvailableAttributesForTimeTrigger',
+                array_merge($_GET, array('type' => $this->model->type)));
+            $script = "
+                $.ajax({
+                    url : '" . $url . "',
+                    type : 'POST',
+                    data : $('#" . $formName . "').serialize(),
+                    dataType: 'json',
+                    success : function(data)
+                    {
+                        rebuildSelectInputFromDataAndLabels
+                        ('ByTimeWorkflowWizardForm_timeTriggerAttribute', data);
+                    },
+                    error : function()
+                    {
+                        //todo: error call
+                    }
+                });
+            ";
+            return $script;
+        }
+
+        protected function registerTimeTriggerAttributeDropDownOnChangeScript()
+        {
+            $id         = 'ByTimeWorkflowWizardForm_timeTriggerAttribute';
+            $inputDivId = 'time-trigger-container';
+            $url        =  Yii::app()->createUrl('workflows/default/addOrChangeTimeTriggerAttribute',
+                           array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
+            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
+                'type'    => 'GET',
+                'data'    => 'js:\'attributeIndexOrDerivedType=\' + $(this).val() +
+                                 \'&moduleClassName=\' +
+                                 $("input:radio[name=\"ByTimeWorkflowWizardForm[moduleClassName]\"]:checked").val()',
+                'url'     =>  $url,
+                'beforeSend' => 'js:function(){
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
+                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        }',
+                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
+            ));
+            $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
+            {
+                if($('#" . $id . "').val() == '')
+                {
+                    $('#" . $inputDivId . "').html('');
+                }
+                else
+                {
+                    $ajaxSubmitScript
+                }
+            }
+            );";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('timeTriggerAttributeDropDownOnChangeScript', $script);
         }
     }
 ?>

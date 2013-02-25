@@ -40,7 +40,7 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testResolveWorkflowByWizardPostData()
+        public function testResolveOnSaveWorkflowByWizardPostData()
         {
             $workflow = new Workflow();
             $workflow->setType(Workflow::TYPE_ON_SAVE);
@@ -54,6 +54,25 @@
             $this->assertEquals('someName',            $workflow->getName());
             $this->assertEquals('1 AND 2',             $workflow->getTriggersStructure());
             $this->assertEquals('WorkflowsTestModule', $workflow->getModuleClassName());
+        }
+
+        public function testResolveByTimeWorkflowByWizardPostData()
+        {
+         //todO: switch to byTime, and check timeTriggerAttribute... make sure that works
+            /**
+            $workflow = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $data   = array();
+            $data['OnSaveWorkflowWizardForm'] = array('description'       => 'someDescription',
+                'name'              => 'someName',
+                'triggersStructure' => '1 AND 2',
+                'moduleClassName'   => 'WorkflowsTestModule');
+            DataToWorkflowUtil::resolveWorkflowByWizardPostData($workflow, $data, 'OnSaveWorkflowWizardForm');
+            $this->assertEquals('someDescription',     $workflow->getDescription());
+            $this->assertEquals('someName',            $workflow->getName());
+            $this->assertEquals('1 AND 2',             $workflow->getTriggersStructure());
+            $this->assertEquals('WorkflowsTestModule', $workflow->getModuleClassName());
+         * **/
         }
 
         /**

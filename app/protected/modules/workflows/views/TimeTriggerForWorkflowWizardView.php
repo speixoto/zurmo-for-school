@@ -53,12 +53,17 @@
             return 'timeTriggerNextLink';
         }
 
-        public function registerScripts()
+        protected function registerScripts()
         {
             parent::registerScripts();
-            $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
-            $script = ''; //todO:
-            Yii::app()->getClientScript()->registerScript('xx', $script);
+            $script = '
+                $(".remove-dynamic-attribute-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function(){
+                    $(this).parent().remove();
+                    $("#ByTimeWorkflowWizardForm_timeTriggerAttribute").val("");
+                    return false;
+                });
+            ';
+            Yii::app()->getClientScript()->registerScript('TimeTriggerForWorkflowComponentScript', $script);
         }
 
         /**
@@ -70,25 +75,75 @@
         }
 
         /**
+         * @return int
+         */
+        protected function getItemsCount()
+        {
+            return count($this->model->timeTrigger);
+        }
+
+        /**
          * @return string
          */
         protected function renderFormContent()
         {
-            //$inputPrefixData   = array(get_class($this->model), get_class($this->model->chart)); //todO: cant use chart fix this
-            $inputPrefixData = array();
-            $this->form->setInputPrefixData($inputPrefixData);
-            $params            = array('inputPrefix' => $inputPrefixData);
-            $content           = '<div class="attributesContainer">';
-            //$element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
-            //    array_merge($params, array('addBlank' => true)));
-            //= $element->render();
-            $content          .= 'zero-model image and view<BR>';
-            $content          .= 'existing time trigger div<BR>';
-            $content          .= 'time picker picker<BR>';
-            $content          .= '</div>';
-            $this->form->clearInputPrefixData();
+            $content  = '<div>'; //todo: is this div necessary?
+            $content .= $this->renderZeroComponentsContentAndWrapper();
+            $content .= $this->renderAttributeSelectorContentAndWrapper();
+            $content .= $this->renderTimeTriggerContentAndWrapper();
+            $content .= '</div>';
             $this->registerScripts();
             return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getZeroComponentsClassName()
+        {
+            return 'NoTimeTrigger';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getZeroComponentsMessageContent()
+        {
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a time trigger below') . '</h2>';
+        }
+        protected function renderZeroComponentsContentAndWrapper()
+        {
+            return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
+                   ComponentForWorkflowForm::TYPE_TIME_TRIGGER), $this->getZeroComponentsContent());
+        }
+
+        protected function renderAttributeSelectorContentAndWrapper()
+        {
+            $element                   = new TimeTriggerAttributeStaticDropDownElement($this->model,
+                                         'timeTriggerAttribute', $this->form, array('addBlank' => true));
+            $attributeSelectorContent  = $element->render();
+            return ZurmoHtml::tag('div', array('class' => 'time-trigger-attribute-selector-container'),
+                                         $attributeSelectorContent);
+        }
+
+        protected function renderTimeTriggerContentAndWrapper()
+        {
+            if($this->model->timeTriggerAttribute != null)
+            {
+                $componentType       = TimeTriggerForWorkflowForm::getType();
+                $inputPrefixData     = array(get_class($this->model), $componentType);
+                $adapter             = new WorkflowAttributeToElementAdapter($inputPrefixData,
+                                       $this->model->timeTrigger, $this->form, $componentType);
+                $view                = new AttributeRowForWorkflowComponentView($adapter,
+                                       1, $inputPrefixData, $this->model->timeTriggerAttribute,
+                                       false, true, $componentType);
+                $timeTriggerContent  = $view->render();
+            }
+            else
+            {
+                $timeTriggerContent = null;
+            }
+            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container'), $timeTriggerContent);
         }
     }
 ?>

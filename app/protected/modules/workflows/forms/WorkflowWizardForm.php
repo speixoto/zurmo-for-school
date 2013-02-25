@@ -66,6 +66,13 @@
         public $triggersStructure;
 
         /**
+         * Corresponds to the selection of a time trigger attribute for By-time workflow rules.  This shows in a dropdown
+         * for picking from the available attributes.
+         * @var string
+         */
+        public $timeTriggerAttribute;
+
+        /**
          * @var object TimeTriggerForWorkflowForm
          */
         public $timeTrigger;
@@ -83,20 +90,21 @@
         public function rules()
         {
             return array(
-                array('description', 	     'type',               'type' => 'string'),
-                array('name', 			     'type',        	   'type' => 'string'),
-                array('name', 			     'length',   		   'max' => 64),
-                array('name', 			     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('moduleClassName',     'type',     		   'type' => 'string'),
-                array('moduleClassName',     'length',             'max' => 64),
-                array('moduleClassName',     'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
-                array('type', 		         'type',     		   'type' => 'string'),
-                array('type', 			     'length',   		   'max' => 64),
-                array('type', 			     'required'),
-                array('timeTrigger', 		 'validateTimeTrigger', 'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
-                array('triggersStructure', 	 'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
-                array('triggers',            'validateTriggers',   'on' => self::TRIGGERS_VALIDATION_SCENARIO),
-                array('actions',             'validateActions',    'on' => self::ACTIONS_VALIDATION_SCENARIO),
+                array('description', 	      'type',               'type' => 'string'),
+                array('name', 			      'type',        	   'type' => 'string'),
+                array('name', 			      'length',   		   'max' => 64),
+                array('name', 			      'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('moduleClassName',      'type',     		   'type' => 'string'),
+                array('moduleClassName',      'length',             'max' => 64),
+                array('moduleClassName',      'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
+                array('type', 		          'type',     		   'type' => 'string'),
+                array('type', 			      'length',   		   'max' => 64),
+                array('type', 			      'required'),
+                array('timeTrigger', 		  'validateTimeTrigger', 'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
+                array('triggersStructure', 	  'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
+                array('triggers',             'validateTriggers',   'on' => self::TRIGGERS_VALIDATION_SCENARIO),
+                array('actions',              'validateActions',    'on' => self::ACTIONS_VALIDATION_SCENARIO),
+                array('timeTriggerAttribute', 'type', 'type' => 'string'),
             );
         }
 
@@ -120,7 +128,7 @@
                 {
                     foreach($this->timeTrigger->getErrors() as $attribute => $error)
                     {
-                        $this->addError( 'TimeTriggerForWorkflowForm_' . $attribute, $error);
+                        $this->addError( ComponentForWorkflowForm::TYPE_TIME_TRIGGER . '_' . $attribute, $error);
                     }
                     $passedValidation = false;
                 }

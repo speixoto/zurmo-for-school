@@ -329,7 +329,6 @@
             }
             $modelToWorkflowAdapter          = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
             $availableOperatorsType        = $modelToWorkflowAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
-            echo 'test' . $availableOperatorsType . "<BR>";
             $this->_availableOperatorsType = $availableOperatorsType;
             return $availableOperatorsType;
         }
