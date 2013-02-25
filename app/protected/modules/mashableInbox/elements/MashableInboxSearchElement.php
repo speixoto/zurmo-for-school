@@ -34,20 +34,12 @@
 
         private function renderSearchScript()
         {
-            $inputId = $this->getEditableInputId();
-            $url     = "";
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                        'type'       => 'GET',
-                        'data'       => 'js:$("#' . $this->form->getId() . '").serialize()',
-                        'url'        =>  $url,
-                        'update'     => '#MashableInboxListViewWrapper',
-                        'beforeSend' => 'js:function(){makeSmallLoadingSpinner(); $("#MashableInboxListViewWrapper").addClass("loading");}',
-                        'complete'   => 'js:function()
-                                            {
-                                                $("#MashableInboxListViewWrapper").removeClass("loading");
-                                                processListViewSummaryClone("MashableInboxListViewWrapper", "summary");
-                                            }'
-                    ));
+            $inputId    = $this->getEditableInputId();
+            $formName   = $this->form->getId();
+            $listViewId = $this->getListViewGridId();
+            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$listViewId}', {
+                                        data: $('#{$formName}').serialize()
+                                });";
             $script = "
                     $('#{$inputId}').keyup(function(e) {
                         clearTimeout($.data(this, 'timer'));
@@ -63,6 +55,15 @@
                     }
                 ";
             Yii::app()->clientScript->registerScript('MashableInboxSearchTerm', $script);
+        }
+
+        protected function getListViewGridId()
+        {
+            if (!isset($this->params['listViewGridId']))
+            {
+                throw new NotSupportedException();
+            }
+            return $this->params['listViewGridId'];
         }
     }
 ?>

@@ -48,17 +48,9 @@
             $gridId             = $this->getListViewGridId();
             $formName           = $this->getFormName();
             $formClassName      = $this->modelId;
-            $ajaxSubmitScript   = ZurmoHtml::ajax(array(
-                        "type"       => "GET",
-                        "data"       => "js:$('#{$formName}').serialize()",
-                        "update"     => "#MashableInboxListViewWrapper",
-                        "beforeSend" => "js:function(){makeSmallLoadingSpinner(); $('#MashableInboxListViewWrapper').addClass('loading');}",
-                        "complete"   => "js:function()
-                                            {
-                                                $('#MashableInboxListViewWrapper').removeClass('loading');
-                                                processListViewSummaryClone('MashableInboxListViewWrapper', 'summary');
-                                            }"
-                    ));
+            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$gridId}', {
+                                        data: $('#{$formName}').serialize()
+                                });";
             $script = '';
             $items  = array();
             foreach ($massOptions as $massOption => $massOptionParams)

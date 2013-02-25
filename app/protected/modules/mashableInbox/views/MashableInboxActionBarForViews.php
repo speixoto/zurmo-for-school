@@ -77,7 +77,7 @@
         {
             $params = array('type'           => 'MashableInboxMass',
                             'htmlOptions'    => array('class' => 'icon-create'),
-                            'listViewGridId' => 'list-view',
+                            'listViewGridId' => $this->listView->getGridViewId(),
                             'modelClassName' => $this->modelClassName,
                             'formName'       => 'mashable-inbox-form',
                         );
@@ -127,7 +127,8 @@
 
         private function renderSearchView($model, $form)
         {
-            $element  = new MashableInboxSearchElement($model, 'searchTerm', $form);
+            $params   = array('listViewGridId' => $this->listView->getGridViewId());
+            $element  = new MashableInboxSearchElement($model, 'searchTerm', $form, $params);
             $content  = $element->render();
             $content .= $this->renderSummaryCloneContent();
             return ZurmoHtml::tag('div', array('class' => 'SearchView'), $content);
@@ -162,19 +163,10 @@
 
         private function registerFormScript($form)
         {
-            $url = "";
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                        'type'       => 'GET',
-                        'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                        'url'        =>  $url,
-                        'update'     => '#MashableInboxListViewWrapper',
-                        'beforeSend' => 'js:function(){makeSmallLoadingSpinner(); $("#MashableInboxListViewWrapper").addClass("loading");}',
-                        'complete'   => 'js:function()
-                                            {
-                                                $("#MashableInboxListViewWrapper").removeClass("loading");
-                                                processListViewSummaryClone("MashableInboxListViewWrapper", "summary");
-                                            }'
-                    ));
+            $listViewId       = $this->listView->getGridViewId();
+            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$listViewId}', {
+                                        data: $('#" . $form->getId() . "').serialize()
+                                });";
             $script = "
                     $('#MashableInboxForm_optionForModel_area').buttonset();
                     $('#MashableInboxForm_filteredBy_area').buttonset();
