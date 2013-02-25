@@ -34,7 +34,8 @@
             if (UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'enableDesktopNotifications'))
             {
                 $makeNotification = "
-                    if (window.webkitNotifications.checkPermission() == 0) {
+                    if (window.webkitNotifications.checkPermission() == 0)
+                    {
                         nf = window.webkitNotifications.createNotification(image, title, body);
                         if (nf.hasOwnProperty('onshow'))
                         {
@@ -49,6 +50,7 @@
             {
                 $makeNotification = "";
             }
+            // Begin Not Coding Standard
             $script = "
             var desktopNotifications =
             {
@@ -92,11 +94,13 @@
                 }
             };
             ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_HEAD);
         }
 
         public static function renderAutoUpdaterScript()
         {
+            // Begin Not Coding Standard
             $script = "
                     var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
                     var unreadConversations = conversationsPlacer.text();
@@ -112,7 +116,8 @@
                                 async: true,
                                 cache: false,
                                 timeout: 15000,
-                                success: function(data){
+                                success: function(data)
+                                {
                                     data = JSON.parse(data);
                                     if (data != null)
                                     {
@@ -130,7 +135,8 @@
                                     }
                                     setTimeout(startAutoUpdater, 10000);
                                 },
-                                error: function(XMLHttpRequest, textStatus, errorThrown){
+                                error: function(XMLHttpRequest, textStatus, errorThrown)
+                                {
                                     setTimeout(startAutoUpdater, 30000);
                                 }
                             });
@@ -138,6 +144,7 @@
                     }
                     setTimeout(startAutoUpdater, 10000);
                 ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_READY);
         }
     }

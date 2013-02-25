@@ -327,7 +327,6 @@
             // Note that two new boxes are created for use jimmy instead one.
             // Probably because $jimmy->emailBoxes->count() return 0
             $this->assertEquals(3, count($boxes));
-
         }
     }
 ?>

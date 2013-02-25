@@ -81,8 +81,10 @@
         {
             $url    = Yii::app()->createUrl('conversations/default/changeIsClosed', array('id' => $conversationId));
             $script = "
-                    $('input[name=" . self::getRadioButtonListName($conversationId) . "]').change(function() {
-                        $.ajax({
+                    $('input[name=" . self::getRadioButtonListName($conversationId) . "]').change(function()
+                    {
+                        $.ajax(
+                        {
                             url: '{$url}',
                             type: 'GET',
                             success: " . self::resolveOnSuccessScript() . ",
@@ -116,6 +118,7 @@
 
         protected static function resolveOnSuccessScript()
         {
+            // Begin Not Coding Standard
             $script = "
                 function(data)
                 {
@@ -129,6 +132,7 @@
                     );
                     $('#CommentInlineEditForModelView').toggle();
                 }";
+            // End Not Coding Standard
             return $script;
         }
 

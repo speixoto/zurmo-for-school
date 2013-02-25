@@ -301,7 +301,7 @@
         return $problems;
     }
 
-    function findFileNameToCategoryToMessage($path, $forcedCategory='Default')
+    function findFileNameToCategoryToMessage($path, $forcedCategory = 'Default')
     {
         assert('is_string($path)');
         assert('is_dir   ($path)');
