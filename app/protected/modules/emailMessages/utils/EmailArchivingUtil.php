@@ -209,12 +209,10 @@
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $user);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    $user);
             $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', $user);
-            $userCanAccessUsers    = RightsUtil::canUserAccessModule('UsersModule',    $user);
             return self::getPersonsAndAccountsByEmailAddress($emailAddress,
                                                                  $userCanAccessContacts,
                                                                  $userCanAccessLeads,
-                                                                 $userCanAccessAccounts,
-                                                                 $userCanAccessUsers);
+                                                                 $userCanAccessAccounts);
         }
 
         /**
@@ -223,20 +221,17 @@
          * @param boolean $userCanAccessContacts
          * @param boolean $userCanAccessLeads
          * @param boolean $userCanAccessAccounts
-         * @param boolean $userCanAccessUsers
          * @return Contact || Account || User || NULL || array of objects
          */
         public static function getPersonsAndAccountsByEmailAddress($emailAddress,
                                                                    $userCanAccessContacts  = false,
                                                                    $userCanAccessLeads     = false,
-                                                                   $userCanAccessAccounts  = false,
-                                                                   $userCanAccessUsers     = false)
+                                                                   $userCanAccessAccounts  = false)
         {
             assert('is_string($emailAddress)');
             assert('is_bool($userCanAccessContacts)');
             assert('is_bool($userCanAccessLeads)');
             assert('is_bool($userCanAccessAccounts)');
-            assert('is_bool($userCanAccessUsers)');
             $personsAndAccounts    = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
             {
@@ -250,11 +245,10 @@
                 $personsAndAccounts = array_merge($personsAndAccounts,
                                                   AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1));
             }
-            if ($userCanAccessUsers)
-            {
-                $personsAndAccounts = array_merge($personsAndAccounts,
-                                                  UserSearch::getUsersByEmailAddress($emailAddress));
-            }
+
+            $personsAndAccounts = array_merge($personsAndAccounts,
+                                              UserSearch::getUsersByEmailAddress($emailAddress));
+
             return $personsAndAccounts;
         }
 
@@ -264,20 +258,18 @@
          * @param boolean $userCanAccessContacts
          * @param boolean $userCanAccessLeads
          * @param boolean $userCanAccessAccounts
-         * @param boolean $userCanAccessUsers
          * @return Contact || Account || User || NULL
          */
         public static function resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                       $userCanAccessContacts = false,
                                                                       $userCanAccessLeads = false,
-                                                                      $userCanAccessAccounts = false,
-                                                                      $userCanAccessUsers = false)
+                                                                      $userCanAccessAccounts = false)
         {
             assert('is_string($emailAddress)');
             assert('is_bool($userCanAccessContacts)');
             assert('is_bool($userCanAccessLeads)');
             assert('is_bool($userCanAccessAccounts)');
-            assert('is_bool($userCanAccessUsers)');
+
             $personOrAccount   = null;
             $contactsOrLeads   = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
@@ -306,11 +298,7 @@
                 }
                 else
                 {
-                    $users = array();
-                    if ($userCanAccessUsers)
-                    {
-                        $users = UserSearch::getUsersByEmailAddress($emailAddress);
-                    }
+                    $users = UserSearch::getUsersByEmailAddress($emailAddress);
                     if (count($users))
                     {
                         $personOrAccount = $users[0];
