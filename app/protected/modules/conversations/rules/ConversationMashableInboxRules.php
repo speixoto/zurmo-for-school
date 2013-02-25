@@ -26,6 +26,8 @@
 
     class ConversationMashableInboxRules extends MashableInboxRules
     {
+        public $shouldRenderCreateAction = true;
+
         public function getUnreadCountForCurrentUser()
         {
             return ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
@@ -134,7 +136,8 @@
         public function getMassOptions()
         {
             return array(
-                          'closeSelected' => array('label' => Zurmo::t('ConversationsModule', 'Close selected'), 'isActionForAll' => false),
+                          'closeSelected' => array('label' => Zurmo::t('ConversationsModule', 'Mark selected as closed'),
+                                                   'isActionForAll' => false),
                     );
         }
 

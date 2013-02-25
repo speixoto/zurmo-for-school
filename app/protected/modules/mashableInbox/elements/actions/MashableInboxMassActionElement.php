@@ -34,8 +34,10 @@
         public function render()
         {
             $defaultMassOptions  = array(
-                          'markRead'      => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected read'), 'isActionForAll' => false),
-                          'markUnread'    => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected unread'), 'isActionForAll' => false),
+                          'markRead'      => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as read'),
+                                                   'isActionForAll' => false),
+                          'markUnread'    => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as unread'),
+                                                   'isActionForAll' => false),
                     );
             $massOptions = $defaultMassOptions;
             if ($this->getModelClassName() !== null)

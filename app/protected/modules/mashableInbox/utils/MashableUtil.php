@@ -93,25 +93,29 @@
             return $unreadCount;
         }
 
-        public static function getSearchAttributesDataByModelClassNames($modelClassNames, $filteredBy, $searchTerm = '')
+        public static function getSearchAttributeMetadataForMashableInboxByModelClassName($modelClassNames, $filteredBy, $searchTerm = '')
         {
-            assert('is_array($modelClassNames)');
-            assert('$filteredBy == MashableInboxForm::FILTERED_BY_ALL || $filteredBy == MashableInboxForm::FILTERED_BY_UNREAD');
             $modelClassNamesAndSearchAttributeData = array();
             foreach ($modelClassNames as $modelClassName)
             {
-                $mashableActivityRules =
-                        static::createMashableInboxRulesByModel($modelClassName);
-                $searchAttributesData =
-                        $mashableActivityRules->getSearchAttributeData($searchTerm);
-                $metadataFilteredBy =
-                        $mashableActivityRules->getMetadataFilteredByFilteredBy($filteredBy);
-                $searchAttributesDataAndByFiltered = static::mergeMetada($searchAttributesData, $metadataFilteredBy);
-                $modelClassNamesAndSearchAttributeData[] = array($modelClassName => $searchAttributesDataAndByFiltered);
+                $mashableActivityRules
+                    = static::createMashableInboxRulesByModel($modelClassName);
+                $metadataForMashableInbox
+                    = $mashableActivityRules->getMetadataForMashableInbox();
+                $searchAttributesData
+                    = $mashableActivityRules->getSearchAttributeData($searchTerm);
+                $metadataForMashableInboxAndSearch
+                    = static::mergeMetada($metadataForMashableInbox, $searchAttributesData);
+                $metadataFilteredBy
+                    = $mashableActivityRules->getMetadataFilteredByFilteredBy($filteredBy);
+                $searchAttributesDataAndByFiltered
+                    = static::mergeMetada($metadataForMashableInboxAndSearch, $metadataFilteredBy);
+                $modelClassNamesAndSearchAttributeData[]
+                    = array($modelClassName => $searchAttributesDataAndByFiltered);
             }
             return $modelClassNamesAndSearchAttributeData;
         }
-
+        
         public static function getSortAttributesByMashableInboxModelClassNames($modelClassNames)
         {
             assert('is_array($modelClassNames)');

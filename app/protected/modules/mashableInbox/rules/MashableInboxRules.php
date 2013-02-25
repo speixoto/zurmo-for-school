@@ -52,6 +52,11 @@
             return null;
         }
 
+        public function getMetadataForMashableInbox()
+        {
+            return null;
+        }
+
         public function getListViewClassName()
         {
             $modelClassName  = $this->getModelClassName();

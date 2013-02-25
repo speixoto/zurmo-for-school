@@ -82,31 +82,41 @@
             $this->assertEquals($count, 38);
         }
 
-        public function testGetSearchAttributesDataByModelClassNames()
+        public function testGetSearchAttributeMetadataForMashableInboxByModelClassName()
         {
+            $metadataMashableInboxForModel1
+                = array(
+                    'clauses'       => array(1 => 'testMetadataForMashableInboxModel1'),
+                    'structure'     => '1',
+                );
             $searchAttributeDataForModel1
                 = array(
                     'clauses'       => array(1 => 'testSearchClauseForModel1'),
                     'structure'     => '1',
-            );
+                );
             $metadataFilteredByFilteredByForModel1
                 = array(
                     'clauses'       => array(1 => 'testClauseForFilteredByForModel1'),
                     'structure'     => '1',
-            );
+                );
             $searchAttributeDataForModel2
                 = array(
                     'clauses'       => array(1 => 'testSearchClauseForModel2'),
                     'structure'     => '1',
-            );
+                );
             $metadataFilteredByFilteredByForModel2
                 = array(
                     'clauses'       => array(1 => 'testClauseForFilteredByForModel2'),
                     'structure'     => '1',
-            );
+                );
             $rules
-                = $this->getMock('ConversationMashableInboxRules', array('getSearchAttributeData',
+                = $this->getMock('ConversationMashableInboxRules', array('getMetadataForMashableInbox',
+                                                                         'getSearchAttributeData',
                                                                          'getMetadataFilteredByFilteredBy'));
+            $rules
+                ->expects($this->exactly(2))
+                ->method('getMetadataForMashableInbox')
+                ->will($this->onConsecutiveCalls($metadataMashableInboxForModel1, null));
             $rules
                 ->expects($this->exactly(2))
                 ->method('getSearchAttributeData')
@@ -122,14 +132,15 @@
                 ->method('createMashableInboxRulesByModel')
                 ->will($this->returnValue($rules));
             $searchAttributesData
-                = $mashableUtil::getSearchAttributesDataByModelClassNames(
+                = $mashableUtil::getSearchAttributeMetadataForMashableInboxByModelClassName(
                                       array('model1', 'model2'),
                                       MashableInboxForm::FILTERED_BY_ALL);
             $this->assertEquals(
                     array('model1' => array(
-                                        'clauses'   => array(1 => 'testSearchClauseForModel1',
-                                                             2 => 'testClauseForFilteredByForModel1'),
-                                        'structure' => '(1) and (2)')),
+                                        'clauses'   => array(1 => 'testMetadataForMashableInboxModel1',
+                                                             2 => 'testSearchClauseForModel1',
+                                                             3 => 'testClauseForFilteredByForModel1'),
+                                        'structure' => '((1) and (2)) and (3)')),
                    $searchAttributesData[0]);
             $this->assertEquals(
                     array('model2' => array(

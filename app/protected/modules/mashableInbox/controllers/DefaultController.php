@@ -125,8 +125,8 @@
         {
             $modelClassNames
                 = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
-            $modelClassNamesAndSearchAttributeData
-                = MashableUtil::getSearchAttributesDataByModelClassNames(
+            $modelClassNamesAndSearchAttributeMetadataForMashableInbox
+                = MashableUtil::getSearchAttributeMetadataForMashableInboxByModelClassName(
                                                 $modelClassNames,
                                                 $mashableInboxForm->filteredBy,
                                                 $mashableInboxForm->searchTerm);
@@ -136,7 +136,7 @@
                 = new RedBeanModelsDataProvider('MashableInbox',
                                                 $modelClassNamesAndSortAttributes,
                                                 true,
-                                                $modelClassNamesAndSearchAttributeData,
+                                                $modelClassNamesAndSearchAttributeMetadataForMashableInbox,
                                                 array('pagination' => array('pageSize' => $pageSize)));
             $listView
                 = new MashableInboxListView($this->getId(),

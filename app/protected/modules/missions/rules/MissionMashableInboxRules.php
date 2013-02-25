@@ -26,7 +26,8 @@
 
     class MissionMashableInboxRules extends MashableInboxRules
     {
-
+        public $shouldRenderCreateAction = true;
+        
         private function getMetadataForUnreadForCurrentUser()
         {
             $searchAttributeData['clauses'] = array(
@@ -52,6 +53,29 @@
                 ),
             );
             $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
+            return $searchAttributeData;
+        }
+
+        public function getMetadataForMashableInbox()
+        {
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id
+                ),
+                2 => array(
+                    'attributeName'        => 'takenByUser',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id,
+                ),
+                3 => array(
+                    'attributeName'        => 'takenByUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
+            );
+            $searchAttributeData['structure'] = '1 or 2 or 3';
             return $searchAttributeData;
         }
 
