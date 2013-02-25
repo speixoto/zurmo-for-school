@@ -25,16 +25,16 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the available modules that can be reported on
+     * Element for displaying the available modules that can be used by a wizard module such as reporting or workflow
      */
-    class ModuleForReportStaticDropDownElement extends ModuleForWizardModelStaticDropDownElement
+    abstract class ModuleForWizardModelStaticDropDownElement extends StaticDropDownFormElement
     {
         /**
-         * @return array
+         * @return string
          */
-        protected function getDropDownArray()
+        protected function getFormattedAttributeLabel()
         {
-            return Report::getReportableModulesAndLabelsForCurrentUser();
+            return Yii::app()->format->text(Zurmo::t('Core', 'Module'));
         }
     }
 ?>
