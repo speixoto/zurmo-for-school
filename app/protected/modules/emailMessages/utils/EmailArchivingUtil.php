@@ -210,9 +210,9 @@
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    $user);
             $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', $user);
             return self::getPersonsAndAccountsByEmailAddress($emailAddress,
-                                                                 $userCanAccessContacts,
-                                                                 $userCanAccessLeads,
-                                                                 $userCanAccessAccounts);
+                                                             $userCanAccessContacts,
+                                                             $userCanAccessLeads,
+                                                             $userCanAccessAccounts);
         }
 
         /**
