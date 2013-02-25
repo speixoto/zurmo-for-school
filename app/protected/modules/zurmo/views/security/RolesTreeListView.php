@@ -67,7 +67,7 @@
                 $content .= '<td class="level-' . $indent . '">';
                 $content .= $node['link'];
                 $content .= '</td>';
-                $content .= '<td class="user-count">';
+                $content .= '<td>';
                 $content .= static::renderUserCount($node['userCount'], $node['route']);
                 $content .= '</td>';
                 $content .= '<td>';
