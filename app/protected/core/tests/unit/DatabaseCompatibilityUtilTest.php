@@ -399,7 +399,7 @@
                                                                                              $this->temporaryDatabaseUsername,
                                                                                              $this->temporaryDatabasePassword,
                                                                                              $this->temporaryDatabasePort);
-            $this->assertGreaterThan(0, $maxSpRecursionDepth);
+            $this->assertGreaterThanOrEqual(0, $maxSpRecursionDepth);
         }
 
         public function testGetDatabaseThreadStackValue()
