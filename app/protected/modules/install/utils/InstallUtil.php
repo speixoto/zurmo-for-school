@@ -696,6 +696,26 @@
                                              $contents);
                 }
             }
+
+            $installSettingsForm = new InstallSettingsForm();
+            $installSettingsForm->databaseHostname = $databaseHost;
+            $installSettingsForm->databaseUsername = $username;
+            $installSettingsForm->databasePassword = $password;
+            $installSettingsForm->databasePort     = $port;
+            $maxSpRecursionDepthServiceHelper = new DatabaseMaxSpRecursionDepthServiceHelper($installSettingsForm);
+            if ($maxSpRecursionDepthServiceHelper->runCheckAndGetIfSuccessful())
+            {
+                $contents = preg_replace('/\$securityOptimized\s*=\s*false;/',
+                    '$securityOptimized = true;',
+                    $contents);
+            }
+            else
+            {
+                $contents = preg_replace('/\$securityOptimized\s*=\s*true;/',
+                    '$securityOptimized = false;',
+                    $contents);
+            }
+
             file_put_contents($debugConfigFile, $contents);
 
             $contents = file_get_contents($perInstanceConfigFile);
