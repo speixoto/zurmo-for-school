@@ -90,7 +90,7 @@ EOD;
                         $contents);
                 file_put_contents(INSTANCE_ROOT . '/protected/config/perInstanceTest.php', $contents);
             }
-            
+
             if (!strpos($contents, '$authenticationTestSettings'))
             {
                 $authenticationTestSettings = <<<EOD

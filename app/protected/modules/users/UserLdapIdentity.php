@@ -31,6 +31,7 @@
     class UserLdapIdentity extends UserIdentity
     {
         const ERROR_NO_RIGHT_WEB_LOGIN = 3;
+
         /**
          * Authenticates a user against ldap server.
          * @return boolean whether authentication succeeds.
@@ -44,22 +45,22 @@
                 $baseDomain                = Yii::app()->authenticationHelper->ldapBaseDomain;
                 $bindPassword              = Yii::app()->authenticationHelper->ldapBindPassword;
                 $bindRegisteredDomain      = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
-                $ldapConnection            = LdapUtil::establishConnection($host,$port,$bindRegisteredDomain,
-                                                                           $bindPassword,$baseDomain);
-                if($ldapConnection)
+                $ldapConnection            = LdapUtil::establishConnection($host, $port, $bindRegisteredDomain,
+                                                                           $bindPassword, $baseDomain);
+                if ($ldapConnection)
                 {
                     $ldapFilter              = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))';
-                    $ldapResults             = ldap_search($ldapConnection, $baseDomain,$ldapFilter);
-                    $ldapResultsCount        = ldap_count_entries($ldapConnection,$ldapResults);
+                    $ldapResults             = ldap_search($ldapConnection, $baseDomain, $ldapFilter);
+                    $ldapResultsCount        = ldap_count_entries($ldapConnection, $ldapResults);
                     if ($ldapResultsCount > 0)
                     {
                         $result = @ldap_get_entries($ldapConnection, $ldapResults);
                         $zurmoLogin = parent::authenticate();
-                        if(!$zurmoLogin)
+                        if (!$zurmoLogin)
                         {
                            if ($result[0] && @ldap_bind($ldapConnection, $result[0]['dn'], $this->password))
                             {
-                              if($this->errorCode != 1)
+                              if ($this->errorCode != 1)
                               {
                                  $this->setState('username', $this->username);
                                  $this->errorCode = self::ERROR_NONE;

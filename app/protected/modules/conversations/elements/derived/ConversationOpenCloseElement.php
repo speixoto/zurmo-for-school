@@ -72,8 +72,8 @@
                             self::getRadioButtonListName($conversation->id),
                             $conversation->resolveIsClosedForNull(),
                             self::getDropDownArray(),
-                            array('separator' =>'',
-                                  'template'  =>'<div class="switch-state clearfix">{input}{label}</div>'));
+                            array('separator' => '',
+                                  'template'  => '<div class="switch-state clearfix">{input}{label}</div>'));
             return ZurmoHtml::tag('div', array('class' => 'switch'), $content);
         }
 
@@ -117,7 +117,8 @@
         protected static function resolveOnSuccessScript()
         {
             $script = "
-                function(data){
+                function(data)
+                {
                     $('#FlashMessageBar').jnotifyAddMessage(
                         {
                             text: '" . CJavaScript::quote(Zurmo::t('ConversationsModule', 'Conversation status was changed.')) . "',
@@ -127,7 +128,7 @@
                         }
                     );
                     $('#CommentInlineEditForModelView').toggle();
-                 }";
+                }";
             return $script;
         }
 

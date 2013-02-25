@@ -24,32 +24,37 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserTestHelper
+    class HasOneModelAttributesAdapterTest extends ZurmoBaseTest
     {
-        public static function createBasicUser($name)
+        public static function setUpBeforeClass()
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function createBasicUserWithManager($name, $manager)
+        /**
+         * Test account  attribute that is a hasOne relation off of Opportunity
+         */
+        public function testModifyingAHasOneModelRelationDoesNotCreateNewAttribute()
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->manager = $manager;
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            $opportunity = new Opportunity(false);
+            $this->assertEquals(15, count($opportunity->getAttributes()));
+            $validated   = $opportunity->validate();
+            $this->assertFalse($validated);
+            $this->assertEquals(6, count($opportunity->getErrors()));
+
+            $attributeForm = AttributesFormFactory::createAttributeFormByAttributeName($opportunity, 'account');
+            $this->assertFalse($attributeForm->isRequired);
+            $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
+            $adapter = new $modelAttributesAdapterClassName(new Opportunity());
+            $attributeForm->isRequired = true;
+            $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $opportunity = new Opportunity(false);
+            $this->assertEquals(15, count($opportunity->getAttributes()));
+            $validated = $opportunity->validate();
+            $this->assertFalse($validated);
+            $this->assertEquals(7, count($opportunity->getErrors()));
         }
     }
+?>

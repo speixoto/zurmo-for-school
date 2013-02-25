@@ -62,7 +62,7 @@
     $common_config['components']['request']['class']                   = 'application.tests.HttpRequestForTesting';
     $common_config['components']['request']['enableCsrfValidation']    = false; //todo: get this working, since for production this is true.
     $common_config['components']['request']['enableCookieValidation']  = false;
-    $common_config['components']['emailHelper']['class']               = 'application.tests.EmailHelperForTesting';    
+    $common_config['components']['emailHelper']['class']               = 'application.tests.EmailHelperForTesting';
     //Set the GeoCodeApiKey to null which will work for localhost requests. If this is not running on
     //localhost, then modify perInstanceConfig.php with an updated key.
     if (!isset($common_config['params']['testGoogleGeoCodeApiKey']))
@@ -74,12 +74,12 @@
     {
         $common_config['params']['emailTestAccounts'] = $emailTestAccounts;
     }
-	
+
     if (isset($authenticationTestSettings) && !empty($authenticationTestSettings))
     {
         $common_config['params']['authenticationTestSettings'] = $authenticationTestSettings;
     }
-	
+
     if (isset($testApiUrl))
     {
         $common_config['params']['testApiUrl'] = $testApiUrl;

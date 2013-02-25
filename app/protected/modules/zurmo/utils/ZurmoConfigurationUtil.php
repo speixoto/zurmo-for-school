@@ -53,7 +53,7 @@
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
-            $metadata = $moduleName::getMetadata();                        
+            $metadata = $moduleName::getMetadata();
             if (isset($metadata['global']) && isset($metadata['global'][$key]))
             {
                 return $metadata['global'][$key];

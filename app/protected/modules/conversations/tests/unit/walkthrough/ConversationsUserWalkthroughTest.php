@@ -237,15 +237,7 @@
                                      'relatedModelRelationName'   => 'comments',
                                      'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name 2')));
-            try
-            {
-                $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
-                $this->fail();
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                //success.
-            }
+            $content = $this->runControllerWithAccessDeniedSecurityExceptionAndGetContent('comments/default/inlineCreateSave');
 
             //Add mary as a participant.
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -549,7 +541,11 @@
             $conversations                          = Conversation::getAll();
             $this->assertEquals(2, count($conversations));
             $this->assertEquals(0, $conversations[0]->comments->count());
-            $initalQueued                           = Yii::app()->emailHelper->getQueuedCount();
+            foreach (EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $initalQueued                           = 0;
             $conversation                           = $conversations[0];
             $conversationParticipant                = new ConversationParticipant();
             $conversationParticipant->person        = $steven;
@@ -579,6 +575,5 @@
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->textContent);
         }
-
     }
 ?>

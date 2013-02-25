@@ -251,7 +251,7 @@
                            array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'testString'))),
                            'column_9' => array('type' => 'importColumn', 'attributeIndexOrDerivedType' => 'firstName',
                            'mappingRulesData' =>
-                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'testfirstName'))),                            
+                           array('DefaultValueModelAttributeMappingRuleForm' => array('defaultValue' => 'testfirstName'))),
             );
             $data = MappingRuleFormAndElementTypeUtil::
                     makeFormsAndElementTypesByMappingDataAndImportRulesType($mappingData, 'ImportModelTestItem');
@@ -275,7 +275,7 @@
             $this->assertEquals('testString',          $data['column_8'][0]['mappingRuleForm']->defaultValue);
             $this->assertEquals('Text',                $data['column_8'][0]['elementType']);
             $this->assertEquals('testfirstName',       $data['column_9'][0]['mappingRuleForm']->defaultValue);
-            $this->assertEquals('Text',                $data['column_9'][0]['elementType']);             
+            $this->assertEquals('Text',                $data['column_9'][0]['elementType']);
         }
 
         public function testValidateMappingRuleForms()

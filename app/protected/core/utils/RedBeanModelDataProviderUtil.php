@@ -61,15 +61,15 @@
                 $pageSize
             );
         }
-        
+
         /*
-        *resolves the configArray for pageSize param,if not set then by default 
-        *pageSize set to unlimited        
+        *resolves the configArray for pageSize param,if not set then by default
+        *pageSize set to unlimited
         */
         protected static function resolveConfigForPageSize($pageSize)
         {
             assert('is_int($pageSize) || $pageSize == null');
-            if($pageSize != null)
+            if ($pageSize != null)
             {
                 return  array(
                         'pagination' => array(
@@ -79,7 +79,7 @@
             }
             else
             {
-                return array(); 
+                return array();
             }
         }
     }

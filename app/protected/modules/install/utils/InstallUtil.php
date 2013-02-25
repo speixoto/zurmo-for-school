@@ -567,7 +567,6 @@
         {
             $user = new User();
             $user->username     = $username;
-            $user->title->value = 'Mr.';
             $user->firstName    = 'Super';
             $user->lastName     = 'User';
             $user->setPassword($password);
@@ -991,7 +990,7 @@
                     $errors = $form->getErrors();
                     foreach ($errors as $fieldErrors)
                     {
-                        foreach($fieldErrors as $fieldError)
+                        foreach ($fieldErrors as $fieldError)
                         {
                             $messageStreamer->add($fieldError);
                         }

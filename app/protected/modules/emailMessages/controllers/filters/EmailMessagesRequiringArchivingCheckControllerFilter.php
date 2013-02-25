@@ -40,7 +40,7 @@
             {
                 return true;
             }
-            //Added some logic for watching there is last unmatched mail deleted            
+            //Added some logic for watching there is last unmatched mail deleted
             $pageSize         = null;
             $emailMessage     = new EmailMessage(false);
             $searchAttributes = array();
@@ -57,18 +57,17 @@
                 true,
                 $pageSize
             );
-            $data=$dataProvider->getData();
-            if(($n=count($data))>0)
-            {              
+            $data = $dataProvider->getData();
+            if (count($data) > 0)
+            {
               return true;
             }
-            $modelClassName    = $this->controller->getModule()->getPrimaryModelName();
-            $messageView = new ZeroEmailMessagesRequiringArchivingView();            
+            $messageView = new ZeroEmailMessagesRequiringArchivingView();
             $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
             $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
                                                  makeStandardViewForCurrentUser($this->controller, $messageView));
-            echo $view->render();                       
+            echo $view->render();
             return false;
-        }                
+        }
     }
 ?>
