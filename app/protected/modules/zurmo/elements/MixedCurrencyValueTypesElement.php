@@ -29,26 +29,23 @@
      */
     class MixedCurrencyValueTypesElement extends MixedNumberTypesElement
     {
-        /**
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        protected function renderEditableFirstValueContent()
         {
-           $content      = parent::renderControlEditable();
+            $content = parent::renderEditableFirstValueContent();
             $htmlOptions = array(
                 'id'              => $this->getCurrencyIdForValueEditableInputId(),
                 'empty'           => Zurmo::t('Core', '(None)'),
-           );
-           $data         = Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(
-                                                           (int)$this->model->currencyIdForValue);
-           $content     .= ZurmoHtml::dropDownList($this->getCurrencyIdForValueEditableInputName(),
-                                                   $this->model->currencyIdForValue,
-                                                   $data,
-                                                   $htmlOptions
-                                                   );
-           $error        = $this->form->error($this->model, 'currencyIdForValue',
-                                              array('inputID' => $this->getCurrencyIdForValueEditableInputId()));
-           return $content . $error;
+            );
+            $data         = Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(
+                (int)$this->model->currencyIdForValue);
+            $content     .= ZurmoHtml::dropDownList($this->getCurrencyIdForValueEditableInputName(),
+                $this->model->currencyIdForValue,
+                $data,
+                $htmlOptions
+            );
+            $error        = $this->form->error($this->model, 'currencyIdForValue',
+                array('inputID' => $this->getCurrencyIdForValueEditableInputId()));
+            return $content . $error;
         }
 
         protected function getCurrencyIdForValueEditableInputId()
