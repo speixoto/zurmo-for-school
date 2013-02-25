@@ -25,56 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Display radio buttons for selecting the module for a report.
+     * Display radio buttons for selecting the module for a workflow.
      * @see ModuleForWorkflowWizardView
      */
-    class ModuleForWorkflowRadioDropDownElement extends Element
+    class ModuleForWorkflowRadioDropDownElement extends ModuleForWizardModelRadioDropDownElement
     {
-        /**
-         * Renders the setting as a radio list.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
-        {
-            $content = $this->form->radioButtonList(
-                $this->model,
-                $this->attribute,
-                $this->getArray(),
-                $this->getEditableHtmlOptions()
-            );
-            return $content;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Override to ensure label is pointing to the right input id
-         * @return A string containing the element's label
-         */
-        protected function renderLabel()
-        {
-            if ($this->form === null)
-            {
-                throw new NotImplementedException();
-            }
-            return null;
-        }
-
-        public function getEditableHtmlOptions()
-        {
-            $htmlOptions = array(
-                'name'           => $this->getEditableInputName(),
-                'id'             => $this->getEditableInputId(),
-                'ignoreIdPrefix' => true,
-                'separator'      => ''
-            );
-            $htmlOptions['template'] =  '<div class="radio-input">{input}{label}</div>';
-            return $htmlOptions;
-        }
-
         protected function getArray()
         {
             return Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();

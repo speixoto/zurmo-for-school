@@ -119,9 +119,10 @@
 
         protected function renderAttributeSelectorContentAndWrapper()
         {
-            $element                   = new TimeTriggerAttributeStaticDropDownElement($this->model,
-                                         'timeTriggerAttribute', $this->form, array('addBlank' => true));
-            $attributeSelectorContent  = $element->render();
+            $element                    = new TimeTriggerAttributeStaticDropDownElement($this->model,
+                                          'timeTriggerAttribute', $this->form, array('addBlank' => true));
+            $element->editableTemplate  = '{content}{error}';
+            $attributeSelectorContent   = $element->render();
             return ZurmoHtml::tag('div', array('class' => 'time-trigger-attribute-selector-container'),
                                          $attributeSelectorContent);
         }

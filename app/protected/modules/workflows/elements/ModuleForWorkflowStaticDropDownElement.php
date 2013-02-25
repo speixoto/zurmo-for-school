@@ -27,7 +27,7 @@
     /**
      * Element for displaying the available modules that can be used for workflow rules
      */
-    class ModuleForWorkflowStaticDropDownElement extends StaticDropDownFormElement
+    class ModuleForWorkflowStaticDropDownElement extends ModuleForWizardModelStaticDropDownElement
     {
         /**
          * @return array
@@ -35,14 +35,6 @@
         protected function getDropDownArray()
         {
             return Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
-        }
-
-        /**
-         * @return string
-         */
-        protected function getFormattedAttributeLabel()
-        {
-            return Yii::app()->format->text(Zurmo::t('Core', 'Module'));
         }
     }
 ?>
