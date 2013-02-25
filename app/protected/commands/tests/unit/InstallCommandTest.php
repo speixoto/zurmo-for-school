@@ -74,6 +74,8 @@
             unlink($perInstanceConfigFile);
             file_put_contents($perInstanceConfigFile, $this->originalPerInstanceConfiguration);
             file_put_contents($debugConfigFile, $this->originalDebugConfiguration);
+            chmod($perInstanceConfigFile, 0777);
+            chmod($debugConfigFile, 0777);
             parent::tearDown();
         }
 
