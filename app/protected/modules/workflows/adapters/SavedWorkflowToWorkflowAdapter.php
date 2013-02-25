@@ -58,21 +58,19 @@
             return $workflow;
         }
 
-        public static function resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow)
+        public static function resolveWorkflowToSavedWorkflow(Workflow $workflow, SavedWorkflow $savedWorkflow)
         {
             $savedWorkflow->description     = $workflow->getDescription();
             $savedWorkflow->moduleClassName = $workflow->getModuleClassName();
             $savedWorkflow->name            = $workflow->getName();
-            $savedWorkflow->owner           = $workflow->getOwner();
             $savedWorkflow->type            = $workflow->getType();
-
             $data = array();
             $data['triggersStructure']      = $workflow->getTriggersStructure();
             $data[ComponentForWorkflowForm::TYPE_TRIGGERS]                     =
                   self::makeArrayFromComponentFormsAttributesData($workflow->getTriggers());
             $data[ComponentForWorkflowForm::TYPE_ACTIONS]                      =
                   self::makeArrayFromComponentFormsAttributesData($workflow->getActions());
-            if($workflow->getTimeTrigger()->type != null)
+            if($workflow->getTimeTrigger() != null)
             {
                 $data['timeTrigger'] = self::makeArrayFromTimeTriggerForWorkflowFormAttributesData(
                                        $workflow->getTimeTrigger());

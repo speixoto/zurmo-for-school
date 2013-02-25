@@ -35,6 +35,8 @@
 
         const AVAILABLE_OPERATORS_TYPE_DROPDOWN = 'DropDown';
 
+        const AVAILABLE_OPERATORS_TYPE_HAS_ONE  = 'HasOne';
+
         public static function resolveOperatorsToIncludeByType(& $data, $type)
         {
             $data[OperatorRules::TYPE_EQUALS] =
@@ -71,6 +73,10 @@
             {
                 $data[OperatorRules::TYPE_ONE_OF] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ONE_OF);
+            }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            {
+                return;
             }
             else
             {
@@ -240,7 +246,7 @@
                     switch(get_class($validator))
                     {
                         case 'CBooleanValidator':
-                            return null;
+                            return static::getAvailableOperatorsTypeForBoolean();
 
                         case 'CEmailValidator':
                             return self::AVAILABLE_OPERATORS_TYPE_STRING;
@@ -293,6 +299,11 @@
                 default :
                     null;
             }
+        }
+
+        protected static function getAvailableOperatorsTypeForBoolean()
+        {
+            return null;
         }
     }
 ?>

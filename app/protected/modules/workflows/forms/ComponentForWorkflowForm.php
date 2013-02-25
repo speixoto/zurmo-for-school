@@ -324,7 +324,7 @@
 
                     $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                             make($moduleClassName, $modelClassName, $this->workflowType);
-                    if($modelToWorkflowAdapter->isWorkflowedOnAsARelation($relationOrAttribute))
+                    if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                     {
                         $modelClassName   = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName  = $modelToWorkflowAdapter->getRelationModuleClassName($relationOrAttribute);
@@ -431,7 +431,7 @@
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($moduleClassName, $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isWorkflowedOnAsARelation($relationOrAttribute))
+                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToWorkflowAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
@@ -454,7 +454,7 @@
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($moduleClassName, $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isWorkflowedOnAsARelation($relationOrAttribute))
+                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToWorkflowAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
@@ -477,7 +477,7 @@
                 $lastModelClassName = $modelClassName;
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($modelClassName::getModuleClassName(), $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isWorkflowedOnAsARelation($relationOrAttribute))
+                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                 {
                     $modelClassName     = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
                 }

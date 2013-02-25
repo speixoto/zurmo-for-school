@@ -124,9 +124,9 @@
             }
             $breadcrumbLinks = array(Zurmo::t('WorkflowsModule', 'Create'));
             assert('is_string($type)');
-            $wizard           = new Workflow();
-            $wizard->setType($type);
-            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($wizard);
+            $workflow         = new Workflow();
+            $workflow->setType($type);
+            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
             $view             = new WorkflowsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                     $this,
@@ -140,9 +140,9 @@
         {
             $savedWorkflow      = SavedWorkflow::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
-            $breadcrumbLinks  = array(strval($savedWorkflow));
-            $wizard           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
-            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($wizard);
+            $breadcrumbLinks    = array(strval($savedWorkflow));
+            $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+            $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
             $view             = new WorkflowsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
                                                     $this,
@@ -156,16 +156,16 @@
         {
             $postData                  = PostUtil::getData();
             $savedWorkflow             = null;
-            $wizard                    = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $wizard, $type, $id);
+            $workflow                  = null;
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
 
-            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($wizard);
+            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $model                     =  $workflowToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
             {
                 $this->actionValidate($postData, $model);
             }
-            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($wizard, $savedWorkflow);
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
             if($savedWorkflow->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
@@ -186,11 +186,11 @@
         {
             $postData      = PostUtil::getData();
             $savedWorkflow = null;
-            $wizard        = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $wizard, $type, $id);
+            $workflow        = null;
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
             if($nodeId != null)
             {
-                $wizardToTreeAdapter = new WorkflowRelationsAndAttributesToTreeAdapter($wizard, $treeType);
+                $wizardToTreeAdapter = new WorkflowRelationsAndAttributesToTreeAdapter($workflow, $treeType);
                 echo ZurmoTreeView::saveDataAsJson($wizardToTreeAdapter->getData($nodeId));
                 Yii::app()->end(0, false);
             }
@@ -205,18 +205,18 @@
         {
             $postData                           = PostUtil::getData();
             $savedWorkflow                      = null;
-            $wizard                             = null;
-            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $wizard, $type, $id);
+            $workflow                           = null;
+            $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
             $nodeIdWithoutTreeType              = WorkflowRelationsAndAttributesToTreeAdapter::
                                                      removeTreeTypeFromNodeId($nodeId, $treeType);
-            $moduleClassName                    = $wizard->getModuleClassName();
+            $moduleClassName                    = $workflow->getModuleClassName();
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
-            $form                               = new WorkflowActiveForm();
+            $form                               = new WizardActiveForm();
             $form->enableAjaxValidation         = true; //ensures error validation populates correctly
 
-            $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($wizard->getType());
+            $wizardFormClassName                = WorkflowToWizardFormAdapter::getFormClassNameByType($workflow->getType());
             $model                              = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
-                                                      $modelClassName, $wizard->getType(), $treeType);
+                                                      $modelClassName, $workflow->getType(), $treeType);
             $form->modelClassNameForError       = $wizardFormClassName;
             $attribute                          = WorkflowRelationsAndAttributesToTreeAdapter::
                                                       resolveAttributeByNodeId($nodeIdWithoutTreeType);
@@ -260,22 +260,22 @@
             return true;
         }
 
-        protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $wizard, $type, $id = null)
+        protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow, $type, $id = null)
         {
             if($id == null)
             {
                 $this->resolveCanCurrentUserAccessWorkflows();
                 $savedWorkflow               = new SavedWorkflow();
-                $wizard                    = new Workflow();
-                $wizard->setType($type);
+                $workflow                    = new Workflow();
+                $workflow->setType($type);
             }
             else
             {
                 $savedWorkflow              = SavedWorkflow::getById(intval($id));
                 ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedWorkflow);
-                $wizard                     = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+                $workflow                   = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             }
-            DataToWorkflowUtil::resolveWorkflowByWizardPostData($wizard, $postData,
+            DataToWorkflowUtil::resolveWorkflowByWizardPostData($workflow, $postData,
                                     WorkflowToWizardFormAdapter::getFormClassNameByType($type));
         }
 

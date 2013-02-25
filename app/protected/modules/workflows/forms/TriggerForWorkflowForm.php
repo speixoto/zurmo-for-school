@@ -251,26 +251,30 @@
             }
             $type = $this->getAvailableOperatorsType();
             $data = array();
-            ModelAttributeToOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
-            if($this->workflowType == Workflow::TYPE_ON_SAVE && $this->getAttribute() != null)
+            ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
+            if($this->resolveShouldAddSpecialOnSaveNonRelatedOperators())
             {
                 $data[OperatorRules::TYPE_BECOMES]         = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES);
                 $data[OperatorRules::TYPE_WAS]             = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS);
                 $data[OperatorRules::TYPE_CHANGES]         = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CHANGES);
                 $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
             }
-            elseif($this->workflowType == Workflow::TYPE_BY_SAVE && $this->getAttribute() != null)
+            elseif($this->resolveShouldAddSpecialByTimeNonRelatedOperators())
             {
                 $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
             }
-            if($this->workflowType == Workflow::TYPE_ON_SAVE && $this->getAttribute() != null &&
+            if($this->resolveShouldAddSpecialOnSaveNonRelatedOperators() &&
                $type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
             {
                 $data[OperatorRules::TYPE_BECOMES_ONE_OF]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES_ONE_OF);
                 $data[OperatorRules::TYPE_WAS_ONE_OF]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS_ONE_OF);
             }
-            $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
-            $data[OperatorRules::TYPE_IS_NOT_EMPTY]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);
+            if($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
+               $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            {
+                $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
+                $data[OperatorRules::TYPE_IS_NOT_EMPTY]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);
+            }
             return $data;
         }
 
@@ -325,6 +329,7 @@
             }
             $modelToWorkflowAdapter          = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
             $availableOperatorsType        = $modelToWorkflowAdapter->getAvailableOperatorsType($this->getResolvedAttribute());
+            echo 'test' . $availableOperatorsType . "<BR>";
             $this->_availableOperatorsType = $availableOperatorsType;
             return $availableOperatorsType;
         }
@@ -405,6 +410,38 @@
                     $passedValidation = false;
                 }
             }
+        }
+
+        protected function resolveShouldAddSpecialOnSaveNonRelatedOperators()
+        {
+            $modelClassName = $this->modelClassName;
+            //todo: not needed once performance3 is complete
+            $model = new $modelClassName();
+            if(( $this->workflowType == Workflow::TYPE_ON_SAVE &&
+                $this->getAttribute() != null) ||
+                ($this->getAttribute() == null &&
+                    $this->getAttributeAndRelationData()) == 2 &&
+                    $model->isOwnedRelation($this->getPenultimateRelation()))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        protected function resolveShouldAddSpecialByTimeNonRelatedOperators()
+        {
+            $modelClassName = $this->modelClassName;
+            //todo: not needed once performance3 is complete
+            $model = new $modelClassName();
+            if(( $this->workflowType == Workflow::TYPE_BY_TIME &&
+                $this->getAttribute() != null) ||
+                ($this->getAttribute() == null &&
+                    $this->getAttributeAndRelationData()) == 2 &&
+                    $model->isOwnedRelation($this->getPenultimateRelation()))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

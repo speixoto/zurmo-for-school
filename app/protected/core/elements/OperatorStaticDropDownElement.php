@@ -84,7 +84,9 @@
                             secondValueArea.hide();
                             secondValueArea.find(':input, select').prop('disabled', true);
                         }
-                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
+                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "' ||
+                           $(this).val() == '" . OperatorRules::TYPE_BECOMES_ONE_OF . "' ||
+                           $(this).val() == '" . OperatorRules::TYPE_WAS_ONE_OF . "')
                         {
                             var newName = $(this).parent().parent().parent().find('.value-data')
                                           .find('.flexible-drop-down').attr('name') + '[]';
@@ -120,7 +122,12 @@
                          OperatorRules::TYPE_BETWEEN,
                          OperatorRules::TYPE_STARTS_WITH,
                          OperatorRules::TYPE_ENDS_WITH,
-                         OperatorRules::TYPE_CONTAINS);
+                         OperatorRules::TYPE_CONTAINS,
+                         OperatorRules::TYPE_BECOMES,
+                         OperatorRules::TYPE_WAS,
+                         OperatorRules::TYPE_BECOMES_ONE_OF,
+                         OperatorRules::TYPE_WAS_ONE_OF,
+                        );
         }
 
         public static function getValueTypesRequiringSecondInput()

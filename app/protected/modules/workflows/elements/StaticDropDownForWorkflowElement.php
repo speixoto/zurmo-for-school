@@ -25,47 +25,45 @@
      ********************************************************************************/
 
     /**
-     * Component form for a time trigger definition
+     * Element used by filters that can morph between a single select and a multi-select.
      */
-    class TimeTriggerForWorkflowForm extends TriggerForWorkflowForm
+    class StaticDropDownForWorkflowElement extends DataFromFormStaticDropDownFormElement
     {
         /**
-         * @var integer.  Example: Account name is xyz for 1 hour.  The duration seconds would be set to 3600
+         * @param TriggerForWorkflowForm $model
+         * @param string $attribute
+         * @param null $form
+         * @param array $params
          */
-        public $durationSeconds;
-
-        /**
-         * @return array
-         */
-        public function rules()
+        public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            return array_merge(parent::rules(), array(
-                array('durationSeconds', 'type', 'type' => 'integer'),
-            ));
+            assert('$model instanceof TriggerForWorkflowForm');
+            parent::__construct($model, $attribute, $form, $params);
         }
 
+        /**
+         * @return string
+         */
+        protected function getDataAndLabelsModelPropertyName()
+        {
+            return 'getCustomFieldDataAndLabels';
+        }
 
         /**
+         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
+         * can change to a multi-select or back.
          * @return array
-         * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
          */
-        public function getOperatorValuesAndLabels()
+        protected function getEditableHtmlOptions()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            $htmlOptions                 = parent::getEditableHtmlOptions();
+            $htmlOptions['class']        = 'flexible-drop-down';
+            if($this->model->operator == 'oneOf')
             {
-                throw new NotSupportedException();
+                $htmlOptions['multiple']  = true;
+                $htmlOptions['class']    .= 'multiple';
             }
-            $type = $this->getAvailableOperatorsType();
-            $data = array();
-            ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
-            $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
-            if($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
-               $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
-            {
-                $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
-                $data[OperatorRules::TYPE_IS_NOT_EMPTY]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);
-            }
-            return $data;
+            return $htmlOptions;
         }
     }
 ?>

@@ -82,7 +82,7 @@
                 $model                     = new $modelClassName(false);
                 if($workflowType == Workflow::TYPE_ON_SAVE)
                 {
-                    $adapter       = new ModelRelationsAndAttributesToByTimeWorkflowAdapter($model, $rules,
+                    $adapter       = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules,
                                                                                              $workflowType, $moduleClassName);
                 }
                 elseif($workflowType == Workflow::TYPE_BY_TIME)
@@ -329,9 +329,10 @@
         public function getAvailableOperatorsType($attribute)
         {
             assert('is_string($attribute)');
+            //Currently only User is supported as a dynamically derived attributed
             if($this->isDynamicallyDerivedAttribute($attribute))
             {
-                return null;
+                return ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE;
             }
             if($this->isDerivedAttribute($attribute))
             {
@@ -343,7 +344,7 @@
             {
                 return $availableOperatorsTypeFromRule;
             }
-            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
+            return ModelAttributeToWorkflowOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
         }
 
         /**

@@ -163,6 +163,8 @@
 
         protected function registerScripts()
         {
+            //Registered to make sure things work when debug mode is on. Otherwise this is missing.
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
         }
 
         protected function registerCss()

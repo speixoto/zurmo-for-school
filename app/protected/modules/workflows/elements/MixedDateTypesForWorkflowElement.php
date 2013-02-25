@@ -44,19 +44,19 @@
             $valueTypesAndLabels = MixedDateTimeTypesSearchFormAttributeMappingRules::getTimeBasedValueTypesAndLabels();
             if($this->model->getWorkflowType() == Workflow::TYPE_BY_TIME && $this->model->getAttribute() != null)
             {
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
             }
             elseif($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() != null)
             {
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON]          = Zurmo::t('Core', 'Was On');
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON]      = Zurmo::t('Core', 'Becomes On');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON]          = Zurmo::t('Core', 'Was On');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON]      = Zurmo::t('Core', 'Becomes On');
             }
             elseif($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() == null)
             {
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
-                $data[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
+                $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
             }
             return $valueTypesAndLabels;
         }
