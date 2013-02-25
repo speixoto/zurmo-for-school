@@ -24,20 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailTemplateTestHelper
+    class MergeTagsUtilFactory
     {
-        public static function createEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        public static function make($emailTemplateType, $language, $content)
         {
-            $emailTemplate = new EmailTemplate();
-            $emailTemplate->type            = $type;
-            $emailTemplate->subject         = $subject;
-            $emailTemplate->modelClassName  = $modelClassName;
-            $emailTemplate->name            = $name;
-            $emailTemplate->htmlContent     = $htmlContent;
-            $emailTemplate->textContent     = $textContent;
-            $saved                          = $emailTemplate->save();
-            assert('$saved');
-            return $emailTemplate;
+            $emailTemplateTypes = EmailTemplate::getTypeDropDownArray();
+            $classNamePrefix    = $emailTemplateTypes[$emailTemplateType];
+            $className          = $classNamePrefix . 'MergeTagsUtil';
+            return new $className($language, $content);
         }
     }
 ?>

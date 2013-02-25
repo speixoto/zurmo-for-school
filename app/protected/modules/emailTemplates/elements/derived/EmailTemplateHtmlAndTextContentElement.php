@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-
+     * Element used to display text and html areas on EmailTemplateEditAndDetailsView
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {

@@ -32,10 +32,10 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EmailTemplateCancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type' => 'EditLink',       'renderType' => 'Details'),
-                            array('type'  => 'EmailTemplateDeleteLink'),
+                            array('type'    => 'EmailTemplateCancelLink', 'renderType' => 'Edit'),
+                            array('type'    => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type'    => 'EditLink', 'renderType' => 'Details'),
+                            array('type'    => 'EmailTemplateDeleteLink'),
                         ),
                     ),
                     'panels' => array(
@@ -49,6 +49,32 @@
                                             ),
                                         ),
                                     ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                /*
+                                                 * // TODO: @Shoaibi Extracting model names:
+                                                 * You can loop getAllModules or something like that in Module.php,
+                                                 *  then from there for each module ::getPrimaryModelName,
+                                                 *   then from there you have the model name and can use the label
+                                                 *  function in model to get the translated, correct model
+                                                 *  names for labels
+                                                 *
+                                                 * // TODO: @Shoaibi/@Jason dependent dropdown? DropDownDependencyElement, example?
+                                                 * Dependendent DDL:
+                                                 *  moduleClassName one has a public wraper that takes type and returns array
+                                                 *  this wrapper calls specific method depending on type
+                                                 *  these sub functions keep value to english label but option content to translated
+                                                 *  the action does cjson::encode
+                                                 *  on first run select the one user selected on generation, generate default depending on first option of the other ddl.
+                                                 *  type ddl registers js to call that action and update ddl.
+                                                 */
+                                                array('attributeName' => 'modelClassName', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
                                 ),
                                 array('cells' =>
                                     array(
@@ -68,6 +94,7 @@
                                         ),
                                     )
                                 ),
+                                // TODO: @Shoaibi/@Jason: Why don't we use separate elements for text and html and display them here?
                             ),
                         ),
                     ),

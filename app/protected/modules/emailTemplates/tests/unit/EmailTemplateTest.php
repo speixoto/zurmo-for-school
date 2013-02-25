@@ -40,29 +40,31 @@
 
         public function testCreateAndGetEmailTemplateById()
         {
-            $emailTemplate              = new EmailTemplate();
-            $emailTemplate->type        = 1;
-            $emailTemplate->subject     = 'Test subject';
-            $emailTemplate->name        = 'Test Email Template';
-            $emailTemplate->htmlContent = 'Test html Content';
-            $emailTemplate->textContent = 'Test text Content';
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Test subject';
+            $emailTemplate->modelClassName  = 'Contact';
+            $emailTemplate->name            = 'Test Email Template';
+            $emailTemplate->htmlContent     = 'Test html Content';
+            $emailTemplate->textContent     = 'Test text Content';
             $this->assertTrue($emailTemplate->save());
-            $id = $emailTemplate->id;
+            $id             = $emailTemplate->id;
             unset($emailTemplate);
-            $emailTemplate = EmailTemplate::getById($id);
-            $this->assertEquals(1, $emailTemplate->type);
-            $this->assertEquals('Test subject',   $emailTemplate->subject);
-            $this->assertEquals('Test Email Template', $emailTemplate->name);
-            $this->assertEquals('Test html Content', $emailTemplate->htmlContent);
-            $this->assertEquals('Test text Content',   $emailTemplate->textContent);
+            $emailTemplate  = EmailTemplate::getById($id);
+            $this->assertEquals(EmailTemplate::TYPE_CONTACT,    $emailTemplate->type);
+            $this->assertEquals('Test subject',                 $emailTemplate->subject);
+            $this->assertEquals('Test Email Template',          $emailTemplate->name);
+            $this->assertEquals('Test html Content',            $emailTemplate->htmlContent);
+            $this->assertEquals('Test text Content',            $emailTemplate->textContent);
         }
 
         public function testAtLeastOneContentFieldIsRequired()
         {
-            $emailTemplate              = new EmailTemplate();
-            $emailTemplate->type        = 1;
-            $emailTemplate->subject     = 'Another Test subject';
-            $emailTemplate->name        = 'Another Test Email Template';
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->modelClassName  = 'Contact';
+            $emailTemplate->name            = 'Another Test Email Template';
             $this->assertFalse($emailTemplate->save());
         }
 
@@ -87,20 +89,18 @@
             $this->assertEquals('EmailTemplates', $emailTemplate[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
 
+        /*
+         * @depends testCreateAndGetEmailTemplateById
+         */
         public function testDeleteEmailTemplate()
         {
-            $emailTemplate = new EmailTemplate();
-            $emailTemplate->type        = 1;
-            $emailTemplate->subject     = 'Test subject2';
-            $emailTemplate->name        = 'Test Email Template2';
-            $emailTemplate->htmlContent = 'Test html Content';
-            $emailTemplate->textContent = 'Test text Content';
-            $this->assertTrue($emailTemplate->save());
-            $emailTemplate = EmailTemplate::getAll();
-            $this->assertEquals(2, count($emailTemplate));
-            $emailTemplate[0]->delete();
-            $emailTemplate = EmailTemplate::getAll();
-            $this->assertEquals(1, count($emailTemplate));
+            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject',
+                                                                                    'Contact', 'Name', 'Html', 'Text');
+            $emailTemplates = EmailTemplate::getAll();
+            $this->assertEquals(2, count($emailTemplates));
+            $emailTemplates[0]->delete();
+            $emailTemplates = EmailTemplate::getAll();
+            $this->assertEquals(1, count($emailTemplates));
         }
     }
 ?>

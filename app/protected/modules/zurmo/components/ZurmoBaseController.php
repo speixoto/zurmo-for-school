@@ -546,17 +546,17 @@
         protected function attemptToSaveModelFromPost($model, $redirectUrlParams = null, $redirect = true)
         {
             assert('$redirectUrlParams == null || is_array($redirectUrlParams) || is_string($redirectUrlParams)');
-            $savedSucessfully   = false;
+            $savedSuccessfully   = false;
             $modelToStringValue = null;
             $postVariableName   = get_class($model);
             if (isset($_POST[$postVariableName]))
             {
                 $postData = $_POST[$postVariableName];
                 $controllerUtil   = static::getZurmoControllerUtil();
-                $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSucessfully,
+                $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSuccessfully,
                                                                        $modelToStringValue);
             }
-            if ($savedSucessfully && $redirect)
+            if ($savedSuccessfully && $redirect)
             {
                 $this->actionAfterSuccessfulModelSave($model, $modelToStringValue, $redirectUrlParams);
             }

@@ -24,20 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailTemplateTestHelper
+    /*
+     * Class that converts MergeTags for Contact based EmailTemplate to relevant fields
+     */
+    class ContactMergeTagsUtil extends MergeTagsUtil
     {
-        public static function createEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
-        {
-            $emailTemplate = new EmailTemplate();
-            $emailTemplate->type            = $type;
-            $emailTemplate->subject         = $subject;
-            $emailTemplate->modelClassName  = $modelClassName;
-            $emailTemplate->name            = $name;
-            $emailTemplate->htmlContent     = $htmlContent;
-            $emailTemplate->textContent     = $textContent;
-            $saved                          = $emailTemplate->save();
-            assert('$saved');
-            return $emailTemplate;
-        }
+
     }
 ?>
