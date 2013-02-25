@@ -97,7 +97,7 @@
                 $element = new UsersModalListLinkActionElement(Yii::app()->controller->id,
                     Yii::app()->controller->module->id,
                     static::resolveRoleIdFromRoute($route),
-                    array('label' => $userCount));
+                    array('label' => $userCount, 'htmlOptions' => array('class' => 'z-link')));
                 return $element->render();
             }
             else
