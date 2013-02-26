@@ -52,12 +52,14 @@
                     $mashableInboxForm->optionForModel = 2;
                 }
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-                $listView           = $mashableUtilRules->getListView($mashableInboxForm->optionForModel,
-                                                                      $mashableInboxForm->filteredBy);
+                $listView           = $mashableUtilRules->getListView(
+                                                $mashableInboxForm->optionForModel,
+                                                $mashableInboxForm->filteredBy);
                 $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
             } else {
-                $listView           = $this->getMashableInboxListView($mashableInboxForm,
-                                                                      $pageSize);
+                $listView           = $this->getMashableInboxListView(
+                                                $mashableInboxForm,
+                                                $pageSize);
             }
             $actionBarView          = new MashableInboxActionBarForViews(
                                                 $this->getId(),
@@ -79,15 +81,16 @@
                 $this->resolveAjaxMassAction($modelClassName, $mashableInboxForm);
             }
             if ($modelClassName !== null) {
-                $mashableUtilRules
-                    = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-                $listView
-                    = $mashableUtilRules->getListView($mashableInboxForm->optionForModel,
+                $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel(
+                                                      $modelClassName);
+                $listView           = $mashableUtilRules->getListView(
+                                                      $mashableInboxForm->optionForModel,
                                                       $mashableInboxForm->filteredBy,
                                                       $mashableInboxForm->searchTerm);
             } else {
-                $listView
-                    = $this->getMashableInboxListView($mashableInboxForm, $pageSize);
+                $listView           = $this->getMashableInboxListView(
+                                                      $mashableInboxForm,
+                                                      $pageSize);
             }
             echo $listView->render();
         }
@@ -99,17 +102,20 @@
                 $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
                 foreach ($selectedIds as $modelId)
                 {
-                   $this->resolveMassActionByModel($mashableInboxForm->massAction, $modelClassName, $modelId);
+                   $this->resolveMassActionByModel($mashableInboxForm->massAction,
+                                                   $modelClassName,
+                                                   $modelId);
                 }
             }
             else
             {
-                $selectedIds = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
                 foreach ($selectedIds as $selectedId)
                 {
-                   list($modelClassNameForMassAction, $modelId)
-                        = explode("_", $selectedId);
-                   $this->resolveMassActionByModel($mashableInboxForm->massAction, $modelClassNameForMassAction, $modelId);
+                   list($modelClassNameForMassAction, $modelId) = explode("_", $selectedId);
+                   $this->resolveMassActionByModel($mashableInboxForm->massAction,
+                                                   $modelClassNameForMassAction,
+                                                   $modelId);
                 }
             }
         }

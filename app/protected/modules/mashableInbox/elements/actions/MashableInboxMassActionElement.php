@@ -26,6 +26,8 @@
 
     class MashableInboxMassActionElement extends LinkActionElement
     {
+        private $massOptions;
+
         public function getActionType()
         {
             return 'MassEdit';
@@ -33,59 +35,12 @@
 
         public function render()
         {
-            $defaultMassOptions  = array(
-                          'markRead'      => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as read'),
-                                                   'isActionForAll' => false),
-                          'markUnread'    => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as unread'),
-                                                   'isActionForAll' => false),
-                    );
-            $massOptions = $defaultMassOptions;
+            $this->massOptions = $this->getDefaultMassActions();
             if ($this->getModelClassName() !== null)
             {
-                $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
-                $massOptions        = array_merge($defaultMassOptions, $mashableUtilRules->getMassOptions());
+                $this->addModelMassOptions();
             }
-            $gridId             = $this->getListViewGridId();
-            $formName           = $this->getFormName();
-            $formClassName      = $this->modelId;
-            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$gridId}', {
-                                        data: $('#{$formName}').serialize()
-                                });";
-            $script = '';
-            $items  = array();
-            foreach ($massOptions as $massOption => $massOptionParams)
-            {
-                $selectedName = $gridId . '-' . $massOption;
-                $items[]      = array('label' => $massOptionParams['label'],
-                                      'url'   => '#',
-                                      'itemOptions' => array( 'id'   => $selectedName));
-                $isActionForEachScript = '';
-                if (!$massOptionParams['isActionForAll'])
-                {
-                    $isActionForEachScript = "
-                            if ($('#" . $gridId . "-selectedIds').val() == '')
-                            {
-                                alert('" . Zurmo::t('MashableInboxModule', 'You must select at least one record') . "');
-                                $(this).val('');
-                                return false;
-                            }";
-                }
-                $script      .= "
-                    $('#{$selectedName}').unbind('click.action');
-                    $('#{$selectedName}').bind('click.action', function()
-                        {
-                            {$isActionForEachScript}
-                            $('#{$formClassName}_massAction').val('{$massOption}');
-                            $('#{$formClassName}_selectedIds').val($('#{$gridId}-selectedIds').val());
-                            {$ajaxSubmitScript};
-                        }
-                    );
-                ";
-            }
-            Yii::app()->clientScript->registerScript($gridId . 'ScriptForMashableInboxMassAction', $script);
-            $menuItems      = array('label' => $this->getLabel(), 'url' => null,
-                                    'items' => $items);
-
+            $menuItems   = $this->getMenuItems();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
@@ -127,6 +82,84 @@
         protected function getDefaultRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/list/';
+        }
+
+        private function getDefaultMassActions()
+        {
+            $defaultMassOptions  = array(
+                                    'markRead'  => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as read'),
+                                                        'isActionForAll' => false),
+                                    'markUnread'=> array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as unread'),
+                                                        'isActionForAll' => false),
+                    );
+            return $defaultMassOptions;
+        }
+
+        private function addModelMassOptions()
+        {
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($this->getModelClassName());
+            $this->massOptions  = array_merge($this->massOptions, $mashableUtilRules->getMassOptions());
+        }
+
+        private function getMenuItems()
+        {
+
+            $items  = array();
+            $script = '';
+            foreach ($this->massOptions as $massOption => $massOptionParams)
+            {
+                $selectedName = $this->getListViewGridId() . '-' . $massOption;
+                $items[]      = array('label' => $massOptionParams['label'],
+                                      'url'   => '#',
+                                      'itemOptions' => array( 'id'   => $selectedName));
+                $script .= $this->getScriptForOptionAction($selectedName, $massOption, $massOptionParams['isActionForAll']);
+            }
+            Yii::app()->clientScript->registerScript(
+                                            $this->getListViewGridId() . 'ScriptForMashableInboxMassAction',
+                                            $script);
+            $menuItems      = array('label' => $this->getLabel(), 'url' => null,
+                                    'items' => $items);
+            return $menuItems;
+        }
+
+        private function getScriptForOptionAction($selectedName, $massOption, $isActionForAll)
+        {
+            $gridId                 = $this->getListViewGridId();
+            $formName               = $this->getFormName();
+            $formClassName          = $this->modelId;
+            $isActionForEachScript  = null;
+            $ajaxSubmitScript       = "$.fn.yiiGridView.update('{$gridId}', {
+                                            data: $('#{$formName}').serialize()
+                                        });";
+            if (!$isActionForAll)
+            {
+                $isActionForEachScript = $this->getScriptForAlertNoRecordSelected();
+            }
+            $script      = "
+                $('#{$selectedName}').unbind('click.action');
+                $('#{$selectedName}').bind('click.action', function()
+                    {
+                        {$isActionForEachScript}
+                        $('#{$formClassName}_massAction').val('{$massOption}');
+                        $('#{$formClassName}_selectedIds').val($('#{$gridId}-selectedIds').val());
+                        {$ajaxSubmitScript};
+                    }
+                );
+            ";
+            return $script;
+        }
+
+        private function getScriptForAlertNoRecordSelected()
+        {
+            $gridId = $this->getListViewGridId();
+            $script = "
+                        if ($('#{$gridId}-selectedIds').val() == '')
+                        {
+                            alert('" . Zurmo::t('MashableInboxModule', 'You must select at least one record') . "');
+                            $(this).val('');
+                            return false;
+                        }";
+            return $script;
         }
     }
 ?>
