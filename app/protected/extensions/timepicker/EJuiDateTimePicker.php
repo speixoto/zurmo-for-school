@@ -102,11 +102,11 @@ class EJuiDateTimePicker extends CJuiInputWidget
 
         if (!isset($this->options['currentText']))
         {
-            $this->options['currentText'] = ZurmoHtml::wrapLabel(Yii::t('Default', 'Now'));
+            $this->options['currentText'] = ZurmoHtml::wrapLabel(Zurmo::t('TimepickerExtension', 'Now'));
         }
         if (!isset($this->options['closeText']))
         {
-            $this->options['closeText'] = ZurmoHtml::wrapLabel(Yii::t('Default', 'Done'));
+            $this->options['closeText'] = ZurmoHtml::wrapLabel(Zurmo::t('TimepickerExtension', 'Done'));
         }
         $options=CJavaScript::encode($this->options);
 

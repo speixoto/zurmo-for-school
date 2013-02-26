@@ -29,7 +29,7 @@
      */
     class DatabaseMaxSpRecursionDepthServiceHelper extends ServiceHelper
     {
-        protected $required = true;
+        protected $required = false;
         protected $form;
 
         protected $minimumRequiredMaxSpRecursionDepth = 20;
@@ -54,20 +54,20 @@
             {
                 if ($maxSpRecursionDepth == null)
                 {
-                    $this->message = Yii::t('Default', 'Could not get value of database max_sp_recursion_depth.');
+                    $this->message = Zurmo::t('InstallModule', 'Could not get value of database max_sp_recursion_depth.');
                 }
                 else
                 {
-                    $this->message  = Yii::t('Default', 'Database max_sp_recursion_depth size is:') . ' ';
+                    $this->message  = Zurmo::t('InstallModule', 'Database max_sp_recursion_depth size is:') . ' ';
                     $this->message .= $maxSpRecursionDepth . ' ';
-                    $this->message .= Yii::t('Default', 'minimum requirement is:') . ' ';
+                    $this->message .= Zurmo::t('InstallModule', 'minimum requirement is:') . ' ';
                     $this->message .= $this->minimumRequiredMaxSpRecursionDepth;
                 }
                 $passed = false;
             }
             else
             {
-                $this->message = Yii::t('Default', 'Database max_sp_recursion_depth size meets minimum requirement.');
+                $this->message = Zurmo::t('InstallModule', 'Database max_sp_recursion_depth size meets minimum requirement.');
             }
             return $passed;
         }

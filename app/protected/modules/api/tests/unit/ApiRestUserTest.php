@@ -33,7 +33,7 @@
         {
             if (!$this->isApiTestUrlConfigured())
             {
-                $this->markTestSkipped(Yii::t('Default', 'API test url is not configured in perInstanceTest.php file.'));
+                $this->markTestSkipped(Zurmo::t('ApiModule', 'API test url is not configured in perInstanceTest.php file.'));
             }
             $this->assertTrue(strlen($this->serverUrl) > 0);
         }
@@ -188,6 +188,8 @@
 
             ksort($data);
             ksort($response['data']);
+            //Add isActive
+            $data['isActive'] = '1';
             $this->assertEquals($data, $response['data']);
             // Check if new user can log in
             $newUser = User::getByUsername('diggy011');

@@ -25,21 +25,22 @@
      ********************************************************************************/
 
     /**
-     * A  NotificationRules to manage when jobs are detected as being 'stuck' by the
-     * job monitor.
+     * Inform user that some email address are not matching any account's or person's emails in system
      */
-    class HostInfoAndScriptUrlNotSetupNotificationRules extends JobsManagerAccessNotificationRules
+    class EmailMessageArchivingEmailAddressNotMatchingNotificationRules extends NotificationRules
     {
-        protected $critical    = true;
+        protected $critical    = false;
+
+        protected $allowDuplicates = false;
 
         public static function getDisplayName()
         {
-            return Yii::t('Default', 'hostInfo or scriptUrl not set up');
+            return Zurmo::t('EmailMessagesModule', 'Match archived emails');
         }
 
         public static function getType()
         {
-            return 'HostInfoAndScriptUrlNotSetup';
+            return 'EmailMessageArchivingEmailAddressNotMatching';
         }
     }
 ?>

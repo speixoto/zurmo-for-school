@@ -40,8 +40,7 @@
             $pathsToTest = array(
                 INSTANCE_ROOT . '/assets',
                 INSTANCE_ROOT . '/protected/data',
-                INSTANCE_ROOT . '/protected/runtime',
-                INSTANCE_ROOT . '/version.php'
+                INSTANCE_ROOT . '/protected/runtime'
             );
             foreach ($pathsToTest as $pathToTest)
             {
@@ -51,7 +50,7 @@
                     {
                         $this->message .= "\n";
                     }
-                    $this->message .= Yii::t('Default', '{folderPath} is missing.', array('{folderPath}' => $pathToTest));
+                    $this->message .= Zurmo::t('InstallModule', '{folderPath} is missing.', array('{folderPath}' => $pathToTest));
                     $passed = false;
                 }
                 if (!is_writable($pathToTest))
@@ -60,14 +59,14 @@
                     {
                         $this->message .= "\n";
                     }
-                    $this->message .= Yii::t('Default', '{folderPath} is not writable.',
+                    $this->message .= Zurmo::t('InstallModule', '{folderPath} is not writable.',
                                              array('{folderPath}' => $pathToTest));
                     $passed = false;
                 }
             }
             if ($passed)
             {
-                    $this->message .= Yii::t('Default', 'The instance folders are present and writable.');
+                    $this->message .= Zurmo::t('InstallModule', 'The instance folders are present and writable.');
             }
             return $passed;
         }

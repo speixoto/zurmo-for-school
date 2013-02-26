@@ -110,7 +110,7 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink        = ZurmoHtml::link(Yii::t('Default', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
@@ -139,7 +139,7 @@
 
         protected function getClearSearchLabelContent()
         {
-            return Yii::t('Default', 'Clear');
+            return Zurmo::t('Core', 'Clear');
         }
 
         protected function getClearSearchLinkStartingStyle()
@@ -184,13 +184,13 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event){
                         $('.select-list-attributes-view').hide();
-                        $('.search-view-1').toggle();
+                        $(this).closest('form').find('.search-view-1').toggle();                        
                         return false;
                     }
                 );
                 $('#cancel-advanced-search').unbind('click');
                 $('#cancel-advanced-search').live('click', function(event){
-                    $('.search-view-1').hide();
+                    $(this).closest('form').find('.search-view-1').hide();
                 });
             " . $this->getExtraRenderFormBottomPanelScriptPart());
             $this->renderAdvancedSearchScripts();
@@ -203,7 +203,7 @@
                 $('#" . $this->getSearchFormId() . "').unbind('submit');
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
-                        $('.search-view-1').hide();
+                        $(this).closest('form').find('.search-view-1').hide();
                         $('.select-list-attributes-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
@@ -291,7 +291,7 @@
         {
             if ($this->model->getListAttributesSelector() != null)
             {
-                return ZurmoHtml::link(Yii::t('Default', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
+                return ZurmoHtml::link(Zurmo::t('Core', 'Columns'), '#', array('id' => 'select-list-attributes-link' . $this->gridIdSuffix));
             }
         }
 
@@ -305,7 +305,7 @@
                 $('#select-list-attributes-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#select-list-attributes-link" . $this->gridIdSuffix . "').bind('click.more',  function(event)
                     {
-                        $('.search-view-1').hide();
+                        $(this).closest('form').find('.search-view-1').hide();
                         $('.select-list-attributes-view').toggle();
                         return false;
                     }
@@ -342,11 +342,11 @@
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
             $params = array();
-            $params['label']       = Yii::t('Default', 'Search');
+            $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             $content  = $searchElement->render();
-            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Close')),
+            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
                             '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
             return $closeButton . $content;
         }

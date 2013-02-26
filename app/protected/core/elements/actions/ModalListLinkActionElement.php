@@ -24,23 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Inform user that export process is completed, and that user can download exported file.
-     */
-    class EmailMessageArchivingEmailAddressNotMachingNotificationRules extends JobsManagerAccessNotificationRules
+    abstract class ModalListLinkActionElement extends LinkActionElement
     {
-        protected $critical    = false;
-
-        protected $allowDuplicates = false;
-
-        public static function getDisplayName()
+        public function getActionType()
         {
-            return Yii::t('Default', 'Match archived emails');
+            return 'Details';
         }
 
-        public static function getType()
+        public function render()
         {
-            return 'EmailMessageArchivingEmailAddressNotMaching';
+            return ZurmoHtml::ajaxLink($this->getLabel(), $this->getDefaultRoute(),
+                $this->getAjaxLinkOptions(),
+                $this->getHtmlOptions()
+            );
         }
+
+        public function renderMenuItem()
+        {
+            if (!empty($this->modelId) && $this->modelId > 0)
+            {
+                return array('label'           => $this->getLabel(),
+                             'url'             => $this->getDefaultRoute(),
+                             'linkOptions'     => $this->getHtmlOptions(),
+                             'ajaxLinkOptions' => $this->getAjaxLinkOptions()
+                );
+            }
+        }
+
+        protected function getAjaxLinkOptions()
+        {
+            return ModalView::getAjaxOptionsForModalLink($this->getAjaxLinkTitle());
+        }
+
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . $this->getRouteAction(),
+                                         array('id' => $this->modelId));
+        }
+
+        abstract protected function getAjaxLinkTitle();
+
+        abstract protected function getRouteAction();
     }
 ?>

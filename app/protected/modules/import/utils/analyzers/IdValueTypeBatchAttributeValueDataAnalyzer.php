@@ -260,7 +260,7 @@
          */
         protected function makeMessages()
         {
-            $label   = Yii::t('Default', '{found} record(s) will be updated ' .
+            $label   = Zurmo::t('ImportModule', '{found} record(s) will be updated ' .
                                          'and {unfound} record(s) will be skipped during import.',
                                          array('{found}'   => $this->messageCountData[static::FOUND],
                                                '{unfound}' => $this->messageCountData[static::UNFOUND]));
@@ -272,7 +272,7 @@
         {
             if ($this->messageCountData[static::EXTERNAL_SYSTEM_ID_TOO_LONG] > 0)
             {
-                $label   = Yii::t('Default', '{invalid} value(s) were too large. ' .
+                $label   = Zurmo::t('ImportModule', '{invalid} value(s) were too large. ' .
                                              'These rows will be skipped during the import.',
                                              array('{invalid}' => $this->messageCountData[static::EXTERNAL_SYSTEM_ID_TOO_LONG]));
                 $this->addMessage($label);

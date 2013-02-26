@@ -60,7 +60,8 @@
                 'id'   => $id,
             );
             $textField = $form->textField($model, $attribute, $htmlOptions);
-            $error     = $form->error    ($model, $attribute, array('inputID' => $id));
+            $error     = $form->error    ($model, $attribute, array('inputID' => $id), true, true,
+                                          $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
             return $textField . $error;
         }
 
@@ -73,7 +74,8 @@
             );
             $label         = $form->labelEx ($model, $attribute, array('for'   => $id));
             $checkBoxField = $form->checkBox($model, $attribute, $htmlOptions);
-            $error         = $form->error   ($model, $attribute, array('inputID' => $id));
+            $error         = $form->error   ($model, $attribute, array('inputID' => $id), true, true,
+                                             $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
             return '<div class="hasCheckBox">' . $checkBoxField . $label . $error . '</div>';
         }
 
@@ -102,7 +104,7 @@
                 }
                 if ($optOut)
                 {
-                    $content  .= Yii::t('Default', 'Opted Out');
+                    $content  .= Zurmo::t('EmailMessagesModule', 'Opted Out');
                 }
                 if ($isInvalid)
                 {
@@ -110,7 +112,7 @@
                     {
                         $content  .= ',&#160;';
                     }
-                    $content  .= Yii::t('Default', 'Invalid');
+                    $content  .= Zurmo::t('EmailMessagesModule', 'Invalid');
                 }
                 if ($optOut || $isInvalid)
                 {

@@ -74,7 +74,7 @@
         protected function renderOperationDescriptionContent()
         {
             $highlight = ZurmoHtml::tag('em', array(),
-                         Yii::t('Default', 'There is no primary email associated with {contactName}. Please add one to continue.',
+                         Zurmo::t('EmailMessagesModule', 'There is no primary email associated with {contactName}. Please add one to continue.',
                                  array('{contactName}' => strval($this->model))));
             $message  = ZurmoHtml::tag('strong', array(), $highlight);
             return ZurmoHtml::wrapLabel($message, 'operation-description');

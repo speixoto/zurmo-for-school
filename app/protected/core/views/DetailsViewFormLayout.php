@@ -150,11 +150,11 @@
                 $content = '<div id="' . $tabId . '">';
                 if (!empty($panel['title']))
                 {
-                    $tabTitle = Yii::t('Default', $panel['title']); //Attempt a final translation if available.
+                    $tabTitle = Zurmo::t('Core', $panel['title']); //Attempt a final translation if available.
                 }
                 else
                 {
-                    $tabTitle = Yii::t('Default', 'Tab'). ' ' . ($panelNumber + 1);
+                    $tabTitle = Zurmo::t('Core', 'Tab'). ' ' . ($panelNumber + 1);
                 }
                $this->addTabsContent('<li><a href="#' . $tabId . '">' . $tabTitle . '</a></li>');
                return $content;
@@ -163,7 +163,7 @@
             {
                 if (!empty($panel['title']))
                 {
-                    return '<div class="panelTitle">' . Yii::t('Default', $panel['title']) . '</div>'; //Attempt a final translation if available.
+                    return '<div class="panelTitle">' . Zurmo::t('Core', $panel['title']) . '</div>'; //Attempt a final translation if available.
                 }
             }
         }
@@ -283,7 +283,7 @@
         {
             if ($this->morePanelsLinkLabel == null)
             {
-                Yii::t('Default', 'More Options');
+                Zurmo::t('Core', 'More Options');
             }
             else
             {
@@ -295,7 +295,7 @@
         {
             if ($this->lessPanelsLinkLabel == null)
             {
-                Yii::t('Default', 'Fewer Options');
+                Zurmo::t('Core', 'Fewer Options');
             }
             else
             {

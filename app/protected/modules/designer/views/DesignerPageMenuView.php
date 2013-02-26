@@ -53,8 +53,8 @@
                 {
                     $route = $this->moduleId . '/' . $this->controllerId . '/modulesMenu/';
                     $content .= '<li>';
-                    $content .= '<h4>'. Yii::t('Default', $module::getModuleLabelByTypeAndLanguage('Plural')) . '</h4>';
-                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Yii::t('Default', 'Configure') ),
+                    $content .= '<h4>'. Zurmo::t('DesignerModule', $module::getModuleLabelByTypeAndLanguage('Plural')) . '</h4>';
+                    $content .= ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('DesignerModule', 'Configure') ),
                                         Yii::app()->createUrl($route,
                             array(
                                 'moduleClassName' => get_class($module),
