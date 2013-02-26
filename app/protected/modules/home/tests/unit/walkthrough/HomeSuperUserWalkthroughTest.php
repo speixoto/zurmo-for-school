@@ -260,7 +260,6 @@
                 'ajax'           => 'list-view' . $uniqueLayoutId . '_' . $portlets[1][4]->id
             ));
             $this->runControllerWithNoExceptionsAndGetContent('home/default');
-
         }
 
         /**

@@ -78,7 +78,7 @@
                 }
                 if ($configurationForm->host != null && $configurationForm->port != null &&
                     $configurationForm->bindRegisteredDomain != null && $configurationForm->bindPassword != null &&
-      				$configurationForm->baseDomain != null	)
+                    $configurationForm->baseDomain != null)
                 {
                     $authenticationHelper = new ZurmoAuthenticationHelper;
                     $authenticationHelper->ldapHost                 = $configurationForm->host;
@@ -119,5 +119,4 @@
             }
         }
     }
-
 ?>

@@ -77,7 +77,7 @@
             //Load the portlet details for latest activity
             $getData = array('id' => $superAccountId,
                              'portletId' => $portletToUse->id,
-                             'uniqueLayoutId' => 'AccountDetailsAndRelationsView_'.$portletToUse->id,
+                             'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portletToUse->id,
                              'LatestActivitiesConfigurationForm' => array(
                                 'filteredByModelName' => 'all',
                                 'rollup' => ''

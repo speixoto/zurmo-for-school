@@ -127,7 +127,7 @@
                     if ($memcacheResult !== true)
                     {
                         $this->addError('memcacheHostname', Zurmo::t('InstallModule', 'Error code:') . " " .
-                        $memcacheResult[0] . '<br/>Message: ' . $memcacheResult[1]);
+                        $memcacheResult[0] . '<br/>Message(Memcached): ' . $memcacheResult[1]);
                         return;
                     }
                 }

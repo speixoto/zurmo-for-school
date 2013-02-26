@@ -54,7 +54,7 @@
         {
             $this->_identity = Yii::app()->authenticationHelper->makeIdentity($this->username, $this->password);
             if (!$this->_identity->authenticate())
-            {			    
+            {
                 $this->addError('password', Zurmo::t('ZurmoModule', 'Incorrect username or password.'));
             }
         }
@@ -62,7 +62,7 @@
         public function login()
         {
             if ($this->_identity === null)
-            {			    
+            {
                 $this->_identity = Yii::app()->authenticationHelper->makeIdentity($this->username, $this->password);
                 $this->_identity->authenticate();
             }

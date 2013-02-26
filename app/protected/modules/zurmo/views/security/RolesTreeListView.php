@@ -87,7 +87,7 @@
 
         protected static function resolveRoleIdFromRoute($route)
         {
-            return substr($route, strpos($route, 'id=')+3);
+            return substr($route, strpos($route, 'id=') + 3); // Not Coding Standard
         }
 
         protected static function renderUserCount($userCount, $route)
@@ -97,9 +97,8 @@
                 $element = new UsersModalListLinkActionElement(Yii::app()->controller->id,
                     Yii::app()->controller->module->id,
                     static::resolveRoleIdFromRoute($route),
-                    array('label' => $userCount));
+                    array('label' => $userCount, 'htmlOptions' => array('class' => 'z-link')));
                 return $element->render();
-
             }
             else
             {

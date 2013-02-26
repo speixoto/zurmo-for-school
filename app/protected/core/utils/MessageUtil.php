@@ -301,7 +301,7 @@
         return $problems;
     }
 
-    function findFileNameToCategoryToMessage($path)
+    function findFileNameToCategoryToMessage($path, $forcedCategory = 'Default')
     {
         assert('is_string($path)');
         assert('is_dir   ($path)');
@@ -456,6 +456,12 @@
                         {
                             foreach ($matches[1] as $index => $category)
                             {
+                                if ($forcedCategory
+                                    AND is_string($forcedCategory)
+                                    AND strlen($forcedCategory))
+                                {
+                                    $category = $forcedCategory;
+                                }
                                 if (!isset($fileNamesToCategoriesToMessages[$entry][$category]))
                                 {
                                     $fileNamesToCategoriesToMessages[$entry][$category] = array();

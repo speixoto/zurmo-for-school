@@ -24,32 +24,29 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserTestHelper
+    /**
+     * Adapter to set attributes from a related model.  For example on the opportunities module, you have a
+     * related account.  The related account attribute would utilize this adapter
+     */
+    class HasOneModelAttributesAdapter extends ModelAttributesAdapter
     {
-        public static function createBasicUser($name)
+        public function setAttributeMetadataFromForm(AttributeForm $attributeForm)
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
-        }
-
-        public static function createBasicUserWithManager($name, $manager)
-        {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->manager = $manager;
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            assert('$attributeForm instanceof HasOneModelAttributeForm');
+            $modelClassName              = get_class($this->model);
+            $attributeName               = $attributeForm->attributeName;
+            $attributeLabels             = $attributeForm->attributeLabels;
+            $elementType                 = $attributeForm->getAttributeTypeName();
+            $isRequired                  = (boolean)$attributeForm->isRequired;
+            $isAudited                   = (boolean)$attributeForm->isAudited;
+            ModelMetadataUtil::addOrUpdateRelation($modelClassName,
+                $attributeName,
+                $attributeLabels,
+                $elementType,
+                $isRequired,
+                $isAudited,
+                $attributeForm->getHasOneModelClassName());
+            $this->resolveDatabaseSchemaForModel($modelClassName);
         }
     }
+?>
