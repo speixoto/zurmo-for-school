@@ -16034,7 +16034,6 @@ a.user-link {
 .ReportResultsGridView #report-results-grid-view > .items th,
 .ReportResultsGridView #report-results-grid-view > .items td {
   border-left: 1px solid #DFDFDF !important;
-  text-align: center !important;
 }
 .ReportResultsGridView #report-results-grid-view > .items th {
   border-top: 1px solid #DFDFDF !important;
@@ -16070,6 +16069,10 @@ a.user-link {
 }
 .ReportResultsGridView .items {
   overflow-x: hidden;
+}
+#MatrixReportResultsGridView #report-results-grid-view > .items th,
+#MatrixReportResultsGridView #report-results-grid-view td {
+  text-align: center !important;
 }
 #UserCannotRenderReportProperlySplashView {
   float: left;
