@@ -1798,6 +1798,22 @@ body div.form-toolbar{
     }
 }
 
+a.simple-link{
+    background:none !important;
+    background-image:none !important;
+    .b-shadow( ~"none  !important" );
+    .radius(~"0 !important");
+    padding:0  !important;
+    border: none !important;
+    margin-left:10px;
+    text-decoration:underline;
+    .smaller();
+    font-weight:normal;
+    &:before{
+        content:""  !important;
+    }
+}
+
 /*needed for specifity*/
 .portlet-toolbar{
     a.simple-link{

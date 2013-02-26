@@ -768,6 +768,7 @@ body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
+body.blue a.simple-link,
 body.blue a.simple-link .z-label,
 body.blue a.simple-select,
 body.blue .after-form-details-content a,
@@ -1309,6 +1310,7 @@ body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
+body.brown a.simple-link,
 body.brown a.simple-link .z-label,
 body.brown a.simple-select,
 body.brown .after-form-details-content a,
@@ -1850,6 +1852,7 @@ body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
+body.lime a.simple-link,
 body.lime a.simple-link .z-label,
 body.lime a.simple-select,
 body.lime .after-form-details-content a,
@@ -2391,6 +2394,7 @@ body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
+body.cherry a.simple-link,
 body.cherry a.simple-link .z-label,
 body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
@@ -2932,6 +2936,7 @@ body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
+body.turquoise a.simple-link,
 body.turquoise a.simple-link .z-label,
 body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
@@ -3473,6 +3478,7 @@ body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
+body.violet a.simple-link,
 body.violet a.simple-link .z-label,
 body.violet a.simple-select,
 body.violet .after-form-details-content a,
@@ -4014,6 +4020,7 @@ body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
+body.honey a.simple-link,
 body.honey a.simple-link .z-label,
 body.honey a.simple-select,
 body.honey .after-form-details-content a,
@@ -6700,6 +6707,29 @@ body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
   font-weight: normal;
 }
 body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
+  content: "" !important;
+}
+a.simple-link {
+  background: none !important;
+  background-image: none !important;
+  -webkit-box-shadow: none  !important;
+  -moz-box-shadow: none  !important;
+  -o-box-shadow: none  !important;
+  -ms-box-shadow: none  !important;
+  box-shadow: none  !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  -o-border-radius: 0 !important;
+  border-radius: 0 !important;
+  padding: 0  !important;
+  border: none !important;
+  margin-left: 10px;
+  text-decoration: underline;
+  font-size: 11px;
+  font-weight: normal;
+}
+a.simple-link:before {
   content: "" !important;
 }
 /*needed for specifity*/
