@@ -56,6 +56,7 @@
             $this->assertEquals('Test Email Template',          $emailTemplate->name);
             $this->assertEquals('Test html Content',            $emailTemplate->htmlContent);
             $this->assertEquals('Test text Content',            $emailTemplate->textContent);
+            $this->assertEquals(1, count(EmailTemplate::getAll()));
         }
 
         public function testAtLeastOneContentFieldIsRequired()
@@ -66,6 +67,77 @@
             $emailTemplate->modelClassName  = 'Contact';
             $emailTemplate->name            = 'Another Test Email Template';
             $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertEquals(2, count($errorMessages));
+            $this->assertTrue(array_key_exists('textContent', $errorMessages));
+            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['textContent']));
+            $this->assertEquals(1, count($errorMessages['htmlContent']));
+            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['textContent'][0]);
+            $this->assertEquals('Please provide at least one of the contents field.', $errorMessages['htmlContent'][0]);
+        }
+
+        public function testModelClassNameExists()
+        {
+            // test against a class name that doesn't exist
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = 'Text Content';
+            $emailTemplate->modelClassName  = 'RaNdOmTeXt';
+            $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('modelClassName', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['modelClassName']));
+            $this->assertEquals('Provided class name does not exist.', $errorMessages['modelClassName'][0]);
+            // test against a class name thats not a model
+            $emailTemplate->modelClassName  = 'TestSuite';
+            $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertEquals(1, count($errorMessages));
+            $this->assertTrue(array_key_exists('modelClassName', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['modelClassName']));
+            $this->assertEquals('Provided class name is not a valid Model class.', $errorMessages['modelClassName'][0]);
+            // test against a model that is indeed a class
+            $emailTemplate->modelClassName  = 'Contact';
+            $this->assertTrue($emailTemplate->save());
+            $this->assertEmpty($emailTemplate->getErrors());
+            $this->assertEquals(2, count(EmailTemplate::getAll()));
+        }
+
+        public function testMergeTagsValidation()
+        {
+            // test against a invalid merge tags
+            $emailTemplate                  = new EmailTemplate();
+            $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
+            $emailTemplate->subject         = 'Another Test subject';
+            $emailTemplate->name            = 'Another Test Email Template';
+            $emailTemplate->textContent     = 'Text Content [[TEXT^INVALID^MERGE^TAG]]';
+            $emailTemplate->htmlContent     = 'Html Content [[HTML__INVALID^MERGE^TAG]]';
+            $emailTemplate->modelClassName  = 'Contact';
+            $this->assertFalse($emailTemplate->save());
+            $errorMessages = $emailTemplate->getErrors();
+            $this->assertEquals(2, count($errorMessages));
+            $this->assertTrue(array_key_exists('textContent', $errorMessages));
+            $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
+            $this->assertEquals(1, count($errorMessages['textContent']));
+            $this->assertEquals(1, count($errorMessages['htmlContent']));
+            $this->assertTrue(strpos($errorMessages['textContent'][0], 'TEXT^INVALID^MERGE^TAG') !== false);
+            $this->assertTrue(strpos($errorMessages['htmlContent'][0], 'HTML__INVALID^MERGE^TAG') !== false);
+            // test with no merge tags
+            $emailTemplate->textContent    = 'Text Content without tags';
+            $emailTemplate->htmlContent    = 'Html Content without tags';
+            $this->assertTrue($emailTemplate->save());
+            $this->assertEmpty($emailTemplate->getErrors());
+            $this->assertEquals(3, count(EmailTemplate::getAll()));
+            // test with valid merge tags
+            $emailTemplate->textContent    = 'Name : [[FIRST^NAME]] [[LAST^NAME]]';
+            $emailTemplate->htmlContent    = '<b>Name : [[FIRST^NAME]] [[LAST^NAME]]</b>';
+            $this->assertTrue($emailTemplate->save());
+            $this->assertEmpty($emailTemplate->getErrors());
+            $this->assertEquals(3, count(EmailTemplate::getAll()));
         }
 
         /**
@@ -94,13 +166,11 @@
          */
         public function testDeleteEmailTemplate()
         {
-            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Subject',
-                                                                                    'Contact', 'Name', 'Html', 'Text');
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(2, count($emailTemplates));
+            $this->assertEquals(3, count($emailTemplates));
             $emailTemplates[0]->delete();
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(1, count($emailTemplates));
+            $this->assertEquals(2, count($emailTemplates));
         }
     }
 ?>

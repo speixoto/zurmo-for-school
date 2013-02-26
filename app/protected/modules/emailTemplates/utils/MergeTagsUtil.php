@@ -25,8 +25,7 @@
      ********************************************************************************/
 
     /*
-     * Base class that defines Merge Tag delimiters, extracts them, and provides abstract
-     *  methods for converting them to values.
+     * Base class that defines Merge Tag delimiters, extracts them, and provides methods for converting them to values.
      */
     class MergeTagsUtil
     {

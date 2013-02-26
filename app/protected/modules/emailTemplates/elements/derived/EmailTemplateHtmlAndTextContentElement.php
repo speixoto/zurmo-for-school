@@ -39,7 +39,7 @@
 
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
-            // TODO: @Shoaibi/@Amit Display both of them in separate divs, we need a toggle here.
+            // TODO: @Shoaibi/@Amit Display both of them in separate tabs, we need a toggle here.
             $content   = '<div class="email-template-content">' .
                             '<div class="email-template-textcontent">' .
                             $plainTextContent .

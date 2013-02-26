@@ -146,7 +146,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        public function testSucceedsWhenDataHasNoMergeFields()
+        public function testSucceedsWhenDataHasNoMergeTags()
         {
             $emailTemplateWithNoMergeTags = EmailTemplateTestHelper::createEmailTemplateByName(
                 EmailTemplate::TYPE_WORKFLOW, 'Subject 02', 'Account', 'Name 02',
@@ -162,7 +162,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        public function testFailsOnInvalidTags()
+        public function testFailsOnInvalidMergeTags()
         {
             $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(
                 EmailTemplate::TYPE_WORKFLOW, 'Subject 02', 'Account', 'Name 02',

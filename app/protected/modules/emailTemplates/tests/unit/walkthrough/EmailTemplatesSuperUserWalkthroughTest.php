@@ -104,7 +104,8 @@
             $this->assertTrue(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type_value">') !== false);
             $this->assertTrue(strpos($content, '<option value="1" selected="selected">Workflow</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="2">Contact</option>') !== false);
-            $this->assertTrue(strpos($content, 'Provided content contains few invalid merge tags') !== false);
+            $this->assertTrue(strpos($content, 'INVALID^TAG') !== false);
+            $this->assertEquals(5, substr_count($content, 'INVALID^TAG'));
 
             // Create a new emailTemplate and save it.
             $this->setPostArray(array('EmailTemplate' => array(
