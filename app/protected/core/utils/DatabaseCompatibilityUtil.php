@@ -226,7 +226,7 @@
                     'REGEXP', 'REPEAT', 'RESTRICT', 'RIGHT', 'SCHEMAS', 'SENSITIVE', 'SHOW', 'SPECIFIC', 'SQLSTATE',
                     'SQL_CALC_FOUND_ROWS', 'STARTING', 'TERMINATED', 'TINYINT', 'TRAILING', 'UNDO', 'UNLOCK', 'USAGE',
                     'UTC_DATE', 'VALUES', 'VARCHARACTER', 'WHERE', 'WRITE', 'ZEROFILL', 'ALL', 'AND', 'ASENSITIVE', 'BIGINT',
-                    'BOTH', 'CASCADE', 'CHAR', 'COLLATE', 'CONSTRAINT', 'CREATE', 'CURRENT_TIME', 'CURSOR', 'DAY_HOUR',
+                    'BOTH', 'CASCADE', 'CHAR', 'COLLATE', 'CONSTRAINT', 'COUNT', 'CREATE', 'CURRENT_TIME', 'CURSOR', 'DAY_HOUR',
                     'DAY_SECOND', 'DECLARE', 'DELETE', 'DETERMINISTIC', 'DIV', 'DUAL', 'ELSEIF', 'EXISTS', 'FALSE', 'FLOAT4', // Not Coding Standard
                     'FORCE', 'FULLTEXT', 'HAVING', 'HOUR_MINUTE', 'IGNORE', 'INFILE', 'INSENSITIVE', 'INT1', 'INT4', 'INTERVAL',
                     'ITERATE', 'KEYS', 'LEAVE', 'LIMIT', 'LOAD', 'LOCK', 'LONGTEXT', 'MASTER_SSL_VERIFY_SERVER_CERT', 'MEDIUMINT',
@@ -342,9 +342,9 @@
                 else
                 {
                     throw new BulkInsertFailedException(
-                              Yii::t('Default', 'Bulk insert failed. There was a row with an incorrect column quantity.') .
+                              Zurmo::t('Core', 'Bulk insert failed. There was a row with an incorrect column quantity.') .
                               ' ' .
-                              Yii::t('Default', 'Row Counter: {rowNumber} Serialized row data: {serializedRowData}',
+                              Zurmo::t('Core', 'Row Counter: {rowNumber} Serialized row data: {serializedRowData}',
                               array('{rowNumber}' => $counter, '{serializedRowData}' => serialize($row))));
                 }
             }

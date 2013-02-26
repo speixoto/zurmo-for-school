@@ -24,16 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserAttributeForm extends AttributeForm
+    class UserAttributeForm extends HasOneModelAttributeForm
     {
         public static function getAttributeTypeDisplayName()
         {
-            return Yii::t('Default', 'User');
+            return Zurmo::t('UsersModule', 'User');
         }
 
         public static function getAttributeTypeDisplayDescription()
         {
-            return Yii::t('Default', 'A user field');
+            return Zurmo::t('UsersModule', 'A user field');
         }
 
         public function getAttributeTypeName()

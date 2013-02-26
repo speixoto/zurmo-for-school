@@ -24,20 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Display either the sent date time or a message saying it is in queue.
-     */
-    class EmailMessageSentDateTimeElement extends DateTimeElement
+    class UsersByRoleModalListViewDesignerRules extends ModalListViewDesignerRules
     {
-        protected function renderControlNonEditable()
+        public function allowEditInLayoutTool()
         {
-            assert('$this->model instanceof EmailMessage');
-            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
-            {
-                return parent::renderControlNonEditable();
-            }
-            return Yii::t('Default', 'Currently in the {folderType} folder',
-                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
+            return false;
         }
     }
 ?>

@@ -105,7 +105,7 @@
                     }
                 }
             }
-            throw new CException(Yii::t('yii', 'Property "{class}.{property}" is not defined.',
+            throw new CException(Zurmo::t('ZurmoModule', 'Property "{class}.{property}" is not defined.',
                 array('{class}'  => get_class($this),
                     '{property}' => $moduleName . FormModelUtil::DELIMITER . $securityItem))
             );
@@ -137,7 +137,7 @@
 
         protected function resolveLabelfromData($information)
         {
-            return Yii::t('Default', $information['displayName']);
+            return Zurmo::t('ZurmoModule', $information['displayName']);
         }
 
         /**
@@ -149,7 +149,7 @@
         {
             if ($this->{$params['compareAttributeName']} != null && $this->{$attribute} == null)
             {
-                $this->addError($attribute, Yii::t('Default', 'You must specify a value.'));
+                $this->addError($attribute, Zurmo::t('ZurmoModule', 'You must specify a value.'));
             }
         }
     }

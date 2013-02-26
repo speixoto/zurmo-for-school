@@ -119,7 +119,7 @@
                 {
                     ZurmoConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'Global configuration saved successfully.')
+                        Zurmo::t('ZurmoModule', 'Global configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
@@ -331,6 +331,23 @@
         public function actionClearStickySearch($key)
         {
             StickySearchUtil::clearDataByKey($key);
+        }
+
+        public function actionGetUpdatesForRefresh($unreadConversations)
+        {
+            $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
+            if ($newUnreadConversations > $unreadConversations)
+            {
+                $data['unreadConversations'] = $newUnreadConversations;
+                $data['imgUrl']              = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/z-logo-60x60.png';
+                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM (New comment)');
+                $data['message']             = Zurmo::t('ZurmoModule', 'There is an unread conversation.');
+                echo CJSON::encode($data);
+            }
+            else
+            {
+                echo CJSON::encode(null);
+            }
         }
     }
 ?>

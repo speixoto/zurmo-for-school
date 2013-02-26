@@ -119,7 +119,8 @@
             );
             $label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
-            $error       = $form->error    ($model, $attribute);
+            $error       = $form->error    ($model, $attribute, array('inputID' => $id), true, true,
+                                            $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
             if ($model->$attribute != null)
             {
                  $label = null;
@@ -151,7 +152,7 @@
                                                                          'latitude'      => $addressModel->latitude,
                                                                          'longitude'     => $addressModel->longitude));
             $id           = $this->getEditableInputId($this->attribute, 'MapLink');
-            $content      = ZurmoHtml::ajaxLink(Yii::t('Default', 'map'), $mapRenderUrl,
+            $content      = ZurmoHtml::ajaxLink(Zurmo::t('ZurmoModule', 'map'), $mapRenderUrl,
                                 $this->resolveAjaxOptionsForMapLink(),
                                 array('id' => $id, 'class' => 'map-link')
             );

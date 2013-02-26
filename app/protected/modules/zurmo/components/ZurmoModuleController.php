@@ -134,7 +134,7 @@
             $modelClassName = $this->getModule()->getPrimaryModelName();
             $model = $modelClassName::getById((int)$id);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($model);
-            $searchAttributeData = AuditEventsListControllerUtil::makeSearchAttributeDataByAuditedModel($model);
+            $searchAttributeData = AuditEventsListControllerUtil::makeModalSearchAttributeDataByAuditedModel($model);
             $dataProvider = AuditEventsListControllerUtil::makeDataProviderBySearchAttributeData($searchAttributeData);
             Yii::app()->getClientScript()->setToAjaxMode();
             echo AuditEventsListControllerUtil::renderList($this, $dataProvider);
@@ -155,9 +155,8 @@
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             $modelClassName        = $this->getModelName();
             $searchFormClassName   = static::getSearchFormClassName();
-            // Set $pageSize to unlimited, because we don't want pagination
-            $pageSize = Yii::app()->pagination->getGlobalValueByType('unlimitedPageSize');
-            $model = new $modelClassName(false);
+            $pageSize              = null;
+            $model                 = new $modelClassName(false);
 
             if ($searchFormClassName != null)
             {
@@ -186,7 +185,7 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusTreshold)
+                if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)
@@ -222,7 +221,7 @@
                     else
                     {
                         Yii::app()->user->setFlash('notification',
-                            Yii::t('Default', 'There is no data to export.')
+                            Zurmo::t('ZurmoModule', 'There is no data to export.')
                         );
                     }
                 }
@@ -247,7 +246,7 @@
                     $exportItem->save();
                     $exportItem->forget();
                     Yii::app()->user->setFlash('notification',
-                        Yii::t('Default', 'A large amount of data has been requested for export.  You will receive ' .
+                        Zurmo::t('ZurmoModule', 'A large amount of data has been requested for export.  You will receive ' .
                         'a notification with the download link when the export is complete.')
                     );
                 }
@@ -255,7 +254,7 @@
             else
             {
                 Yii::app()->user->setFlash('notification',
-                    Yii::t('Default', 'There is no data to export.')
+                    Zurmo::t('ZurmoModule', 'There is no data to export.')
                 );
             }
             $this->redirect(array($this->getId() . '/index'));
@@ -271,7 +270,7 @@
             }
             catch (NotFoundException $e)
             {
-                $messageContent  = Yii::t('Default', 'The record you are trying to access does not exist.');
+                $messageContent  = Zurmo::t('ZurmoModule', 'The record you are trying to access does not exist.');
                 $messageView     = new ModelNotFoundView($messageContent);
                 $view            = new ModelNotFoundPageView($messageView);
                 echo $view->render();

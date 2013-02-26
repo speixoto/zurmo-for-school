@@ -68,7 +68,7 @@
             $stateMetadataAdapterClassName = null,
             $dataCollection = null)
         {
-            assert('is_int($pageSize)');
+            assert('is_int($pageSize) || $pageSize == null');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             assert('$dataCollection instanceof SearchAttributesDataCollection || $dataCollection == null');
             $listModelClassName = get_class($searchModel->getModel());
@@ -236,7 +236,7 @@
             $alertMessage          = $this->getMassEditAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
-            $title                 = Yii::t('Default', 'Mass Update') . ': ' . $title;
+            $title                 = Zurmo::t('Core', 'Mass Update') . ': ' . $title;
             $massEditViewClassName = $moduleName . 'MassEditView';
             $view  = new $massEditViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
                                                       $selectedRecordCount, $title, $alertMessage);
@@ -252,7 +252,7 @@
         {
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
-            $title                 = Yii::t('Default', 'Mass Delete') . ': ' . $title;
+            $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
             $massDeleteViewClassName = 'MassDeleteView';
             $selectedIds = GetUtil::getData();
             $view  = new $massDeleteViewClassName($this->getId(), $this->getModule()->getId(), $model, $activeAttributes,
@@ -320,11 +320,7 @@
             {
                 $model->setAttributes($_POST[$postVariableName]);
                 $model->validate();
-                $errorData = array();
-                foreach ($model->getErrors() as $attribute => $errors)
-                {
-                        $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }
@@ -413,7 +409,7 @@
         {
             if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
             {
-                return Yii::t('Default', 'You must select at least one field to modify.');
+                return Zurmo::t('Core', 'You must select at least one field to modify.');
             }
         }
     }

@@ -132,7 +132,7 @@
 
         public static function getDisplayDescription()
         {
-            return Yii::t('Default', 'Matching Archived Emails');
+            return Zurmo::t('LeadsModule', 'Matching Archived Emails');
         }
 
         public function renderAfterFormLayout($form)
@@ -166,10 +166,15 @@
                     $('#wrapper-" . $this->uniqueId . "').parent().parent().parent().remove();
                     $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
                                        {
-                                          text: '" . Yii::t('Default', 'Created LeadsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
+                                          text: '" . Zurmo::t('LeadsModule', 'Created LeadsModuleSingularLabel successfully', LabelUtil::getTranslationParamsForAllModules()) . "',
                                           permanent: false,
                                           showIcon: true,
-                                       })}"
+                                       });
+                    if($('.email-archive-item').length==0)
+                    {                                     
+                        window.location.reload()                                     
+                    }                     
+                    }",                                    
                 ));
             // End Not Coding Standard
         }

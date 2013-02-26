@@ -64,11 +64,7 @@
                                              sanitizePostByDesignerTypeForSavingModel($model, $postFormData);
             $model->setAttributes($sanitizedPostData);
             $model->validate();
-            $errorData = array();
-            foreach ($model->getErrors() as $attribute => $errors)
-            {
-                    $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-            }
+            $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
             echo CJSON::encode($errorData);
             Yii::app()->end(0, false);
         }
@@ -105,7 +101,7 @@
             $socialItem    = SocialItem::getById((int)$id);
             $uniquePageId  = SocialItemsUtil::makeUniquePageIdByModel($socialItem);
             $content       = ZurmoHtml::tag('span', array(),
-                                            ZurmoHtml::link(Yii::t('Default', 'Comment'), '#',
+                                            ZurmoHtml::link(Zurmo::t('SocialItemsModule', 'Comment'), '#',
                                                             array('class' => 'show-create-comment')));
             $inlineView    = new CommentForSocialItemInlineEditView($comment, 'default', 'comments', 'inlineCreateSave',
                                                                     $urlParameters, $uniquePageId, $socialItem->id);

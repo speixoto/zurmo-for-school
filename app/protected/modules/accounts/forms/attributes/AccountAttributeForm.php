@@ -24,16 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AccountAttributeForm extends AttributeForm
+    class AccountAttributeForm extends HasOneModelAttributeForm
     {
         public static function getAttributeTypeDisplayName()
         {
-            return Yii::t('Default', 'Account');
+            return Zurmo::t('AccountsModule', 'Account');
         }
 
         public static function getAttributeTypeDisplayDescription()
         {
-            return Yii::t('Default', 'An account field');
+            return Zurmo::t('AccountsModule', 'An account field');
         }
 
         public function getAttributeTypeName()
