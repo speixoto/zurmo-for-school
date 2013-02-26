@@ -93,7 +93,6 @@
 
         protected function renderAfterFormLayout($form)
         {
-            // TODO: @Shoaibi/@Jason Is this the right place to put it?
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
                         {
@@ -122,6 +121,7 @@
             $content .= '<div class="email-template-content"></div>' . "\n";
             $content .= '<div>' . "\n";
             $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , $form);
+            $this->resolveElementDuringFormLayoutRender($element);
             $content .= $element->render();
             $content .= '</div>' . "\n";
             return $content;
@@ -145,14 +145,20 @@
             return $content;
         }
 
-        protected function renderFormLayout($form = null)
+        protected function resolveElementDuringFormLayoutRender(& $element)
         {
-            // TODO: @Shoaibi/@Jason This is a hack.
-            // TODO: @Shoaibi/@Jason How to disable element specific error messages?
-            // TODO: @Shoaibi Run test after disabling element specific error messages, some might fail.
-            $errorSummary = (isset($form))? $form->errorSummary($this->getModel()) : null;
-            return $errorSummary . parent::renderFormLayout($form);
+            if ($this->alwaysShowErrorSummary())
+            {
+                $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
+            }
+            else
+            {
+            }
         }
 
+        protected function alwaysShowErrorSummary()
+        {
+            return true;
+        }
     }
 ?>

@@ -36,19 +36,21 @@
 
         protected function getAvailableModelNamesArray()
         {
+            // NOTE: @Shoaibi/@Jason: User shouldn't be able to edit a template created against a model he hasn't got access for.
             $modules = Module::getModuleObjects();
             $availableModels = array();
             foreach ($modules as $module)
             {
                 $moduleClassName = get_class($module);
-                if (method_exists($moduleClassName, 'getPrimaryModelName'))
+                if (RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel) &&
+                                                    method_exists($moduleClassName, 'getPrimaryModelName'))
                 {
                     try
                     {
                         $modelClassName = $moduleClassName::getPrimaryModelName();
                         if (!isset($availableModels[$modelClassName]))
                         {
-                            $availableModels[$modelClassName] = Zurmo::t($moduleClassName, $modelClassName);
+                            $availableModels[$modelClassName] = $modelClassName::getModelLabelByTypeAndLanguage('Singular');
                         }
                         else
                         {

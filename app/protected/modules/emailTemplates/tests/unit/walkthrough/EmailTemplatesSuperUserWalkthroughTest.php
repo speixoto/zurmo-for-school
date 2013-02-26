@@ -97,7 +97,7 @@
                 'name'              => 'New Test EmailTemplate',
                 'subject'           => 'New Test Subject',
                 'textContent'       => 'This is text content [[INVALID^TAG]]',
-                'htmlContent'       => 'This is text content [[INVALID^TAG]]',
+                'htmlContent'       => 'This is Html content [[INVALID^TAG]]',
                 )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
@@ -105,7 +105,7 @@
             $this->assertTrue(strpos($content, '<option value="1" selected="selected">Workflow</option>') !== false);
             $this->assertTrue(strpos($content, '<option value="2">Contact</option>') !== false);
             $this->assertTrue(strpos($content, 'INVALID^TAG') !== false);
-            $this->assertEquals(5, substr_count($content, 'INVALID^TAG'));
+            $this->assertEquals(4, substr_count($content, 'INVALID^TAG'));
 
             // Create a new emailTemplate and save it.
             $this->setPostArray(array('EmailTemplate' => array(
@@ -180,8 +180,8 @@
             $this->assertTrue(strpos($content, '<th>Type</th><td colspan="1">' . $types[(int)$emailTemplate->type] . '</td>') !== false);
             $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
             $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
-            $this->assertTrue(strpos($content, '<div class="email-template-textcontent">'. $emailTemplate->textContent . '</div>') !== false);
-            $this->assertTrue(strpos($content, '<div class="email-template-htmlcontent">' . $emailTemplate->htmlContent . '</div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-textContent">'. $emailTemplate->textContent . '</div>') !== false);
+            $this->assertTrue(strpos($content, '<div class="email-template-htmlContent">' . $emailTemplate->htmlContent . '</div>') !== false);
         }
 
         public function testSuperUserDeleteAction()

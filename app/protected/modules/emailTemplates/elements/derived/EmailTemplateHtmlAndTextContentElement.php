@@ -29,22 +29,49 @@
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
+        // REVIEW: @Shoaibi This is uber crap, workarounds everywhere. Rewrite with proper compliance to how Element handles things
+        const HTML_CONTENT_LABEL = 'htmlContent';
+
+        const TEXT_CONTENT_LABEL = 'textContent';
+
         public static function getModelAttributeNames()
         {
             return array(
-                'htmlContent',
-                'textContent',
+                static::HTML_CONTENT_LABEL,
+                static::TEXT_CONTENT_LABEL,
             );
+        }
+
+
+        public static function renderModelAttributeLabel($name)
+        {
+            $labels = static::renderLabels();
+            return $labels[$name];
+        }
+
+        protected static function renderLabels()
+        {
+            $names = static::getModelAttributeNames();
+            $labels = array(
+                            Zurmo::t('EmailTemplatesModule', 'Html Content'),
+                            Zurmo::t('EmailTemplatesModule', 'Text Content'),
+                            );
+            return array_combine(static::getModelAttributeNames(), $labels);
+        }
+
+        protected function renderHtmlContentAreaLabel()
+        {
+            return static::renderModelAttributeLabel(static::HTML_CONTENT_LABEL);
         }
 
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
             // TODO: @Shoaibi/@Amit Display both of them in separate tabs, we need a toggle here.
             $content   = '<div class="email-template-content">' .
-                            '<div class="email-template-textcontent">' .
+                            '<div class="email-template-' . static::TEXT_CONTENT_LABEL . '">' .
                             $plainTextContent .
                             '</div>' .
-                            '<div class="email-template-htmlcontent">'  .
+                            '<div class="email-template-' . static::HTML_CONTENT_LABEL . '">'  .
                             $htmlContent .
                             '</div>' .
                         '</div>';
@@ -65,35 +92,44 @@
 
         protected function renderHtmlContentArea()
         {
-            $attribute               = 'htmlContent';
-            $id                      = $this->getEditableInputId($attribute);
+            $id                      = $this->getEditableInputId(static::HTML_CONTENT_LABEL);
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName($attribute);
+            $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_LABEL);
             $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $this->model->htmlContent,
-            ));
+                                ));
             $cClipWidget->endClip();
                             // TODO: @Shoaibi/@Amit <label> either needs a line break at the end or margin-bottom.
-            $content                 = '<label for="EmailTemplate_htmlContent">HTML Content</label>';
+            $content                 = '<label for="EmailTemplate_' . $this->renderHtmlContentAreaLabel() .
+                                            '">HTML Content</label>';
             $content                .= $cClipWidget->getController()->clips['Redactor'];
-            $content                .= $this->form->error($this->model, $attribute);
+            $content                .= $this->renderHtmlContentAreaError();
             return $content;
         }
 
          protected function renderTextContentArea()
          {
-            $attribute                                  = 'textContent';
-            $content                                    = null;
-            $textContentElement                         = new TextAreaElement($this->model, 'textContent', $this->form);
+            $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_LABEL, $this->form);
             $textContentElement->nonEditableTemplate    = '<div class="text-content">{content}</div>';
-            $content                                    .= $textContentElement->render();
-            $content                                    .= $this->form->error($this->model, $attribute);
-            return $content;
+            $textContentElement->editableTemplate       = $this->editableTemplate;
+            return $textContentElement->render();
          }
+
+        protected function renderHtmlContentAreaError()
+        {
+            if (strpos($this->editableTemplate, '{error}') !== false)
+            {
+                return $this->form->error($this->model, static::HTML_CONTENT_LABEL);
+            }
+            else
+            {
+                return null;
+            }
+        }
 
         protected function renderLabel()
         {

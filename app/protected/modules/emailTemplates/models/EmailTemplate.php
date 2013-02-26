@@ -200,8 +200,10 @@
                     {
                         foreach ($invalidTags as $tag)
                         {
-                            $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Invalid MergeTag used: {mergeTag}',
-                                array('{mergeTag}' => $tag)));
+                            $errorMessage = EmailTemplateHtmlAndTextContentElement::renderModelAttributeLabel($attribute) .
+                                            ': Invalid MergeTag({mergeTag}) used.';
+                            $this->addError($attribute, Zurmo::t('EmailTemplatesModule', $errorMessage,
+                                                        array('{mergeTag}' => $tag)));
                         }
                     }
                     else

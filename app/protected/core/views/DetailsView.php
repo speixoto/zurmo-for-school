@@ -111,6 +111,7 @@
                 $errorSummaryContent = null;
             }
             $formLayout = new DetailsViewFormLayout($metadataWithRenderedElements, $maxCellsPerRow, $errorSummaryContent);
+            $formLayout->alwaysShowErrorSummary = $this->alwaysShowErrorSummary();
             $formLayout->labelsHaveOwnCells($this->doesLabelHaveOwnCell());
             $formLayout->setMorePanelsLinkLabel($this->getMorePanelsLinkLabel());
             $formLayout->setLessPanelsLinkLabel($this->getLessPanelsLinkLabel());
@@ -362,6 +363,11 @@
         public function getTitle()
         {
             return $this->title;
+        }
+
+        protected function alwaysShowErrorSummary()
+        {
+            return true;
         }
     }
 ?>
