@@ -93,6 +93,55 @@
         private $_modelClassName;
 
         /**
+         * @return array
+         */
+        public static function getTypeDataAndLabels()
+        {
+            return array(
+                self::TYPE_UPDATE_SELF    => Zurmo::t('WorkflowsModule', 'Update'),
+                self::TYPE_UPDATE_RELATED => Zurmo::t('WorkflowsModule', 'Update Related'),
+                self::TYPE_CREATE         => Zurmo::t('WorkflowsModule', 'Create'),
+                self::TYPE_CREATE_RELATED => Zurmo::t('WorkflowsModule', 'Create Related'),
+            );
+        }
+
+        public static function getTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
+            $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($moduleClassName,
+                              $modelClassName, $workflowType);
+            $relationsData  = $adapter->getSelectableRelationsDataForActionTypeRelation();
+            $dataAndLabels  = array();
+            foreach($relationsData as $relation => $data)
+            {
+                $dataAndLabels[$relation] = $data['label'];
+            }
+            return $dataAndLabels;
+        }
+
+        public static function getTypeRelatedModelRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType, $relation)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
+            assert('is_string($relation)');
+            $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($moduleClassName,
+                              $modelClassName, $workflowType);
+            $relatedadapter = ModelRelationsAndAttributesToWorkflowAdapter::make(
+                              $adapter->getRelationModuleClassName($relation),
+                              $adapter->getRelationModelClassName($relation), $workflowType);
+            $relationsData  = $relatedadapter->getSelectableRelationsDataForActionTypeRelation();
+            $dataAndLabels  = array();
+            foreach($relationsData as $relation => $data)
+            {
+                $dataAndLabels[$relation] = $data['label'];
+            }
+            return $dataAndLabels;
+        }
+
+        /**
          * @param string $modelClassName
          */
         public function __construct($modelClassName)

@@ -58,5 +58,41 @@
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
         }
+
+        /**
+         * @param array $items
+         * @param string $componentType
+         * @return string
+         */
+        protected function getSortableListContent(Array $items, $componentType)
+        {
+            //unless we refactor getTreeType to getComponentType... but that requires a bigger refactor
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip($componentType . 'WorkflowComponentSortable');
+            $cClipWidget->widget('application.core.widgets.JuiSortable', array(
+                'items' => $items,
+                'itemTemplate' => '<li>content</li>',
+                'htmlOptions' =>
+                array(
+                    'id'    => $componentType . 'attributeRowsUl',
+                    'class' => 'sortable',
+                ),
+                'options' => array(
+                    'placeholder' => 'ui-state-highlight',
+                ),
+                'showEmptyList' => false
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips[$componentType . 'WorkflowComponentSortable'];
+        }
+
+        /**
+         * @param string $componentType
+         * @return string
+         */
+        protected function getRowCounterInputId($componentType)
+        {
+            return $componentType . 'RowCounter';
+        }
     }
 ?>

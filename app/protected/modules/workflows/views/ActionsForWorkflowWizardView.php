@@ -29,6 +29,11 @@
      */
     class ActionsForWorkflowWizardView extends ComponentForWorkflowWizardView
     {
+        const ACTION_TYPE_NAME                          = 'actionType';
+        const ACTION_TYPE_RELATION_NAME                 = 'actionTypeRelatedModel';
+        const ACTION_TYPE_RELATED_MODEL_RELATION_NAME   = 'actionTypeRelatedRelatedModel';
+        const ACTION_TYPE_RELATION_DIV_ID               = 'action-type-related-model-selector';
+        const ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID = 'action-type-related-related-model-selector';
         /**
          * @return string
          */
@@ -53,12 +58,33 @@
             return 'actionsNextLink';
         }
 
+        public static function resolveTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
+            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Module'));
+            return array_merge($data, ActionForWorkflowForm::
+                                      getTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType));
+        }
+
+        public static function resolveTypeRelatedModelRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType, $relation)
+        {
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
+            assert('is_string($relation)');
+            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Module'));
+            return array_merge($data, ActionForWorkflowForm::getTypeRelatedModelRelationDataAndLabels($moduleClassName,
+                                      $modelClassName, $workflowType, $relation));
+        }
+
         public function registerScripts()
         {
             parent::registerScripts();
-            $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
-            $script = ''; //todO:
-            Yii::app()->getClientScript()->registerScript('xx', $script);
+            $this->registerActionTypeDropDownOnChangeScript();
+            $this->registerActionTypeRelationDropDownOnChangeScript();
+            $this->registerActionTypeRelatedModelRelationDropDownOnChangeScript();
         }
 
         /**
@@ -74,21 +100,220 @@
          */
         protected function renderFormContent()
         {
-            //$inputPrefixData   = array(get_class($this->model), get_class($this->model->chart)); //todO: cant use chart fix this
-            $inputPrefixData = array();
-            $this->form->setInputPrefixData($inputPrefixData);
-            $params            = array('inputPrefix' => $inputPrefixData);
-            $content           = '<div class="attributesContainer">';
-            //$element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
-            //    array_merge($params, array('addBlank' => true)));
-            //= $element->render();
-            $content          .= 'zero-model image and view<BR>';
-            $content          .= 'existing actions div<BR>';
-            $content          .= 'action picker<BR>';
-            $content          .= '</div>';
-            $this->form->clearInputPrefixData();
+            $content  = '<div>'; //todo: is this div necessary?
+            $content .= $this->renderZeroComponentsContentAndWrapper();
+            $content .= $this->renderAttributeSelectorContentAndWrapper();
+            $content .= $this->renderActionsContentAndWrapper();
+            $content .= '</div>';
             $this->registerScripts();
             return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getZeroComponentsClassName()
+        {
+            return 'ZeroActions';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getZeroComponentsMessageContent()
+        {
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select an action below') . '</h2>';
+        }
+        protected function renderZeroComponentsContentAndWrapper()
+        {
+            return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
+                ComponentForWorkflowForm::TYPE_ACTIONS), $this->getZeroComponentsContent());
+        }
+
+        protected function renderAttributeSelectorContentAndWrapper()
+        {
+            $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
+                                             static::resolveTypeDataAndLabels());
+            $content  = Zurmo::t('WorkflowsModule', 'Select action');
+            $content .= '<BR><BR><BR><BR><BR><BR><BR><BR><BR>' . $actionTypeContent; //todo: remove the br's once styled
+            $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
+                                                    'style' => "display:none;"), null);
+            $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID,
+                                                    'style' => "display:none;"), null);
+            return      ZurmoHtml::tag('div', array('class' => 'action-type-selector-container'), $content);
+        }
+
+        protected static function resolveTypeDataAndLabels()
+        {
+            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Action'));
+            return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
+        }
+
+        protected function renderActionsContentAndWrapper()
+        {
+            //todo: comeback
+            //todo: still seems strange we call it droppable even though it is only draggable here. maybe not a big deal
+            $rowCount                    = 0;
+            $items                       = $this->getItemsContent($rowCount);
+            $itemsContent                = $this->getSortableListContent($items, ComponentForWorkflowForm::TYPE_ACTIONS);
+            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS));
+            $hiddenInputName             = ComponentForWorkflowForm::TYPE_ACTIONS . 'RowCounter';
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
+            $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+                                           ComponentForWorkflowForm::TYPE_ACTIONS), $droppableAttributesContent);
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
+                                           ComponentForWorkflowForm::TYPE_ACTIONS), $this->getZeroComponentsContent());
+            return $content;
+        }
+
+        /**
+         * @return int
+         */
+        protected function getItemsCount()
+        {
+            return count($this->model->actions);
+        }
+
+        /**
+         * @param int $rowCount
+         * @return array|string
+         */
+        protected function getItemsContent(& $rowCount)
+        {
+            return $this->renderActions($rowCount, $this->model->actions);
+        }
+
+        protected function renderActions(& $rowCount, $actions)
+        {
+            assert('is_int($rowCount)');
+            assert('is_array($actions)');
+            $items                      = array();
+            $wizardFormClassName        = get_class($this->model);
+            foreach($actions as $action)
+            {
+                $nodeIdWithoutTreeType      = $action->attributeIndexOrDerivedType;
+                $inputPrefixData            = WorkflowRelationsAndAttributesToTreeAdapter::
+                                              resolveInputPrefixData($wizardFormClassName,
+                                              ComponentForWorkflowForm::TYPE_ACTIONS, $rowCount);
+                //todo: use different adapter ? or just call different method on adapter, probably differnet method on adapter?
+                $adapter                    = new WorkflowAttributeToElementAdapter($inputPrefixData, $action,
+                                              $this->form, ComponentForWorkflowForm::TYPE_ACTIONS);
+                //todo: need to use different view
+                $view                       = new AttributeRowForWorkflowComponentView($adapter, $rowCount,
+                                                  $inputPrefixData,
+                                                  WorkflowRelationsAndAttributesToTreeAdapter:: //todo weird we are calling a tree adapter thing.
+                                                  resolveAttributeByNodeId($nodeIdWithoutTreeType),
+                                                  false, true, ComponentForWorkflowForm::TYPE_ACTIONS); //todO: make sure you know what true/false is for
+                $view->addWrapper           = false;
+                $items[]                    = array('content' => $view->render());
+                $rowCount ++;
+            }
+            return $items;
+        }
+
+        protected function registerActionTypeDropDownOnChangeScript()
+        {
+            $id                = self::ACTION_TYPE_NAME;
+            $inputDivId        = self::ACTION_TYPE_RELATION_DIV_ID;
+            $relatedInputDivId = self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID;
+            $moduleClassNameId = get_class($this->model) . '[moduleClassName]';
+            $url               = Yii::app()->createUrl('workflows/default/changeActionType',
+                                 array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
+            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
+                'type'    => 'GET',
+                'data'    => 'js:\'moduleClassName=\' + $("input:radio[name=\"' . $moduleClassNameId . '\"]:checked").val()',
+                'url'     =>  $url,
+                'beforeSend' => 'js:function(){
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
+                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        $("#' . $inputDivId . '").show();
+                        }',
+                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
+            ));
+            $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
+            {
+                $('#" . $inputDivId . "').html('');
+                $('#" . $inputDivId . "').hide();
+                $('#" . $relatedInputDivId . "').html('');
+                $('#" . $relatedInputDivId . "').hide();
+                $('.action-type-selector-container').find('#" . self::ACTION_TYPE_RELATION_DIV_ID . "').html('');
+                $('.action-type-selector-container').find('#" . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . "').html('');
+                if($('#" . $id . "').val() == '')
+                {
+                    //do nothing
+                }
+                else if($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
+                {
+                    //todo: ajax to get action row
+                }
+                else
+                {
+                    $ajaxSubmitScript
+                }
+            }
+            );";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('actionTypeDropDownOnChangeScript', $script);
+        }
+
+        protected function registerActionTypeRelationDropDownOnChangeScript()
+        {
+            $id                = self::ACTION_TYPE_RELATION_NAME;
+            $inputDivId        = self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID;
+            $moduleClassNameId = get_class($this->model) . '[moduleClassName]';
+            $url               = Yii::app()->createUrl('workflows/default/changeActionTypeRelatedModel',
+                array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
+            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
+                'type'    => 'GET',
+                'data'    => 'js:\'relation=\' + $(this).val() + \'&moduleClassName=\' + $("input:radio[name=\"' .
+                              $moduleClassNameId . '\"]:checked").val()',
+                'url'     =>  $url,
+                'beforeSend' => 'js:function(){
+                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
+                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        $("#' . $inputDivId . '").show();
+                        }',
+                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
+            ));
+            $script = "$('#" . $id . "').live('change', function()
+            {
+                $('.action-type-selector-container').find('#" . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . "').html('');
+                if($('#" . $id . "').val() == '')
+                {
+                    $('#" . $inputDivId . "').html('');
+                    $('#" . $inputDivId . "').hide();
+                }
+                else if($('#" . self::ACTION_TYPE_NAME . "').val() == '" . ActionForWorkflowForm::TYPE_CREATE_RELATED . "')
+                {
+                    $ajaxSubmitScript
+                }
+                else
+                {
+                    //todo: ajax to get action row
+                }
+            }
+            );";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('actionTypeRelatedModelDropDownOnChangeScript', $script);
+        }
+
+        protected function registerActionTypeRelatedModelRelationDropDownOnChangeScript()
+        {
+            $id     = self::ACTION_TYPE_RELATED_MODEL_RELATION_NAME;
+            $script = "$('#" . $id . "').live('change', function()
+            {
+                if($('#" . $id . "').val() != '')
+                {
+                    //todo: ajax to get action row
+                    someMethod(relation, relatedModelRelation);
+                }
+            }
+            );";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('actionTypeRelatedModelDropDownOnChangeScript', $script);
         }
     }
 ?>

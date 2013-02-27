@@ -77,13 +77,13 @@
             $items                       = $this->getItemsContent($rowCount);
             if($this->isListContentSortable())
             {
-                $itemsContent            = $this->getSortableListContent($items);
+                $itemsContent            = $this->getSortableListContent($items, static::getTreeType());
             }
             else
             {
                 $itemsContent            = $this->getNonSortableListContent($items);
             }
-            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId());
+            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId(static::getTreeType()));
             $hiddenInputName             = static::getTreeType() . 'RowCounter';
             $dropZone                    = $this->renderRightSideDropZoneContent();
             $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
@@ -158,39 +158,6 @@
             return ZurmoHtml::tag('ul', array(), $content);
         }
 
-        /**
-         * @param array $items
-         * @return string
-         */
-        protected function getSortableListContent(Array $items)
-        {
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip(static::getTreeType() . 'WorkflowComponentSortable');
-            $cClipWidget->widget('application.core.widgets.JuiSortable', array(
-                'items' => $items,
-                'itemTemplate' => '<li>content</li>',
-                'htmlOptions' =>
-                array(
-                    'id'    => static::getTreeType() . 'attributeRowsUl',
-                    'class' => 'sortable',
-                ),
-                'options' => array(
-                    'placeholder' => 'ui-state-highlight',
-                ),
-                'showEmptyList' => false
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips[static::getTreeType() . 'WorkflowComponentSortable'];
-        }
-
-        /**
-         * @return string
-         */
-        protected function getRowCounterInputId()
-        {
-            return static::getTreeType() . 'RowCounter';
-        }
-
         protected function registerScripts()
         {
             parent::registerScripts();
@@ -236,12 +203,13 @@
                     'url'      => 'js:$.param.querystring("' .
                                   $this->getAddAttributeUrl() .
                                   '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' .
-                                  $this->getRowCounterInputId(). '\').val())',
+                                  $this->getRowCounterInputId(static::getTreeType()). '\').val())',
                     'beforeSend' => 'js:function(){
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                    $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
+                    $(\'#' . $this->getRowCounterInputId(static::getTreeType()). '\').val(parseInt($(\'#' .
+                        $this->getRowCounterInputId(static::getTreeType()) . '\').val()) + 1);
                     $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                     ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
                     $(".' . static::getZeroComponentsClassName() . '").hide();
@@ -258,12 +226,14 @@
                     'type'     => 'POST',
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
-                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $this->getRowCounterInputId(). '\').val())',
+                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' .
+                                        $this->getRowCounterInputId(static::getTreeType()). '\').val())',
                     'beforeSend' => 'js:function(){
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                        $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
+                        $(\'#' . $this->getRowCounterInputId(static::getTreeType()). '\').val(parseInt($(\'#' .
+                        $this->getRowCounterInputId(static::getTreeType()) . '\').val()) + 1);
                         $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                         ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();

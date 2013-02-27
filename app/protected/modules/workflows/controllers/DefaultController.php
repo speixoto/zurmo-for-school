@@ -290,6 +290,22 @@
             echo $content;
         }
 
+        public function actionChangeActionType($moduleClassName, $type)
+        {
+            $content = ZurmoHtml::dropDownList(ActionsForWorkflowWizardView::ACTION_TYPE_RELATION_NAME,
+                null, ActionsForWorkflowWizardView::resolveTypeRelationDataAndLabels(
+                    $moduleClassName, $moduleClassName::getPrimaryModelName(), $type));
+            echo $content;
+        }
+
+        public function actionChangeActionTypeRelatedModel($moduleClassName, $type, $relation)
+        {
+            $content = ZurmoHtml::dropDownList(ActionsForWorkflowWizardView::ACTION_TYPE_RELATED_MODEL_RELATION_NAME,
+                                               null, ActionsForWorkflowWizardView::resolveTypeRelatedModelRelationDataAndLabels(
+                                               $moduleClassName, $moduleClassName::getPrimaryModelName(), $type, $relation));
+            echo $content;
+        }
+
         protected function resolveCanCurrentUserAccessWorkflows()
         {
             if(!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',
