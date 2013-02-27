@@ -29,7 +29,6 @@
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
-        // REVIEW: @Shoaibi This is uber crap, workarounds everywhere. Rewrite with proper compliance to how Element handles things
         const HTML_CONTENT_INPUT_NAME = 'htmlContent';
 
         const TEXT_CONTENT_INPUT_NAME = 'textContent';
@@ -65,16 +64,13 @@
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
             // TODO: @Shoaibi/@Amit Display both of them in separate tabs, we need a toggle here.
-            $content   = '<div class="email-template-content">' .
-                            '<div class="email-template-' . static::TEXT_CONTENT_INPUT_NAME . '">' .
-                            $plainTextContent .
-                            '</div>' .
-                            '<div class="email-template-' . static::HTML_CONTENT_INPUT_NAME . '">'  .
-                            $htmlContent .
-                            '</div>' .
-                        '</div>';
-            return $content;
-
+            $plainTextDiv = ZurmoHtml::tag('div',
+                                                array('class' => 'email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+                                                $plainTextContent);
+            $htmlContentDiv = ZurmoHtml::tag('div',
+                                                array('class' => 'email-template-' . static::HTML_CONTENT_INPUT_NAME),
+                                                $htmlContent);
+            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $plainTextDiv.$htmlContentDiv);
         }
 
         protected function renderControlNonEditable()
@@ -88,6 +84,7 @@
             return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea());
         }
 
+        // REVIEW : @Shoaibi Create a HTML element out of it.
         protected function renderHtmlContentArea()
         {
             $id                      = $this->getEditableInputId(static::HTML_CONTENT_INPUT_NAME);
@@ -102,8 +99,7 @@
                                 ));
             $cClipWidget->endClip();
                             // TODO: @Shoaibi/@Amit <label> either needs a line break at the end or margin-bottom.
-            $content                 = '<label for="EmailTemplate_' . $this->renderHtmlContentAreaLabel() .
-                                            '">HTML Content</label>';
+            $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
             $content                .= $cClipWidget->getController()->clips['Redactor'];
             $content                .= $this->renderHtmlContentAreaError();
             return $content;
@@ -112,7 +108,6 @@
          protected function renderTextContentArea()
          {
             $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_INPUT_NAME, $this->form);
-            $textContentElement->nonEditableTemplate    = '<div class="text-content">{content}</div>';
             $textContentElement->editableTemplate       = $this->editableTemplate;
             return $textContentElement->render();
          }

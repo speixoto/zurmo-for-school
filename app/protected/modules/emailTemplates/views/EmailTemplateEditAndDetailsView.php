@@ -87,8 +87,7 @@
 
         protected function renderRightSideFormLayoutForEdit($form)
         {
-            $content = null;
-            return $content;
+            return null;
         }
 
         protected function renderAfterFormLayout($form)
@@ -117,14 +116,7 @@
                         }
                         );
                     ");
-            $content  = null;
-            $content .= '<div class="email-template-content"></div>' . "\n";
-            $content .= '<div>' . "\n";
-            $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , $form);
-            $this->resolveElementDuringFormLayoutRender($element);
-            $content .= $element->render();
-            $content .= '</div>' . "\n";
-            return $content;
+            return $this->renderHtmlAndTextContentElement($this->model, null, $form);
         }
 
         protected function getNewModelTitleLabel()
@@ -133,16 +125,23 @@
                                      LabelUtil::getTranslationParamsForAllModules());
         }
 
-        protected function renderAfterFormLayoutForDetailsContent()
+        protected function renderAfterFormLayoutForDetailsContent($form = null)
         {
-            $content  = null;
-            $content .= '<div class="email-template-content"></div>' . "\n";
-            $content .= '<div>' . "\n";
-            $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , null);
-            $content .= $element->render();
-            $content .= '</div>' . "\n";
-            $content .= parent::renderAfterFormLayoutForDetailsContent();
-            return $content;
+            return $this->renderHtmlAndTextContentElement($this->model, null, $form) .
+                        parent::renderAfterFormLayout($form);
+        }
+
+        protected function renderHtmlAndTextContentElement($model, $attribute, $form)
+        {
+            $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+            if (!is_null($form))
+            {
+                $this->resolveElementDuringFormLayoutRender($element);
+            }
+            else
+            {
+            }
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
         }
 
         protected function resolveElementDuringFormLayoutRender(& $element)
