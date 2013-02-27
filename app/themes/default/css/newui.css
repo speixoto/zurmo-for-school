@@ -16426,6 +16426,33 @@ orientation : portrait // orientation: landscape    Target orientation
   #MenuView .nav span {
     width: 33px;
   }
+  #MenuView #search > a > em:before {
+    content: "k";
+  }
+  #MenuView #shortcuts > a > em:before {
+    content: "Y";
+  }
+  #MenuView #home > a > em:before {
+    content: "A";
+  }
+  #MenuView #accounts > a > em:before {
+    content: "P";
+  }
+  #MenuView #leads > a > em:before {
+    content: ".";
+  }
+  #MenuView #contacts > a > em:before {
+    content: "y";
+  }
+  #MenuView #opportunities > a > em:before {
+    content: "9";
+  }
+  #MenuView #conversations > a > em:before {
+    content: "b";
+  }
+  #MenuView #recently-viewed > a > em:before {
+    content: "{";
+  }
   #RecentlyViewedView ul {
     max-height: 200px;
     overflow: scroll;
