@@ -30,18 +30,17 @@
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
         // REVIEW: @Shoaibi This is uber crap, workarounds everywhere. Rewrite with proper compliance to how Element handles things
-        const HTML_CONTENT_NAME = 'htmlContent';
+        const HTML_CONTENT_INPUT_NAME = 'htmlContent';
 
-        const TEXT_CONTENT_NAME = 'textContent';
+        const TEXT_CONTENT_INPUT_NAME = 'textContent';
 
         public static function getModelAttributeNames()
         {
             return array(
-                static::HTML_CONTENT_NAME,
-                static::TEXT_CONTENT_NAME,
+                static::HTML_CONTENT_INPUT_NAME,
+                static::TEXT_CONTENT_INPUT_NAME,
             );
         }
-
 
         public static function renderModelAttributeLabel($name)
         {
@@ -51,7 +50,6 @@
 
         protected static function renderLabels()
         {
-            $names = static::getModelAttributeNames();
             $labels = array(
                             Zurmo::t('EmailTemplatesModule', 'Html Content'),
                             Zurmo::t('EmailTemplatesModule', 'Text Content'),
@@ -61,17 +59,17 @@
 
         protected function renderHtmlContentAreaLabel()
         {
-            return static::renderModelAttributeLabel(static::HTML_CONTENT_NAME);
+            return static::renderModelAttributeLabel(static::HTML_CONTENT_INPUT_NAME);
         }
 
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
             // TODO: @Shoaibi/@Amit Display both of them in separate tabs, we need a toggle here.
             $content   = '<div class="email-template-content">' .
-                            '<div class="email-template-' . static::TEXT_CONTENT_NAME . '">' .
+                            '<div class="email-template-' . static::TEXT_CONTENT_INPUT_NAME . '">' .
                             $plainTextContent .
                             '</div>' .
-                            '<div class="email-template-' . static::HTML_CONTENT_NAME . '">'  .
+                            '<div class="email-template-' . static::HTML_CONTENT_INPUT_NAME . '">'  .
                             $htmlContent .
                             '</div>' .
                         '</div>';
@@ -92,10 +90,10 @@
 
         protected function renderHtmlContentArea()
         {
-            $id                      = $this->getEditableInputId(static::HTML_CONTENT_NAME);
+            $id                      = $this->getEditableInputId(static::HTML_CONTENT_INPUT_NAME);
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_NAME);
+            $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_INPUT_NAME);
             $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
@@ -113,7 +111,7 @@
 
          protected function renderTextContentArea()
          {
-            $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_NAME, $this->form);
+            $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_INPUT_NAME, $this->form);
             $textContentElement->nonEditableTemplate    = '<div class="text-content">{content}</div>';
             $textContentElement->editableTemplate       = $this->editableTemplate;
             return $textContentElement->render();
@@ -123,7 +121,7 @@
         {
             if (strpos($this->editableTemplate, '{error}') !== false)
             {
-                return $this->form->error($this->model, static::HTML_CONTENT_NAME);
+                return $this->form->error($this->model, static::HTML_CONTENT_INPUT_NAME);
             }
             else
             {
