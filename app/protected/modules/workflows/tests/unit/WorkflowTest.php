@@ -94,18 +94,20 @@
             $workflow->setTimeTriggerAttribute('something');
             $workflow->setId(5);
             $workflow->setName('my workflow rule');
+            $workflow->setTriggerOn(Workflow::TRIGGER_ON_NEW);
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setTimeTrigger($timeTrigger);
             $workflow->addAction($action);
 
-            $this->assertEquals('SomeModule',           $workflow->getModuleClassName());
-            $this->assertEquals('a description',        $workflow->getDescription());
-            $this->assertEquals('1 AND 2',              $workflow->getTriggersStructure());
-            $this->assertEquals('something',            $workflow->getTimeTriggerAttribute());
-            $this->assertEquals(5,                      $workflow->getId());
-            $this->assertEquals('my workflow rule',     $workflow->getName());
-            $this->assertEquals(Workflow::TYPE_ON_SAVE, $workflow->getType());
-            $this->assertEquals($timeTrigger,           $workflow->getTimeTrigger());
+            $this->assertEquals('SomeModule',             $workflow->getModuleClassName());
+            $this->assertEquals('a description',          $workflow->getDescription());
+            $this->assertEquals('1 AND 2',                $workflow->getTriggersStructure());
+            $this->assertEquals('something',              $workflow->getTimeTriggerAttribute());
+            $this->assertEquals(5,                        $workflow->getId());
+            $this->assertEquals('my workflow rule',       $workflow->getName());
+            $this->assertEquals(Workflow::TRIGGER_ON_NEW, $workflow->getTriggerOne());
+            $this->assertEquals(Workflow::TYPE_ON_SAVE,   $workflow->getType());
+            $this->assertEquals($timeTrigger,             $workflow->getTimeTrigger());
             $actions = $workflow->getActions();
             $this->assertEquals($action,                $actions[0]);
             $this->assertCount(1,                       $actions);

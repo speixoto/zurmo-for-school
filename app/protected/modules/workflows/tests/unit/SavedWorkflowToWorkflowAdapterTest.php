@@ -44,6 +44,7 @@
             $workflow->setDescription    ('aDescription');
             $workflow->setModuleClassName('WorkflowsTestModule');
             $workflow->setName           ('myFirstReport');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW);
             $workflow->setType           (Report::TYPE_ROWS_AND_COLUMNS);
             $workflow->setTriggersStructure('1 and 2 or 3');
 
@@ -84,9 +85,10 @@
 
             SavedReportToReportAdapter::resolveReportToSavedReport($workflow, $savedReport);
 
-            $this->assertEquals('WorkflowsTestModule',           $savedReport->moduleClassName);
+            $this->assertEquals('WorkflowsTestModule',         $savedReport->moduleClassName);
             $this->assertEquals('myFirstReport',               $savedReport->name);
             $this->assertEquals('aDescription',                $savedReport->description);
+            $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedReport->triggerOn);
             $this->assertEquals(Report::TYPE_ROWS_AND_COLUMNS, $savedReport->type);
             $this->assertEquals('1 and 2 or 3',                $workflow->getTriggersStructure());
             $compareData = array('Triggers' => array(
@@ -148,9 +150,10 @@
             $savedReport                = $savedReports[0];
             $workflow                     = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $triggers                    = $workflow->getTriggers();
-            $this->assertEquals    	      ('WorkflowsTestModule',           $workflow->getModuleClassName());
+            $this->assertEquals    	      ('WorkflowsTestModule',         $workflow->getModuleClassName());
             $this->assertEquals           ('myFirstReport',               $workflow->getName());
             $this->assertEquals           ('aDescription',                $workflow->getDescription());
+            $this->assertEquals           (Workflow::TRIGGER_ON_NEW,      $workflow->getTriggerOn());
             $this->assertEquals           (Report::TYPE_ROWS_AND_COLUMNS, $workflow->getType());
             $this->assertEquals           ('1 and 2 or 3',                $workflow->getTriggersStructure());
             $this->assertCount            (4, $triggers);

@@ -55,6 +55,7 @@
                     'moduleClassName',
                     'name',
                     'serializedData',
+                    'triggerOn',
                     'type'
                 ),
                 'rules' => array(
@@ -70,6 +71,9 @@
                     array('type',       		 'required'),
                     array('type',       		 'type',   'type' => 'string'),
                     array('type',       		 'length', 'max'  => 15),
+                    array('triggerOn',       	 'required'),
+                    array('triggerOn',       	 'type',   'type' => 'string'),
+                    array('triggerOn',       	 'length', 'max'  => 15),
                 )
             );
             return $metadata;

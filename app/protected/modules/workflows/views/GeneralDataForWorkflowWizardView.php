@@ -65,6 +65,9 @@
             $element           = new TextAreaElement(
                                  $this->model, 'description', $this->form, array('rows' => 2));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
+            $element           = new TriggerOnStaticDropDownElement(
+                                 $this->model, 'triggerOn', $this->form);
+            $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
             $leftSideContent  .= '</table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
             $content          .= '</div>';

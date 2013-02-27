@@ -55,6 +55,13 @@
         public $name;
 
         /**
+         * When to trigger the workflow Workflow::TRIGGER_ON_NEW, Workflow::TRIGGER_ON_EXISTING,
+         * Workflow::TRIGGER_ON_NEW_AND_EXISTING
+         * @var string
+         */
+        public $triggerOn;
+
+        /**
          * Type of workflow
          * @var string
          */
@@ -90,21 +97,24 @@
         public function rules()
         {
             return array(
-                array('description', 	      'type',               'type' => 'string'),
+                array('description', 	      'type',              'type' => 'string'),
                 array('name', 			      'type',        	   'type' => 'string'),
                 array('name', 			      'length',   		   'max' => 64),
                 array('name', 			      'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('moduleClassName',      'type',     		   'type' => 'string'),
-                array('moduleClassName',      'length',             'max' => 64),
+                array('moduleClassName',      'length',            'max' => 64),
                 array('moduleClassName',      'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
+                array('triggerOn', 		      'type',     		   'type' => 'string'),
+                array('triggerOn', 			  'length',   		   'max' => 15),
+                array('triggerOn', 			  'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('type', 		          'type',     		   'type' => 'string'),
-                array('type', 			      'length',   		   'max' => 64),
+                array('type', 			      'length',   		   'max' => 15),
                 array('type', 			      'required'),
                 array('timeTrigger', 		  'validateTimeTrigger', 'on' => self::TIME_TRIGGER_VALIDATION_SCENARIO),
                 array('triggersStructure', 	  'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
-                array('triggers',             'validateTriggers',   'on' => self::TRIGGERS_VALIDATION_SCENARIO),
-                array('actions',              'validateActions',    'on' => self::ACTIONS_VALIDATION_SCENARIO),
-                array('timeTriggerAttribute', 'type', 'type' => 'string'),
+                array('triggers',             'validateTriggers',  'on' => self::TRIGGERS_VALIDATION_SCENARIO),
+                array('actions',              'validateActions',   'on' => self::ACTIONS_VALIDATION_SCENARIO),
+                array('timeTriggerAttribute', 'type',              'type' => 'string'),
             );
         }
 
@@ -173,6 +183,19 @@
                 $validated = false;
             }
             return $validated;
+        }
+
+        /**
+         * @return array
+         */
+        public function getTriggerOnDataAndLabels()
+        {
+            $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
+            return array(
+                Workflow::TRIGGER_ON_NEW              => Zurmo::t('WorkflowsModule', 'New Records Only'),
+                Workflow::TRIGGER_ON_EXISTING         => Zurmo::t('WorkflowsModule', 'Existing Records Only'),
+                Workflow::TRIGGER_ON_NEW_AND_EXISTING => Zurmo::t('WorkflowsModule', 'Both New and Existing Records'),
+            );
         }
     }
 ?>

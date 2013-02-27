@@ -42,6 +42,10 @@
             {
                 $workflow->setName($data['name']);
             }
+            if(isset($data['triggerOn']))
+            {
+                $workflow->setTriggerOn($data['triggerOn']);
+            }
             if(isset($data['triggersStructure']))
             {
                 $workflow->setTriggersStructure($data['triggersStructure']);

@@ -37,6 +37,7 @@
             $workflow->setModuleClassName($savedWorkflow->moduleClassName);
             $workflow->setName($savedWorkflow->name);
             $workflow->setType($savedWorkflow->type);
+            $workflow->setTriggerOn($savedWorkflow->triggerOn);
             if($savedWorkflow->serializedData != null)
             {
                 $unserializedData = unserialize($savedWorkflow->serializedData);
@@ -67,6 +68,7 @@
             $savedWorkflow->description     = $workflow->getDescription();
             $savedWorkflow->moduleClassName = $workflow->getModuleClassName();
             $savedWorkflow->name            = $workflow->getName();
+            $savedWorkflow->triggerOn       = $workflow->getTriggerOn();
             $savedWorkflow->type            = $workflow->getType();
             $data = array();
             $data['triggersStructure']      = $workflow->getTriggersStructure();

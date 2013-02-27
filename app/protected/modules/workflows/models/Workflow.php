@@ -30,6 +30,12 @@
 
         const TYPE_BY_TIME  = 'ByTime';
 
+        const TRIGGER_ON_NEW      = 'New';
+
+        const TRIGGER_ON_NEW_AND_EXISTING     = 'NewAndExisting';
+
+        const TRIGGER_ON_EXISTING = 'Existing';
+
         private $description;
 
         /**
@@ -41,6 +47,8 @@
         private $moduleClassName;
 
         private $name;
+
+        private $triggerOn;
 
         private $type;
 
@@ -134,6 +142,18 @@
         {
             assert('is_string($description)');
             $this->description = $description;
+        }
+
+        public function getTriggerOn()
+        {
+            return $this->triggerOn;
+        }
+
+        public function setTriggerOn($triggerOn)
+        {
+            assert('$triggerOn == self::TRIGGER_ON_NEW || $triggerOn == self::TRIGGER_ON_NEW_AND_EXISTING ||
+                    $triggerOn == self::TRIGGER_ON_EXISTING');
+            $this->triggerOn = $triggerOn;
         }
 
         public function setTriggersStructure($triggersStructure)
