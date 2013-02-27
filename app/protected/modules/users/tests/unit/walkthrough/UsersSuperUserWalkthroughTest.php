@@ -332,8 +332,8 @@
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
-            $this->assertEquals(1,$user->isActive);
-            
+            $this->assertEquals(1, $user->isActive);
+
             //Change the user's status to inactive and confirm the changes in rights and isActive attribute.
             $this->setGetArray(array('id' => $user->id));
             $this->setPostArray(array('User' => array('userStatus'  => UserStatusUtil::INACTIVE)));
@@ -343,8 +343,8 @@
             $this->assertTrue(Right::DENY == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));
             $this->assertTrue(Right::DENY == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE));
             $this->assertTrue(Right::DENY == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
-            $this->assertEquals(0,$user->isActive);
-            
+            $this->assertEquals(0, $user->isActive);
+
             //Now change the user's status back to active.
             $this->setGetArray(array('id' => $user->id));
             $this->setPostArray(array('User' => array('userStatus'  => UserStatusUtil::ACTIVE)));
@@ -354,7 +354,7 @@
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
-            $this->assertEquals(1,$user->isActive);
+            $this->assertEquals(1, $user->isActive);
         }
 
         /**
@@ -427,6 +427,6 @@
                                                                 'customAvatarEmailAddress' => ''))
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
-        }        
+        }
     }
 ?>

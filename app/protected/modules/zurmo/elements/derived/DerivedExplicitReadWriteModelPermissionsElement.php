@@ -147,7 +147,6 @@
             $userConfigPermissionTypes          = UserConfigurationForm::getAllDefaultPermissionTypes();
             $explicitReadWritePermissionTypes   = parent::getPermissionTypes();
             return array_search($userConfigPermissionTypes[$selectedType], $explicitReadWritePermissionTypes);
-
         }
 
         protected function isModelCreateAction()

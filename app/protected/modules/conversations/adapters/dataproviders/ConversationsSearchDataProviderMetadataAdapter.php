@@ -116,7 +116,8 @@
                 );
                 $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and (' . ($startingCount + 2) . ' or ' . ($startingCount + 3) . ')';
             }
-            elseif ($this->type == self::LIST_TYPE_CLOSED) {
+            elseif ($this->type == self::LIST_TYPE_CLOSED)
+            {
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'isClosed',
                     'operatorType'  => 'equals',

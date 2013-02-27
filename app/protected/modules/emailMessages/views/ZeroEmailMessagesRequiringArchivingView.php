@@ -33,10 +33,11 @@
         public $cssClasses = array('splash-view');
 
         protected function renderContent()
-        {            
-            $content  = '<div class="' . $this->getIconName() . '">';
+        {
+            $content  = '<h2>' . Zurmo::t('EmailMessagesModule', 'Nothing to see here') . '</h2>';
+            $content .= '<div class="' . $this->getIconName() . '">';
             $content .= '<div class="large-icon"></div>';
-            $content .= $this->getMessageContent();            
+            $content .= $this->getMessageContent();
             $content .= '</div>';
             return $content;
         }
@@ -48,7 +49,7 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('EmailMessagesModule', '<p>There are no unmatched emails</p>');
+            return '<p>' . Zurmo::t('EmailMessagesModule', 'There are no unmatched emails') . '</p>';
         }
     }
 ?>

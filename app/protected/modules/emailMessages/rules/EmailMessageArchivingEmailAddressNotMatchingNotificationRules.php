@@ -25,19 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Display either the sent date time or a message saying it is in queue.
+     * Inform user that some email address are not matching any account's or person's emails in system
      */
-    class EmailMessageSentDateTimeElement extends DateTimeElement
+    class EmailMessageArchivingEmailAddressNotMatchingNotificationRules extends NotificationRules
     {
-        protected function renderControlNonEditable()
+        protected $critical    = false;
+
+        protected $allowDuplicates = false;
+
+        public static function getDisplayName()
         {
-            assert('$this->model instanceof EmailMessage');
-            if ($this->model->folder->type == EmailFolder::TYPE_SENT)
-            {
-                return parent::renderControlNonEditable();
-            }
-            return Zurmo::t('EmailMessagesModule', 'Currently in the {folderType} folder',
-                                     array('{folderType}' => EmailFolder::getTranslatedFolderNameByType($this->model->folder->type)));
+            return Zurmo::t('EmailMessagesModule', 'Match archived emails');
+        }
+
+        public static function getType()
+        {
+            return 'EmailMessageArchivingEmailAddressNotMatching';
         }
     }
 ?>

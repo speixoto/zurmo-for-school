@@ -47,7 +47,7 @@
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
-                        array(                            
+                        array(
                             'rows' => array(
                                 array('cells' =>
                                     array(

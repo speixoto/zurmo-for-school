@@ -185,8 +185,8 @@
 
         protected function renderSaveModalSettingsButton()
         {
-            return ZurmoHtml::link(ZurmoHtml::wrapLink(Zurmo::t('Core', 'Save and Close')), '#', array('class' => 'green-button', 'onclick' => '$(this).closest(".modal-settings").dialog("close");'));
-
+            return ZurmoHtml::link(ZurmoHtml::wrapLink(Zurmo::t('Core', 'Save and Close')), '#',
+                                   array('class' => 'green-button', 'onclick' => '$(this).closest(".modal-settings").dialog("close");')); // Not Coding Standard
         }
 
         /**

@@ -79,7 +79,7 @@
                          'DatabaseThreadStack',
                          'DatabaseDefaultCollation',
                          'DatabaseLogBin',
-                         'DatabaseOptimizerSearchDepth'                                                 
+                         'DatabaseOptimizerSearchDepth'
             );
         }
 
