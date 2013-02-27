@@ -26,28 +26,107 @@
 
     class MashableInboxUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        public static function setUpBeforeClass()
+        private $modelsWithMashableInboxInterface;
+
+        public function setup()
         {
-            parent::setUpBeforeClass();
+            parent::setUp();
             SecurityTestHelper::createSuperAdmin();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            $this->modelsWithMashableInboxInterface =
+                array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
         }
 
-        public function testSuperUserAllSimpleControllerActions()
+        public function testListActionRenderListViewsForMashableInboxAndModels()
         {
             $super   = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default');
-            $this->assertContains('MashableInboxListView', $content);
-            $modelClassNames =
-                array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
-            foreach ($modelClassNames as $modelClassName)
+            $this->assertContains('MashableInboxListView',  $content);
+            $this->assertContains('list-view-markRead',     $content);
+            $this->assertContains('list-view-markUnread',   $content);
+            foreach ($this->modelsWithMashableInboxInterface as $modelClassName)
             {
                 $this->setGetArray(array('modelClassName' => $modelClassName));
                 $content        = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
                 $mashableRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-                $this->assertContains($mashableRules->getListViewClassName(), $content);
+                $this->assertContains($mashableRules->getListViewClassName(),   $content);
+                $this->assertContains('list-view-markRead',                     $content);
+                $this->assertContains('list-view-markUnread',                   $content);
+                foreach (array_keys($mashableRules->getMassOptions()) as $massAction)
+                {
+                    $this->assertContains('list-view-' . $massAction, $content);
+                }
             }
         }
+
+        public function testMarkReadUnreadMassAction()
+        {
+            $super                     = User::getByUsername('super');
+            $conversation              = new Conversation();
+            $conversation->owner       = $super;
+            $conversation->subject     = 'My test conversation subject';
+            $conversation->description = 'My test conversation description';
+            $this->assertTrue($conversation->save());
+            $conversationId            = $conversation->id;
+            $mission                   = new Mission();
+            $mission->owner            = $super;
+            $mission->description      = 'My test mission description';
+            $mission->status           = Mission::STATUS_AVAILABLE;
+            $this->assertTrue($mission->save());
+            $missionId                 = $mission->id;
+            $this->assertTrue((bool)ConversationsUtil::hasUserReadConversationLatest($conversation, $super));
+            $this->assertTrue((bool)MissionsUtil::hasUserReadMissionLatest($mission, $super));
+
+            //Mark conversation and mission as unread
+            $selectedIds               = get_class($conversation) . '_' . $conversationId;
+            $selectedIds              .= ',' . get_class($mission) . '_' . $missionId;
+            $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+            $this->setGetArray(
+                        array(
+                            'MashableInboxForm' => array(
+                                    'massAction'     => 'markUnread',
+                                    'selectedIds'    => $selectedIds,
+                                )
+                        )
+                    );
+            $content        = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+            $conversation   = Conversation::getById($conversationId);
+            $this->assertFalse((bool)ConversationsUtil::hasUserReadConversationLatest($conversation, $super));
+            $mission        = Mission::getById($missionId);
+            $this->assertFalse((bool)MissionsUtil::hasUserReadMissionLatest($mission, $super));
+
+            //Mark conversation and mission as read
+            $this->setGetArray(
+                        array(
+                            'MashableInboxForm' => array(
+                                    'massAction'     => 'markRead',
+                                    'selectedIds'    => $selectedIds,
+                                )
+                        )
+                    );
+            $content        = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+            $conversation   = Conversation::getById($conversationId);
+            $this->assertTrue((bool)ConversationsUtil::hasUserReadConversationLatest($conversation, $super));
+            $mission        = Mission::getById($missionId);
+            $this->assertTrue((bool)MissionsUtil::hasUserReadMissionLatest($mission, $super));
+
+            //Mark conversation as unread
+            $selectedIds    = get_class($conversation) . '_' . $conversationId;
+            $this->setGetArray(
+                        array(
+                            'MashableInboxForm' => array(
+                                    'massAction'     => 'markUnread',
+                                    'selectedIds'    => $selectedIds,
+                                )
+                        )
+                    );
+            $content        = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+            $conversation   = Conversation::getById($conversationId);
+            $this->assertFalse((bool)ConversationsUtil::hasUserReadConversationLatest($conversation, $super));
+            $mission        = Mission::getById($missionId);
+            $this->assertTrue((bool)MissionsUtil::hasUserReadMissionLatest($mission, $super));
+        }
+
     }
 ?>

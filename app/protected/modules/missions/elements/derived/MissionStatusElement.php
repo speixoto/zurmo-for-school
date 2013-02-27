@@ -139,7 +139,22 @@
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
             $aContent                = ZurmoHtml::wrapLink($label);
-            $onClickScript           = ZurmoHtml::ajax(
+            return       ZurmoHtml::link($aContent,
+                                         $url,
+                                         array(
+                                             "id"        => $newStatus . "-" . $updateDivId,
+                                             "class"     => "mission-change-status-link attachLoading z-button " .
+                                                          self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
+                                             "namespace" => "update",
+                                             "onClick"   => self::renderOnClickScript($url, $updateDivId, $newStatus),
+                                         )
+                    );
+        }
+
+        protected static function renderOnClickScript($url, $updateDivId, $newStatus)
+        {
+            $onClickScript   = "{";
+            $onClickScript  .= ZurmoHtml::ajax(
                                             array(
                                                 "update"    => "#" . $updateDivId,
                                                 "data"      => "js:jQuery(this).parents('form').serialize()",
@@ -154,17 +169,8 @@
                                                                 ",
                                             )
                                         );
-            $onClickScript          .= "return false;";
-            return       ZurmoHtml::link($aContent,
-                                         $url,
-                                         array(
-                                             "id"        => $newStatus . "-" . $updateDivId,
-                                             "class"     => "mission-change-status-link attachLoading z-button " .
-                                                          self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
-                                             "namespace" => "update",
-                                             "onClick"   => "{{$onClickScript}}",
-                                         )
-                    );
+            $onClickScript  .= "return false;}";
+            return $onClickScript;
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
