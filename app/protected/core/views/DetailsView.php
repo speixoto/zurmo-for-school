@@ -367,7 +367,7 @@
 
         protected function alwaysShowErrorSummary()
         {
-            return true;
+            return false;
         }
     }
 ?>
