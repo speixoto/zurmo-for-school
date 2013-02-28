@@ -33,7 +33,7 @@
         {
             if (trim($this->subject) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('Default', '(Unnamed)');
             }
             return $this->subject;
         }

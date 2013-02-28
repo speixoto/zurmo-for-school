@@ -36,7 +36,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Options');
+            return Zurmo::t('Default', 'Options');
         }
     }
 ?>

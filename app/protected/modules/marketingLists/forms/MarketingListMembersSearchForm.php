@@ -40,8 +40,8 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'anyEmail'           => Yii::t('Default', 'Any Email Address'),
-                'fullName'           => Yii::t('Default', 'Name'),
+                'anyEmail'           => Zurmo::t('Default', 'Any Email Address'),
+                'fullName'           => Zurmo::t('Default', 'Name'),
             ));
         }
 

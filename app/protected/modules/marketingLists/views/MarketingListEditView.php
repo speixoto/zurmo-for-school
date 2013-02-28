@@ -57,6 +57,24 @@
                                         ),
                                     )
                                 ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'fromName', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'fromAddress', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
                             ),
                         ),
                     ),

@@ -31,7 +31,7 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Yii::t('Default', 'Marketing');
+            return Zurmo::t('Default', 'Marketing');
         }
     }
 ?>

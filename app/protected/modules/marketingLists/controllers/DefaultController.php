@@ -50,12 +50,20 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    MarketingListsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider
-                );
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
+                /*
+                 * // TODO: @Shoaibi: Do we need mass actions???
+                 * // TODO: @Shoaibi : For just one create button use:
+                 * $actionBarAndListView = new ActionBarAndListView(
+                                                                $this->getId(),
+                                                                $this->getModule()->getId(),
+                                                                $emailTemplate,
+                                                                'MarketingLists',
+                                                                $dataProvider,
+                                                                array(),
+                                                                'MarketingListsActionBarForListView'
+                                                            );
+                 */
                 $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -66,7 +74,7 @@
         {
            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
-                                                 Yii::t('Default', 'Create Marketing List'));
+                                                 Zurmo::t('Default', 'Create Marketing List'));
             $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
@@ -122,7 +130,6 @@
         protected function makeActionBarDetailsSearchAndListView(MarketingList $marketingList,
                                                                  MarketingListMembersSearchForm $searchModel, $dataProvider)
         {
-            assert('is_string($actionBarViewClassName)');
             $listModel = $searchModel->getModel();
             return new MarketingListMembersActionBarDetailsSearchAndListView(
                         $this->getId(),
@@ -149,7 +156,7 @@
 
         public function actionDelete($id)
         {
-            $marketingList = MarketingList::GetById(intval($id));
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($marketingList);
             $marketingList->delete();
             $this->redirect(array($this->getId() . '/index'));

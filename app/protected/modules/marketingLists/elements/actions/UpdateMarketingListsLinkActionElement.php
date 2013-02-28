@@ -36,7 +36,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Update');
+            return Zurmo::t('Default', 'Update');
         }
 
         protected function getDefaultRoute()
@@ -53,16 +53,16 @@
             $subscribeAll          = $gridId . '-subscribeAllMarketingListMembers';
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
-                                        array(  'label'   => Yii::t('Default', 'Unsubscribe Selected'),
+                                        array(  'label'   => Zurmo::t('Default', 'Unsubscribe Selected'),
                                                 'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $unsubscribeSelected)),
-                                        array(  'label'   => Yii::t('Default', 'Unsubscribe All'),
+                                        array(  'label'   => Zurmo::t('Default', 'Unsubscribe All'),
                                                 'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $unsubscribeAll))
-                                        array(  'label'   => Yii::t('Default', 'Subscribe Selected'),
+                                                'itemOptions' => array( 'id'   => $unsubscribeAll)),
+                                        array(  'label'   => Zurmo::t('Default', 'Subscribe Selected'),
                                                 'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $subscribeSelected)),
-                                        array(  'label'   => Yii::t('Default', 'Subscribe All'),
+                                        array(  'label'   => Zurmo::t('Default', 'Subscribe All'),
                                                 'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $subscribeAll))));
             $cClipWidget = new CClipWidget();

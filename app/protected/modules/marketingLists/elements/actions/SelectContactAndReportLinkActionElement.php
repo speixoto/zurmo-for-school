@@ -34,7 +34,7 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Select');
+            return Zurmo::t('Default', 'Select');
         }
 
         protected function getDefaultRoute()
@@ -62,10 +62,10 @@
             ");
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
-                                        array(  'label'   => Yii::t('Default', 'Contact/Lead'),
+                                        array(  'label'   => Zurmo::t('Default', 'Contact/Lead'),
                                                 'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $selectContact)),
-                                        array(  'label'   => Yii::t('Default', 'Reports'),
+                                        array(  'label'   => Zurmo::t('Default', 'Reports'),
                                                 'url'     => '#',
                                                 'itemOptions' => array( 'id'   => $selectReport))));
             $cClipWidget = new CClipWidget();
