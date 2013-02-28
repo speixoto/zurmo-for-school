@@ -373,7 +373,11 @@
             $this->assertEquals(1, count($missions));
             $mission        = $missions[0];
             $this->assertEquals(0, $mission->comments->count());
-            $messageCount   = Yii::app()->emailHelper->getQueuedCount();
+            foreach (EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $messageCount   = 0;
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
             //Save new comment.

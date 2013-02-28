@@ -77,7 +77,6 @@
                     }
                 }
             }
-
         }
 
         public function handleResolveRedBeanQueriesToFile($event)

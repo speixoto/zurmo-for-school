@@ -42,29 +42,29 @@
         public $ldapPort = 389;
 
         /**
-         * Ldap server username. 
+         * Ldap server username.
          * @var string
          */
         public $ldapBindRegisteredDomain;
 
         /**
-         * Ldap server password. 
+         * Ldap server password.
          * @var string
          */
         public $ldapBindPassword;
 
         /**
-         * Ldap server domain name. 
+         * Ldap server domain name.
          * @var string
          */
         public $ldapBaseDomain;
-				
+
          /**
-         * Ldap server authentication feature turn on. 
+         * Ldap server authentication feature turn on.
          * @var boolean
          */
         public $ldapEnabled;
-        
+
         /**
          * Contains array of settings to load during initialization from the configuration table.
          * @see loadLdapSettings
@@ -95,7 +95,7 @@
             {
                 if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', $keyName))
                 {
-                    $this->$keyName = $keyValue;					
+                    $this->$keyName = $keyValue;
                 }
             }
         }
@@ -106,26 +106,26 @@
         public function setLdapSettings()
         {
             foreach ($this->settingsToLoad as $keyName)
-            {                
+            {
                 ZurmoConfigurationUtil::setByModuleName('ZurmoModule', $keyName, $this->$keyName);
             }
-        }				
+        }
 
         /**
-        * for Login authentication 
+        * for Login authentication
         */
         public function makeIdentity($username, $password)
         {
-          //checking Ldap option enable 
+          //checking Ldap option enable
           $ldapEnabled = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'ldapEnabled');
-          if($ldapEnabled)
-          {  		     
+          if ($ldapEnabled)
+          {
              return new UserLdapIdentity($username, $password);
           }
           else
           {
              return new UserIdentity($username, $password);
-          }			
+          }
         }
     }
 ?>

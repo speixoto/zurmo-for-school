@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Inform user that export process is completed, and that user can download exported file.
+     * Inform user that some email address are not matching any account's or person's emails in system
      */
-    class EmailMessageArchivingEmailAddressNotMachingNotificationRules extends JobsManagerAccessNotificationRules
+    class EmailMessageArchivingEmailAddressNotMatchingNotificationRules extends NotificationRules
     {
         protected $critical    = false;
 
@@ -40,7 +40,7 @@
 
         public static function getType()
         {
-            return 'EmailMessageArchivingEmailAddressNotMaching';
+            return 'EmailMessageArchivingEmailAddressNotMatching';
         }
     }
 ?>

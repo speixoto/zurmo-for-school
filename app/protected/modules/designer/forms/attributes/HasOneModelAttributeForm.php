@@ -24,32 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserTestHelper
+    /**
+     * Base class for working with relations that are hasOne and display in the user interface to be selected. An example
+     * is an account picked from an opportunity.
+     */
+    abstract class HasOneModelAttributeForm extends AttributeForm
     {
-        public static function createBasicUser($name)
+        /**
+         * @see AttributeForm::getModelAttributeAdapterNameForSavingAttributeFormData()
+         */
+        public static function getModelAttributeAdapterNameForSavingAttributeFormData()
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            return 'HasOneModelAttributesAdapter';
         }
 
-        public static function createBasicUserWithManager($name, $manager)
+        /**
+         * @return string, the type is also the name of the model for children that extend this class. This method
+         * should be refactored if that changes in the future.
+         */
+        public function getHasOneModelClassName()
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->manager = $manager;
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            return $this->getAttributeTypeName();
         }
     }
+?>

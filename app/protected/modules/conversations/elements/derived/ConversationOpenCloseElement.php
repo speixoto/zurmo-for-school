@@ -72,8 +72,8 @@
                             self::getRadioButtonListName($conversation->id),
                             $conversation->resolveIsClosedForNull(),
                             self::getDropDownArray(),
-                            array('separator' =>'',
-                                  'template'  =>'<div class="switch-state clearfix">{input}{label}</div>'));
+                            array('separator' => '',
+                                  'template'  => '<div class="switch-state clearfix">{input}{label}</div>'));
             return ZurmoHtml::tag('div', array('class' => 'switch'), $content);
         }
 
@@ -81,8 +81,10 @@
         {
             $url    = Yii::app()->createUrl('conversations/default/changeIsClosed', array('id' => $conversationId));
             $script = "
-                    $('input[name=" . self::getRadioButtonListName($conversationId) . "]').change(function() {
-                        $.ajax({
+                    $('input[name=" . self::getRadioButtonListName($conversationId) . "]').change(function()
+                    {
+                        $.ajax(
+                        {
                             url: '{$url}',
                             type: 'GET',
                             success: " . self::resolveOnSuccessScript() . ",
@@ -116,8 +118,10 @@
 
         protected static function resolveOnSuccessScript()
         {
+            // Begin Not Coding Standard
             $script = "
-                function(data){
+                function(data)
+                {
                     $('#FlashMessageBar').jnotifyAddMessage(
                         {
                             text: '" . CJavaScript::quote(Zurmo::t('ConversationsModule', 'Conversation status was changed.')) . "',
@@ -127,7 +131,8 @@
                         }
                     );
                     $('#CommentInlineEditForModelView').toggle();
-                 }";
+                }";
+            // End Not Coding Standard
             return $script;
         }
 
