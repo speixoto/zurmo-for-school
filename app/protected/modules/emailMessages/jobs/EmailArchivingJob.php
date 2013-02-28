@@ -67,7 +67,6 @@
          */
         public function run()
         {
-            $jobOwnerUserModel = Yii::app()->user->userModel;
             if (Yii::app()->imap->connect())
             {
                 $lastImapCheckTime     = EmailMessagesModule::getLastImapDropboxCheckTime();
@@ -88,15 +87,13 @@
                 {
                    foreach ($messages as $message)
                    {
-                       Yii::app()->user->userModel = $jobOwnerUserModel;
                        $lastMessageCreatedTime = strtotime($message->createdDate);
                        if (strtotime($message->createdDate) > strtotime($lastCheckTime))
                        {
                            $lastCheckTime = $message->createdDate;
                        }
-                       $this->saveEmailMessage($message, $jobOwnerUserModel);
+                       $this->saveEmailMessage($message);
                    }
-                   Yii::app()->user->userModel = $jobOwnerUserModel;
                    Yii::app()->imap->expungeMessages();
                    if ($lastCheckTime != '')
                    {
@@ -233,7 +230,7 @@
             }
         }
 
-        protected function saveEmailMessage($message, $jobOwnerUserModel)
+        protected function saveEmailMessage($message)
         {
             // Get owner for message
             try
@@ -247,10 +244,9 @@
                 return false;
             }
             $emailSenderOrRecipientEmailNotFoundInSystem = false;
-            Yii::app()->user->userModel = $emailOwner;
-            $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', Yii::app()->user->userModel);
-            $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    Yii::app()->user->userModel);
-            $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', Yii::app()->user->userModel);
+            $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $emailOwner);
+            $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    $emailOwner);
+            $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', $emailOwner);
 
             $senderInfo = EmailArchivingUtil::resolveEmailSenderFromEmailMessage($message);
             if (!$senderInfo)
@@ -269,7 +265,6 @@
                 }
             }
 
-            Yii::app()->user->userModel = $jobOwnerUserModel;
             $recipientsInfo = EmailArchivingUtil::resolveEmailRecipientsFromEmailMessage($message);
             if (!$recipientsInfo)
             {
