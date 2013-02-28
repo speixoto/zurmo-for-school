@@ -306,6 +306,25 @@
             echo $content;
         }
 
+        public function actionAddAction($moduleClassName, $type, $actionType, $rowNumber, $relation = null, $relatedModelRelation = null)
+        {
+            $form                        = new WizardActiveForm();
+            $form->enableAjaxValidation  = true; //ensures error validation populates correctly
+            $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
+            $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
+                                           $moduleClassName::getPrimaryModelName(), $type, ComponentForWorkflowForm::TYPE_ACTIONS);
+            $model->type                 = $actionType;
+            $model->relation             = $relation;
+            $model->relatedModelRelation = $relatedModelRelation;
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_ACTIONS, (int)$rowNumber);
+            $view                        = new ActionRowForWorkflowComponentView($model, (int)$rowNumber, $inputPrefixData);
+            $content                     = $view->render();
+            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
         protected function resolveCanCurrentUserAccessWorkflows()
         {
             if(!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',

@@ -34,7 +34,7 @@
          */
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'Reports');
+            return Zurmo::t('WorkflowsModule', 'Workflows');
         }
     }
 ?>

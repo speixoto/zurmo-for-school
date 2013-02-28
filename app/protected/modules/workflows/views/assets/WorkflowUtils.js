@@ -74,3 +74,12 @@ function rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput(divId){
         $('#show-triggers-structure-wrapper').show();
     }
 }
+
+function rebuildWorkflowActionRowNumbers(divId){
+    rowCount = 1;
+    structure = '';
+    $('#' + divId).find('.dynamic-action-row-number-label').each(function(){
+        $(this).html(rowCount + '.');
+        rowCount ++;
+    });
+}

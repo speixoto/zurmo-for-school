@@ -85,6 +85,8 @@
             $this->registerActionTypeDropDownOnChangeScript();
             $this->registerActionTypeRelationDropDownOnChangeScript();
             $this->registerActionTypeRelatedModelRelationDropDownOnChangeScript();
+            $this->registerAddActionScript();
+            $this->registerRemoveActionScript();
         }
 
         /**
@@ -158,7 +160,7 @@
             $itemsContent                = $this->getSortableListContent($items, ComponentForWorkflowForm::TYPE_ACTIONS);
             $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS));
             $hiddenInputName             = ComponentForWorkflowForm::TYPE_ACTIONS . 'RowCounter';
-            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'action-rows'), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
                                            ComponentForWorkflowForm::TYPE_ACTIONS), $droppableAttributesContent);
@@ -232,21 +234,21 @@
                         }',
                 'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
             ));
-            $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
+            $script = "$('#" . $id . "').live('change', function()
             {
                 $('#" . $inputDivId . "').html('');
                 $('#" . $inputDivId . "').hide();
                 $('#" . $relatedInputDivId . "').html('');
                 $('#" . $relatedInputDivId . "').hide();
-                $('.action-type-selector-container').find('#" . self::ACTION_TYPE_RELATION_DIV_ID . "').html('');
-                $('.action-type-selector-container').find('#" . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . "').html('');
+                $('.action-type-selector-container').find('#" . $inputDivId . "').html('');
+                $('.action-type-selector-container').find('#" . $relatedInputDivId . "').html('');
                 if($('#" . $id . "').val() == '')
                 {
                     //do nothing
                 }
                 else if($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
                 {
-                    //todo: ajax to get action row
+                    loadWorkflowAction();
                 }
                 else
                 {
@@ -280,7 +282,7 @@
             ));
             $script = "$('#" . $id . "').live('change', function()
             {
-                $('.action-type-selector-container').find('#" . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . "').html('');
+                $('.action-type-selector-container').find('#" . $inputDivId . "').html('');
                 if($('#" . $id . "').val() == '')
                 {
                     $('#" . $inputDivId . "').html('');
@@ -292,12 +294,12 @@
                 }
                 else
                 {
-                    //todo: ajax to get action row
+                    loadWorkflowAction();
                 }
             }
             );";
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript('actionTypeRelatedModelDropDownOnChangeScript', $script);
+            Yii::app()->clientScript->registerScript('actionTypeRelationDropDownOnChangeScript', $script);
         }
 
         protected function registerActionTypeRelatedModelRelationDropDownOnChangeScript()
@@ -307,13 +309,77 @@
             {
                 if($('#" . $id . "').val() != '')
                 {
-                    //todo: ajax to get action row
-                    someMethod(relation, relatedModelRelation);
+                    loadWorkflowAction();
                 }
             }
             );";
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript('actionTypeRelatedModelDropDownOnChangeScript', $script);
+            Yii::app()->clientScript->registerScript('actionTypeRelatedModelRelationDropDownOnChangeScript', $script);
+        }
+
+        protected function registerAddActionScript()
+        {
+            $moduleClassNameId = get_class($this->model) . '[moduleClassName]';
+            $url               = Yii::app()->createUrl('workflows/default/addAction',
+                array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
+            $ajaxSubmitScript  = ZurmoHtml::ajax(array(
+                'type'    => 'GET',
+                'data'    => 'js:\'actionType=\' + $(".action-type-selector-container").find("#' .
+                                 self::ACTION_TYPE_NAME . '").val()
+                                 + \'&relation=\' + $(".action-type-selector-container").find("#' .
+                                 self::ACTION_TYPE_RELATION_NAME . '").val()
+                                 + \'&relatedModelRelation=\' + $(".action-type-selector-container").find("#' .
+                                 self::ACTION_TYPE_RELATED_MODEL_RELATION_NAME . '").val()
+                                 + \'&moduleClassName=\' + $("input:radio[name=\"' .
+                                 $moduleClassNameId . '\"]:checked").val() + ' .
+                                 '\'&rowNumber=\' + $(\'#' .
+                                 $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS). '\').val()',
+                'url'     =>  $url,
+                'beforeSend' => 'js:function(){
+                    //attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
+                }',
+                'success' => 'js:function(data){
+                    $(\'#' . $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS). '\').val(parseInt($(\'#' .
+                    $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS) . '\').val()) + 1);
+                    $(".droppable-attributes-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
+                    . '").parent().find(".action-rows").find("ul").append(data);
+                    rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
+                    $(".' . static::getZeroComponentsClassName() . '").hide();
+                    $("#' . self::ACTION_TYPE_NAME . '").val("");
+                    $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").html("");
+                    $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").hide();
+                    $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").html("");
+                    $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").hide();
+
+                }',
+            ));
+            $script = "function loadWorkflowAction()
+                {
+
+                     $ajaxSubmitScript
+                }
+            ";
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('workflowAddActionScript', $script);
+        }
+
+        protected function registerRemoveActionScript()
+        {
+            $script = '
+                $(".remove-dynamic-action-row-link").live("click", function(){
+                    size = $(this).parent().parent().parent().find("li").size();
+                    $(this).parent().parent().remove(); //removes the <li>
+                    if(size < 2)
+                    {
+                        $(".' . static::getZeroComponentsClassName() . '").show();
+                    }
+                    rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
+                    return false;
+                });
+            ';
+            // End Not Coding Standard
+            Yii::app()->clientScript->registerScript('removeActionScript', $script);
         }
     }
 ?>
