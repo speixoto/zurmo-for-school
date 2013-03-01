@@ -12511,6 +12511,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 0;
   clear: both;
   min-height: 60px;
+  float: left;
+  width: 100%;
 }
 .panel-list > li {
   min-height: 60px;
@@ -12638,6 +12640,12 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border: 1px solid #fcefa1;
   background: #fbf9ee;
   color: #363636 ;
+}
+#layout-container .ui-state-highlight {
+  width: 100%;
+  min-height: 60px;
+  float: left;
+  display: block;
 }
 #layout-container .ui-state-highlight a,
 #layout-container .ui-widget-content .ui-state-highlight a,
