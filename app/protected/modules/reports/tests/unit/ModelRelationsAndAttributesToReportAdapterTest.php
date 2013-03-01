@@ -1352,12 +1352,12 @@
             $model              = new ReportModelTestItem();
             $rules              = new ReportsTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
-            $this->assertEquals('ContactStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+            $this->assertEquals('ContactStateStaticDropDownForWizardModel', $adapter->getFilterValueElementType('likeContactState'));
 
             $model              = new ReportModelTestItem();
             $rules              = new ReportsAlternateStateTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
-            $this->assertEquals('LeadStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+            $this->assertEquals('LeadStateStaticDropDownForWizardModel', $adapter->getFilterValueElementType('likeContactState'));
         }
 
         /**
@@ -1384,11 +1384,11 @@
             $this->assertEquals('Text',                           $adapter->getFilterValueElementType('textArea'));
             $this->assertEquals('Text',                           $adapter->getFilterValueElementType('url'));
 
-            $this->assertEquals('ContactStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+            $this->assertEquals('ContactStateStaticDropDownForWizardModel', $adapter->getFilterValueElementType('likeContactState'));
             $model              = new ReportModelTestItem();
             $rules              = new ReportsAlternateStateTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
-            $this->assertEquals('LeadStateStaticDropDownForReport', $adapter->getFilterValueElementType('likeContactState'));
+            $this->assertEquals('LeadStateStaticDropDownForWizardModel', $adapter->getFilterValueElementType('likeContactState'));
 
         }
 
