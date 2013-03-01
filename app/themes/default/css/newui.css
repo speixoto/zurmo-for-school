@@ -6693,11 +6693,11 @@ div.wide.form label.hasCheckBox {
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-item-details {
-  display: block;
   font-weight: normal;
   color: #999;
-  margin-top: 5px;
   font-size: 11px;
+  margin-left: 5px;
+  float: right;
 }
 .summary {
   display: none;
@@ -14507,9 +14507,6 @@ a.close-ModalGameNotification.simple-link {
 }
 #ConversationEditView textarea {
   line-height: 130%;
-}
-#ConversationsPageView .items td {
-  padding-left: 10px;
 }
 .single-coloumn-details-view.AppContent,
 #ConversationDetailsView.AppContent,
