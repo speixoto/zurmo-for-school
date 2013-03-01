@@ -36,7 +36,7 @@
         {
             $metadata = array();
             $metadata['Contact']['filterValueElementTypes']
-                                                   ['state'] = 'LeadStateStaticDropDownForReport';
+                                                   ['state'] = 'LeadStateStaticDropDownForWizardModel';
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }
