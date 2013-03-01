@@ -29,6 +29,11 @@
      */
     class CurrencyValueWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
+        public function getValueElementType()
+        {
+            return 'CurrencyValueAndCurrencyIdForWorkflowActionAttribute';
+        }
+
         /**
          * Defines currency id for the value as being a specific currency id.  In the future additional options will
          * be addded to use the user's currency or maybe an existing model's currency
@@ -69,6 +74,13 @@
                 return false;
             }
             return true;
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            return $data;
         }
     }
 ?>

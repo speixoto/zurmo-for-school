@@ -54,6 +54,11 @@
          * action will be performed on all related models
          */
         const RELATION_FILTER_ALL   = 'RelationFilterAll';
+
+        /**
+         * Utilized by arrays to define the element that is for the actionAttributes
+         */
+        const ACTION_ATTRIBUTES     = 'ActionAttributes';
         /**
          * Type of chart
          * @var string
@@ -85,7 +90,7 @@
         /**
          * @var array of WorkflowActionAttributeForms indexed by attributeNames
          */
-        private $_attributes;
+        private $_actionAttributes;
 
         /**
          * @var string string references the modelClassName of the workflow itself
@@ -153,9 +158,9 @@
         /**
          * @return int
          */
-        public function getAttributeFormsCount()
+        public function getActionAttributeFormsCount()
         {
-            return count($this->_attributes);
+            return count($this->_actionAttributes);
         }
 
         /**
@@ -163,20 +168,20 @@
          * @return mixed
          * @throws NotFoundException if the attribute does not exist
          */
-        public function getAttributeFormByName($attribute)
+        public function getActionAttributeFormByName($attribute)
         {
             assert('is_string($attribute)');
-            if(!isset($this->_attributes[$attribute]))
+            if(!isset($this->_actionAttributes[$attribute]))
             {
                 throw new NotFoundException();
             }
             else
             {
-                return $this->_attributes[$attribute];
+                return $this->_actionAttributes[$attribute];
             }
         }
 
-        public function getAttributesAttributeFormType($attribute)
+        public function getActionAttributesAttributeFormType($attribute)
         {
             assert('is_string($attribute)');
             $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
@@ -220,10 +225,7 @@
             {
                 $valuesAttributes = $values['attributes'];
                 unset($values['attributes']);
-            }
-            else
-            {
-                $this->_attributes = array();
+                $this->_actionAttributes = array();
             }
             parent::setAttributes($values, $safeOnly);
             if($valuesAttributes != null)
@@ -235,7 +237,10 @@
                                               $this->type, $this->relation, $this->relatedModelRelation);
                     $form = WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
                     $form->setAttributes($attributeData);
-                    $this->_attributes[$attribute] = $form;
+                    if($form->shouldSetValue)
+                    {
+                        $this->_actionAttributes[$attribute] = $form;
+                    }
                 }
             }
         }
@@ -325,7 +330,7 @@
         {
             $passedValidation = true;
             $count            = 0;
-            foreach($this->_attributes as $attributeName => $workflowActionAttributeForm)
+            foreach($this->_actionAttributes as $attributeName => $workflowActionAttributeForm)
             {
                 if(!$workflowActionAttributeForm->validate())
                 {

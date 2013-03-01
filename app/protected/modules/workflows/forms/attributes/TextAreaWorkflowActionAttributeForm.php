@@ -29,5 +29,20 @@
      */
     class TextAreaWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
+        public function getValueElementType()
+        {
+            return 'TextArea';
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            if(!$isRequired)
+            {
+                $data[static::TYPE_STATIC_NULL] = Zurmo::t('WorkflowModule', 'As Empty');
+            }
+            return $data;
+        }
     }
 ?>

@@ -33,6 +33,11 @@
 
         const TYPE_DYNAMIC_FROM_EXISTING_DATE = 'DynamicFromExistingDate';
 
+        public function getValueElementType()
+        {
+            return 'MixedDateTypesForWorkflowActionAttribute';
+        }
+
         /**
          * Value can either be date or if dynamic, then it is an integer
          * @return bool
@@ -55,6 +60,18 @@
                 }
             }
             return false;
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]                 = Zurmo::t('WorkflowModule', 'Specifically on');
+            $data[TYPE_DYNAMIC_FROM_TRIGGERED_DATE]    = Zurmo::t('WorkflowModule', 'Dynamically From Triggered Date');
+            if(!$isCreatingNewModel)
+            {
+                $data[TYPE_DYNAMIC_FROM_EXISTING_DATE] = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+            }
+            return $data;
         }
     }
 ?>

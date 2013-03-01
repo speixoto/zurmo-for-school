@@ -196,7 +196,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES] =
                 array(
                     'boolean'       => array('shouldSetValue'    => '1',
                         'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -262,86 +262,86 @@
             $actions = $workflow->getActions();
             $this->assertCount(1, $actions);
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_SELF, $actions[0]->type);
-            $this->assertEquals(19,        $actions[0]->getAttributeFormsCount());
+            $this->assertEquals(19,        $actions[0]->getActionAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean') instanceof CheckBoxWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean')->type);
-            $this->assertEquals('1', $actions[0]->getAttributeFormByName('boolean')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('boolean') instanceof CheckBoxWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('boolean')->type);
+            $this->assertEquals('1', $actions[0]->getActionAttributeFormByName('boolean')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean2') instanceof CheckBoxWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean2')->type);
-            $this->assertEquals('0', $actions[0]->getAttributeFormByName('boolean2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('boolean2') instanceof CheckBoxWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('boolean2')->type);
+            $this->assertEquals('0', $actions[0]->getActionAttributeFormByName('boolean2')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('currencyValue') instanceof CurrencyValueWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('currencyValue')->type);
-            $this->assertEquals(362.24,      $actions[0]->getAttributeFormByName('currencyValue')->value);
-            $this->assertEquals($currency->id,  $actions[0]->getAttributeFormByName('currencyValue')->currencyId);
-            $this->assertEquals('Static',  $actions[0]->getAttributeFormByName('currencyValue')->currencyIdType);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('currencyValue') instanceof CurrencyValueWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('currencyValue')->type);
+            $this->assertEquals(362.24,      $actions[0]->getActionAttributeFormByName('currencyValue')->value);
+            $this->assertEquals($currency->id,  $actions[0]->getActionAttributeFormByName('currencyValue')->currencyId);
+            $this->assertEquals('Static',  $actions[0]->getActionAttributeFormByName('currencyValue')->currencyIdType);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('date')->type);
-            $this->assertEquals('2012-02-24',  $actions[0]->getAttributeFormByName('date')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('date')->type);
+            $this->assertEquals('2012-02-24',  $actions[0]->getActionAttributeFormByName('date')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('dateTime')->type);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('dateTime')->type);
             $compareDateTime = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero('2/24/12 03:00 AM');
-            $this->assertEquals($compareDateTime,  $actions[0]->getAttributeFormByName('dateTime')->value);
+            $this->assertEquals($compareDateTime,  $actions[0]->getActionAttributeFormByName('dateTime')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('dropDown')->type);
-            $this->assertEquals('Value 1',  $actions[0]->getAttributeFormByName('dropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('dropDown')->type);
+            $this->assertEquals('Value 1',  $actions[0]->getActionAttributeFormByName('dropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('float') instanceof DecimalWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('float')->type);
-            $this->assertEquals('54.25',  $actions[0]->getAttributeFormByName('float')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('float') instanceof DecimalWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('float')->type);
+            $this->assertEquals('54.25',  $actions[0]->getActionAttributeFormByName('float')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('integer') instanceof IntegerWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('integer')->type);
-            $this->assertEquals('32',  $actions[0]->getAttributeFormByName('integer')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('integer') instanceof IntegerWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('integer')->type);
+            $this->assertEquals('32',  $actions[0]->getActionAttributeFormByName('integer')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('likeContactState') instanceof ContactStateWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('likeContactState')->type);
-            $this->assertEquals($contactState->id,  $actions[0]->getAttributeFormByName('likeContactState')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('likeContactState') instanceof ContactStateWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('likeContactState')->type);
+            $this->assertEquals($contactState->id,  $actions[0]->getActionAttributeFormByName('likeContactState')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('multiDropDown') instanceof MultiSelectDropDownWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('multiDropDown')->type);
-            $this->assertEquals(array('Multi Value 1', 'Multi Value 2'),  $actions[0]->getAttributeFormByName('multiDropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('multiDropDown') instanceof MultiSelectDropDownWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('multiDropDown')->type);
+            $this->assertEquals(array('Multi Value 1', 'Multi Value 2'),  $actions[0]->getActionAttributeFormByName('multiDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('owner')->type);
-            $this->assertEquals($bobby->id,  $actions[0]->getAttributeFormByName('owner')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('owner')->type);
+            $this->assertEquals($bobby->id,  $actions[0]->getActionAttributeFormByName('owner')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('phone') instanceof PhoneWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('phone')->type);
-            $this->assertEquals('8471112222',  $actions[0]->getAttributeFormByName('phone')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('phone') instanceof PhoneWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('phone')->type);
+            $this->assertEquals('8471112222',  $actions[0]->getActionAttributeFormByName('phone')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('primaryAddress___street1') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryAddress___street1')->type);
-            $this->assertEquals('123 Main Street',  $actions[0]->getAttributeFormByName('primaryAddress___street1')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('primaryAddress___street1') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('primaryAddress___street1')->type);
+            $this->assertEquals('123 Main Street',  $actions[0]->getActionAttributeFormByName('primaryAddress___street1')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('primaryEmail___emailAddress') instanceof EmailWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryEmail___emailAddress')->type);
-            $this->assertEquals('info@zurmo.com',  $actions[0]->getAttributeFormByName('primaryEmail___emailAddress')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('primaryEmail___emailAddress') instanceof EmailWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('primaryEmail___emailAddress')->type);
+            $this->assertEquals('info@zurmo.com',  $actions[0]->getActionAttributeFormByName('primaryEmail___emailAddress')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('radioDropDown')->type);
-            $this->assertEquals('Radio Value 1',  $actions[0]->getAttributeFormByName('radioDropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('radioDropDown')->type);
+            $this->assertEquals('Radio Value 1',  $actions[0]->getActionAttributeFormByName('radioDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $actions[0]->getActionAttributeFormByName('string')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('tagCloud') instanceof TagCloudWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('tagCloud')->type);
-            $this->assertEquals(array('Tag Value 1', 'Tag Value 2'),  $actions[0]->getAttributeFormByName('tagCloud')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('tagCloud') instanceof TagCloudWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('tagCloud')->type);
+            $this->assertEquals(array('Tag Value 1', 'Tag Value 2'),  $actions[0]->getActionAttributeFormByName('tagCloud')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('textArea') instanceof TextAreaWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('textArea')->type);
-            $this->assertEquals('some description',  $actions[0]->getAttributeFormByName('textArea')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('textArea') instanceof TextAreaWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('textArea')->type);
+            $this->assertEquals('some description',  $actions[0]->getActionAttributeFormByName('textArea')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('url') instanceof UrlWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('url')->type);
-            $this->assertEquals('http://www.zurmo.com',  $actions[0]->getAttributeFormByName('url')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('url') instanceof UrlWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('url')->type);
+            $this->assertEquals('http://www.zurmo.com',  $actions[0]->getActionAttributeFormByName('url')->value);
         }
 
         /**
@@ -355,7 +355,7 @@
             $workflow->setModuleClassName('WorkflowsTestModule');
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type'] = ActionForWorkflowForm::TYPE_UPDATE_SELF;
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES] =
             array(
                 'date'          => array('shouldSetValue'    => '1',
                     'type'   => DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE,
@@ -398,52 +398,52 @@
             $actions = $workflow->getActions();
             $this->assertCount(1, $actions);
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_SELF, $actions[0]->type);
-            $this->assertEquals(13,        $actions[0]->getAttributeFormsCount());
+            $this->assertEquals(13,        $actions[0]->getActionAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getAttributeFormByName('date')->type);
-            $this->assertEquals(-86400,  $actions[0]->getAttributeFormByName('date')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('date2') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getAttributeFormByName('date2')->type);
-            $this->assertEquals(86400,  $actions[0]->getAttributeFormByName('date2')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('date3') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getAttributeFormByName('date3')->type);
-            $this->assertEquals(-86400,  $actions[0]->getAttributeFormByName('date3')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('date4') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getAttributeFormByName('date4')->type);
-            $this->assertEquals(86400,  $actions[0]->getAttributeFormByName('date4')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getActionAttributeFormByName('date')->type);
+            $this->assertEquals(-86400,  $actions[0]->getActionAttributeFormByName('date')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date2') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getActionAttributeFormByName('date2')->type);
+            $this->assertEquals(86400,  $actions[0]->getActionAttributeFormByName('date2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date3') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getActionAttributeFormByName('date3')->type);
+            $this->assertEquals(-86400,  $actions[0]->getActionAttributeFormByName('date3')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date4') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getActionAttributeFormByName('date4')->type);
+            $this->assertEquals(86400,  $actions[0]->getActionAttributeFormByName('date4')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getAttributeFormByName('dateTime')->type);
-            $this->assertEquals(-3600,  $actions[0]->getAttributeFormByName('dateTime')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime2') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getAttributeFormByName('dateTime2')->type);
-            $this->assertEquals(3600,  $actions[0]->getAttributeFormByName('dateTime2')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime3') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getAttributeFormByName('dateTime3')->type);
-            $this->assertEquals(-7200,  $actions[0]->getAttributeFormByName('dateTime3')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime4') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getAttributeFormByName('dateTime4')->type);
-            $this->assertEquals(7200,  $actions[0]->getAttributeFormByName('dateTime4')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getActionAttributeFormByName('dateTime')->type);
+            $this->assertEquals(-3600,  $actions[0]->getActionAttributeFormByName('dateTime')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime2') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getActionAttributeFormByName('dateTime2')->type);
+            $this->assertEquals(3600,  $actions[0]->getActionAttributeFormByName('dateTime2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime3') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getActionAttributeFormByName('dateTime3')->type);
+            $this->assertEquals(-7200,  $actions[0]->getActionAttributeFormByName('dateTime3')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime4') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getActionAttributeFormByName('dateTime4')->type);
+            $this->assertEquals(7200,  $actions[0]->getActionAttributeFormByName('dateTime4')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getAttributeFormByName('dropDown')->type);
-            $this->assertEquals(2, $actions[0]->getAttributeFormByName('dropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getActionAttributeFormByName('dropDown')->type);
+            $this->assertEquals(2, $actions[0]->getActionAttributeFormByName('dropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicCreatedByUser',    $actions[0]->getAttributeFormByName('owner')->type);
-            $this->assertNull($actions[0]->getAttributeFormByName('owner')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicCreatedByUser',    $actions[0]->getActionAttributeFormByName('owner')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('owner')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getAttributeFormByName('radioDropDown')->type);
-            $this->assertEquals(-2, $actions[0]->getAttributeFormByName('radioDropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getActionAttributeFormByName('radioDropDown')->type);
+            $this->assertEquals(-2, $actions[0]->getActionAttributeFormByName('radioDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('user') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicModifiedByUser',    $actions[0]->getAttributeFormByName('user')->type);
-            $this->assertNull($actions[0]->getAttributeFormByName('user')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('user2') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicTriggeredByUser',    $actions[0]->getAttributeFormByName('user2')->type);
-            $this->assertNull($actions[0]->getAttributeFormByName('user2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('user') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicModifiedByUser',    $actions[0]->getActionAttributeFormByName('user')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('user')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('user2') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicTriggeredByUser',    $actions[0]->getActionAttributeFormByName('user2')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('user2')->value);
         }
 
         /**
@@ -463,7 +463,7 @@
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES]     =
             array(
                 'boolean'       => array('shouldSetValue'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -532,86 +532,86 @@
             $this->assertEquals('hasMany2', $actions[0]->relation);
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
 
-            $this->assertEquals(19,        $actions[0]->getAttributeFormsCount());
+            $this->assertEquals(19,        $actions[0]->getActionAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean') instanceof CheckBoxWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean')->type);
-            $this->assertEquals('1', $actions[0]->getAttributeFormByName('boolean')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('boolean') instanceof CheckBoxWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('boolean')->type);
+            $this->assertEquals('1', $actions[0]->getActionAttributeFormByName('boolean')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('boolean2') instanceof CheckBoxWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('boolean2')->type);
-            $this->assertEquals('0', $actions[0]->getAttributeFormByName('boolean2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('boolean2') instanceof CheckBoxWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('boolean2')->type);
+            $this->assertEquals('0', $actions[0]->getActionAttributeFormByName('boolean2')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('currencyValue') instanceof CurrencyValueWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('currencyValue')->type);
-            $this->assertEquals(362.24,      $actions[0]->getAttributeFormByName('currencyValue')->value);
-            $this->assertEquals($currency->id,  $actions[0]->getAttributeFormByName('currencyValue')->currencyId);
-            $this->assertEquals('Static',  $actions[0]->getAttributeFormByName('currencyValue')->currencyIdType);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('currencyValue') instanceof CurrencyValueWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('currencyValue')->type);
+            $this->assertEquals(362.24,      $actions[0]->getActionAttributeFormByName('currencyValue')->value);
+            $this->assertEquals($currency->id,  $actions[0]->getActionAttributeFormByName('currencyValue')->currencyId);
+            $this->assertEquals('Static',  $actions[0]->getActionAttributeFormByName('currencyValue')->currencyIdType);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('date')->type);
-            $this->assertEquals('2012-02-24',  $actions[0]->getAttributeFormByName('date')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('date')->type);
+            $this->assertEquals('2012-02-24',  $actions[0]->getActionAttributeFormByName('date')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('dateTime')->type);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('dateTime')->type);
             $compareDateTime = DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero('2/24/12 03:00 AM');
-            $this->assertEquals($compareDateTime,  $actions[0]->getAttributeFormByName('dateTime')->value);
+            $this->assertEquals($compareDateTime,  $actions[0]->getActionAttributeFormByName('dateTime')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('dropDown')->type);
-            $this->assertEquals('Value 1',  $actions[0]->getAttributeFormByName('dropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('dropDown')->type);
+            $this->assertEquals('Value 1',  $actions[0]->getActionAttributeFormByName('dropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('float') instanceof DecimalWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('float')->type);
-            $this->assertEquals('54.25',  $actions[0]->getAttributeFormByName('float')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('float') instanceof DecimalWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('float')->type);
+            $this->assertEquals('54.25',  $actions[0]->getActionAttributeFormByName('float')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('integer') instanceof IntegerWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('integer')->type);
-            $this->assertEquals('32',  $actions[0]->getAttributeFormByName('integer')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('integer') instanceof IntegerWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('integer')->type);
+            $this->assertEquals('32',  $actions[0]->getActionAttributeFormByName('integer')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('likeContactState') instanceof ContactStateWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('likeContactState')->type);
-            $this->assertEquals($contactState->id,  $actions[0]->getAttributeFormByName('likeContactState')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('likeContactState') instanceof ContactStateWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('likeContactState')->type);
+            $this->assertEquals($contactState->id,  $actions[0]->getActionAttributeFormByName('likeContactState')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('multiDropDown') instanceof MultiSelectDropDownWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('multiDropDown')->type);
-            $this->assertEquals(array('Multi Value 1', 'Multi Value 2'),  $actions[0]->getAttributeFormByName('multiDropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('multiDropDown') instanceof MultiSelectDropDownWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('multiDropDown')->type);
+            $this->assertEquals(array('Multi Value 1', 'Multi Value 2'),  $actions[0]->getActionAttributeFormByName('multiDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('Static',    $actions[0]->getAttributeFormByName('owner')->type);
-            $this->assertEquals($bobby->id,  $actions[0]->getAttributeFormByName('owner')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('Static',    $actions[0]->getActionAttributeFormByName('owner')->type);
+            $this->assertEquals($bobby->id,  $actions[0]->getActionAttributeFormByName('owner')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('phone') instanceof PhoneWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('phone')->type);
-            $this->assertEquals('8471112222',  $actions[0]->getAttributeFormByName('phone')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('phone') instanceof PhoneWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('phone')->type);
+            $this->assertEquals('8471112222',  $actions[0]->getActionAttributeFormByName('phone')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('primaryAddress___street1') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryAddress___street1')->type);
-            $this->assertEquals('123 Main Street',  $actions[0]->getAttributeFormByName('primaryAddress___street1')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('primaryAddress___street1') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('primaryAddress___street1')->type);
+            $this->assertEquals('123 Main Street',  $actions[0]->getActionAttributeFormByName('primaryAddress___street1')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('primaryEmail___emailAddress') instanceof EmailWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('primaryEmail___emailAddress')->type);
-            $this->assertEquals('info@zurmo.com',  $actions[0]->getAttributeFormByName('primaryEmail___emailAddress')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('primaryEmail___emailAddress') instanceof EmailWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('primaryEmail___emailAddress')->type);
+            $this->assertEquals('info@zurmo.com',  $actions[0]->getActionAttributeFormByName('primaryEmail___emailAddress')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('radioDropDown')->type);
-            $this->assertEquals('Radio Value 1',  $actions[0]->getAttributeFormByName('radioDropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('radioDropDown')->type);
+            $this->assertEquals('Radio Value 1',  $actions[0]->getActionAttributeFormByName('radioDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $actions[0]->getActionAttributeFormByName('string')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('tagCloud') instanceof TagCloudWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('tagCloud')->type);
-            $this->assertEquals(array('Tag Value 1', 'Tag Value 2'),  $actions[0]->getAttributeFormByName('tagCloud')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('tagCloud') instanceof TagCloudWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('tagCloud')->type);
+            $this->assertEquals(array('Tag Value 1', 'Tag Value 2'),  $actions[0]->getActionAttributeFormByName('tagCloud')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('textArea') instanceof TextAreaWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('textArea')->type);
-            $this->assertEquals('some description',  $actions[0]->getAttributeFormByName('textArea')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('textArea') instanceof TextAreaWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('textArea')->type);
+            $this->assertEquals('some description',  $actions[0]->getActionAttributeFormByName('textArea')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('url') instanceof UrlWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('url')->type);
-            $this->assertEquals('http://www.zurmo.com',  $actions[0]->getAttributeFormByName('url')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('url') instanceof UrlWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('url')->type);
+            $this->assertEquals('http://www.zurmo.com',  $actions[0]->getActionAttributeFormByName('url')->value);
         }
 
         /**
@@ -627,7 +627,7 @@
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes']     =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES]     =
             array(
                 'date'          => array('shouldSetValue'    => '1',
                     'type'   => DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE,
@@ -673,52 +673,52 @@
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED, $actions[0]->type);
             $this->assertEquals('hasMany2', $actions[0]->relation);
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
-            $this->assertEquals(13,        $actions[0]->getAttributeFormsCount());
+            $this->assertEquals(13,        $actions[0]->getActionAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getAttributeFormByName('date')->type);
-            $this->assertEquals(-86400,  $actions[0]->getAttributeFormByName('date')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('date2') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getAttributeFormByName('date2')->type);
-            $this->assertEquals(86400,  $actions[0]->getAttributeFormByName('date2')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('date3') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getAttributeFormByName('date3')->type);
-            $this->assertEquals(-86400,  $actions[0]->getAttributeFormByName('date3')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('date4') instanceof DateWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getAttributeFormByName('date4')->type);
-            $this->assertEquals(86400,  $actions[0]->getAttributeFormByName('date4')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getActionAttributeFormByName('date')->type);
+            $this->assertEquals(-86400,  $actions[0]->getActionAttributeFormByName('date')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date2') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDate', $actions[0]->getActionAttributeFormByName('date2')->type);
+            $this->assertEquals(86400,  $actions[0]->getActionAttributeFormByName('date2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date3') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getActionAttributeFormByName('date3')->type);
+            $this->assertEquals(-86400,  $actions[0]->getActionAttributeFormByName('date3')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('date4') instanceof DateWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDate', $actions[0]->getActionAttributeFormByName('date4')->type);
+            $this->assertEquals(86400,  $actions[0]->getActionAttributeFormByName('date4')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getAttributeFormByName('dateTime')->type);
-            $this->assertEquals(-3600,  $actions[0]->getAttributeFormByName('dateTime')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime2') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getAttributeFormByName('dateTime2')->type);
-            $this->assertEquals(3600,  $actions[0]->getAttributeFormByName('dateTime2')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime3') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getAttributeFormByName('dateTime3')->type);
-            $this->assertEquals(-7200,  $actions[0]->getAttributeFormByName('dateTime3')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('dateTime4') instanceof DateTimeWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getAttributeFormByName('dateTime4')->type);
-            $this->assertEquals(7200,  $actions[0]->getAttributeFormByName('dateTime4')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getActionAttributeFormByName('dateTime')->type);
+            $this->assertEquals(-3600,  $actions[0]->getActionAttributeFormByName('dateTime')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime2') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromTriggeredDateTime', $actions[0]->getActionAttributeFormByName('dateTime2')->type);
+            $this->assertEquals(3600,  $actions[0]->getActionAttributeFormByName('dateTime2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime3') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getActionAttributeFormByName('dateTime3')->type);
+            $this->assertEquals(-7200,  $actions[0]->getActionAttributeFormByName('dateTime3')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dateTime4') instanceof DateTimeWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicFromExistingDateTime', $actions[0]->getActionAttributeFormByName('dateTime4')->type);
+            $this->assertEquals(7200,  $actions[0]->getActionAttributeFormByName('dateTime4')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getAttributeFormByName('dropDown')->type);
-            $this->assertEquals(2, $actions[0]->getAttributeFormByName('dropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('dropDown') instanceof DropDownWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getActionAttributeFormByName('dropDown')->type);
+            $this->assertEquals(2, $actions[0]->getActionAttributeFormByName('dropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicCreatedByUser',    $actions[0]->getAttributeFormByName('owner')->type);
-            $this->assertNull($actions[0]->getAttributeFormByName('owner')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('owner') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicCreatedByUser',    $actions[0]->getActionAttributeFormByName('owner')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('owner')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getAttributeFormByName('radioDropDown')->type);
-            $this->assertEquals(-2, $actions[0]->getAttributeFormByName('radioDropDown')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('radioDropDown') instanceof RadioDropDownWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicStepForwardOrBackwards', $actions[0]->getActionAttributeFormByName('radioDropDown')->type);
+            $this->assertEquals(-2, $actions[0]->getActionAttributeFormByName('radioDropDown')->value);
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('user') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicModifiedByUser',    $actions[0]->getAttributeFormByName('user')->type);
-            $this->assertNull($actions[0]->getAttributeFormByName('user')->value);
-            $this->assertTrue($actions[0]->getAttributeFormByName('user2') instanceof UserWorkflowActionAttributeForm);
-            $this->assertEquals('DynamicTriggeredByUser',    $actions[0]->getAttributeFormByName('user2')->type);
-            $this->assertNull($actions[0]->getAttributeFormByName('user2')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('user') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicModifiedByUser',    $actions[0]->getActionAttributeFormByName('user')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('user')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('user2') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('DynamicTriggeredByUser',    $actions[0]->getActionAttributeFormByName('user2')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('user2')->value);
         }
 
         /**
@@ -733,7 +733,7 @@
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']       = ActionForWorkflowForm::TYPE_CREATE;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']   = 'hasMany2';
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES] =
             array(
                 'string' => array('shouldSetValue'    => '1',
                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -746,11 +746,11 @@
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE, $actions[0]->type);
             $this->assertEquals('hasMany2', $actions[0]->relation);
 
-            $this->assertEquals(1,        $actions[0]->getAttributeFormsCount());
+            $this->assertEquals(1,        $actions[0]->getActionAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('string')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $actions[0]->getActionAttributeFormByName('string')->value);
         }
 
         /**
@@ -767,7 +767,7 @@
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relatedModelRelation'] = 'hasMany';
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['attributes'] =
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES] =
             array(
                     'name'   => array('shouldSetValue'    => '1',
                     'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
@@ -782,11 +782,11 @@
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
             $this->assertEquals('hasMany', $actions[0]->relatedModelRelation);
 
-            $this->assertEquals(1,        $actions[0]->getAttributeFormsCount());
+            $this->assertEquals(1,        $actions[0]->getActionAttributeFormsCount());
 
-            $this->assertTrue($actions[0]->getAttributeFormByName('name') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $actions[0]->getAttributeFormByName('name')->type);
-            $this->assertEquals('jason',  $actions[0]->getAttributeFormByName('name')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('name') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('name')->type);
+            $this->assertEquals('jason',  $actions[0]->getActionAttributeFormByName('name')->value);
         }
     }
 ?>

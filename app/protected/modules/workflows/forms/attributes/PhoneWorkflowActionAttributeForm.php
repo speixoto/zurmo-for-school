@@ -29,5 +29,21 @@
      */
     class PhoneWorkflowActionAttributeForm extends TextWorkflowActionAttributeForm
     {
+
+        public function getValueElementType()
+        {
+            return 'Phone';
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            if(!$isRequired)
+            {
+                $data[static::TYPE_STATIC_NULL] = Zurmo::t('WorkflowModule', 'As Empty');
+            }
+            return $data;
+        }
     }
 ?>

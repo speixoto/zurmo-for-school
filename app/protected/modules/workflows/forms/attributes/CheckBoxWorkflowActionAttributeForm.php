@@ -36,5 +36,17 @@
         {
             return array_merge(parent::rules(), array(array('value', 'boolean')));
         }
+
+        public function getValueElementType()
+        {
+            return 'BooleanStaticDropDown';
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            return $data;
+        }
     }
 ?>

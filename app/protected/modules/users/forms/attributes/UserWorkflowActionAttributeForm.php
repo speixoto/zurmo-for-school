@@ -29,11 +29,18 @@
      */
     class UserWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        const TYPE_DYNAMIC_CREATED_BY_USER   = 'DynamicCreatedByUser';
+        const TYPE_DYNAMIC_CREATED_BY_USER          = 'DynamicCreatedByUser';
 
-        const TYPE_DYNAMIC_MODIFIED_BY_USER  = 'DynamicModifiedByUser';
+        const TYPE_DYNAMIC_MODIFIED_BY_USER         = 'DynamicModifiedByUser';
 
-        const TYPE_DYNAMIC_TRIGGERED_BY_USER = 'DynamicTriggeredByUser';
+        const TYPE_DYNAMIC_TRIGGERED_BY_USER        = 'DynamicTriggeredByUser';
+
+        const TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL = 'OwnerOfTriggeredModel';
+
+        public function getValueElementType()
+        {
+            return 'UserNameId';
+        }
 
         /**
          * Value can either be date or if dynamic, then it is an integer
@@ -60,6 +67,23 @@
                 }
             }
             return false;
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                      = array();
+            $data[static::TYPE_STATIC] = Zurmo::t('WorkflowModule', 'As');
+            if($isCreatingNewModel)
+            {
+                $data[TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+            }
+            else
+            {
+                $data[TYPE_DYNAMIC_CREATED_BY_USER]       = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+                 $data[TYPE_DYNAMIC_MODIFIED_BY_USER]       = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+                $data[TYPE_DYNAMIC_TRIGGERED_BY_USER]       = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+            }
+            return $data;
         }
     }
 ?>

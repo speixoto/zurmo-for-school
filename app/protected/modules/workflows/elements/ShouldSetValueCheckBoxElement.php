@@ -25,10 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Displays the standard boolean field
+     * Displays checkbox for choosing whether to set a workflow action attribute value or not. Override to support
+     * hiding and showing the value div
      * rendered as a check box.
      */
-    class CheckBoxElement extends Element
+    class ShouldSetValueCheckBoxElement extends CheckBoxElement
     {
         /**
          * Render A standard text input.
@@ -36,40 +37,14 @@
          */
         protected function renderControlEditable()
         {
-            assert('empty($this->model->{$this->attribute}) ||
-                is_string($this->model->{$this->attribute}) ||
-                is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
-            );
-            return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
+            assert('$this->model instanceof WorkflowActionAttributeForm');
+            return parent::renderControlEditable();
         }
 
         protected function getEditableHtmlOptions()
         {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            if ($this->getDisabledValue())
-            {
-                $htmlOptions['disabled'] = $this->getDisabledValue();
-                if (BooleanUtil::boolVal($this->model->{$this->attribute}))
-                {
-                    $htmlOptions['uncheckValue'] = 1;
-                }
-            }
-            return $htmlOptions;
-        }
-
-        /**
-         * Renders the attribute from the model.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
-        {
-            $htmlOptions             = array();
-            $htmlOptions['id']       = $this->getEditableInputId();
-            $htmlOptions['name']     = $this->getEditableInputName();
-            $htmlOptions['disabled'] = 'disabled';
-            return ZurmoHtml::activeCheckBox($this->model, $this->attribute, $htmlOptions);
+            $htmlOptions             = parent::getEditableHtmlOptions();
+            $htmlOptions['onclick']  = 'toggleWorkflowShouldSetValueWrapper("' . $this->getEditableInputId(). '")';
         }
     }
 ?>

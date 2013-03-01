@@ -31,6 +31,12 @@
     {
         const TYPE_STATIC = 'Static';
 
+        const TYPE_STATIC_NULL = 'StaticNull';
+
+        abstract public function getValueElementType();
+
+        abstract protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired);
+
         /**
          * @var string Static for example, Can also be Dynamic as well as other types specified by children
          */
@@ -125,12 +131,20 @@
                 $this->addError('value', Zurmo::t('WorkflowsModule', 'Value cannot be blank.'));
                 return false;
             }
-            if($this->value != null && !$this->shouldSetValue)
-            {
-                $this->addError('value', Zurmo::t('WorkflowsModule', 'Value should not be set.'));
-                return false;
-            }
             return true;
+        }
+
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired Is the attribute required or not. Some types are not available if the attribute is
+         * required.
+         * @return array
+         */
+        public function getTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
+            return $this->makeTypeValuesAndLabels($isCreatingNewModel, $isRequired);
         }
     }
 ?>

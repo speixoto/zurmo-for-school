@@ -29,12 +29,24 @@
      */
     class ContactStateWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
+        public function getValueElementType()
+        {
+            return 'UserNameId';
+        }
+
         /**
          * Override to make sure the value attribute is set as an integer value since it will be the id of a contact state
          */
         public function rules()
         {
             return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'integer')));
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            return $data;
         }
     }
 ?>

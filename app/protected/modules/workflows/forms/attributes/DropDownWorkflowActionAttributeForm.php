@@ -35,6 +35,11 @@
          */
         const TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS = 'DynamicStepForwardOrBackwards';
 
+        public function getValueElementType()
+        {
+            return 'MixedDropDownTypesForWorkflowActionAttribute';
+        }
+
         /**
          * Value can either be a string or if dynamic step, then it is an integer
          * @return bool
@@ -57,6 +62,17 @@
                 }
             }
             return false;
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]                         = Zurmo::t('WorkflowModule', 'As');
+            if(!$isCreatingNewModel)
+            {
+                $data[TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS]      = Zurmo::t('WorkflowModule', 'Step Forward or Backward');
+            }
+            return $data;
         }
     }
 ?>

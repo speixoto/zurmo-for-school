@@ -627,5 +627,26 @@ EOD;
         {
             return static::tag('span', array('class' => $class), null);
         }
+
+        /**
+         * @param string $innerContent
+         * @param string $content
+         * @param null|string $class
+         */
+        public static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
+        {
+            if($class != null)
+            {
+                $htmlOptions = array('class' => $class);
+            }
+            else
+            {
+                $htmlOptions = array();
+            }
+            if($innerContent != null)
+            {
+                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
+            }
+        }
     }
 ?>

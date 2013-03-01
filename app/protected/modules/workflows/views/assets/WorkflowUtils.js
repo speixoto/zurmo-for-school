@@ -83,3 +83,14 @@ function rebuildWorkflowActionRowNumbers(divId){
         rowCount ++;
     });
 }
+function toggleWorkflowShouldSetValueWrapper(checkboxId)
+{
+    if ($('#' + checkboxId).attr('checked') == 'checked')
+    {
+        $('#' + checkboxId).parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').show();
+    }
+    else
+    {
+        $('#' + checkboxId).parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').hide();
+    }
+}

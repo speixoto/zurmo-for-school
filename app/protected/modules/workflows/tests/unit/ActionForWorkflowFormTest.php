@@ -49,11 +49,11 @@
             $action->setAttributes($attributes);
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE, $action->type);
-            $this->assertEquals(1, $action->getAttributeFormsCount());
+            $this->assertEquals(1, $action->getActionAttributeFormsCount());
 
-            $this->assertTrue($action->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getAttributeFormByName('string')->value);
+            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
         }
 
         /**
@@ -74,11 +74,11 @@
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED,     $action->type);
             $this->assertEquals('hasMany2',                        $action->relation );
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL,     $action->relationFilter);
-            $this->assertEquals(1, $action->getAttributeFormsCount());
+            $this->assertEquals(1, $action->getActionAttributeFormsCount());
 
-            $this->assertTrue($action->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getAttributeFormByName('string')->value);
+            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
         }
 
         /**
@@ -97,11 +97,11 @@
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE,     $action->type);
             $this->assertEquals('hasMany2',                $action->relation );
-            $this->assertEquals(1, $action->getAttributeFormsCount());
+            $this->assertEquals(1, $action->getActionAttributeFormsCount());
 
-            $this->assertTrue($action->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getAttributeFormByName('string')->value);
+            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
         }
 
         /**
@@ -124,11 +124,11 @@
             $this->assertEquals('hasMany2',  $action->relation );
             $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL,     $action->relationFilter);
             $this->assertEquals('hasMany',   $action->relatedModelRelation);
-            $this->assertEquals(1, $action->getAttributeFormsCount());
+            $this->assertEquals(1, $action->getActionAttributeFormsCount());
 
-            $this->assertTrue($action->getAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getAttributeFormByName('string')->value);
+            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
+            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
         }
 
         /**

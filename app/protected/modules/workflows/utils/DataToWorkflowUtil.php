@@ -133,7 +133,7 @@
             {
                 if(isset($attributeData['value']))
                 {
-                    $type = $actionForSanitizing->getAttributesAttributeFormType($attribute);
+                    $type = $actionForSanitizing->getActionAttributesAttributeFormType($attribute);
                     if($type == 'Date' && $attributeData['type'] == DateWorkflowActionAttributeForm::TYPE_STATIC)
                     {
                         $actionData['attributes'][$attribute]['value'] =

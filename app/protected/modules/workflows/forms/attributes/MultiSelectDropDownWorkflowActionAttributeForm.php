@@ -36,5 +36,12 @@
         {
             return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'array')));
         }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            return $data;
+        }
     }
 ?>

@@ -36,5 +36,17 @@
         {
             return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'float')));
         }
+
+        public function getValueElementType()
+        {
+            return 'Decimal';
+        }
+
+        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+        {
+            $data                           = array();
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            return $data;
+        }
     }
 ?>
