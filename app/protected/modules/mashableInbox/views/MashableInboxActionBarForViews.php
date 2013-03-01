@@ -139,7 +139,7 @@
             $unreadCount           = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
             $url                   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list');
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
-            $content               = ZurmoHtml::link($label . ' (' . $unreadCount . ')', $url);
+            $content               = ZurmoHtml::link($label . '<span class="unread-count">' . $unreadCount . '</span>', $url);
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {

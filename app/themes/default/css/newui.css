@@ -4392,6 +4392,9 @@ body.light-toast,
   display: none !important;
   visibility: hidden !important;
 }
+.temp-hidden {
+  display: none;
+}
 .disabled-select-element {
   pointer-events: none;
 }
@@ -4646,7 +4649,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 32px;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -5566,6 +5569,9 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-MissionsModule em:before {
   content: "Q";
 }
+#RecentlyViewedView li.type-ReportsModule em:before {
+  content: "V";
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -5608,10 +5614,6 @@ body > .ui-autocomplete {
   float: left;
   position: relative;
 }
-.AppContent .single-column .panel td,
-.AppContent .single-column .panel th {
-  padding-bottom: 10px !important;
-}
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
   margin-right: 0 !important;
@@ -5638,24 +5640,31 @@ body > .ui-autocomplete {
   position: relative;
   z-index: 9999;
 }
+#MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
   position: relative;
 }
+#MashableInboxActionBarForViews > div:nth-child(1),
 #ActionBarSearchAndListView > div:nth-child(1) {
   z-index: 10;
 }
+#MashableInboxActionBarForViews > div:nth-child(2),
 #ActionBarSearchAndListView > div:nth-child(2) {
   z-index: 9;
 }
+#MashableInboxActionBarForViews > div:nth-child(3),
 #ActionBarSearchAndListView > div:nth-child(3) {
   z-index: 8;
 }
+#MashableInboxActionBarForViews > div:nth-child(4),
 #ActionBarSearchAndListView > div:nth-child(4) {
   z-index: 7;
 }
+#MashableInboxActionBarForViews > div:nth-child(5),
 #ActionBarSearchAndListView > div:nth-child(5) {
   z-index: 6;
 }
+#MashableInboxActionBarForViews > div:nth-child(6),
 #ActionBarSearchAndListView > div:nth-child(6) {
   z-index: 5;
 }
@@ -5672,17 +5681,20 @@ body > .ui-autocomplete {
 }
 /*=Inner toolbar*/
 .float-bar {
+  width: 100%;
+  float: left;
+  position: relative;
   height: 40px;
   display: block;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
   position: fixed !important;
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
   background-color: #ffffff ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), color-stop(80%, #f5f5f5), to(#ffffff)) ;
@@ -5721,6 +5733,33 @@ body > .ui-autocomplete {
   display: inline-block;
   width: 100%;
   position: relative;
+}
+.unread-count {
+  display: inline-block;
+  margin-left: 8px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 15px;
+  background: #666;
+  text-align: center;
+  color: #fff;
+  font-size: 9px;
+  font-weight: normal;
+  background-color: #555555;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#555555));
+  background-image: -moz-linear-gradient(top, #333333, #555555);
+  background-image: -ms-linear-gradient(top, #333333, #555555);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #555555));
+  background-image: -webkit-linear-gradient(top, #333333, #555555);
+  background-image: -o-linear-gradient(top, #333333, #555555);
+  background-image: linear-gradient(top, #333333, #555555);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#555555', GradientType=0);
 }
 form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container,
@@ -5868,6 +5907,37 @@ form .view-toolbar-container,
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before {
   content: "(";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#ListViewDetailsActionMenu .parent > a:before,
+.icon-details:before {
+  content: 'T';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#MashableInboxMassActionMenu .parent > a:before,
+#ListViewOptionsActionMenu .parent > a:before,
+.icon-options:before {
+  content: "n";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -6229,6 +6299,18 @@ table.items > tbody tr td:first-child:not(.checkbox-column),
 table.items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.sort-link:after {
+  margin-left: 10px;
+  font-size: 12px;
+  position: relative;
+  top: -1px;
+}
+.sort-link.asc:after {
+  content: "↑";
+}
+.sort-link.desc:after {
+  content: "↓";
+}
 tr.odd {
   background: none;
   -webkit-transition: all 0.05s ease-out;
@@ -6378,9 +6460,9 @@ td.empty {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
 .AppContent label {
-  font-size: 12px !important;
+  font-size: 12px;
   color: #666;
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 /*=Form Edit Account*/
 .modal-view-toolbar,
@@ -6424,6 +6506,7 @@ td.empty {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  font-size: 11px;
 }
 .portlet-toolbar a .z-label {
   padding: 0 10px 0 10px;
@@ -6458,6 +6541,7 @@ td.empty {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
+  font-size: 22px;
   top: -2px;
   margin: 0 5px 0 0 !important;
 }
@@ -6492,6 +6576,52 @@ td.empty {
   top: -1px;
   color: #fff;
   margin-left: 0;
+}
+body div.form-toolbar a.simple-link:not(.z-button) {
+  background: none !important;
+  background-image: none !important;
+  -webkit-box-shadow: none  !important;
+  -moz-box-shadow: none  !important;
+  -o-box-shadow: none  !important;
+  -ms-box-shadow: none  !important;
+  box-shadow: none  !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  -o-border-radius: 0 !important;
+  border-radius: 0 !important;
+  padding: 0  !important;
+  border: none !important;
+  margin: !important;
+  text-decoration: underline;
+  font-weight: normal;
+}
+body div.form-toolbar a.simple-link:not(.z-button):hover span.z-label {
+  background: none !important;
+  background-image: none !important;
+  background: transparent !important;
+}
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
+  background: none !important;
+  background-image: none !important;
+  -webkit-box-shadow: none  !important;
+  -moz-box-shadow: none  !important;
+  -o-box-shadow: none  !important;
+  -ms-box-shadow: none  !important;
+  box-shadow: none  !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  -o-border-radius: 0 !important;
+  border-radius: 0 !important;
+  padding: 0  !important;
+  border: none !important;
+  margin-left: 10px;
+  text-decoration: underline;
+  font-weight: normal;
+}
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
+  content: "" !important;
 }
 a.simple-link {
   background: none !important;
@@ -6693,11 +6823,11 @@ div.wide.form label.hasCheckBox {
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-item-details {
+  display: block;
   font-weight: normal;
   color: #999;
+  margin-top: 5px;
   font-size: 11px;
-  margin-left: 5px;
-  float: right;
 }
 .summary {
   display: none;
@@ -6768,6 +6898,7 @@ div.wide.form label.hasCheckBox {
 #NoUserEmailConfigurationYetView,
 #NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView*/
+.zero-components-view h2,
 .splash-view h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
@@ -6776,6 +6907,7 @@ div.wide.form label.hasCheckBox {
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
+.zero-components-view i,
 .splash-view i {
   font-size: 13px;
   color: #555;
@@ -6783,6 +6915,7 @@ div.wide.form label.hasCheckBox {
   display: block;
   margin-left: 30px;
 }
+.zero-components-view p,
 .splash-view p {
   font-size: 16px;
   line-height: 24px;
@@ -6792,6 +6925,7 @@ div.wide.form label.hasCheckBox {
   width: 70%;
   margin: 45px 0 0 30px;
 }
+.zero-components-view a,
 .splash-view a {
   margin-left: 30px;
   margin-top: 30px;
@@ -6806,6 +6940,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
   cursor: pointer;
 }
+.zero-components-view a span:before,
 .splash-view a span:before {
   content: "Y";
   font-weight: normal;
@@ -6816,6 +6951,7 @@ div.wide.form label.hasCheckBox {
   left: -5px;
   margin-right: 3px;
 }
+.zero-components-view .large-icon,
 .splash-view .large-icon {
   width: 25%;
   text-align: center;
@@ -6823,6 +6959,7 @@ div.wide.form label.hasCheckBox {
   border-right: 1px solid #ccc;
   float: left;
 }
+.zero-components-view .Contact .large-icon:after,
 .splash-view .Contact .large-icon:after {
   content: "y";
   font-weight: normal;
@@ -6830,6 +6967,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 50%;
 }
+.zero-components-view .Account .large-icon:after,
 .splash-view .Account .large-icon:after {
   content: "P";
   font-weight: normal;
@@ -6837,6 +6975,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+.zero-components-view .Lead .large-icon:after,
 .splash-view .Lead .large-icon:after {
   content: ".";
   font-weight: normal;
@@ -6844,6 +6983,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+.zero-components-view .Opportunity .large-icon:after,
 .splash-view .Opportunity .large-icon:after {
   content: "9";
   font-weight: normal;
@@ -6851,6 +6991,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+.zero-components-view .Conversation .large-icon:after,
 .splash-view .Conversation .large-icon:after {
   content: "b";
   font-weight: normal;
@@ -6858,6 +6999,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 90%;
 }
+.zero-components-view .Mission .large-icon:after,
 .splash-view .Mission .large-icon:after {
   content: "Q";
   font-weight: normal;
@@ -6865,12 +7007,23 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+.zero-components-view .EmailMessage .large-icon:after,
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
   font-weight: normal;
   font-size: 325px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
+}
+.zero-components-view .missing-report:after,
+.splash-view .missing-report:after,
+.zero-components-view .Report .large-icon:after,
+.splash-view .Report .large-icon:after {
+  content: "j";
+  font-weight: normal;
+  font-size: 250px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -7090,7 +7243,7 @@ div.wide.form label.hasCheckBox {
   z-index: 10000;
 }
 #ModalView .search-view-1 {
-  z-index: 1100;
+  z-index: 0;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -7225,14 +7378,13 @@ div.wide.form label.hasCheckBox {
 }
 .dynamic-search-row > div > span:first-child + div {
   margin-right: 0 !important;
-  width: 46%;
+  width: 45%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
   margin-right: 30px !important;
-  width: 46%;
+  width: 45%;
   float: right;
-  position: relative;
 }
 .dynamic-search-row > div .has-model-select {
   float: left;
@@ -7533,12 +7685,17 @@ div.wide.form label.hasCheckBox {
   position: absolute;
   right: 15px;
   top: 15px;
+}
+.right-side-edit-view-panel,
+#right-side-edit-view-panel {
   width: 30%;
   float: right;
 }
+.right-side-edit-view-panel h3,
 #right-side-edit-view-panel h3 {
   margin-bottom: 8px;
 }
+.right-side-edit-view-panel label,
 #right-side-edit-view-panel label {
   width: 100%;
   display: block;
@@ -7546,47 +7703,59 @@ div.wide.form label.hasCheckBox {
   padding-top: 0;
   margin-bottom: 5px;
 }
+.right-side-edit-view-panel #owner-box,
 #right-side-edit-view-panel #owner-box {
   margin-bottom: 15px;
   position: relative;
 }
+.right-side-edit-view-panel #owner-box label,
 #right-side-edit-view-panel #owner-box label,
+.right-side-edit-view-panel #owner-box + label,
 #right-side-edit-view-panel #owner-box + label {
   font-size: 12px;
   font-weight: 600;
 }
+.right-side-edit-view-panel #owner-box input,
 #right-side-edit-view-panel #owner-box input {
   position: relative;
   z-index: 0;
 }
+.right-side-edit-view-panel .ui-autocomplete,
 #right-side-edit-view-panel .ui-autocomplete {
   width: auto;
 }
+.right-side-edit-view-panel input[type="text"],
 #right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
 }
+.right-side-edit-view-panel #owner-box + label,
 #right-side-edit-view-panel #owner-box + label {
   margin-bottom: 15px;
 }
+.right-side-edit-view-panel .radio-input,
 #right-side-edit-view-panel .radio-input {
   margin-bottom: 10px;
   width: 100%;
   float: left;
   display: block;
 }
+.right-side-edit-view-panel .radio-input label,
 #right-side-edit-view-panel .radio-input label {
   width: auto;
   float: left;
   vertical-align: middle;
 }
+.right-side-edit-view-panel .radio-input input[type="radio"],
 #right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
+.right-side-edit-view-panel .radio-input .hasDropDown,
 #right-side-edit-view-panel .radio-input .hasDropDown {
   padding-left: 40px;
 }
+.right-side-edit-view-panel input[type="text"],
 #right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
 }
@@ -7838,12 +8007,13 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.TitleBarAndDetailsView > div,
-.ProgressView > div,
-#MetadataViewEditView > div,
-.TableOfContentsView > div,
-.DetailsView > div,
-.EditAndDetailsView > div {
+.wrapper,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container),
+.ProgressView > div:not(.view-toolbar-container),
+#MetadataViewEditView > div:not(.view-toolbar-container),
+.TableOfContentsView > div:not(.view-toolbar-container),
+.DetailsView > div:not(.view-toolbar-container),
+.EditAndDetailsView > div:not(.view-toolbar-container) {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -7861,12 +8031,13 @@ div.wide.form label.hasCheckBox {
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
-.TitleBarAndDetailsView > div .form form,
-.ProgressView > div .form form,
-#MetadataViewEditView > div .form form,
-.TableOfContentsView > div .form form,
-.DetailsView > div .form form,
-.EditAndDetailsView > div .form form {
+.wrapper .form form,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) .form form,
+.ProgressView > div:not(.view-toolbar-container) .form form,
+#MetadataViewEditView > div:not(.view-toolbar-container) .form form,
+.TableOfContentsView > div:not(.view-toolbar-container) .form form,
+.DetailsView > div:not(.view-toolbar-container) .form form,
+.EditAndDetailsView > div:not(.view-toolbar-container) .form form {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -7875,12 +8046,13 @@ div.wide.form label.hasCheckBox {
   -ms-box-shadow: none;
   box-shadow: none;
 }
-.TitleBarAndDetailsView h1,
-.ProgressView h1,
-#MetadataViewEditView h1,
-.TableOfContentsView h1,
-.DetailsView h1,
-.EditAndDetailsView h1 {
+.wrapper h1,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) h1,
+.ProgressView > div:not(.view-toolbar-container) h1,
+#MetadataViewEditView > div:not(.view-toolbar-container) h1,
+.TableOfContentsView > div:not(.view-toolbar-container) h1,
+.DetailsView > div:not(.view-toolbar-container) h1,
+.EditAndDetailsView > div:not(.view-toolbar-container) h1 {
   text-indent: 15px;
   font-size: 15px;
   height: 40px;
@@ -7903,21 +8075,23 @@ div.wide.form label.hasCheckBox {
   border-bottom: 1px solid #ccc;
   overflow: hidden;
 }
-.TitleBarAndDetailsView input[type="checkbox"] + label,
-.ProgressView input[type="checkbox"] + label,
-#MetadataViewEditView input[type="checkbox"] + label,
-.TableOfContentsView input[type="checkbox"] + label,
-.DetailsView input[type="checkbox"] + label,
-.EditAndDetailsView input[type="checkbox"] + label {
+.wrapper input[type="checkbox"] + label,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.ProgressView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+#MetadataViewEditView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.TableOfContentsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.DetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.EditAndDetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label {
   width: 60px;
   margin-top: 0;
 }
-.TitleBarAndDetailsView td + th,
-.ProgressView td + th,
-#MetadataViewEditView td + th,
-.TableOfContentsView td + th,
-.DetailsView td + th,
-.EditAndDetailsView td + th {
+.wrapper td + th,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) td + th,
+.ProgressView > div:not(.view-toolbar-container) td + th,
+#MetadataViewEditView > div:not(.view-toolbar-container) td + th,
+.TableOfContentsView > div:not(.view-toolbar-container) td + th,
+.DetailsView > div:not(.view-toolbar-container) td + th,
+.EditAndDetailsView > div:not(.view-toolbar-container) td + th {
   padding-left: 30px;
 }
 .SecuredEditAndDetailsView,
@@ -8533,7 +8707,7 @@ div.hasHalfs .twoThirds {
   height: 50px;
   float: left;
   margin-left: 0;
-  margin-top: -4px;
+  margin-top: -6px;
   width: auto;
 }
 .juiportlet-widget td div.checkbox-column label {
