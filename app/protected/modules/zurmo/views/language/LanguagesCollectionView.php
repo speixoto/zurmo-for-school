@@ -79,7 +79,7 @@
         {
             $commonErrorMessage = Zurmo::t('ZurmoModule', 'Unexpected error during the AJAX call');
             $script = <<<EOD
-$(document).on('click', ".action-button", function() {
+$(document).on('click', ".action-button", function(event) {
     var _parent = $(this).parent();
     var _ajaxUrl = $(this).attr('ajaxurl');
 
@@ -87,11 +87,11 @@ $(document).on('click', ".action-button", function() {
     {
         return false;
     }
-
+    
     _parent.addClass('loading-ajax');
     $(this).addClass('loading');
-    attachLoadingSpinner(_parent.attr('id'), true);
-
+    attachLoadingSpinnerForLanguageActivation(this, true);
+    
     $.ajax({
         'url':_ajaxUrl,
         'cache':false,
@@ -104,7 +104,7 @@ $(document).on('click', ".action-button", function() {
                 permanent: false,
                 showIcon: true,
             });
-            attachLoadingSpinner(_parent.attr('id'));
+            attachLoadingSpinnerForLanguageActivation(this);
             $(this).removeClass('loading');
             _parent.removeClass('loading-ajax');
         }
