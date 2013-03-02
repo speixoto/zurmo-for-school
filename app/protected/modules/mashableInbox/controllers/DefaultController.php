@@ -26,23 +26,31 @@
 
     class MashableInboxDefaultController extends ZurmoModuleController {
 
+        public $pageSize;
+
         public function actionList($modelClassName = null) {
             assert('is_string($modelClassName) || $modelClassName == null');
-            $pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+            $this->pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
             $mashableInboxForm  = new MashableInboxForm();
             $getData            = GetUtil::getData();
             if(Yii::app()->request->isAjaxRequest && isset($getData['MashableInboxForm']))
             {
-                $this->renderListViewForAjax($mashableInboxForm, $modelClassName, $getData, $pageSize);
+                $this->renderListViewForAjax($mashableInboxForm, $modelClassName, $getData);
             }
             else
             {
-                $this->renderMashableInboxPageView($mashableInboxForm, $modelClassName, $pageSize);
+                $this->renderMashableInboxPageView($mashableInboxForm, $modelClassName);
             }
         }
 
-        private function renderMashableInboxPageView($mashableInboxForm, $modelClassName, $pageSize)
+        /**
+         * Render that page view for the mashableInbox. If $modelClassName is set it will render the model listView
+         * otherwise it will render a listView with all mashableInbox models merged
+         * @param type $mashableInboxForm
+         * @param type $modelClassName
+         */
+        private function renderMashableInboxPageView($mashableInboxForm, $modelClassName)
         {
             $actionViewOptions  = array();
             $mashableInboxForm->filteredBy = MashableInboxForm::FILTERED_BY_ALL;
@@ -59,7 +67,7 @@
             } else {
                 $listView           = $this->getMashableInboxListView(
                                                 $mashableInboxForm,
-                                                $pageSize);
+                                                $this->pageSize);
             }
             $actionBarView          = new MashableInboxActionBarForViews(
                                                 $this->getId(),
@@ -73,7 +81,13 @@
             echo $view->render();
         }
 
-        private function renderListViewForAjax($mashableInboxForm, $modelClassName, $getData, $pageSize)
+        /**
+         * Render the listView to update after ajax request is made
+         * @param type $mashableInboxForm
+         * @param type $modelClassName
+         * @param type $getData
+         */
+        private function renderListViewForAjax($mashableInboxForm, $modelClassName, $getData)
         {
             $mashableInboxForm->attributes = $getData["MashableInboxForm"];
             if ($mashableInboxForm->massAction != null)
@@ -90,11 +104,16 @@
             } else {
                 $listView           = $this->getMashableInboxListView(
                                                       $mashableInboxForm,
-                                                      $pageSize);
+                                                      $this->pageSize);
             }
             echo $listView->render();
         }
 
+        /**
+         * Resolves the mass action triggered by the ajax request
+         * @param type $modelClassName
+         * @param type $mashableInboxForm
+         */
         private function resolveAjaxMassAction($modelClassName, $mashableInboxForm)
         {
             if($modelClassName !== null)
@@ -120,6 +139,12 @@
             }
         }
 
+        /**
+         * Resolves the mass action triggered by ajax based on the modelClassName
+         * @param type $massAction
+         * @param type $modelClassName
+         * @param type $modelId
+         */
         private function resolveMassActionByModel($massAction, $modelClassName, $modelId)
         {
             $method             = 'resolve' . ucfirst($massAction);
@@ -127,7 +152,12 @@
             $mashableUtilRules->$method((int)$modelId);
         }
 
-        private function getMashableInboxListView($mashableInboxForm, $pageSize)
+        /**
+         * Gets the listView that should be rendered based on the mashableInboxForm params
+         * @param type $mashableInboxForm
+         * @return \MashableInboxListView
+         */
+        private function getMashableInboxListView($mashableInboxForm)
         {
             $modelClassNames
                 = array_keys(MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface'));
@@ -143,7 +173,7 @@
                                                 $modelClassNamesAndSortAttributes,
                                                 true,
                                                 $modelClassNamesAndSearchAttributeMetadataForMashableInbox,
-                                                array('pagination' => array('pageSize' => $pageSize)));
+                                                array('pagination' => array('pageSize' => $this->pageSize)));
             $listView
                 = new MashableInboxListView($this->getId(),
                                             $this->getModule()->getId(),

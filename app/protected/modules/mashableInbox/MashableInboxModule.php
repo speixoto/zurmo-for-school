@@ -37,7 +37,7 @@
             $metadata['global'] = array(
                 'tabMenuItems' => array(
                     array(
-                        'label'               => 'MashableInboxModuleSingularLabel',
+                        'label'               => Zurmo::t('MashableInboxModule', 'Inbox'),
                         'url'                 => array('/mashableInbox/default'),
                         'dynamicLabelContent' => 'eval:MashableUtil::getUnreadCountMashableInboxForCurrentUser()'
                     ),
