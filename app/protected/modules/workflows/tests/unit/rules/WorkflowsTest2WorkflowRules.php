@@ -25,41 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Helper class to create ComponentForWorkflowForm based objects
+     * Report rules to be used with the WorkflowModelTestItem2s.  Rules are module based and should store the rules
+     * for all the module's models.
      */
-    class ComponentForWorkflowFormFactory
+    class WorkflowsTest2WorkflowRules extends SecuredWorkflowRules
     {
-        /**
-         * Make and return the correct ComponentForWorkflowForm based object
-         * @param $moduleClassName string
-         * @param $modelClassName string
-         * @param $type string
-         * @param $componentType string
-         * @return TimeTriggerForWorkflowForm|TriggerForWorkflowForm|ActionForWorkflowForm
-         * @throws NotSupportedException
-         */
-        public static function makeByComponentType($moduleClassName, $modelClassName, $type, $componentType)
-        {
-            assert('is_string($moduleClassName)');
-            assert('is_string($modelClassName)');
-            assert('is_string($type)');
-            assert('is_string($componentType)');
-            if($componentType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
-            {
-                return new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
-            }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_TRIGGERS)
-            {
-                return new TriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
-            }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_ACTIONS)
-            {
-                return new ActionForWorkflowForm($modelClassName, $type);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
     }
 ?>

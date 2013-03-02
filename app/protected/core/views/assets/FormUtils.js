@@ -79,6 +79,7 @@ function afterValidateAction(form, data, hasError)
         {
             form.find(".attachLoadingTarget").removeClass("loading");
             form.find(".attachLoadingTarget").removeClass("loading-ajax-submit");
+            form.find(".attachLoadingTarget").removeClass("attachLoadingTarget");
         }
         else
         {

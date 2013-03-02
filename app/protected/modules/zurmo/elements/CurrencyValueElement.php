@@ -33,7 +33,7 @@
             /**
          * Renders the editable currency attribute. Also renders a currency id selector if there is more
          * than one currency. If there is only one currency, then show a display only currency code with
-         * a hidden input for the currency id.
+         * a hidden input for the currency id. //todo: only showing hidden currency id
          * @return A string containing the element's content
          */
         protected function renderControlEditable()

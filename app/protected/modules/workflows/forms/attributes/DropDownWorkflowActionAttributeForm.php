@@ -56,7 +56,8 @@
                 }
                 else
                 {
-                    $validator = CValidator::createValidator('type', $this, 'value', array('type' => 'integer'));
+                    $validator = CValidator::createValidator('type', $this, 'alternateValue', array('type' => 'integer'));
+                    $validator->allowEmpty = false;
                     $validator->validate($this);
                     return !$this->hasErrors();
                 }
@@ -70,7 +71,7 @@
             $data[static::TYPE_STATIC]                         = Zurmo::t('WorkflowModule', 'As');
             if(!$isCreatingNewModel)
             {
-                $data[TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS]      = Zurmo::t('WorkflowModule', 'Step Forward or Backward');
+                $data[self::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS] = Zurmo::t('WorkflowModule', 'Step Forward or Backward');
             }
             return $data;
         }

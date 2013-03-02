@@ -55,6 +55,10 @@
                 {
                     $htmlOptions['uncheckValue'] = 1;
                 }
+                if($htmlOptions['disabled'] == 'disabled')
+                {
+                    $htmlOptions['labelClass'] = 'disabled';
+                }
             }
             return $htmlOptions;
         }

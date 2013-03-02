@@ -76,10 +76,11 @@
             {
                 if(!$model->validate())
                 {
-                    foreach($model->getErrors() as $attribute => $error)
+                    foreach($model->getErrors() as $attribute => $errorArray)
                     {
+                        assert('is_array($errorArray)');
                         $attributePrefix = static::resolveErrorAttributePrefix($componentType, $count);
-                        $this->addError( $attributePrefix . $attribute, $error);
+                        $this->addError( $attributePrefix . $attribute, $errorArray[0]);
                     }
                     $passedValidation = false;
                 }

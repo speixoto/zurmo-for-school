@@ -87,10 +87,10 @@ function toggleWorkflowShouldSetValueWrapper(checkboxId)
 {
     if ($('#' + checkboxId).attr('checked') == 'checked')
     {
-        $('#' + checkboxId).parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').show();
+        $('#' + checkboxId).parent().parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').show();
     }
     else
     {
-        $('#' + checkboxId).parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').hide();
+        $('#' + checkboxId).parent().parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').hide();
     }
 }

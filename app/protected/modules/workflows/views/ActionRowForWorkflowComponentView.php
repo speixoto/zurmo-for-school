@@ -29,19 +29,31 @@
      */
     class ActionRowForWorkflowComponentView extends View
     {
+        const REQUIRED_ATTRIBUTES_INDEX     = 'Required';
+
+        const NON_REQUIRED_ATTRIBUTES_INDEX = 'NonRequired';
+
         protected $model;
 
         protected $rowNumber;
 
         protected $inputPrefixData;
 
-        public function __construct(ActionForWorkflowForm $model, $rowNumber, $inputPrefixData)
+        protected $form;
+
+        public static function getFormId()
+        {
+            return WizardView::getFormId();
+        }
+
+        public function __construct(ActionForWorkflowForm $model, $rowNumber, $inputPrefixData, WizardActiveForm $form)
         {
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             $this->model            = $model;
             $this->rowNumber        = $rowNumber;
             $this->inputPrefixData  = $inputPrefixData;
+            $this->form             = $form;
         }
 
         public function render()
@@ -52,7 +64,32 @@
         public function renderAddAttributeErrorSettingsScript(WizardActiveForm $form, $wizardFormClassName,
                                                               $componentFormClassName, $inputPrefixData)
         {
-            //todo: i think loop and call something on each of the rows included at this point?
+            assert('is_string($wizardFormClassName)');
+            assert('is_string($componentFormClassName)');
+            assert('is_array($inputPrefixData)');
+            $attributes             = $form->getAttributes();
+            $encodedErrorAttributes = CJSON::encode(array_values($attributes));
+            $script = "
+                var settings = $('#" . static::getFormId() . "').data('settings');
+                $.each(" . $encodedErrorAttributes . ", function(i)
+                {
+                    var newId = this.id;
+                    var alreadyInArray = false;
+                    $.each(settings.attributes, function (i)
+                    {
+                        if(newId == this.id)
+                        {
+                            alreadyInArray = true;
+                        }
+                    });
+                    if(alreadyInArray == false)
+                    {
+                        settings.attributes.push(this);
+                    }
+                });
+                $('#" . static::getFormId() . "').data('settings', settings);
+            ";
+            Yii::app()->getClientScript()->registerScript('AddAttributeErrorSettingsScript', $script);
         }
 
         /**
@@ -70,7 +107,7 @@
             $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
             $content .= '</div>';
             $content .= '<div>';
-            $content .= $this->renderSaveAndCancelActionElementsContent();
+            $content .= $this->renderSaveActionElementsContent();
             $content .= '</div>';
             //todo: call correctly as action, fix theme? need to maybe refcator
             $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-attribute-row"), $content);
@@ -100,19 +137,19 @@
         {
             $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
                                        self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
+            $inputPrefixData   = $this->inputPrefixData;
             $inputPrefixData[] = ActionForWorkflowForm::ACTION_ATTRIBUTES;
-            foreach($this->model->resolveForAllPossibleRequiredActionAttributesAndSort() as $actionAttributeForm)
+            foreach($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
-                //todO: inputPrefixData needs one more item which is the $attribute itself so i guess as => is needed same for non-required
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                                   $this->model->type, $inputPrefixData);
-                $attributeRows[] = $elementAdapter->getContent();
+                                   $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
+                $attributeRows[self::REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
-            foreach($this->model->resolveForAllPossibleNonRequiredActionAttributesAndSort() as $actionAttributeForm)
+            foreach($this->model->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                                   $this->model->type, $inputPrefixData);
-                $attributeRows[] = $elementAdapter->getContent();
+                                   $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
+                $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             return $attributeRows;
         }
@@ -120,22 +157,29 @@
         protected function renderAttributesRowsContent($attributeRows)
         {
             assert('is_array($attributeRows)');
-            $content = '<h2>todo requireds</h2>';
+            $content = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
             foreach($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
-                $content .= Zurmo::tag('div', array(), $attributeContent);
+                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
+                $content .= '<BR><BR>'; //todo: remove once css is in place correctly
             }
-            $content .= '<h2>todo non-reqs</h2>';
+            $content .= ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
             foreach($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
-                $content .= Zurmo::tag('div', array(), $attributeContent);
+                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
+                $content .= '<BR><BR>'; //todo: remove once css is in place correctly
             }
             return $content;
         }
 
-        protected function renderSaveAndCancelActionElementsContent()
+        protected function renderSaveActionElementsContent()
         {
-            return 'todo cancel/save buttons';
+            $params                = array();
+            $params['label']       = Zurmo::t('Core', 'Save');
+            $params['htmlOptions'] = array('id' => 'saveAction'. $this->rowNumber,
+                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
     }
 ?>

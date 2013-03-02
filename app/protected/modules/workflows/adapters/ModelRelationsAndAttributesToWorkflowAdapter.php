@@ -164,7 +164,7 @@
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
             if(!isset($attributesData[$resolvedAttribute]))
             {
-                throw new NotSupportedException('Label not found for: ' . $resolvedAttribute);
+                throw new NotSupportedException('Label not found for: ' . $resolvedAttribute . ' from ' . $attribute);
             }
             return $attributesData[$resolvedAttribute]['label'];
         }
@@ -734,6 +734,65 @@
             }
         }
 
+        public function getSelectableRelationsDataForTriggers(RedBeanModel $precedingModel = null, $precedingRelation = null)
+        {
+            if(($precedingModel != null && $precedingRelation == null) ||
+                ($precedingModel == null && $precedingRelation != null))
+            {
+                throw new NotSupportedException();
+            }
+            $onlyIncludeOwnedRelations = false;
+            if(($precedingModel != null && $precedingRelation != null))
+            {
+                $onlyIncludeOwnedRelations = true;
+            }
+            $attributes = array();
+            foreach ($this->model->getAttributes() as $attribute => $notUsed)
+            {
+                if ($this->model->isRelation($attribute) &&
+                    !$this->rules->relationIsUsedAsAttribute($this->model, $attribute) &&
+                    $this->rules->attributeCanBeTriggered($this->model, $attribute) &&
+                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
+                    (!$onlyIncludeOwnedRelations ||
+                        ($onlyIncludeOwnedRelations && $this->model->isOwnedRelation($attribute)))
+                )
+                {
+                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
+                }
+            }
+            if(!$onlyIncludeOwnedRelations)
+            {
+                $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
+                $attributes = array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
+            }
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        /**
+         * Exclude User relations and Owned relations.
+         * @return sorted array
+         */
+        public function getSelectableRelationsDataForActionTypeRelation()
+        {
+            $attributes = array();
+            foreach ($this->model->getAttributes() as $attribute => $notUsed)
+            {
+                if ($this->model->isRelation($attribute) &&
+                    !$this->rules->relationIsUsedAsAttribute($this->model, $attribute) &&
+                    $this->rules->attributeCanBeTriggered($this->model, $attribute)  &&
+                    !$this->model->isOwnedRelation($attribute) &&
+                    $this->model->getRelationModelClassName($attribute) != 'User')
+                {
+                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
+                }
+            }
+            $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData());
+            $attributes = array_merge($attributes, $this->getInferredRelationsData());
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
         /**
          * @return array
          */
@@ -1036,65 +1095,6 @@
             assert('is_array($attributes)');
             assert('is_string($attribute)');
             $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
-        }
-
-        public function getSelectableRelationsDataForTriggers(RedBeanModel $precedingModel = null, $precedingRelation = null)
-        {
-            if(($precedingModel != null && $precedingRelation == null) ||
-                ($precedingModel == null && $precedingRelation != null))
-            {
-                throw new NotSupportedException();
-            }
-            $onlyIncludeOwnedRelations = false;
-            if(($precedingModel != null && $precedingRelation != null))
-            {
-                $onlyIncludeOwnedRelations = true;
-            }
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsUsedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeCanBeTriggered($this->model, $attribute) &&
-                    !$this->relationLinksToPrecedingRelation($attribute, $precedingModel, $precedingRelation) &&
-                    (!$onlyIncludeOwnedRelations ||
-                     ($onlyIncludeOwnedRelations && $this->model->isOwnedRelation($attribute)))
-                )
-                {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
-                }
-            }
-            if(!$onlyIncludeOwnedRelations)
-            {
-                $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData($precedingModel, $precedingRelation));
-                $attributes = array_merge($attributes, $this->getInferredRelationsData($precedingModel, $precedingRelation));
-            }
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
-        }
-
-        /**
-         * Exclude User relations and Owned relations.
-         * @return sorted array
-         */
-        public function getSelectableRelationsDataForActionTypeRelation()
-        {
-            $attributes = array();
-            foreach ($this->model->getAttributes() as $attribute => $notUsed)
-            {
-                if ($this->model->isRelation($attribute) &&
-                    !$this->rules->relationIsUsedAsAttribute($this->model, $attribute) &&
-                    $this->rules->attributeCanBeTriggered($this->model, $attribute)  &&
-                    !$this->model->isOwnedRelation($attribute) &&
-                    $this->model->getRelationModelClassName($attribute) != 'User')
-                {
-                    $this->resolveRelationToSelectableRelationData($attributes, $attribute);
-                }
-            }
-            $attributes = array_merge($attributes, $this->getDerivedRelationsViaCastedUpModelData());
-            $attributes = array_merge($attributes, $this->getInferredRelationsData());
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
         }
     }
 ?>

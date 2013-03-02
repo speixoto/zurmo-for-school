@@ -317,7 +317,8 @@
             $model->relation             = $relation;
             $model->relatedModelRelation = $relatedModelRelation;
             $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_ACTIONS, (int)$rowNumber);
-            $view                        = new ActionRowForWorkflowComponentView($model, (int)$rowNumber, $inputPrefixData);
+            $view                        = new ActionRowForWorkflowComponentView($model, (int)$rowNumber,
+                                           $inputPrefixData, $form);
             $content                     = $view->render();
             $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
             Yii::app()->getClientScript()->setToAjaxMode();

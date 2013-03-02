@@ -124,7 +124,7 @@
             {
                 if($isTimeBased)
                 {
-                    WorkflowUtil::resolveNegativeTimeBasedDurationData($data, $includeHours);
+                    WorkflowUtil::resolveNegativeDurationAsDistanceFromPointData($data, $includeHours);
                 }
                 else
                 {
@@ -135,11 +135,11 @@
             {
                 if($isTimeBased)
                 {
-                    WorkflowUtil::resolvePositiveTimeBasedDurationData($data, $includeHours);
+                    WorkflowUtil::resolvePositiveDurationAsDistanceFromPointData($data, $includeHours);
                 }
                 else
                 {
-                    WorkflowUtil::resolvePositiveNonTimeBasedDurationData($data, $includeHours);
+                    WorkflowUtil::resolvePositiveDurationData($data, $includeHours);
                 }
             }
             return $data;

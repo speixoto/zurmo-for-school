@@ -43,7 +43,7 @@
             $secondValueSpanAreaId        = $this->getSecondValueEditableInputId() . '-second-value-area';
             $startingDivStyleFirstValue   = null;
             $startingDivStyleSecondValue  = null;
-            if ($this->getActionAttributeType() != WorkflowActionAttributeForm::TYPE_STATIC)
+            if (!$this->shouldDisableSecondValueInputs())
             {
                 $startingDivStyleFirstValue = "display:none;";
             }
@@ -62,22 +62,40 @@
             return $content;
         }
 
+        protected function shouldDisableSecondValueInputs()
+        {
+            if ($this->getActionAttributeType() != WorkflowActionAttributeForm::TYPE_STATIC &&
+                $this->getActionAttributeType() != null)
+            {
+                return false;
+            }
+            return true;
+        }
+
         protected function getHtmlOptionsForFirstValue()
         {
-            return array(
+            $htmlOptions = array(
                 'id'              => $this->getFirstValueEditableInputId(),
                 'name'            => $this->getFirstValueEditableInputName(),
-                'encode'          => false,
             );
+            if(!$this->shouldDisableSecondValueInputs())
+            {
+                $htmlOptions['disabled'] = 'disabled';
+            }
+            return $htmlOptions;
         }
 
         protected function getHtmlOptionsForSecondValue()
         {
-            return array(
+            $htmlOptions = array(
                 'id'     => $this->getSecondValueEditableInputId(),
                 'name'   => $this->getSecondValueEditableInputName(),
-                'encode' => false,
             );
+            if($this->shouldDisableSecondValueInputs())
+            {
+                $htmlOptions['disabled'] = 'disabled';
+            }
+            return $htmlOptions;
         }
 
         /**

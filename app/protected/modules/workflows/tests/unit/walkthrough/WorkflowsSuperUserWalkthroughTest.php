@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Reports module walkthrough tests for super users.
+     * Workflows module walkthrough tests for super users.
      */
-    class ReportsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
+    class WorkflowsSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -44,6 +44,7 @@
 
         public function testSuperUserAllDefaultControllerActions()
         {
+            $this->fail(); //make work
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             
             $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/list');

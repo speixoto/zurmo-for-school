@@ -66,8 +66,8 @@
 
         protected function renderChangeScript()
         {
-            Yii::app()->clientScript->registerScript('operatorRules', "
-                $('.operatorType').change( function()
+            Yii::app()->clientScript->registerScript('actionAttributeTypeChangeRules', "
+                $('.actionAttributeType').change( function()
                     {
                         arr  = " . CJSON::encode($this->getValueTypesRequiringFirstInput()) . ";
                         arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondInput()) . ";

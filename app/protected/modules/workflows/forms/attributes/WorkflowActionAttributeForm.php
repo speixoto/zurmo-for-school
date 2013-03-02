@@ -29,7 +29,7 @@
      */
     abstract class WorkflowActionAttributeForm extends ConfigurableMetadataModel
     {
-        const TYPE_STATIC = 'Static';
+        const TYPE_STATIC      = 'Static';
 
         const TYPE_STATIC_NULL = 'StaticNull';
 
@@ -76,6 +76,12 @@
         protected $modelAttributeName;
 
         /**
+         * An example could be Primary Address >> Street 1
+         * @var string
+         */
+        protected $displayLabel;
+
+        /**
          * @return string - If the class name is BooleanWorkflowActionAttributeForm,
          * then 'Boolean' will be returned.
          */
@@ -92,6 +98,27 @@
             assert('is_string($modelAttributeName)');
             $this->modelClassName     = $modelClassName;
             $this->modelAttributeName = $modelAttributeName;
+        }
+
+        /**
+         * Method needed so the validation routines can properly interact with the alternateValue and properly
+         * set the correct errors.
+         * @return mixed
+         */
+        public function getAlternateValue()
+        {
+            return $this->value;
+        }
+
+        public function getDisplayLabel()
+        {
+            return $this->displayLabel;
+        }
+
+        public function setDisplayLabel($displayLabel)
+        {
+            assert('is_string($displayLabel)');
+            $this->displayLabel = $displayLabel;
         }
 
         /**
@@ -117,7 +144,7 @@
 
         public function attributeLabels()
         {
-            return array();
+            return array('alternateValue' => Zurmo::t('Core', 'Value'));
         }
 
         /**

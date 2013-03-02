@@ -327,10 +327,10 @@
                 'type'    => 'GET',
                 'data'    => 'js:\'actionType=\' + $(".action-type-selector-container").find("#' .
                                  self::ACTION_TYPE_NAME . '").val()
-                                 + \'&relation=\' + $(".action-type-selector-container").find("#' .
-                                 self::ACTION_TYPE_RELATION_NAME . '").val()
-                                 + \'&relatedModelRelation=\' + $(".action-type-selector-container").find("#' .
-                                 self::ACTION_TYPE_RELATED_MODEL_RELATION_NAME . '").val()
+                                 + \'&relation=\' + ($(".action-type-selector-container").find("#' .
+                                 self::ACTION_TYPE_RELATION_NAME . '").val() || "")
+                                 + \'&relatedModelRelation=\' + ($(".action-type-selector-container").find("#' .
+                                 self::ACTION_TYPE_RELATED_MODEL_RELATION_NAME . '").val() || "")
                                  + \'&moduleClassName=\' + $("input:radio[name=\"' .
                                  $moduleClassNameId . '\"]:checked").val() + ' .
                                  '\'&rowNumber=\' + $(\'#' .

@@ -106,8 +106,8 @@
             {
                 foreach($actionsData as $actionData)
                 {
-                    $sanitizedActionData = static::sanitizeActionData($moduleClassName::getPrimaryModelName(), $actionData);
-                    $action              = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName());
+                    $sanitizedActionData = static::sanitizeActionData($moduleClassName::getPrimaryModelName(), $actionData, $workflow->type);
+                    $action              = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->type);
                     $action->setAttributes($sanitizedActionData);
                     $workflow->addAction($action);
                 }
@@ -118,30 +118,30 @@
             }
         }
 
-        public static function sanitizeActionData($modelClassName, $actionData)
+        public static function sanitizeActionData($modelClassName, $actionData, $workflowType)
         {
             assert('is_string($modelClassName)');
             assert('is_array($actionData)');
-
-            if(!isset($actionData['attributes']))
+            assert('is_string($workflowType)');
+            if(!isset($actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES]))
             {
                 return $actionData;
             }
-            $actionForSanitizing = new ActionForWorkflowForm($modelClassName);
+            $actionForSanitizing = new ActionForWorkflowForm($modelClassName, $workflowType);
             $actionForSanitizing->setAttributes($actionData);
-            foreach($actionData['attributes'] as $attribute => $attributeData)
+            foreach($actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES] as $attribute => $attributeData)
             {
                 if(isset($attributeData['value']))
                 {
                     $type = $actionForSanitizing->getActionAttributesAttributeFormType($attribute);
                     if($type == 'Date' && $attributeData['type'] == DateWorkflowActionAttributeForm::TYPE_STATIC)
                     {
-                        $actionData['attributes'][$attribute]['value'] =
+                        $actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES][$attribute]['value'] =
                             DateTimeUtil::resolveValueForDateDBFormatted($attributeData['value']);
                     }
                     elseif($type == 'DateTime' && $attributeData['type'] == DateTimeWorkflowActionAttributeForm::TYPE_STATIC)
                     {
-                        $actionData['attributes'][$attribute]['value'] =
+                        $actionData[ActionForWorkflowForm::ACTION_ATTRIBUTES][$attribute]['value'] =
                             DateTimeUtil::convertDateTimeLocaleFormattedDisplayToDbFormattedDateTimeWithSecondsAsZero($attributeData['value']);
                     }
                 }

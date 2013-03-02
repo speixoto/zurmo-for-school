@@ -67,11 +67,9 @@
 
         protected function getHtmlOptionsForFirstValue()
         {
-            return array(
-                'id'              => $this->getFirstValueEditableInputId(),
-                'name'            => $this->getFirstValueEditableInputName(),
-                'style'           => 'position:relative;z-index:10000;'
-            );
+            $htmlOptions           = parent::getHtmlOptionsForFirstValue();
+            $htmlOptions['style' ] = 'position:relative;z-index:10000;';
+            return $htmlOptions;
         }
 
         protected function renderEditableSecondValueContent()
@@ -81,7 +79,8 @@
             $dropDownArray = $this->model->getDynamicTypeValueDropDownArray();
             $inputContent  = $this->form->dropDownList($this->model, 'value', $dropDownArray, $htmlOptions);
             $error         = $this->form->error($this->model, 'value',
-                             array('inputID' => $this->getSecondValueEditableInputId()));
+                             array('inputID' => $this->getSecondValueEditableInputId()), true, true,
+                             $this->getSecondValueEditableInputId());
             return $inputContent . $error;
         }
     }

@@ -80,7 +80,7 @@
         }
 
         /**
-         * @depends testResolveWorkflowByWizardPostData
+         * @depends testResolveByTimeWorkflowByWizardPostData
          */
         public function testResolveTriggers()
         {
@@ -722,8 +722,40 @@
         }
 
         /**
-         * Simple test that does not need to test all attributes because they are tested in the update
          * @depends testResolveUpdateRelatedActionWithDynamicValues
+         */
+        public function testResolveUpdateRelatedActionWithDynamicValuesSpecificallyDynamicOwnerOfTriggeredModel()
+        {
+            $bobby    = User::getByUsername('bobby');
+            $workflow = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('WorkflowsTest2Module');
+            $data   = array();
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
+            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES]     =
+                array(
+                    'user'          => array('shouldSetValue'    => '1',
+                        'type'   => UserWorkflowActionAttributeForm::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL),
+                );
+
+            DataToWorkflowUtil::resolveActions($data, $workflow);
+            $actions = $workflow->getActions();
+            $this->assertCount(1, $actions);
+            $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED, $actions[0]->type);
+            $this->assertEquals('hasMany2', $actions[0]->relation);
+            $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL, $actions[0]->relationFilter);
+            $this->assertEquals(1,        $actions[0]->getActionAttributeFormsCount());
+
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('user') instanceof UserWorkflowActionAttributeForm);
+            $this->assertEquals('OwnerOfTriggeredModel',    $actions[0]->getActionAttributeFormByName('user')->type);
+            $this->assertNull($actions[0]->getActionAttributeFormByName('user')->value);
+        }
+
+        /**
+         * Simple test that does not need to test all attributes because they are tested in the update
+         * @depends testResolveUpdateRelatedActionWithDynamicValuesSpecificallyDynamicOwnerOfTriggeredModel
          */
         public function testResolveCreateActionWithValues()
         {
@@ -736,8 +768,11 @@
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES] =
             array(
                 'string' => array('shouldSetValue'    => '1',
-                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                'value'  => 'jason'),
+                                  'type'              => WorkflowActionAttributeForm::TYPE_STATIC,
+                                  'value'             => 'jason'),
+                'phone' => array('shouldSetValue'    => '1',
+                                 'type'              => WorkflowActionAttributeForm::TYPE_STATIC_NULL,
+                                 'value'             => ''),
             );
 
             DataToWorkflowUtil::resolveActions($data, $workflow);
@@ -746,11 +781,14 @@
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE, $actions[0]->type);
             $this->assertEquals('hasMany2', $actions[0]->relation);
 
-            $this->assertEquals(1,        $actions[0]->getActionAttributeFormsCount());
+            $this->assertEquals(2,        $actions[0]->getActionAttributeFormsCount());
 
             $this->assertTrue($actions[0]->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('string')->type);
             $this->assertEquals('jason',  $actions[0]->getActionAttributeFormByName('string')->value);
+            $this->assertTrue($actions[0]->getActionAttributeFormByName('phone') instanceof PhoneWorkflowActionAttributeForm);
+            $this->assertEquals('StaticNull', $actions[0]->getActionAttributeFormByName('phone')->type);
+            $this->assertEquals(null,  $actions[0]->getActionAttributeFormByName('phone')->value);
         }
 
         /**

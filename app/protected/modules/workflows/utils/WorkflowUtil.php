@@ -91,7 +91,7 @@
             return $dataAndLabels;
         }
 
-        public static function resolvePositiveTimeBasedDurationData(& $data, $includeHours)
+        public static function resolvePositiveDurationAsDistanceFromPointData(& $data, $includeHours)
         {
             assert('is_bool($includeHours)');
             if($includeHours)
@@ -118,7 +118,7 @@
             $data[31104000] = Zurmo::t('WorkflowsModule', '{n} year from now|{n} years from now', array(1));
         }
 
-        public static function resolvePositiveNonTimeBasedDurationData(& $data, $includeHours)
+        public static function resolvePositiveDurationData(& $data, $includeHours)
         {
             assert('is_bool($includeHours)');
             if($includeHours)
@@ -145,7 +145,7 @@
             $data[31104000] = Zurmo::t('WorkflowsModule', 'for {n} year|{n} years', array(1));
         }
 
-        public static function resolveNegativeTimeBasedDurationData(& $data, $includeHours)
+        public static function resolveNegativeDurationAsDistanceFromPointData(& $data, $includeHours)
         {
             assert('is_bool($includeHours)');
             $data[-31104000] = Zurmo::t('WorkflowsModule', '{n} year ago|{n} years ago', array(1));

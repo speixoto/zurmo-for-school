@@ -36,9 +36,9 @@
         public function getDynamicTypeValueDropDownArray()
         {
             $data       = array();
-            WorkflowUtil::resolvePositiveTimeBasedDurationData($data, false);
+            WorkflowUtil::resolveNegativeDurationAsDistanceFromPointData($data, false);
             $data[0]    = Zurmo::t('WorkflowsModule', '0 days');
-            WorkflowUtil::resolvePositiveTimeBasedDurationData($data, false);
+            WorkflowUtil::resolvePositiveDurationAsDistanceFromPointData($data, false);
             return $data;
         }
 
@@ -63,7 +63,8 @@
                 }
                 else
                 {
-                    $validator = CValidator::createValidator('type', $this, 'value', array('type' => 'integer'));
+                    $validator             = CValidator::createValidator('TypeValidator', $this, 'alternateValue', array('type' => 'integer'));
+                    $validator->allowEmpty = false;
                     $validator->validate($this);
                     return !$this->hasErrors();
                 }
@@ -73,12 +74,12 @@
 
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-            $data                           = array();
-            $data[static::TYPE_STATIC]                 = Zurmo::t('WorkflowModule', 'Specifically on');
-            $data[TYPE_DYNAMIC_FROM_TRIGGERED_DATE]    = Zurmo::t('WorkflowModule', 'Dynamically From Triggered Date');
+            $data                                            = array();
+            $data[static::TYPE_STATIC]                       = Zurmo::t('WorkflowModule', 'Specifically on');
+            $data[self::TYPE_DYNAMIC_FROM_TRIGGERED_DATE]    = Zurmo::t('WorkflowModule', 'Dynamically From Triggered Date');
             if(!$isCreatingNewModel)
             {
-                $data[TYPE_DYNAMIC_FROM_EXISTING_DATE] = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+                $data[self::TYPE_DYNAMIC_FROM_EXISTING_DATE] = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
             }
             return $data;
         }

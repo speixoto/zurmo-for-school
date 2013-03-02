@@ -45,6 +45,7 @@
         {
             $htmlOptions             = parent::getEditableHtmlOptions();
             $htmlOptions['onclick']  = 'toggleWorkflowShouldSetValueWrapper("' . $this->getEditableInputId(). '")';
+            return $htmlOptions;
         }
     }
 ?>

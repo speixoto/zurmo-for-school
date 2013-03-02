@@ -57,15 +57,6 @@
             return $inputContent . $error;
         }
 
-        protected function getHtmlOptionsForFirstValue()
-        {
-            return array(
-                'id'              => $this->getFirstValueEditableInputId(),
-                'name'            => $this->getFirstValueEditableInputName(),
-            );
-        }
-
-
         protected function renderEditableSecondValueContent()
         {
             $htmlOptions          = $this->getHtmlOptionsForSecondValue();
@@ -73,7 +64,8 @@
             $dropDownArray = $this->model->getDynamicTypeValueDropDownArray();
             $inputContent  = $this->form->dropDownList($this->model, 'value', $dropDownArray, $htmlOptions);
             $error         = $this->form->error($this->model, 'value',
-                             array('inputID' => $this->getSecondValueEditableInputId()));
+                             array('inputID' => $this->getSecondValueEditableInputId()), true, true,
+                             $this->getSecondValueEditableInputId());
             return $inputContent . $error;
         }
     }

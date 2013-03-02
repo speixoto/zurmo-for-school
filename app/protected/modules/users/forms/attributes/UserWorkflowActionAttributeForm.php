@@ -52,7 +52,8 @@
             {
                 if($this->type == self::TYPE_STATIC)
                 {
-                    $validator = CValidator::createValidator('type', $this, 'value', array('type' => 'integer'));
+                    $validator             = CValidator::createValidator('type', $this, 'value', array('type' => 'integer'));
+                    $validator->allowEmpty = false;
                     $validator->validate($this);
                     return !$this->hasErrors();
                 }
@@ -80,13 +81,18 @@
             $data[static::TYPE_STATIC] = Zurmo::t('WorkflowModule', 'As');
             if($isCreatingNewModel)
             {
-                $data[TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+                $modelClassName            = $this->modelClassName;
+                $model                     = new $modelClassName(false);//todo: performance3 once done fix to static
+                if($model instanceof OwnedSecurableItem)
+                {
+                    $data[self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] = Zurmo::t('WorkflowModule', 'As user who owned triggered record');
+                }
             }
             else
             {
-                $data[TYPE_DYNAMIC_CREATED_BY_USER]       = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
-                 $data[TYPE_DYNAMIC_MODIFIED_BY_USER]       = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
-                $data[TYPE_DYNAMIC_TRIGGERED_BY_USER]       = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+                $data[self::TYPE_DYNAMIC_CREATED_BY_USER]   = Zurmo::t('WorkflowModule', 'As user who created record');
+                $data[self::TYPE_DYNAMIC_MODIFIED_BY_USER]  = Zurmo::t('WorkflowModule', 'As user who last modified record');
+                $data[self::TYPE_DYNAMIC_TRIGGERED_BY_USER] = Zurmo::t('WorkflowModule', 'As user who triggered action');
             }
             return $data;
         }

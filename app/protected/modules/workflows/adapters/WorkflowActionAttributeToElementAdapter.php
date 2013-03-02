@@ -33,13 +33,13 @@
 
         protected $model;
 
-        protected $activeForm;
+        protected $form;
 
         protected $inputPrefixData;
 
         protected $isAttributeRequired;
 
-        public function __construct(WorkflowActionAttributeForm $model, WizardActiveForm $activeForm,
+        public function __construct(WorkflowActionAttributeForm $model, WizardActiveForm $form,
                                     $actionType, $inputPrefixData, $isAttributeRequired)
         {
 
@@ -48,7 +48,7 @@
             assert('static::isActionTypeValid($actionType)');
             assert('is_bool($isAttributeRequired)');
             $this->model               = $model;
-            $this->activeForm          = $activeForm;
+            $this->form                = $form;
             $this->actionType          = $actionType;
             $this->inputPrefixData     = $inputPrefixData;
             $this->isAttributeRequired = $isAttributeRequired;
@@ -150,7 +150,7 @@
                 $name        = Element::resolveInputNamePrefixIntoString($this->inputPrefixData) . '[type]';
                 $id          = Element::resolveInputIdPrefixIntoString($this->inputPrefixData) . 'type';
                 $htmlOptions = array('id' => $id);
-                $content     = Zurmo::html('span', array(), $label);
+                $content     = ZurmoHtml::tag('span', array(), $label);
                 $content    .= ZurmoHtml::hiddenField($name, key($typeValuesAndLabels), $htmlOptions);
                 return $content;
             }
@@ -169,12 +169,12 @@
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedDropDownTypesForWorkflowActionAttribute)
+                if($valueElement instanceof MixedDropDownTypesForWorkflowActionAttributeElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 }
-                elseif($valueElement instanceof MixedDateTypesForWorkflowActionAttribute ||
-                       $valueElement instanceof MixedDateTimeTypesForWorkflowActionAttribute)
+                elseif($valueElement instanceof MixedDateTypesForWorkflowActionAttributeElement ||
+                       $valueElement instanceof MixedDateTimeTypesForWorkflowActionAttributeElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data has-date-inputs">{content}{error}</div>';
                 }

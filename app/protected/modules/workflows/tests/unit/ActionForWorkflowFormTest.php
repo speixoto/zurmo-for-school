@@ -40,15 +40,15 @@
 
         public function testSetAndGetActionForUpdateAction()
         {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem');
-            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE;
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;
             $attributes                   = array(
                                             'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
-            $action->setAttributes($attributes);
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
 
-            $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE, $action->type);
+            $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_SELF, $action->type);
             $this->assertEquals(1, $action->getActionAttributeFormsCount());
 
             $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
@@ -61,7 +61,7 @@
          */
         public function testSetAndGetActionForUpdateRelatedAction()
         {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2');
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $action->relation             = 'hasMany2';
             $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
@@ -69,7 +69,7 @@
                                             'string'     => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
-            $action->setAttributes($attributes);
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED,     $action->type);
             $this->assertEquals('hasMany2',                        $action->relation );
@@ -86,14 +86,14 @@
          */
         public function testSetAndGetActionForCreateAction()
         {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2');
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
             $action->relation             = 'hasMany2';
             $attributes                   = array(
                                             'string'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
-            $action->setAttributes($attributes);
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE,     $action->type);
             $this->assertEquals('hasMany2',                $action->relation );
@@ -109,16 +109,16 @@
          */
         public function testSetAndGetActionForCreatingRelatedAction()
         {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2');
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_CREATE_RELATED;
             $action->relation             = 'hasMany2';
             $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $action->relatedModelRelation = 'hasMany';
             $attributes                   = array(
-                                            'string'        => array('shouldSetValue'    => '1',
+                                            'name'        => array('shouldSetValue'    => '1',
                                                 'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
                                                 'value'  => 'jason'));
-            $action->setAttributes($attributes);
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
 
             $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE_RELATED,     $action->type);
             $this->assertEquals('hasMany2',  $action->relation );
@@ -126,9 +126,9 @@
             $this->assertEquals('hasMany',   $action->relatedModelRelation);
             $this->assertEquals(1, $action->getActionAttributeFormsCount());
 
-            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
+            $this->assertTrue($action->getActionAttributeFormByName('name') instanceof TextWorkflowActionAttributeForm);
+            $this->assertEquals('Static', $action->getActionAttributeFormByName('name')->type);
+            $this->assertEquals('jason',  $action->getActionAttributeFormByName('name')->value);
         }
 
         /**
@@ -136,27 +136,27 @@
          */
         public function testValidate()
         {
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem');
+            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $validated = $action->validate();
             $this->assertFalse($validated);
             $errors                              = $action->getErrors();
-            $compareErrors                       = array('type'  => array('Type cannot be blank.'));
+            $compareErrors                       = array('type'  => array('Type cannot be blank.', 'Invalid Type'));
             $this->assertEquals($compareErrors, $errors);
             //Update type does not require any related information
-            $action->type                         = ActionForWorkflowForm::TYPE_UPDATE;
+            $action->type                         = ActionForWorkflowForm::TYPE_UPDATE_SELF;
             $validated                           = $action->validate();
             $this->assertTrue($validated);
 
 
 
             //When the type is update_related, related information is required
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2');
+            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->type                        = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $validated = $action->validate();
             $this->assertFalse($validated);
             $errors                              = $action->getErrors();
             $compareErrors                       = array('relation'        => array('Relation cannot be blank.'),
-                                                         'relationFilter'  => array('Relation Filter cannot be blank.'));
+                                                         'relationFilter'  => array('Invalid Relation Filter'));
             $this->assertEquals($compareErrors, $errors);
             $action->relation                    = 'hasMany2';
             $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
@@ -165,7 +165,7 @@
 
 
             //When the type is create, related information is required
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2');
+            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->type                        = ActionForWorkflowForm::TYPE_CREATE;
             $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $validated = $action->validate();
@@ -178,7 +178,7 @@
             $this->assertTrue($validated);
 
             //When the type is create related, additional related information is required
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2');
+            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->type                        = ActionForWorkflowForm::TYPE_CREATE_RELATED;
             $action->relation                    = 'hasMany2';
             $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
@@ -190,6 +190,32 @@
             $action->relatedModelRelation        = 'hasOne';
             $validated                           = $action->validate();
             $this->assertTrue($validated);
+        }
+
+        /**
+         * @depends testValidate
+         */
+        public function testResolveAllRequiredActionAttributeFormsAndLabelsAndSort()
+        {
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'hasMany2';
+            $data = $form->resolveAllRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(3, count($data));
+            //todo: test various types and related related.
+        }
+
+        /**
+         * @depends testResolveAllRequiredActionAttributeFormsAndLabelsAndSort
+         */
+        public function testResolveAllNonRequiredActionAttributeFormsAndLabelsAndSort()
+        {
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'hasMany2';
+            $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(38, count($data));
+            //todo: test various types and related related.
         }
     }
 ?>
