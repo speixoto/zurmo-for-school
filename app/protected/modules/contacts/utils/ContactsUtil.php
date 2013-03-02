@@ -150,6 +150,7 @@
         /**
          * Get an array of only the states from the starting state onwards, id/translated label pairings of the
          * existing contact states ordered by order.
+         * @param string language
          * @return array
          */
         public static function getContactStateDataFromStartingStateKeyedByIdAndLabelByLanguage($language)
@@ -169,6 +170,24 @@
                     }
                     $contactStatesData[$state->id] = static::resolveStateLabelByLanguage($state, $language);
                 }
+            }
+            return $contactStatesData;
+        }
+
+        /**
+         * Get an array of only the states from the starting state onwards, id/translated label pairings of the
+         * existing contact states ordered by order.
+         * @param string language
+         * @return array
+         */
+        public static function getAllContactStatesDataFromStartingStateKeyedByIdAndLabelByLanguage($language)
+        {
+            assert('is_string($language)');
+            $contactStatesData = array();
+            $states            = ContactState::getAll('order');
+            foreach ($states as $state)
+            {
+                        $contactStatesData[$state->id] = static::resolveStateLabelByLanguage($state, $language);
             }
             return $contactStatesData;
         }

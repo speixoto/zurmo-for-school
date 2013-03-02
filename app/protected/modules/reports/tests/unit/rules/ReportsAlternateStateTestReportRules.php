@@ -30,7 +30,7 @@
         {
             $metadata = parent::getDefaultMetadata();
             $metadata['ReportModelTestItem']['filterValueElementTypes']
-                                                   ['likeContactState'] = 'LeadStateStaticDropDownForWizardModel';
+                                                   ['likeContactState'] = 'AllContactStatesStaticDropDownForWizardModel';
             return $metadata;
         }
     }
