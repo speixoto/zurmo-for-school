@@ -24,39 +24,92 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class to help interacting with classes that implement the MashableInboxInterface.
+     */
     abstract class MashableInboxRules
     {
 
+        /**
+         * This sets if action button to create a new model should be rendered in the mashableInboxView
+         * @var boolean
+         */
         public $shouldRenderCreateAction = false;
 
+        /**
+         * This method return the count of the models that current user
+         * has not read latest changes
+         * @return integer
+         */
         abstract public function getUnreadCountForCurrentUser();
 
+        /**
+         * Returns true if current user had read latest changes of model
+         * else it should return false
+         * @param integer $modelId
+         * @return boolean
+         */
         abstract public function hasUserReadLatest($modelId);
 
+        /**
+         * Returns the metada for the FilteredBy
+         * @param string $filteredBy
+         */
         abstract public function getMetadataFilteredByFilteredBy($filteredBy);
 
+        /**
+         * Returns the metada for the filter by model options
+         * @param integer $option
+         */
         abstract public function getMetadataFilteredByOption($option);
 
+        /**
+         * Returns the option to populate the MashableInboxOptionsByModelRadioElement
+         * that will be used to filter list view by model options
+         */
         abstract public function getActionViewOptions();
 
         abstract public function getModelClassName();
 
+        /**
+         * The attribute to be used for the ordering of the list view
+         */
         abstract public function getMachableInboxOrderByAttributeName();
 
+        /**
+         * Marks the model as read latest changes by current user
+         * @param integer $modelId
+         */
         abstract public function resolveMarkRead($modelId);
 
+        /**
+         * Marks the model as read latest changes by current user
+         * @param integer $modelId
+         */
         abstract public function resolveMarkUnread($modelId);
 
+        /**
+         * Makes the metadata to filter models by the searchTerm
+         * @param string $searchTerm
+         */
         public function getSearchAttributeData($searchTerm)
         {
             return null;
         }
 
+        /**
+         * Makes the metadata to be used when searching models that
+         * will be displayed in the MashableInboxListView
+         */
         public function getMetadataForMashableInbox()
         {
             return null;
         }
 
+        /**
+         * The list view class name that will be displayed for the current model
+         * @return string
+         */
         public function getListViewClassName()
         {
             $modelClassName  = $this->getModelClassName();
@@ -91,6 +144,11 @@
             return $listView;
         }
 
+        /**
+         * The content to be displayed in the MashableInboxListView row
+         * @param RedBeanModel $model
+         * @return string
+         */
         public function getModelStringContent(RedBeanModel $model)
         {
             $modelDisplayString = strval($model);
@@ -101,16 +159,34 @@
             return $element->render();
         }
 
+        /**
+         * A string containing the time passed from latest changes on the model
+         * to be used in the MashableInboxListView row
+         * @param RedBeanModel $model
+         * @return string
+         */
         public function getModelCreationTimeContent(RedBeanModel $model)
         {
             return MashableUtil::getTimeSinceLatestUpdate($model->latestDateTime);
         }
 
+        /**
+         * Template to display the models rows content
+         * @return string
+         */
         public function getSummaryContentTemplate()
         {
             return "<span>{modelStringContent}</span><span>{modelCreationTimeContent}</span>";
         }
 
+        /**
+         * Mass options to be rendered in the MashableInboxMassActionElement
+         * The array retunr should be like this
+         * array('stringForTheActionName'  => array('label' => $label,
+                                                    'isActionForAll' => $boolean),
+             );
+         * @return array
+         */
         public function getMassOptions()
         {
             return array();

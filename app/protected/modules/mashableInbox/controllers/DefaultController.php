@@ -47,8 +47,8 @@
         /**
          * Render that page view for the mashableInbox. If $modelClassName is set it will render the model listView
          * otherwise it will render a listView with all mashableInbox models merged
-         * @param type $mashableInboxForm
-         * @param type $modelClassName
+         * @param MashableInboxForm $mashableInboxForm
+         * @param string $modelClassName
          */
         private function renderMashableInboxPageView($mashableInboxForm, $modelClassName)
         {
@@ -83,9 +83,9 @@
 
         /**
          * Render the listView to update after ajax request is made
-         * @param type $mashableInboxForm
-         * @param type $modelClassName
-         * @param type $getData
+         * @param MashableInboxForm $mashableInboxForm
+         * @param string $modelClassName
+         * @param array $getData
          */
         private function renderListViewForAjax($mashableInboxForm, $modelClassName, $getData)
         {
@@ -111,8 +111,8 @@
 
         /**
          * Resolves the mass action triggered by the ajax request
-         * @param type $modelClassName
-         * @param type $mashableInboxForm
+         * @param string $modelClassName
+         * @param MashableInboxForm $mashableInboxForm
          */
         private function resolveAjaxMassAction($modelClassName, $mashableInboxForm)
         {
@@ -141,9 +141,9 @@
 
         /**
          * Resolves the mass action triggered by ajax based on the modelClassName
-         * @param type $massAction
-         * @param type $modelClassName
-         * @param type $modelId
+         * @param string $massAction
+         * @param string $modelClassName
+         * @param integer $modelId
          */
         private function resolveMassActionByModel($massAction, $modelClassName, $modelId)
         {
@@ -154,7 +154,7 @@
 
         /**
          * Gets the listView that should be rendered based on the mashableInboxForm params
-         * @param type $mashableInboxForm
+         * @param MashableInboxForm $mashableInboxForm
          * @return \MashableInboxListView
          */
         private function getMashableInboxListView($mashableInboxForm)
