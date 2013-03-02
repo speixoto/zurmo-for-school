@@ -135,7 +135,6 @@
 
         protected function renderEditableFirstDateContent()
         {
-            $themePath = Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name;
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateElement");
             $cClipWidget->widget('application.core.widgets.JuiDatePicker', array(

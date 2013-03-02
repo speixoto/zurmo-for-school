@@ -27,7 +27,7 @@
     /**
      * Form to work with dropDown attributes
      */
-    class DropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
+    class DropDownWorkflowActionAttributeForm extends CustomFieldWorkflowActionAttributeForm
     {
         /**
          * DropDowns can be dynamically set based on a distance from the existing value.  If the existing value is the

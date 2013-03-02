@@ -33,6 +33,15 @@
 
         const TYPE_DYNAMIC_FROM_EXISTING_DATETIME = 'DynamicFromExistingDateTime';
 
+        public function getDynamicTypeDropDownArray()
+        {
+            $data       = array();
+            WorkflowUtil::resolvePositiveTimeBasedDurationData($data, true);
+            $data[0]    = Zurmo::t('WorkflowsModule', '0 hours');
+            WorkflowUtil::resolvePositiveTimeBasedDurationData($data, true);
+            return $data;
+        }
+
         public function getValueElementType()
         {
             return 'MixedDateTimeTypesForWorkflowActionAttribute';

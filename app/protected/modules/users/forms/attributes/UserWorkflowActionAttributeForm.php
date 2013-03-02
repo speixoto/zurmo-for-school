@@ -69,6 +69,11 @@
             return false;
         }
 
+        public function getStringifiedModelForValue()
+        {
+            return 'does this work?'; //todo: replace with logic if we can.
+        }
+
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                      = array();

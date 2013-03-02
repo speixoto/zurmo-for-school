@@ -25,28 +25,18 @@
  ********************************************************************************/
 
     /**
-     * Form to work with the related contact state attribute
+     * Form to work with CustomField attributes including MultipleValuesCustomFields
      */
-    class ContactStateWorkflowActionAttributeForm extends WorkflowActionAttributeForm
+    abstract class CustomFieldWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
-        public function getValueElementType()
+        public function getCustomFieldDataAndLabels()
         {
-            return 'ContactStateStaticDropDownForWizardModel';
-        }
-
-        /**
-         * Override to make sure the value attribute is set as an integer value since it will be the id of a contact state
-         */
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'integer')));
-        }
-
-        protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
-        {
-            $data                           = array();
-            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
-            return $data;
+            $model = new $modelClassName(false); //todo: once performance3 is done, we might be able to do this statically somehow
+            //cause we can call the metadata statically and get the customField name to get the CustomFieldData by name.
+            $dropDownModel = $model->{$this->modelAttributeName};
+            $dataAndLabels = CustomFieldDataUtil::
+                             getDataIndexedByDataAndTranslatedLabelsByLanguage($dropDownModel->data, Yii::app()->language);
+            return $dataAndLabels;
         }
     }
 ?>

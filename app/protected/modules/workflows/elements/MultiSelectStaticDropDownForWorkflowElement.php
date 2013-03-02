@@ -25,31 +25,28 @@
      ********************************************************************************/
 
     /**
-     * Element used by the import mapping process. This is similar to the StaticDropDownElement in how the input id/name
-     * pairings are constructed.  The $this->model->$this->attribute is not a CustomField model.  The CustomField->data
-     * is an attribute on the model itself as the 'data' attribute.  This class contains the necessary overrides to
-     * support this.  This class specifically supports the multiSelect dropdown.
+     * Element used by workflow action attributes for multi-select dropdowns
      */
-    class ImportMappingRuleDefaultMultiSelectDropDownFormElement extends ImportMappingRuleDefaultDropDownFormElement
+    class MultiSelectStaticDropDownForWorkflowElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @param TriggerForWorkflowForm $model
+         * @param string $attribute
+         * @param null $form
+         * @param array $params
+         */
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            assert('$model instanceof DefaultValueDropDownModelAttributeMappingRuleForm');
+            assert('$model instanceof MultiSelectDropDownWorkflowActionAttributeForm');
             parent::__construct($model, $attribute, $form, $params);
         }
 
         /**
-         * Renders the editable dropdown content.
-         * @return A string containing the element's content.
+         * @return string
          */
-        protected function renderControlEditable()
+        protected function getDataAndLabelsModelPropertyName()
         {
-            $content       = null;
-            $content      .= ZurmoHtml::listBox($this->getNameForSelectInput(),
-                                            $this->model->{$this->attribute},
-                                            $this->getDropDownArray(),
-                                            $this->getEditableHtmlOptions());
-            return $content;
+            return 'getCustomFieldDataAndLabels';
         }
     }
 ?>

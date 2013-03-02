@@ -43,7 +43,7 @@
                     'availableOperatorsTypes' =>
                     array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'triggerValueElementTypes' =>
-                    array('state' => 'ContactStateStaticDropDownForReport'),
+                    array('state' => 'ContactStateStaticDropDownForWizardModel'),
                 )
             );
             return array_merge(parent::getDefaultMetadata(), $metadata);

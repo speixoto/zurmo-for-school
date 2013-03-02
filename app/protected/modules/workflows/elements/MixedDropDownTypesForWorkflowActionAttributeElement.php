@@ -25,31 +25,29 @@
      ********************************************************************************/
 
     /**
-     * Element used by the import mapping process. This is similar to the StaticDropDownElement in how the input id/name
-     * pairings are constructed.  The $this->model->$this->attribute is not a CustomField model.  The CustomField->data
-     * is an attribute on the model itself as the 'data' attribute.  This class contains the necessary overrides to
-     * support this.  This class specifically supports the multiSelect dropdown.
+     * Displays the drop down attribute inputs for a workflow action attribute row.  In addition to being able to
+     * select a specific dropdown, you can also step forward or backward from the existing value.
      */
-    class ImportMappingRuleDefaultMultiSelectDropDownFormElement extends ImportMappingRuleDefaultDropDownFormElement
+    class MixedDropDownTypesForWorkflowActionAttributeElement extends MixedAttributeTypesForWorkflowActionAttributeElement
     {
-        public function __construct($model, $attribute, $form = null, array $params = array())
+        protected function renderEditableFirstValueContent()
         {
-            assert('$model instanceof DefaultValueDropDownModelAttributeMappingRuleForm');
-            parent::__construct($model, $attribute, $form, $params);
+            $htmlOptions          = $this->getHtmlOptionsForFirstValue();
+            $htmlOptions['empty'] = Zurmo::t('Core', '(None)');
+            $dropDownArray = $this->model->getCustomFieldDataAndLabels();
+            $inputContent  = $this->form->dropDownList($this->model, 'value', $dropDownArray, $htmlOptions);
+            $error         = $this->form->error($this->model, 'value',
+                             array('inputID' => $this->getFirstValueEditableInputId()));
+            return $inputContent . $error;
         }
 
-        /**
-         * Renders the editable dropdown content.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
+        protected function renderEditableSecondValueContent()
         {
-            $content       = null;
-            $content      .= ZurmoHtml::listBox($this->getNameForSelectInput(),
-                                            $this->model->{$this->attribute},
-                                            $this->getDropDownArray(),
-                                            $this->getEditableHtmlOptions());
-            return $content;
+            $htmlOptions  = $this->getHtmlOptionsForSecondValue();
+            $inputContent = $this->form->textField($this->model, 'value', $htmlOptions);
+            $error        = $this->form->error($this->model, 'value',
+                           array('inputID' => $this->getSecondValueEditableInputId()));
+            return $inputContent . $error . ZurmoHtml::tag('span', array(), ' ' . Zurmo::t('WorkflowModule', 'value(s)'));
         }
     }
 ?>

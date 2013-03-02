@@ -1091,12 +1091,12 @@
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsTestWorkflowRules();
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
-            $this->assertEquals('ContactStateStaticDropDownForWorkflow', $adapter->getTriggerValueElementType('likeContactState'));
+            $this->assertEquals('ContactStateStaticDropDownForWizardModel', $adapter->getTriggerValueElementType('likeContactState'));
 
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsAlternateStateTestWorkflowRules();
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
-            $this->assertEquals('LeadStateStaticDropDownForWorkflow', $adapter->getTriggerValueElementType('likeContactState'));
+            $this->assertEquals('LeadStateStaticDropDownForWizardModel', $adapter->getTriggerValueElementType('likeContactState'));
         }
 
         /**

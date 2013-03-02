@@ -90,5 +90,86 @@
             }
             return $dataAndLabels;
         }
+
+        public static function resolvePositiveTimeBasedDurationData(& $data, $includeHours)
+        {
+            assert('is_bool($includeHours)');
+            if($includeHours)
+            {
+                $data[14400] = Zurmo::t('WorkflowsModule', '{n} hour from now|{n} hours from now', array(4));
+                $data[28800] = Zurmo::t('WorkflowsModule', '{n} hour from now|{n} hours from now', array(8));
+                $data[43200] = Zurmo::t('WorkflowsModule', '{n} hour from now|{n} hours from now', array(12));
+            }
+            $data[86400]    = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(1));
+            $data[172800]   = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(2));
+            $data[259200]   = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(3));
+            $data[345600]   = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(4));
+            $data[432000]   = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(5));
+            $data[864000]   = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(10));
+            $data[604800]   = Zurmo::t('WorkflowsModule', '{n} week from now|{n} weeks from now', array(1));
+            $data[1209600]  = Zurmo::t('WorkflowsModule', '{n} week from now|{n} weeks from now', array(2));
+            $data[1814400]  = Zurmo::t('WorkflowsModule', '{n} week from now|{n} weeks from now', array(3));
+            $data[2592000]  = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(30));
+            $data[5184000]  = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(60));
+            $data[7776000]  = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(90));
+            $data[10368000] = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(120));
+            $data[12960000] = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(150));
+            $data[15552000] = Zurmo::t('WorkflowsModule', '{n} day from now|{n} days from now', array(180));
+            $data[31104000] = Zurmo::t('WorkflowsModule', '{n} year from now|{n} years from now', array(1));
+        }
+
+        public static function resolvePositiveNonTimeBasedDurationData(& $data, $includeHours)
+        {
+            assert('is_bool($includeHours)');
+            if($includeHours)
+            {
+                $data[14400] = Zurmo::t('WorkflowsModule', 'for {n} hour|for {n} hours', array(4));
+                $data[28800] = Zurmo::t('WorkflowsModule', 'for {n} hour|for {n} hours', array(8));
+                $data[43200] = Zurmo::t('WorkflowsModule', 'for {n} hour|for {n} hours', array(12));
+            }
+            $data[86400]    = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(1));
+            $data[172800]   = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(2));
+            $data[259200]   = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(3));
+            $data[345600]   = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(4));
+            $data[432000]   = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(5));
+            $data[864000]   = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(10));
+            $data[604800]   = Zurmo::t('WorkflowsModule', 'for {n} week|{n} weeks', array(1));
+            $data[1209600]  = Zurmo::t('WorkflowsModule', 'for {n} week|{n} weeks', array(2));
+            $data[1814400]  = Zurmo::t('WorkflowsModule', 'for {n} week|{n} weeks', array(3));
+            $data[2592000]  = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(30));
+            $data[5184000]  = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(60));
+            $data[7776000]  = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(90));
+            $data[10368000] = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(120));
+            $data[12960000] = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(150));
+            $data[15552000] = Zurmo::t('WorkflowsModule', 'for {n} day|{n} days', array(180));
+            $data[31104000] = Zurmo::t('WorkflowsModule', 'for {n} year|{n} years', array(1));
+        }
+
+        public static function resolveNegativeTimeBasedDurationData(& $data, $includeHours)
+        {
+            assert('is_bool($includeHours)');
+            $data[-31104000] = Zurmo::t('WorkflowsModule', '{n} year ago|{n} years ago', array(1));
+            $data[-15552000] = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(180));
+            $data[-12960000] = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(150));
+            $data[-10368000] = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(120));
+            $data[-7776000]  = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(90));
+            $data[-5184000]  = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(60));
+            $data[-2592000]  = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(30));
+            $data[-1814400]  = Zurmo::t('WorkflowsModule', '{n} week ago|{n} weeks ago', array(3));
+            $data[-1209600]  = Zurmo::t('WorkflowsModule', '{n} week ago|{n} weeks ago', array(2));
+            $data[-604800]   = Zurmo::t('WorkflowsModule', '{n} week ago|{n} weeks ago', array(1));
+            $data[-864000]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(10));
+            $data[-432000]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(5));
+            $data[-345600]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(4));
+            $data[-259200]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(3));
+            $data[-172800]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(2));
+            $data[-86400]    = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(1));
+            if($includeHours)
+            {
+                $data[-43200] = Zurmo::t('WorkflowsModule', '{n} hour ago|{n} hours ago', array(12));
+                $data[-28800] = Zurmo::t('WorkflowsModule', '{n} hour ago|{n} hours ago', array(8));
+                $data[-14400] = Zurmo::t('WorkflowsModule', '{n} hour ago|{n} hours ago', array(4));
+            }
+        }
     }
 ?>

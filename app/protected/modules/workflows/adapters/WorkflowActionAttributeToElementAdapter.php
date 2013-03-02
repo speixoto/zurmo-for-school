@@ -160,39 +160,28 @@
         {
             $params           = array('inputPrefix' => $this->inputPrefixData);
             $valueElementType = $this->model->getValueElementType();
-            if($valueElementType != null) //todO: contactState, deal with that correctly.
-                //todO: ContactStateStaticDropDownForReportElement could refactor to wizard...
+            if($valueElementType != null)
             {
                 $valueElementClassName = $valueElementType . 'Element';
                 $valueElement          = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement) //todO: how can we do UserNameIdElement? how does reporting do that?
+                if($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedNumberTypesElement)
+                if($valueElement instanceof MixedDropDownTypesForWorkflowActionAttribute)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
-                    //MixedDropDownTypesForWorkflowActionAttribute
-
                 }
-                elseif($valueElement instanceof MixedDateTypesElement)
+                elseif($valueElement instanceof MixedDateTypesForWorkflowActionAttribute ||
+                       $valueElement instanceof MixedDateTimeTypesForWorkflowActionAttribute)
                 {
                     $valueElement->editableTemplate = '<div class="value-data has-date-inputs">{content}{error}</div>';
-                    //MixedDateTimeTypesForWorkflowActionAttribute
-                    //MixedDateTypesForWorkflowActionAttribute
-//todo: better job with the //XX types it can help us understand better
-                    //todO: date time needs timing inputs? hmm.
                 }
                 else
                 {
-                    //Decimal
-                    //integer
-                    //phone, text, text area, url
-                    //BooleanStaticDropDown
-                    //CurrencyValueAndCurrencyIdForWorkflowActionAttribute
                     $startingDivStyleFirstValue     = null;
-                    if (in_array($this->model->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
+                    if ($this->model->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
                     {
                         $startingDivStyleFirstValue = "display:none;";
                     }

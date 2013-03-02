@@ -27,8 +27,13 @@
     /**
      * Form to work with multi-select drop downs
      */
-    class MultiSelectDropDownWorkflowActionAttributeForm extends WorkflowActionAttributeForm
+    class MultiSelectDropDownWorkflowActionAttributeForm extends CustomFieldWorkflowActionAttributeForm
     {
+        public function getValueElementType()
+        {
+            return 'MultiSelectStaticDropDownForWorkflow';
+        }
+
         /**
          * Override to make sure the value attribute is set as an array.
          */
