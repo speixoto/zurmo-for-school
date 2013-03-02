@@ -127,9 +127,11 @@
             $gridId                 = $this->getListViewGridId();
             $formName               = $this->getFormName();
             $formClassName          = $this->modelId;
+            $onCompleteScript       = $this->getOnCompleteScript();
             $isActionForEachScript  = null;
             $ajaxSubmitScript       = "$.fn.yiiGridView.update('{$gridId}', {
-                                            data: $('#{$formName}').serialize()
+                                            data: $('#{$formName}').serialize(),
+                                            complete: {$onCompleteScript}
                                         });";
             if (!$isActionForAll)
             {
@@ -146,6 +148,18 @@
                     }
                 );
             ";
+            return $script;
+        }
+
+        private function getOnCompleteScript()
+        {
+            $gridId = $this->getListViewGridId();
+            $script = "
+                    function()
+                    {
+                        $('#{$gridId}-selectedIds').val('');
+                    }
+                ";
             return $script;
         }
 
