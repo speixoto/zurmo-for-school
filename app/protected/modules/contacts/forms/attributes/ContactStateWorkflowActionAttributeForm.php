@@ -31,7 +31,7 @@
     {
         public function getValueElementType()
         {
-            return 'ContactStateStaticDropDownForWizardModel';
+            return 'AllContactStatesStaticDropDownForWizardModel';
         }
 
         /**
