@@ -43,7 +43,7 @@
                     'availableOperatorsTypes' =>
                         array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>
-                        array('state' => 'ContactStateStaticDropDownForWizardModel'),
+                        array('state' => 'AllContactStatesStaticDropDownForWizardModel'),
                     'relationsReportedAsAttributesSortAttributes' =>
                         array('state' => 'name'),
                     'relationsReportedAsAttributesGroupByAttributes' =>

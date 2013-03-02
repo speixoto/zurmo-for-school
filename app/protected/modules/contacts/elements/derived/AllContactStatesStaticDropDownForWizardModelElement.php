@@ -24,11 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ContactStateStaticDropDownForWizardModelElement extends StaticDropDownForReportElement
+    class AllContactStatesStaticDropDownForWizardModelElement extends StaticDropDownForReportElement
     {
         public function getDropDownArray()
         {
-            return ContactsUtil::getContactStateDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
+            return ContactsUtil::getAllContactStatesDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
         }
     }
 ?>
