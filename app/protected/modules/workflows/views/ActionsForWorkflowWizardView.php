@@ -373,7 +373,7 @@
         protected function registerTypeChangeScript()
         {
             Yii::app()->clientScript->registerScript('actionAttributeTypeChangeRules', "
-                $('.actionAttributeType').change( function()
+                $('.actionAttributeType').live('change', function()
                     {
                         arr  = " . CJSON::encode(WorkflowActionAttributeTypeStaticDropDownElement::getValueTypesRequiringFirstInput()) . ";
                         arr2 = " . CJSON::encode(WorkflowActionAttributeTypeStaticDropDownElement::getValueTypesRequiringSecondInput()) . ";
