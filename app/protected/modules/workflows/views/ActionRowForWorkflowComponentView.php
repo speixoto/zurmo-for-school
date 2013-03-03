@@ -101,6 +101,8 @@
             $content .= $this->renderAttributeRowNumberLabel();
             $content .= $this->model->type; //todo: convert to label
             $content .= $this->renderTypeHiddenInputContent();
+            $content .= $this->renderRelationHiddenInputContent();
+            $content .= $this->renderRelatedModelRelationHiddenInputContent();
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-action-row-link'));
             $content .= '<div>';
@@ -131,6 +133,26 @@
                                    array_merge($this->inputPrefixData, array('type')));
             $idInputHtmlOptions  = array('id' => $hiddenInputId);
             return ZurmoHtml::hiddenField($hiddenInputName, $this->model->type, $idInputHtmlOptions);
+        }
+
+        protected function renderRelationHiddenInputContent()
+        {
+            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
+                array_merge($this->inputPrefixData, array('relation')));
+            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
+                array_merge($this->inputPrefixData, array('relation')));
+            $idInputHtmlOptions  = array('id' => $hiddenInputId);
+            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->relation, $idInputHtmlOptions);
+        }
+
+        protected function renderRelatedModelRelationHiddenInputContent()
+        {
+            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
+                array_merge($this->inputPrefixData, array('relatedModelRelation')));
+            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
+                array_merge($this->inputPrefixData, array('relatedModelRelation')));
+            $idInputHtmlOptions  = array('id' => $hiddenInputId);
+            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->relatedModelRelation, $idInputHtmlOptions);
         }
 
         protected function makeAttributeRows()

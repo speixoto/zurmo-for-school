@@ -226,6 +226,14 @@
         /**
          * @return array
          */
+        public function getActionAttributes()
+        {
+            return $this->_actionAttributes;
+        }
+
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -471,22 +479,24 @@
 
         protected function getModelClassNameAndResolveForRelations()
         {
-            //todo: once performance3 is done, don't need to instantiate this
-            $modelClassName = $this->_modelClassName;
-            $model = new $modelClassName(false);
             if($this->type == self::TYPE_UPDATE_SELF)
             {
-                return $modelClassName;
+                return $this->_modelClassName;
             }
-            elseif($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE)
+            $modelClassName         = $this->_modelClassName;
+            $adapter                = ModelRelationsAndAttributesToWorkflowAdapter::
+                                      make($modelClassName::getModuleClassName(), $modelClassName, $this->_workflowType);
+            $relationModelClassName = $adapter->getRelationModelClassName($this->relation);
+            if($this->type == self::TYPE_UPDATE_RELATED || $this->type == self::TYPE_CREATE)
             {
-                return $model->getRelationModelClassName($this->relation);
+                return  $relationModelClassName;
             }
             elseif($this->type == self::TYPE_CREATE_RELATED)
             {
-                $relationModelClassName = $model->getRelationModelClassName($this->relation);
-                $relationModel          = new $relationModelClassName(false);
-                return $relationModel->getRelationModelClassName($this->relatedModelRelation);
+                $relationModelAdapter = ModelRelationsAndAttributesToWorkflowAdapter::make(
+                                        $relationModelClassName::getModuleClassName(),
+                                        $relationModelClassName, $this->_workflowType);
+                return $relationModelAdapter->getRelationModelClassName($this->relatedModelRelation);
             }
             throw new NotSupportedException();
         }

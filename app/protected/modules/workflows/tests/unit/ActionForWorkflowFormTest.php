@@ -215,7 +215,42 @@
             $form->relation        = 'hasMany2';
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
             $this->assertEquals(38, count($data));
-            //todo: test various types and related related.
+
+            //Test update a derived related model (this is like account's meetings)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'model5ViaItem';
+            $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(2, count($data));
+
+
+            //Test update a inferred related model (this is like a meeting's accounts)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(38, count($data));
+
+            //Test create a related, derived related model (this is like account's meetings)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type                  = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $form->relation              = 'hasMany2';
+            $form->relatedModelRelation  = 'model5ViaItem';
+            $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(2, count($data));
+
+
+            //Test create a related, inferred related model (this is like a meeting's accounts)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem7', Workflow::TYPE_ON_SAVE);
+            $form->type                 = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $form->relation             ='model5';
+            $form->relatedModelRelation = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(38, count($data));
+
+            //todo: test create_related cauuse that gets coverage on a bit more. test with inferred, derieved as well
+
+            //todo: test various types and related related. test create related non-derives and non-inferred
         }
     }
 ?>

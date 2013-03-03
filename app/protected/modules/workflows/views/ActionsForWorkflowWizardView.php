@@ -87,6 +87,7 @@
             $this->registerActionTypeRelatedModelRelationDropDownOnChangeScript();
             $this->registerAddActionScript();
             $this->registerRemoveActionScript();
+            $this->registerTypeChangeScript();
         }
 
         /**
@@ -153,7 +154,6 @@
 
         protected function renderActionsContentAndWrapper()
         {
-            //todo: comeback
             //todo: still seems strange we call it droppable even though it is only draggable here. maybe not a big deal
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
@@ -191,24 +191,12 @@
             assert('is_int($rowCount)');
             assert('is_array($actions)');
             $items                      = array();
-            $wizardFormClassName        = get_class($this->model);
             foreach($actions as $action)
             {
-                $nodeIdWithoutTreeType      = $action->attributeIndexOrDerivedType;
-                $inputPrefixData            = WorkflowRelationsAndAttributesToTreeAdapter::
-                                              resolveInputPrefixData($wizardFormClassName,
-                                              ComponentForWorkflowForm::TYPE_ACTIONS, $rowCount);
-                //todo: use different adapter ? or just call different method on adapter, probably differnet method on adapter?
-                $adapter                    = new WorkflowAttributeToElementAdapter($inputPrefixData, $action,
-                                              $this->form, ComponentForWorkflowForm::TYPE_ACTIONS);
-                //todo: need to use different view
-                $view                       = new AttributeRowForWorkflowComponentView($adapter, $rowCount,
-                                                  $inputPrefixData,
-                                                  WorkflowRelationsAndAttributesToTreeAdapter:: //todo weird we are calling a tree adapter thing.
-                                                  resolveAttributeByNodeId($nodeIdWithoutTreeType),
-                                                  false, true, ComponentForWorkflowForm::TYPE_ACTIONS); //todO: make sure you know what true/false is for
-                $view->addWrapper           = false;
-                $items[]                    = array('content' => $view->render());
+                $inputPrefixData  = array(get_class($this->model), ComponentForWorkflowForm::TYPE_ACTIONS, (int)$rowCount);
+                $view             = new ActionRowForWorkflowComponentView($action, $rowCount, $inputPrefixData, $this->form);
+                $view->addWrapper = false;
+                $items[]          = array('content' => $view->render());
                 $rowCount ++;
             }
             return $items;
@@ -380,6 +368,40 @@
             ';
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('removeActionScript', $script);
+        }
+
+        protected function registerTypeChangeScript()
+        {
+            Yii::app()->clientScript->registerScript('actionAttributeTypeChangeRules', "
+                $('.actionAttributeType').change( function()
+                    {
+                        arr  = " . CJSON::encode(WorkflowActionAttributeTypeStaticDropDownElement::getValueTypesRequiringFirstInput()) . ";
+                        arr2 = " . CJSON::encode(WorkflowActionAttributeTypeStaticDropDownElement::getValueTypesRequiringSecondInput()) . ";
+                        var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
+                        var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
+                        if ($.inArray($(this).val(), arr) != -1)
+                        {
+                            firstValueArea.show();
+                            firstValueArea.find(':input, select').prop('disabled', false);
+                        }
+                        else
+                        {
+                            firstValueArea.hide();
+                            firstValueArea.find(':input, select').prop('disabled', true);
+                        }
+                        if ($.inArray($(this).val(), arr2) != -1)
+                        {
+                            secondValueArea.show();
+                            secondValueArea.find(':input, select').prop('disabled', false);
+                        }
+                        else
+                        {
+                            secondValueArea.hide();
+                            secondValueArea.find(':input, select').prop('disabled', true);
+                        }
+                    }
+                );
+            ");
         }
     }
 ?>

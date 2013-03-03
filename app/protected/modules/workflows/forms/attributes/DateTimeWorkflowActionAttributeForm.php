@@ -33,7 +33,7 @@
 
         const TYPE_DYNAMIC_FROM_EXISTING_DATETIME = 'DynamicFromExistingDateTime';
 
-        public function getDynamicTypeDropDownArray()
+        public function getDynamicTypeValueDropDownArray()
         {
             $data       = array();
             WorkflowUtil::resolveNegativeDurationAsDistanceFromPointData($data, true);

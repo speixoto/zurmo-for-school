@@ -100,11 +100,11 @@
          */
         protected function renderNextPageLinkContent()
         {
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('ReportsModule', 'Save and Run');
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            return $searchElement->render();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
 
         protected function registerScripts()

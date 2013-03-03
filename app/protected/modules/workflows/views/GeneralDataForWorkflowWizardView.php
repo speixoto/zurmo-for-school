@@ -79,11 +79,11 @@
          */
         protected function renderNextPageLinkContent()
         {
-            $params = array();
-            $params['label']       = Zurmo::t('WorkflowsModule', 'Save and Run');
+            $params                = array();
+            $params['label']       = Zurmo::t('Core', 'Save');
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            return $searchElement->render();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
     }
 ?>

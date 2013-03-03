@@ -46,9 +46,9 @@
                     $workflow->setTriggersStructure($unserializedData['triggersStructure']);
                 }
                 self::makeComponentFormAndPopulateWorkflowFromData(
-                        $unserializedData[ComponentForWorkflowForm::TYPE_TRIGGERS], $workflow, 'Trigger');
-                self::makeComponentFormAndPopulateWorkflowFromData(
-                        $unserializedData[ComponentForWorkflowForm::TYPE_ACTIONS],  $workflow, 'Action');
+                            $unserializedData[ComponentForWorkflowForm::TYPE_TRIGGERS], $workflow, 'Trigger');
+                self::makeActionForWorkflowFormAndPopulateWorkflowFromData(
+                            $unserializedData[ComponentForWorkflowForm::TYPE_ACTIONS],  $workflow);
                 if(isset($unserializedData['timeTrigger']))
                 {
                     $moduleClassName = $workflow->getModuleClassName();
@@ -75,7 +75,7 @@
             $data[ComponentForWorkflowForm::TYPE_TRIGGERS]                     =
                   self::makeArrayFromComponentFormsAttributesData($workflow->getTriggers());
             $data[ComponentForWorkflowForm::TYPE_ACTIONS]                      =
-                  self::makeArrayFromComponentFormsAttributesData($workflow->getActions());
+                  self::makeArrayFromActionForWorkflowFormAttributesData($workflow->getActions());
             if($workflow->getTimeTrigger() != null)
             {
                 $data['timeTrigger'] = self::makeArrayFromTimeTriggerForWorkflowFormAttributesData(
@@ -108,6 +108,28 @@
             return $data;
         }
 
+        protected static function makeArrayFromActionForWorkflowFormAttributesData(Array $componentFormsData)
+        {
+            $data = array();
+            foreach($componentFormsData as $key => $actionForReportForm)
+            {
+                foreach($actionForReportForm->getAttributes() as $attribute => $value)
+                {
+
+                    $data[$key][$attribute] = $value;
+                }
+                foreach($actionForReportForm->getActionAttributes() as $actionAttribute => $workflowActionAttributeForm)
+                {
+                    echo $actionAttribute . "<BR>";//
+                    foreach($workflowActionAttributeForm->getAttributes() as $attribute => $value)
+                    {
+                        $data[$key][ActionForWorkflowForm::ACTION_ATTRIBUTES][$actionAttribute][$attribute] = $value;
+                    }
+                }
+            }
+            return $data;
+        }
+
         protected static function makeComponentFormAndPopulateWorkflowFromData($componentFormsData, $workflow, $componentPrefix)
         {
             $moduleClassName    = $workflow->getModuleClassName();
@@ -120,6 +142,17 @@
                                                           $workflow->getType());
                 $component->setAttributes($componentFormData);
                 $workflow->{$addMethodName}($component);
+            }
+        }
+
+        protected static function makeActionForWorkflowFormAndPopulateWorkflowFromData($componentFormsData, $workflow)
+        {
+            $moduleClassName    = $workflow->getModuleClassName();
+            foreach($componentFormsData as $componentFormData)
+            {
+                $component      = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->getType());
+                $component->setAttributes($componentFormData);
+                $workflow->addAction($component);
             }
         }
     }

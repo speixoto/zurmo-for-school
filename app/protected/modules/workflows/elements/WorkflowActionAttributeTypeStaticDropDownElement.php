@@ -66,36 +66,7 @@
 
         protected function renderChangeScript()
         {
-            Yii::app()->clientScript->registerScript('actionAttributeTypeChangeRules', "
-                $('.actionAttributeType').change( function()
-                    {
-                        arr  = " . CJSON::encode($this->getValueTypesRequiringFirstInput()) . ";
-                        arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondInput()) . ";
-                        var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
-                        var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
-                        if ($.inArray($(this).val(), arr) != -1)
-                        {
-                            firstValueArea.show();
-                            firstValueArea.find(':input, select').prop('disabled', false);
-                        }
-                        else
-                        {
-                            firstValueArea.hide();
-                            firstValueArea.find(':input, select').prop('disabled', true);
-                        }
-                        if ($.inArray($(this).val(), arr2) != -1)
-                        {
-                            secondValueArea.show();
-                            secondValueArea.find(':input, select').prop('disabled', false);
-                        }
-                        else
-                        {
-                            secondValueArea.hide();
-                            secondValueArea.find(':input, select').prop('disabled', true);
-                        }
-                    }
-                );
-            ");
+
         }
 
         public static function getValueTypesRequiringFirstInput()

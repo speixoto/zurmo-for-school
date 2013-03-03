@@ -45,7 +45,7 @@
 
             assert('is_string($actionType)');
             assert('is_array($inputPrefixData)');
-            assert('static::isActionTypeValid($actionType)');
+            //assert('static::isActionTypeValid($actionType)'); //todo: not sure why i had this here. remove.
             assert('is_bool($isAttributeRequired)');
             $this->model               = $model;
             $this->form                = $form;

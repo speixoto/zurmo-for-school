@@ -341,13 +341,13 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content  = $searchElement->render();
-            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
-                            '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
+            $searchElement         = new SaveButtonActionElement(null, null, null, $params);
+            $content               = $searchElement->render();
+            $closeButton           = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
+                                     '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
             return $closeButton . $content;
         }
 
