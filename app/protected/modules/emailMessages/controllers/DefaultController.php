@@ -177,7 +177,6 @@
                         $emailMessage = EmailMessageHelper::sendTestEmailFromUser($emailHelper, $userToSendMessagesFrom,
                                                                       $configurationForm->aTestToAddress);
                     }
-
                     $messageContent  = null;
                     if (!$emailMessage->hasSendError())
                     {
