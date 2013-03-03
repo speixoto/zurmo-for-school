@@ -34,7 +34,7 @@
                                         'listPageSize', get_class($this->getModule()));
             $mashableInboxForm  = new MashableInboxForm();
             $getData            = GetUtil::getData();
-            if(Yii::app()->request->isAjaxRequest && isset($getData['MashableInboxForm']))
+            if(Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
             {
                 $this->renderListViewForAjax($mashableInboxForm, $modelClassName, $getData);
             }
@@ -89,7 +89,10 @@
          */
         private function renderListViewForAjax($mashableInboxForm, $modelClassName, $getData)
         {
-            $mashableInboxForm->attributes = $getData["MashableInboxForm"];
+            if (isset($getData["MashableInboxForm"]))
+            {
+                $mashableInboxForm->attributes = $getData["MashableInboxForm"];
+            }
             if ($mashableInboxForm->massAction != null)
             {
                 $this->resolveAjaxMassAction($modelClassName, $mashableInboxForm);
@@ -106,7 +109,8 @@
                                                       $mashableInboxForm,
                                                       $this->pageSize);
             }
-            echo $listView->render();
+            $view = new AjaxPageView($listView);
+            echo $view->render();
         }
 
         /**
@@ -174,12 +178,20 @@
                                                 true,
                                                 $modelClassNamesAndSearchAttributeMetadataForMashableInbox,
                                                 array('pagination' => array('pageSize' => $this->pageSize)));
+            $paginationParams
+                = array(
+
+                );
             $listView
                 = new MashableInboxListView($this->getId(),
                                             $this->getModule()->getId(),
                                             'MashableInbox',
                                             $dataProvider,
-                                            array());
+                                            array(),
+                                            null,
+                                            array(
+                                                'paginationParams' => array_merge(GetUtil::getData(), $paginationParams)
+                                            ));
             return $listView;
         }
     }
