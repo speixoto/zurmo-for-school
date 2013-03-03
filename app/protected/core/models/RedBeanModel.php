@@ -2547,16 +2547,16 @@
         }
 
         /**
-         * Given an attributeName, return an array of all attribute labels for each language available.
+         * Given an attributeName, return an array of all attribute labels for each active language.
          * @return array - attribute labels by language for the given attributeName.
          */
-        public function getAttributeLabelsForAllSupportedLanguagesByAttributeName($attributeName)
+        public function getAttributeLabelsForAllActiveLanguagesByAttributeName($attributeName)
         {
             assert('is_string($attributeName)');
             $attirbuteLabelData = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $attirbuteLabelData[$language] = $this->getAttributeLabelByLanguage($attributeName, $language);
+                $attirbuteLabelData[$language] = $this->getAttributeLabelByLanguage($attributeName, $languageCode);
             }
             return $attirbuteLabelData;
         }

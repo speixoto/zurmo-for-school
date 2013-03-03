@@ -41,7 +41,7 @@
             if ($model !== null)
             {
                 $this->attributeName     = $attributeName;
-                $this->attributeLabels   = $model->getAttributeLabelsForAllSupportedLanguagesByAttributeName(
+                $this->attributeLabels   = $model->getAttributeLabelsForAllActiveLanguagesByAttributeName(
                                                     $attributeName);
                 $this->attributePropertyToDesignerFormAdapter = new AttributePropertyToDesignerFormAdapter();
                 $validators = $model->getValidators($attributeName);

@@ -565,7 +565,7 @@
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
             {
                 $this->assertEquals(
-                    $compareData, $newModel->getAttributeLabelsForAllSupportedLanguagesByAttributeName($name));
+                    $compareData, $newModel->getAttributeLabelsForAllActiveLanguagesByAttributeName($name));
             }
 
             if ($attributeTypeName != "CalculatedNumber" && $attributeTypeName != "DropDownDependency")
