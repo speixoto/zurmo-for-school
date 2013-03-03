@@ -163,6 +163,9 @@
 
         protected function registerScripts()
         {
+            //Registered to make sure things work when debug mode is on. Otherwise this is missing.
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
+            $this->registerOperatorChangeScript();
         }
 
         protected function registerCss()
@@ -238,6 +241,59 @@
                 });
             ";
             return $script;
+        }
+
+        protected function registerOperatorChangeScript()
+        {
+            Yii::app()->clientScript->registerScript('operatorRules', "
+                $('.operatorType').live('change', function()
+                    {
+                        arr  = " . CJSON::encode(OperatorStaticDropDownElement::getValueTypesRequiringFirstInput()) . ";
+                        arr2 = " . CJSON::encode(OperatorStaticDropDownElement::getValueTypesRequiringSecondInput()) . ";
+                        var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
+                        var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
+                        if ($.inArray($(this).val(), arr) != -1)
+                        {
+                            firstValueArea.show();
+                            firstValueArea.find(':input, select').prop('disabled', false);
+                        }
+                        else
+                        {
+                            firstValueArea.hide();
+                            firstValueArea.find(':input, select').prop('disabled', true);
+                        }
+                        if ($.inArray($(this).val(), arr2) != -1)
+                        {
+                            secondValueArea.show();
+                            secondValueArea.find(':input, select').prop('disabled', false);
+                        }
+                        else
+                        {
+                            secondValueArea.hide();
+                            secondValueArea.find(':input, select').prop('disabled', true);
+                        }
+                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
+                        {
+                            var newName = $(this).parent().parent().parent().find('.value-data')
+                                          .find('.flexible-drop-down').attr('name') + '[]';
+                            $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
+                            .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
+                            .attr('name', newName);
+                        }
+                        else
+                        {
+                            var newName = $(this).parent().parent().parent().find('.value-data')
+                                          .find('.flexible-drop-down').attr('name');
+                            if(newName != undefined)
+                            {
+                                $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
+                                .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
+                                .attr('name', newName.replace('[]',''));
+                            }
+                        }
+                    }
+                );
+            ");
         }
     }
 ?>
