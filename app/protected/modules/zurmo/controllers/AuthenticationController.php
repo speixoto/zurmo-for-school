@@ -29,12 +29,12 @@
      *
      */
     class ZurmoAuthenticationController extends ZurmoModuleController
-    {       
+    {
         public function actionConfigurationEdit()
         {
             $view = new ConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                                   makeStandardViewForCurrentUser($this, new AuthenticationConfigurationListView()));
             echo $view->render();
-        }               
+        }
     }
 ?>

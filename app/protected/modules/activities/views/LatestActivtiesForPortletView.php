@@ -128,10 +128,7 @@
                 $latestActivitiesConfigurationForm->setAttributes($_GET[get_class($latestActivitiesConfigurationForm)]);
                 $excludeFromRestore = $this->saveUserSettingsFromConfigForm($latestActivitiesConfigurationForm);
             }
-
             $this->restoreUserSettingsToConfigFrom($latestActivitiesConfigurationForm, $excludeFromRestore);
-
-
         }
 
         protected function saveUserSettingsFromConfigForm(&$latestActivitiesConfigurationForm)
@@ -164,11 +161,10 @@
                 $persistantUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
                     $this->params['portletId'],
                     $persistantUserConfigItem);
-                if(isset($persistantUserConfigItemValue))
+                if (isset($persistantUserConfigItemValue))
                 {
                     $latestActivitiesConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
                 }
-
             }
             return $latestActivitiesConfigurationForm;
         }
@@ -295,8 +291,7 @@
 
         protected static function resolvePropertyName($attribute)
         {
-            return 'has' .ucfirst($attribute) . 'Switch';
-
+            return 'has' . ucfirst($attribute) . 'Switch';
         }
 
         public static function hasRollupSwitch()
@@ -314,11 +309,10 @@
         {
             return true;
         }
-        /**/
 
         public static function processBeforeDelete($portletId)
         {
-            foreach(static::$persistantUserPortletConfigs as $persistantUserConfigItem)
+            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
             {
                 $property = static::resolvePropertyName($persistantUserConfigItem);
                 if (method_exists(get_called_class(), $property) && static::$property())

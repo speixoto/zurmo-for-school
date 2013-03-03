@@ -34,7 +34,7 @@
         protected function getCategoryData()
         {
             $categories = array();
-            $module = new ZurmoModule('ZurmoModule', false);            
+            $module = new ZurmoModule('ZurmoModule', false);
             $moduleSubMenuItems = MenuUtil::getAccessibleConfigureSubMenuByCurrentUser('ZurmoModule');
             if ($module->isEnabled() && count($moduleSubMenuItems) > 0)
             {

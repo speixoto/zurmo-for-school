@@ -24,23 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Inform user that export process is completed, and that user can download exported file.
-     */
-    class EmailMessageArchivingEmailAddressNotMachingNotificationRules extends JobsManagerAccessNotificationRules
+    class UsersByRoleModalListViewDesignerRules extends ModalListViewDesignerRules
     {
-        protected $critical    = false;
-
-        protected $allowDuplicates = false;
-
-        public static function getDisplayName()
+        public function allowEditInLayoutTool()
         {
-            return Zurmo::t('EmailMessagesModule', 'Match archived emails');
-        }
-
-        public static function getType()
-        {
-            return 'EmailMessageArchivingEmailAddressNotMaching';
+            return false;
         }
     }
 ?>

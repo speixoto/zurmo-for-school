@@ -31,7 +31,7 @@
     {
         public function getTitle()
         {
-            return Yii::t('Default', 'Ldap Configuration');
+            return Zurmo::t('Default', 'Ldap Configuration');
         }
 
         public static function getDefaultMetadata()
@@ -47,7 +47,7 @@
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
-                        array(                            
+                        array(
                             'rows' => array(
                                 array('cells' =>
                                     array(
