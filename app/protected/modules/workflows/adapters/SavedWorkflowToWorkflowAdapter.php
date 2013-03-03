@@ -120,8 +120,7 @@
                 }
                 foreach($actionForReportForm->getActionAttributes() as $actionAttribute => $workflowActionAttributeForm)
                 {
-                    echo $actionAttribute . "<BR>";//
-                    foreach($workflowActionAttributeForm->getAttributes() as $attribute => $value)
+                    foreach($workflowActionAttributeForm->getSavableAttributes() as $attribute => $value)
                     {
                         $data[$key][ActionForWorkflowForm::ACTION_ATTRIBUTES][$actionAttribute][$attribute] = $value;
                     }

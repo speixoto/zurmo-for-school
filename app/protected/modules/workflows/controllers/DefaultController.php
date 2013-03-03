@@ -231,7 +231,7 @@
                                                       (int)$rowNumber, $inputPrefixData, $attribute,
                                                       (bool)$trackableStructurePosition, true, $treeType);
             $content               = $view->render();
-            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
@@ -284,7 +284,7 @@
                                                   1, $inputPrefixData, $attributeIndexOrDerivedType,
                                                   false, true, $componentType);
             $content               = $view->render();
-            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;
@@ -320,7 +320,7 @@
             $view                        = new ActionRowForWorkflowComponentView($model, (int)$rowNumber,
                                            $inputPrefixData, $form);
             $content                     = $view->render();
-            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;

@@ -122,6 +122,18 @@
         }
 
         /**
+         * Exclude stringifiedModelForValue since this is a temporary attribute that is based on the value when
+         * the value is an 'id' of a model.  This should not be saved to the SavedWorkflow serialized data.
+         * @return array
+         */
+        public function getSavableAttributes()
+        {
+            $attributes = $this->getAttributes();
+            unset($attributes['stringifiedModelForValue']);
+            return $attributes;
+        }
+
+        /**
          * Override to properly handle retrieving rule information from the model for the attribute name.
          */
         public function rules()

@@ -78,7 +78,7 @@
             $workflow->addTrigger($trigger);
 
             //todo: add TimeTrigger
-            //todo: add Action
+            //todo: add Action, test that stringifiedModelValue does not get saved to SavedWorkflow
 
             $savedReport = new SavedWorkflow();
             $this->assertNull($savedReport->serializedData);

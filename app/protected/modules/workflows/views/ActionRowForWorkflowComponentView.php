@@ -61,37 +61,6 @@
             return $this->renderContent();
         }
 
-        public function renderAddAttributeErrorSettingsScript(WizardActiveForm $form, $wizardFormClassName,
-                                                              $componentFormClassName, $inputPrefixData)
-        {
-            assert('is_string($wizardFormClassName)');
-            assert('is_string($componentFormClassName)');
-            assert('is_array($inputPrefixData)');
-            $attributes             = $form->getAttributes();
-            $encodedErrorAttributes = CJSON::encode(array_values($attributes));
-            $script = "
-                var settings = $('#" . static::getFormId() . "').data('settings');
-                $.each(" . $encodedErrorAttributes . ", function(i)
-                {
-                    var newId = this.id;
-                    var alreadyInArray = false;
-                    $.each(settings.attributes, function (i)
-                    {
-                        if(newId == this.id)
-                        {
-                            alreadyInArray = true;
-                        }
-                    });
-                    if(alreadyInArray == false)
-                    {
-                        settings.attributes.push(this);
-                    }
-                });
-                $('#" . static::getFormId() . "').data('settings', settings);
-            ";
-            Yii::app()->getClientScript()->registerScript('AddAttributeErrorSettingsScript', $script);
-        }
-
         /**
          * @return string
          */
