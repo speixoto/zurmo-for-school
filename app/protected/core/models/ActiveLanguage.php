@@ -40,7 +40,7 @@
                 'rules' => array(
                     array('code', 'required'),
                     array('code', 'type', 'type' => 'string'),
-                    array('code', 'length',  'min'  => 2, 'max' => 5),
+                    array('code', 'length',  'min'  => 2, 'max' => 16),
                     array('name', 'required'),
                     array('name', 'type', 'type' => 'string'),
                     array('name', 'length',  'min'  => 2, 'max' => 64),
