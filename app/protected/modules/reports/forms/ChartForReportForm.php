@@ -105,22 +105,6 @@
         }
 
         /**
-         * @return string
-         */
-        public function getModuleClassName()
-        {
-            return $this->moduleClassName;
-        }
-
-        /**
-         * @return string
-         */
-        public function getModelClassName()
-        {
-            return $this->modelClassName;
-        }
-
-        /**
          * Validates that the first and second series/ranges are properly formed.
          * @return bool
          */

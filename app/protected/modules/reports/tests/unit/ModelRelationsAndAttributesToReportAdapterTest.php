@@ -1306,7 +1306,7 @@
             $report             = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
+            $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $report->getType());
             $this->assertTrue($adapter->isRelationASingularRelation('hasOne'));
             $this->assertFalse($adapter->isRelationASingularRelation('hasMany'));
 
@@ -1315,7 +1315,7 @@
             $report             = new Report();
             $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
             $report->setModuleClassName('ReportsTestModule');
-            $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
+            $adapter            = new ModelRelationsAndAttributesToRowsAndColumnsReportAdapter($model, $rules, $report->getType());
             $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem2__reportItems__Inferred'));
             $this->assertFalse($adapter->isRelationASingularRelation('ReportModelTestItem__reportItems__Inferred'));
         }
