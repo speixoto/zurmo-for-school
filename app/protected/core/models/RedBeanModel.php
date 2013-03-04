@@ -2532,7 +2532,7 @@
         protected function getTranslatedCustomAttributeLabelByLanguage($attributeName, $languageCode)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
+            assert('is_string($languageCode)');
             $metadata = $this->getMetadata();
             foreach ($metadata as $modelClassName => $modelClassMetadata)
             {
