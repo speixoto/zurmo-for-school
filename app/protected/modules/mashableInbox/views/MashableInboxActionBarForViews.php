@@ -130,7 +130,7 @@
         {
             $params   = array('listViewGridId' => $this->listView->getGridViewId());
             $element  = new MashableInboxSearchElement($model, 'searchTerm', $form, $params);
-            $content  = $element->render();
+            $content  = '<button type="button" class="global-search-loopa" aria-haspopup="true"><span></span></button>'.$element->render();
             $content .= $this->renderSummaryCloneContent();
             return ZurmoHtml::tag('div', array('class' => 'search-view-0'), $content);
         }
@@ -149,7 +149,7 @@
                 $url         = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
                                                      array('modelClassName' => $modelClassName));
                 $span        = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
-                $content    .= ZurmoHtml::link($modelLabel . $span, $url, array('class' => 'icon-' . $modelClassName));
+                $content    .= ZurmoHtml::link($modelLabel . $span, $url, array('class' => 'icon-' . strtolower($modelClassName)));
             }
             return $content;
         }

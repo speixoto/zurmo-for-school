@@ -49,7 +49,6 @@
             }
             $menuItems = array('label' => $this->getLabel(),
                                'url'   => null,
-                               'itemOptions' => array('class' => 'icon-create'),
                                'items' => $items);
             if (!empty($items))
             {
