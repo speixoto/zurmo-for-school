@@ -97,7 +97,8 @@
                 'address'   => $emailHelper->resolveFromAddressByUser($userToSendMessagesFrom),
                 'name'      => strval($userToSendMessagesFrom),
             );
-            static::sendTestEmail($emailHelper, $from, $toAddress);
+            $emailMessage = static::sendTestEmail($emailHelper, $from, $toAddress);
+            return $emailMessage;
         }
 
         /**
