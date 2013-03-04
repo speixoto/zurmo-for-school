@@ -32,13 +32,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'          => 'CreateLink',
-                                'htmlOptions'     => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'MarketingListDeleteLink',
-                                'htmlOptions'     => array( 'class' => 'icon-delete' )
-                            ),
+                            array('type' => 'CreateLink', 'htmlOptions' => array('class' => 'icon-create')),
                         ),
                     ),
                 ),

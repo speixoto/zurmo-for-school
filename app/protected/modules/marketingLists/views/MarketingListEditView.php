@@ -32,7 +32,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelMarketingListsLink'),
+                            array('type'  => 'MarketingListsCancelLink'),
                             array('type'  => 'SaveButton'),
                         ),
                     ),

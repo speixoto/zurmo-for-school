@@ -35,9 +35,10 @@
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
-            parent::__construct(4, 1);
+            parent::__construct(3, 1);
             $detailsView         = new MarketingListDetailsView($controllerId, $moduleId, $marketingList);
-            $searchView          = new MarketingListMembersSearchView($searchModel, get_class($listModel));
+            // TODO: @Shoaibi Enable the following line
+            // $searchView          = new MarketingListMembersSearchView($searchModel, get_class($listModel));
             $listView            = new MarketingListMembersListView($controllerId, $moduleId,
                                                           get_class($listModel), $dataProvider,
                                                           $selectedIds, null, array(),
@@ -48,8 +49,10 @@
                                                                $listView->getRowsAreSelectable());
             $this->setView($detailsView, 0, 0);
             $this->setView($actionBarView, 1, 0);
-            $this->setView($searchView, 2, 0);
-            $this->setView($listView, 3, 0);
+            // TODO: @Shoaibi Enable the following line
+            //$this->setView($searchView, 2, 0);
+            // TODO: @Shoaibi Change following to be 3,0
+            $this->setView($listView, 2, 0);
         }
     }
 ?>

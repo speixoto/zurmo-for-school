@@ -26,19 +26,13 @@
 
     class MarketingListDetailsView extends SecuredDetailsView
     {
+        const SUBSCRIBERS_PORTLET_CLASS     = 'marketing-list-subscribers-portlet-container';
+
+        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
+
         public static function assertModelIsValid($model)
         {
             assert('$model instanceof MarketingList');
-        }
-
-        protected function renderContent()
-        {
-            $content = $this->renderTitleContent();
-//todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
-            return $content;
         }
 
         public static function getDefaultMetadata()
@@ -51,7 +45,12 @@
                                 'htmlOptions' => array('class' => 'icon-details')),
                             array('type'  => 'MarketingListsOptionsLink',
                                 'htmlOptions' => array('class' => 'icon-edit')),
-                            //todo: also: see that all UL's are created with same ID - this is not valid html
+                            array('type'  => 'MarketingListsTogglePortletsLink',
+                                'htmlOptions' => array('class' => 'hasCheckboxes'),
+                                'subscribersPortletClass'           => static::SUBSCRIBERS_PORTLET_CLASS,
+                                'autorespondersPortletClass'        => static::AUTORESPONDERS_PORTLET_CLASS,),
+                            // TODO: @Shoaibi: also: see that all UL's are created with same ID - this is not valid html
+                            // TODO: @Shoaibi: add panels and Both portlets in leftBottom.
                         ),
                     ),
                 ),
@@ -61,14 +60,53 @@
 
         public function getTitle()
         {
-            if ($this->model->id > 0)
+            return strval($this->model);
+        }
+
+        protected function renderContent()
+        {
+            $actionElementBarContent        = $this->renderActionElementBar(false);
+            // TODO: @Shoaibi: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
+            $content                        = $this->renderTitleContent();
+            $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
+                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
+                                                                                    $actionElementBarContent)
+                                                );
+            $content                       .= $this->renderSubscriberPortlet() . $this->renderAutorespondersPortlet();
+            return $content;
+        }
+
+        protected function renderSubscriberPortlet()
+        {
+            // TODO: @Shoaibi: Where do we get the parameters?
+            $subscribersViewData            = false;
+            $subscribersParams              = array(
+                                                'controllerId' => $this->getId(),
+                                                'relationModuleId' => $this->getModuleLabel('PluralLowerCase'),
+                                                'relationModel' => $this->model,
+                                                'redirectUrl' => Yii::app()->request->url,
+                                                'portletId' => 53, // TODO: @Shoaibi: From where do we get this?
+                                            );
+            $subscriberLayoutId             = __CLASS__ . '_' . 53;
+            $subscribersPortlet             = new MarketingListSubscribersForPortletView($subscribersViewData,
+                                                                                $subscribersParams, $subscriberLayoutId);
+            return ZurmoHtml::tag('div', array('class' => static::SUBSCRIBERS_PORTLET_CLASS), $subscribersPortlet->render());
+        }
+
+        protected function renderAutorespondersPortlet()
+        {
+            // TODO: @Shoaibi: Implement
+            $autorespondersPortletContent  = 'Dummy Autoresponders Portlet content';
+            return ZurmoHtml::tag('div', array('class' => static::AUTORESPONDERS_PORTLET_CLASS), $autorespondersPortletContent);
+        }
+
+        protected function getModuleClassName()
+        {
+            // TODO: @Shoaibi this could be ported to parent.
+            if ($this->modelId > 0)
             {
-                $moduleClassName = $this->model->moduleClassName;
-                $typesAndLabels  = Report::getTypeDropDownArray();
-                return strval($this->model) . ' - ' .
-                    Zurmo::t('Default', '{moduleLabel} {typeLabel} MarketingList',
-                        array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
-                            '{typeLabel}'   => $typesAndLabels[$this->model->type]));
+                $modelClassName = get_class($this->model);
+                return $modelClassName::getModuleClassName();
             }
             else
             {
@@ -76,21 +114,11 @@
             }
         }
 
-        protected function renderActionElementBar($renderedInForm)
+        protected function getModuleLabel($type, $language = null)
         {
-            $selectContactAndReportLinkActionElement  = new SelectContactAndReportLinkActionElement(
-                $this->controllerId,
-                $this->moduleId,
-                $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-select')));
-            $updateMarketingListsLinkActionElement  = new UpdateMarketingListsLinkActionElement(
-                $this->controllerId,
-                $this->moduleId,
-                $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-update')));
-            $content .= $selectContactAndReportLinkActionElement->render();
-            $content .= $updateMarketingListsLinkActionElement->render();
-            return $content;
+            // TODO: @Shoaibi this could be ported to parent.
+            $moduleClassName = $this->getModuleClassName();
+            return $moduleClassName::getModuleLabelByTypeAndLanguage($type, $language);
         }
     }
 ?>

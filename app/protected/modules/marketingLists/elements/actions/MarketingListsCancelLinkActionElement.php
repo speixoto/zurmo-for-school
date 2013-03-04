@@ -27,7 +27,7 @@
     /**
      * Cancel conversion link.
      */
-    class CancelMarketingListsLinkActionElement extends LinkActionElement
+    class MarketingListsCancelLinkActionElement extends LinkActionElement
     {
         public function getActionType()
         {

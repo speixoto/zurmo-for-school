@@ -24,8 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-
-    class SelectContactAndReportLinkActionElement extends LinkActionElement
+    /**
+     * Update Marketing List.
+     */
+    class MarketingListsUpdateLinkActionElement extends LinkActionElement
     {
         public function getActionType()
         {
@@ -34,22 +36,22 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Default', 'Select');
+            return Zurmo::t('Default', 'Update');
         }
 
         protected function getDefaultRoute()
         {
-          // TODO: @Shoaibi: has to add the action for this
+          // TODO: @Shoaibi: action has to be added.
         }
 
-        public function render()
+       public function render()
         {
-            $cClipWidget    = new CClipWidget();
+            $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                                'htmlOptions' => array('id' => 'ListViewSelectContactAndReportMenu'),
-                                'items'                   => array($this->renderMenuItem()),
-                            ));
+                'htmlOptions' => array('id' => 'ListViewUpdateMarketingListsMenu'),
+                'items'                   => array($this->renderMenuItem()),
+            ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ActionMenu'];
         }
@@ -59,45 +61,49 @@
             $this->registerScripts();
             return array('label' => $this->getLabel(), 'url' => null,
                 'items' => array(
-                    array(  'label'   => Zurmo::t('Default', 'Contact/Lead'),
+                    array(  'label'   => Zurmo::t('Default', 'Unsubscribe Selected'),
                         'url'     => '#',
-                        'itemOptions' => array( 'id'   => $this->getSelectContactAndLeadId())),
-                    array(  'label'   => Zurmo::t('Default', 'Reports'),
+                        'itemOptions' => array( 'id'   => $this->getUnsubscribeSelectedId())),
+                    array(  'label'   => Zurmo::t('Default', 'Unsubscribe All'),
                         'url'     => '#',
-                        'itemOptions' => array( 'id'   => $this->getSelectReportId()))));
+                        'itemOptions' => array( 'id'   => $this->getUnsubscribeAllId())),
+                    array(  'label'   => Zurmo::t('Default', 'Subscribe Selected'),
+                        'url'     => '#',
+                        'itemOptions' => array( 'id'   => $this->getSubscribeSelectedId())),
+                    array(  'label'   => Zurmo::t('Default', 'Subscribe All'),
+                        'url'     => '#',
+                        'itemOptions' => array( 'id'   => $this->getSubscribeAllId()))));
 
         }
 
         protected function registerScripts()
         {
-            // TODO: @Shoaibi: Write JS code to handle events from here and use variableStateController
-            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-listViewContactAndLead', "
-                $('#" . $this->getSelectContactAndLeadId() . "').unbind('click.action').bind('click.action', function()
-                    {
-                    }
-                );
-            ");
-            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-listViewReport', "
-                $('#"  . $this->getSelectReportId() . "').unbind('click.action').bind('click.action', function()
-                    {
-                    }
-                );
-            ");
+            // TODO: @Shoaibi: Implement scripts to handle user operations
         }
 
-        protected function getSelectContactAndLeadId()
+        protected function getUnsubscribeSelectedId()
         {
-            return $this->getListViewGridId() . '-selectContactAndLead';
+            return $this->getListViewGridId() . '-unsubscribeSelectedMarketingListMembers';
         }
 
-        protected function getSelectReportId()
+        protected function getUnsubscribeAllId()
         {
-            return $this->getListViewGridId() . '-selectReport';
+            return $this->getListViewGridId() . '-unsubscribeAllMarketingListMembers';
+        }
+
+        protected function getSubscribeSelectedId()
+        {
+            return $this->getListViewGridId() . '-subscribeSelectedMarketingListMembers';
+        }
+
+        protected function getSubscribeAllId()
+        {
+            return $this->getListViewGridId() . '-subscribeAllMarketingListMembers';
         }
 
         protected function getListViewGridId()
         {
-            // TODO: @Shoaibi: should be probably ported to parent, throws exception, work on why?
+            // TODO: @Shoaibi: should be probably ported to parent
             if (!isset($this->params['listViewGridId']))
             {
                 throw new NotSupportedException();

@@ -29,10 +29,11 @@
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
+                                                                        'listPageSize', get_class($this->getModule()));
             $marketingList                  = new MarketingList(false);
             $searchForm                     = new MarketingListsSearchForm($marketingList);
-            $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView', get_class($this->getModule()));
+            $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView',
+                                                                                        get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
@@ -50,20 +51,15 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
-                /*
-                 * // TODO: @Shoaibi: Do we need mass actions???
-                 * // TODO: @Shoaibi : For just one create button use:
-                 * $actionBarAndListView = new ActionBarAndListView(
-                                                                $this->getId(),
-                                                                $this->getModule()->getId(),
-                                                                $emailTemplate,
-                                                                'MarketingLists',
-                                                                $dataProvider,
-                                                                array(),
-                                                                'MarketingListsActionBarForListView'
-                                                            );
-                 */
+                $mixedView = new ActionBarAndListView(
+                                                        $this->getId(),
+                                                        $this->getModule()->getId(),
+                                                        $marketingList,
+                                                        'MarketingLists',
+                                                        $dataProvider,
+                                                        array(),
+                                                        'MarketingListsActionBarForListView'
+                                                    );
                 $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -80,6 +76,7 @@
             echo $view->render();
         }
 
+        /*
         public function actionDetails($id)
         {
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
@@ -95,7 +92,7 @@
                                               $pageSize,
                                               null,
                                               'MarketingListMembersSearchView'
-                                              );*/
+                                              );/
             $searchAttributes = array();
             $metadataAdapter  = new MarketingListsMembersSearchDataProviderMetadataAdapter(
                 $marketingListMember,
@@ -139,6 +136,23 @@
                         $listModel,
                         $dataProvider,
                         GetUtil::resolveSelectedIdsFromGet());
+        }
+        */
+
+        public function actionDetails($id)
+        {
+            // TODO: @Shoaibi: what about ajax?
+            // TODO: @Shoaibi: should portlet handle ajax loading of members itself?
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                            array(strval($marketingList), 'MarketingListsModule'), $marketingList);
+            $detailsView        = new MarketingListDetailsView($this->getId(), $this->getModule()->getId(), $marketingList);
+            $breadcrumbLinks    = array(StringUtil::getChoppedStringContent(strval($marketingList), 25));
+            $view               = new MarketingListsPageView((ZurmoDefaultViewUtil::
+                                        makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
+                                                $breadcrumbLinks, 'MarketingListBreadCrumbView')));
+            echo $view->render();
         }
 
 
