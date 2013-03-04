@@ -91,40 +91,5 @@
                 }
             }
         }
-
-        /**
-         * Utilized for existing models, that were not originally saved with a new custom field.  This will be utilized
-         * to ensure cached models properly generate information needed by the existing model. Construct incomplete does
-         * not run on new models.  This only needs to run on custom fields that have been created after a model was
-         * created, so the model does not have a  value for the linking id in the table.
-         * (non-PHPdoc)
-         * @see RedBeanModel::constructIncomplete()
-         */
-        protected function constructIncomplete($bean)
-        {
-            assert('$bean === null || $bean instanceof RedBean_OODBBean');
-            parent::constructIncomplete($bean);
-            /**
-            $metadata = $this->getMetadata();
-            foreach ($metadata as $unused => $classMetadata)
-            {
-                if (isset($classMetadata['customFields']))
-                {
-                    foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
-                    {
-                        $customFieldModelClassName = static::getAttributeModelClassName($customFieldName);
-                        $classBean                 = $this->getClassBean($customFieldModelClassName);
-                        $columnName                = static::getForeignKeyName($customFieldModelClassName, $customFieldName);
-                        if ($classBean->{$columnName} == null)
-                        {
-                            $customField       = $this->unrestrictedGet($customFieldName);
-                            $customFieldData   = CustomFieldData::getByName($customFieldDataName);
-                            $customField->data = $customFieldData;
-                        }
-                    }
-                }
-            }
-             * **/
-        }
     }
 ?>

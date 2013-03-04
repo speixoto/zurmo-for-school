@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CustomFieldFieldsModelTest extends BaseTest
+    class CustomFieldsModelTest extends BaseTest
     {
         /**
          * There previously was a problem with a model being created, then a new custom field added, then if you try
@@ -37,10 +37,10 @@
             $aaa = new AAA();
             $aaa->aaaMember = 'test';
             $saved = $aaa->save();
-            $this->assertTrue($aaa);
+            $this->assertTrue($saved);
             $aaaId = $aaa->id;
             $aaa->forget();
-            $aaa->unset();
+            unset($aaa);
 
             //Second create customFieldData
             $values = array(
@@ -62,15 +62,21 @@
 
             //Third create a CustomField on AAA
             $metadata = AAA::getMetadata();
-            $metadata['AAA']['customFields']['aNewCustomField'] = 'Items';
-            $metadata['AAA']['relations']['aNewCustomField']    = array(RedBeanModel::HAS_ONE, 'CustomField');
+            $metadata['AAA']['customFields']['newCustomField'] = 'Items';
+            $metadata['AAA']['relations']['newCustomField']    = array(RedBeanModel::HAS_ONE, 'CustomField');
             AAA::setMetadata($metadata);
-
 
             //Fourth make sure AAA can utilize CustomFieldData after being constructed
             $aaa = AAA::GetById($aaaId);
-            echo "<pre>";
-            print_r($aaa->aNewCustomField->data->serializedData);
-            echo "</pre>";
+
+            $this->assertTrue($aaa->isAnAttribute('newCustomField'));
+            $dropDownArray = unserialize($aaa->newCustomField->data->serializedData);
+            $this->assertCount(3, $dropDownArray);
+
+            //Fifth make sure a new model has the data available
+            $aaa = new AAA();
+            $this->assertTrue($aaa->isAnAttribute('newCustomField'));
+            $dropDownArray = unserialize($aaa->newCustomField->data->serializedData);
+            $this->assertCount(3, $dropDownArray);
         }
     }
