@@ -387,7 +387,6 @@
 
         protected static function getAttributeNamesToClassNamesForModel()
         {
-            //todo: confirm empty array comes back true on isset. we need that in order for this to work
             if(!isset(self::$attributeNamesToClassNames[get_called_class()]))
             {
                 self::mapMetadataForAllClassesInHeirarchy();
@@ -397,7 +396,6 @@
 
         protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
         {
-            //todo: confirm empty array comes back true on isset. we need that in order for this to work
             if(!isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
             {
                 self::mapMetadataForAllClassesInHeirarchy();
@@ -407,7 +405,6 @@
 
         protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
         {
-            //todo: confirm empty array comes back true on isset. we need that in order for this to work
             if(!isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
             {
                 self::mapMetadataForAllClassesInHeirarchy();

@@ -56,8 +56,8 @@
             $errorData = array();
             foreach ($model->getErrors() as $attribute => $errors)
             {
-                if ($model->isRelation($attribute) && $model->isOwnedRelation($attribute) &&
-                   in_array($model->getRelationModelClassName($attribute), array('Address', 'Email', 'CurrencyValue')))
+                if ($model::isRelation($attribute) && $model::isOwnedRelation($attribute) &&
+                   in_array($model::getRelationModelClassName($attribute), array('Address', 'Email', 'CurrencyValue')))
                 {
                     foreach ($errors as $relatedAttribute => $relatedErrors)
                     {

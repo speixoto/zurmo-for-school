@@ -719,7 +719,7 @@
                                 $hints[$columnName] = 'boolean';
                                 break;
                             case 'RedBeanModelUniqueValidator':
-                                if (!$this->isRelation($attributeName))
+                                if (!static::isRelation($attributeName))
                                 {
                                     $bean->setMeta("buildcommand.unique", array(array($attributeName)));
                                 }
@@ -1164,7 +1164,7 @@
             elseif ($this->isAttribute($attributeName))
             {
                 list($bean, $attributeModelClassName) = $this->attributeNameToBeanAndClassName[$attributeName];
-                if (!$this->isRelation($attributeName))
+                if (!static::isRelation($attributeName))
                 {
                     $columnName = strtolower($attributeName);
                     return $bean->$columnName;
@@ -1519,7 +1519,7 @@ exit;
         public function abbreviatedAttributeLabels()
         {
             $abbreviatedAttributeLabels = array();
-            foreach ($this->untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
+            foreach (static::untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
             {
                 $abbreviatedAttributeLabels[$attributeName] = Zurmo::t('Core', $label);
             }
@@ -1691,7 +1691,7 @@ exit;
         {
             assert("\$this->isAttribute('$attributeName')");
             assert('$value !== null');
-            if (!$this->isRelation($attributeName))
+            if (!static::isRelation($attributeName))
             {
                 $modelClassName = $this->attributeNameToBeanAndClassName[$attributeName][1];
                 $tableName = self::getTableName($modelClassName);
@@ -2448,7 +2448,7 @@ exit;
                 }
                 else
                 {
-                    if (!$this->isRelation($attributeName))
+                    if (!static::isRelation($attributeName))
                     {
                         $this->isInHasErrors = false;
                         return array_key_exists($attributeName, $this->attributeNameToErrors);
@@ -2702,7 +2702,7 @@ exit;
                     }
                     else
                     {
-                        if ($this->isRelation($attributeName))
+                        if (static::isRelation($attributeName))
                         {
                             if (count($value) == 1 && array_key_exists('id', $value))
                             {

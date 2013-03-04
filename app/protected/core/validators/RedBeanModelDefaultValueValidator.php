@@ -48,7 +48,7 @@
                 $isEmptyAttribute            = $model->isAttribute($attributeName) &&
                                                ($value === null || $value === '');
 
-                $isRelation = $model->isRelation($attributeName);
+                $isRelation = $model::isRelation($attributeName);
 
                 $isNullRelatedModel               = $isRelation &&
                                                     $value === null;

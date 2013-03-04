@@ -30,13 +30,14 @@
     class CustomFieldUtil
     {
         /**
-         * Given a model, return an array of attributes names that extend the CustomField class.
-         * @param RedBeanModel $model
+         * Given a model class name, return an array of attributes names that extend the CustomField class.
+         * @param string $modelClassName
+         * @return array
          */
-        public static function getCustomFieldAttributeNames(RedBeanModel $model)
+        public static function getCustomFieldAttributeNames($modelClassName)
         {
+            assert('is_string($modelClassName)');
             $attributeNames = array();
-            $modelClassName = get_class($model);
             $metadata       = $modelClassName::getMetadata();
             foreach ($metadata as $unused => $classMetadata)
             {
@@ -44,7 +45,7 @@
                 {
                     foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
                     {
-                        $relationModelClassName = $model->getRelationModelClassName($customFieldName);
+                        $relationModelClassName = $modelClassName::getRelationModelClassName($customFieldName);
                         if ( is_subclass_of($relationModelClassName, 'CustomField') ||
                             $relationModelClassName == 'CustomField')
                         {

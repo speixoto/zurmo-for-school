@@ -24,11 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CustomFieldUtilTest extends BaseTest
+    class BeanModelTest extends BaseTest
     {
-        public function testGetCustomFieldAttributeNames()
+        public function IssetAndEmptyOnPrivateStaticProperty()
         {
-            $customFieldAttributeNames = CustomFieldUtil::getCustomFieldAttributeNames('TestCustomFieldsModel');
-            $this->assertEquals(array('industry'), $customFieldAttributeNames);
+            $this->assertFalse(A::isPrivateStaticIsset());
+            A::setIssetAndEmptyAsEmpty();
+            $this->assertTrue(A::isPrivateStaticIsset());
+            A::setIssetAndEmptyWithString();
+            $this->assertTrue(A::isPrivateStaticIsset());
+            A::setIssetAndEmptyWithNull();
+            $this->assertFalse(A::isPrivateStaticIsset());
         }
     }
+?>

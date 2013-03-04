@@ -127,7 +127,7 @@
             foreach ($attributeModel->attributeNames() as $attributeName)
             {
                 if (!in_array($attributeName, $noAuditAttributeNames) &&
-                    $attributeModel->isOwnedRelation($attributeName))
+                    $attributeModel::isOwnedRelation($attributeName))
                 {
                     try
                     {
@@ -224,7 +224,7 @@
             foreach ($item->attributeNames() as $attributeName)
             {
                 if (!in_array($attributeName, $noAuditAttributeNames) &&
-                    $item->isOwnedRelation($attributeName))
+                    $item::isOwnedRelation($attributeName))
                 {
                     try
                     {

@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Used for testing with @see A
+     * Used for testing with @see MixedRelationsModel
      */
-    class ASearchFormTestModel extends DynamicSearchForm
+    class MixedRelationsModelSearchFormTestModel extends DynamicSearchForm
     {
         public $anyA;
         public $ABName;
@@ -38,10 +38,10 @@
 
         protected static function getRedBeanModelClassName()
         {
-            return 'A';
+            return 'MixedRelationsModel';
         }
 
-        public function __construct(A $model)
+        public function __construct(MixedRelationsModel $model)
         {
             parent::__construct($model);
             $this->addAttributeNamesThatCanBeSplitUsingDelimiter('dateDateTimeADate__Date');

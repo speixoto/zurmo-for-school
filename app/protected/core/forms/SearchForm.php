@@ -298,7 +298,7 @@
          */
         public function setAttributes($values, $safeOnly = true)
         {
-            $nonDyanmicAttributeValues = array();
+            $nonDynamicAttributeValues = array();
             foreach ($values as $name => $value)
             {
                 if (static::doesNameResolveNameForDelimiterSplit($name))
@@ -307,16 +307,17 @@
                 }
                 else
                 {
-                    $nonDyanmicAttributeValues[$name] = $value;
+                    $nonDynamicAttributeValues[$name] = $value;
                 }
             }
             //Dropdowns can be searched on as mulit-selects.  This below foreach resolves the issue of needing to show
             //multiple values in the dropdown.
             foreach ($values as $name => $value)
             {
-                if ($value != null && $this->model->isAttribute($name) && $this->model->isRelation($name))
+                $modelClassName = get_class($this->model);
+                if ($value != null && $this->model->isAttribute($name) && $modelClassName::isRelation($name))
                 {
-                    $relationModelClassName = $this->model->getRelationModelClassName($name);
+                    $relationModelClassName = $modelClassName::getRelationModelClassName($name);
                     if (($relationModelClassName == 'CustomField' ||
                        is_subclass_of($relationModelClassName, 'CustomField') && isset($value['value']) &&
                        is_array($value['value']) && count($value['value']) > 0))
@@ -325,7 +326,7 @@
                     }
                 }
             }
-            parent::setAttributes($nonDyanmicAttributeValues, $safeOnly);
+            parent::setAttributes($nonDynamicAttributeValues, $safeOnly);
         }
 
         /**
