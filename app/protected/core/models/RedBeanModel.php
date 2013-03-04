@@ -1435,7 +1435,7 @@ exit;
          */
         public function attributeNames()
         {
-            return self::getAttributeNames();
+            return static::getAttributeNames();
         }
 
         /**
@@ -1445,10 +1445,7 @@ exit;
          */
         public function isAttribute($attributeName)
         {
-            assert('is_string($attributeName)');
-            assert('$attributeName != ""');
-            return $attributeName == 'id' ||
-                   array_key_exists($attributeName, $this->attributeNameToBeanAndClassName);
+            return static::isAnAttribute($attributeName);
         }
 
         /**
