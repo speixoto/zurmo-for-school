@@ -176,7 +176,7 @@
          */
         public function getSummaryContentTemplate()
         {
-            return "<span>{modelStringContent}</span><span>{modelCreationTimeContent}</span>";
+            return "<span>{modelStringContent}</span><span  class=\"list-item-details\">{modelCreationTimeContent}</span>";
         }
 
         /**
