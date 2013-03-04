@@ -1016,7 +1016,6 @@
                         assert('is_array($metadata[$modelClassName]["rollupRelations"])');
                     }
                 }
-                // Todo: add more rules here as I think of them.
             }
         }
 
