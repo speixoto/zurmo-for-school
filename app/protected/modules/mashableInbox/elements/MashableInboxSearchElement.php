@@ -29,7 +29,9 @@
         protected function renderControlEditable()
         {
             $this->renderSearchScript();
-            return parent::renderControlEditable();
+            $content  = '<button type="button" class="global-search-loopa" aria-haspopup="true"><span></span></button>';
+            $content .= parent::renderControlEditable();
+            return $content;
         }
 
         private function renderSearchScript()
@@ -64,6 +66,11 @@
                 throw new NotSupportedException();
             }
             return $this->params['listViewGridId'];
+        }
+
+        protected function renderLabel()
+        {
+            return null;
         }
     }
 ?>

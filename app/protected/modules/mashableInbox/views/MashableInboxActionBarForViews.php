@@ -67,7 +67,7 @@
         {
             $content  = '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
             $content .= $this->renderActionElementBar(false);
-            $content .= $this->renderMashableInboxModels();
+            $content .= $this->renderMashableInboxModelsToolbar();
             $content .= $this->renderMassActionElement();
             $content .= '</div></div>';
             $content .= $this->renderMashableInboxForm();
@@ -130,26 +130,36 @@
         {
             $params   = array('listViewGridId' => $this->listView->getGridViewId());
             $element  = new MashableInboxSearchElement($model, 'searchTerm', $form, $params);
-            $content  = '<button type="button" class="global-search-loopa" aria-haspopup="true"><span></span></button>'.$element->render();
+            $content  = $element->render();
             $content .= $this->renderSummaryCloneContent();
             return ZurmoHtml::tag('div', array('class' => 'search-view-0'), $content);
         }
 
-        private function renderMashableInboxModels()
+        private function renderMashableInboxModelsToolbar()
         {
+            $activeClass           = null;
+            if ($this->modelClassName == null)
+            {
+                $activeClass = "active";
+            }
             $unreadCount           = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
             $url                   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list');
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
-            $span                  = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
-            $content               = ZurmoHtml::link($label . $span, $url, array('class' => 'icon-combined'));
+            $span                  = ZurmoHtml::tag('span', array("class" => "unread-count"),$unreadCount);
+            $content               = ZurmoHtml::link($label . $span, $url, array('class' => 'icon-combined ' . $activeClass));
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
+                $activeClass       = null;
+                if ($this->modelClassName == $modelClassName)
+                {
+                    $activeClass = "active";
+                }
                 $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
                 $url         = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
                                                      array('modelClassName' => $modelClassName));
                 $span        = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
-                $content    .= ZurmoHtml::link($modelLabel . $span, $url, array('class' => 'icon-' . strtolower($modelClassName)));
+                $content    .= ZurmoHtml::link($modelLabel . $span, $url, array('class' => 'icon-' . strtolower($modelClassName) . ' '  . $activeClass));
             }
             return $content;
         }
