@@ -90,12 +90,36 @@
 
         private static   $attributeNamesNotBelongsToOrManyMany;
 
-        public static function getMetadata() //todO: convert to an interface? that can be used by other things with metadata?
+        /**
+         * Can the class have a bean.  Some classes do not have beans as they are just used for modeling purposes
+         * and do not need to store persistant data.
+         * @var boolean
+         */
+        private static $canHaveBean = true;
+
+        /**
+         * @returns boolean
+         */
+        public static function getCanHaveBean()
+        {
+            return self::$canHaveBean;
+        }
+
+        /**
+         * Implement in children classes
+         * @throws NotImplementedException
+         */
+        public static function getMetadata()
         {
             throw new NotImplementedException();
         }
 
-        public static function isAnAttribute($attributeName) //todo: cant make isAttribute static because it is not in parent class.
+        /**
+         * Static alternative to using isAttribute which is a concrete method.
+         * @param $attributeName
+         * @return bool
+         */
+        public static function isAnAttribute($attributeName)
         {
             assert('is_string($attributeName)');
             assert('$attributeName != ""');
@@ -215,9 +239,6 @@
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 
-        /**
-         * See the yii documentation.
-         */
         public static function getAbbreviatedAttributeLabel($attributeName)
         {
             return static::getAbbreviatedAttributeLabelByLanguage($attributeName, Yii::app()->language);
@@ -257,7 +278,7 @@
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => static::generateAnAttributeLabel($attributeName)),
-                    Yii::t('Default', $labels[$attributeName],
+                    Zurmo::t('Default', $labels[$attributeName],
                         LabelUtil::getTranslationParamsForAllModules(), null, $language));
             }
             else
@@ -271,7 +292,7 @@
             return array();
         }
 
-        private static function mapMetadataForStuffA()
+        private static function mapMetadataForAllClassesInHeirarchy()
         {
             self::$attributeNamesToClassNames[get_called_class()]                      = array();
             self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()] = array();
@@ -280,19 +301,19 @@
             {
                 if ($modelClassName::getCanHaveBean())
                 {
-                    self::mapMetadataStuffA($modelClassName);
+                    self::mapMetadataByModelClassName($modelClassName);
                 }
             }
             foreach(static::getMixedInModelClassNames() as $modelClassName)
             {
                 if ($modelClassName::getCanHaveBean())
                 {
-                    self::mapMetadataStuffA($modelClassName);
+                    self::mapMetadataByModelClassName($modelClassName);
                 }
             }
         }
 
-        private static function mapMetadataStuffA($modelClassName)
+        private static function mapMetadataByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
             assert('$modelClassName != ""');
@@ -323,7 +344,7 @@
                         $label = 'Relations of type HAS_MANY_BELONGS_TO must have the relation name ' .
                             'the same as the related model class name. Relation: {relationName} ' .
                             'Relation model class name: {relationModelClassName}';
-                        throw new NotSupportedException(Yii::t('Default', $label,
+                        throw new NotSupportedException(Zurmo::t('Core', $label,
                             array('{relationName}' => $relationName,
                                 '{relationModelClassName}' => $relationModelClassName)));
                     }
@@ -366,27 +387,30 @@
 
         protected static function getAttributeNamesToClassNamesForModel()
         {
-            if(!isset(self::$attributeNamesToClassNames[get_called_class()])) //todo: confirm empty array comes back true on isset. we need that in order for this to work
+            //todo: confirm empty array comes back true on isset. we need that in order for this to work
+            if(!isset(self::$attributeNamesToClassNames[get_called_class()]))
             {
-                self::mapMetadataForStuffA();
+                self::mapMetadataForAllClassesInHeirarchy();
             }
             return self::$attributeNamesToClassNames[get_called_class()];
         }
 
         protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
         {
-            if(!isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()])) //todo: confirm empty array comes back true on isset. we need that in order for this to work
+            //todo: confirm empty array comes back true on isset. we need that in order for this to work
+            if(!isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
             {
-                self::mapMetadataForStuffA();
+                self::mapMetadataForAllClassesInHeirarchy();
             }
             return self::$attributeNamesNotBelongsToOrManyMany[get_called_class()];
         }
 
         protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
         {
-            if(!isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()])) //todo: confirm empty array comes back true on isset. we need that in order for this to work
+            //todo: confirm empty array comes back true on isset. we need that in order for this to work
+            if(!isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
             {
-                self::mapMetadataForStuffA();
+                self::mapMetadataForAllClassesInHeirarchy();
             }
             return self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
         }

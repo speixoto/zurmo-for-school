@@ -35,21 +35,10 @@
 
         protected function unrestrictedGet($attributeName)
         {
-            $x = parent::unrestrictedGet($attributeName);
-            if(is_object($x) && $x instanceof BaseCustomField && !($x->data->id > 0) ) //todo: imperfect since maybe a dropdown has no values. so need some php caching here.
+            $memberOrModel = parent::unrestrictedGet($attributeName);
+            //todo: imperfect since maybe a dropdown has no values yet. so need some php caching here.
+            if(is_object($memberOrModel) && $memberOrModel instanceof BaseCustomField && !($memberOrModel->data->id > 0) )
             {
-                /**
-                $backtrace = debug_backtrace();
-                foreach($backtrace as $back)
-                {
-                    if(isset($back['file']) && isset($back['line']))
-                    {
-                        echo $back['file'] . $back['line'] . "<BR>";
-                    }
-
-                }
-                echo '--------------' . "<BR>";
-                 * **/
                 $metadata = $this->getMetadata();
                 foreach ($metadata as $unused => $classMetadata)
                 {
@@ -59,16 +48,15 @@
                         {
                             if($customFieldName == $attributeName)
                             {
-                                //echo 'what is hapasd' . $attributeName . "<BR>";
                                 $customFieldData = CustomFieldData::getByName($customFieldDataName);
-                                $x->data = $customFieldData;
+                                $memberOrModel->data = $customFieldData;
                                 break;
                             }
                         }
                     }
                 }
             }
-            return $x;
+            return $memberOrModel;
         }
 
         protected function constructDerived($bean, $setDefaults)
@@ -78,18 +66,6 @@
             parent::constructDerived($bean, $setDefaults);
             if($setDefaults && $bean === null)
             {
-/**
-                $backtrace = debug_backtrace();
-                foreach($backtrace as $back)
-                {
-                    if(isset($back['file']) && isset($back['line']))
-                    {
-                        echo $back['file'] . $back['line'] . "<BR>";
-                    }
-
-                }
-                echo '--------------' . "<BR>";
- * **/
                 $metadata = $this->getMetadata();
                 foreach ($metadata as $unused => $classMetadata)
                 {
@@ -97,7 +73,6 @@
                     {
                         foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
                         {
-                          //echo 'constructDerived' . $customFieldName;
                             $customField     = $this->unrestrictedGet($customFieldName);
                             if ($customField instanceof CustomField &&
                                 ($customField->value === null || $customField->value === ''))

@@ -57,14 +57,14 @@
             assert('property_exists($auditableModel, "originalAttributeValues")');
             if (!array_key_exists($attributeName, $auditableModel->originalAttributeValues))
             {
-                if (!$auditableModel->isRelation($attributeName))
+                if (!$auditableModel::isRelation($attributeName))
                 {
                     if ($auditableModel->$attributeName != $value)
                     {
                         $auditableModel->originalAttributeValues[$attributeName] = $auditableModel->$attributeName;
                     }
                 }
-                elseif (!$auditableModel->isOwnedRelation($attributeName) &&
+                elseif (!$auditableModel::isOwnedRelation($attributeName) &&
                         !$auditableModel->$attributeName instanceof CustomFieldData)
                 {
                     assert('$auditableModel->$attributeName instanceof RedBeanModel');
@@ -89,7 +89,7 @@
                 if (!in_array($attributeName, $noAuditAttributeNames))
                 {
                     $processAuditEvent = true;
-                    if (!$attributeModel->isRelation($attributeName))
+                    if (!$attributeModel::isRelation($attributeName))
                     {
                         $newValue = $attributeModel->$attributeName;
                     }
@@ -173,7 +173,7 @@
                 return 'Collection';
             }
             assert('is_string($attributeName) && $attributeName != ""');
-            if (!$attributeModel->isRelation($attributeName))
+            if (!$attributeModel::isRelation($attributeName))
             {
                 if ($value === null || $value == '')
                 {

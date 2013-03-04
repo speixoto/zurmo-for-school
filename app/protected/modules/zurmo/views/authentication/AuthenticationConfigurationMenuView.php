@@ -28,7 +28,7 @@
     {
         public function getTitle()
         {
-            return Yii::t('Default', 'Authentication Configuration');
+            return Zurmo::t('ZurmoModule', 'Authentication Configuration');
         }
 
         protected function getCategoryData()

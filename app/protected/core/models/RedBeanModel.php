@@ -136,13 +136,6 @@
         );
 
         /**
-         * Can the class have a bean.  Some classes do not have beans as they are just used for modeling purposes
-         * and do not need to store persistant data.
-         * @var boolean
-         */
-        private static $canHaveBean = true;
-
-        /**
          * Returns the static model of the specified AR class.
          * The model returned is a static instance of the AR class.
          * It is provided for invoking class-level methods (something similar to static class methods.)
@@ -372,19 +365,6 @@
             {
                 return;
             }
-            /**
-            echo 'how many times we here' . get_called_class() . "<BR>";
-            $backtrace = debug_backtrace();
-            foreach($backtrace as $back)
-            {
-                if(isset($back['file']) && isset($back['line']))
-                {
-                    echo $back['file'] . $back['line'] . "<BR>";
-                }
-
-            }
-            echo '--------------' . "<BR>";
-             * **/
             if ($bean === null)
             {
                 foreach (array_reverse(RuntimeUtil::getClassHierarchy(get_class($this), static::$lastClassInBeanHeirarchy)) as $modelClassName)
@@ -2945,14 +2925,6 @@ exit;
         {
             assert('is_array($values)');
             return ArrayUtil::stringify($values);
-        }
-
-        /**
-         * @returns boolean
-         */
-        public static function getCanHaveBean()
-        {
-            return self::$canHaveBean;
         }
 
         /**
