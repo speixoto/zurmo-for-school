@@ -2529,7 +2529,7 @@
          * Given an attributeName, attempt to find in the metadata a custom attribute label for the given language.
          * @return string - translated attribute label, if not found return null.
          */
-        protected function getTranslatedCustomAttributeLabelByLanguage($attributeName, $language)
+        protected function getTranslatedCustomAttributeLabelByLanguage($attributeName, $languageCode)
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
@@ -2538,9 +2538,9 @@
             {
                 if (isset($modelClassMetadata['labels']) &&
                     isset($modelClassMetadata['labels'][$attributeName]) &&
-                    isset($modelClassMetadata['labels'][$attributeName][$language]))
+                    isset($modelClassMetadata['labels'][$attributeName][$languageCode]))
                 {
-                    return $modelClassMetadata['labels'][$attributeName][$language];
+                    return $modelClassMetadata['labels'][$attributeName][$languageCode];
                 }
             }
             return null;
@@ -2556,7 +2556,7 @@
             $attirbuteLabelData = array();
             foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $attirbuteLabelData[$language] = $this->getAttributeLabelByLanguage($attributeName, $languageCode);
+                $attirbuteLabelData[$languageCode] = $this->getAttributeLabelByLanguage($attributeName, $languageCode);
             }
             return $attirbuteLabelData;
         }
