@@ -44,7 +44,7 @@
                 if ($mashableUtilRules->shouldRenderCreateAction)
                 {
                     $items[] = array('label'   => $modelClassName,
-                                 'url'     => $this->getRouteForItem($modelClassName));
+                                     'url'     => $this->getRouteForItem($modelClassName));
                 }
             }
             $menuItems = array('label' => $this->getLabel(),
@@ -56,6 +56,7 @@
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("ActionMenu");
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
                     'items'       => array($menuItems),
                 ));
                 $cClipWidget->endClip();

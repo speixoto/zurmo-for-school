@@ -30,6 +30,8 @@
 
         private $listView;
 
+        private $formName = 'search-form';
+
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -79,7 +81,7 @@
                             'htmlOptions'    => array('class' => 'icon-create'),
                             'listViewGridId' => $this->listView->getGridViewId(),
                             'modelClassName' => $this->modelClassName,
-                            'formName'       => 'mashable-inbox-form',
+                            'formName'       => $this->formName,
                         );
             $massActionElement = new MashableInboxMassActionElement($this->controllerId, $this->moduleId, 'MashableInboxForm', $params);
             return $massActionElement->render();
@@ -87,12 +89,11 @@
 
         private function renderMashableInboxForm()
         {
-            $formName   = 'mashable-inbox-form';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
                 array(
-                    'id' => $formName,
+                    'id' => $this->formName,
                 )
             );
             $content  = $formStart;
@@ -131,7 +132,7 @@
             $element  = new MashableInboxSearchElement($model, 'searchTerm', $form, $params);
             $content  = $element->render();
             $content .= $this->renderSummaryCloneContent();
-            return ZurmoHtml::tag('div', array('class' => 'SearchView'), $content);
+            return ZurmoHtml::tag('div', array('class' => 'search-view-0'), $content);
         }
 
         private function renderMashableInboxModels()
@@ -139,14 +140,16 @@
             $unreadCount           = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
             $url                   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list');
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
-            $content               = ZurmoHtml::link($label . '<span class="unread-count">' . $unreadCount . '</span>', $url);
+            $span                  = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
+            $content               = ZurmoHtml::link($label . $span, $url);
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
                 $unreadCount = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
                 $url         = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
                                                      array('modelClassName' => $modelClassName));
-                $content    .= ZurmoHtml::link($modelLabel . ' (' . $unreadCount . ')', $url);
+                $span        = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
+                $content    .= ZurmoHtml::link($modelLabel . $span, $url);
             }
             return $content;
         }
