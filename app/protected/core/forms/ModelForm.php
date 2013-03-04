@@ -35,6 +35,15 @@
 
         protected $model;
 
+        /**
+         * Override in child to implement.
+         * @throws NotImplementedException
+         */
+        protected static function getRedBeanModelClassName()
+        {
+            throw new NotImplementedException();
+        }
+
         public function __construct(RedBeanModel $model)
         {
             $this->model = $model;

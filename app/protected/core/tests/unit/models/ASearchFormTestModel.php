@@ -36,6 +36,11 @@
         public $dateDateTimeADate__Date;
         public $dateDateTimeADateTime__DateTime;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'A';
+        }
+
         public function __construct(RedBeanModel $model)
         {
             parent::__construct($model);

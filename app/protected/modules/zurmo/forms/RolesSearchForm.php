@@ -29,5 +29,14 @@
      */
     class RolesSearchForm extends SearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Role';
+        }
+
+        public function __construct(Role $model)
+        {
+            parent::__construct($model);
+        }
     }
 ?>
