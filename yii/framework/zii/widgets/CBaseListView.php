@@ -195,7 +195,7 @@ abstract class CBaseListView extends CWidget
 	 */
 	public function renderSummary()
 	{
-		if(($count=$this->dataProvider->getItemCount())<0)
+		if(($count=$this->dataProvider->getItemCount())<=0)
 			return;
 
 		echo '<div class="'.$this->summaryCssClass.'">';
