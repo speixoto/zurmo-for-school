@@ -26,7 +26,7 @@
 
     class BeanModelTest extends BaseTest
     {
-        public function IssetAndEmptyOnPrivateStaticProperty()
+        public function testIssetAndEmptyOnPrivateStaticProperty()
         {
             $this->assertFalse(A::isPrivateStaticIsset());
             A::setIssetAndEmptyAsEmpty();

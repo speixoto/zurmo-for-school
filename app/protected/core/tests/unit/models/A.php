@@ -98,7 +98,7 @@
         {
             if(!isset(self::$testingIssetAndEmpty[get_called_class()]))
             {
-                false;
+                return false;
             }
             return true;
         }
