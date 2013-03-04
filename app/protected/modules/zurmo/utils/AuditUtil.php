@@ -177,7 +177,7 @@
             {
                 if ($value === null || $value == '')
                 {
-                    $value = Zurmo::t('ZurmoModule', '(None)');
+                    $value = Zurmo::t('Core', '(None)');
                 }
                 $s = $value;
             }
@@ -190,7 +190,7 @@
                 assert('is_array($value)');
                 if ($value[1] < 0)
                 {
-                    $s = Zurmo::t('ZurmoModule', '(None)');
+                    $s = Zurmo::t('Core', '(None)');
                 }
                 else
                 {
@@ -206,7 +206,7 @@
                     }
                     if ($value[2] === null || $value == '')
                     {
-                        $s .= Zurmo::t('ZurmoModule', '(None)');
+                        $s .= Zurmo::t('Core', '(None)');
                     }
                     else
                     {

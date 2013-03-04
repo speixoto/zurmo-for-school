@@ -49,7 +49,7 @@
         {
             if (trim($this->value) == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return strval($this->value);
         }

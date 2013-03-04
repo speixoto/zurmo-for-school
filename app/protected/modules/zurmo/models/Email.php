@@ -30,7 +30,7 @@
         {
             if (trim($this->emailAddress) == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $this->emailAddress;
         }

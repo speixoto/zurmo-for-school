@@ -31,7 +31,7 @@
             $address = $this->makeAddress();
             if ($address == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $address;
         }

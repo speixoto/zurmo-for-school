@@ -123,7 +123,7 @@
         {
             if (trim($this->code) == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $this->code;
         }

@@ -160,7 +160,7 @@
 
         public function actionSave($type, $id = null)
         {
-            $postData                  = PostUtil::getData();            
+            $postData                  = PostUtil::getData();
             $savedReport               = null;
             $report                    = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
@@ -277,16 +277,16 @@
             $rangeAttributesData  =                       $modelToReportAdapter->
                                                           getAttributesForChartRange ($report->getDisplayAttributes());
             $dataAndLabels                              = array();
-            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['firstSeriesDataAndLabels']  = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['firstSeriesDataAndLabels']  = array_merge($dataAndLabels['firstSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['firstRangeDataAndLabels']   = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['firstRangeDataAndLabels']   = array_merge($dataAndLabels['firstRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
-            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['secondSeriesDataAndLabels'] = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['secondSeriesDataAndLabels'] = array_merge($dataAndLabels['secondSeriesDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($seriesAttributesData));
-            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('ReportsModule', '(None)'));
+            $dataAndLabels['secondRangeDataAndLabels']  = array('' => Zurmo::t('Core', '(None)'));
             $dataAndLabels['secondRangeDataAndLabels']  = array_merge($dataAndLabels['secondRangeDataAndLabels'],
                                                           ReportUtil::makeDataAndLabelsForSeriesOrRange($rangeAttributesData));
             echo CJSON::encode($dataAndLabels);
@@ -450,39 +450,39 @@
             $gridView->setView($reportDetailsAndRelationsView, 1, 0);
             return $gridView;
         }
-        
+
         public function actionExport($id, $stickySearchKey = null)
-        {                           
+        {
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
-            assert('is_int($id)');            
+            assert('is_int($id)');
             $savedReport                    = SavedReport::getById((int)$id);
             $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
             $savedReport                    = new SavedReport(false);
             $searchForm                     = new ReportsSearchForm($savedReport);
-            
-            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);            
-            $totalItems = intval($dataProvider->calculateTotalItemCount());            
+
+            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);
+            $totalItems = intval($dataProvider->calculateTotalItemCount());
             $data = array();
             if ($totalItems > 0)
             {
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
                     // Output csv file directly to user browser
-                    if ($dataProvider)                    
-                    {     
-                        $data1 = $dataProvider->getData();                      
+                    if ($dataProvider)
+                    {
+                        $data1 = $dataProvider->getData();
                         foreach ($data1 as $reportResultsRowData)
-                        {                             
-                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData); 
-                          $data[] = $reportToExportAdapter->getData();  
-                        }                                                                          
+                        {
+                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData);
+                          $data[] = $reportToExportAdapter->getData();
+                        }
                     }
                     // Output data
                     if (count($data))
                     {
-                        $fileName = $this->getModule()->getName() . ".csv";                        
+                        $fileName = $this->getModule()->getName() . ".csv";
                         $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
                     }
                     else
@@ -540,6 +540,6 @@
                 $dataProvider->setRunReport($runReport);
             }
             return $dataProvider;
-        }        
+        }
     }
 ?>

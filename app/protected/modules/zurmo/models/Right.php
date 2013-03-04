@@ -61,7 +61,7 @@
             switch ($right)
             {
                 case self::NONE:
-                    return Zurmo::t('ZurmoModule', '(None)');
+                    return Zurmo::t('Core', '(None)');
 
                 case self::ALLOW:
                     return Zurmo::t('ZurmoModule', 'Allow');
