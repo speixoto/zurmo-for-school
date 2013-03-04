@@ -732,6 +732,7 @@ body.blue #notifications-flyout .single-notification h4,
 body.blue .view-toolbar a:hover,
 body.blue .view-toolbar a:active,
 body.blue .view-toolbar a.active,
+body.blue .view-toolbar a.active span,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
 body.blue #StickyListMenu > li > a:hover > span,
@@ -1266,6 +1267,7 @@ body.brown #notifications-flyout .single-notification h4,
 body.brown .view-toolbar a:hover,
 body.brown .view-toolbar a:active,
 body.brown .view-toolbar a.active,
+body.brown .view-toolbar a.active span,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
 body.brown #StickyListMenu > li > a:hover > span,
@@ -1800,6 +1802,7 @@ body.lime #notifications-flyout .single-notification h4,
 body.lime .view-toolbar a:hover,
 body.lime .view-toolbar a:active,
 body.lime .view-toolbar a.active,
+body.lime .view-toolbar a.active span,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
 body.lime #StickyListMenu > li > a:hover > span,
@@ -2334,6 +2337,7 @@ body.cherry #notifications-flyout .single-notification h4,
 body.cherry .view-toolbar a:hover,
 body.cherry .view-toolbar a:active,
 body.cherry .view-toolbar a.active,
+body.cherry .view-toolbar a.active span,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
 body.cherry #StickyListMenu > li > a:hover > span,
@@ -2868,6 +2872,7 @@ body.turquoise #notifications-flyout .single-notification h4,
 body.turquoise .view-toolbar a:hover,
 body.turquoise .view-toolbar a:active,
 body.turquoise .view-toolbar a.active,
+body.turquoise .view-toolbar a.active span,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
 body.turquoise #StickyListMenu > li > a:hover > span,
@@ -3402,6 +3407,7 @@ body.violet #notifications-flyout .single-notification h4,
 body.violet .view-toolbar a:hover,
 body.violet .view-toolbar a:active,
 body.violet .view-toolbar a.active,
+body.violet .view-toolbar a.active span,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
 body.violet #StickyListMenu > li > a:hover > span,
@@ -3936,6 +3942,7 @@ body.honey #notifications-flyout .single-notification h4,
 body.honey .view-toolbar a:hover,
 body.honey .view-toolbar a:active,
 body.honey .view-toolbar a.active,
+body.honey .view-toolbar a.active span,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
 body.honey #StickyListMenu > li > a:hover > span,
@@ -7231,9 +7238,9 @@ div.wide.form label.hasCheckBox {
 }
 #MashableInboxActionBarForViews .search-view-0 {
   padding-left: 10px;
+  margin-bottom: 15px;
 }
-#MashableInboxForm_filteredBy_area,
-#MashableInboxForm_optionForModel_area {
+.filters-bar {
   font-size: 11px;
   padding-left: 8px;
   border-bottom: 1px solid #DFDFDF;
@@ -7256,6 +7263,8 @@ div.wide.form label.hasCheckBox {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
   position: relative;
+  border-bottom: none;
+  border-top: 1px solid #dfdfdf;
   float: left;
   width: 100%;
   padding: 0 10px;
@@ -7263,8 +7272,7 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-#MashableInboxForm_filteredBy_area label,
-#MashableInboxForm_optionForModel_area label {
+.filters-bar label {
   cursor: pointer;
   border: none;
   background: none;
@@ -7272,8 +7280,7 @@ div.wide.form label.hasCheckBox {
   padding: 3px;
   margin: 0 3px;
 }
-#MashableInboxForm_filteredBy_area label:hover,
-#MashableInboxForm_optionForModel_area label:hover {
+.filters-bar label:hover {
   color: #FFF;
   -webkit-border-radius: 3px !important;
   -moz-border-radius: 3px !important;
@@ -7282,15 +7289,12 @@ div.wide.form label.hasCheckBox {
   border-radius: 3px !important;
   border: none;
 }
-#MashableInboxForm_filteredBy_area input[type="radio"],
-#MashableInboxForm_optionForModel_area input[type="radio"],
-#MashableInboxForm_filteredBy_area input[type="checkbox"],
-#MashableInboxForm_optionForModel_area input[type="checkbox"] {
+.filters-bar input[type="radio"],
+.filters-bar input[type="checkbox"] {
   visibility: hidden;
   display: none;
 }
-#MashableInboxForm_filteredBy_area .ui-state-active,
-#MashableInboxForm_optionForModel_area .ui-state-active {
+.filters-bar .ui-state-active {
   color: #FFF;
   -webkit-border-radius: 3px !important;
   -moz-border-radius: 3px !important;
@@ -7299,10 +7303,13 @@ div.wide.form label.hasCheckBox {
   border-radius: 3px !important;
   border: none;
 }
-#MashableInboxForm_filteredBy_area .ui-button-text,
-#MashableInboxForm_optionForModel_area .ui-button-text {
+.filters-bar .ui-button-text {
   padding: 0;
   margin: 0;
+}
+.filters-bar > div {
+  display: inline-block;
+  margin-right: 15px;
 }
 .cgrid-view {
   /*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/

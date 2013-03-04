@@ -112,10 +112,12 @@
             $content      = $this->renderSearchView($model, $form);
             $element      = new MashableInboxOptionsByModelRadioElement($model, 'optionForModel', $form, array(), $this->getArrayForByModelRadioElement());
             $element->editableTemplate =  '<div id="MashableInboxForm_optionForModel_area">{content}</div>';
+            $content     .= '<div class="filters-bar">';
             $content     .= $element->render();
             $element      = new MashableInboxStatusRadioElement($model, 'filteredBy', $form);
             $element->editableTemplate =  '<div id="MashableInboxForm_filteredBy_area">{content}</div>';
             $content     .= $element->render();
+            $content     .= '</div>';
             $content     .= ZurmoHtml::activeHiddenField($model, 'selectedIds');
             $content     .= ZurmoHtml::activeHiddenField($model, 'massAction');
             return $content;
