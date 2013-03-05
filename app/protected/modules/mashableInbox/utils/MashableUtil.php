@@ -138,11 +138,12 @@
             $data['modelStringContent']         = static::renderModelStringContent($model, $mashableInboxRules);
             $data['modelCreationTimeContent']   = static::renderModelCreationTimeContent($model, $mashableInboxRules);
             $spanForTag                         = ZurmoHtml::tag(
-                                                            'span',
+                                                            'div',
                                                             array(
                                                                 "class" => "model-tag " . strtolower($mashableInboxRules->getModelClassName())
                                                             ),
-                                                            $mashableInboxRules->getModelClassName());
+                                                            ZurmoHtml::tag('span', array(), $mashableInboxRules->getModelClassName()));
+            
             $content  = self::resolveContentTemplate($summaryContentTemplate, $data);
             $content .= $spanForTag;
             return $content;

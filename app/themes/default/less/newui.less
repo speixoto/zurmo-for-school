@@ -1202,11 +1202,10 @@ body > .ui-autocomplete{
     color: #545454;
     .t-shadow(none);
     font-size:9px;
-    font-weight: bold;
+    font-weight: bold !important;
     #gradient > .vertical( #fff, #dfdfdf );
     border:1px solid #dfdfdf;
 }
-
 
 form,
 .juiportlet-widget,
@@ -1569,7 +1568,6 @@ caption, th, td {
     border-collapse: collapse;
     border-spacing: 1px;
     margin: 0 -100% 0 0;
-    float: left;
     .box-sizing();
     > tbody,
     > thead{
@@ -2049,11 +2047,43 @@ div.wide.form{
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-item-details{
-    display: block;
+    display: inline-block;
+    float: right;
     font-weight: normal;
     color:#999;
-    margin-top: 5px;
+    margin-right: 5px;
     .smaller();
+}
+
+.model-tag{
+    display: inline-block;
+    font-weight:400;
+    .smaller();
+    float: left;
+    margin-right: 5px;
+    margin-top: 1px;
+    span{
+        .radius(3px);
+        color:#fff;
+        padding:2px 4px;
+        line-height: 1;
+    }
+    &.mission span{
+        #gradient > .vertical(#1ABC9C, #16A085 ); //green
+    }
+    &.conversation span{
+        #gradient > .vertical(#34495E, #2C3E50 ); //dark
+    }
+    &.notification span{
+        #gradient > .vertical(#9B59B6, #8E44AD ); //purple
+    }
+}
+
+.last-comment{
+    font-weight: 400;
+    color:#666;
+    margin-left: 5px;
+    font-style:italic;
 }
 
 .summary{
