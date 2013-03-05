@@ -84,6 +84,7 @@
             $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markUnread',
                                     'selectedIds'    => $selectedIds,
@@ -99,6 +100,7 @@
             //Mark conversation and mission as read
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markRead',
                                     'selectedIds'    => $selectedIds,
@@ -115,6 +117,7 @@
             $selectedIds    = get_class($conversation) . '_' . $conversationId;
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markUnread',
                                     'selectedIds'    => $selectedIds,
@@ -146,6 +149,7 @@
             $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'modelClassName'    => 'Conversation',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markUnread',
@@ -160,6 +164,7 @@
             //Mark conversation as read
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'modelClassName'    => 'Conversation',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markRead',
@@ -185,6 +190,7 @@
             $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'modelClassName'    => 'Mission',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markUnread',
@@ -199,6 +205,7 @@
             //Mark mission as read
             $this->setGetArray(
                         array(
+                            'ajax'              => 'list-view',
                             'modelClassName'    => 'Mission',
                             'MashableInboxForm' => array(
                                     'massAction'     => 'markRead',

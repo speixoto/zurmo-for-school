@@ -203,7 +203,8 @@
                 ->will($this->returnValue($rules));
             $content
                 = $mashableUtil::renderSummaryContent($model);
-            $this->assertEquals($content, 'string - time');
+            $this->assertContains('string - time',          $content);
+            $this->assertContains('model-tag conversation', $content);
         }
 
         public function testResolveContentTemplate()
