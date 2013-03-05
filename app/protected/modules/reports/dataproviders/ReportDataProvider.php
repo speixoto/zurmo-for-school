@@ -431,7 +431,7 @@
             $filters          = $this->report->getFilters();
             $filtersStructure = $this->report->getFiltersStructure();
             $resolvedFilters  = $this->resolveFiltersForVariableStates($filters, $filtersStructure);
-            $resolvedFilters  = $this->resolveFiltersForReadPermissions($filters, $filtersStructure);
+            $resolvedFilters  = $this->resolveFiltersForReadPermissions($resolvedFilters, $filtersStructure);
             $builder = new FiltersReportQueryBuilder($joinTablesAdapter, $filtersStructure);
             return $builder->makeQueryContent($resolvedFilters);
         }

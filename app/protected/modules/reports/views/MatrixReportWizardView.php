@@ -119,6 +119,7 @@
                 $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
                         $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::MODULE_VALIDATION_SCENARIO . "');
+                        $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForReportWizardView').show();
                         $('#FiltersForReportWizardView').hide();
                         return false;

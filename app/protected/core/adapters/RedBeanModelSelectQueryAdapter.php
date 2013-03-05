@@ -163,7 +163,7 @@
         {
             assert('is_string($tableName)');
             assert('is_string($columnName)');
-            assert('is_string($queryStringExtraPart) || $queryStringExtraPart == null');
+            assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
             if($adjustForTimeZone)

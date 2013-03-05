@@ -109,12 +109,12 @@
         {
             assert('$modelAttributeToDataProviderAdapter instanceof RedBeanModelAttributeToDataProviderAdapter');
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            $resolvedModelClassName     = $this->resolvedModelClassName($modelAttributeToDataProviderAdapter);
             if($onTableAliasName == null)
             {
                 $onTableAliasName     = $modelAttributeToDataProviderAdapter->getModelTableName();
             }
-            $this->selectQueryAdapter->resolveIdClause($resolvedModelClassName, $onTableAliasName);
+            $this->selectQueryAdapter->resolveIdClause($modelAttributeToDataProviderAdapter->getModelClassName(),
+                                                       $onTableAliasName);
             $this->componentForm->setModelAliasUsingTableAliasName($onTableAliasName);
         }
 

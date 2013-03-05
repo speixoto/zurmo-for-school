@@ -40,6 +40,12 @@
          */
         public $bindAsLive = false;
 
+        public static function makeErrorsSummaryId($id)
+        {
+            assert('is_string($id)');
+            return $id . '_es_';
+        }
+
         /**
          * Makes errorsData by getting errors from model.  Also resolves for owned related models such as Email. Prior
          * to having this method, things such as currencyValue, emailAddress, and street1 for example were not properly
@@ -227,7 +233,7 @@
             }
             if (!isset($htmlOptions['id']))
             {
-                $htmlOptions['id'] = $this->id . '_es_';
+                $htmlOptions['id'] = static::makeErrorsSummaryId($this->id);
             }
             $html = ZurmoHtml::errorSummary($models, $header, $footer, $htmlOptions);
             if ($html === '')
