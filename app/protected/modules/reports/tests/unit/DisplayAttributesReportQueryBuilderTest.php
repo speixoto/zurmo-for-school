@@ -979,16 +979,19 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdByUser__User';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'modifiedByUser__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+            $this->assertCount(1, $idTableAliasesAndModelClassNames);
+            $this->assertEquals('ReportModelTestItem9', $idTableAliasesAndModelClassNames['reportmodeltestitem9']);
 
             //2 __User attributes on the same model, one is owned, so not originating both from Item
             DisplayAttributeForReportForm::resetCount();
@@ -996,16 +999,22 @@
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
             $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdByUser__User';
             $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_ROWS_AND_COLUMNS);
+                                                              Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->attributeIndexOrDerivedType = 'owner__User';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
             $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
+            $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+            $this->assertCount(1, $idTableAliasesAndModelClassNames);
+            $this->assertEquals('ReportModelTestItem9', $idTableAliasesAndModelClassNames['reportmodeltestitem9']);
+            $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+            $this->assertCount(1, $idTableAliasesAndModelClassNames);
+            $this->assertEquals('ReportModelTestItem9', $idTableAliasesAndModelClassNames['reportmodeltestitem9']);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereSameAttribute()
@@ -1027,6 +1036,10 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+            $this->assertCount(2, $idTableAliasesAndModelClassNames);
+            $this->assertEquals('ReportModelTestItem9', $idTableAliasesAndModelClassNames['reportmodeltestitem9']);
+            $this->assertEquals('ReportModelTestItem', $idTableAliasesAndModelClassNames['reportmodeltestitem']);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereDifferentAttributes()
@@ -1048,6 +1061,10 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+            $this->assertCount(2, $idTableAliasesAndModelClassNames);
+            $this->assertEquals('ReportModelTestItem9', $idTableAliasesAndModelClassNames['reportmodeltestitem9']);
+            $this->assertEquals('ReportModelTestItem', $idTableAliasesAndModelClassNames['reportmodeltestitem']);
         }
 
         public function testDynamicallyDerivedAttributeBothOnRelatedModelWhereDifferentAttributes()
@@ -1068,6 +1085,9 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+            $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+            $this->assertCount(1, $idTableAliasesAndModelClassNames);
+            $this->assertEquals('ReportModelTestItem', $idTableAliasesAndModelClassNames['reportmodeltestitem']);
         }
 
         public function testNestedRelationsThatComeBackOnTheBaseModel()
@@ -1537,6 +1557,13 @@
         print_r($joinTablesAdapter->getFromTablesAndAliases());
         print_r($joinTablesAdapter->getLeftTablesAndAliases());
         echo "</pre>";
+         */
+
+        /**
+         * //todo: check for all methods the following info...
+         *             $idTableAliasesAndModelClassNames = $selectQueryAdapter->getIdTableAliasesAndModelClassNames();
+        $this->assertCount(1, $idTableAliasesAndModelClassNames);
+        $this->assertEquals('ReportModelTestItem9', $idTableAliasesAndModelClassNames['reportmodeltestitem9']);
          */
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
