@@ -42,7 +42,11 @@
                         self::getRightsFilterPath() . ' + selectType',
                         'moduleClassName' => 'ReportsModule',
                         'rightName' => ReportsModule::RIGHT_CREATE_REPORTS,
-                   )
+                   ),
+                   array(
+                        ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        'controller' => $this,
+                   ),
                 )
             );
         }
