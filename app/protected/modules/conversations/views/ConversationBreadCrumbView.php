@@ -33,5 +33,23 @@
         {
             return Zurmo::t('ConversationsModule', 'Conversations');
         }
+
+        protected function renderContent()
+        {
+            $content  = $this->renderGoBackLink();
+            $content .= parent::renderContent();
+            return $content;
+        }
+
+        protected function renderGoBackLink()
+        {
+            if (Yii::app()->request->urlReferrer)
+            {
+                $content = ZurmoHtml::link(
+                                  Zurmo::t('ConversationsModule', 'Go Back'),
+                                  Yii::app()->request->urlReferrer);
+                return $content;
+            }
+        }
     }
 ?>
