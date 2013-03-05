@@ -6972,12 +6972,11 @@ div.wide.form label.hasCheckBox {
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-item-details {
-  display: inline-block;
+  display: block;
   font-weight: normal;
   color: #999;
-  margin-right: 5px;
+  margin-top: 5px;
   font-size: 11px;
-  float: right;
 }
 .summary {
   display: none;
