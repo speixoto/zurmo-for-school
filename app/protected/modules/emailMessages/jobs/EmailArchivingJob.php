@@ -192,7 +192,7 @@
             $recipient                 = new EmailMessageRecipient();
             $recipient->toAddress      = $recipientInfo['email'];
             $recipient->toName         = $recipientInfo['name'];
-            $recipient->type           = EmailMessageRecipient::TYPE_TO;
+            $recipient->type           = $recipientInfo['type'];
 
             $personOrAccount = EmailArchivingUtil::resolvePersonOrAccountByEmailAddress(
                     $recipientInfo['email'],
@@ -230,7 +230,14 @@
             }
         }
 
-        protected function saveEmailMessage($message)
+        /**
+         * Save email message
+         * This method should be protected, but we made it public for unit testing, so don't call it outside this class.
+         * @param ImapMessage $message
+         * @throws NotSupportedException
+         * @return boolean
+         */
+        public function saveEmailMessage($message)
         {
             // Get owner for message
             try
@@ -294,7 +301,6 @@
                 if (!(empty($recipient->personOrAccount) || $recipient->personOrAccount->id <= 0))
                 {
                     $emailRecipientNotFoundInSystem = false;
-                    break;
                 }
             }
 
@@ -303,7 +309,6 @@
             {
                 $emailSenderOrRecipientEmailNotFoundInSystem = $emailRecipientNotFoundInSystem;
             }
-
             $box                       = EmailBox::resolveAndGetByName(EmailBox::NOTIFICATIONS_NAME);
             if ($emailSenderOrRecipientEmailNotFoundInSystem)
             {
@@ -348,6 +353,7 @@
             {
                 // Email message couldn't be validated(some related models can't be validated). Email user.
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotValidated', $message);
+                return false;
             }
 
             $saved = $emailMessage->save();
@@ -357,7 +363,10 @@
                 {
                     throw new NotSupportedException();
                 }
-                Yii::app()->imap->deleteMessage($message->uid);
+                if (isset($message->uid)) // For tests uid will not be setup
+                {
+                    Yii::app()->imap->deleteMessage($message->uid);
+                }
             }
             catch (NotSupportedException $e)
             {
