@@ -400,7 +400,6 @@
                 $cachedData['relationNameToRelationTypeModelClassNameAndOwns'][get_called_class()] =
                     self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
                 BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
-                echo 'dinngy' . get_called_class() . "<BR>";
             }
         }
 
