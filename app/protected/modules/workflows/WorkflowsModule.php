@@ -76,6 +76,11 @@
             return $metadata;
         }
 
+        public static function getPrimaryModelName()
+        {
+            return 'SavedWorkflow';
+        }
+
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_WORKFLOWS;

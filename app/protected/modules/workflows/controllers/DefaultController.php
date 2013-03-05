@@ -37,7 +37,11 @@
                         self::getRightsFilterPath() . ' + selectType',
                         'moduleClassName' => 'WorkflowsModule',
                         'rightName' => WorkflowsModule::RIGHT_CREATE_WORKFLOWS,
-                   )
+                   ),
+                   array(
+                       ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                       'controller' => $this,
+                   ),
                 )
             );
         }
