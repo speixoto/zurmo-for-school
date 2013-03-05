@@ -90,6 +90,11 @@
             return $metadata;
         }
 
+        public static function getPrimaryModelName()
+        {
+            return 'SavedReport';
+        }
+
         /**
          * @return string
          */
