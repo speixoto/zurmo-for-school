@@ -148,7 +148,8 @@
             $url                   = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list');
             $label                 = Zurmo::t('MashableInboxModule', 'Combined');
             $span                  = ZurmoHtml::tag('span', array("class" => "unread-count"),$unreadCount);
-            $content               = ZurmoHtml::link($label . $span, $url, array('class' => 'icon-combined ' . $activeClass));
+            $zLabel      = ZurmoHtml::tag('span', array("class" => "z-label"), $label . $span);
+            $content               = ZurmoHtml::link($zLabel, $url, array('class' => 'icon-combined ' . $activeClass));
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
@@ -161,7 +162,8 @@
                 $url         = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list',
                                                      array('modelClassName' => $modelClassName));
                 $span        = ZurmoHtml::tag('span', array("class" => "unread-count"), $unreadCount);
-                $content    .= ZurmoHtml::link($modelLabel . $span, $url, array('class' => 'icon-' . strtolower($modelClassName) . ' '  . $activeClass));
+                $zLabel      = ZurmoHtml::tag('span', array("class" => "z-label"), $modelLabel . $span);
+                $content    .= ZurmoHtml::link($zLabel, $url, array('class' => 'icon-' . strtolower($modelClassName) . ' '  . $activeClass));
             }
             return $content;
         }

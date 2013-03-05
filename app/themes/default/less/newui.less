@@ -1111,7 +1111,8 @@ body > .ui-autocomplete{
 
 .DynamicSearchView{
     position: relative;
-    z-index: 9999;
+    //z-index: 9999;
+    float: left;
 }
 
 #MashableInboxActionBarForViews,
@@ -1562,12 +1563,13 @@ caption, th, td {
         scroll;
 }
 
-table.items{
+.items{
     width:100%;
-    border: 1px solid #DFDFDF;
+    border: 1px solid #dfdfdf;
     border-collapse: collapse;
     border-spacing: 1px;
-    margin: 0;
+    margin: 0 -100% 0 0;
+    float: left;
     .box-sizing();
     > tbody,
     > thead{
@@ -1603,6 +1605,9 @@ table.items{
         #gradient > .vertical(#f9f9f9, #f4f4f4);
         tr:hover{
             #gradient > .vertical(#f9f9f9, #f4f4f4);
+        }
+        th:first-child{
+            //border-left:1px solid #DFDFDF;
         }
     }
     > tbody{
@@ -2255,17 +2260,23 @@ div.wide.form{
         border-left: none;
     }
     .search-view-0{
-        padding-left: 10px;
-        margin-bottom: 15px;
+        padding:0 15px 15px 15px;
+        .box-sizing();
+    }
+    .list-view-items-summary-clone{
+        margin-top:5px;
     }
 }
 .filters-bar{
     .filter-portlet-model-bar();
-    border-bottom: none;
-    border-top:1px solid #dfdfdf;
+    border: none;
     float: left;
-    width: 100%;
-    padding: 0 10px;
+    position: absolute;
+    z-index: 51;
+    left: 250px;
+    top:7px;
+    background: none !important;
+    .b-shadow(none);
     .border-box();
     > div{
         display: inline-block;
@@ -3820,6 +3831,7 @@ div.hasHalfs{
 
 #list-view .pager{
     .b-shadow(none);
+    clear: both;
 }
 
 #ModalView #list-view .pager{
