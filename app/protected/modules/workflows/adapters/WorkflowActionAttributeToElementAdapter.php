@@ -183,7 +183,8 @@
                     $startingDivStyleFirstValue     = null;
                     if ($this->model->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
                     {
-                        $startingDivStyleFirstValue = "display:none;";
+                        $startingDivStyleFirstValue         = "display:none;";
+                        $valueElement->params['disabled']   = 'disabled';
                     }
                     $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area" style="' .
                         $startingDivStyleFirstValue . '">{content}{error}</div></div>';
