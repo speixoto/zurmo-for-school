@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base class for working with models. Handles mapping and caching of metadata and attribute information.
+     */
     abstract class BeanModel extends ObservableComponent
     {
         /**
@@ -79,15 +82,27 @@
          */
         const NOT_OWNED = false;
 
+        const CACHE_IDENTIFIER = 'BeanModelMapping';
+
+
         /**
          * @see RedBeanModel::$lastClassInBeanHeirarchy
          */
         protected static $lastClassInBeanHeirarchy = 'BeanModel';
 
+        /**
+         * @var array
+         */
         private static   $attributeNamesToClassNames;
 
+        /**
+         * @vara array
+         */
         private static   $relationNameToRelationTypeModelClassNameAndOwns;
 
+        /**
+         * @var array
+         */
         private static   $attributeNamesNotBelongsToOrManyMany;
 
         /**
@@ -206,6 +221,7 @@
         /**
          * Given an attribute return the column name.
          * @param string $attributeName
+         * @return string
          */
         public static function getColumnNameByAttribute($attributeName)
         {
@@ -268,6 +284,8 @@
         /**
          * Given an attributeName and a language, retrieve the translated attribute label. Attempts to find a customized
          * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
+         * @param string $attributeName
+         * @param string $language
          * @return string - translated attribute label
          */
         protected static function getAbbreviatedAttributeLabelByLanguage($attributeName, $language)
@@ -287,11 +305,109 @@
             }
         }
 
+        /**
+         * @return array
+         */
         protected static function getMixedInModelClassNames()
         {
             return array();
         }
 
+        /**
+         * @return array
+         */
+        protected static function getAttributeNamesToClassNamesForModel()
+        {
+            if(!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
+            {
+                self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
+            }
+            return self::$attributeNamesToClassNames[get_called_class()];
+        }
+
+        /**
+         * @return array
+         */
+        protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
+        {
+            if(!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
+            {
+                self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
+            }
+            return self::$attributeNamesNotBelongsToOrManyMany[get_called_class()];
+        }
+
+        /**
+         * @return array
+         */
+        protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
+        {
+            if(!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
+            {
+                self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
+            }
+            return self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
+        }
+
+        /**
+         * @param string $modelClassName
+         */
+        protected static function forgetBeanModel($modelClassName)
+        {
+            if(isset(self::$attributeNamesToClassNames[$modelClassName]))
+            {
+                unset(self::$attributeNamesToClassNames[$modelClassName]);
+            }
+            if(isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
+            {
+                unset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]);
+            }
+            if(isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
+            {
+                unset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]);
+            }
+            BeanModelCache::forgetEntry(self::CACHE_IDENTIFIER . get_called_class());
+        }
+
+        protected static function forgetAllBeanModels()
+        {
+            self::$attributeNamesToClassNames                      = null;
+            self::$relationNameToRelationTypeModelClassNameAndOwns = null;
+            self::$attributeNamesNotBelongsToOrManyMany            = null;
+            BeanModelCache::forgetAll();
+        }
+
+        protected static function resolveCacheAndMapMetadataForAllClassesInHeirarchy()
+        {
+            try
+            {
+                $cachedData = BeanModelCache::getEntry(self::CACHE_IDENTIFIER . get_called_class());
+                self::$attributeNamesToClassNames[get_called_class()]                              =
+                    $cachedData['attributeNamesToClassNames'][get_called_class()];
+                self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]                    =
+                    $cachedData['attributeNamesNotBelongsToOrManyMany'][get_called_class()];
+                self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]         =
+                    $cachedData['relationNameToRelationTypeModelClassNameAndOwns'][get_called_class()];
+            }
+            catch(NotFoundException $e)
+            {
+                self::mapMetadataForAllClassesInHeirarchy();
+                $cachedData = array();
+                $cachedData['attributeNamesToClassNames'][get_called_class()]                      =
+                    self::$attributeNamesToClassNames[get_called_class()];
+                $cachedData['attributeNamesNotBelongsToOrManyMany'][get_called_class()]            =
+                    self::$attributeNamesNotBelongsToOrManyMany[get_called_class()];
+                $cachedData['relationNameToRelationTypeModelClassNameAndOwns'][get_called_class()] =
+                    self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
+                BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
+                echo 'dinngy' . get_called_class() . "<BR>";
+            }
+        }
+
+
+        /**
+         * Maps metadata for the class and all of the classes in the heirarchy up to the BeanModel
+         */
         private static function mapMetadataForAllClassesInHeirarchy()
         {
             self::$attributeNamesToClassNames[get_called_class()]                      = array();
@@ -313,6 +429,10 @@
             }
         }
 
+        /**
+         * @param $modelClassName
+         * @throws NotSupportedException
+         */
         private static function mapMetadataByModelClassName($modelClassName)
         {
             assert('is_string($modelClassName)');
@@ -373,68 +493,16 @@
                         'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                     self::$attributeNamesToClassNames[get_called_class()][$relationName] = $modelClassName;
                     self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()][$relationName] =
-                            array($relationType,
-                                  $relationModelClassName,
-                                  $owns,
-                                  $relationPolyOneToManyName);
+                        array($relationType,
+                            $relationModelClassName,
+                            $owns,
+                            $relationPolyOneToManyName);
                     if (!in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, self::MANY_MANY)))
                     {
                         self::$attributeNamesNotBelongsToOrManyMany[get_called_class()][] = $relationName;
                     }
                 }
             }
-        }
-
-        protected static function getAttributeNamesToClassNamesForModel()
-        {
-            if(!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
-            {
-                //todo: check memcache.. if no, then call this. and in this, should set memcache?
-                //todo: is memcache on the entirety or just each class? hmm. think this through.
-                self::mapMetadataForAllClassesInHeirarchy();
-            }
-            return self::$attributeNamesToClassNames[get_called_class()];
-        }
-
-        protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
-        {
-            if(!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
-            {
-                self::mapMetadataForAllClassesInHeirarchy();
-            }
-            return self::$attributeNamesNotBelongsToOrManyMany[get_called_class()];
-        }
-
-        protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
-        {
-            if(!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
-            {
-                self::mapMetadataForAllClassesInHeirarchy();
-            }
-            return self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
-        }
-
-        protected static function forgetBeanModel($modelClassName)
-        {
-            if(isset(self::$attributeNamesToClassNames[$modelClassName]))
-            {
-                unset(self::$attributeNamesToClassNames[$modelClassName]);
-            }
-            if(isset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]))
-            {
-                unset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]);
-            }
-            if(isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
-            {
-                unset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]);
-            }
-        }
-
-        protected static function forgetAllBeanModels()
-        {
-            self::$attributeNamesToClassNames                      = null;
-            self::$relationNameToRelationTypeModelClassNameAndOwns = null;
-            self::$attributeNamesNotBelongsToOrManyMany            = null;
         }
     }
 ?>
