@@ -89,11 +89,11 @@
             $unread             = null;
             if (!$hasReadLatest)
             {
-                $unread = ' unread';
+                $unread = 'unread';
             }
             $params =
                 array(
-                    "class"=>get_class($data) . $unread
+                    "class" => $unread
                 );
             return $params;
         }

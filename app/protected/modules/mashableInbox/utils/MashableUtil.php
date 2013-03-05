@@ -115,7 +115,7 @@
             }
             return $modelClassNamesAndSearchAttributeData;
         }
-        
+
         public static function getSortAttributesByMashableInboxModelClassNames($modelClassNames)
         {
             assert('is_array($modelClassNames)');
@@ -137,7 +137,14 @@
             $data                               = array();
             $data['modelStringContent']         = static::renderModelStringContent($model, $mashableInboxRules);
             $data['modelCreationTimeContent']   = static::renderModelCreationTimeContent($model, $mashableInboxRules);
-            $content = self::resolveContentTemplate($summaryContentTemplate, $data);
+            $spanForTag                         = ZurmoHtml::tag(
+                                                            'span',
+                                                            array(
+                                                                "class" => "model-tag " . strtolower($mashableInboxRules->getModelClassName())
+                                                            ),
+                                                            $mashableInboxRules->getModelClassName());
+            $content  = self::resolveContentTemplate($summaryContentTemplate, $data);
+            $content .= $spanForTag;
             return $content;
         }
 
