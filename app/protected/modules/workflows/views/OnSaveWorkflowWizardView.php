@@ -108,6 +108,7 @@
                 $('#" . TriggersForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::MODULE_VALIDATION_SCENARIO . "');
+                        $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForWorkflowWizardView').show();
                         $('#TriggersForWorkflowWizardView').hide();
                         return false;
