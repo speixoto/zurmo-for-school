@@ -164,7 +164,6 @@
             $savedReport               = null;
             $report                    = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
-
             $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
             $model                     =  $reportToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')

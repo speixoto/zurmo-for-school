@@ -53,17 +53,17 @@
             return $content . $error;
         }
 
-        protected function renderEditableFirstDateContent()
+        protected function renderEditableFirstDateContent($disabled = null)
         {
-            $content = parent::renderEditableFirstDateContent();
+            $content = parent::renderEditableFirstDateContent($disabled);
             $error   = $this->form->error($this->model, 'value',
                                           array('inputID' => $this->getValueFirstDateEditableInputId()));
             return $content . $error;
         }
 
-        protected function renderEditableSecondDateContent()
+        protected function renderEditableSecondDateContent($disabled = null)
         {
-            $content = parent::renderEditableSecondDateContent();
+            $content = parent::renderEditableSecondDateContent($disabled);
             $error   = $this->form->error($this->model, 'secondValue',
                                           array('inputID' => $this->getValueSecondDateEditableInputId()));
             return $content . $error;

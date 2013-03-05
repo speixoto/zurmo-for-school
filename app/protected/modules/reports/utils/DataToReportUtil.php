@@ -190,6 +190,7 @@
         protected static function resolveDisplayAttributes($data, Report $report)
         {
             $report->removeAllDisplayAttributes();
+            DisplayAttributeForReportForm::resetCount();
             $moduleClassName = $report->getModuleClassName();
             if(count($displayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
@@ -216,6 +217,7 @@
         protected static function resolveDrillDownDisplayAttributes($data, Report $report)
         {
             $report->removeAllDrillDownDisplayAttributes();
+            DrillDownDisplayAttributeForReportForm::resetCount();
             $moduleClassName = $report->getModuleClassName();
             if(count($drillDownDisplayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
