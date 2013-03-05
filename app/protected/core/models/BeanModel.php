@@ -387,8 +387,10 @@
 
         protected static function getAttributeNamesToClassNamesForModel()
         {
-            if(!isset(self::$attributeNamesToClassNames[get_called_class()]))
+            if(!PHP_CACHING_ON || !isset(self::$attributeNamesToClassNames[get_called_class()]))
             {
+                //todo: check memcache.. if no, then call this. and in this, should set memcache?
+                //todo: is memcache on the entirety or just each class? hmm. think this through.
                 self::mapMetadataForAllClassesInHeirarchy();
             }
             return self::$attributeNamesToClassNames[get_called_class()];
@@ -396,7 +398,7 @@
 
         protected static function getAttributeNamesNotBelongsToOrManyManyForModel()
         {
-            if(!isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
+            if(!PHP_CACHING_ON || !isset(self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]))
             {
                 self::mapMetadataForAllClassesInHeirarchy();
             }
@@ -405,7 +407,7 @@
 
         protected static function getRelationNameToRelationTypeModelClassNameAndOwnsForModel()
         {
-            if(!isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
+            if(!PHP_CACHING_ON || !isset(self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]))
             {
                 self::mapMetadataForAllClassesInHeirarchy();
             }
