@@ -26,7 +26,20 @@
 
     class MashableInboxDefaultController extends ZurmoModuleController {
 
+        const MASHABLE_INBOX_ZERO_MODELS_CHECK_FILTER_PATH =
+              'application.modules.mashableInbox.controllers.filters.MashableInboxZeroModelsCheckControllerFilter';
+
         public $pageSize;
+
+        public function filters()
+        {
+            return array(
+                array(
+                    self::MASHABLE_INBOX_ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
+                    'controller'  => $this,
+                ),
+            );
+        }
 
         public function actionList($modelClassName = null) {
             assert('is_string($modelClassName) || $modelClassName == null');
