@@ -152,11 +152,21 @@
         public function getModelStringContent(RedBeanModel $model)
         {
             $modelDisplayString = strval($model);
-            $params          = array('label' => $modelDisplayString, 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-            return $element->render();
+            $params             = array('label' => $modelDisplayString, 'wrapLabel' => false);
+            $moduleClassName    = $model->getModuleClassName();
+            $moduleId           = $moduleClassName::getDirectoryName();
+            $element            = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
+            $content            = $element->render();
+            $lastCommentNumber  = count($model->comments) - 1;
+            if ($lastCommentNumber > 0)
+            {
+                $content .= ZurmoHtml::tag(
+                                    'span',
+                                    array("class" => "last-comment"),
+                                    $model->comments[$lastCommentNumber]->description
+                                );
+            }            
+            return $content;
         }
 
         /**

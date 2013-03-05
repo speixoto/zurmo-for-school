@@ -156,25 +156,7 @@
                 }
             }
         }
-
-        public function getModelStringContent(RedBeanModel $model)
-        {
-            $modelDisplayString = strval($model);
-            if (count($model->comments) > 0)
-            {
-                $prefix = Zurmo::t('ConversationsModule', 'A conversation recent comment on: ');
-            }
-            else
-            {
-                $prefix = Zurmo::t('ConversationsModule', 'New conversation started: ');
-            }
-            $params          = array('label' => $prefix . ' ' . $modelDisplayString, 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-            return $element->render();
-        }
-
+       
         public function hasUserReadLatest($modelId)
         {
             assert('$modelId > 0');

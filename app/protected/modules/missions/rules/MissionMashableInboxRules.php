@@ -27,7 +27,7 @@
     class MissionMashableInboxRules extends MashableInboxRules
     {
         public $shouldRenderCreateAction = true;
-        
+
         private function getMetadataForUnreadForCurrentUser()
         {
             $searchAttributeData['clauses'] = array(
@@ -164,25 +164,7 @@
             $model          = $modelClassName::getById($modelId);
             MissionsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, false);
         }
-
-        public function getModelStringContent(RedBeanModel $model)
-        {
-            $modelDisplayString = strval($model);
-            if (count($model->comments) > 0)
-            {
-                $prefix = Zurmo::t('MissionsModule', 'A mission recent comment on: ');
-            }
-            else
-            {
-                $prefix = Zurmo::t('MissionsModule', 'New mission added: ');
-            }
-            $params          = array('label' => $prefix . ' ' . $modelDisplayString, 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            $element         = new DetailsLinkActionElement('default', $moduleId, $model->id, $params);
-            return $element->render();
-        }
-
+        
         public function hasUserReadLatest($modelId)
         {
             assert('$modelId > 0');
