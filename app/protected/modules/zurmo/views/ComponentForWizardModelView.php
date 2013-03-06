@@ -77,6 +77,16 @@
         }
 
         /**
+         * Override and implement in children.
+         * @return string of class name
+         * @throws NotImplementedException
+         */
+        public static function getZeroComponentsClassName()
+        {
+            throw new NotImplementedException();
+        }
+
+        /**
          * @param WizardForm $model
          * @param WizardActiveForm $form
          * @param bool $hideView

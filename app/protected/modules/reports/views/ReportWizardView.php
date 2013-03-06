@@ -58,6 +58,30 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
             $this->registerClickFlowScript();
+            $this->registerModuleClassNameChangeScript();
+        }
+
+        protected function registerModuleClassNameChangeScript()
+        {
+            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
+            Yii::app()->clientScript->registerScript('moduleForReportChangeScript', "
+                $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
+                    {
+                        $('#FiltersForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#FiltersTreeArea').html('');
+                        $('." . FiltersForReportWizardView::getZeroComponentsClassName() . "').show();
+                        rebuildReportFiltersAttributeRowNumbersAndStructureInput('FiltersForReportWizardView');
+                        $('#DisplayAttributesForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#DisplayAttributesTreeArea').html('');
+                        $('." . DisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
+                        " . $this->registerModuleClassNameChangeScriptExtraPart() . "
+                    }
+                );
+            ");
+        }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
         }
     }
 ?>

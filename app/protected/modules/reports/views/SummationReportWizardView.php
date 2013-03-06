@@ -292,5 +292,21 @@
                 );
             ");
         }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
+            return  "   $('#OrderBysForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#OrderBysTreeArea').html('');
+                        $('." . OrderBysForReportWizardView::getZeroComponentsClassName() . "').show();
+                        $('#GroupBysForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#GroupBysTreeArea').html('');
+                        $('." . GroupBysForReportWizardView::getZeroComponentsClassName() . "').show();
+                        $('#DrillDownDisplayAttributesForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#DrillDownDisplayAttributesTreeArea').html('');
+                        $('." . DrillDownDisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
+                        $('input:radio[name=\"SummationReportWizardForm[ChartForReportForm][type]\"]').filter('[value=\"\"]').attr('checked', true)
+                        onChangeChartType($('.chart-selector:checked'));
+                    ";
+        }
     }
 ?>

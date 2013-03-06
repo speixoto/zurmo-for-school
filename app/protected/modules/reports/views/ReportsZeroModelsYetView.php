@@ -38,7 +38,8 @@
         protected function getMessageContent()
         {
             return Zurmo::t('ReportsModule', '<h2>"Report me and my cause aright."</h2><i>- William Shakespeare</i>' .
-                                             '</i><div class="large-icon"></div><p>Be the first to create a Report</p>');
+                                             '</i><div class="large-icon"></div><p>Create a report to analyze and ' .
+                                             'aggregate your data correctly - it was Hamlet\'s dying wish</p>');
         }
     }
 ?>

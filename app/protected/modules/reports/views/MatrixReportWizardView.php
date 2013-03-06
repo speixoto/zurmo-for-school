@@ -154,5 +154,13 @@
                 );
             ");
         }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
+            return  "   $('#GroupBysForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#GroupBysTreeArea').html('');
+                        $('." . GroupBysForReportWizardView::getZeroComponentsClassName() . "').show();
+                    ";
+        }
     }
 ?>
