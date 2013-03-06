@@ -31,27 +31,19 @@
     {
         protected function getHomeLinkLabel()
         {
+            if (strpos(Yii::app()->request->urlReferrer, 'mashableInbox') > 0)
+            {
+                return Zurmo::t('ConversationsModule', 'Inbox');
+            }
             return Zurmo::t('MissionsModule', 'Missions');
         }
 
-        protected function renderContent()
-        {
-            $content  = $this->renderGoBackLink();
-            $content .= parent::renderContent();
-            return $content;
-        }
-
-        protected function renderGoBackLink()
-        {
-            if (Yii::app()->request->urlReferrer)
+        protected function getHomeUrl() {
+            if (strpos(Yii::app()->request->urlReferrer,'mashableInbox') > 0)
             {
-                $link    = ZurmoHtml::link(
-                                Zurmo::t('MissionsModule', 'Inbox'),
-                                Yii::app()->request->urlReferrer,
-                                array('class' => 'back-to-inbox-link'));
-                $content = ZurmoHtml::tag('div', array('class' => 'breadcrumbs'), $link . '&nbsp;/&nbsp;');
-                return $content;
+                return Yii::app()->request->urlReferrer;
             }
+            return parent::getHomeUrl();
         }
     }
 ?>
