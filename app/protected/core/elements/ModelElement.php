@@ -153,19 +153,19 @@
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeOut(100);
-                                       makeToggableSpinner(context, true);
+                                       makeOrRemoveTogglableSpinner(true, context);
                                   }',
                     'open'     => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeToggableSpinner(context, false);
+                                       makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'close'    => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeToggableSpinner(context, false);
+                                       makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'response' => 'js: function(event, ui)
                                   {
@@ -173,7 +173,7 @@
                                        {
                                            var context = $("#' . $this->getIdForTextField() . '").parent();
                                            $(".model-select-icon", context).fadeIn(250);
-                                           makeToggableSpinner(context, false);
+                                           makeOrRemoveTogglableSpinner(false, context);
                                        }
                                   }'
                 ),
