@@ -715,6 +715,7 @@ body.blue .unread td,
 body.blue .unread td a,
 body.blue a.user-link,
 body.blue .SocialItemsListView .show-create-comment,
+body.blue .back-to-inbox-link,
 body.blue #AllSocialItemsForPortletView .show-create-comment,
 body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
@@ -1250,6 +1251,7 @@ body.brown .unread td,
 body.brown .unread td a,
 body.brown a.user-link,
 body.brown .SocialItemsListView .show-create-comment,
+body.brown .back-to-inbox-link,
 body.brown #AllSocialItemsForPortletView .show-create-comment,
 body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
@@ -1785,6 +1787,7 @@ body.lime .unread td,
 body.lime .unread td a,
 body.lime a.user-link,
 body.lime .SocialItemsListView .show-create-comment,
+body.lime .back-to-inbox-link,
 body.lime #AllSocialItemsForPortletView .show-create-comment,
 body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
@@ -2320,6 +2323,7 @@ body.cherry .unread td,
 body.cherry .unread td a,
 body.cherry a.user-link,
 body.cherry .SocialItemsListView .show-create-comment,
+body.cherry .back-to-inbox-link,
 body.cherry #AllSocialItemsForPortletView .show-create-comment,
 body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
@@ -2855,6 +2859,7 @@ body.turquoise .unread td,
 body.turquoise .unread td a,
 body.turquoise a.user-link,
 body.turquoise .SocialItemsListView .show-create-comment,
+body.turquoise .back-to-inbox-link,
 body.turquoise #AllSocialItemsForPortletView .show-create-comment,
 body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
@@ -3390,6 +3395,7 @@ body.violet .unread td,
 body.violet .unread td a,
 body.violet a.user-link,
 body.violet .SocialItemsListView .show-create-comment,
+body.violet .back-to-inbox-link,
 body.violet #AllSocialItemsForPortletView .show-create-comment,
 body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
@@ -3925,6 +3931,7 @@ body.honey .unread td,
 body.honey .unread td a,
 body.honey a.user-link,
 body.honey .SocialItemsListView .show-create-comment,
+body.honey .back-to-inbox-link,
 body.honey #AllSocialItemsForPortletView .show-create-comment,
 body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
@@ -7287,7 +7294,8 @@ div.wide.form label.hasCheckBox {
   margin-bottom: 20px;
   position: relative;
 }
-#MashableInboxListViewWrapper {
+#NotificationsForUserListView,
+#MashableInboxListView {
   float: left;
   width: 100%;
   margin-bottom: 20px;
@@ -8893,6 +8901,15 @@ div.radio-input .hasDropDown {
   -ms-text-shadow: none;
   text-shadow: none;
 }
+/*
+.back-to-inbox-link{
+    .smaller();
+    .opacity(50);
+    &:hover{
+        .opacity(100);
+    }
+}
+*/
 /*=Madlib*/
 .mad-lib input {
   width: auto !important;

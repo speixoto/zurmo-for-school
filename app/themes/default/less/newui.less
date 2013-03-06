@@ -2281,9 +2281,12 @@ div.wide.form{
    margin-bottom:20px;
    position: relative;
 }
-#MashableInboxListViewWrapper{
+
+#NotificationsForUserListView,
+#MashableInboxListView{
     .SecuredListView();
 }
+
 #MashableInboxActionBarForViews{
     .view-toolbar ul:first-child > li > a {
         border-left: none;
@@ -3581,6 +3584,16 @@ div.radio-input{
         }
     }
 }
+
+/*
+.back-to-inbox-link{
+    .smaller();
+    .opacity(50);
+    &:hover{
+        .opacity(100);
+    }
+}
+*/
 
 /*=Madlib*/
 .mad-lib{

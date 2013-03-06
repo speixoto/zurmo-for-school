@@ -45,9 +45,11 @@
         {
             if (Yii::app()->request->urlReferrer)
             {
-                $content = ZurmoHtml::link(
-                                  Zurmo::t('MissionsModule', 'Go Back'),
-                                  Yii::app()->request->urlReferrer);
+                $link    = ZurmoHtml::link(
+                                Zurmo::t('MissionsModule', 'Inbox'),
+                                Yii::app()->request->urlReferrer,
+                                array('class' => 'back-to-inbox-link'));
+                $content = ZurmoHtml::tag('div', array('class' => 'breadcrumbs'), $link . '&nbsp;/&nbsp;');
                 return $content;
             }
         }
