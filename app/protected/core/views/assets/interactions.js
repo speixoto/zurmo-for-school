@@ -128,22 +128,18 @@ $(window).ready(function(){
 
 
     /*Spinner*/
-   $( '.loading', '#stickyListLoadingArea' ).spin({
-        lines : 9, // The number of lines to draw
-        length : 3, // The length of each line
-        width : 2, // The line thickness
-        radius : 4, // The radius of the inner circle
-        rotate : 0, // The rotation offset
-        color : '#999', // #rgb or #rrggbb
-        speed : 2, // Rounds per second
-        trail : 100, // Afterglow percentage
-        shadow : false, // Whether to render a shadow
-        hwaccel : true, // Whether to use hardware acceleration
-        className : 'spinner', // The CSS class to assign to the spinner
-        zIndsex : 2e9, // The z-index (defaults to 2000000000)
-        top : 0, // Top position relative to parent in px
-        left : 0 // Left position relative to parent in px
-    });
+   var style = {
+        lines : 9,
+        length : 3,
+        width : 2,
+        radius : 4,
+        color : 'dark',
+        speed : 2,
+        trail : 100,
+        top : 0,
+        left : 0
+    };
+    resolveSpinner(state, '#stickyListLoadingArea', style, '.loading');
 
 });
 
@@ -233,20 +229,20 @@ function resolveSpinner(state, domObject, styleObject, spinnerClassName){
     
     if(state === true){
         $( spinnerClassName, domObject).spin({
-            lines     : styleObject.lines,  //9, // The number of lines to draw
-            length    : styleObject.length, //2.3, // The length of each line
-            width     : styleObject.width, //1.7, // The line thickness
-            radius    : styleObject.radius, // The radius of the inner circle
-            rotate    : 0, // The rotation offset
-            color     : styleObject.color, //color, // #rgb or #rrggbb
-            speed     : styleObject.speed,       //2.5, // Rounds per second
-            trail     : styleObject.trail,       //37, // Afterglow percentage
-            shadow    : false,                   // Whether to render a shadow
-            hwaccel   : true,                   // Whether to use hardware acceleration
-            className : 'spinner',            // The CSS class to assign to the spinner
-            zIndex    : 2e9,                     // The z-index (defaults to 2000000000)
-            top       : styleObject.top,         //4, // Top position relative to parent in px
-            left      : styleObject.left         //0 // Left position relative to parent in px
+            lines     : styleObject.lines  || 9,      // The number of lines to draw
+            length    : styleObject.length || 2.3,    // The length of each line
+            width     : styleObject.width  || 1.7,    // The line thickness
+            radius    : styleObject.radius || 3,      // The radius of the inner circle
+            rotate    : 0,                            // The rotation offset
+            color     : styleObject.color  || '#fff', // #rgb or #rrggbb
+            speed     : styleObject.speed  || 2.5,    // Rounds per second
+            trail     : styleObject.trail  || 37,     // Afterglow percentage
+            shadow    : false,                        // Whether to render a shadow
+            hwaccel   : true,                         // Whether to use hardware acceleration
+            className : 'spinner',                    // The CSS class to assign to the spinner
+            zIndex    : 2e9,                          // The z-index (defaults to 2000000000)
+            top       : styleObject.top    || 0,      // Top position relative to parent in px
+            left      : styleObject.left   || 0       // Left position relative to parent in px
         });
     } else {
         $( spinnerClassName, domObject).spin(false);

@@ -70,7 +70,6 @@ function beforeValidateAction(form)
         context.addClass("loading");
         context.addClass("loading-ajax-submit");
     }
-    console.log(context, 'line 73');
     makeOrRemoveLoadingSpinner(true, context);
     return true;
 }

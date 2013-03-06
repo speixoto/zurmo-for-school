@@ -147,7 +147,7 @@
                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
                                 'namespace' => 'update',
                                 'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        makeOrRemoveLoadingSpinner(true, $(this).attr("id"));'));
+                                                        makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
