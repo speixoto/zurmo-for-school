@@ -64,6 +64,14 @@
         /**
          * @return string
          */
+        public static function getZeroComponentsClassName()
+        {
+            return 'ZeroTriggers';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderExtraDroppableAttributesContent()
         {
             return $this->renderStructureContent();
@@ -173,14 +181,6 @@
         protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->triggers, true);
-        }
-
-        /**
-         * @return string
-         */
-        protected static function getZeroComponentsClassName()
-        {
-            return 'ZeroTriggers';
         }
 
         /**

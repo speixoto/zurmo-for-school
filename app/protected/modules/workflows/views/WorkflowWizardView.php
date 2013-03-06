@@ -61,6 +61,31 @@
                 Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.elements.assets')) . '/SelectInputUtils.js', CClientScript::POS_END);
             $this->registerClickFlowScript();
+            $this->registerModuleClassNameChangeScript();
+        }
+
+        protected function registerModuleClassNameChangeScript()
+        {//todo: add alerts once ready
+            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
+            Yii::app()->clientScript->registerScript('moduleForWorkflowChangeScript', "
+                $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
+                    {
+                        $('#TriggersForWorkflowWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#TriggersTreeArea').html('');
+                        $('." . TriggersForWorkflowWizardView::getZeroComponentsClassName() . "').show();
+                        rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput('TriggersForWorkflowWizardView');
+                        $('#ActionsForWorkflowWizardView').find('.action-rows').find('ul').find('li').remove();
+                        $('#actionType option:selected').removeAttr('selected');
+                        $('." . ActionsForWorkflowWizardView::getZeroComponentsClassName() . "').show();
+                        rebuildWorkflowActionRowNumbers('ActionsForWorkflowWizardView');
+                        " . $this->registerModuleClassNameChangeScriptExtraPart() . "
+                    }
+                );
+            ");
+        }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
         }
     }
 ?>

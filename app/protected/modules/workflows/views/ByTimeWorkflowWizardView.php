@@ -227,5 +227,14 @@
             // End Not Coding Standard
             Yii::app()->clientScript->registerScript('timeTriggerAttributeDropDownOnChangeScript', $script);
         }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
+            $timeTriggerSelectId = get_class($this->model) . '_timeTriggerAttribute';
+            return  "   $('#time-trigger-container').find('li').remove();
+                        $('." . TimeTriggerForWorkflowWizardView::getZeroComponentsClassName() . "').show();
+                        $('#" . $timeTriggerSelectId . "').find('option[value!=\"\"]').remove();
+                    ";
+        }
     }
 ?>

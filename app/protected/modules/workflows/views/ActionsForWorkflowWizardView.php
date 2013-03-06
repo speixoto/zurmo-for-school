@@ -79,6 +79,14 @@
                                       $modelClassName, $workflowType, $relation));
         }
 
+        /**
+         * @return string
+         */
+        public static function getZeroComponentsClassName()
+        {
+            return 'ZeroActions';
+        }
+
         public function registerScripts()
         {
             parent::registerScripts();
@@ -110,14 +118,6 @@
             $content .= '</div>';
             $this->registerScripts();
             return $content;
-        }
-
-        /**
-         * @return string
-         */
-        protected static function getZeroComponentsClassName()
-        {
-            return 'ZeroActions';
         }
 
         /**
