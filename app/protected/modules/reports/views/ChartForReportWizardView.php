@@ -125,8 +125,20 @@
             $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
             $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
             $content          .= '</div>';
+            $content          .= $this->renderChartTipContent();
             $this->form->clearInputPrefixData();
             $this->registerScripts();
+            return $content;
+        }
+
+        protected function renderChartTipContent()
+        {
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Quick Tip'));
+            $content .= Zurmo::t('WorkflowsModule', 'In order to use a grouping as a series field, ' .
+                                                    'the grouping must be added as a display column.');
+            $content  = ZurmoHtml::tag('div', array(), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'buffer'), $content);
+            $content  = ZurmoHtml::tag('div', array('id'    => 'right-side-edit-view-panel'), $content);
             return $content;
         }
     }
