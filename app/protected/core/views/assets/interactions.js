@@ -219,6 +219,10 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId){
 
 /*
 * Spinner Functions
+* @state (Bool) true/false, activate/deactivate the spinner.
+* @domObject (String), the object's seletor where the spinner runs inside it. The CSS selector (with . or #).
+* @styleObject (Object) key-value pairs for the spinner's styles.
+* @spinnerClassName (String) Optional, used mostly for the Big-Spinners. The CSS selector for the actuall spinner (with . or #).
 */
 
 function resolveSpinner(state, domObject, styleObject, spinnerClassName){
@@ -249,46 +253,23 @@ function resolveSpinner(state, domObject, styleObject, spinnerClassName){
     }
 }
 
-function attachLoadingSpinner( id, state, color ){
-    /*
+/*
+* @shade (String) HEX color (with #) or 'dark', default value is #FFF (white).
+*/
+
+function makeOrRemoveLoadingSpinner(state, context, shade){
     var style = {
         lines : 9,
         length : 2.3,
         width : 1.7,
-        color : '#999',
+        radius : 3,
+        color : ( shade === 'dark' ) ? '#999' : '#fff',
         speed : 2.5,
         trail : 37,
         top : 4,
         left : 0
     };
-    resolveSpinner(true, this, style);*/
-    
-    var color;
-    if ( color === 'dark' ){
-        color = '#999';
-    } else {
-        color = '#fff';
-    }
-    if ( state === true ){
-        $( '.form-toolbar .z-spinner, #Login .z-spinner', '#' + id ).spin({
-            lines : 9, // The number of lines to draw
-            length : 2.3, // The length of each line
-            width : 1.7, // The line thickness
-            radius : 3, // The radius of the inner circle
-            rotate : 0, // The rotation offset
-            color : color, // #rgb or #rrggbb
-            speed : 2.5, // Rounds per second
-            trail : 37, // Afterglow percentage
-            shadow : false, // Whether to render a shadow
-            hwaccel : true, // Whether to use hardware acceleration
-            className : 'spinner', // The CSS class to assign to the spinner
-            zIndex : 2e9, // The z-index (defaults to 2000000000)
-            top : 4, // Top position relative to parent in px
-            left : 0 // Left position relative to parent in px
-        });
-    } else {
-        $( '.form-toolbar .z-spinner, #Login .z-spinner', '#' + id ).spin(false);
-    }
+    resolveSpinner(state, context, style);
 }
 
 function makeSmallLoadingSpinner(state, context){
@@ -306,7 +287,7 @@ function makeSmallLoadingSpinner(state, context){
     resolveSpinner(true, context, style);
 }
 
-function makeLargeLoadingSpinner(context){
+function makeLargeLoadingSpinner(state, context){
     $(context).append('<span class="big-spinner"></span>');
     var style = {
         lines  : 10,
@@ -319,7 +300,7 @@ function makeLargeLoadingSpinner(context){
         top    : 0,
         left   : 0
     };
-    resolveSpinner(true, context, style, '.big-spinner');
+    resolveSpinner(state, context, style, '.big-spinner');
 }
 
 function makeOrRemoveTogglableSpinner(state, context){
