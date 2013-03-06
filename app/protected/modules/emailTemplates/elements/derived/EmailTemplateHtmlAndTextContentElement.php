@@ -64,13 +64,31 @@
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
             // TODO: @Shoaibi/@Amit Display both of them in separate tabs, we need a toggle here.
+            $nav = '<div class="tabs-nav"><a href="#tab1" class="active-tab">TEXT</a><a href="#tab2">HTML</a></div>';
+            $script =
+"<script>
+    $('.tabs-nav a').click( function(){
+        //the menu items
+        $('.active-tab', $(this).parent()).removeClass('active-tab');
+        $(this).addClass('active-tab');
+        //the sections
+        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+        _old.fadeToggle();
+        var _new = $( $(this).attr('href') );
+        _new.fadeToggle(300, 'linear', function(){
+                _old.removeClass('active-tab');
+                _new.addClass('active-tab');
+        });
+        return false;
+    });
+</script>";
             $plainTextDiv = ZurmoHtml::tag('div',
-                                                array('class' => 'email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+                                                array('id' => 'tab1', 'class' => 'active-tab tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
                                                 $plainTextContent);
             $htmlContentDiv = ZurmoHtml::tag('div',
-                                                array('class' => 'email-template-' . static::HTML_CONTENT_INPUT_NAME),
+                                                array('id' => 'tab2','class' => 'tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
                                                 $htmlContent);
-            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $plainTextDiv.$htmlContentDiv);
+            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $nav.$plainTextDiv.$htmlContentDiv.$script);
         }
 
         protected function renderControlNonEditable()

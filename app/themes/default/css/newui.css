@@ -726,7 +726,8 @@ body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
 body.blue #clear-search-linkmodal,
 body.blue .z-action-link,
-body.blue .showAllCommentsLink {
+body.blue .showAllCommentsLink,
+body.blue a.active-tab {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1257,7 +1258,8 @@ body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
 body.brown #clear-search-linkmodal,
 body.brown .z-action-link,
-body.brown .showAllCommentsLink {
+body.brown .showAllCommentsLink,
+body.brown a.active-tab {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1788,7 +1790,8 @@ body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
 body.lime #clear-search-linkmodal,
 body.lime .z-action-link,
-body.lime .showAllCommentsLink {
+body.lime .showAllCommentsLink,
+body.lime a.active-tab {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -2319,7 +2322,8 @@ body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
 body.cherry #clear-search-linkmodal,
 body.cherry .z-action-link,
-body.cherry .showAllCommentsLink {
+body.cherry .showAllCommentsLink,
+body.cherry a.active-tab {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2850,7 +2854,8 @@ body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
 body.turquoise #clear-search-linkmodal,
 body.turquoise .z-action-link,
-body.turquoise .showAllCommentsLink {
+body.turquoise .showAllCommentsLink,
+body.turquoise a.active-tab {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -3381,7 +3386,8 @@ body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
 body.violet #clear-search-linkmodal,
 body.violet .z-action-link,
-body.violet .showAllCommentsLink {
+body.violet .showAllCommentsLink,
+body.violet a.active-tab {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -3912,7 +3918,8 @@ body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
 body.honey #clear-search-linkmodal,
 body.honey .z-action-link,
-body.honey .showAllCommentsLink {
+body.honey .showAllCommentsLink,
+body.honey a.active-tab {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -15374,6 +15381,58 @@ a.user-link {
 }
 .outbound-settings label {
   margin-bottom: 5px;
+}
+.tabs-container,
+.email-template-content {
+  position: relative;
+  min-height: 200px;
+}
+.tabs-container > .tab,
+.email-template-content > .tab {
+  position: absolute;
+  top: 27px;
+  left: 0;
+  width: 100%;
+  min-height: 170px;
+  display: none;
+}
+.tabs-container > .tab label,
+.email-template-content > .tab label {
+  display: none;
+}
+.tabs-container .tab.active-tab,
+.email-template-content .tab.active-tab {
+  display: block;
+}
+.tabs-nav {
+  margin-bottom: 10px;
+}
+.tabs-nav a {
+  display: inline-block;
+  padding: 0 12px;
+  line-height: 26px;
+  margin: 0 5px 0 0;
+  background: url(../images/table-items-header.png) left bottom repeat-x;
+  border: 1px solid #dfdfdf;
+  border-bottom: none;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #666;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.tabs-nav a:hover,
+.tabs-nav a.active-tab {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  text-decoration: none;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {
