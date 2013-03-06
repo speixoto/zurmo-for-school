@@ -113,9 +113,13 @@
             {
                 return $this->resolveValueFromModel($parts[1]);
             }
-            if(isset($this->selectedColumnNamesAndValues[$name]))
+            //Not using isset, because a null value would not resolve correctly
+            if(array_key_exists($name, $this->selectedColumnNamesAndValues))
             {
                 return $this->selectedColumnNamesAndValues[$name];
+            }
+            if($name == 'col1')
+            {
             }
             return parent::__get($name);
         }

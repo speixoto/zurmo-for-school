@@ -299,6 +299,7 @@
             $idByOffset   = self::resolveIdByOffset($offset);
             foreach ($rows as $key => $row)
             {
+
                 $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
                 foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
                 {

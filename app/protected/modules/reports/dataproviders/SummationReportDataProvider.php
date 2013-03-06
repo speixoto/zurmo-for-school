@@ -139,7 +139,6 @@
          */
         protected function fetchChartData()
         {
-            //todO: $totalItemCount = $this->getTotalItemCount(); if too many rows over 100? then we should block or limit or something not sure...
             return $this->runQueryAndGetResolveResultsData(null, null);
         }
 

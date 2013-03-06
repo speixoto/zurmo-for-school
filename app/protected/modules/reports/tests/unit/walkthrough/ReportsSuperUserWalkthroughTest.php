@@ -145,5 +145,10 @@
         //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
 
         //todO: list security elevated and not, also where the user is nobody and can't see any of the modules but has access to reports
+
+        public function testChartWithTooManyGroupsToRender()
+        {
+            //todo: call setMaximumGroupsPerChart(2) and then run a report chart with more than 2. then it should render the chart warning
+        }
     }
 ?>
