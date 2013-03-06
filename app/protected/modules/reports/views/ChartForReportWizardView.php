@@ -64,31 +64,37 @@
                 }
                 $(".chart-selector").live("change", function()
                     {
-                        $("#series-and-range-areas").detach().insertAfter( $(this).parent()  ).removeClass("hidden-element");
-                        arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
-                        if($(this).val() == "")
-                        {
-                            $("#series-and-range-areas").addClass("hidden-element")
-                            $(".first-series-and-range-area").hide();
-                            $(".first-series-and-range-area").find("input:select").prop("disabled", true);
-                        }
-                        else
-                        {
-                            $(".first-series-and-range-area").show();
-                            $(".first-series-and-range-area").find("input:select").prop("disabled", false);
-                        }
-                        if ($.inArray($(this).val(), arr) != -1)
-                        {
-                            $(".second-series-and-range-area").show();
-                            $(".second-series-and-range-area").find("input:select").prop("disabled", false);
-                        }
-                        else
-                        {
-                            $(".second-series-and-range-area").hide();
-                            $(".second-series-and-range-area").find("input:select").prop("disabled", true);
-                        }
+                        onChangeChartType(this);
                     }
                 );
+                function onChangeChartType(changedChartObject)
+                {
+                    $("#series-and-range-areas").detach().insertAfter( $(changedChartObject).parent()  ).removeClass("hidden-element");
+                    arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
+                    if($(changedChartObject).val() == "")
+                    {
+                        $("#series-and-range-areas").addClass("hidden-element")
+                        $(".first-series-and-range-area").hide();
+                        $(".first-series-and-range-area").find("select option:selected").removeAttr("selected");
+                        $(".first-series-and-range-area").find("select").prop("disabled", true);
+                    }
+                    else
+                    {
+                        $(".first-series-and-range-area").show();
+                        $(".first-series-and-range-area").find("select").prop("disabled", false);
+                    }
+                    if ($.inArray($(changedChartObject).val(), arr) != -1)
+                    {
+                        $(".second-series-and-range-area").show();
+                        $(".second-series-and-range-area").find("select").prop("disabled", false);
+                    }
+                    else
+                    {
+                        $(".second-series-and-range-area").hide();
+                        $(".second-series-and-range-area").find("select option:selected").removeAttr("selected");
+                        $(".second-series-and-range-area").find("select").prop("disabled", true);
+                    }
+                }
             ';
             Yii::app()->getClientScript()->registerScript('ChartChangingScript', $script);
         }

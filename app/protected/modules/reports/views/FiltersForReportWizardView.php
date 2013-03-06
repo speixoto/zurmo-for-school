@@ -178,7 +178,7 @@
         /**
          * @return string
          */
-        protected static function getZeroComponentsClassName()
+        public static function getZeroComponentsClassName()
         {
             return 'ZeroFilters';
         }
