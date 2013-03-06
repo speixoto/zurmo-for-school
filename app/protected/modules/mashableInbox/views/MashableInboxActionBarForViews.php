@@ -61,6 +61,7 @@
             $this->actionViewOptions         = $actionViewOptions;
             $this->mashableInboxForm         = $mashableInboxForm;
             $this->modelClassName            = $modelClassName;
+            $this->cssClasses                = array_merge($this->cssClasses, array("GridView")); //Todo: Move this into a gridview
         }
 
         protected function renderContent()
@@ -71,7 +72,7 @@
             $content .= $this->renderMassActionElement();
             $content .= '</div></div>';
             $content .= $this->renderMashableInboxForm();
-            $content .= ZurmoHtml::tag('div', array('id' => 'MashableInboxListViewWrapper'), $this->listView->render());
+            $content .= $this->listView->render();
             return $content;
         }
 
@@ -181,13 +182,10 @@
         private function registerFormScript($form)
         {
             $listViewId       = $this->listView->getGridViewId();
-            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$listViewId}', {
-                                        data: $('#" . $form->getId() . "').serialize()
-                                });";
+            $ajaxSubmitScript = "$('#{$listViewId}').yiiGridView('update', {data: $('#" . $form->getId() . "').serialize()});";
             $script = "
                     $('#MashableInboxForm_optionForModel_area').buttonset();
                     $('#MashableInboxForm_filteredBy_area').buttonset();
-                    processListViewSummaryClone('MashableInboxListViewWrapper', 'summary');
                     $('#MashableInboxForm_optionForModel_area').change(
                         function()
                         {
