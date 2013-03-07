@@ -28,7 +28,6 @@
     {
         public function resolveData(& $data)
         {
-            assert('$this->model->{$this->attribute} instanceof ContactState');
             if ($this->model->{$this->attribute}->id > 0)
             {
                 $data[] = $this->model->{$this->attribute}->name;

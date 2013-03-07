@@ -24,32 +24,44 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Utilized by module views that extend ListView
-     * to provide abstracted column element information
-     * that can be translated into one of the available
-     * GridView widgets in Yii.
-     */
-    abstract class RedBeanModelAttributeValueToArrayValueAdapter
+    class ForReportToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        protected $model;
-
-        protected $attribute;
-
-        public function __construct($model, $attribute)
+        /**
+         * @return int
+         */
+        protected function getCurrencyValueConversionType()
         {
-            assert('is_string($attribute)');
-            $this->model     = $model;
-            $this->attribute = $attribute;
+            if (isset($this->params['currencyValueConversionType']))
+            {
+                return $this->params['currencyValueConversionType'];
+            }
+            return Report::CURRENCY_CONVERSION_TYPE_ACTUAL;
         }
 
         /**
-         * Resolve data
-         * @param array $data
+         * @return mixed
+         * @throws NotSupportedException
          */
-        public function resolveData(& $data)
+        protected function getSpotConversionCurrencyCode()
         {
-            $data[$this->attribute] = $this->model->{$this->attribute};
+            if (isset($this->params['spotConversionCurrencyCode']))
+            {
+                return $this->params['spotConversionCurrencyCode'];
+            }
+            throw new NotSupportedException();
+        }
+
+        /**
+         * @return mixed
+         * @throws NotSupportedException
+         */
+        protected function getFromBaseToSpotRate()
+        {
+            if (isset($this->params['fromBaseToSpotRate']))
+            {
+                return $this->params['fromBaseToSpotRate'];
+            }
+            throw new NotSupportedException();
         }
     }
 ?>

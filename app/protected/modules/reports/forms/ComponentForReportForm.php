@@ -332,18 +332,25 @@
                     {
                         $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                        $typeToUse = 'Plural';
-                        if($modelToReportAdapter->isRelationASingularRelation($relationOrAttribute))
+                        if($modelToReportAdapter->isOwnedRelation($relationOrAttribute))
                         {
-                            $typeToUse = 'Singular';
-                        }
-                        if($moduleClassName != $modelClassName::getModuleClassName())
-                        {
-                            $content         .= $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse);
+                            $content   .= $modelToReportAdapter->getAttributeLabel($relationOrAttribute);
                         }
                         else
                         {
-                            $content         .= $modelClassName::getModelLabelByTypeAndLanguage($typeToUse);
+                            $typeToUse = 'Plural';
+                            if($modelToReportAdapter->isRelationASingularRelation($relationOrAttribute))
+                            {
+                                $typeToUse = 'Singular';
+                            }
+                            if($moduleClassName != $modelClassName::getModuleClassName())
+                            {
+                                $content         .= $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse);
+                            }
+                            else
+                            {
+                                $content         .= $modelClassName::getModelLabelByTypeAndLanguage($typeToUse);
+                            }
                         }
                     }
                     else

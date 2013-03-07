@@ -31,9 +31,12 @@
     {
         protected $reportResultsRowData;
 
-        public function __construct(ReportResultsRowData $reportResultsRowData)
+        protected $report;
+
+        public function __construct(ReportResultsRowData $reportResultsRowData, Report $report)
         {
             $this->reportResultsRowData = $reportResultsRowData;
+            $this->report               = $report;
         }
 
         public function getData()
@@ -41,42 +44,56 @@
             $data   = array();
             foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
             {
+
                 $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
-                //$data[] = $resolvedAttributeName;
-                echo $resolvedAttributeName . ' battery ' . $displayAttribute->getDisplayElementType() . "\n";
-
-                //get Type of adapter to use.
-                //if viaSelect vs. not, that makes it easy too i think
-
-
-                //shouldResolveValueFromModel($attributeAlias)
-if( $displayAttribute->getDisplayElementType() != 'FullName' &&
-    $displayAttribute->getDisplayElementType() != 'CurrencyValue')
-{
-                $className = $displayAttribute->getDisplayElementType() . 'RedBeanModelAttributeValueToExportValueAdapter'; //todo: move to factory
-                $adapter = new $className($this->reportResultsRowData, $resolvedAttributeName);
+                $className             = $this->resolveExportClassNameForListViewColumnAdapter($displayAttribute);
+                $params                = array();
+                $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                $adapter = new $className($this->reportResultsRowData, $resolvedAttributeName, $params);
                 $adapter->resolveData($data);
-            }
-                //here we need adapters because full name for example does something special...
-                //$data[] = $this->reportResultsRowData->$resolvedAttributeName;
             }
             return $data;
         }
 
         public function getHeaderData()
         {
-            $data = array();
-            foreach($this->reportResultsRowData->getDisplayAttributes() as $displayAttribute)
+            $data   = array();
+            foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
             {
-                $data[] = $displayAttribute->getDisplayLabel(); //todo: this is wrong, because currency for example has 2 fields one is amount and other is
-                //todo: currency code.... so we really we need to do the same thing.
+
+                $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                $className             = $this->resolveExportClassNameForListViewColumnAdapter($displayAttribute);
+                $params                = array();
+                $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                $adapter = new $className($this->reportResultsRowData, $resolvedAttributeName, $params);
+                $adapter->resolveHeaderData($data);
             }
             return $data;
         }
-        
-        protected function resolveIdLabelToTitleCaseForExport($id) //todo: where is this used?
+
+        protected function resolveExportClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
-            return mb_convert_case($id, MB_CASE_TITLE, "UTF-8");
-        }        
+            $displayElementType = $displayAttribute->getDisplayElementType();
+            if(@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
+            {
+                return $displayElementType . 'ForReportToExportValueAdapter';
+            }
+            else
+            {
+                return $displayElementType . 'RedBeanModelAttributeValueToExportValueAdapter';
+            }
+        }
+
+        protected function resolveParamsForCurrencyTypes(DisplayAttributeForReportForm $displayAttribute, & $params)
+        {
+            assert('is_array($params)');
+            if($displayAttribute->isATypeOfCurrencyValue())
+            {
+
+                $params['currencyValueConversionType'] = $this->report->getCurrencyConversionType();
+                $params['spotConversionCurrencyCode']  = $this->report->getSpotConversionCurrencyCode();
+                $params['fromBaseToSpotRate']          = $this->report->getFromBaseToSpotRate();
+            }
+        }
     }
 ?>

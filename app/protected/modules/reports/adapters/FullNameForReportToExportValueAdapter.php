@@ -24,32 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Utilized by module views that extend ListView
-     * to provide abstracted column element information
-     * that can be translated into one of the available
-     * GridView widgets in Yii.
-     */
-    abstract class RedBeanModelAttributeValueToArrayValueAdapter
+    class FullNameForReportToExportValueAdapter extends ForReportToExportValueAdapter
     {
-        protected $model;
-
-        protected $attribute;
-
-        public function __construct($model, $attribute)
+        public function resolveData(& $data)
         {
-            assert('is_string($attribute)');
-            $this->model     = $model;
-            $this->attribute = $attribute;
+            $model = $this->model->getModel($this->attribute);
+            if ($model->id > 0)
+            {
+                $data[] = strval($model);
+            }
+            else
+            {
+                $data[] = null;
+            }
         }
 
         /**
-         * Resolve data
-         * @param array $data
+         * Resolve the header data for the attribute.
+         * @param array $headerData
          */
-        public function resolveData(& $data)
+        public function resolveHeaderData(& $headerData)
         {
-            $data[$this->attribute] = $this->model->{$this->attribute};
+            $headerData[] = Zurmo::t('ReportsModule', 'Name');
         }
     }
 ?>

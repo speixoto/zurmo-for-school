@@ -24,30 +24,34 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Utilized by module views that extend ListView
-     * to provide abstracted column element information
-     * that can be translated into one of the available
-     * GridView widgets in Yii.
-     */
-    abstract class RedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToArrayValueAdapter
+    class CalculatedCurrencyValueForReportToExportValueAdapter extends ForReportToExportValueAdapter
     {
-        protected $params;
-
-        public function __construct($model, $attribute, $params = array())
-        {
-            assert('is_array($params)');
-            parent::__construct($model, $attribute);
-            $this->params    = $params;
-        }
-
-        /**
-         * Resolve data
-         * @param array $data
-         */
         public function resolveData(& $data)
         {
-            $data[] = $this->model->{$this->attribute};
+            assert('$this->model->{$this->attribute} instanceof CurrencyValue');
+            if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+            {
+                $data[] = Yii::app()->numberFormatter->formatDecimal($this->model->{$this->attribute});
+                $data[] = Zurmo::t('ReportsModule', 'Mixed Currency');
+            }
+            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+            {
+                //Assumes base conversion is done using sql math
+                $data[] = Yii::app()->numberFormatter->formatCurrency($this->model->{$this->attribute},
+                                                                      Yii::app()->currencyHelper->getBaseCode());
+                $data[] = Yii::app()->currencyHelper->getBaseCode();
+            }
+            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+            {
+                //Assumes base conversion is done using sql math
+                $data[] = Yii::app()->numberFormatter->formatCurrency($this->model->{$this->attribute} *
+                          $this->getFromBaseToSpotRate(), $this->getSpotConversionCurrencyCode());
+                $data[] = $this->getSpotConversionCurrencyCode();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
         /**
@@ -57,6 +61,7 @@
         public function resolveHeaderData(& $headerData)
         {
             $headerData[] = $this->model->getAttributeLabel($this->attribute);
+            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' ' . Zurmo::t('ZurmoModule', 'Currency');
         }
     }
 ?>

@@ -44,7 +44,7 @@
         }
 
         public function testGetDataWithNoRelationsSet()
-        {  
+        {
             $values = array(
                 'Test1',
                 'Test2',
@@ -56,6 +56,8 @@
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
             $this->assertTrue($saved);
+
+            $report = new Report();
             
             //for fullname attribute  (derived attribute)
             $reportModelTestItem = new ReportModelTestItem();
@@ -81,7 +83,7 @@
             $displayAttribute3->attributeIndexOrDerivedType = 'date';             
 
             //for datetime attribute
-            $reportModelTestItem->dateTime = '2013-02-12 10:15';
+            $reportModelTestItem->dateTime = '2013-02-12 10:15:00';
             $displayAttribute4    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute4->setModelAliasUsingTableAliasName('model1');  
@@ -203,6 +205,9 @@
             $displayAttribute18->setModelAliasUsingTableAliasName('model1');
             $displayAttribute18->attributeIndexOrDerivedType = 'likeContactState';
 
+
+            $saved                = $reportModelTestItem->save();
+            $this->assertTrue($saved);
             $tempId               = 1;
             $reportResultsRowData = new ReportResultsRowData(array(
                                         $displayAttribute1, $displayAttribute2, $displayAttribute3,
@@ -213,21 +218,17 @@
                                         $displayAttribute16, $displayAttribute17, $displayAttribute18), $tempId);
                                                                     
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
-            $adapter            = new ReportToExportAdapter($reportResultsRowData);
-            $compareHeaderData  = array( 'Full Name', 'Boolean', 'Date', 'DateTime', 'Float',
-                                         'Integer', 'Phone', 'String', 'TextArea', 'Url', 'Dropdown',
-                                         'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown',
-                                         'tagCloud', 'radioDropDown', 'Contact State');
-            $compareRowData     = array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
-                                         10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
-                                         'http://www.test.com', 'Test2', 'USD', 'someString', 'test@someString.com',
-                                         'Multi 1 Multi 2', 'Cloud 2 Cloud 3', 'Test2', 'someName');
-            echo "<pre>";
-            print_r($adapter->getHeaderRowData());
-            print_r($adapter->getData());
-            echo "</pre>";
-            exit;
-            $this->assertEquals($compareHeaderData, $adapter->getHeaderRowData());
+            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $compareHeaderData  = array( 'Name', 'Boolean', 'Date', 'Date Time', 'Float',
+                                         'Integer', 'Phone', 'String', 'Text Area', 'Url', 'Drop Down',
+                                         'Currency Value', 'Currency Value Currency', 'Primary Address >> Street 1',
+                                         'Primary Email >> Email Address', 'Multi Drop Down',
+                                         'Tag Cloud', 'Radio Drop Down', 'A name for a state');
+            $compareRowData     = array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
+                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
+                                         'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
+                                         'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName');
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
         }
 
@@ -246,7 +247,9 @@
             $customFieldData = CustomFieldData::getByName('ReportTestDropDown');
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
-            assert('$saved'); // Not Coding Standard               
+            assert('$saved'); // Not Coding Standard
+
+            $report = new Report();
             
             //for fullname attribute  
             $reportModelTestItem = new ReportModelTestItem();
@@ -272,7 +275,7 @@
             $displayAttribute3->attributeIndexOrDerivedType = 'hasMany2___date';             
 
             //for datetime attribute
-            $reportModelTestItem->dateTime = '2013-02-12 10:15';
+            $reportModelTestItem->dateTime = '2013-02-12 10:15:00';
             $displayAttribute4    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute4->setModelAliasUsingTableAliasName('relatedModel');  
@@ -392,32 +395,45 @@
             $displayAttribute18            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
                                             Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute18->setModelAliasUsingTableAliasName('relatedModel');
-            $displayAttribute18->attributeIndexOrDerivedType = 'hasMany2___likeContactState';            
-                                                                                            
+            $displayAttribute18->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
+
+            $saved                = $reportModelTestItem->save();
+            $this->assertTrue($saved);
+            $tempId               = 1;
             $reportResultsRowData = new ReportResultsRowData(array(
                                         $displayAttribute1, $displayAttribute2, $displayAttribute3,
                                         $displayAttribute4, $displayAttribute5, $displayAttribute6,
                                         $displayAttribute7, $displayAttribute8, $displayAttribute9,
                                         $displayAttribute10, $displayAttribute11, $displayAttribute12,
                                         $displayAttribute13, $displayAttribute14, $displayAttribute15,
-                                        $displayAttribute16, $displayAttribute17, $displayAttribute18), 24);
-                                                                    
+                                        $displayAttribute16, $displayAttribute17, $displayAttribute18), $tempId);
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'relatedModel');
-            
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();
-            
-            $headerdata  = array('Full Name', 'Boolean', 'Date', 'DateTime', 'Float'
-                                 , 'Integer', 'Phone', 'String', 'TextArea', 'Url', 'Dropdown'
-                                 , 'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown'
-                                 , 'tagCloud', 'radioDropDown', 'Contact State');
-            $content     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
-                                 10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
-                                 'http://www.test.com', 'Test2', 'USD', 'someString', 'test@someString.com',
-                                 'Multi 1 Multi 2', 'Cloud 2 Cloud 3', 'Test2', 'someName');
-            
-            $compareData = array($headerdata, $content);                        
-            $this->assertEquals($compareData, $data); 
+            $adapter     = new ReportToExportAdapter($reportResultsRowData, $report);
+            $compareHeaderData  = array('Name',
+                                        'ReportModelTestItems >> Boolean',
+                                        'ReportModelTestItems >> Date',
+                                        'ReportModelTestItems >> Date Time',
+                                        'ReportModelTestItems >> Float',
+                                        'ReportModelTestItems >> Integer',
+                                        'ReportModelTestItems >> Phone',
+                                        'ReportModelTestItems >> String',
+                                        'ReportModelTestItems >> Text Area',
+                                        'ReportModelTestItems >> Url',
+                                        'ReportModelTestItems >> Drop Down',
+                                        'ReportModelTestItems >> Currency Value',
+                                        'ReportModelTestItems >> Currency Value Currency',
+                                        'ReportModelTestItems >> Primary Address >> Street 1',
+                                        'ReportModelTestItems >> Primary Email >> Email Address',
+                                        'ReportModelTestItems >> Multi Drop Down',
+                                        'ReportModelTestItems >> Tag Cloud',
+                                        'ReportModelTestItems >> Radio Drop Down',
+                                        'ReportModelTestItems >> A name for a state');
+            $compareRowData     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
+                                        10.5, 10, '7842151012', 'xString', 'xtextAreatest',
+                                        'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
+                                        'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName');
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
             
             //for MANY-MANY Relationship
             //for name attribute  
@@ -438,23 +454,22 @@
             $reportResultsRowData = new ReportResultsRowData(array(
                                         $displayAttribute1, $displayAttribute2), 4);
                                                                     
-            $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'relatedModel1');  
-            
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();
-            
-            $headerdata  = array('Name', 'SomethingOn3');
-            $content     = array('xFirst', 'somethingOn3');
-            
-            $compareData = array($headerdata, $content); 
-            $this->assertEquals($compareData, $data);            
+            $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'relatedModel1');
+
+            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $compareHeaderData  = array('ReportModelTestItem2 >> ReportModelTestItem3s >> Name',
+                                        'ReportModelTestItem2 >> ReportModelTestItem3s >> Something On 3');
+            $compareRowData     = array('xFirst', 'somethingOn3');
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
         }
 
         /**
          * @depends testExportRelationAttributes
          */
         public function testExportSummationAttributes()
-        {              
+        {
+            $report = new Report();
             //for date summation
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_SUMMATION);
@@ -581,7 +596,8 @@
             $displayAttribute20->attributeIndexOrDerivedType = 'currencyValue__Average';
             $displayAttribute20->madeViaSelectInsteadOfViaModel = true;
             $this->assertTrue($displayAttribute20->columnAliasName == 'col19');
-            
+
+            $tempId               = 1;
             $reportResultsRowData = new ReportResultsRowData(array(
                                     $displayAttribute1, $displayAttribute2, $displayAttribute3,
                                     $displayAttribute4, $displayAttribute5, $displayAttribute6, 
@@ -589,15 +605,15 @@
                                     $displayAttribute10, $displayAttribute11, $displayAttribute12,
                                     $displayAttribute13, $displayAttribute14, $displayAttribute15,
                                     $displayAttribute16, $displayAttribute17, $displayAttribute18,
-                                    $displayAttribute19, $displayAttribute20), 4);
+                                    $displayAttribute19, $displayAttribute20), $tempId);
             $reportResultsRowData->addSelectedColumnNameAndValue('col0', '2013-02-14');
             $reportResultsRowData->addSelectedColumnNameAndValue('col1', '2013-02-12');
-            $reportResultsRowData->addSelectedColumnNameAndValue('col2', '2013-02-14 00:00');
-            $reportResultsRowData->addSelectedColumnNameAndValue('col3', '2013-02-12 00:59');
-            $reportResultsRowData->addSelectedColumnNameAndValue('col4', '2013-02-14 00:00');
-            $reportResultsRowData->addSelectedColumnNameAndValue('col5', '2013-02-12 00:59');
-            $reportResultsRowData->addSelectedColumnNameAndValue('col6', '2013-02-14 00:00');
-            $reportResultsRowData->addSelectedColumnNameAndValue('col7', '2013-02-12 00:59');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col2', '2013-02-14 00:00:00');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col3', '2013-02-12 00:59:00');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col4', '2013-02-14 00:00:00');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col5', '2013-02-12 00:59:00');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col6', '2013-02-14 00:00:00');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col7', '2013-02-12 00:59:00');
             $reportResultsRowData->addSelectedColumnNameAndValue('col8', 18.45);
             $reportResultsRowData->addSelectedColumnNameAndValue('col9', 19.41);
             $reportResultsRowData->addSelectedColumnNameAndValue('col10', 192.15);
@@ -611,19 +627,44 @@
             $reportResultsRowData->addSelectedColumnNameAndValue('col18', 7000);
             $reportResultsRowData->addSelectedColumnNameAndValue('col19', 8000);                        
             
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();
-            
-            $headerdata  = array('col0', 'col1', 'col2', 'col3', 'col4', 'col5', 'col6', 'col7',
-                                 'col8', 'col9', 'col10', 'col11', 'col12', 'col13', 'col14',
-                                 'col15', 'col16', 'col17', 'col18', 'col19');
-            $content     = array('2013-02-14', '2013-02-12', '2013-02-14 00:00', '2013-02-12 00:59',
-                                 '2013-02-14 00:00', '2013-02-12 00:59', '2013-02-14 00:00',
-                                 '2013-02-12 00:59', 18.45, 19.41, 192.15, 180.21, 2000,
-                                 5000, 1000, 9000, 5000, 6000, 7000, 8000);
-            
-            $compareData = array($headerdata, $content);
-            $this->assertEquals($compareData, $data);
+            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $compareHeaderData  = array('Date -(Max)',
+                                        'Date -(Min)',
+                                        'Date Time -(Min)',
+                                        'Date Time -(Min)',
+                                        'Created Date Time -(Max)',
+                                        'Created Date Time -(Min)',
+                                        'Modified Date Time -(Max)',
+                                        'Modified Date Time -(Min)',
+                                        'Float -(Min)',
+                                        'Float -(Max)',
+                                        'Float -(Sum)',
+                                        'Float -(Avg)',
+                                        'Integer -(Min)',
+                                        'Integer -(Max)',
+                                        'Integer -(Sum)',
+                                        'Integer -(Avg)',
+                                        'Currency Value -(Min)',
+                                        'Currency Value -(Min) Currency',
+                                        'Currency Value -(Max)',
+                                        'Currency Value -(Max) Currency',
+                                        'Currency Value -(Sum)',
+                                        'Currency Value -(Sum) Currency',
+                                        'Currency Value -(Avg)',
+                                        'Currency Value -(Avg) Currency');
+            $compareRowData     = array('2013-02-14',
+                                        '2013-02-12',
+                                        '2013-02-14 00:00:00',
+                                        '2013-02-12 00:59:00',
+                                        '2013-02-14 00:00:00',
+                                        '2013-02-12 00:59:00',
+                                        '2013-02-14 00:00:00',
+                                        '2013-02-12 00:59:00',
+                                        18.45, 19.41, 192.15, 180.21, 2000,
+                                        5000, 1000, 9000, '5,000', 'Mixed Currency', '6,000',
+                                        'Mixed Currency', '7,000', 'Mixed Currency','8,000', 'Mixed Currency');
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
         }
         
        /**
@@ -633,6 +674,7 @@
         public function testViaSelectAndViaModelTogether()
         {
             $reportModelTestItem = new ReportModelTestItem();
+            $report              = new Report();
             
             //viaSelect attribute
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
@@ -653,13 +695,17 @@
             $reportResultsRowData->addSelectedColumnNameAndValue('col0', 9000);                                                                                                            
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');  
             
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();
-            
-            $headerdata  = array('col0', 'Boolean');
-            $content     = array(9000, true);
-            
-            $compareData = array($headerdata, $content); 
-            $this->assertEquals($compareData, $data); 
+            $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
+            $compareHeaderData  = array('Integer -(Min)', 'Boolean');
+            $compareRowData     = array(9000, true);
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
+            $this->assertEquals($compareRowData, $adapter->getData());
         }
-    }        
+
+        public function testWeAreMissingDynamicUser()
+        {
+            //todo: test dynamic user in the tests above.
+            $this->fail();
+        }
+    }
+?>

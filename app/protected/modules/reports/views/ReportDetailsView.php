@@ -89,6 +89,7 @@
         {
             $script = '$(".ReportSQLForPortletView").hide();';
             Yii::app()->getClientScript()->registerScript('ReportPortletsDefaultHideScript', $script);
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
         }
 
         /**
@@ -103,6 +104,15 @@
             $content .= '</div></div>';
             $this->registerScripts();
             return $content;
+        }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            if(get_class($element) == 'ReportExportLinkActionElement' && $this->model->getType() == Report::TYPE_MATRIX)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

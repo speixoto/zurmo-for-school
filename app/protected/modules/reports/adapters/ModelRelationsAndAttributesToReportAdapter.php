@@ -153,6 +153,7 @@
         /**
          * Enter description here ...
          * @param string $attribute
+         * @return string
          * @throws NotSupportedException if the label is missing for the attribute
          */
         public function getAttributeLabel($attribute)
@@ -167,9 +168,14 @@
                 $resolvedAttribute = $this->resolveRealAttributeName($attribute);
             }
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
-            if(!isset($attributesData[$resolvedAttribute]))
+            if(!isset($attributesData[$resolvedAttribute]) && !$this->model->isAttribute($resolvedAttribute))
             {
                 throw new NotSupportedException('Label not found for: ' . $resolvedAttribute);
+            }
+            //PrimaryAddress for example would not be an attribute that is reportable but is still required for getting labels
+            elseif($this->model->isAttribute($resolvedAttribute))
+            {
+                return $this->model->getAttributeLabel($resolvedAttribute);
             }
             return $attributesData[$resolvedAttribute]['label'];
         }
@@ -543,6 +549,40 @@
                 return true;
             }
             return false;
+        }
+
+        /**
+         * Assumes for now that we only need to know about real attributes that are 'owned'.
+         * @param $relation
+         * @return bool
+         * @throws NotSupportedException
+         */
+        public function isOwnedRelation($relation)
+        {
+            assert('is_string($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $relationAndInferredData         = explode($delimiter, $relation);
+            $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+            if(count($relationAndInferredData) == 3)
+            {
+                return false;
+            }
+            elseif(count($relationAndInferredData) == 2)
+            {
+                return false;
+            }
+            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            {
+                return false;
+            }
+            elseif(count($relationAndInferredData) == 1)
+            {
+                return $this->model->isOwnedRelation($relation);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
         /**

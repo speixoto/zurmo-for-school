@@ -457,17 +457,11 @@
         public function actionExport($id, $stickySearchKey = null)
         {                           
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
-            assert('is_int($id)');            
             $savedReport                    = SavedReport::getById((int)$id);
             $report                         = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $savedReport                    = new SavedReport(false);
-            $searchForm                     = new ReportsSearchForm($savedReport);
-            
-            $dataProvider = $this->getDataProviderForExport($report,$stickySearchKey,false);            
-            $totalItems = intval($dataProvider->calculateTotalItemCount());            
-            $data = array();
+            $dataProvider                   = $this->getDataProviderForExport($report, (int)$stickySearchKey, false);
+            $totalItems                     = intval($dataProvider->calculateTotalItemCount());
+            $data                           = array();
             if ($totalItems > 0)
             {
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
@@ -475,10 +469,15 @@
                     // Output csv file directly to user browser
                     if ($dataProvider)                    
                     {     
-                        $data1 = $dataProvider->getData();                      
+                        $data1      = $dataProvider->getData();
+                        $headerData = array();
                         foreach ($data1 as $reportResultsRowData)
                         {                             
-                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData); 
+                          $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $report);
+                          if(count($headerData) == 0)
+                          {
+                              $headerData = $reportToExportAdapter->getHeaderData();
+                          }
                           $data[] = $reportToExportAdapter->getData();  
                         }                                                                          
                     }
@@ -501,13 +500,12 @@
                     {
                         $serializedData = serialize($dataProvider);
                     }
-
                     // Create background job
-                    $exportItem = new ExportItem();
+                    $exportItem                  = new ExportItem();
                     $exportItem->isCompleted     = 0;
                     $exportItem->exportFileType  = 'csv';
                     $exportItem->exportFileName  = $this->getModule()->getName();
-                    $exportItem->modelClassName = $modelClassName;
+                    $exportItem->modelClassName  = 'SavedReport';
                     $exportItem->serializedData  = $serializedData;
                     $exportItem->save();
                     $exportItem->forget();
@@ -530,7 +528,6 @@
         {
             assert('is_string($stickyKey) || is_int($stickyKey)');
             assert('is_bool($runReport)');
-            $getData   = GetUtil::getData();
             if (null != $stickyData = StickyReportUtil::getDataByKey($stickyKey))
             {
                 StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
