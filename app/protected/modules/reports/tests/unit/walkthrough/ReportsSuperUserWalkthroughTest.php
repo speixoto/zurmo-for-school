@@ -158,5 +158,7 @@
 
         //todo: that the initial query thing works for filtering out modules you don’t have access to always.
 
+        //todo: test details view comes up ok when user cant delete or edit report, make sure options button doesnt blow up since it shouldnt display
+
     }
 ?>

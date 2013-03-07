@@ -784,13 +784,13 @@
         }
 
         /**
-         * Override when some attributes can be made via select and not via the model.
+         * Override when some attributes can be made via select and not via the model. An example of a viaSelect is
+         * SUM(amount) since that is not derived via a model but directly from the results of a query.
          * @param $attribute
          * @return bool
          */
         public function isDisplayAttributeMadeViaSelect($attribute)
         {
-            //todo: document this more
             assert('is_string($attribute)');
             return false;
         }

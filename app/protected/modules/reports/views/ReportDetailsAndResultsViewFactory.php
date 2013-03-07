@@ -65,7 +65,7 @@
             {
                 throw new NotSupportedException();
             }
-            return new $viewClassName($controllerId, $moduleId, $params, $report);
+            return new $viewClassName($controllerId, $moduleId, $params, $report, $savedReport);
         }
     }
 ?>

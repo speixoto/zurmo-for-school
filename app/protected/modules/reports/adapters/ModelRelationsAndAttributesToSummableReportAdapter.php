@@ -684,7 +684,6 @@
             }
         }
 
-    //todo: should we really call resolveReal in here? or have that outside and then call this method? make it a bit cleaner
         /**
          * @param string $attribute
          * @return bool
