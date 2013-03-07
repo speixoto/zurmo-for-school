@@ -66,7 +66,6 @@
 
             //Change email settings
             $this->resetGetArray();
-            $this->resetPostArray();
             $this->setPostArray(array('EmailSmtpConfigurationForm' => array(
                                     'host'                              => 'abc',
                                     'port'                              => '565',
@@ -94,7 +93,6 @@
 
             //Change email settings
             $this->resetGetArray();
-            $this->resetPostArray();
             $this->setPostArray(array('EmailArchivingConfigurationForm' => array(
                                     'imapHost'                          => 'mail.example.com',
                                     'imapUsername'                      => 'test@example.com',
@@ -107,10 +105,10 @@
 
             $this->assertEquals('mail.example.com',     Yii::app()->imap->imapHost);
             $this->assertEquals('test@example.com',     Yii::app()->imap->imapUsername);
-            $this->assertEquals('abcd',                 Yii::app()->imap->imapPassword);
-            $this->assertEquals('143',                  Yii::app()->imap->imapPort);
-            $this->assertEquals('0',                    Yii::app()->imap->imapSSL);
-            $this->assertEquals('INBOX',                Yii::app()->imap->imapFolder);
+            $this->assertEquals('abcd',     Yii::app()->imap->imapPassword);
+            $this->assertEquals('143',     Yii::app()->imap->imapPort);
+            $this->assertEquals('0',     Yii::app()->imap->imapSSL);
+            $this->assertEquals('INBOX',     Yii::app()->imap->imapFolder);
         }
 
         public function testSuperUserModifyEmailArchivingConfigurationImapWithValidation()

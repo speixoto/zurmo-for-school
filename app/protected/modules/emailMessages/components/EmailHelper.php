@@ -119,24 +119,7 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if ($keyName == 'outboundPassword')
-                {
-                    $encryptedKeyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
-                    if ($encryptedKeyValue !== '' && $encryptedKeyValue !== null)
-                    {
-                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($encryptedKeyValue);
-                    }
-                    else
-                    {
-                        $keyValue = null;
-                    }
-
-                }
-                else
-                {
-                    $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName);
-                }
-                if (null !== $keyValue)
+                if (null !== $keyValue = ZurmoConfigurationUtil::getByModuleName('EmailMessagesModule', $keyName))
                 {
                     $this->$keyName = $keyValue;
                 }
@@ -156,15 +139,7 @@
                 $settingsToLoad = array_merge($this->settingsToLoad, array('fromName', 'fromAddress'));
                 foreach ($settingsToLoad as $keyName)
                 {
-                    if ($keyName == 'outboundPassword')
-                    {
-                        $keyValue = ZurmoPasswordSecurityUtil::decrypt($userEmailAccount->$keyName);
-                        $this->$keyName = $keyValue;
-                    }
-                    else
-                    {
-                        $this->$keyName = $userEmailAccount->$keyName;
-                    }
+                    $this->$keyName = $userEmailAccount->$keyName;
                 }
             }
             else
@@ -182,15 +157,7 @@
         {
             foreach ($this->settingsToLoad as $keyName)
             {
-                if ($keyName == 'outboundPassword')
-                {
-                    $password = ZurmoPasswordSecurityUtil::encrypt($this->$keyName);
-                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $password);
-                }
-                else
-                {
-                    ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
-                }
+                ZurmoConfigurationUtil::setByModuleName('EmailMessagesModule', $keyName, $this->$keyName);
             }
         }
 
