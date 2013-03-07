@@ -139,7 +139,7 @@ $(window).ready(function(){
         top : 0,
         left : 0
     };
-    resolveSpinner(state, '#stickyListLoadingArea', style, '.loading');
+    resolveSpinner(true, '#stickyListLoadingArea', style, '.loading');
 
 });
 
