@@ -134,11 +134,12 @@
         protected function renderChartTipContent()
         {
             $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Quick Tip'));
-            $content .= Zurmo::t('WorkflowsModule', 'In order to use a grouping as a series field, ' .
-                                                    'the grouping must be added as a display column.');
+            $content .= ZurmoHtml::tag('p', array(),
+                                       Zurmo::t('WorkflowsModule', 'In order to use a grouping as a series field, ' .
+                                                    'the grouping must be added as a display column.'));
             $content  = ZurmoHtml::tag('div', array(), $content);
             $content  = ZurmoHtml::tag('div', array('class' => 'buffer'), $content);
-            $content  = ZurmoHtml::tag('div', array('id'    => 'right-side-edit-view-panel'), $content);
+            $content  = ZurmoHtml::tag('div', array('class'    => 'right-side-edit-view-panel'), $content);
             return $content;
         }
     }

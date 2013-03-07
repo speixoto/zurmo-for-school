@@ -5751,7 +5751,7 @@ body > .ui-autocomplete {
   display: table;
   clear: both;
 }
-.AppContent .single-column #right-side-edit-view-panel {
+.AppContent .single-column .right-side-edit-view-panel {
   top: 55px;
 }
 .AppContent .single-column #inline-edit-form .panel {
@@ -7634,12 +7634,12 @@ div.wide.form label.hasCheckBox {
 .double-column .panel table {
   width: 100% !important;
 }
-.double-column #right-side-edit-view-panel {
+.double-column .right-side-edit-view-panel {
   margin-bottom: 15px;
   position: relative !important;
   float: left !important;
 }
-.double-column #right-side-edit-view-panel .buffer {
+.double-column .right-side-edit-view-panel .buffer {
   padding-left: 5px;
 }
 .double-column .col-0,
@@ -7791,82 +7791,68 @@ div.wide.form label.hasCheckBox {
 .radio-input label {
   margin-left: 10px;
 }
-#right-side-edit-view-panel {
+.right-side-edit-view-panel {
+  width: 30%;
+  float: right;
   position: absolute;
   right: 15px;
   top: 15px;
 }
-.right-side-edit-view-panel,
-#right-side-edit-view-panel {
-  width: 30%;
-  float: right;
+.right-side-edit-view-panel p {
+  line-height: 140%;
 }
-.right-side-edit-view-panel h3,
-#right-side-edit-view-panel h3 {
+.right-side-edit-view-panel h3 {
   margin-bottom: 8px;
 }
-.right-side-edit-view-panel label,
-#right-side-edit-view-panel label {
+.right-side-edit-view-panel label {
   width: 100%;
   display: block;
   line-height: 100%;
   padding-top: 0;
   margin-bottom: 5px;
 }
-.right-side-edit-view-panel #owner-box,
-#right-side-edit-view-panel #owner-box {
+.right-side-edit-view-panel #owner-box {
   margin-bottom: 15px;
   position: relative;
 }
 .right-side-edit-view-panel #owner-box label,
-#right-side-edit-view-panel #owner-box label,
-.right-side-edit-view-panel #owner-box + label,
-#right-side-edit-view-panel #owner-box + label {
+.right-side-edit-view-panel #owner-box + label {
   font-size: 12px;
   font-weight: 600;
 }
-.right-side-edit-view-panel #owner-box input,
-#right-side-edit-view-panel #owner-box input {
+.right-side-edit-view-panel #owner-box input {
   position: relative;
   z-index: 0;
 }
-.right-side-edit-view-panel .ui-autocomplete,
-#right-side-edit-view-panel .ui-autocomplete {
+.right-side-edit-view-panel .ui-autocomplete {
   width: auto;
 }
-.right-side-edit-view-panel input[type="text"],
-#right-side-edit-view-panel input[type="text"] {
+.right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
 }
-.right-side-edit-view-panel #owner-box + label,
-#right-side-edit-view-panel #owner-box + label {
+.right-side-edit-view-panel #owner-box + label {
   margin-bottom: 15px;
 }
-.right-side-edit-view-panel .radio-input,
-#right-side-edit-view-panel .radio-input {
+.right-side-edit-view-panel .radio-input {
   margin-bottom: 10px;
   width: 100%;
   float: left;
   display: block;
 }
-.right-side-edit-view-panel .radio-input label,
-#right-side-edit-view-panel .radio-input label {
+.right-side-edit-view-panel .radio-input label {
   width: auto;
   float: left;
   vertical-align: middle;
 }
-.right-side-edit-view-panel .radio-input input[type="radio"],
-#right-side-edit-view-panel .radio-input input[type="radio"] {
+.right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
-.right-side-edit-view-panel .radio-input .hasDropDown,
-#right-side-edit-view-panel .radio-input .hasDropDown {
+.right-side-edit-view-panel .radio-input .hasDropDown {
   padding-left: 40px;
 }
-.right-side-edit-view-panel input[type="text"],
-#right-side-edit-view-panel input[type="text"] {
+.right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
 }
 .has-date-select,
@@ -11238,7 +11224,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AppContent.ImportWizardView h3 {
   margin-bottom: 15px;
 }
-.AppContent.ImportWizardView #right-side-edit-view-panel {
+.AppContent.ImportWizardView .right-side-edit-view-panel {
   width: 60% !important;
   float: none !important;
 }
@@ -11307,7 +11293,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 5px 0 0 10px !important;
 }
 /*= Step 3*/
-#ImportWizardSetModelPermissionsView #right-side-edit-view-panel {
+#ImportWizardSetModelPermissionsView .right-side-edit-view-panel {
   position: relative !important;
   top: 0 !important;
   right: 0 !important;
@@ -11422,6 +11408,7 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportSequentialProcessContainerView > div {
   float: left;
   width: 100%;
+  padding-bottom: 15px;
 }
 #ImportSequentialProcessContainerView #edit-form {
   padding: 0 0 15px 0 !important;
@@ -14847,6 +14834,11 @@ a.close-ModalGameNotification.simple-link {
 #ConversationDetailsAndRelationsView .panel > table {
   border-bottom: none;
 }
+.single-coloumn-details-view .right-side-edit-view-panel,
+#ConversationDetailsView .right-side-edit-view-panel,
+#ConversationDetailsAndRelationsView .right-side-edit-view-panel {
+  top: 40px;
+}
 .single-coloumn-details-view .details-table,
 #ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
@@ -14864,11 +14856,6 @@ a.close-ModalGameNotification.simple-link {
   content: "";
   display: table;
   clear: both;
-}
-.single-coloumn-details-view #right-side-edit-view-panel,
-#ConversationDetailsView #right-side-edit-view-panel,
-#ConversationDetailsAndRelationsView #right-side-edit-view-panel {
-  top: 55px;
 }
 /*Sidebar*/
 .thred-details {
@@ -15767,6 +15754,9 @@ a.user-link {
 #GeneralDataForReportWizardView .right-side-edit-view-panel {
   width: 30%;
   float: right;
+  position: relative;
+  top: -2px;
+  right: 0;
 }
 .hasTree {
   width: 25%;
@@ -16183,6 +16173,11 @@ a.user-link {
   width: auto;
   float: none;
   clear: left;
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin-bottom: 15px;
 }
 #series-and-range-areas .buffer {
   padding-left: 22px;
