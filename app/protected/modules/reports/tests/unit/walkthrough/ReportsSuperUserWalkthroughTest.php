@@ -150,5 +150,13 @@
         {
             //todo: call setMaximumGroupsPerChart(2) and then run a report chart with more than 2. then it should render the chart warning
         }
+        //todo: test saving a report and changing owner so you don't have permissions anymore. it should do a flashbar and redirect you to
+        //the list view.
+        //todo: test async export
+
+        //todo: test contorller filters are working
+
+        //todo: that the initial query thing works for filtering out modules you don’t have access to always.
+
     }
 ?>

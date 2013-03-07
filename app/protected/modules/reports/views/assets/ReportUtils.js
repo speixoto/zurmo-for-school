@@ -28,7 +28,6 @@ $(window).ready(function(){
         hoverClass: "ui-state-active",
         cursor: "pointer",
         drop: function( event, ui ) {
-            //console.log(event, ui);
             //todo: hide drop overlay
             isDragging = false;
             $('.dynamic-droppable-area').removeClass('activate-drop-zone');
