@@ -24,18 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    class ContactStateRedBeanModelAttributeValueToExportValueAdapter extends TextRedBeanModelAttributeValueToExportValueAdapter
     {
         public function resolveData(& $data)
         {
-            assert('$this->model->{$this->attribute} instanceof User');
+            assert('$this->model->{$this->attribute} instanceof ContactState');
             if ($this->model->{$this->attribute}->id > 0)
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = $this->model->{$this->attribute}->username;
+                $data[] = $this->model->{$this->attribute}->name;
             }
             else
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = null;
+                $data[] = null;
             }
         }
     }

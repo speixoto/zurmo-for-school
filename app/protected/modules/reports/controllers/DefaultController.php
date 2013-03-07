@@ -486,7 +486,7 @@
                     if (count($data))
                     {
                         $fileName = $this->getModule()->getName() . ".csv";                        
-                        $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+                        $output = ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
                     }
                     else
                     {

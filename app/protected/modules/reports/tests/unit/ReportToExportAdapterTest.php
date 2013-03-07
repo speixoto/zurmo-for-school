@@ -55,9 +55,9 @@
             $customFieldData = CustomFieldData::getByName('ReportTestDropDown');
             $customFieldData->serializedData = serialize($values);
             $saved = $customFieldData->save();
-            assert('$saved'); // Not Coding Standard               
+            $this->assertTrue($saved);
             
-            //for fullname attribute  
+            //for fullname attribute  (derived attribute)
             $reportModelTestItem = new ReportModelTestItem();
             $reportModelTestItem->firstName = 'xFirst';
             $reportModelTestItem->lastName = 'xLast';
@@ -202,34 +202,39 @@
                                             Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute18->setModelAliasUsingTableAliasName('model1');
             $displayAttribute18->attributeIndexOrDerivedType = 'likeContactState';
-                                                                                            
+
+            $tempId               = 1;
             $reportResultsRowData = new ReportResultsRowData(array(
                                         $displayAttribute1, $displayAttribute2, $displayAttribute3,
                                         $displayAttribute4, $displayAttribute5, $displayAttribute6,
                                         $displayAttribute7, $displayAttribute8, $displayAttribute9,
                                         $displayAttribute10, $displayAttribute11, $displayAttribute12,
                                         $displayAttribute13, $displayAttribute14, $displayAttribute15,
-                                        $displayAttribute16, $displayAttribute17, $displayAttribute18), 24);
+                                        $displayAttribute16, $displayAttribute17, $displayAttribute18), $tempId);
                                                                     
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
-            
-            $adapter     = new ReportToExportAdapter($reportResultsRowData);
-            $data        = $adapter->getData();
-            
-            $headerdata  = array('Full Name', 'Boolean', 'Date', 'DateTime', 'Float'
-                                 , 'Integer', 'Phone', 'String', 'TextArea', 'Url', 'Dropdown'
-                                 , 'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown'
-                                 , 'tagCloud', 'radioDropDown', 'Contact State');
-            $content     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
-                                 10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
-                                 'http://www.test.com', 'Test2', 'USD', 'someString', 'test@someString.com',
-                                 'Multi 1 Multi 2', 'Cloud 2 Cloud 3', 'Test2', 'someName');
-            
-            $compareData = array($headerdata, $content);
-            $this->assertEquals($compareData, $data);
+            $adapter            = new ReportToExportAdapter($reportResultsRowData);
+            $compareHeaderData  = array( 'Full Name', 'Boolean', 'Date', 'DateTime', 'Float',
+                                         'Integer', 'Phone', 'String', 'TextArea', 'Url', 'Dropdown',
+                                         'Currency', 'PrimaryAddress', 'PrimaryEmail', 'MultiDropDown',
+                                         'tagCloud', 'radioDropDown', 'Contact State');
+            $compareRowData     = array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15',
+                                         10.5, 10, 'xNr', '7842151012', 'xString', 'xtextAreatest',
+                                         'http://www.test.com', 'Test2', 'USD', 'someString', 'test@someString.com',
+                                         'Multi 1 Multi 2', 'Cloud 2 Cloud 3', 'Test2', 'someName');
+            echo "<pre>";
+            print_r($adapter->getHeaderRowData());
+            print_r($adapter->getData());
+            echo "</pre>";
+            exit;
+            $this->assertEquals($compareHeaderData, $adapter->getHeaderRowData());
+            $this->assertEquals($compareRowData, $adapter->getData());
         }
-        
-        public function testRelationalFields()
+
+        /**
+         * @depends testGetDataWithNoRelationsSet
+         */
+        public function testExportRelationAttributes()
         {
             $values = array(
                 'Test1',
@@ -444,8 +449,11 @@
             $compareData = array($headerdata, $content); 
             $this->assertEquals($compareData, $data);            
         }
-        
-        public function testSummationfields()
+
+        /**
+         * @depends testExportRelationAttributes
+         */
+        public function testExportSummationAttributes()
         {              
             //for date summation
             $displayAttribute1 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
@@ -618,8 +626,9 @@
             $this->assertEquals($compareData, $data);
         }
         
-        /*
+       /**
         * Test for viaSelect and viaModel together
+        * @depends testExportSummationAttributes
         */
         public function testViaSelectAndViaModelTogether()
         {

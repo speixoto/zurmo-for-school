@@ -24,41 +24,67 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CurrencyRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
+    class UserRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
     {
+        public $freeze = false;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             $super = SecurityTestHelper::createSuperAdmin();
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
+        }
+
         public function testGetExportValue()
         {
-            $currencies                 = Currency::getAll();
-            $this->assertTrue(count($currencies) > 0);
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
 
             $data = array();
             $model = new ExportTestModelItem();
-            $model->currency = $currencies[0];
-            $adapter = new CurrencyRedBeanModelAttributeValueToExportValueAdapter($model, 'currency');
+            $model->lastName = "Smith";
+            $model->string = "Some Test String";
+            $model->user     = $super;
+            $this->assertTrue($model->save());
+
+            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
             $adapter->resolveData($data);
-            $compareData = array($currencies[0]->code);
+            $compareData = array($super->username);
             $this->assertEquals($compareData, $data);
             $data = array();
             $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('currency'));
+            $compareData = array($model->getAttributeLabel('user'));
             $this->assertEquals($compareData, $data);
 
-            // Test when model doesn't contain currency data.
             $data = array();
             $model = new ExportTestModelItem();
-            $adapter = new CurrencyRedBeanModelAttributeValueToExportValueAdapter($model, 'currency');
+            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
             $adapter->resolveData($data);
             $compareData = array('');
             $this->assertEquals($compareData, $data);
             $data = array();
             $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('currency'));
+            $compareData = array($model->getAttributeLabel('user'));
             $this->assertEquals($compareData, $data);
         }
     }

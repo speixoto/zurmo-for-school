@@ -27,27 +27,54 @@
     /**
      * Helper class used to convert models into arrays
      */
-    class ReportToExportAdapter extends ModelToArrayAdapter
+    class ReportToExportAdapter
     {
-        /**
-        * Use when multiple attribute names
-        * need to be combined together into one string that can easily
-        * be parsed later.
-        */
-        const DELIMITER = ' - ';
+        protected $reportResultsRowData;
 
-        /**
-        *
-        * Get model properties as array.
-        * return array
-        */
+        public function __construct(ReportResultsRowData $reportResultsRowData)
+        {
+            $this->reportResultsRowData = $reportResultsRowData;
+        }
+
         public function getData()
         {
-            $data       = array('aa','dd');            
+            $data   = array();
+            foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
+            {
+                $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                //$data[] = $resolvedAttributeName;
+                echo $resolvedAttributeName . ' battery ' . $displayAttribute->getDisplayElementType() . "\n";
+
+                //get Type of adapter to use.
+                //if viaSelect vs. not, that makes it easy too i think
+
+
+                //shouldResolveValueFromModel($attributeAlias)
+if( $displayAttribute->getDisplayElementType() != 'FullName' &&
+    $displayAttribute->getDisplayElementType() != 'CurrencyValue')
+{
+                $className = $displayAttribute->getDisplayElementType() . 'RedBeanModelAttributeValueToExportValueAdapter'; //todo: move to factory
+                $adapter = new $className($this->reportResultsRowData, $resolvedAttributeName);
+                $adapter->resolveData($data);
+            }
+                //here we need adapters because full name for example does something special...
+                //$data[] = $this->reportResultsRowData->$resolvedAttributeName;
+            }
             return $data;
-        } 
+        }
+
+        public function getHeaderData()
+        {
+            $data = array();
+            foreach($this->reportResultsRowData->getDisplayAttributes() as $displayAttribute)
+            {
+                $data[] = $displayAttribute->getDisplayLabel(); //todo: this is wrong, because currency for example has 2 fields one is amount and other is
+                //todo: currency code.... so we really we need to do the same thing.
+            }
+            return $data;
+        }
         
-        protected function resolveIdLabelToTitleCaseForExport($id)
+        protected function resolveIdLabelToTitleCaseForExport($id) //todo: where is this used?
         {
             return mb_convert_case($id, MB_CASE_TITLE, "UTF-8");
         }        

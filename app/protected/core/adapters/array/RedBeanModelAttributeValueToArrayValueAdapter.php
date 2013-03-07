@@ -49,7 +49,6 @@
         public function resolveData(& $data)
         {
             $data[$this->attribute] = $this->model->{$this->attribute};
-            return;
         }
     }
 ?>

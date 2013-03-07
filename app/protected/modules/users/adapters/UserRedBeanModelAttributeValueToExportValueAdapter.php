@@ -24,38 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DateRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
+    class UserRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        public static function setUpBeforeClass()
+        public function resolveData(& $data)
         {
-            parent::setUpBeforeClass();
-            $super = SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function testGetExportValue()
-        {
-            $data = array();
-            $model = new ExportTestModelItem();
-            $model->date = '2002-04-03';
-            $adapter = new DateRedBeanModelAttributeValueToExportValueAdapter($model, 'date');
-            $adapter->resolveData($data);
-            $compareData = array('2002-04-03');
-            $this->assertEquals($compareData, $data);
-            $data = array();
-            $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('date'));
-            $this->assertEquals($compareData, $data);
-
-            $data = array();
-            $model = new ExportTestModelItem();
-            $adapter = new DateRedBeanModelAttributeValueToExportValueAdapter($model, 'date');
-            $adapter->resolveData($data);
-            $compareData = array('');
-            $this->assertEquals($compareData, $data);
-            $data = array();
-            $adapter->resolveHeaderData($data);
-            $compareData = array($model->getAttributeLabel('date'));
-            $this->assertEquals($compareData, $data);
+            assert('$this->model->{$this->attribute} instanceof User');
+            if ($this->model->{$this->attribute}->id > 0)
+            {
+                $data[] = $this->model->{$this->attribute}->username;
+            }
+            else
+            {
+                $data[] = null;
+            }
         }
     }
 ?>

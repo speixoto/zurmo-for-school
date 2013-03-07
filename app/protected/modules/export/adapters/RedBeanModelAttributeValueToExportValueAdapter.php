@@ -32,5 +32,22 @@
      */
     abstract class RedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToArrayValueAdapter
     {
+        /**
+         * Resolve data
+         * @param array $data
+         */
+        public function resolveData(& $data)
+        {
+            $data[] = $this->model->{$this->attribute};
+        }
+
+        /**
+         * Resolve the header data for the attribute.
+         * @param array $headerData
+         */
+        public function resolveHeaderData(& $headerData)
+        {
+            $headerData[] = $this->model->getAttributeLabel($this->attribute);
+        }
     }
 ?>

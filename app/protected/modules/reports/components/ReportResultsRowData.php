@@ -78,6 +78,11 @@
             return self::ATTRIBUTE_NAME_PREFIX . $key;
         }
 
+        public function getDisplayAttributes()
+        {
+            return $this->displayAttributes;
+        }
+
         /**
          * @param array $displayAttributes
          * @param int $id
@@ -117,9 +122,6 @@
             if(array_key_exists($name, $this->selectedColumnNamesAndValues))
             {
                 return $this->selectedColumnNamesAndValues[$name];
-            }
-            if($name == 'col1')
-            {
             }
             return parent::__get($name);
         }
@@ -324,7 +326,6 @@
             {
                 $model = $this->getModelByAlias($modelAlias);
             }
-
             return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
         }
 
