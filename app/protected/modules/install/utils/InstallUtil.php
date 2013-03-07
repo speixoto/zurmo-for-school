@@ -122,6 +122,11 @@
             return function_exists('mb_strlen');
         }
 
+        public static function isMcryptInstalled()
+        {
+            return extension_loaded('mcrypt');
+        }
+
         /**
          * @returns true, or the max memory setting is less than the minimum required.
          */
@@ -952,6 +957,7 @@
             }
 
             InstallUtil::setZurmoTokenAndWriteToPerInstanceFile(INSTANCE_ROOT);
+            ZurmoPasswordSecurityUtil::setPasswordSaltAndWriteToPerInstanceFile(INSTANCE_ROOT);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Installation Complete.'));
         }
 

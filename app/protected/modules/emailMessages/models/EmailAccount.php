@@ -184,5 +184,23 @@
                 }
             }
         }
+
+        /**
+         * Get the rateToBase from the currency model.
+         * @return true to signal success and that validate can proceed.
+         */
+        public function beforeValidate()
+        {
+            if (!parent::beforeValidate())
+            {
+                return false;
+            }
+
+            if ($this->outboundPassword !== null && $this->outboundPassword !== '')
+            {
+                $this->outboundPassword = ZurmoPasswordSecurityUtil::encrypt($this->outboundPassword);
+            }
+            return true;
+        }
     }
 ?>
