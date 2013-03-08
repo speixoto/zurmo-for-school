@@ -472,20 +472,6 @@
                 {
                 }
             }
-            elseif($user->id > 0)
-            {
-                try
-                {
-                    return GeneralCache::getEntry($className . 'Metadata' . $user->id);
-                }
-                catch (NotFoundException $e)
-                {
-                }
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
             $metadata = MetadataUtil::getMetadata($className, $user);
             if (YII_DEBUG)
             {
@@ -494,14 +480,6 @@
             if ($user == null)
             {
                 GeneralCache::cacheEntry($className . 'Metadata', $metadata);
-            }
-            elseif($user->id > 0)
-            {
-                GeneralCache::cacheEntry($className . 'Metadata' . $user->id, $metadata);
-            }
-            else
-            {
-                throw new NotSupportedException();
             }
             return $metadata;
         }
@@ -522,14 +500,6 @@
             if ($user == null)
             {
                 GeneralCache::forgetEntry($className . 'Metadata');
-            }
-            elseif($user->id > 0)
-            {
-                GeneralCache::forgetEntry($className . 'Metadata' . $user->id);
-            }
-            else
-            {
-                throw new NotSupportedException();
             }
         }
 
