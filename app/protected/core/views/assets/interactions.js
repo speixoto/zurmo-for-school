@@ -289,11 +289,11 @@ function makeLargeLoadingSpinner(state, context){
     $(context).append('<span class="big-spinner"></span>');
     var style = {
         lines  : 10,
-        length : 8,
-        width  : 5,
-        radius : 8,
+        length : 6,
+        width  : 4,
+        radius : 7,
         color  : '#CCCCCC',
-        speed  : 2.5,
+        speed  : 2.6,
         trail  : 37,
         top    : 0,
         left   : 0

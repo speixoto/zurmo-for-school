@@ -63,10 +63,10 @@
          */
         protected function renderMaximumGroupsContent()
         {
-            $content  = '<div class="general-issue-notice"><p><span class="icon-notice"></span>';
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
             $content .= Zurmo::t('ReportsModule', 'Your report has too many groupings to plot. ' .
                 'Please adjust the filters to reduce the number below {maximum}. ' .
-                'The maximum is calculated as x-axis groupings multiplied by y-axis groupings',
+                '<br />The maximum is calculated as x-axis groupings multiplied by y-axis groupings',
                 array('{maximum}' => self::$maximumGroupsCount));
             $content .= '</p></div>';
             return $content;

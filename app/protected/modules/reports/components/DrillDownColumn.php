@@ -45,7 +45,7 @@ jQuery('.drillDownExpandAndLoadLink').live('click', function(){
         url      : $(this).data('url'),
         type     : 'GET',
         beforeSend : function(){
-            makeLargeLoadingSpinner(loadDivId);
+            makeLargeLoadingSpinner(true, "#"+loadDivId);
         },
         success  : function(data){
             jQuery('#' + loadDivId).html(data)

@@ -85,7 +85,7 @@
         {
             return array(
                     'beforeSend' => 'js:function(){
-                                        attachLoadingSpinner("reset-runtime-filters", true);
+                                        makeOrRemoveLoadingSpinner(true, "#reset-runtime-filters");
                                         $("#reset-runtime-filters").addClass("attachLoadingTarget");
                                         $("#reset-runtime-filters").addClass("loading");
                                         $("#reset-runtime-filters").addClass("loading-ajax-submit");
