@@ -111,14 +111,14 @@
         protected static function makeArrayFromActionForWorkflowFormAttributesData(Array $componentFormsData)
         {
             $data = array();
-            foreach($componentFormsData as $key => $actionForReportForm)
+            foreach($componentFormsData as $key => $actionForWorkflowForm)
             {
-                foreach($actionForReportForm->getAttributes() as $attribute => $value)
+                foreach($actionForWorkflowForm->getAttributes() as $attribute => $value)
                 {
 
                     $data[$key][$attribute] = $value;
                 }
-                foreach($actionForReportForm->getActionAttributes() as $actionAttribute => $workflowActionAttributeForm)
+                foreach($actionForWorkflowForm->getActionAttributes() as $actionAttribute => $workflowActionAttributeForm)
                 {
                     foreach($workflowActionAttributeForm->getSavableAttributes() as $attribute => $value)
                     {
