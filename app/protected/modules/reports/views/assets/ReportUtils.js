@@ -3,7 +3,7 @@ $(window).ready(function(){
         $(this).draggable({
             helper: function(event){
                 var label = $(event.target).html();
-                var width = $('.wrapper').width() * 0.75 - 55;
+                var width = $('.wrapper').width() * 0.5 - 55;
                 var clone = $('<div class="dynamic-attribute-row clone">' + label + '</div>');
                 //clone.width(width);
                 clone.animate({ width : width}, 250);
@@ -31,12 +31,18 @@ $(window).ready(function(){
             //todo: hide drop overlay
             isDragging = false;
             $('.dynamic-droppable-area').removeClass('activate-drop-zone');
+            //$('.zero-components-view').hide();
         },
         activate: function(event,ui){
             isDragging = true;
             $('.dynamic-droppable-area').addClass('activate-drop-zone');
+            //$('.zero-components-view').hide();
+            console.log(typeof ui)
+            console.log( event, ui );
         },
         deactivate: function(event,ui){
+            $('.dynamic-droppable-area').removeClass('activate-drop-zone');
+            //$('.zero-components-view').show();
         }
     });
     /*

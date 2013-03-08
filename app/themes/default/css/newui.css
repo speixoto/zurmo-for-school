@@ -6276,14 +6276,23 @@ form .view-toolbar-container,
 }
 .general-issue-notice {
   text-align: center;
+  width: 75%;
+  margin: 10px auto 15px auto;
+  position: relative;
+}
+.general-issue-notice .icon-notice {
+  display: block;
+  line-height: 1;
+  margin-bottom: 10px;
 }
 .general-issue-notice .icon-notice:before {
   margin: 0;
   font-size: 100px;
-  line-height: 1;
+  line-height: 60px !important;
 }
 .general-issue-notice p {
   font-size: 14px;
+  line-height: 21px;
 }
 /*=Footer*/
 #FooterView {
@@ -15794,6 +15803,13 @@ a.user-link {
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
+}
+.activate-drop-zone {
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
 }
 .activate-drop-zone .drop-zone {
   filter: alpha(opacity=100);

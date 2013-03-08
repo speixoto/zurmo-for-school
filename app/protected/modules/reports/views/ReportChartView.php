@@ -137,7 +137,7 @@
          */
         protected function renderMaximumGroupsContent()
         {
-            $content  = '<div class="general-issue-notice"><p><span class="icon-notice"></span>';
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
             $content .= Zurmo::t('ReportsModule', 'Your report has too many groups to plot. ' .
                                           'Please adjust the filters to reduce the number below {maximum}.',
                         array('{maximum}' => self::$maximumGroupsPerChart));
