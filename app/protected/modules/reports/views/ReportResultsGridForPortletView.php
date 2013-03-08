@@ -52,7 +52,8 @@
 
                 if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
                 {
-                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider($this->params['relationModel'], $dataProvider);
+                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
+                                 'default', 'reports', $this->params['relationModel'], $dataProvider);
                 }
                 else
                 {

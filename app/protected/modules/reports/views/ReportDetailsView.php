@@ -124,12 +124,21 @@
             }
             if(get_class($element) == 'ReportOptionsLinkActionElement')
             {
-                $elementInformation['showEdit']   = $this->userCanEditReport();
-                $elementInformation['showDelete'] = $this->userCanDeleteReport();
-                if(!$elementInformation['showEdit'] && !$elementInformation['showDelete'])
+                $userCanEditReport   = $this->userCanEditReport();
+                $userCanDeleteReport = $this->userCanDeleteReport();
+                if(!$userCanEditReport && !$userCanDeleteReport)
                 {
                     return false;
                 }
+                if(!$userCanEditReport)
+                {
+                    $element->setHideEdit();
+                }
+                if(!$userCanDeleteReport)
+                {
+                    $element->setHideDelete();
+                }
+
             }
             return true;
         }

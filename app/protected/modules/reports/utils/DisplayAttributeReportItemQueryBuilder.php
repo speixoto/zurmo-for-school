@@ -146,8 +146,6 @@
                                   $this->resolveColumnName($modelAttributeToDataProviderAdapter),
                                   $this->componentForm->columnAliasName,
                                   $this->getAttributeClauseQueryStringExtraPart($tableAliasName));
-                //todo: actually make getSelectClauseQueryStringExtraPart here in this class. then in constructor need to pass the conversion info param in.
-                //todo: then we can do it all here and scrap that method in displayAttribute.
             }
             else
             {
@@ -306,7 +304,6 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
-            //todo: this is lame because it knows that madeViaSelectInsteadOfViaModel true, means it is a group by. try to decouple.
             if($this->componentForm->madeViaSelectInsteadOfViaModel)
             {
                 $resolvedRelatedAttribute = $modelToReportAdapter->getRules()->

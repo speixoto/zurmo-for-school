@@ -36,7 +36,7 @@
          */
         protected function getIconName()
         {
-            return 'Report'; //todo: we should have an image for this. montage of something related to reports plus an exclamation or some error
+            return 'Report';
         }
 
         /**

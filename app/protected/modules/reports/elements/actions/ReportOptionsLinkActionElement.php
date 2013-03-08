@@ -30,6 +30,20 @@
      */
     class ReportOptionsLinkActionElement extends LinkActionElement
     {
+        protected $showEdit   = true;
+
+        protected $showDelete = true;
+
+        public function setHideEdit()
+        {
+            $this->showEdit = false;
+        }
+
+        public function setHideDelete()
+        {
+            $this->showDelete = false;
+        }
+
         /**
          * @return string
          */
@@ -45,14 +59,14 @@
         {
             $menuItems = array('label' => $this->getLabel(), 'url' => null, 'items' => array());
 
-            if($this->showEdit())
+            if($this->showEdit)
             {
                 $menuItems['items'][] = array('label' => Zurmo::t('ReportsModule', 'Edit'),
                                                  'url'   => Yii::app()->createUrl($this->getEditRoute(),
                                                                                   array('id' => $this->modelId)));
             }
 
-            if($this->showDelete())
+            if($this->showDelete)
             {
                 $menuItems['items'][] = array('label'       => Zurmo::t('ReportsModule', 'Delete'),
                                               'url'         => Yii::app()->createUrl($this->getDeleteRoute(),
@@ -101,24 +115,6 @@
         protected function getDeleteRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/delete/';
-        }
-
-        protected function showEdit()
-        {
-            if (!isset($this->params['showEdit']))
-            {
-                return false;
-            }
-            return $this->params['showEdit'];
-        }
-
-        protected function showDelete()
-        {
-            if (!isset($this->params['showDelete']))
-            {
-                return false;
-            }
-            return $this->params['showDelete'];
         }
     }
 ?>

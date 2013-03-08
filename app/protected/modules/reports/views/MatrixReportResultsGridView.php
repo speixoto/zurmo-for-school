@@ -30,6 +30,23 @@
     class MatrixReportResultsGridView extends ReportResultsGridView
     {
         /**
+         * @var int
+         */
+        protected static $maximumGroupsCount = 400;
+
+        /**
+         * @return string
+         */
+        protected function renderResultsGridContent()
+        {
+            if($this->dataProvider->calculateTotalGroupingsCount() > self::$maximumGroupsCount)
+            {
+                return $this->renderMaximumGroupsContent();
+            }
+            return parent::renderResultsGridContent();
+        }
+
+        /**
          * @return bool
          */
         protected function isDataProviderValid()
@@ -41,6 +58,19 @@
             return true;
         }
 
+        /**
+         * @return string
+         */
+        protected function renderMaximumGroupsContent()
+        {
+            $content  = '<div class="general-issue-notice"><p><span class="icon-notice"></span>';
+            $content .= Zurmo::t('ReportsModule', 'Your report has too many groupings to plot. ' .
+                'Please adjust the filters to reduce the number below {maximum}. ' .
+                'The maximum is calculated as x-axis groupings multiplied by y-axis groupings',
+                array('{maximum}' => self::$maximumGroupsCount));
+            $content .= '</p></div>';
+            return $content;
+        }
         /**
          * @return array
          */
@@ -83,9 +113,6 @@
                     }
                 }
             }
-
-
-
             return $columns;
         }
 

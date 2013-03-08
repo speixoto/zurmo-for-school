@@ -123,7 +123,7 @@
          */
         protected static function getGridTemplate()
         {
-            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>'; //todo: do we need this , maybe it is for pagination?
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
             return "{summary}\n{items}\n{pager}" . $preloader;
         }
 

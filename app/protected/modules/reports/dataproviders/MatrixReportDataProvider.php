@@ -78,12 +78,25 @@
          */
         public function calculateTotalItemCount()
         {
-            //todo: somewhere check size of x and y to make sure not to big to make a matrix report
-            //todo: total count is wrong because we dont use every row. not sure how to do deal with that.
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
             $rows                   = R::getAll($sql);
             return count($rows);
+        }
+
+        /**
+         * @return int
+         */
+        public function calculateTotalGroupingsCount()
+        {
+            $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
+            $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
+            $rows                   = R::getAll($sql);
+            if(count($rows) > 0)
+            {
+                return count($rows) * count($rows[0]);
+            }
+            return 0;
         }
 
         /**
