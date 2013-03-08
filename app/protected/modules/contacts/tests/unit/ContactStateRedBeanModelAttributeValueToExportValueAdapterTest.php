@@ -24,14 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
+    class ContactStateRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
     {
         public $freeze = false;
 
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            $super = SecurityTestHelper::createSuperAdmin();
+            $user = SecurityTestHelper::createSuperAdmin();
+            Yii::app()->user->userModel = $user;
+            $loaded = ContactsModule::loadStartingData();
+            assert($loaded); // Not Coding Standard
         }
 
         public function setUp()
@@ -61,22 +64,27 @@
             Yii::app()->user->userModel = $super;
 
             $data = array();
-            $model = new ExportTestModelItem();
-            $model->lastName = "Smith";
-            $model->string = "Some Test String";
-            $model->user     = $super;
-            $this->assertTrue($model->save());
+            $contactStates = ContactState::getByName('Qualified');
+            $contact = new Contact();
+            $contact->owner         = $super;
+            $contact->firstName     = 'Super';
+            $contact->lastName      = 'Man';
+            $contact->jobTitle      = 'Superhero';
+            $contact->description   = 'Some Description';
+            $contact->department    = 'Red Tape';
+            $contact->officePhone   = '1234567890';
+            $contact->mobilePhone   = '0987654321';
+            $contact->officeFax     = '1222222222';
+            $contact->state         = $contactStates[0];
+            $this->assertTrue($contact->save());
 
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
+            $adapter = new ContactStateRedBeanModelAttributeValueToExportValueAdapter($contact, 'state');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('user') => $super->username);
+            $compareData = array($contactStates[0]->name);
             $this->assertEquals($compareData, $data);
-
             $data = array();
-            $model = new ExportTestModelItem();
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('user') => '');
+            $adapter->resolveHeaderData($data);
+            $compareData = array($contact->getAttributeLabel('state'));
             $this->assertEquals($compareData, $data);
         }
     }

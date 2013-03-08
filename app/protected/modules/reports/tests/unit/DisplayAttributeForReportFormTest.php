@@ -170,5 +170,11 @@
             //todO:
             $this->fail();
         }
+
+        public function testGetDisplayLabel()
+        {
+            //test owned like primary address -> street1.  normal, and various types of related ones.
+            $this->fail();
+        }
     }
 ?>

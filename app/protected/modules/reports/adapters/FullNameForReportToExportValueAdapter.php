@@ -24,43 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class FullNameForReportToExportValueAdapter extends ForReportToExportValueAdapter
     {
-        /**
-         * @return string
-         */
-        public function renderContent()
+        public function resolveData(& $data)
         {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
+            $model = $this->model->getModel($this->attribute);
+            if ($model->id > 0)
+            {
+                $data[] = strval($model);
+            }
+            else
+            {
+                $data[] = null;
+            }
         }
 
         /**
-         * @return null|string
+         * Resolve the header data for the attribute.
+         * @param array $headerData
          */
-        protected function makeViewAndRender()
+        public function resolveHeaderData(& $headerData)
         {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
-            {
-                $dataProvider = $this->params['dataProvider'];
-
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
-                                 'default', 'reports', $this->params['relationModel'], $dataProvider);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
-            }
+            $headerData[] = Zurmo::t('ReportsModule', 'Name');
         }
     }
 ?>

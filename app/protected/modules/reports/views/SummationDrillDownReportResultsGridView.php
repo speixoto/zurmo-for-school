@@ -42,7 +42,7 @@
          */
         protected static function getPagerCssClass()
         {
-            return 'pager horizontalX'; //todo: change to something else. needed so it doesnt cause doulbe up on pager requests.
+            return 'pager horizontal-drill-down';
         }
 
         /**

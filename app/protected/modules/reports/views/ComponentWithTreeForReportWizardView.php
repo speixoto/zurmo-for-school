@@ -206,7 +206,7 @@
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)
                     {
-                        $(".' . static::getZeroComponentsClassName() . '").show();
+                        $(".' . static::getZeroComponentsClassName() . '").fadeIn(400);
                     }
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     return false;
@@ -244,7 +244,7 @@
                     $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
                     $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                    $(".' . static::getZeroComponentsClassName() . '").hide();
+                    $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
                 }'
             ));
         }

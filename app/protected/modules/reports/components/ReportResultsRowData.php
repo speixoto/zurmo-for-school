@@ -78,6 +78,11 @@
             return self::ATTRIBUTE_NAME_PREFIX . $key;
         }
 
+        public function getDisplayAttributes()
+        {
+            return $this->displayAttributes;
+        }
+
         /**
          * @param array $displayAttributes
          * @param int $id
@@ -113,7 +118,8 @@
             {
                 return $this->resolveValueFromModel($parts[1]);
             }
-            if(isset($this->selectedColumnNamesAndValues[$name]))
+            //Not using isset, because a null value would not resolve correctly
+            if(array_key_exists($name, $this->selectedColumnNamesAndValues))
             {
                 return $this->selectedColumnNamesAndValues[$name];
             }
@@ -192,12 +198,50 @@
          */
         public function getModel($attribute)
         {
+            assert('is_string($attribute)');
             list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
             if($displayAttributeKey != null)
             {
                 return $this->resolveModel($displayAttributeKey);
             }
             throw new NotSupportedException();
+        }
+
+        /**
+         * Utilized by export adapters to get the header label for each column.
+         * @param $attribute
+         * @return string
+         * @throws NotSupportedException
+         */
+        public function getAttributeLabel($attribute)
+        {
+            assert('is_string($attribute)');
+            $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
+            if(count($parts) == 2 && $parts[1] != null)
+            {
+                list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
+                if($displayAttributeKey != null && isset($this->displayAttributes[$displayAttributeKey]))
+                {
+                    return $this->displayAttributes[$displayAttributeKey]->getDisplayLabel();
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
+            $parts = explode(DisplayAttributeForReportForm::COLUMN_ALIAS_PREFIX, $attribute);
+            if(count($parts) == 2 && $parts[1] != null)
+            {
+                list($notUsed, $displayAttributeKey) = explode(DisplayAttributeForReportForm::COLUMN_ALIAS_PREFIX, $attribute);
+                if($displayAttributeKey != null && isset($this->displayAttributes[$displayAttributeKey]))
+                {
+                    return $this->displayAttributes[$displayAttributeKey]->getDisplayLabel();
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
         }
 
         /**
@@ -320,7 +364,6 @@
             {
                 $model = $this->getModelByAlias($modelAlias);
             }
-
             return $this->resolveModelAttributeValueForPenultimateRelation($model, $attribute, $displayAttribute);
         }
 

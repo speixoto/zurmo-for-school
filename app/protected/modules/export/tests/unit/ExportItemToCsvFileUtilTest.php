@@ -150,22 +150,24 @@
             $testItem->forget();
             unset($testItem);
 
-            $data = array();
+            $data        = array();
             $testItem    = ExportTestModelItem::getById($id);
             $adapter     = new ModelToExportAdapter($testItem);
-            $data[]        = $adapter->getData();
-
+            $data[]      = $adapter->getData();
+            $headerData  = $adapter->getHeaderData();
             // Export data to csv, and then revert csv back to array, so we compare data
-            $csvData = ExportItemToCsvFileUtil::export($data, '', false);
+            $csvData = ExportItemToCsvFileUtil::export($data, $headerData, '', false);
             $revertedData = CsvParser::parseFromString($csvData);
 
             // We are testing ModelToExportAdapter in details in another test
             // so in this test we suppose that ModelToExportAdapter::getData
             // return correct results
-            $adapter     = new ModelToExportAdapter($testItem);
+            $adapter            = new ModelToExportAdapter($testItem);
             $compareData        = $adapter->getData();
+            $compareHeaderData  = $adapter->getHeaderData();
 
-            $this->assertEquals($compareData, $revertedData[0]);
+            $this->assertEquals($compareHeaderData, array_keys($revertedData[0]));
+            $this->assertEquals($compareData, array_values($revertedData[0]));
         }
 
         public function testExportItemToCsvWorksWithNormalData()
@@ -213,22 +215,28 @@
             unset($testItem);
 
             $data = array();
-            $testItem = ExportTestModelItem::getById($id);
-            $adapter = new ModelToExportAdapter($testItem);
-            $data[] = $adapter->getData();
+            $testItem   = ExportTestModelItem::getById($id);
+            $adapter    = new ModelToExportAdapter($testItem);
+            $data[]     = $adapter->getData();
+            $headerData = $adapter->getHeaderData();
 
             // Export data to csv, and then revert csv back to array, so we compare data
-            $csvData = ExportItemToCsvFileUtil::export($data, '', false);
+            $csvData      = ExportItemToCsvFileUtil::export($data, $headerData, 'exports.csv', false);
             $revertedData = CsvParser::parseFromString($csvData);
 
             // We are testing ModelToExportAdapter in details in another test
             // so in this test we suppose that ModelToExportAdapter::getData
             // return correct results
-            $adapter = new ModelToExportAdapter($testItem);
-            $compareData = $adapter->getData();
+            $adapter           = new ModelToExportAdapter($testItem);
+            $compareData       = $adapter->getData();
+            $compareHeaderData = $adapter->getHeaderData();
 
             // Using === here would fail as we are not setting all keys part of getData()'s return array
-            return $compareData == $revertedData[0];
+            if($compareData == array_values($revertedData[0]) && $compareHeaderData == array_keys($revertedData[0]))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>

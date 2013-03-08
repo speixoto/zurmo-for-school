@@ -30,6 +30,20 @@
      */
     class ReportOptionsLinkActionElement extends LinkActionElement
     {
+        protected $showEdit   = true;
+
+        protected $showDelete = true;
+
+        public function setHideEdit()
+        {
+            $this->showEdit = false;
+        }
+
+        public function setHideDelete()
+        {
+            $this->showDelete = false;
+        }
+
         /**
          * @return string
          */
@@ -43,15 +57,24 @@
          */
         public function render()
         {
-            //todo securable on these items from the outside coming in?
-            //todo: need confirmation on delete link.
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                'items' => array(
-                    array(  'label'   => Zurmo::t('ReportsModule', 'Edit'),
-                            'url'     => Yii::app()->createUrl($this->getEditRoute(), array('id' => $this->modelId))),
-                    array(  'label'   => Zurmo::t('ReportsModule', 'Delete'),
-                            'url'     => Yii::app()->createUrl($this->getDeleteRoute(), array('id' => $this->modelId))
-                    )));
+            $menuItems = array('label' => $this->getLabel(), 'url' => null, 'items' => array());
+
+            if($this->showEdit)
+            {
+                $menuItems['items'][] = array('label' => Zurmo::t('ReportsModule', 'Edit'),
+                                                 'url'   => Yii::app()->createUrl($this->getEditRoute(),
+                                                                                  array('id' => $this->modelId)));
+            }
+
+            if($this->showDelete)
+            {
+                $menuItems['items'][] = array('label'       => Zurmo::t('ReportsModule', 'Delete'),
+                                              'url'         => Yii::app()->createUrl($this->getDeleteRoute(),
+                                                                                     array('id' => $this->modelId)),
+                                              'linkOptions' =>
+                                                array('confirm' =>
+                                                    Zurmo::t('ReportsModule', 'Are you sure you want to delete this report?')));
+            }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(

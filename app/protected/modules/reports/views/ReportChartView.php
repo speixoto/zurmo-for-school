@@ -52,7 +52,13 @@
         /**
          * @var int
          */
-        protected $maximumGroupsPerChart = 100;
+        protected static $maximumGroupsPerChart = 100;
+
+        public static function setMaximumGroupsPerChart($value)
+        {
+            assert('is_int($value)');
+            self::$maximumGroupsPerChart = $value;
+        }
 
         /**
          * @param string $controllerId
@@ -76,7 +82,7 @@
          */
         public function renderContent()
         {
-            if($this->dataProvider->calculateTotalItemCount() > $this->maximumGroupsPerChart)
+            if($this->dataProvider->calculateTotalItemCount() > self::$maximumGroupsPerChart)
             {
                 return $this->renderMaximumGroupsContent();
             }
@@ -131,11 +137,11 @@
          */
         protected function renderMaximumGroupsContent()
         {
-            $content  = '<div class="a-class-we-can-call-something-else">';
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
             $content .= Zurmo::t('ReportsModule', 'Your report has too many groups to plot. ' .
                                           'Please adjust the filters to reduce the number below {maximum}.',
-                        array('{maximum}' => $this->maximumGroupsPerChart));
-            $content .= '</div>';
+                        array('{maximum}' => self::$maximumGroupsPerChart));
+            $content .= '</p></div>';
             return $content;
         }
 

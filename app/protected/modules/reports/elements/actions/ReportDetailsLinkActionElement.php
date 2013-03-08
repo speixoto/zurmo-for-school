@@ -45,7 +45,7 @@
         {
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                 'items' => array(
-                    array(  'label'   => 'need div here with details?',
+                    array(  'label'   => 'todo',
                         'url'     => '#'))); //todo: dont use default route
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");

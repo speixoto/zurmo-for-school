@@ -25,42 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping a view of a report results grid
+     * Displays option values also as currency codes ISO-4217
+     * @see CurrencyDropDownFormElement for alternative useage
      */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class CurrencyCodeStaticDropDownFormElement extends CurrencyStaticDropDownFormElement
     {
         /**
-         * @return string
+         * (non-PHPdoc)
+         * @see DropDownElement::getDropDownArray()
          */
-        public function renderContent()
+        protected function getDropDownArray()
         {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function makeViewAndRender()
-        {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+            $currencyIdsAndCodes = Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null);
+            $justCodes = array();
+            foreach($currencyIdsAndCodes as $id => $code)
             {
-                $dataProvider = $this->params['dataProvider'];
-
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
-                                 'default', 'reports', $this->params['relationModel'], $dataProvider);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
+                $justCodes[$code] = $code;
             }
+            return $justCodes;
         }
     }
 ?>

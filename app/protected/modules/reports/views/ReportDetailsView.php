@@ -29,6 +29,17 @@
       */
     class ReportDetailsView extends DetailsView
     {
+        protected $savedReport;
+
+        /**
+         * Override to support security checks on user rights/permissions.  The savedReport is needed for this
+         */
+        public function __construct($controllerId, $moduleId, Report $model, $title = null, SavedReport$savedReport)
+        {
+            parent::__construct($controllerId, $moduleId, $model);
+            $this->savedReport = $savedReport;
+        }
+
         /**
          * @param $model
          */
@@ -46,17 +57,16 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'ReportDetailsLink',
-                                'htmlOptions' => array('class' => 'icon-details')),
+                           // array('type'  => 'ReportDetailsLink',
+                           //     'htmlOptions' => array('class' => 'icon-details')),
                             array('type'  => 'ReportOptionsLink',
-                                'htmlOptions' => array('class' => 'icon-edit')),
+                                  'htmlOptions' => array('class' => 'icon-edit')),
                             array('type'  => 'ReportExportLink',
-                                'htmlOptions' => array('class' => 'icon-export')),
+                                  'htmlOptions' => array('class' => 'icon-export')),
                             array('type'  => 'ReportTogglePortletsLink',
-                                'htmlOptions' => array('class' => 'hasCheckboxes'),
-                                'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
-                                'hasChart'          => 'eval:$this->model->hasChart()'),
-                            //todo: also: see that all UL's are created with same ID - this is not valid html
+                                  'htmlOptions' => array('class' => 'hasCheckboxes'),
+                                  'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
+                                  'hasChart'          => 'eval:$this->model->hasChart()'),
                         ),
                     ),
                 ),
@@ -89,6 +99,7 @@
         {
             $script = '$(".ReportSQLForPortletView").hide();';
             Yii::app()->getClientScript()->registerScript('ReportPortletsDefaultHideScript', $script);
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
         }
 
         /**
@@ -97,12 +108,54 @@
         protected function renderContent()
         {
             $content = $this->renderTitleContent();
-            //todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
             $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
             $content .= $this->renderActionElementBar(false);
             $content .= '</div></div>';
             $this->registerScripts();
             return $content;
+        }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            if(get_class($element) == 'ReportExportLinkActionElement' &&
+               ($this->model->getType() == Report::TYPE_MATRIX || !$this->userCanExportReport()))
+            {
+                return false;
+            }
+            if(get_class($element) == 'ReportOptionsLinkActionElement')
+            {
+                $userCanEditReport   = $this->userCanEditReport();
+                $userCanDeleteReport = $this->userCanDeleteReport();
+                if(!$userCanEditReport && !$userCanDeleteReport)
+                {
+                    return false;
+                }
+                if(!$userCanEditReport)
+                {
+                    $element->setHideEdit();
+                }
+                if(!$userCanDeleteReport)
+                {
+                    $element->setHideDelete();
+                }
+
+            }
+            return true;
+        }
+
+        protected function userCanEditReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Edit', $this->savedReport);
+        }
+
+        protected function userCanDeleteReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Delete', $this->savedReport);
+        }
+
+        protected function userCanExportReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Export', $this->savedReport);
         }
     }
 ?>

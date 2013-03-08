@@ -157,7 +157,6 @@
             $searchFormClassName   = static::getSearchFormClassName();
             $pageSize              = null;
             $model                 = new $modelClassName(false);
-
             if ($searchFormClassName != null)
             {
                 $searchForm = new $searchFormClassName($model);
@@ -167,22 +166,16 @@
                 throw new NotSupportedException();
             }
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
-
-            $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                $searchForm,
-                $pageSize,
-                Yii::app()->user->userModel->id,
-                null,
-                $stickySearchKey
-            );
-
+            $dataProvider                  = $this->getDataProviderByResolvingSelectAllFromGet(
+                                             $searchForm, $pageSize, Yii::app()->user->userModel->id,
+                                             $stateMetadataAdapterClassName, $stickySearchKey);
             if (!$dataProvider)
             {
                 $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,"))); // Not Coding Standard
             }
             $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
-
-            $data = array();
+            $headerData = array();
+            $data       = array();
             if ($totalItems > 0)
             {
                 if ($totalItems <= ExportModule::$asynchronusThreshold)
@@ -190,7 +183,12 @@
                     // Output csv file directly to user browser
                     if ($dataProvider)
                     {                        
-                        $modelsToExport = $dataProvider->getData();                    
+                        $modelsToExport = $dataProvider->getData();
+                        if(count($modelsToExport) > 0)
+                        {
+                            $modelToExportAdapter  = new ModelToExportAdapter($modelsToExport[0]);
+                            $headerData            = $modelToExportAdapter->getHeaderData();
+                        }
                         foreach ($modelsToExport as $model)
                         {
                             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
@@ -202,6 +200,7 @@
                     }
                     else
                     {
+                        $headerData = array();
                         foreach ($idsToExport as $idToExport)
                         {
                             $model = $modelClassName::getById(intval($idToExport));
@@ -209,6 +208,10 @@
                             {
                                 $modelToExportAdapter  = new ModelToExportAdapter($model);
                                 $data[] = $modelToExportAdapter->getData();
+                                if(count($headerData) == 0)
+                                {
+                                    $headerData = $modelToExportAdapter->getHeaderData();
+                                }
                             }
                         }
                     }
@@ -216,7 +219,7 @@
                     if (count($data))
                     {
                         $fileName = $this->getModule()->getName() . ".csv";
-                        $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+                        ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
                     }
                     else
                     {

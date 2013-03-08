@@ -123,7 +123,7 @@
          */
         protected static function getGridTemplate()
         {
-            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>'; //todo: do we need this , maybe it is for pagination?
+            $preloader = '<div class="list-preloader"><span class="z-spinner"></span></div>';
             return "{summary}\n{items}\n{pager}" . $preloader;
         }
 
@@ -346,7 +346,7 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            return 'js:function(id, options) {makeSmallLoadingSpinner(id, options); }';
+            return 'js:function(id, options) {makeSmallLoadingSpinner(true, "#"+id); }';
         }
 
         /**

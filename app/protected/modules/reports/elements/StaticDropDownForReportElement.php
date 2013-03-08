@@ -27,7 +27,7 @@
     /**
      * Element used by filters that can morph between a single select and a multi-select.
      */
-    class StaticDropDownForReportElement extends DataFromFormStaticDropDownFormElement
+    class StaticDropDownForReportElement extends StaticDropDownForWizardElement
     {
         /**
          * @param FilterForReportForm $model
@@ -39,31 +39,6 @@
         {
             assert('$model instanceof FilterForReportForm');
             parent::__construct($model, $attribute, $form, $params);
-        }
-
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
-        {
-            return 'getCustomFieldDataAndLabels';
-        }
-
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if($this->model->operator == 'oneOf')
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= 'multiple';
-            }
-            return $htmlOptions;
         }
     }
 ?>

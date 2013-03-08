@@ -24,43 +24,44 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class ForReportToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
         /**
-         * @return string
+         * @return int
          */
-        public function renderContent()
+        protected function getCurrencyValueConversionType()
         {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
+            if (isset($this->params['currencyValueConversionType']))
+            {
+                return $this->params['currencyValueConversionType'];
+            }
+            return Report::CURRENCY_CONVERSION_TYPE_ACTUAL;
         }
 
         /**
-         * @return null|string
+         * @return mixed
+         * @throws NotSupportedException
          */
-        protected function makeViewAndRender()
+        protected function getSpotConversionCurrencyCode()
         {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+            if (isset($this->params['spotConversionCurrencyCode']))
             {
-                $dataProvider = $this->params['dataProvider'];
-
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
-                                 'default', 'reports', $this->params['relationModel'], $dataProvider);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
+                return $this->params['spotConversionCurrencyCode'];
             }
+            throw new NotSupportedException();
+        }
+
+        /**
+         * @return mixed
+         * @throws NotSupportedException
+         */
+        protected function getFromBaseToSpotRate()
+        {
+            if (isset($this->params['fromBaseToSpotRate']))
+            {
+                return $this->params['fromBaseToSpotRate'];
+            }
+            throw new NotSupportedException();
         }
     }
 ?>

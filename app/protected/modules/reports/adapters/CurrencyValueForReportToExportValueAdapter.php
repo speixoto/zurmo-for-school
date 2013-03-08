@@ -24,16 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CurrencyValueRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    class CurrencyValueForReportToExportValueAdapter extends ForReportToExportValueAdapter
     {
         public function resolveData(& $data)
         {
             assert('$this->model->{$this->attribute} instanceof CurrencyValue');
+
+
+
             $currencyValue = $this->model->{$this->attribute};
             if ($currencyValue->id > 0)
             {
-                $data[] = $currencyValue->value;
-                $data[] = $currencyValue->currency->code;
+                if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+                {
+                    $data[] = Yii::app()->numberFormatter->formatCurrency($currencyValue->value,
+                              $currencyValue->currency->code);
+                    $data[] = $currencyValue->currency->code;
+                }
+                elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+                {
+                    $data[] = Yii::app()->numberFormatter->formatCurrency($currencyValue->value *
+                              $currencyValue->rateToBase, Yii::app()->currencyHelper->getBaseCode());
+                    $data[] = Yii::app()->currencyHelper->getBaseCode();
+                }
+                elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+                {
+                    //Assumes base conversion is done using sql math
+                    $data[] = Yii::app()->numberFormatter->formatCurrency($currencyValue->value *
+                              $currencyValue->rateToBase * $this->getFromBaseToSpotRate(),
+                              $this->getSpotConversionCurrencyCode());
+                    $data[] = $this->getSpotConversionCurrencyCode();
+                }
+
             }
             else
             {

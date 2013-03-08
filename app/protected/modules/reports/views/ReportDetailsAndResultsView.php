@@ -35,15 +35,21 @@
         protected $report;
 
         /**
+         * @var object SavedReport
+         */
+        protected $savedReport;
+
+        /**
          * @param string $controllerId
          * @param string $moduleId
          * @param array $params
          * @param Report $report
          */
-        public function __construct($controllerId, $moduleId, $params, Report $report)
+        public function __construct($controllerId, $moduleId, $params, Report $report, SavedReport $savedReport)
         {
             parent::__construct($controllerId, $moduleId, $params);
-            $this->report = $report;
+            $this->report      = $report;
+            $this->savedReport = $savedReport;
         }
 
         /**
@@ -71,7 +77,9 @@
             $detailsViewClassName = $metadata['global']['leftTopView']['viewClassName'];
             return new $detailsViewClassName($this->params["controllerId"],
                                              $this->params["relationModuleId"],
-                                             $this->report);
+                                             $this->report,
+                                             null,
+                                             $this->savedReport);
         }
 
         protected function renderScripts()

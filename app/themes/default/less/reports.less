@@ -76,6 +76,9 @@
     .right-side-edit-view-panel{
         width: 30%;
         float: right;
+        position: relative;
+        top:-2px;
+        right:0;
     }
 }
 
@@ -122,6 +125,7 @@
 }
 
 .activate-drop-zone{
+    .animateAll(0.75s);
     .drop-zone{
         .opacity(100);
         z-index: 100;
@@ -521,6 +525,11 @@
     width: auto;
     float: none;
     clear: left;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin-bottom: 15px;
     .buffer{
         padding-left: 22px;
     }
@@ -578,7 +587,7 @@
     float: left;
     position: absolute;
     left: 0;
-    top:0;
+    top:75px;
     width: 100%;
     .large-icon{
         border-right:none;
@@ -589,7 +598,7 @@
     h2{
         padding-top:10px;
         text-align: center;
-        width: 50%;
+        width: 55%;
         margin: 0 auto;
     }
     .large-icon:after{

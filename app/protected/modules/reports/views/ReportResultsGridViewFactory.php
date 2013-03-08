@@ -35,9 +35,10 @@
          * @return ReportResultsGridView based object
          * @throws NotSupportedException if the report type is not valid or null
          */
-        public static function makeByReportAndDataProvider(Report $report, ReportDataProvider $dataProvider = null)
+        public static function makeByReportAndDataProvider($controllerId, $moduleId, Report $report, ReportDataProvider $dataProvider = null)
         {
-
+            assert('is_string($controllerId)');
+            assert('is_string($moduleId)');
             if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 $className = 'RowsAndColumnsReportResultsGridView';
@@ -54,6 +55,6 @@
             {
                 throw new NotSupportedException();
             }
-            return new $className('default', 'reports', $dataProvider); //todo: maybe pass moduleId and controllerId in from controller or at least class calling this class?
+            return new $className($controllerId, $moduleId, $dataProvider);
         }
     }

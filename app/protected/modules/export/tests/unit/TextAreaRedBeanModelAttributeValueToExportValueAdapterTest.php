@@ -39,14 +39,22 @@
             $model->textArea = 'Sample Text';
             $adapter = new TextAreaRedBeanModelAttributeValueToExportValueAdapter($model, 'textArea');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('textArea') => 'Sample Text');
+            $compareData = array('Sample Text');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('textArea'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new TextAreaRedBeanModelAttributeValueToExportValueAdapter($model, 'textArea');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('textArea') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('textArea'));
             $this->assertEquals($compareData, $data);
         }
     }

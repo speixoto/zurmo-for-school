@@ -24,42 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class used for wrapping a view of a report results grid
-     */
-    class ReportResultsGridForPortletView extends ReportResultsComponentForPortletView
+    class ContactStateRedBeanModelAttributeValueToExportValueAdapter extends TextRedBeanModelAttributeValueToExportValueAdapter
     {
-        /**
-         * @return string
-         */
-        public function renderContent()
+        public function resolveData(& $data)
         {
-
-            $content   = $this->renderRefreshLink();
-            $content  .= $this->makeViewAndRender();
-            return $content;
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function makeViewAndRender()
-        {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+            if ($this->model->{$this->attribute}->id > 0)
             {
-                $dataProvider = $this->params['dataProvider'];
-
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
-                                 'default', 'reports', $this->params['relationModel'], $dataProvider);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
+                $data[] = $this->model->{$this->attribute}->name;
+            }
+            else
+            {
+                $data[] = null;
             }
         }
     }

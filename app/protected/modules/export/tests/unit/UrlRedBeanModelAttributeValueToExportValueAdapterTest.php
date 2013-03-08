@@ -39,14 +39,22 @@
             $model->url = 'http://www.example.com';
             $adapter = new UrlRedBeanModelAttributeValueToExportValueAdapter($model, 'url');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('url') => 'http://www.example.com');
+            $compareData = array('http://www.example.com');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('url'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new UrlRedBeanModelAttributeValueToExportValueAdapter($model, 'url');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('url') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('url'));
             $this->assertEquals($compareData, $data);
         }
     }

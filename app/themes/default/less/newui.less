@@ -1100,7 +1100,7 @@ body > .ui-autocomplete{
             margin-right:0 !important;
             .clearfix();
 	}
-        #right-side-edit-view-panel{
+        .right-side-edit-view-panel{
             top:55px;
         }
         #inline-edit-form .panel{
@@ -1432,6 +1432,32 @@ form,
     content: "F";
     .view-toolbar-icons();
     top:-2px;
+}
+
+.icon-notice:before{
+    content: "j";
+    .view-toolbar-icons();
+}
+
+.general-issue-notice{
+    text-align: center;
+    width:75%;
+    margin:10px auto 15px auto;
+    position: relative;
+    .icon-notice{
+        display: block;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+    .icon-notice:before{
+        margin: 0;
+        font-size:100px;
+        line-height: 60px !important;
+    }
+    p{
+        font-size: 14px;
+        line-height: 21px;
+    }
 }
 
 /*=Footer*/
@@ -2579,7 +2605,7 @@ div.wide.form{
             width:100% !important;
         }
     }
-    #right-side-edit-view-panel{
+    .right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
         float:left !important;
@@ -2688,16 +2714,15 @@ div.wide.form{
     }
 }
 
-#right-side-edit-view-panel{
+.right-side-edit-view-panel{
+    width:30%;
+    float:right;
     position:absolute;
     right:15px;
     top:15px;
-}
-
-.right-side-edit-view-panel,
-#right-side-edit-view-panel{
-    width:30%;
-    float:right;
+    p{
+        line-height: 140%;
+    }
     h3{
         margin-bottom:8px;
     }

@@ -24,19 +24,34 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    /**
+     * Element used by filters or triggers that can morph between a single select and a multi-select.
+     */
+    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
     {
-        public function resolveData(& $data)
+        /**
+         * @return string
+         */
+        protected function getDataAndLabelsModelPropertyName()
         {
-            assert('$this->model->{$this->attribute} instanceof User');
-            if ($this->model->{$this->attribute}->id > 0)
+            return 'getCustomFieldDataAndLabels';
+        }
+
+        /**
+         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
+         * can change to a multi-select or back.
+         * @return array
+         */
+        protected function getEditableHtmlOptions()
+        {
+            $htmlOptions                 = parent::getEditableHtmlOptions();
+            $htmlOptions['class']        = 'flexible-drop-down';
+            if($this->model->operator == 'oneOf')
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = $this->model->{$this->attribute}->username;
+                $htmlOptions['multiple']  = true;
+                $htmlOptions['class']    .= 'multiple';
             }
-            else
-            {
-                $data[$this->model->getAttributeLabel($this->attribute)] = null;
-            }
+            return $htmlOptions;
         }
     }
 ?>

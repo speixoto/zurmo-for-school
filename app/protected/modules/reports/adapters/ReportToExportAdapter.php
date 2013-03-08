@@ -27,29 +27,73 @@
     /**
      * Helper class used to convert models into arrays
      */
-    class ReportToExportAdapter extends ModelToArrayAdapter
+    class ReportToExportAdapter
     {
-        /**
-        * Use when multiple attribute names
-        * need to be combined together into one string that can easily
-        * be parsed later.
-        */
-        const DELIMITER = ' - ';
+        protected $reportResultsRowData;
 
-        /**
-        *
-        * Get model properties as array.
-        * return array
-        */
+        protected $report;
+
+        public function __construct(ReportResultsRowData $reportResultsRowData, Report $report)
+        {
+            $this->reportResultsRowData = $reportResultsRowData;
+            $this->report               = $report;
+        }
+
         public function getData()
         {
-            $data       = array('aa','dd');            
+            $data   = array();
+            foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
+            {
+
+                $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                $className             = $this->resolveExportClassNameForListViewColumnAdapter($displayAttribute);
+                $params                = array();
+                $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                $adapter = new $className($this->reportResultsRowData, $resolvedAttributeName, $params);
+                $adapter->resolveData($data);
+            }
             return $data;
-        } 
-        
-        protected function resolveIdLabelToTitleCaseForExport($id)
+        }
+
+        public function getHeaderData()
         {
-            return mb_convert_case($id, MB_CASE_TITLE, "UTF-8");
-        }        
+            $data   = array();
+            foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
+            {
+
+                $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
+                $className             = $this->resolveExportClassNameForListViewColumnAdapter($displayAttribute);
+                $params                = array();
+                $this->resolveParamsForCurrencyTypes($displayAttribute, $params);
+                $adapter = new $className($this->reportResultsRowData, $resolvedAttributeName, $params);
+                $adapter->resolveHeaderData($data);
+            }
+            return $data;
+        }
+
+        protected function resolveExportClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
+        {
+            $displayElementType = $displayAttribute->getDisplayElementType();
+            if(@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
+            {
+                return $displayElementType . 'ForReportToExportValueAdapter';
+            }
+            else
+            {
+                return $displayElementType . 'RedBeanModelAttributeValueToExportValueAdapter';
+            }
+        }
+
+        protected function resolveParamsForCurrencyTypes(DisplayAttributeForReportForm $displayAttribute, & $params)
+        {
+            assert('is_array($params)');
+            if($displayAttribute->isATypeOfCurrencyValue())
+            {
+
+                $params['currencyValueConversionType'] = $this->report->getCurrencyConversionType();
+                $params['spotConversionCurrencyCode']  = $this->report->getSpotConversionCurrencyCode();
+                $params['fromBaseToSpotRate']          = $this->report->getFromBaseToSpotRate();
+            }
+        }
     }
 ?>

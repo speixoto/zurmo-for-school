@@ -69,10 +69,8 @@
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                                     'items' => array(
                                         array(  'label'   => Zurmo::t('ReportsModule', 'to CSV'),
-                                                'url'     => '#',    //todo: make sure to use default route method.
-                                                'itemOptions' => array( 'id'   => 'exportToCsv')), 
-                                        array(  'label'   => Zurmo::t('ReportsModule', 'to PDF'),
-                                                'url'     => '#'))); //todo: make sure to use default route method.
+                                                'url'     => '#',
+                                                'itemOptions' => array( 'id'   => 'exportToCsv'))));
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(

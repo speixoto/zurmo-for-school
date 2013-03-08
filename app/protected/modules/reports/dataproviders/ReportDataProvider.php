@@ -299,6 +299,7 @@
             $idByOffset   = self::resolveIdByOffset($offset);
             foreach ($rows as $key => $row)
             {
+
                 $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
                 foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
                 {
@@ -401,8 +402,12 @@
             //Make a fresh selectQueryAdapter that only has a count clause
             if($selectJustCount)
             {
-                //todo: if distinct we shouldn't actually do a NonSpecificCountClause,
-                //but this means distinct should know what table/col it is distincting on... so we need to add that
+                //Currently this is always expected as false. If it is true, we need to add support for SpecificCountClauses
+                //so we know which table/id the count is on.
+                if($selectQueryAdapter->isDistinct())
+                {
+                    throw new NotSupportedException();
+                }
                 $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter($selectQueryAdapter->isDistinct());
                 $selectQueryAdapter->addNonSpecificCountClause();
             }
