@@ -68,7 +68,7 @@
             $element           = new CurrencyConversionTypeStaticDropDownElement(
                                  $this->model, 'currencyConversionType', $this->form);
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
-            $element           = new CurrencyStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode',
+            $element           = new CurrencyCodeStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode',
                                  $this->form, array('addBlank' => true));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr></table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
@@ -118,18 +118,18 @@
             Yii::app()->clientScript->registerScript('currencyConversionTypeHelper', "
                 if($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                 {
-                    $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').hide();
+                    $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $currencyConversionTypeSelectId . "').change( function()
                     {
                         if($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                         {
-                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').show();
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().show();
                         }
                         else
                         {
                             $('#" . $spotConversionCurrencyCodeSelectId . "').val('');
-                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').hide();
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().hide();
                         }
                     }
                 );
