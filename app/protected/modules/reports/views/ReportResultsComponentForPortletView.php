@@ -159,7 +159,7 @@
             return ZurmoHtml::ajaxLink('refresh', $this->getPortletDetailsUrl(), array(
                     'type'   => 'GET',
                     'beforeSend' => 'function ( xhr ) {jQuery("#' . $containerId .
-                                    '").html("");makeLargeLoadingSpinner("' . $containerId . '");}',
+                                    '").html("");makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
                     'update' => '#' . get_class($this)),
                     array('id'		  => 'refreshPortletLink-' . get_class($this),
                           'class'     => 'refreshPortletLink',
