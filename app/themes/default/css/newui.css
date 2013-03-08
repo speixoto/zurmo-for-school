@@ -15805,11 +15805,11 @@ a.user-link {
   opacity: 1;
 }
 .activate-drop-zone {
-  -webkit-transition: all 0.5s ease-out;
-  -moz-transition: all 0.5s ease-out;
-  -o-transition: all 0.5s ease-out;
-  -ms-transition: all 0.5s ease-out;
-  transition: all 0.5s ease-out;
+  -webkit-transition: all 0.75s ease-out;
+  -moz-transition: all 0.75s ease-out;
+  -o-transition: all 0.75s ease-out;
+  -ms-transition: all 0.75s ease-out;
+  transition: all 0.75s ease-out;
 }
 .activate-drop-zone .drop-zone {
   filter: alpha(opacity=100);
@@ -16244,7 +16244,7 @@ a.user-link {
   float: left;
   position: absolute;
   left: 0;
-  top: 0;
+  top: 75px;
   width: 100%;
 }
 .zero-components-view .large-icon {
@@ -16256,7 +16256,7 @@ a.user-link {
 .zero-components-view h2 {
   padding-top: 10px;
   text-align: center;
-  width: 50%;
+  width: 55%;
   margin: 0 auto;
 }
 .zero-components-view .large-icon:after {
