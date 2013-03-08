@@ -1493,13 +1493,14 @@ form,
 }
 
 .icon-notification:before{
-    content:"q";
+    content:'\00A5';
     .view-toolbar-icons();
     top:-2px;
 }
+
 .icon-combined:before{
-    content:"T";
-    .view-toolbar-icons();
+    content:'\00AE';
+    .view-toolbar-icons(26px);
     top:-2px;
 }
 
@@ -2282,8 +2283,8 @@ div.wide.form{
    position: relative;
 }
 
-#NotificationsForUserListView,
-#MashableInboxListView{
+#MashableInboxListView,
+#NotificationsForUserListView{
     .SecuredListView();
 }
 
