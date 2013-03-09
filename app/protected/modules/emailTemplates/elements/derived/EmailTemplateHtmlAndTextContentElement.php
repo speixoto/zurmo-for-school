@@ -61,16 +61,48 @@
             return static::renderModelAttributeLabel(static::HTML_CONTENT_INPUT_NAME);
         }
 
+        protected function renderTextContentAreaLabel()
+        {
+            return static::renderModelAttributeLabel(static::TEXT_CONTENT_INPUT_NAME);
+        }
+
         protected function resolveTabbedContent($plainTextContent, $htmlContent)
         {
-            // TODO: @Shoaibi/@Amit Display both of them in separate tabs, we need a toggle here.
-            $plainTextDiv = ZurmoHtml::tag('div',
-                                                array('class' => 'email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+            $this->registerTabbedContentScripts();
+            $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
+            $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
+            $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink);
+
+            $plainTextDiv       = ZurmoHtml::tag('div',
+                                                array('id' => 'tab1',
+                                                      'class' => 'active-tab tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
                                                 $plainTextContent);
-            $htmlContentDiv = ZurmoHtml::tag('div',
-                                                array('class' => 'email-template-' . static::HTML_CONTENT_INPUT_NAME),
+            $htmlContentDiv     = ZurmoHtml::tag('div',
+                                                array('id' => 'tab2',
+                                                      'class' => 'tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
                                                 $htmlContent);
-            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $plainTextDiv.$htmlContentDiv);
+            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+        }
+
+        protected function registerTabbedContentScripts()
+        {
+            Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
+                    $('.tabs-nav a').click( function(){
+                        //the menu items
+                        $('.active-tab', $(this).parent()).removeClass('active-tab');
+                        $(this).addClass('active-tab');
+                        //the sections
+                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                        _old.fadeToggle();
+                        var _new = $( $(this).attr('href') );
+                        _new.fadeToggle(300, 'linear', function(){
+                                _old.removeClass('active-tab');
+                                _new.addClass('active-tab');
+                        });
+                        return false;
+                    });
+                ");
+
         }
 
         protected function renderControlNonEditable()
