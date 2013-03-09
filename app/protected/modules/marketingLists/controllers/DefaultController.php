@@ -142,16 +142,18 @@
         public function actionDetails($id)
         {
             // TODO: @Shoaibi: what about ajax?
-            // TODO: @Shoaibi: should portlet handle ajax loading of members itself?
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                             array(strval($marketingList), 'MarketingListsModule'), $marketingList);
-            $detailsView        = new MarketingListDetailsView($this->getId(), $this->getModule()->getId(), $marketingList);
-            $breadcrumbLinks    = array(StringUtil::getChoppedStringContent(strval($marketingList), 25));
-            $view               = new MarketingListsPageView((ZurmoDefaultViewUtil::
-                                        makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                                $breadcrumbLinks, 'MarketingListBreadCrumbView')));
+            $breadCrumbView             = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this,
+                                                                            'MarketingListsSearchView', $marketingList);
+            $detailsAndRelationsView    = $this->makeDetailsAndRelationsView($marketingList, 'MarketingListsModule',
+                                                                                'MarketingListDetailsAndRelationsView',
+                                                                                Yii::app()->request->getRequestUri(),
+                                                                                $breadCrumbView);
+            $view                       = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                                makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
         }
 
@@ -189,5 +191,6 @@
         {
             return 'MarketingListsSearchForm';
         }
+
     }
 ?>

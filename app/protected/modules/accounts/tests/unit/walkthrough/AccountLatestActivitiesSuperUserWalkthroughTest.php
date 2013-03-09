@@ -85,15 +85,15 @@
             $this->setGetArray($getData);
             $this->resetPostArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
-            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                $getData['portletId'], $configKey) === '');
+            $this->assertTrue(LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                            $getData['portletId'], $configKey) === '');
 
             //Now add roll up
             $getData['LatestActivitiesConfigurationForm']['rollup'] = '1';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
-            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                $getData['portletId'], $configKey) === '1');
+            $this->assertTrue(LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                            $getData['portletId'], $configKey) === '1');
             //Now filter by meeting, task, and note
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Meeting';
             $this->setGetArray($getData);
@@ -109,8 +109,8 @@
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Meeting';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');
-            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                $getData['portletId'], $configKey) === '');
+            $this->assertTrue(LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                            $getData['portletId'], $configKey) === '');
             $getData['LatestActivitiesConfigurationForm']['filteredByModelName'] = 'Note';
             $this->setGetArray($getData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('accounts/defaultPortlet/details');

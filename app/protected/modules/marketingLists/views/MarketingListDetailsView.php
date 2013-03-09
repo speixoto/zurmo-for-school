@@ -26,10 +26,6 @@
 
     class MarketingListDetailsView extends SecuredDetailsView
     {
-        const SUBSCRIBERS_PORTLET_CLASS     = 'marketing-list-subscribers-portlet-container';
-
-        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
-
         public static function assertModelIsValid($model)
         {
             assert('$model instanceof MarketingList');
@@ -47,10 +43,9 @@
                                 'htmlOptions' => array('class' => 'icon-edit')),
                             array('type'  => 'MarketingListsTogglePortletsLink',
                                 'htmlOptions' => array('class' => 'hasCheckboxes'),
-                                'subscribersPortletClass'           => static::SUBSCRIBERS_PORTLET_CLASS,
-                                'autorespondersPortletClass'        => static::AUTORESPONDERS_PORTLET_CLASS,),
+                                'membersPortletClass'           => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS,
+                                'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS,),
                             // TODO: @Shoaibi: also: see that all UL's are created with same ID - this is not valid html
-                            // TODO: @Shoaibi: add panels and Both portlets in leftBottom.
                         ),
                     ),
                 ),
@@ -72,53 +67,7 @@
                                                 ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
                                                                                     $actionElementBarContent)
                                                 );
-            $content                       .= $this->renderSubscriberPortlet() . $this->renderAutorespondersPortlet();
             return $content;
-        }
-
-        protected function renderSubscriberPortlet()
-        {
-            // TODO: @Shoaibi: Where do we get the parameters?
-            $subscribersViewData            = false;
-            $subscribersParams              = array(
-                                                'controllerId' => $this->getId(),
-                                                'relationModuleId' => $this->getModuleLabel('PluralLowerCase'),
-                                                'relationModel' => $this->model,
-                                                'redirectUrl' => Yii::app()->request->url,
-                                                'portletId' => 53, // TODO: @Shoaibi: From where do we get this?
-                                            );
-            $subscriberLayoutId             = __CLASS__ . '_' . 53;
-            $subscribersPortlet             = new MarketingListSubscribersForPortletView($subscribersViewData,
-                                                                                $subscribersParams, $subscriberLayoutId);
-            return ZurmoHtml::tag('div', array('class' => static::SUBSCRIBERS_PORTLET_CLASS), $subscribersPortlet->render());
-        }
-
-        protected function renderAutorespondersPortlet()
-        {
-            // TODO: @Shoaibi: Implement
-            $autorespondersPortletContent  = 'Dummy Autoresponders Portlet content';
-            return ZurmoHtml::tag('div', array('class' => static::AUTORESPONDERS_PORTLET_CLASS), $autorespondersPortletContent);
-        }
-
-        protected function getModuleClassName()
-        {
-            // TODO: @Shoaibi this could be ported to parent.
-            if ($this->modelId > 0)
-            {
-                $modelClassName = get_class($this->model);
-                return $modelClassName::getModuleClassName();
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-        }
-
-        protected function getModuleLabel($type, $language = null)
-        {
-            // TODO: @Shoaibi this could be ported to parent.
-            $moduleClassName = $this->getModuleClassName();
-            return $moduleClassName::getModuleLabelByTypeAndLanguage($type, $language);
         }
     }
 ?>

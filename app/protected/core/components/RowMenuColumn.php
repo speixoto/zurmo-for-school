@@ -74,6 +74,11 @@
                 foreach ($this->rowMenu['elements'] as $elementInformation)
                 {
                     $elementclassname = $elementInformation['type'] . 'ActionElement';
+                    $class = new ReflectionClass($elementclassname);
+                    if ($class->implementsInterface('RowModelShouldRenderInterface') && !$elementclassname::shouldRenderByRowModel($data))
+                    {
+                            continue;
+                    }
                     $params = array_slice($elementInformation, 1);
                     if (!isset($params['redirectUrl']))
                     {
@@ -85,7 +90,6 @@
                     $element  = new $elementclassname($this->listView->getControllerId(),
                                                       $this->listView->getModuleId(),
                                                       $data->id, $params);
-
                     if (!ActionSecurityUtil::canCurrentUserPerformAction( $element->getActionType(), $data) ||
                         (isset($params['userHasRelatedModelAccess']) &&
                         $params['userHasRelatedModelAccess'] == false))
@@ -96,7 +100,7 @@
                     {
                         throw new NotSupportedException();
                     }
-                    $menuItems['items'][] = $element->renderMenuItem();
+                    $menuItems['items'][]   = $element->renderMenuItem();
                 }
             }
             if (count($menuItems['items']) > 0)

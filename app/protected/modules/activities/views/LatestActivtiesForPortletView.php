@@ -137,13 +137,13 @@
             foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
             {
                 if ($latestActivitiesConfigurationForm->$persistantUserConfigItem !==
-                    LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey($this->params['portletId'],
-                        $persistantUserConfigItem))
+                    LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                                                                                            $persistantUserConfigItem))
                 {
-                    LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey($this->params['portletId'],
-                        $persistantUserConfigItem,
-                        $latestActivitiesConfigurationForm->$persistantUserConfigItem
-                    );
+                    LatestActivitiesPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey($this->params['portletId'],
+                                                            $persistantUserConfigItem,
+                                                            $latestActivitiesConfigurationForm->$persistantUserConfigItem
+                                                        );
                     $savedConfigs[] = $persistantUserConfigItem;
                 }
             }
@@ -158,9 +158,9 @@
                 {
                     continue;
                 }
-                $persistantUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                    $this->params['portletId'],
-                    $persistantUserConfigItem);
+                $persistantUserConfigItemValue = LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                                                                $this->params['portletId'],
+                                                                                                $persistantUserConfigItem);
                 if(isset($persistantUserConfigItemValue))
                 {
                     $latestActivitiesConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
@@ -318,8 +318,9 @@
                 $property = static::resolvePropertyName($persistantUserConfigItem);
                 if (method_exists(get_called_class(), $property) && static::$property())
                 {
-                    LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
-                        $portletId, $persistantUserConfigItem, null);
+                    LatestActivitiesPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey($portletId,
+                                                                                                $persistantUserConfigItem,
+                                                                                                null);
                 }
             }
         }

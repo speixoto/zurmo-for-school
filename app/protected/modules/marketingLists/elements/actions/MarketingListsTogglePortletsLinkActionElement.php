@@ -43,13 +43,13 @@
         public function render()
         {
             $content  = null;
-            $subscribersClass = $this->getSubscribersPortletClass();
+            $membersClass = $this->getMembersPortletClass();
             $autorespondersClass = $this->getAutorespondersPortletClass();
-            if ($subscribersClass)
+            if ($membersClass)
             {
-                $htmlOptions = array('onClick' => 'js:$(".' . $subscribersClass . '").toggle();');
-                $label       = ZurmoHtml::label(Zurmo::t('MarketingListsModule', 'Subscribers'), Zurmo::t('MarketingListsModule', 'Subscribers'), array('class' => 'label-for-marketing-list-widgets'));
-                $content    .= ZurmoHtml::checkBox(Zurmo::t('MarketingListsModule', 'Subscribers'), true, $htmlOptions) . $label;
+                $htmlOptions = array('onClick' => 'js:$(".' . $membersClass . '").toggle();');
+                $label       = ZurmoHtml::label(Zurmo::t('MarketingListsModule', 'Members'), Zurmo::t('MarketingListsModule', 'Members'), array('class' => 'label-for-marketing-list-widgets'));
+                $content    .= ZurmoHtml::checkBox(Zurmo::t('MarketingListsModule', 'Members'), true, $htmlOptions) . $label;
             }
             if($autorespondersClass)
             {
@@ -77,9 +77,9 @@
         }
 
 
-        protected function getSubscribersPortletClass()
+        protected function getMembersPortletClass()
         {
-            return $this->getParameterValueOrNull('subscribersPortletClass');
+            return $this->getParameterValueOrNull('membersPortletClass');
         }
 
         protected function getAutorespondersPortletClass()
@@ -89,7 +89,7 @@
 
         protected function getParameterValueOrNull($parameterName)
         {
-            // TODO: @Shoaibi port this to parent, have one getParameterValueOrFalse too
+            // TODO: @Shoaibi/@Jason port this to parent, have one getParameterValueOrFalse too
             return (!isset($this->params[$parameterName]))? false: $this->params[$parameterName];
         }
 

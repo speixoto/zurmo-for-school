@@ -23,7 +23,7 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
+    // TODO: Shoaibi Not Used?
     /**
      * Renders an action bar, search view, and list view.
      */
@@ -37,8 +37,7 @@
             assert('is_string($moduleId)');
             parent::__construct(3, 1);
             $detailsView         = new MarketingListDetailsView($controllerId, $moduleId, $marketingList);
-            // TODO: @Shoaibi Enable the following line
-            // $searchView          = new MarketingListMembersSearchView($searchModel, get_class($listModel));
+            $searchView          = new MarketingListMembersSearchView($searchModel, get_class($listModel));
             $listView            = new MarketingListMembersListView($controllerId, $moduleId,
                                                           get_class($listModel), $dataProvider,
                                                           $selectedIds, null, array(),
@@ -49,10 +48,8 @@
                                                                $listView->getRowsAreSelectable());
             $this->setView($detailsView, 0, 0);
             $this->setView($actionBarView, 1, 0);
-            // TODO: @Shoaibi Enable the following line
-            //$this->setView($searchView, 2, 0);
-            // TODO: @Shoaibi Change following to be 3,0
-            $this->setView($listView, 2, 0);
+            $this->setView($searchView, 2, 0);
+            $this->setView($listView, 3, 0);
         }
     }
 ?>

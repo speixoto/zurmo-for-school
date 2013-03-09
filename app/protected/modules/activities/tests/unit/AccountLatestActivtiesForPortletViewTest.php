@@ -57,20 +57,26 @@
 
         public function testNullRollUpForNewAccountLatestActivitiesForPortletView()
         {
-            $this->assertNull(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY));
+            $this->assertNull(LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                        static::$accountLatestActivitiesPortletId, static::CONFIG_KEY));
         }
 
         public function testCanSetRollUpForNewAccountLatestActivitiesForPortletView()
         {
-            LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
-                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY, '');
-            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY) === '');
-            LatestActivitiesUtil::setPersistentConfigForCurrentUserByPortletIdAndKey(
-                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY, '1');
-            $this->assertTrue(LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                static::$accountLatestActivitiesPortletId, static::CONFIG_KEY) === '1');
+            LatestActivitiesPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey(
+                                                        static::$accountLatestActivitiesPortletId,
+                                                        static::CONFIG_KEY,
+                                                        '');
+            $this->assertTrue(LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                        static::$accountLatestActivitiesPortletId,
+                                                        static::CONFIG_KEY) === '');
+            LatestActivitiesPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey(
+                                                        static::$accountLatestActivitiesPortletId,
+                                                        static::CONFIG_KEY,
+                                                        '1');
+            $this->assertTrue(LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                                                        static::$accountLatestActivitiesPortletId,
+                                                        static::CONFIG_KEY) === '1');
         }
 
         public function testCanDeleteAccountLatestActivitiesForPortletView()
