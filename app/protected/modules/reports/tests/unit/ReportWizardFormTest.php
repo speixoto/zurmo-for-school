@@ -44,8 +44,9 @@
          */        
         public function testValidateForModule()
         {
-            $form = new ReportWizardForm();  
-            $form->moduleClassName   = 'Accounts';                      
+            //$form = new ReportWizardForm();
+           // $form->moduleClassName   = 'Accounts';
+            $this->fail();
         }
     }
 ?>
