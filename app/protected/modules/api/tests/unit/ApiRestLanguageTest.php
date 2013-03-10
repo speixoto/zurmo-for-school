@@ -29,6 +29,8 @@
     */
     class ApiRestLanguageTest extends ApiRestTest
     {
+        public static $activateDefaultLanguages = true;
+
         public function testApiServerUrl()
         {
             if (!$this->isApiTestUrlConfigured())
