@@ -30,18 +30,12 @@
         {
             parent::setUpBeforeClass();
             Yii::app()->languageHelper->load();
-            Yii::app()->languageHelper->activateLanguage('de');
-            Yii::app()->languageHelper->activateLanguage('es');
-            Yii::app()->languageHelper->activateLanguage('fr');
-            Yii::app()->languageHelper->activateLanguage('it');
+            Yii::app()->languageHelper->activateLanguagesForTest();
         }
 
         public static function tearDownAfterClass()
         {
-            Yii::app()->languageHelper->deactivateLanguage('de');
-            Yii::app()->languageHelper->deactivateLanguage('es');
-            Yii::app()->languageHelper->deactivateLanguage('fr');
-            Yii::app()->languageHelper->deactivateLanguage('it');
+            Yii::app()->languageHelper->deactivateLanguagesForTest();
             parent::tearDownAfterClass();
         }
 
