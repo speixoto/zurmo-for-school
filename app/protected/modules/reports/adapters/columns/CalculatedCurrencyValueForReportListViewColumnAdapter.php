@@ -25,7 +25,7 @@
  ********************************************************************************/
 
     /**
-     * Class for working with a calculated currency value and displaying it in a report results grid
+     * Class for working with a calculated currency value and displaying it in a report results grid 
      */
     class CalculatedCurrencyValueForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
