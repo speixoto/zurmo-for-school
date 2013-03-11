@@ -73,5 +73,25 @@
             $params['route']    = $this->getGridViewActionRoute('userList', $this->moduleId);
             return $params;
         }
+
+        protected function getCGridViewParams()
+        {
+            $gridViewParams = parent::getCGridViewParams();
+            $gridViewParams['rowHtmlOptionsExpression']
+                            = 'NotificationsForUserListView::resolveRowHtmlOptionsExpression($this, $row, $data)';
+            return $gridViewParams;
+        }
+
+        public static function resolveRowHtmlOptionsExpression($grid, $row, $data)
+        {
+            $notification = Notification::getById($data->id);
+            if (!$notification->ownerHasReadLatest)
+            {
+                $params = array(
+                            "class" => 'unread'
+                    );
+                return $params;
+            }
+        }
     }
 ?>

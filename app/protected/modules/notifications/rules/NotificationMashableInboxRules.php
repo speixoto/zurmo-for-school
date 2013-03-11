@@ -83,11 +83,28 @@
 
         public function getModelStringContent(RedBeanModel $model)
         {
-            $modelDisplayString = strval($model);
-            $params          = array('label' => $modelDisplayString, 'wrapLabel' => false);
-            $moduleClassName = $model->getModuleClassName();
-            $moduleId        = $moduleClassName::getDirectoryName();
-            return $modelDisplayString;
+            $content = strval($model);
+            if ($content != null)
+            {
+                $content = $content . ' ';
+            }
+            if ($model->notificationMessage->id > 0)
+            {
+                if ($model->notificationMessage->htmlContent != null)
+                {
+                    $contentForSpan = Yii::app()->format->raw($model->notificationMessage->htmlContent);
+                }
+                elseif ($model->notificationMessage->textContent != null)
+                {
+                    $contentForSpan = Yii::app()->format->text($model->notificationMessage->textContent);
+                }
+                $content .= ZurmoHtml::tag(
+                                    'span',
+                                    array("class" => "last-comment"),
+                                    $contentForSpan
+                                );
+            }
+            return $content;
         }
 
         public function getModelCreationTimeContent(RedBeanModel $model)
