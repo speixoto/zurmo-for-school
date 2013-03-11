@@ -118,8 +118,8 @@
                 array('triggersStructure', 	  'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('triggers',             'validateTriggers',  'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('actions',              'validateActions',   'on' => self::ACTIONS_VALIDATION_SCENARIO),
-                array('emailAlerts',          'validateActions',   'on' => self::EMAIL_ALERTS_VALIDATION_SCENARIO),
-                array('timeTriggerAttribute', 'type',              'type' => 'string'),
+                array('emailAlerts',          'validateEmailAlerts', 'on' => self::EMAIL_ALERTS_VALIDATION_SCENARIO),
+                array('timeTriggerAttribute', 'type',                'type' => 'string'),
             );
         }
 
@@ -189,7 +189,7 @@
          */
         public function validateEmailAlerts()
         {
-            return $this->validateComponent(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, 'actions');
+            return $this->validateComponent(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, 'emailAlerts');
         }
 
         /**

@@ -67,7 +67,7 @@
         protected function renderContent()
         {
             $content  = '<div>';
-            $content .= $this->renderAttributeRowNumberLabel();
+            $content .= $this->renderActionRowNumberLabel();
             $content .= $this->model->type; //todo: convert to label
             $content .= $this->renderTypeHiddenInputContent();
             $content .= $this->renderRelationHiddenInputContent();
@@ -88,7 +88,7 @@
         /**
          * @return string
          */
-        protected function renderAttributeRowNumberLabel()
+        protected function renderActionRowNumberLabel()
         {
             return ZurmoHtml::tag('span', array('class' => 'dynamic-action-row-number-label'),
                 ($this->rowNumber + 1) . '.');

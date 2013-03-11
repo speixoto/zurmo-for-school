@@ -330,6 +330,49 @@
             echo $content;
         }
 
+        public function actionAddEmailAlert($moduleClassName, $type, $rowNumber)
+        {
+            $form                        = new WizardActiveForm();
+            $form->enableAjaxValidation  = true; //ensures error validation populates correctly
+            $rowCounterInputId           = ComponentForWorkflowWizardView::
+                                           resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS);
+            $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
+            $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
+                                           $moduleClassName::getPrimaryModelName(), $type, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS);
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, (int)$rowNumber);
+            $view                        = new EmailAlertRowForWorkflowComponentView($model, (int)$rowNumber,
+                                           $inputPrefixData, $form,
+                                           WorkflowToWizardFormAdapter::getFormClassNameByType($type), $rowCounterInputId);
+            $content                     = $view->render();
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
+        public function actionAddEmailAlertRecipient($moduleClassName, $type, $recipientType, $rowNumber, $recipientRowNumber)
+        {
+            $form                        = new WizardActiveForm();
+            $form->enableAjaxValidation  = true; //ensures error validation populates correctly
+            $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
+            $model                       = WorkflowEmailAlertRecipientFormFactory::make($recipientType,
+                                           $moduleClassName::getPrimaryModelName(), $type);
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS,
+                                           (int)$rowNumber, EmailAlertForWorkflowForm::TYPE_EMAIL_ALERT_RECIPIENTS,
+                                           $recipientRowNumber);
+            $adapter                     = new WorkflowEmailAlertRecipientToElementAdapter($model, $form,
+                                           $recipientType, $inputPrefixData);
+            $view                        = new EmailAlertRecipientRowForWorkflowComponentView($adapter,
+                                           (int)$recipientRowNumber, $inputPrefixData);
+            $content                     = $view->render();
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo $content;
+        }
+
+
+
         protected function resolveCanCurrentUserAccessWorkflows()
         {
             if(!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',

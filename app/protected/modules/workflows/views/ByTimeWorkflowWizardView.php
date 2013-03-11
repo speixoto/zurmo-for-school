@@ -88,7 +88,7 @@
                         if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                            WorkflowWizardForm::EMAIL_ALERTS_DATA_VALIDATION_SCENARIO . "');
+                            WorkflowWizardForm::EMAIL_ALERTS_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
                             $('#EmailAlertsForWorkflowWizardView').show();
                         }

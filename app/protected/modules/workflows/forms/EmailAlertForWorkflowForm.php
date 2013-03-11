@@ -29,9 +29,14 @@
      */
     class EmailAlertForWorkflowForm extends ConfigurableMetadataModel
     {
-        const SEND_FROM_TYPE_DEFAULT     = 'Default';
+        const SEND_FROM_TYPE_DEFAULT      = 'Default';
 
-        const SEND_FROM_TYPE_CUSTOM      = 'Custom';
+        const SEND_FROM_TYPE_CUSTOM       = 'Custom';
+
+        /**
+         * Similar to the types defined in ComponentForWorkflowForm like TYPE_EMAIL_ALERTS.
+         */
+        const TYPE_EMAIL_ALERT_RECIPIENTS = 'EmailAlertRecipients';
 
         /**
          * Utilized by arrays to define the element that is for the actionAttributes
@@ -93,6 +98,11 @@
             return $this->_emailAlertRecipients;
         }
 
+        public function getWorkflowType()
+        {
+            return $this->_workflowType;
+        }
+
         /**
          * @return array
          */
@@ -114,7 +124,13 @@
          */
         public function attributeLabels()
         {
-            return array();
+            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Email Template'),
+                         'sendAfterDurationSeconds' => Zurmo::t('WorkflowsModule', 'Send'),
+                         'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
+                         'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),
+                         'sendFromAddress'          => Zurmo::t('WorkflowsModule', 'From Address'),
+                         'logEmail'                 => Zurmo::t('WorkflowsModule', 'Log Email'),
+            );
         }
 
         /**
@@ -153,7 +169,7 @@
          */
         public function validateSendFromType()
         {
-            if($this->type == self::SEND_FROM_TYPE_DEFAULT || $this->type == self::SEND_FROM_TYPE_CUSTOM)
+            if($this->type == self::SEND_FROM_TYPE_CUSTOM)
             {
                 $validated = true;
                 if($this->sendFromName == null)
@@ -211,13 +227,28 @@
             return $passedValidation;
         }
 
+        public function getSendFromTypeValuesAndLabels()
+        {
+            $data                               = array();
+            $data[self::SEND_FROM_TYPE_DEFAULT] = Zurmo::t('WorkflowsModule', 'Default System From Name/Address'); //todo: relabel since we don't define this persay anywhere
+            $data[self::SEND_FROM_TYPE_CUSTOM]  = Zurmo::t('WorkflowsModule', 'Custom From Name/Address');
+            return $data;
+        }
+
+        public function getSendAfterDurationValuesAndLabels()
+        {
+            $data = array();
+            WorkflowUtil::resolveSendAfterDurationData($data);
+            return $data;
+        }
+
         /**
          * @param $attributeName string
          * @return string
          */
         protected static function resolveErrorAttributePrefix($attributeName)
         {
-            assert('is_string($attributeName)');
+            assert('is_int($attributeName)');
             return self::EMAIL_ALERT_RECIPIENTS . '_' .  $attributeName . '_';
         }
     }

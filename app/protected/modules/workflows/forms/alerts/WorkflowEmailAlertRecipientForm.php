@@ -122,7 +122,7 @@
         /**
          * @return array
          */
-        public function getTypeValuesAndLabels()
+        public static function getTypeValuesAndLabels()
         {
             $data = array();
             $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL_USER]             =

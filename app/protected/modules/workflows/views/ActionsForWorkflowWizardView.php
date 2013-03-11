@@ -158,7 +158,7 @@
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
             $itemsContent                = $this->getSortableListContent($items, ComponentForWorkflowForm::TYPE_ACTIONS);
-            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS));
+            $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS));
             $hiddenInputName             = ComponentForWorkflowForm::TYPE_ACTIONS . 'RowCounter';
             $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'action-rows'), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
@@ -307,6 +307,7 @@
 
         protected function registerAddActionScript()
         {
+            $rowCounterInputId = static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS);
             $moduleClassNameId = get_class($this->model) . '[moduleClassName]';
             $url               = Yii::app()->createUrl('workflows/default/addAction',
                 array_merge($_GET, array('type' => $this->model->type)));
@@ -321,17 +322,15 @@
                                  self::ACTION_TYPE_RELATED_MODEL_RELATION_NAME . '").val() || "")
                                  + \'&moduleClassName=\' + $("input:radio[name=\"' .
                                  $moduleClassNameId . '\"]:checked").val() + ' .
-                                 '\'&rowNumber=\' + $(\'#' .
-                                 $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS). '\').val()',
+                                 '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
                     //attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                 }',
                 'success' => 'js:function(data){
-                    $(\'#' . $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS). '\').val(parseInt($(\'#' .
-                    $this->getRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS) . '\').val()) + 1);
+                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                     $(".droppable-attributes-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
-                    . '").parent().find(".action-rows").find("ul").append(data);
+                    . '").find(".action-rows").find("ul").append(data);
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
                     $(".' . static::getZeroComponentsClassName() . '").hide();
                     $("#' . self::ACTION_TYPE_NAME . '").val("");

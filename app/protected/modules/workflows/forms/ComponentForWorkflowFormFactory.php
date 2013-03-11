@@ -56,6 +56,10 @@
             {
                 return new ActionForWorkflowForm($modelClassName, $type);
             }
+            elseif($componentType == ComponentForWorkflowForm::TYPE_EMAIL_ALERTS)
+            {
+                return new EmailAlertForWorkflowForm($modelClassName, $type);
+            }
             else
             {
                 throw new NotSupportedException();

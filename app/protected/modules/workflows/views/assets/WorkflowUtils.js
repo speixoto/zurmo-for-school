@@ -94,3 +94,19 @@ function toggleWorkflowShouldSetValueWrapper(checkboxId)
         $('#' + checkboxId).parent().parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').hide();
     }
 }
+function rebuildWorkflowEmailAlertRowNumbers(divId){
+    rowCount = 1;
+    structure = '';
+    $('#' + divId).find('.dynamic-email-alert-row-number-label').each(function(){
+        $(this).html(rowCount + '.');
+        rowCount ++;
+    });
+}
+function rebuildWorkflowEmailAlertRecipientRowNumbers(object){
+    rowCount = 1;
+    structure = '';
+    $(object).find('.dynamic-email-alert-recipient-row-number-label').each(function(){
+        $(this).html(rowCount + '.');
+        rowCount ++;
+    });
+}

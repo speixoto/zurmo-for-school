@@ -30,6 +30,15 @@
     abstract class ComponentForWorkflowWizardView extends ComponentForWizardModelView
     {
         /**
+         * @param string $componentType
+         * @return string
+         */
+        public static function resolveRowCounterInputId($componentType)
+        {
+            return $componentType . 'RowCounter';
+        }
+
+        /**
          * @return string
          */
         public function getTitle()
@@ -61,6 +70,20 @@
 
         /**
          * @param array $items
+         * @return string
+         */
+        protected function getNonSortableListContent(Array $items)
+        {
+            $content = null;
+            foreach($items as $item)
+            {
+                $content .= ZurmoHtml::tag('li', array(), $item['content']);
+            }
+            return ZurmoHtml::tag('ul', array(), $content);
+        }
+
+        /**
+         * @param array $items
          * @param string $componentType
          * @return string
          */
@@ -84,15 +107,6 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips[$componentType . 'WorkflowComponentSortable'];
-        }
-
-        /**
-         * @param string $componentType
-         * @return string
-         */
-        protected function getRowCounterInputId($componentType)
-        {
-            return $componentType . 'RowCounter';
         }
     }
 ?>

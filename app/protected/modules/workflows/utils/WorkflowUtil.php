@@ -171,5 +171,34 @@
                 $data[-14400] = Zurmo::t('WorkflowsModule', '{n} hour ago|{n} hours ago', array(4));
             }
         }
+
+        /**
+         * Utilized by Email Alert to allow user to decide when an email alert should go out.
+         * @param $data
+         */
+        public static function resolveSendAfterDurationData(& $data)
+        {
+            $data[300]      = Zurmo::t('WorkflowsModule', 'Immediately after workflow runs', array(5));
+            $data[300]      = Zurmo::t('WorkflowsModule', '{n} minute after workflow runs|{n} minutes after workflow runs', array(5));
+            $data[14400]    = Zurmo::t('WorkflowsModule', '{n} hour after workflow runs|{n} hours after workflow runs', array(4));
+            $data[28800]    = Zurmo::t('WorkflowsModule', '{n} hour after workflow runs|{n} hours after workflow runs', array(8));
+            $data[43200]    = Zurmo::t('WorkflowsModule', '{n} hour after workflow runs|{n} hours after workflow runs', array(12));
+            $data[86400]    = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(1));
+            $data[172800]   = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(2));
+            $data[259200]   = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(3));
+            $data[345600]   = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(4));
+            $data[432000]   = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(5));
+            $data[864000]   = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(10));
+            $data[604800]   = Zurmo::t('WorkflowsModule', '{n} week after workflow runs|{n} weeks after workflow runs', array(1));
+            $data[1209600]  = Zurmo::t('WorkflowsModule', '{n} week after workflow runs|{n} weeks after workflow runs', array(2));
+            $data[1814400]  = Zurmo::t('WorkflowsModule', '{n} week after workflow runs|{n} weeks after workflow runs', array(3));
+            $data[2592000]  = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(30));
+            $data[5184000]  = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(60));
+            $data[7776000]  = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(90));
+            $data[10368000] = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(120));
+            $data[12960000] = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(150));
+            $data[15552000] = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(180));
+            $data[31104000] = Zurmo::t('WorkflowsModule', '{n} year after workflow runs|{n} years after workflow runs', array(1));
+        }
     }
 ?>
