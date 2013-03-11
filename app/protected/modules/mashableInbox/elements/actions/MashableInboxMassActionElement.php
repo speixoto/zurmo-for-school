@@ -158,8 +158,26 @@
                     function()
                     {
                         $('#{$gridId}-selectedIds').val('');
+                        " . $this->getScriptForUpdateUnreadCount() ."
                     }
                 ";
+            return $script;
+        }
+
+        private function getScriptForUpdateUnreadCount()
+        {
+            $script = ZurmoHtml::ajax(array(
+                                        "url"       => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/getUnreadCount'),
+                                        "success"   => "function(data){
+                                                            data  = JSON.parse(data);
+                                                            total = 0;
+                                                            for (var key in data) {
+                                                                $('a.icon-' + key.toLowerCase()).find('span.unread-count').html(data[key]);
+                                                                total += data[key];
+                                                            }
+                                                            $('a.icon-combined').find('span.unread-count').html(total);
+                                                        }",
+                ));
             return $script;
         }
 

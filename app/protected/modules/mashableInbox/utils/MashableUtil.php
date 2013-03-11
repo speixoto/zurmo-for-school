@@ -79,7 +79,7 @@
         {
             $mashableInboxRules =
                     static::createMashableInboxRulesByModel($modelClassName);
-            return $mashableInboxRules->getUnreadCountForCurrentUser();
+            return (int)$mashableInboxRules->getUnreadCountForCurrentUser();
         }
 
         public static function getUnreadCountMashableInboxForCurrentUser()
@@ -143,7 +143,7 @@
                                                                 "class" => "model-tag " . strtolower($mashableInboxRules->getModelClassName())
                                                             ),
                                                             ZurmoHtml::tag('span', array(), $mashableInboxRules->getModelClassName()));
-            
+
             $content  = self::resolveContentTemplate($summaryContentTemplate, $data);
             $content .= $spanForTag;
             return $content;

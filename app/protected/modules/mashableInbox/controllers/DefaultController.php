@@ -57,6 +57,16 @@
             }
         }
 
+        public function actionGetUnreadCount()
+        {
+            $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
+            foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
+            {
+                $data[$modelClassName] = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
+            }
+            echo CJSON::encode($data);
+        }
+
         /**
          * Render that page view for the mashableInbox. If $modelClassName is set it will render the model listView
          * otherwise it will render a listView with all mashableInbox models merged
