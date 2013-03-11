@@ -29,7 +29,10 @@
 
         public function getUnreadCountForCurrentUser()
         {
-            return Notification::getCountByUser(Yii::app()->user->userModel);
+            $searchAttributeData = $this->getMetadataFilteredByFilteredBy(MashableInboxForm::FILTERED_BY_UNREAD);
+            $joinTablesAdapter   = new RedBeanModelJoinTablesQueryAdapter('Notification');
+            $where               = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
+            return Notification::getCount($joinTablesAdapter, $where, null, true);
         }
 
         public function getModelClassName()
@@ -59,7 +62,23 @@
 
         public function getMetadataFilteredByFilteredBy($filteredBy)
         {
-            return null;
+            if ($filteredBy == MashableInboxForm::FILTERED_BY_UNREAD)
+            {
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'        => 'ownerHasReadLatest',
+                        'operatorType'         => 'doesNotEqual',
+                        'value'                => (bool)1
+                    ),
+                );
+                $searchAttributeData['structure'] = '1';
+                return $searchAttributeData;
+            }
+            else
+            {
+                $metadata = null;
+            }
+            return $metadata;
         }
 
         public function getModelStringContent(RedBeanModel $model)
