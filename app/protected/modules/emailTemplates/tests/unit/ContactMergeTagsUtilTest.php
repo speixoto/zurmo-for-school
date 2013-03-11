@@ -161,13 +161,23 @@
             $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(
                 EmailTemplate::TYPE_CONTACT, 'Subject 02', 'Contact', 'Name 02',
                 '<b>HTML Content with [[INVALID^TAG]] tags</b>',
-                'Text Content with [[INVALID^TAG]] tags');
+                'Text Content with [[INVALIDTAG]] tags');
             $contactMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type,
                 $emailTemplate->language,
                 $emailTemplate->textContent);
             $this->assertTrue($contactMergeTagsUtil instanceof MergeTagsUtil);
             $textContent = $contactMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
             $this->assertFalse($textContent);
+            $this->assertNotEmpty($this->invalidTags);
+            $this->assertEquals(1, count($this->invalidTags));
+            $this->assertTrue($this->invalidTags[0] == 'INVALIDTAG');
+            $this->invalidTags = array();
+            $contactMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type,
+                $emailTemplate->language,
+                $emailTemplate->htmlContent);
+            $this->assertTrue($contactMergeTagsUtil instanceof MergeTagsUtil);
+            $htmlContent = $contactMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
+            $this->assertFalse($htmlContent);
             $this->assertNotEmpty($this->invalidTags);
             $this->assertEquals(1, count($this->invalidTags));
             $this->assertTrue($this->invalidTags[0] == 'INVALID^TAG');

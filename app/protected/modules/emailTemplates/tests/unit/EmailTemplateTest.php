@@ -114,8 +114,8 @@
             $emailTemplate->type            = EmailTemplate::TYPE_CONTACT;
             $emailTemplate->subject         = 'Another Test subject';
             $emailTemplate->name            = 'Another Test Email Template';
-            $emailTemplate->textContent     = 'Text Content [[TEXT^INVALID^MERGE^TAG]]';
-            $emailTemplate->htmlContent     = 'Html Content [[HTML__INVALID^MERGE^TAG]]';
+            $emailTemplate->textContent     = 'Text Content [[TEXT__INVALID^MERGE^TAG]]';
+            $emailTemplate->htmlContent     = 'Html Content [[HTMLINVALIDMERGETAG]]';
             $emailTemplate->modelClassName  = 'Contact';
             $this->assertFalse($emailTemplate->save());
             $errorMessages = $emailTemplate->getErrors();
@@ -124,8 +124,8 @@
             $this->assertTrue(array_key_exists('htmlContent', $errorMessages));
             $this->assertEquals(1, count($errorMessages['textContent']));
             $this->assertEquals(1, count($errorMessages['htmlContent']));
-            $this->assertTrue(strpos($errorMessages['textContent'][0], 'TEXT^INVALID^MERGE^TAG') !== false);
-            $this->assertTrue(strpos($errorMessages['htmlContent'][0], 'HTML__INVALID^MERGE^TAG') !== false);
+            $this->assertTrue(strpos($errorMessages['textContent'][0], 'TEXT__INVALID^MERGE^TAG') !== false);
+            $this->assertTrue(strpos($errorMessages['htmlContent'][0], 'HTMLINVALIDMERGETAG') !== false);
             // test with no merge tags
             $emailTemplate->textContent    = 'Text Content without tags';
             $emailTemplate->htmlContent    = 'Html Content without tags';

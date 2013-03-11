@@ -74,14 +74,14 @@
         }
 
 
-        public function testCanInstantiateContactMergeTags()
+        public function testCanInstantiateWorkflowMergeTags()
         {
             $this->assertTrue($this->contactTextMergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($this->contactHtmlMergeTagsUtil instanceof MergeTagsUtil);
         }
 
         /*
-         * @depends testCanInstantiateContactMergeTags
+         * @depends testCanInstantiateWorkflowMergeTags
          */
         public function testTextMergeFieldsArePopulatedCorrectlyWithCustomLanguage()
         {
@@ -92,7 +92,7 @@
         }
 
         /*
-         * @depends testCanInstantiateContactMergeTags
+         * @depends testCanInstantiateWorkflowMergeTags
          */
         public function testTextMergeFieldsArePopulatedCorrectlyWithNoLanguage()
         {
@@ -103,7 +103,7 @@
         }
 
         /*
-         * @depends testCanInstantiateContactMergeTags
+         * @depends testCanInstantiateWorkflowMergeTags
          */
         public function testTextMergeFieldsArePopulatedCorrectlyWithDefaultLanguage()
         {
@@ -114,7 +114,7 @@
         }
 
         /*
-         * @depends testCanInstantiateContactMergeTags
+         * @depends testCanInstantiateWorkflowMergeTags
          */
         public function testHtmlMergeFieldsArePopulatedCorrectlyWithCustomLanguage()
         {
@@ -125,7 +125,7 @@
         }
 
         /*
-         * @depends testCanInstantiateContactMergeTags
+         * @depends testCanInstantiateWorkflowMergeTags
          */
         public function testHtmlMergeFieldsArePopulatedCorrectlyWithNoLanguage()
         {
@@ -136,7 +136,7 @@
         }
 
         /*
-         * @depends testCanInstantiateContactMergeTags
+         * @depends testCanInstantiateWorkflowMergeTags
          */
         public function testHtmlMergeFieldsArePopulatedCorrectlyWithDefaultLanguage()
         {
@@ -152,11 +152,11 @@
                 EmailTemplate::TYPE_WORKFLOW, 'Subject 02', 'Account', 'Name 02',
                 '<b>HTML Content without tags</b>',
                 'Text Content without tags');
-            $contactMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplateWithNoMergeTags->type,
+            $workflowMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplateWithNoMergeTags->type,
                 $emailTemplateWithNoMergeTags->language,
                 $emailTemplateWithNoMergeTags->textContent);
-            $this->assertTrue($contactMergeTagsUtil instanceof MergeTagsUtil);
-            $textContent = $contactMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
+            $this->assertTrue($workflowMergeTagsUtil instanceof MergeTagsUtil);
+            $textContent = $workflowMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
             $this->assertTrue($textContent !== false);
             $this->assertEquals($textContent, $emailTemplateWithNoMergeTags->textContent);
             $this->assertEmpty($this->invalidTags);
@@ -167,13 +167,23 @@
             $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(
                 EmailTemplate::TYPE_WORKFLOW, 'Subject 02', 'Account', 'Name 02',
                 '<b>HTML Content with [[INVALID^TAG]] tags</b>',
-                'Text Content with [[INVALID^TAG]] tags');
-            $contactMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type,
+                'Text Content with [[INVALIDTAG]] tags');
+            $workflowMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type,
                 $emailTemplate->language,
                 $emailTemplate->textContent);
-            $this->assertTrue($contactMergeTagsUtil instanceof MergeTagsUtil);
-            $textContent = $contactMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
+            $this->assertTrue($workflowMergeTagsUtil instanceof MergeTagsUtil);
+            $textContent = $workflowMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
             $this->assertFalse($textContent);
+            $this->assertNotEmpty($this->invalidTags);
+            $this->assertEquals(1, count($this->invalidTags));
+            $this->assertTrue($this->invalidTags[0] == 'INVALIDTAG');
+            $this->invalidTags = array();
+            $workflowMergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type,
+                $emailTemplate->language,
+                $emailTemplate->htmlContent);
+            $this->assertTrue($workflowMergeTagsUtil instanceof MergeTagsUtil);
+            $htmlContent = $workflowMergeTagsUtil->resolveMergeTags(self::$contact, $this->invalidTags, null);
+            $this->assertFalse($htmlContent);
             $this->assertNotEmpty($this->invalidTags);
             $this->assertEquals(1, count($this->invalidTags));
             $this->assertTrue($this->invalidTags[0] == 'INVALID^TAG');
