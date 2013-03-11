@@ -184,8 +184,9 @@
             $listViewId       = $this->listView->getGridViewId();
             $ajaxSubmitScript = "$('#{$listViewId}').yiiGridView('update', {data: $('#" . $form->getId() . "').serialize()});";
             $script = "
-                    $('#MashableInboxForm_optionForModel_area').buttonset();
-                    $('#MashableInboxForm_filteredBy_area').buttonset();
+                    $('#MashableInboxForm_optionForModel_area').find('input:checked').next().addClass('ui-state-active');
+                    $('#MashableInboxForm_filteredBy_area').find('input:checked').next().addClass('ui-state-active');
+                    " . $this->getScriptForButtonset() . "
                     $('#MashableInboxForm_optionForModel_area').change(
                         function()
                         {
@@ -200,6 +201,29 @@
                     );
                 ";
              Yii::app()->clientScript->registerScript('MashableInboxForm', $script);
+        }
+
+        private function getScriptForButtonset()
+        {
+            $script = "
+                    $('#MashableInboxForm_filteredBy_area').find('label').each(
+                                function(){
+                                    \$(this).click(function(){
+                                        $('#MashableInboxForm_filteredBy_area').find('label').each(function(){\$(this).removeClass('ui-state-active')});
+                                        \$(this).addClass('ui-state-active');
+                                     })
+                                }
+                            );
+                    $('#MashableInboxForm_optionForModel_area').find('label').each(
+                                function(){
+                                    \$(this).click(function(){
+                                        $('#MashableInboxForm_optionForModel_area').find('label').each(function(){\$(this).removeClass('ui-state-active')});
+                                        \$(this).addClass('ui-state-active');
+                                     })
+                                }
+                            );
+                ";
+            return $script;
         }
     }
 ?>
