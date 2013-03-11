@@ -62,7 +62,8 @@
             $combinedInboxesModels = MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableInboxInterface');
             foreach ($combinedInboxesModels as $modelClassName => $modelLabel)
             {
-                $data[$modelClassName] = MashableUtil::getUnreadCountForCurrentUserByModelClassName($modelClassName);
+                $data[strtolower($modelClassName)] = MashableUtil::
+                        getUnreadCountForCurrentUserByModelClassName($modelClassName);
             }
             echo CJSON::encode($data);
         }
