@@ -125,7 +125,8 @@
                 'defaultSortAttribute' => null,
                 'noAudit' => array(
                     'owner',
-                    'type'
+                    'type',
+                    'ownerHasReadLatest',
                 )
             );
             return $metadata;

@@ -70,8 +70,18 @@
                         'operatorType'         => 'doesNotEqual',
                         'value'                => (bool)1
                     ),
+                    2 => array(
+                        'attributeName'        => 'ownerHasReadLatest',
+                        'operatorType'         => 'isNull',
+                        'value'                => null
+                    ),
+                    3 => array(
+                        'attributeName' => 'owner',
+                        'operatorType'  => 'equals',
+                        'value'         => Yii::app()->user->userModel->id
+                    ),
                 );
-                $searchAttributeData['structure'] = '1';
+                $searchAttributeData['structure'] = '1 or (2 and 3)';
                 return $searchAttributeData;
             }
             else
