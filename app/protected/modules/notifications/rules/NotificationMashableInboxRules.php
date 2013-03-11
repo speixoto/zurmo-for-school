@@ -117,7 +117,14 @@
 
         private function resolveChangeHasReadLatestStatus($modelId, $newStatus)
         {
-            throw new NotImplementedException();
+            $modelClassName            = $this->getModelClassName();
+            $model                     = $modelClassName::getById($modelId);
+            if (Yii::app()->user->userModel == $model->owner)
+            {
+                $model->ownerHasReadLatest = $newStatus;
+            }
+            $model->ownerHasReadLatest = $newStatus;
+            $model->save();
         }
 
         public function getMassOptions()
@@ -159,7 +166,9 @@
 
         public function hasUserReadLatest($modelId)
         {
-            return false;
+            $modelClassName = $this->getModelClassName();
+            $model          = $modelClassName::getById($modelId);
+            return $model->ownerHasReadLatest;
         }
     }
 ?>

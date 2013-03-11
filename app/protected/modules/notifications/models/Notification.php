@@ -106,16 +106,18 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
+                    'ownerHasReadLatest',
                 ),
                 'relations' => array(
                     'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage'),
                     'owner' => array(RedBeanModel::HAS_ONE, 'User'),
                 ),
                 'rules' => array(
-                    array('owner',  'required'),
-                    array('type',   'required'),
-                    array('type',   'type',    'type' => 'string'),
-                    array('type',   'length',  'min'  => 3, 'max' => 64),
+                    array('owner',                  'required'),
+                    array('type',                   'required'),
+                    array('type',                   'type',    'type' => 'string'),
+                    array('type',                   'length',  'min'  => 3, 'max' => 64),
+                    array('ownerHasReadLatest',     'boolean'),
                 ),
                 'elements' => array(
                     'owner' => 'User',
