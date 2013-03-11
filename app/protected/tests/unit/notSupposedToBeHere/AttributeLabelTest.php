@@ -26,6 +26,8 @@
 
     class AttributeLabelTest extends BaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public function testAttributesTranslateToAllSupportedLanguagesCorrectly()
         {
             $this->assertEquals('en', Yii::app()->language);
