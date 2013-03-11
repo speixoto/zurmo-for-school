@@ -65,7 +65,7 @@
         }
 
         protected function registerModuleClassNameChangeScript()
-        {//todo: add alerts once ready
+        {
             $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
             Yii::app()->clientScript->registerScript('moduleForWorkflowChangeScript', "
                 $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
@@ -78,6 +78,8 @@
                         $('#actionType option:selected').removeAttr('selected');
                         $('." . ActionsForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         rebuildWorkflowActionRowNumbers('ActionsForWorkflowWizardView');
+                        $('#EmailAlertsForWorkflowWizardView').find('.alert-rows').find('ul').find('li').remove();
+                        $('." . EmailAlertsForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         " . $this->registerModuleClassNameChangeScriptExtraPart() . "
                     }
                 );

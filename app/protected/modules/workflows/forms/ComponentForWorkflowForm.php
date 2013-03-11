@@ -52,6 +52,11 @@
         const TYPE_ACTIONS                       = 'Actions';
 
         /**
+         * Component type for email alerts
+         */
+        const TYPE_EMAIL_ALERTS                  = 'EmailAlerts';
+
+        /**
          * @var string
          */
         protected $moduleClassName;

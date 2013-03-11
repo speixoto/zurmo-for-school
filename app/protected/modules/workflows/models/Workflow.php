@@ -26,15 +26,15 @@
 
     class Workflow extends CComponent
     {
-        const TYPE_ON_SAVE  = 'OnSave';
+        const TYPE_ON_SAVE                    = 'OnSave';
 
-        const TYPE_BY_TIME  = 'ByTime';
+        const TYPE_BY_TIME                    = 'ByTime';
 
-        const TRIGGER_ON_NEW      = 'New';
+        const TRIGGER_ON_NEW                  = 'New';
 
         const TRIGGER_ON_NEW_AND_EXISTING     = 'NewAndExisting';
 
-        const TRIGGER_ON_EXISTING = 'Existing';
+        const TRIGGER_ON_EXISTING             = 'Existing';
 
         private $description;
 
@@ -61,6 +61,8 @@
         private $triggers                   = array();
 
         private $actions                    = array();
+
+        private $emailAlerts                = array();
 
         public static function getTypeDropDownArray()
         {
@@ -260,6 +262,21 @@
         public function removeAllActions()
         {
             $this->actions   = array();
+        }
+
+        public function getEmailAlerts()
+        {
+        return $this->emailAlerts;
+        }
+
+        public function addEmailAlert(EmailAlertForWorkflowForm $emailAlert)
+        {
+            $this->emailAlerts[] = $emailAlert;
+        }
+
+        public function removeAllEmailAlerts()
+        {
+            $this->emailAlerts   = array();
         }
     }
 ?>

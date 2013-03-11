@@ -78,7 +78,7 @@
          * Currently you can only modify all opportunities.
          * @var relationFilter
          */
-        public $relationFilter;
+        public $relationFilter = self::RELATION_FILTER_ALL;
 
         /**
          * If the type is TYPE_CREATE_RELATED, the relationModelRelation is required. An example is Create a contact's related

@@ -24,34 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Element used by filters or triggers that can morph between a single select and a multi-select.
-     */
-    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
+    class WorkflowEmailAlertRecipientFormTest extends ZurmoBaseTest
     {
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        public static function setUpBeforeClass()
         {
-            return 'getCustomFieldDataAndLabels';
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
+        public function setup()
         {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if(property_exists($this->model, 'operator') && $this->model->operator == 'oneOf')
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= 'multiple';
-            }
-            return $htmlOptions;
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
         }
+
+        public function test()
+        {
+            //todo: each subForm return value of getTypeValuesAndLabels to get complete coverage
+            //todo test validation of each subform based on specific validations for each subform
+            //getTypeValuesAndLabels($isCreatingNewModel, $isRequired)
+            $this->fail();
+        }
+
     }
 ?>

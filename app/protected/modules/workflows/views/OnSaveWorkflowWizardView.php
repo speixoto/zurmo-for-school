@@ -38,13 +38,15 @@
             $moduleForWorkflowWizardView        = new ModuleForWorkflowWizardView ($this->model,     $form);
             $triggersForWorkflowWizardView      = new TriggersForWorkflowWizardView($this->model,    $form, true);
             $actionsForWorkflowWizardView       = new ActionsForWorkflowWizardView($this->model,     $form, true);
+            $emailAlertsForWorkflowWizardView   = new EmailAlertsForWorkflowWizardView($this->model,     $form, true);
             $generalDataForWorkflowWizardView   = new GeneralDataForWorkflowWizardView($this->model, $form, true);
 
-            $gridView = new GridView(4,1);
+            $gridView = new GridView(5,1);
             $gridView->setView($moduleForWorkflowWizardView, 0, 0);
             $gridView->setView($triggersForWorkflowWizardView, 1, 0);
             $gridView->setView($actionsForWorkflowWizardView, 2, 0);
-            $gridView->setView($generalDataForWorkflowWizardView, 3, 0);
+            $gridView->setView($emailAlertsForWorkflowWizardView, 3, 0);
+            $gridView->setView($generalDataForWorkflowWizardView, 4, 0);
             return $gridView->render();
         }
 
@@ -76,8 +78,15 @@
                         if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
-                                WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
+                                WorkflowWizardForm::EMAIL_ALERTS_DATA_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
+                            $('#EmailAlertsForWorkflowWizardView').show();
+                        }
+                        if(linkId == '" . EmailAlertsForWorkflowWizardView::getNextPageLinkId() . "')
+                        {
+                            $('#" . static::getValidationScenarioInputId() . "').val('" .
+                            WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
+                            $('#EmailAlertsForWorkflowWizardView').hide();
                             $('#GeneralDataForWorkflowWizardView').show();
                         }
                         if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
@@ -119,15 +128,24 @@
                     {
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                         $('#TriggersForWorkflowWizardView').show();
-                        $('#ActionsForWorkflowWizardView').hide();
+                        $('#EmailAlertsForWorkflowWizardView').hide();
+                        return false;
+                    }
+                );
+                $('#" . EmailAlertsForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
+                $('#" . EmailAlertsForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
+                    {
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
+                        $('#ActionsForWorkflowWizardView').show();
+                        $('#EmailAlertsForWorkflowWizardView').hide();
                         return false;
                     }
                 );
                 $('#" . GeneralDataForWorkflowWizardView::getPreviousPageLinkId() . "').unbind('click');
                 $('#" . GeneralDataForWorkflowWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
-                        $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
-                        $('#ActionsForWorkflowWizardView').show();
+                        $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::EMAIL_ALERTS_VALIDATION_SCENARIO . "');
+                        $('#EmailAlertsForWorkflowWizardView').show();
                         $('#GeneralDataForWorkflowWizardView').hide();
                         return false;
                     }

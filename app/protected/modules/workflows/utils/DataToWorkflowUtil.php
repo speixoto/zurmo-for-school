@@ -56,6 +56,7 @@
             }
             self::resolveTriggers                   ($data, $workflow);
             self::resolveActions                    ($data, $workflow);
+            self::resolveEmailAlerts                ($data, $workflow);
             self::resolveTimeTrigger                ($data, $workflow);
         }
 
@@ -99,7 +100,6 @@
          */
         public static function resolveActions($data, Workflow $workflow)
         {
-            //todo: we need to sanitize action data too since we can be populating things like static dates..
             $workflow->removeAllActions();
             $moduleClassName = $workflow->getModuleClassName();
             if(count($actionsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_ACTIONS)) > 0)
@@ -147,6 +147,30 @@
                 }
             }
             return $actionData;
+        }
+
+        /**
+         * Public for testing purposes
+         * @param $data
+         * @param Workflow $workflow
+         */
+        public static function resolveEmailAlerts($data, Workflow $workflow)
+        {
+            $workflow->removeAllEmailAlerts();
+            $moduleClassName = $workflow->getModuleClassName();
+            if(count($emailAlertsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS)) > 0)
+            {
+                foreach($emailAlertsData as $emailAlertData)
+                {
+                    $emailAlert = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->type);
+                    $emailAlert->setAttributes($emailAlertData);
+                    $workflow->addEmailAlert($emailAlert);
+                }
+            }
+            else
+            {
+                $workflow->removeAllEmailAlerts();
+            }
         }
 
         /**

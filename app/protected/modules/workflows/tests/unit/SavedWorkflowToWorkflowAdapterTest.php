@@ -79,6 +79,7 @@
 
             //todo: add TimeTrigger
             //todo: add Action, test that stringifiedModelValue does not get saved to SavedWorkflow
+            //todo: add emailAlert
 
             $savedReport = new SavedWorkflow();
             $this->assertNull($savedReport->serializedData);
@@ -145,6 +146,8 @@
         {
             //todo: add TimeTrigger and test timeTriggerAttribute gets populated correctly.
             //todo: add Action
+            //todo: add emailAlert
+
             $savedReports               = SavedReport::getAll();
             $this->assertEquals           (1, count($savedReports));
             $savedReport                = $savedReports[0];

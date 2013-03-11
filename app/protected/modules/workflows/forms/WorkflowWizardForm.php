@@ -39,6 +39,8 @@
 
         const ACTIONS_VALIDATION_SCENARIO           = 'ValidateForActions';
 
+        const EMAIL_ALERTS_VALIDATION_SCENARIO      = 'ValidateForEmailAlerts';
+
         const GENERAL_DATA_VALIDATION_SCENARIO      = 'ValidateForGeneralData';
 
         public $description;
@@ -87,12 +89,14 @@
         /**
          * @var array
          */
-        public $triggers                   = array();
+        public $triggers     = array();
 
         /**
          * @var array
          */
-        public $actions                   = array();
+        public $actions      = array();
+
+        public $emailAlerts  = array();
 
         public function rules()
         {
@@ -114,6 +118,7 @@
                 array('triggersStructure', 	  'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('triggers',             'validateTriggers',  'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('actions',              'validateActions',   'on' => self::ACTIONS_VALIDATION_SCENARIO),
+                array('emailAlerts',          'validateActions',   'on' => self::EMAIL_ALERTS_VALIDATION_SCENARIO),
                 array('timeTriggerAttribute', 'type',              'type' => 'string'),
             );
         }
@@ -176,13 +181,15 @@
          */
         public function validateActions()
         {
-            $validated = $this->validateComponent(ComponentForWorkflowForm::TYPE_ACTIONS, 'actions');
-            if(count($this->actions) == 0)
-            {
-                $this->addError( 'actions', Zurmo::t('WorkflowsModule', 'At least one action must be selected'));
-                $validated = false;
-            }
-            return $validated;
+            return $this->validateComponent(ComponentForWorkflowForm::TYPE_ACTIONS, 'actions');
+        }
+
+        /**
+         * @return bool
+         */
+        public function validateEmailAlerts()
+        {
+            return $this->validateComponent(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, 'actions');
         }
 
         /**

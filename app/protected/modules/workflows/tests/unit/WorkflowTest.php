@@ -84,9 +84,10 @@
          */
         public function testSetAndGetWorkflow()
         {
-            $timeTrigger = new TimeTriggerForWorkflowForm();
-            $action      = new ActionForWorkflowForm('WorkflowModelTestItem');
-            $trigger     = new TriggerForWorkflowForm();
+            $timeTrigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $action      = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $emailAlert  = new EmailAlertForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $trigger     = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $workflow = new Workflow();
             $workflow->setModuleClassName('SomeModule');
             $workflow->setDescription('a description');
@@ -111,6 +112,9 @@
             $actions = $workflow->getActions();
             $this->assertEquals($action,                $actions[0]);
             $this->assertCount(1,                       $actions);
+            $emailAlerts = $workflow->getEmailAlerts();
+            $this->assertEquals($emailAlert,            $emailAlerts[0]);
+            $this->assertCount(1,                       $emailAlerts);
             $triggers = $workflow->getTriggers();
             $this->assertEquals($trigger,               $triggers[0]);
             $this->assertCount(1,                       $triggers);
@@ -118,6 +122,11 @@
             $workflow->removeAllActions();
             $actions = $workflow->getActions();
             $this->assertCount(0,                       $actions);
+
+            $workflow->removeAllEmailAlerts();
+            $actions = $workflow->getEmailAlerts();
+            $this->assertCount(0,                       $emailAlerts);
+
 
             $workflow->removeAllTriggers();
             $triggers = $workflow->getTriggers();

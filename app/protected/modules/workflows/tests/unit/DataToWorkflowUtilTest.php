@@ -462,7 +462,6 @@
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES]     =
             array(
                 'boolean'       => array('shouldSetValue'    => '1',
@@ -626,7 +625,6 @@
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES]     =
             array(
                 'date'          => array('shouldSetValue'    => '1',
@@ -733,7 +731,6 @@
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']           = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES]     =
                 array(
                     'user'          => array('shouldSetValue'    => '1',
@@ -803,7 +800,6 @@
             $data   = array();
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['type']            = ActionForWorkflowForm::TYPE_CREATE_RELATED;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relation']       = 'hasMany2';
-            $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relationFilter'] = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0]['relatedModelRelation'] = 'hasMany';
             $data[ComponentForWorkflowForm::TYPE_ACTIONS][0][ActionForWorkflowForm::ACTION_ATTRIBUTES] =
             array(
@@ -825,6 +821,164 @@
             $this->assertTrue($actions[0]->getActionAttributeFormByName('name') instanceof TextWorkflowActionAttributeForm);
             $this->assertEquals('Static', $actions[0]->getActionAttributeFormByName('name')->type);
             $this->assertEquals('jason',  $actions[0]->getActionAttributeFormByName('name')->value);
+        }
+
+        /**
+         *  A person assoicated with the triggered model      TYPE_DYNAMIC_TRIGGERED_MODEL_USER
+         *      to,cc,bcc
+         *      type of user
+         *          user who created model
+         *          manager of user who created model
+         *          user who last modified model
+         *          manager of user who last modified model
+         *          user who is assigned model
+         *          manager of user who is assigned model
+         *
+         *  A person assoicated with a related model          TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION_USER
+         *      to,cc,bcc
+         *      type of user
+         *          user who created model
+         *          manager of user who created model
+         *          user who last modified model
+         *          manager of user who last modified model
+         *          user who is assigned model
+         *          manager of user who is assigned model
+         *      relation
+         *
+         *  All users in a specific role  TYPE_STATIC_ROLE
+         *      to,cc,bcc
+         *      roleId
+         *
+         *  User who triggered process    TYPE_DYNAMIC_TRIGGERED_USER
+         *      to,cc,bcc
+         *
+         *  A specific user               TYPE_STATIC_USER
+         *      to,cc,bcc
+         *      userId
+         *
+         *  A specific e-mail address     TYPE_STATIC_ADDRESS
+         *      to,cc,bcc
+         *      toName
+         *      toAddress
+         *
+         *  All users in a specific group TYPE_STATIC_GROUP
+         *      to,cc,bcc
+         *       groupId
+         *
+         * @depends testResolveCreateRelatedActionWithValues
+         */
+        public function testEmailAlertValues()
+        {
+            $bobby    = User::getByUsername('bobby');
+            $workflow = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $data   = array();
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['emailTemplateId']          = '5';
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['sendFromType']             =
+                                                                    EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['sendAfterDurationSeconds'] = '0';
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['logEmail']                 = '1';
+            $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0][EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS] =
+            array(
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_TO,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_CREATED_BY_USER),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_CC,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_CREATED_BY_USER),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_BCC,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MODIFIED_BY_USER),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_TO,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_MODIFIED_BY_USER),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_CC,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_OWNER),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_BCC,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_TO,
+                      'dynamicUserType'   => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_CREATED_BY_USER,
+                      'relation'          => 'hasOne'),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_STATIC_ROLE,
+                      'recipientType'     => EmailMessageRecipient::TYPE_CC,
+                      'roleId'            => '5'),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_BCC),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_STATIC_USER,
+                      'recipientType'     => EmailMessageRecipient::TYPE_TO,
+                      'userId'            => '6'),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_STATIC_ADDRESS,
+                      'recipientType'     => EmailMessageRecipient::TYPE_CC,
+                      'toName'            => 'somebody',
+                      'toAddress'         => 'someone@zurmo.com'),
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_STATIC_GROUP,
+                      'recipientType'     => EmailMessageRecipient::TYPE_BCC,
+                      'groupId'           => '7'),
+                    );
+            DataToWorkflowUtil::resolveEmailAlerts($data, $workflow);
+            $emailAlerts = $workflow->getEmailAlerts();
+            $this->assertCount(1,   $emailAlerts);
+            $this->assertEquals('5', $emailAlerts[0]->emailTemplateId);
+            $this->assertEquals(EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT, $emailAlerts[0]->sendFromType);
+            $this->assertEquals(0,   $emailAlerts[0]->sendAfterDurationSeconds);
+            $this->assertEquals('1', $emailAlerts[0]->logEmail);
+            $this->assertEquals(12,  $emailAlerts[0]->getEmailAlertRecipientFormsCount());
+
+            $emailAlertRecipients = $emailAlerts[0]->getEmailAlertRecipients();
+            $this->assertTrue($emailAlertRecipients[0] instanceof DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelUser', $emailAlertRecipients[0]->type);
+            $this->assertEquals(1,                           $emailAlertRecipients[0]->recipientType);
+            $this->assertEquals('CreatedByUser',             $emailAlertRecipients[0]->dynamicUserType);
+            $this->assertTrue($emailAlertRecipients[1] instanceof DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelUser', $emailAlertRecipients[1]->type);
+            $this->assertEquals(2,                           $emailAlertRecipients[1]->recipientType);
+            $this->assertEquals('ManagerOfCreatedByUser',    $emailAlertRecipients[1]->dynamicUserType);
+            $this->assertTrue($emailAlertRecipients[2] instanceof DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelUser', $emailAlertRecipients[2]->type);
+            $this->assertEquals(3,                           $emailAlertRecipients[2]->recipientType);
+            $this->assertEquals('ModifiedByUser',            $emailAlertRecipients[2]->dynamicUserType);
+            $this->assertTrue($emailAlertRecipients[3] instanceof DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelUser', $emailAlertRecipients[3]->type);
+            $this->assertEquals(1,                           $emailAlertRecipients[3]->recipientType);
+            $this->assertEquals('ManagerOfModifiedByUser',   $emailAlertRecipients[3]->dynamicUserType);
+            $this->assertTrue($emailAlertRecipients[4] instanceof DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelUser', $emailAlertRecipients[4]->type);
+            $this->assertEquals(2,                           $emailAlertRecipients[4]->recipientType);
+            $this->assertEquals('Owner',                     $emailAlertRecipients[4]->dynamicUserType);
+            $this->assertTrue($emailAlertRecipients[5] instanceof DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelUser', $emailAlertRecipients[5]->type);
+            $this->assertEquals(3,                           $emailAlertRecipients[5]->recipientType);
+            $this->assertEquals('ManagerOfOwner',            $emailAlertRecipients[5]->dynamicUserType);
+            $this->assertTrue($emailAlertRecipients[6] instanceof DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredModelRelationUser', $emailAlertRecipients[6]->type);
+            $this->assertEquals(1,                                   $emailAlertRecipients[6]->recipientType);
+            $this->assertEquals('CreatedByUser',                     $emailAlertRecipients[6]->dynamicUserType);
+            $this->assertEquals('hasOne',                            $emailAlertRecipients[6]->relation);
+            $this->assertEquals('RelationFilterAll',                 $emailAlertRecipients[6]->relationFilter);
+            $this->assertTrue($emailAlertRecipients[7] instanceof StaticRoleWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('StaticRole',                $emailAlertRecipients[7]->type);
+            $this->assertEquals(2,                           $emailAlertRecipients[7]->recipientType);
+            $this->assertEquals(5,                           $emailAlertRecipients[7]->roleId);
+            $this->assertTrue($emailAlertRecipients[8] instanceof DynamicTriggeredUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('DynamicTriggeredUser',      $emailAlertRecipients[8]->type);
+            $this->assertEquals(3,                           $emailAlertRecipients[8]->recipientType);
+            $this->assertTrue($emailAlertRecipients[9] instanceof StaticUserWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('StaticUser',                $emailAlertRecipients[9]->type);
+            $this->assertEquals(1,                           $emailAlertRecipients[9]->recipientType);
+            $this->assertEquals(6,                           $emailAlertRecipients[9]->userId);
+            $this->assertTrue($emailAlertRecipients[10] instanceof StaticAddressWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('StaticAddress',             $emailAlertRecipients[10]->type);
+            $this->assertEquals(2,                           $emailAlertRecipients[10]->recipientType);
+            $this->assertEquals('somebody',                  $emailAlertRecipients[10]->toName);
+            $this->assertEquals('someone@zurmo.com',         $emailAlertRecipients[10]->toAddress);
+            $this->assertTrue($emailAlertRecipients[11] instanceof StaticGroupWorkflowEmailAlertRecipientForm);
+            $this->assertEquals('StaticGroup',               $emailAlertRecipients[11]->type);
+            $this->assertEquals(3,                           $emailAlertRecipients[11]->recipientType);
+            $this->assertEquals(7,                           $emailAlertRecipients[11]->groupId);
         }
     }
 ?>

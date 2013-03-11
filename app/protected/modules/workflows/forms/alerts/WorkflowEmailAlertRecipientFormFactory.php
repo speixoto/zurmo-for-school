@@ -25,33 +25,16 @@
      ********************************************************************************/
 
     /**
-     * Element used by filters or triggers that can morph between a single select and a multi-select.
+     * Helper class to build workflow email alert recipient forms
      */
-    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
+    class WorkflowEmailAlertRecipientFormFactory extends ConfigurableMetadataModel
     {
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
+        public static function make($type, $modelClassName)
         {
-            return 'getCustomFieldDataAndLabels';
-        }
-
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if(property_exists($this->model, 'operator') && $this->model->operator == 'oneOf')
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= 'multiple';
-            }
-            return $htmlOptions;
+            assert('is_string($type)');
+            assert('is_string($modelClassName)');
+            $formClassName = $type . 'WorkflowEmailAlertRecipientForm';
+            return new $formClassName($modelClassName);
         }
     }
 ?>
