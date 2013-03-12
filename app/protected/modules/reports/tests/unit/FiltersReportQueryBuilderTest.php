@@ -60,6 +60,10 @@
         {
             $tempTimeZone = Yii::app()->user->userModel->timeZone;
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            //Deal with daylight savings time.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            $this->assertTrue($offsetInSeconds == -18000 || $offsetInSeconds == -21600);
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem');
@@ -70,7 +74,8 @@
             $filter->value                         = 'a value';
             $filter->operator                      = OperatorRules::TYPE_EQUALS;
             $content                               = $builder->makeQueryContent(array($filter));
-            $this->assertEquals("(day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) = 'a value')", $content);
+            $this->assertEquals("(day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs($offsetInSeconds) . " SECOND) = 'a value')", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
             Yii::app()->user->userModel->timeZone = $tempTimeZone;
