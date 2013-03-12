@@ -28,7 +28,7 @@
     {
         protected function renderContent()
         {
-            return "<div id=\"modalContainer\"></div>\n";
+            return "<div id=\"modalContainer\"></div>";
         }
 
         public function isUniqueToAPage()
