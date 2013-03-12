@@ -109,7 +109,7 @@
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
-                $adaptedMetadata['clauses'][$startingCount + 2] = array(
+                $adaptedMetadata['clauses'][$startingCount + 3] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
                     'value'         => Yii::app()->user->userModel->id
