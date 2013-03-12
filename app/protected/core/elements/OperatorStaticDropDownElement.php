@@ -73,5 +73,58 @@
         {
             return array(OperatorRules::TYPE_BETWEEN);
         }
+
+        public static function registerOnLoadAndOnChangeScript()
+        {
+            Yii::app()->clientScript->registerScript('operatorOnLoadAndOnChangeScript', "
+                $('.operatorType').live('change', function()
+                    {
+                        arr  = " . CJSON::encode(self::getValueTypesRequiringFirstInput()) . ";
+                        arr2 = " . CJSON::encode(self::getValueTypesRequiringSecondInput()) . ";
+                        var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
+                        var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
+                        if ($.inArray($(this).val(), arr) != -1)
+                        {
+                            firstValueArea.show();
+                            firstValueArea.find(':input, select').prop('disabled', false);
+                        }
+                        else
+                        {
+                            firstValueArea.hide();
+                            firstValueArea.find(':input, select').prop('disabled', true);
+                        }
+                        if ($.inArray($(this).val(), arr2) != -1)
+                        {
+                            secondValueArea.show();
+                            secondValueArea.find(':input, select').prop('disabled', false);
+                        }
+                        else
+                        {
+                            secondValueArea.hide();
+                            secondValueArea.find(':input, select').prop('disabled', true);
+                        }
+                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
+                        {
+                            var newName = $(this).parent().parent().parent().find('.value-data')
+                                          .find('.flexible-drop-down').attr('name') + '[]';
+                            $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
+                            .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
+                            .attr('name', newName);
+                        }
+                        else
+                        {
+                            var newName = $(this).parent().parent().parent().find('.value-data')
+                                          .find('.flexible-drop-down').attr('name');
+                            if(newName != undefined)
+                            {
+                                $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
+                                .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
+                                .attr('name', newName.replace('[]',''));
+                            }
+                        }
+                    }
+                );
+            ");
+        }
     }
 ?>

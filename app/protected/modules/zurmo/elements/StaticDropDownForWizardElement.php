@@ -49,7 +49,7 @@
             if($this->model->operator == 'oneOf')
             {
                 $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= 'multiple';
+                $htmlOptions['class']    .= ' multiple ignore-style';
             }
             return $htmlOptions;
         }

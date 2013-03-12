@@ -114,7 +114,7 @@
         {
             if(!in_array($value, OperatorRules::availableTypes()) && $value != null)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException('Invalid operator type ' . $value);
             }
             $this->_operator = $value;
         }

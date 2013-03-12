@@ -51,7 +51,7 @@
                 if($stateAdapterClassName !== null && $stateAdapterClassName !== false)
                 {
                     $stateAttributeName = $stateAdapterClassName::getStateAttributeName();
-                    $stateAdapter       = new $stateAdapterClassName(array());
+                    $stateAdapter       = new $stateAdapterClassName(array('clauses' => array(), 'structure' => ''));
                     $attributeIndexes[$attributeIndexPrefix] = array($stateAttributeName, $stateAdapter->getStateIds());
                 }
                 elseif($stateAdapterClassName === false)

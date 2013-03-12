@@ -78,6 +78,7 @@
                 }
                 else
                 {
+                    $formula = strtolower($this->dynamicStructure);
                     $formula = str_replace("(", "", $formula);
                     $formula = str_replace(")", "", $formula);
                     $arguments = preg_split("/or|and/", $formula);
