@@ -523,7 +523,6 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_string($attributeTableName)');
-            assert('is_string($modelClassName)');
             $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                 $attributeTableName,
                 self::resolveForeignKey($attributeTableName),

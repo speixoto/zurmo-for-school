@@ -70,7 +70,7 @@
             {
                 $builder        = new ReadOptimizationModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
                 $clausePosition = 1;
-                $where          = null;
+                $where          = array();
                 $builder->resolveJoinsAndBuildWhere(null, null, $clausePosition, $where, $onTableAliasName);
                 return $where[1];
             }

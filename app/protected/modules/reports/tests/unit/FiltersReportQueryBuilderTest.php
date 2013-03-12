@@ -38,7 +38,7 @@
             Yii::app()->user->userModel = User::getByUsername('super');
             DisplayAttributeForReportForm::resetCount();
         }
-//ResolveReadPermissionsForReportDataProviderUtil
+
         public function testASingleAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();

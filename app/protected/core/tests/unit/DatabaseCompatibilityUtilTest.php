@@ -724,7 +724,7 @@
 
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
             $compareContent                       = ' - INTERVAL 21600 SECOND';
-            $this->assertEquals($compareContent, DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+            $this->assertEquals($compareContent, DatabaseCompatibilityUtil::v());
 
             Yii::app()->user->userModel->timeZone = 'Asia/Tokyo';
             $compareContent                       = ' + INTERVAL 32400 SECOND';
