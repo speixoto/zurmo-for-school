@@ -6303,7 +6303,7 @@ form .view-toolbar-container,
   top: -2px;
 }
 .icon-notification:before {
-  content: "q";
+  content: '\00A5';
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -6317,9 +6317,9 @@ form .view-toolbar-container,
   top: -2px;
 }
 .icon-combined:before {
-  content: "T";
+  content: '\00AE';
   font-weight: normal;
-  font-size: 24px;
+  font-size: 26px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
@@ -7294,8 +7294,8 @@ div.wide.form label.hasCheckBox {
   margin-bottom: 20px;
   position: relative;
 }
-#NotificationsForUserListView,
-#MashableInboxListView {
+#MashableInboxListView,
+#NotificationsForUserListView {
   float: left;
   width: 100%;
   margin-bottom: 20px;
