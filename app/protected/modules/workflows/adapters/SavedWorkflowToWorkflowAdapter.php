@@ -124,7 +124,7 @@
                 }
                 foreach($actionForWorkflowForm->getActionAttributes() as $actionAttribute => $workflowActionAttributeForm)
                 {
-                    foreach($workflowActionAttributeForm->getSavableAttributes() as $attribute => $value)
+                    foreach($workflowActionAttributeForm->getAttributes() as $attribute => $value)
                     {
                         $data[$key][ActionForWorkflowForm::ACTION_ATTRIBUTES][$actionAttribute][$attribute] = $value;
                     }
@@ -145,7 +145,7 @@
                 foreach($emailAlertForWorkflowForm->getEmailAlertRecipients() as
                         $emailAlertRecipientKey => $workflowEmailAlertRecipientForm)
                 {
-                    foreach($workflowEmailAlertRecipientForm->getSavableAttributes() as $attribute => $value)
+                    foreach($workflowEmailAlertRecipientForm->getAttributes() as $attribute => $value)
                     {
                         $data[$key][EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS]
                              [$emailAlertRecipientKey][$attribute] = $value;
@@ -186,7 +186,8 @@
             $moduleClassName    = $workflow->getModuleClassName();
             foreach($componentFormsData as $componentFormData)
             {
-                $component      = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->getType());
+                $component      = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(),
+                                  $workflow->getType());
                 $component->setAttributes($componentFormData);
                 $workflow->addEmailAlert($component);
             }

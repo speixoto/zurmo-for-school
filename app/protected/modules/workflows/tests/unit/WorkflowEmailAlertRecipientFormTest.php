@@ -30,12 +30,29 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('bobby');
         }
 
         public function setup()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+
+        public function testStringifiedModelForValue()
+        {
+             $form = new StaticUserWorkflowEmailAlertRecipientForm('ReportModelTestItem', Workflow::TYPE_ON_SAVE);
+             $form->userId = Yii::app()->user->userModel->id;
+             $this->assertEquals('Clark Kent', $form->stringifiedModelForValue);
+
+             //Now switch userId, and the stringifiedModelForValue should clear out.
+             $bobby = User::getByUsername('bobby');
+             $form->userId = $bobby->id;
+             $this->assertEquals('bobby bobbyson', $form->stringifiedModelForValue);
+             //test setting via setAttributes, it should ignore it.
+             $form->setAttributes(array('stringifiedModelForValue' => 'should not set'));
+             $this->assertEquals('bobby bobbyson', $form->stringifiedModelForValue);
         }
 
         public function test()

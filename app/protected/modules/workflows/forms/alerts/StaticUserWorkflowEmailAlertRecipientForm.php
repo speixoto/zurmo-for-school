@@ -30,18 +30,39 @@
     class StaticUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
     {
         /**
+         * Protected so we can attach logic to it on set.
          * @var string
          */
-        public $userId;
-
-        public function getValueElementType()
-        {
-            return '??StaticUserWorkflowEmailAlertRecipient'; //todo: maybe we can use something generic for users
-        }
+        protected $userId;
 
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'A specific user');
+        }
+
+        public function setUserId($value)
+        {
+            $this->userId = $value;
+            $this->stringifiedModelForValue = null;
+        }
+
+        public function getUserId()
+        {
+            return $this->userId;
+        }
+
+        public function getStringifiedModelForValue()
+        {
+            if($this->stringifiedModelForValue != null)
+            {
+                return $this->stringifiedModelForValue;
+            }
+            if($this->userId != null)
+            {
+                $user = User::getById((int)$this->userId);
+                $this->stringifiedModelForValue = strval($user);
+                return $this->stringifiedModelForValue;
+            }
         }
 
         public function rules()

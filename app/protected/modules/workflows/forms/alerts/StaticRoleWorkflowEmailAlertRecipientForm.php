@@ -34,11 +34,6 @@
          */
         public $roleId;
 
-        public function getValueElementType()
-        {
-            return '??StaticRoleWorkflowEmailAlertRecipient'; //todo: maybe we can use something generic for roles
-        }
-
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'All users in a specific role');

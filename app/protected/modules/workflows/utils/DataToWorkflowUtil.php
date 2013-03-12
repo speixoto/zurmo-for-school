@@ -162,7 +162,8 @@
             {
                 foreach($emailAlertsData as $emailAlertData)
                 {
-                    $emailAlert = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->type);
+                    $emailAlert = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(),
+                                  $workflow->type);
                     $emailAlert->setAttributes($emailAlertData);
                     $workflow->addEmailAlert($emailAlert);
                 }

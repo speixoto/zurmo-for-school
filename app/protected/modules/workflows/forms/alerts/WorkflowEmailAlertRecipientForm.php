@@ -43,8 +43,6 @@
 
         const TYPE_STATIC_GROUP                             = 'StaticGroup';
 
-        abstract public function getValueElementType();
-
         /**
          * @var string Type of recipient
          */
@@ -60,13 +58,18 @@
          * interface
          * @var string
          */
-        public $stringifiedModelForValue;
+        protected $stringifiedModelForValue;
 
         /**
          * Refers to the model that is associated with the workflow rule.
          * @var string
          */
         protected $modelClassName;
+
+        /**
+         * @var string
+         */
+        protected $workflowType;
 
         /**
          * @throws NotImplementedException if not implemented by a child class
@@ -87,22 +90,12 @@
             return $type;
         }
 
-        public function __construct($modelClassName)
+        public function __construct($modelClassName, $workflowType)
         {
             assert('is_string($modelClassName)');
+            assert('is_string($workflowType)');
             $this->modelClassName     = $modelClassName;
-        }
-
-        /**
-         * Exclude stringifiedModelForValue since this is a temporary attribute that is based on the value when
-         * the value is an 'id' of a model.  This should not be saved to the SavedWorkflow serialized data.
-         * @return array
-         */
-        public function getSavableAttributes()
-        {
-            $attributes = $this->getAttributes();
-            unset($attributes['stringifiedModelForValue']);
-            return $attributes;
+            $this->workflowType       = $workflowType;
         }
 
         /**
@@ -115,7 +108,6 @@
                 array('type',                     'required'),
                 array('recipientType',            'type', 'type' => 'string'),
                 array('recipientType',            'required'),
-                array('stringifiedModelForValue', 'type', 'type' => 'string'),
             ));
         }
 

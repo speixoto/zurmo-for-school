@@ -25,17 +25,24 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow email alert recipient forms
+     * Class used to show a list of all available groups
      */
-    class WorkflowEmailAlertRecipientFormFactory extends ConfigurableMetadataModel
+    class AllGroupsStaticDropDownElement extends StaticDropDownFormElement
     {
-        public static function make($type, $modelClassName, $workflowType)
+        public function getIdForSelectInput()
         {
-            assert('is_string($type)');
-            assert('is_string($modelClassName)');
-            assert('is_string($workflowType)');
-            $formClassName = $type . 'WorkflowEmailAlertRecipientForm';
-            return new $formClassName($modelClassName, $workflowType);
+            return $this->getEditableInputId($this->attribute);
+        }
+
+        public function getDropDownArray()
+        {
+            $groups     = Group::getAll();
+            $groupsData = array();
+            foreach ($groups as $group)
+            {
+                $groupsData[$group->id] = strval($group);
+            }
+            return $groupsData;
         }
     }
 ?>

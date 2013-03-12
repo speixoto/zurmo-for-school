@@ -39,11 +39,6 @@
          */
         public $toAddress;
 
-        public function getValueElementType()
-        {
-            return 'StaticCustomEmailForWorkflowEmailAlertRecipient';
-        }
-
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'A specific e-mail address');

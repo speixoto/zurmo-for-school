@@ -46,11 +46,6 @@
          */
         public $dynamicUserType;
 
-        public function getValueElementType()
-        {
-            return 'DynamicTriggeredModelUserForWorkflowEmailAlertRecipient';
-        }
-
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'A person associated with the triggered record');
@@ -61,6 +56,24 @@
             return array_merge(parent::rules(), array(
                       array('dynamicUserType',  'type', 'type' =>  'integer'),
                       array('dynamicUserType',  'required')));
+        }
+
+        public function getDynamicUserTypesAndLabels()
+        {
+            $data = array();
+            $data[self::DYNAMIC_USER_TYPE_CREATED_BY_USER]             =
+                Zurmo::t('WorkflowsModule', 'User who created record');
+            $data[self::DYNAMIC_USER_TYPE_MANAGER_OF_CREATED_BY_USER]  =
+                Zurmo::t('WorkflowsModule', 'User\'s manager who created record');
+            $data[self::DYNAMIC_USER_TYPE_MODIFIED_BY_USER]            =
+                Zurmo::t('WorkflowsModule', 'User who last modified record');
+            $data[self::DYNAMIC_USER_TYPE_MANAGER_OF_MODIFIED_BY_USER] =
+                Zurmo::t('WorkflowsModule', 'User\'s manager who last modified record');
+            $data[self::DYNAMIC_USER_TYPE_OWNER]                       =
+                Zurmo::t('WorkflowsModule', 'User who owns the record');
+            $data[self::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER]            =
+                Zurmo::t('WorkflowsModule', 'User\'s manager who owns the record');
+            return $data;
         }
     }
 ?>

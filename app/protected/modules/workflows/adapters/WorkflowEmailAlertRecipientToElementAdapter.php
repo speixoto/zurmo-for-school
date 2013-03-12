@@ -69,7 +69,7 @@
             ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'email-alert-recipient-label');
             $content                            .= $this->renderTypeContent();
             $content                            .= $this->renderRecipientTypeContent();
-            $content                            .= $this->renderValueContent();
+            $content                            .= $this->renderFormAttributesContent();
             return $content;
         }
 
@@ -90,46 +90,69 @@
             return $recipientTypeElement->render();
         }
 
-        protected function renderValueContent()
+        protected function renderFormAttributesContent()
         {
-            return 'the value todo:'; //todo:
-            $params           = array('inputPrefix' => $this->inputPrefixData);
-            $valueElementType = $this->model->getValueElementType();
-            if($valueElementType != null)
+            $formType = $this->model->getFormType();
+            $params   = array('inputPrefix' => $this->inputPrefixData);
+            $content  = null;
+            if($formType == 'DynamicTriggeredModelUser')
             {
-                $valueElementClassName = $valueElementType . 'Element';
-                $valueElement          = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement)
-                {
-                    $valueElement->setIdAttributeId('value');
-                    $valueElement->setNameAttributeName('stringifiedModelForValue');
-                }
-                if($valueElement instanceof MixedDropDownTypesForWorkflowActionAttributeElement)
-                {
-                    $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
-                }
-                elseif($valueElement instanceof MixedDateTypesForWorkflowActionAttributeElement ||
-                       $valueElement instanceof MixedDateTimeTypesForWorkflowActionAttributeElement)
-                {
-                    $valueElement->editableTemplate = '<div class="value-data has-date-inputs">{content}{error}</div>';
-                }
-                else
-                {
-                    $startingDivStyleFirstValue     = null;
-                    if ($this->model->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
-                    {
-                        $startingDivStyleFirstValue         = "display:none;";
-                        $valueElement->params['disabled']   = 'disabled';
-                    }
-                    $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area" style="' .
-                        $startingDivStyleFirstValue . '">{content}{error}</div></div>';
-                }
-                return $valueElement->render();
+                $dynamicUserTypeElement   = new DynamicUserTypeForEmailAlertRecipientStaticDropDownElement(
+                                            $this->model, 'dynamicUserType', $this->form, $params);
+                $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
+                $content .= $dynamicUserTypeElement ->render();
+            }
+            elseif($formType == 'DynamicTriggeredModelRelationUser')
+            {
+                $relationElement        = new ModelRelationForEmailAlertRecipientStaticDropDownElement(
+                                          $this->model, 'relation', $this->form, $params);
+                $relationElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
+
+                $dynamicUserTypeElement = new DynamicUserTypeForEmailAlertRecipientStaticDropDownElement(
+                                          $this->model, 'dynamicUserType', $this->form, $params);
+                $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
+                $content .= Zurmo::t('WorkflowsModule', 'For all related {relationsDropDown}',
+                            array('{relationsDropDown}' => $relationElement->render()));
+                $content .= $dynamicUserTypeElement ->render();
+            }
+            elseif($formType == 'DynamicTriggeredUser')
+            {
+                //nothing to render
+            }
+            elseif($formType == 'StaticAddress')
+            {
+                $toNameElement                      = new TextElement($this->model, 'toName', $this->form, $params);
+                $toNameElement->editableTemplate    = '<div class="value-data">{label}{content}{error}</div>';
+                $toAddressElement                   = new TextElement($this->model, 'toAddress', $this->form, $params);
+                $toAddressElement->editableTemplate = '<div class="value-data">{label}{content}{error}</div>';
+                $content .= $toNameElement->render();
+                $content .= $toAddressElement->render();
+            }
+            elseif($formType == 'StaticGroup')
+            {
+                $staticGroupElement = new AllGroupsStaticDropDownElement($this->model, 'groupId', $this->form, $params);
+                $staticGroupElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
+                $content .= $staticGroupElement->render();
+            }
+            elseif($formType == 'StaticRole')
+            {
+                $staticRoleElement = new AllRolesStaticDropDownElement($this->model, 'roleId', $this->form, $params);
+                $staticRoleElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
+                $content .= $staticRoleElement->render();
+            }
+            elseif($formType == 'StaticUser')
+            {
+                $staticUserElement = new UserNameIdElement($this->model, 'userId', $this->form, $params);
+                $staticUserElement->setIdAttributeId('userId');
+                $staticUserElement->setNameAttributeName('stringifiedModelForValue');
+                $staticUserElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
+                $content .= $staticUserElement->render();
             }
             else
             {
                 throw new NotSupportedException();
             }
+            return $content;
         }
     }
 ?>

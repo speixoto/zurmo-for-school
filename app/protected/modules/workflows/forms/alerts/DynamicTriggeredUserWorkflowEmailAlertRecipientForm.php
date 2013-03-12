@@ -29,11 +29,6 @@
      */
     class DynamicTriggeredUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
     {
-        public function getValueElementType()
-        {
-            return null;
-        }
-
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'User who triggered process');

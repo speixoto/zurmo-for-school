@@ -48,11 +48,6 @@
          */
         public $relationFilter = self::RELATION_FILTER_ALL;
 
-        public function getValueElementType()
-        {
-            return 'DynamicTriggeredModelRelationUserForWorkflowEmailAlertRecipient';
-        }
-
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'A person associated with a related record');
@@ -82,6 +77,19 @@
             $this->addError('relationFilter', Zurmo::t('WorkflowsModule', 'Invalid Relation Filter'));
             return false;
             return true;
+        }
+
+        public function getRelationValuesAndLabels()
+        {
+            $modelClassName = $this->modelClassName;
+            $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
+                                                                                 $modelClassName, $this->workflowType);
+            $valueAndLabels = array();
+            foreach($adapter->getSelectableRelationsDataForEmailAlertRecipientModelRelation() as $relation => $data)
+            {
+                $valueAndLabels[$relation] = $data['label'];
+            }
+            return $valueAndLabels;
         }
     }
 ?>

@@ -217,7 +217,7 @@
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
                         $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
-                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         $("#' . $inputDivId . '").show();
                         }',
                 'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
@@ -263,7 +263,7 @@
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
                         $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
-                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         $("#' . $inputDivId . '").show();
                         }',
                 'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',

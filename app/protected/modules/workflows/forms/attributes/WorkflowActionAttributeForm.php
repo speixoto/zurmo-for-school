@@ -52,7 +52,7 @@
          * interface
          * @var string
          */
-        public $stringifiedModelForValue;
+        protected $stringifiedModelForValue;
 
         /**
          * @var boolean if the attribute should have a value whether static or dynamic. In the user interface this surfaces
@@ -115,22 +115,15 @@
             return $this->displayLabel;
         }
 
+        public function getStringifiedModelForValue()
+        {
+            return $this->stringifiedModelForValue;
+        }
+
         public function setDisplayLabel($displayLabel)
         {
             assert('is_string($displayLabel)');
             $this->displayLabel = $displayLabel;
-        }
-
-        /**
-         * Exclude stringifiedModelForValue since this is a temporary attribute that is based on the value when
-         * the value is an 'id' of a model.  This should not be saved to the SavedWorkflow serialized data.
-         * @return array
-         */
-        public function getSavableAttributes()
-        {
-            $attributes = $this->getAttributes();
-            unset($attributes['stringifiedModelForValue']);
-            return $attributes;
         }
 
         /**
@@ -143,7 +136,6 @@
                 array('type',                     'required'),
                 array('value',                    'safe'),
                 array('value',                    'validateValue'),
-                array('stringifiedModelForValue', 'type', 'type' => 'string'),
                 array('shouldSetValue',           'boolean'),
             ));
             $applicableRules = ModelAttributeRulesToWorkflowActionAttributeUtil::

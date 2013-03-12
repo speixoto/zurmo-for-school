@@ -224,7 +224,7 @@
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
                         $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
-                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         }',
                 'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));

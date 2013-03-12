@@ -24,18 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to build workflow email alert recipient forms
-     */
-    class WorkflowEmailAlertRecipientFormFactory extends ConfigurableMetadataModel
+    class DynamicUserTypeForEmailAlertRecipientStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
-        public static function make($type, $modelClassName, $workflowType)
+        protected function getDataAndLabelsModelPropertyName()
         {
-            assert('is_string($type)');
-            assert('is_string($modelClassName)');
-            assert('is_string($workflowType)');
-            $formClassName = $type . 'WorkflowEmailAlertRecipientForm';
-            return new $formClassName($modelClassName, $workflowType);
+            return 'getDynamicUserTypesAndLabels';
         }
     }
 ?>

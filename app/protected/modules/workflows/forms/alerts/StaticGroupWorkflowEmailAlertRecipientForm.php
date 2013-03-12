@@ -34,11 +34,6 @@
          */
         public $groupId;
 
-        public function getValueElementType()
-        {
-            return '??StaticGroupWorkflowEmailAlertRecipient'; //todo: maybe we can use something generic for groups
-        }
-
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'All users in a specific group');

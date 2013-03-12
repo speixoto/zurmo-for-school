@@ -66,13 +66,31 @@
         private $_emailAlertRecipients = array();
 
         /**
+         * Posted data can be using different keys. if you add 3 then remove 2 and add a fourth, the key would be 4.
+         * but if this is the only alert recipient, then this will save as key 0. this helps to resolve that.
+         * @var array
+         */
+        private $_emailAlertRecipientsRealToTemporaryKeyData = array();
+
+        /**
          * @var string string references the modelClassName of the workflow itself
          */
         private $_modelClassName;
 
         /**
+         * @param $attributeName string
+         * @return string
+         */
+        protected static function resolveErrorAttributePrefix($attributeName)
+        {
+            assert('is_int($attributeName)');
+            return self::EMAIL_ALERT_RECIPIENTS . '_' .  $attributeName . '_';
+        }
+
+        /**
          * @param string $modelClassName
          * @param string $workflowType
+         * @param int $rowNumber
          */
         public function __construct($modelClassName, $workflowType)
         {
@@ -151,15 +169,19 @@
             parent::setAttributes($values, $safeOnly);
             if($recipients != null)
             {
-                foreach($recipients as $recipientData)
+                $count = 0;
+                foreach($recipients as $temporaryKey => $recipientData)
                 {
                     if(!isset($recipientData['type']))
                     {
                         throw new NotSupportedException();
                     }
-                    $form = WorkflowEmailAlertRecipientFormFactory::make($recipientData['type'], $this->_modelClassName);
+                    $form = WorkflowEmailAlertRecipientFormFactory::make($recipientData['type'], $this->_modelClassName,
+                            $this->_workflowType);
                     $form->setAttributes($recipientData);
                     $this->_emailAlertRecipients[] = $form;
+                    $this->_emailAlertRecipientsRealToTemporaryKeyData[] = $temporaryKey;
+                    $count ++;
                 }
             }
         }
@@ -169,7 +191,7 @@
          */
         public function validateSendFromType()
         {
-            if($this->type == self::SEND_FROM_TYPE_CUSTOM)
+            if($this->sendFromType == self::SEND_FROM_TYPE_CUSTOM)
             {
                 $validated = true;
                 if($this->sendFromName == null)
@@ -184,7 +206,10 @@
                 }
                 return $validated;
             }
-            $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Send From Type'));
+            elseif($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT)
+            {
+                $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Send From Type'));
+            }
             return false;
         }
 
@@ -208,7 +233,8 @@
             $passedValidation = true;
             if(count($this->_emailAlertRecipients) == 0)
             {
-                $this->addError( 'displayAttributes', Zurmo::t('WorkflowsModule', 'At least one recipient must be added'));
+                $this->addError('recipientsValidation',
+                                Zurmo::t('WorkflowsModule', 'At least one recipient must be added'));
                 return false;
             }
             foreach($this->_emailAlertRecipients as $key => $workflowEmailAlertRecipientForm)
@@ -218,7 +244,7 @@
                     foreach($workflowEmailAlertRecipientForm->getErrors() as $attribute => $errorArray)
                     {
                         assert('is_array($errorArray)');
-                        $attributePrefix = static::resolveErrorAttributePrefix($key);
+                        $attributePrefix = static::resolveErrorAttributePrefix($this->resolveTemporaryKeyByRealKey($key));
                         $this->addError( $attributePrefix . $attribute, $errorArray[0]);
                     }
                     $passedValidation = false;
@@ -242,14 +268,10 @@
             return $data;
         }
 
-        /**
-         * @param $attributeName string
-         * @return string
-         */
-        protected static function resolveErrorAttributePrefix($attributeName)
+        protected function resolveTemporaryKeyByRealKey($key)
         {
-            assert('is_int($attributeName)');
-            return self::EMAIL_ALERT_RECIPIENTS . '_' .  $attributeName . '_';
+            assert(is_int($key));
+            return $this->_emailAlertRecipientsRealToTemporaryKeyData[$key];
         }
     }
 ?>

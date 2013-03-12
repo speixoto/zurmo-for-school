@@ -145,8 +145,26 @@
         {
             $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';
             $content .= $this->renderRecipientSelectorContentAndWrapper();
+            $content .= $this->renderHiddenRecipientsInputForValidationContent();
             $content .= $this->renderRecipientsContentAndWrapper();
             $content .= '</div>';
+            return $content;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderHiddenRecipientsInputForValidationContent()
+        {
+            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(array_merge($this->inputPrefixData, array('recipientsValidation')));
+            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(array_merge($this->inputPrefixData, array('recipientsValidation')));
+            $idInputHtmlOptions  = array('id' => $hiddenInputId);
+            $id                  = Element::resolveInputIdPrefixIntoString(array_merge($this->inputPrefixData, array('recipientsValidation')));
+
+            $content             = ZurmoHtml::hiddenField($hiddenInputName, null,
+                                   $idInputHtmlOptions);
+            $content            .= $this->form->error($this->model, 'recipientsValidation',
+                                   array('inputID' => $hiddenInputId), true, true, $id);
             return $content;
         }
 
@@ -200,12 +218,10 @@
             $items = array();
             foreach($recipients as $recipient)
             {
-                $inputPrefixData  = array(get_class($this->model),
-                                          ComponentForWorkflowForm::TYPE_EMAIL_ALERTS,
-                                          (int)$this->rowNumber,
-                                          EmailAlertForWorkflowForm::TYPE_EMAIL_ALERT_RECIPIENTS, (int)$rowCount);
-                $adapter          = new WorkflowEmailAlertRecipientToElementAdapter($inputPrefixData, $recipient,
-                                    $recipient->type, $this->form);
+                $inputPrefixData  = array_merge($this->inputPrefixData, array(
+                                    EmailAlertForWorkflowForm::TYPE_EMAIL_ALERT_RECIPIENTS, (int)$rowCount));
+                $adapter          = new WorkflowEmailAlertRecipientToElementAdapter($recipient, $this->form,
+                                    $recipient->type, $inputPrefixData);
                 $view             = new EmailAlertRecipientRowForWorkflowComponentView($adapter, $rowCount, $inputPrefixData);
                 $view->addWrapper = false;
                 $items[]          = array('content' => $view->render());
@@ -281,12 +297,14 @@
 
         protected function registerAddRecipientScript()
         {
+            $moduleClassNameId = $this->workflowWizardFormClassName . '[moduleClassName]';
             $url               = Yii::app()->createUrl('workflows/default/addEmailAlertRecipient',
                                  array_merge($_GET, array('type' => $this->model->getWorkflowType())));
             // Begin Not Coding Standard
             $ajaxSubmitScript  = ZurmoHtml::ajax(array(
                 'type'    => 'GET',
                 'data'    => 'js:\'recipientType=\' + $(this).val() + ' .
+                             '\'&moduleClassName=\' + $("input:radio[name=\"' . $moduleClassNameId . '\"]:checked").val() + ' .
                              '\'&rowNumber=\' + ($("#' . $this->emailAlertsRowCounterInputId . '").val() - 1) + ' .
                              '\'&recipientRowNumber=\' +
                              $(this).parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val()',
