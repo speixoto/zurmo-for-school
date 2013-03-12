@@ -7144,6 +7144,14 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 60%;
 }
+.zero-components-view .SavedReport .large-icon:after,
+.splash-view .SavedReport .large-icon:after {
+  content: "V";
+  font-weight: normal;
+  font-size: 320px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
