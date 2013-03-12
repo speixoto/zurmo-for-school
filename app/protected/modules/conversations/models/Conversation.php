@@ -24,7 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class Conversation extends OwnedSecurableItem implements MashableActivityInterface, MashableInboxInterface
+    /**
+     * Base model for working with a conversation
+     */
+    class Conversation extends OwnedSecurableItem implements MashableActivityInterface
     {
         public static function getMashableActivityRulesType()
         {
