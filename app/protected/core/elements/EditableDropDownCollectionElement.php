@@ -220,7 +220,7 @@
                         '<input name=\"" . $this->getNameForInputField() . "\" id=\"" . $inputIdPrefix .
                         "' + ($('input[name=\"" . $this->getNameForInputField() . "\"]').length + 1) +'\" type=\"text\" value=\"' +
                         $('#" . $this->attribute . "_AddInput').val()
-                         + '\" size=\"50\"/>" . static::renderLanguageLabelHtmlContent($supportedLanguagesData[$baseLanguage]) . "</div>' +
+                         + '\" size=\"50\"/>" . static::renderLanguageLabelHtmlContent($supportedLanguagesData[$baseLanguage]['name']) . "</div>' +
                         '<input name=\"" . $this->getNameForExistingValueHiddenField() . "\" type=\"hidden\" value=\"' +
                         $('#" . $this->attribute . "_AddInput').val() + '\" />" . "' +
                         '" . $this->renderSortableLanguageLabelInputsForAddingNewValuesJavaScriptContent(). "' +
