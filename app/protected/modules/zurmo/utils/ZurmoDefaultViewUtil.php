@@ -210,7 +210,8 @@
                                                                         $shortcutsCreateMenuItems
                                                                         );
                 $moduleNamesAndLabels           = GlobalSearchUtil::
-                                                getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
+                                                    getGlobalSearchScopingModuleNamesAndLabelsDataByUser(
+                                                                                            Yii::app()->user->userModel);
                 $sourceUrl                      = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
                 $globalSearchView               = new GlobalSearchView($moduleNamesAndLabels, $sourceUrl);
                 $recentlyViewed                 = static::makeRecentlyViewedView();
