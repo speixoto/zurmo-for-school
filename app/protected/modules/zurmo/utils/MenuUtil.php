@@ -446,7 +446,7 @@
             {
                 foreach ($labelElements as $labelElement)
                 {
-                    $menuItems[$itemKey][$labelElement] = Zurmo::t('ZurmoModule', $item[$labelElement], $translationParams);
+                    MetadataUtil::resolveEvaluateSubString($menuItems[$itemKey][$labelElement], 'translationParams', $translationParams);
                 }
                 if (isset($item['items']))
                 {
