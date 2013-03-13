@@ -358,8 +358,10 @@
                 $uploadedFile = CUploadedFile::getInstanceByName($filesVariableName);
                 assert('$uploadedFile instanceof CUploadedFile');
 
-                $logoFilePath  = sys_get_temp_dir().DIRECTORY_SEPARATOR."logo-".$uploadedFile->getName();
-                $thumbFilePath = sys_get_temp_dir().DIRECTORY_SEPARATOR."logoThumb-".$uploadedFile->getName();
+                $logoFilePath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
+                                                      ZurmoConfigurationForm::LOGO_FILE_NAME_PREFIX . $uploadedFile->getName();
+                $thumbFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
+                                                      ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
                 $uploadedFile->saveAs($logoFilePath);
                 $logo  = Yii::app()->phpThumbnail->create($logoFilePath);
                 $thumb = Yii::app()->phpThumbnail->create($logoFilePath);
