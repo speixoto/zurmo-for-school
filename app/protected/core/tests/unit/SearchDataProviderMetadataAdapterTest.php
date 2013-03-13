@@ -137,7 +137,7 @@
                                                          'firstDate'  => '1993-04-04'),
                 'dateDateTimeADateTime__DateTime'  => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $this->assertTrue($searchForm->isAttributeOnForm('dateDateTimeADate__Date'));
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
@@ -541,7 +541,7 @@
                 'ABName' => null,
                 'anyA'   => null,
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -559,7 +559,7 @@
                 'ABName' => 'something',
                 'anyA'   => 'nothing',
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -605,7 +605,7 @@
             $searchAttributes = array(
                 'differentOperatorA' => '1',
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -629,7 +629,7 @@
             $searchAttributes = array(
                 'differentOperatorA' => '',
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -650,7 +650,7 @@
             $searchAttributes = array(
                 'differentOperatorB' => 'something',
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -681,7 +681,7 @@
                 'dateTime__DateTime'  => array('type'         => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY),
                 'dateTime2__DateTime' => array('value'        => null)
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -729,7 +729,7 @@
                                                  'firstDate'   => '1991-03-05',
                                                  'secondDate'  => '1992-04-04'),
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,
@@ -771,7 +771,7 @@
                                                     'firstDate'   => '1991-03-05',
                                                     'secondDate'  => '1992-04-04'),
             );
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadataAdapter = new SearchDataProviderMetadataAdapter(
                 $searchForm,
                 $super->id,

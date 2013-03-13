@@ -39,7 +39,7 @@
         // definition must match that of the base class.
         protected function validateAttribute(/*RedBeanModel*/ $model, $attributeName)
         {
-            if ($model->isRelation($attributeName))
+            if ($model::isRelation($attributeName))
             {
                 if ($this->requiredValue !== null)
                 {

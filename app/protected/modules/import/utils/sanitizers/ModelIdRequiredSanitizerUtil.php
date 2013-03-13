@@ -51,9 +51,8 @@
             {
                 return $value;
             }
-            $model = new $modelClassName(false);
-            assert('$model->isRelation($attributeName)');
-            $relationModelClassName = $model->getRelationModelClassName($attributeName);
+            assert('$modelClassName::isRelation($attributeName)');
+            $relationModelClassName = $modelClassName::getRelationModelClassName($attributeName);
             assert('$value == null || $value instanceof $relationModelClassName');
             assert('$mappingRuleData["defaultModelId"] == null || is_string($mappingRuleData["defaultModelId"]) ||
                     is_int($mappingRuleData["defaultModelId"])');
@@ -71,6 +70,7 @@
             }
             else
             {
+                $model = new $modelClassName(false);
                 if (!$model->isAttributeRequired($attributeName))
                 {
                     return $value;

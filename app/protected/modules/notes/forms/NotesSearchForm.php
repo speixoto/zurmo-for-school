@@ -26,5 +26,14 @@
 
     class NotesSearchForm extends OwnedSearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Note';
+        }
+
+        public function __construct(Note $model)
+        {
+            parent::__construct($model);
+        }
     }
 ?>

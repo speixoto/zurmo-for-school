@@ -25,42 +25,50 @@
      ********************************************************************************/
 
     /**
-     * Used for testing with @see CCC model
+     * Used for testing with @see MixedRelationsModel
      */
-    class CCCSearchFormTestModel extends DynamicSearchForm
+    class MixedRelationsModelSearchFormTestModel extends DynamicSearchForm
     {
-        public $CCCName;
+        public $anyA;
+        public $ABName;
         public $differentOperatorA;
         public $differentOperatorB;
-        public $concatedName;
+        public $dateDateTimeADate__Date;
+        public $dateDateTimeADateTime__DateTime;
 
         protected static function getRedBeanModelClassName()
         {
-            return 'CCC';
+            return 'MixedRelationsModel';
         }
 
-        public function __construct(RedBeanModel $model)
+        public function __construct(MixedRelationsModel $model)
         {
             parent::__construct($model);
+            $this->addAttributeNamesThatCanBeSplitUsingDelimiter('dateDateTimeADate__Date');
+            $this->addAttributeNamesThatCanBeSplitUsingDelimiter('dateDateTimeADateTime__DateTime');
         }
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('CCCName', 'safe'),
+                array('anyA', 'safe'),
+                array('ABName', 'safe'),
                 array('differentOperatorA', 'safe'),
                 array('differentOperatorB', 'boolean'),
-                array('concactedName', 'safe'),
+                array('dateDateTimeADate__Date', 'safe'),
+                array('dateDateTimeADateTime__DateTime', 'safe'),
             ));
         }
 
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'concactedName'                    => Zurmo::t('Core', 'Concated Name'),
-                'CCCName'                          => Zurmo::t('Core', 'CCCName'),
+                'anyA'                             => Zurmo::t('Core', 'Any A'),
+                'ABName'                           => Zurmo::t('Core', 'ABName'),
                 'differentOperatorA'               => Zurmo::t('Core', 'differentOperatorA'),
                 'differentOperatorB'               => Zurmo::t('Core', 'differentOperatorB'),
+                'dateDateTimeADate__Date'          => Zurmo::t('Core', 'dateDateTimeADate Date'),
+                'dateDateTimeADateTime__DateTime'  => Zurmo::t('Core', 'dateDateTimeADateTime DateTime'),
             ));
         }
 
@@ -72,20 +80,25 @@
         public function getAttributesMappedToRealAttributesMetadata()
         {
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'CCCName' => array(
-                    array('cccMember'),
-                    array('cccMember2'),
+                'anyA' => array(
+                    array('primaryA',   'name'),
+                    array('secondaryA', 'name'),
+                ),
+                'ABName' => array(
+                    array('aName'),
+                    array('bName'),
                 ),
                 'differentOperatorA' => array(
-                    array('cccMember', null, null, 'resolveValueByRules'),
+                    array('primaryA',   'name', null, 'resolveValueByRules'),
                 ),
                 'differentOperatorB' => array(
-                    array('cccMember', null, 'endsWith')
+                    array('aName', null, 'endsWith')
                 ),
-                'concatedName' => array(
-                    array('cccMember'),
-                    array('cccMember2'),
-                    array('concatedAttributeNames' => array('cccMember', 'cccMember2'))
+                'dateDateTimeADate__Date' => array(
+                    array('manyMany',  'aDate',     null, 'resolveRelatedAttributeValueByRules'),
+                ),
+                'dateDateTimeADateTime__DateTime' => array(
+                    array('manyMany',  'aDateTime', null, 'resolveRelatedAttributeValueByRules'),
                 ),
             ));
         }

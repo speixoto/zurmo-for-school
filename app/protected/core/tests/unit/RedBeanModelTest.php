@@ -1505,7 +1505,6 @@
             $m = M::getById($mId);
             unset($m);
             RedBeanModelsCache::forgetAllModelIdentifiersToModels();
-
             //Now reretrieve.
             $m = M::getById($mId);
             $m->m = null;

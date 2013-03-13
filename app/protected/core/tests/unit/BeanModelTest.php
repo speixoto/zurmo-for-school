@@ -24,10 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * CustomFields search form.
-     */
-    class CustomFieldsSearchForm extends SearchForm
+    class BeanModelTest extends BaseTest
     {
+        public function testIssetAndEmptyOnPrivateStaticProperty()
+        {
+            $this->assertFalse(A::isPrivateStaticIsset());
+            A::setIssetAndEmptyAsEmpty();
+            $this->assertTrue(A::isPrivateStaticIsset());
+            A::setIssetAndEmptyWithString();
+            $this->assertTrue(A::isPrivateStaticIsset());
+            A::setIssetAndEmptyWithNull();
+            $this->assertFalse(A::isPrivateStaticIsset());
+        }
     }
 ?>

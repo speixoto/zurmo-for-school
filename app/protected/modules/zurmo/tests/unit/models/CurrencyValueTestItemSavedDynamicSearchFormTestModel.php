@@ -25,21 +25,21 @@
      ********************************************************************************/
 
     /**
-     * Used for testing with @see CCC model
+     * Used for testing with @see CurrencyValueTestItem model
      */
-    class CCCSearchFormTestModel extends DynamicSearchForm
+    class CurrencyValueTestItemSavedDynamicSearchFormTestModel extends SavedDynamicSearchForm
     {
-        public $CCCName;
+        public $AAAName;
         public $differentOperatorA;
         public $differentOperatorB;
         public $concatedName;
 
         protected static function getRedBeanModelClassName()
         {
-            return 'CCC';
+            return 'CurrencyValueTestItem';
         }
 
-        public function __construct(RedBeanModel $model)
+        public function __construct(CurrencyValueTestItem $model)
         {
             parent::__construct($model);
         }
@@ -47,7 +47,7 @@
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                array('CCCName', 'safe'),
+                array('AAAName', 'safe'),
                 array('differentOperatorA', 'safe'),
                 array('differentOperatorB', 'boolean'),
                 array('concactedName', 'safe'),
@@ -57,10 +57,10 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'concactedName'                    => Zurmo::t('Core', 'Concated Name'),
-                'CCCName'                          => Zurmo::t('Core', 'CCCName'),
-                'differentOperatorA'               => Zurmo::t('Core', 'differentOperatorA'),
-                'differentOperatorB'               => Zurmo::t('Core', 'differentOperatorB'),
+                'concactedName'                    => Zurmo::t('ZurmoModule', 'Concated Name'),
+                'AAAName'                          => Zurmo::t('ZurmoModule', 'AAAName'),
+                'differentOperatorA'               => Zurmo::t('ZurmoModule', 'differentOperatorA'),
+                'differentOperatorB'               => Zurmo::t('ZurmoModule', 'differentOperatorB'),
             ));
         }
 
@@ -72,20 +72,20 @@
         public function getAttributesMappedToRealAttributesMetadata()
         {
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'CCCName' => array(
-                    array('cccMember'),
-                    array('cccMember2'),
+                'AAAName' => array(
+                    array('aaaMember'),
+                    array('aaaMember2'),
                 ),
                 'differentOperatorA' => array(
-                    array('cccMember', null, null, 'resolveValueByRules'),
+                    array('aaaMember', null, null, 'resolveValueByRules'),
                 ),
                 'differentOperatorB' => array(
-                    array('cccMember', null, 'endsWith')
+                    array('aaaMember', null, 'endsWith')
                 ),
                 'concatedName' => array(
-                    array('cccMember'),
-                    array('cccMember2'),
-                    array('concatedAttributeNames' => array('cccMember', 'cccMember2'))
+                    array('aaaMember'),
+                    array('aaaMember2'),
+                    array('concatedAttributeNames' => array('aaaMember', 'aaaMember2'))
                 ),
             ));
         }

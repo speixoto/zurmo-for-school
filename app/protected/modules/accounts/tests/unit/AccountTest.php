@@ -605,7 +605,6 @@
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new Account());
             $adapter->setAttributeMetadataFromForm($attributeForm);
-
             $compareData = array(
                 '747',
                 'A380',
