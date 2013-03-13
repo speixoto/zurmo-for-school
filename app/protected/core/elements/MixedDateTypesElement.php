@@ -138,23 +138,32 @@
             $themePath = Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name;
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateElement");
-            $cClipWidget->widget('application.core.widgets.JuiDatePicker', array(
+//            $cClipWidget->widget('application.core.widgets.JuiDatePicker', array(
+//                'attribute'           => $this->attribute,
+//                'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
+//                                         $this->getValueFirstDate()),
+//                'language'            => YiiToJqueryUIDatePickerLocalization::getLanguage(),
+//                'htmlOptions'         => array(
+//                    'id'              => $this->getValueFirstDateEditableInputId(),
+//                    'name'            => $this->getValueFirstDateEditableInputName(),
+//                ),
+//                'options'             => array(
+//                    'showOn'          => 'both',
+//                    'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),
+//                    'showButtonPanel' => true,
+//                    'buttonImageOnly' => false,
+//                    'dateFormat'      => YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
+//                                            DateTimeUtil::getLocaleDateFormat()),
+//                ),
+//            ));
+            $cClipWidget->widget('application.core.widgets.ExtendedJuiDatePicker', array(
                 'attribute'           => $this->attribute,
                 'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
                                          $this->getValueFirstDate()),
-                'language'            => YiiToJqueryUIDatePickerLocalization::getLanguage(),
                 'htmlOptions'         => array(
                     'id'              => $this->getValueFirstDateEditableInputId(),
                     'name'            => $this->getValueFirstDateEditableInputName(),
-                ),
-                'options'             => array(
-                    'showOn'          => 'both',
-                    'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),
-                    'showButtonPanel' => true,
-                    'buttonImageOnly' => false,
-                    'dateFormat'      => YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                            DateTimeUtil::getLocaleDateFormat()),
-                ),
+                )
             ));
             $cClipWidget->endClip();
             $content =  $cClipWidget->getController()->clips['EditableDateElement'];
@@ -166,23 +175,32 @@
             $themePath = Yii::app()->baseUrl . '/themes/' . Yii::app()->theme->name;
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateElement");
-            $cClipWidget->widget('application.core.widgets.JuiDatePicker', array(
+//            $cClipWidget->widget('application.core.widgets.JuiDatePicker', array(
+//                'attribute'           => $this->attribute,
+//                'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
+//                                         $this->getValueSecondDate()),
+//                'language'            => YiiToJqueryUIDatePickerLocalization::getLanguage(),
+//                'htmlOptions'         => array(
+//                    'id'              => $this->getValueSecondDateEditableInputId(),
+//                    'name'            => $this->getValueSecondDateEditableInputName(),
+//                ),
+//                'options'             => array(
+//                    'showOn'          => 'both',
+//                    'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),
+//                    'showButtonPanel' => true,
+//                    'buttonImageOnly' => false,
+//                    'dateFormat'      => YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
+//                                            DateTimeUtil::getLocaleDateFormat()),
+//                ),
+//            ));
+            $cClipWidget->widget('application.core.widgets.ExtendedJuiDatePicker', array(
                 'attribute'           => $this->attribute,
                 'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
                                          $this->getValueSecondDate()),
-                'language'            => YiiToJqueryUIDatePickerLocalization::getLanguage(),
                 'htmlOptions'         => array(
                     'id'              => $this->getValueSecondDateEditableInputId(),
                     'name'            => $this->getValueSecondDateEditableInputName(),
-                ),
-                'options'             => array(
-                    'showOn'          => 'both',
-                    'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),
-                    'showButtonPanel' => true,
-                    'buttonImageOnly' => false,
-                    'dateFormat'      => YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                            DateTimeUtil::getLocaleDateFormat()),
-                ),
+                )
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateElement'];
