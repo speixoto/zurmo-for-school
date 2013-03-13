@@ -26,6 +26,8 @@
 
     class RedBeanModelSelectQueryAdapterTest extends BaseTest
     {
+        protected static $chicagoOffsetInSeconds = 0;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -37,6 +39,11 @@
             parent::setup();
             Yii::app()->user->userModel           = User::getByUsername('super');
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            //Deal with daylight savings time.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            $this->assertTrue($offsetInSeconds == -18000 || $offsetInSeconds == -21600);
+            self::$chicagoOffsetInSeconds = $offsetInSeconds;
         }
 
         public function testIsDistinct()
@@ -215,7 +222,8 @@
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addDayClause('table', 'abc', 'c', true);
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select day({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $compareString = "select day({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL " .
+                             abs(self::$chicagoOffsetInSeconds) . " SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -237,7 +245,8 @@
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addWeekClause('table', 'abc', 'c', true);
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select week({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $compareString = "select week({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL " .
+                             abs(self::$chicagoOffsetInSeconds) . " SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -259,7 +268,8 @@
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addMonthClause('table', 'abc', 'c', true);
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select month({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $compareString = "select month({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL " .
+                             abs(self::$chicagoOffsetInSeconds) . " SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -281,7 +291,8 @@
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addQuarterClause('table', 'abc', 'c', true);
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select quarter({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $compareString = "select quarter({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL " .
+                             abs(self::$chicagoOffsetInSeconds) . " SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 
@@ -303,7 +314,8 @@
             $this->assertEquals(0, $adapter->getClausesCount());
             $adapter->addYearClause('table', 'abc', 'c', true);
             $this->assertEquals(1, $adapter->getClausesCount());
-            $compareString = "select year({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL 21600 SECOND) c ";
+            $compareString = "select year({$quote}table{$quote}.{$quote}abc{$quote} - INTERVAL " .
+                             abs(self::$chicagoOffsetInSeconds) . " SECOND) c ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
 

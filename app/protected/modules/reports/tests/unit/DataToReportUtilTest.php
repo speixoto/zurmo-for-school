@@ -59,8 +59,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $data   = array();
             $data[ComponentForReportForm::TYPE_FILTERS][] = array('attributeIndexOrDerivedType' => 'date',
-                                                                  'operator'                    => null,
-                                                                  'valueType'                   => 'Between',
+                                                                  'operator'                    => 'between',
                                                                   'value'                       => '2/24/12',
                                                                   'secondValue'                 => '2/28/12');
 

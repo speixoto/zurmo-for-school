@@ -723,7 +723,12 @@
             $tempTimeZone                         = Yii::app()->user->userModel->timeZone;
 
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
-            $compareContent                       = ' - INTERVAL 21600 SECOND';
+            //Deal with daylight savings time.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            $this->assertTrue($offsetInSeconds == -18000 || $offsetInSeconds == -21600);
+
+            $compareContent                       = ' - INTERVAL ' . abs($offsetInSeconds) . ' SECOND';
             $this->assertEquals($compareContent, DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
 
             Yii::app()->user->userModel->timeZone = 'Asia/Tokyo';

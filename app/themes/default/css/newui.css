@@ -168,10 +168,10 @@ a.ModalGameNotification a,
 .dynamic-droppable-area,
 .drop-zone,
 .drop-zone div,
-.dynamic-attribute-row,
-.dynamic-attribute-label,
-.dynamic-attribute-operator,
-.dynamic-attribute-field,
+.dynamic-row,
+.dynamic-row-label,
+.dynamic-row-operator,
+.dynamic-row-field,
 .value-data,
 .report-runtime-availability,
 .hasDrillDownContent,
@@ -187,25 +187,25 @@ a.ModalGameNotification a,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
 #NoUserEmailConfigurationYetView:after,
-.dynamic-attribute-row:before,
-.dynamic-attribute-row:after,
-.dynamic-attribute-row > div:before,
-.dynamic-attribute-row > div:after {
+.dynamic-row:before,
+.dynamic-row:after,
+.dynamic-row > div:before,
+.dynamic-row > div:after {
   content: "";
   display: table;
 }
 .cf:after,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
-.dynamic-attribute-row:after,
-.dynamic-attribute-row > div:after {
+.dynamic-row:after,
+.dynamic-row > div:after {
   clear: both;
 }
 .cf,
 .recipient,
 #NoUserEmailConfigurationYetView,
-.dynamic-attribute-row,
-.dynamic-attribute-row > div {
+.dynamic-row,
+.dynamic-row > div {
   zoom: 1;
 }
 .clearfix {
@@ -660,7 +660,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 #inline-edit-form,
 #RuntimeFiltersForPortletView .wrapper,
 #RuntimeFiltersForPortletView #edit-form,
-#RuntimeFiltersForPortletView .dynamic-attribute-row {
+#RuntimeFiltersForPortletView .dynamic-row {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -15860,17 +15860,17 @@ a.user-link {
   border: 2px solid red !important;
   z-index: 10000;
 }
-.attribute-rows {
+.dynamic-rows {
   float: left;
   width: 100%;
   position: relative;
   z-index: 5;
 }
-.attribute-rows ul,
-.attribute-rows li {
+.dynamic-rows ul,
+.dynamic-rows li {
   list-style: none;
 }
-.dynamic-attribute-row {
+.dynamic-row {
   position: relative;
   width: 100%;
   display: block;
@@ -15883,28 +15883,28 @@ a.user-link {
   border-radius: 3px;
   padding: 15px 30px 15px 15px;
 }
-.dynamic-attribute-row > div {
+.dynamic-row > div {
   position: relative;
   float: left;
   width: 100%;
 }
-.dynamic-attribute-row > div > span:first-child + div {
+.dynamic-row > div > span:first-child + div {
   margin-right: 0 !important;
   width: 45%;
   float: left;
 }
-.dynamic-attribute-row > div .criteria-value-container {
+.dynamic-row > div .criteria-value-container {
   margin-right: 30px !important;
   width: 45%;
   float: right;
 }
-.dynamic-attribute-row > div .has-model-select {
+.dynamic-row > div .has-model-select {
   float: left;
 }
-.dynamic-attribute-row label.hasCheckBox {
+.dynamic-row label.hasCheckBox {
   margin-left: 0 !important;
 }
-.dynamic-attribute-row .remove-dynamic-attribute-row-link {
+.dynamic-row .remove-dynamic-row-link {
   position: absolute;
   right: 10px;
   top: 15px;
@@ -15923,7 +15923,7 @@ a.user-link {
   -ms-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-.dynamic-attribute-row .dynamic-attribute-row-number-label {
+.dynamic-row .dynamic-row-number-label {
   position: absolute;
   width: 25px;
   text-align: right;
@@ -15939,24 +15939,24 @@ a.user-link {
   -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
   text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
 }
-.dynamic-attribute-row .hasDropDown {
+.dynamic-row .hasDropDown {
   width: auto !important;
 }
-.dynamic-attribute-row:hover .remove-dynamic-attribute-row-link {
+.dynamic-row:hover .remove-dynamic-row-link {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
-.dynamic-attribute-row.clone {
+.dynamic-row.clone {
   padding: 15px;
   position: absolute;
   z-index: 10000;
 }
-.Filters .dynamic-attribute-row {
+.Filters .dynamic-row {
   padding: 15px 30px;
 }
-.sortable .dynamic-attribute-row:hover {
+.sortable .dynamic-row:hover {
   -webkit-border-radius: 0 3px 3px 0;
   -moz-border-radius: 0 3px 3px 0;
   -ms-border-radius: 0 3px 3px 0;
@@ -15964,21 +15964,21 @@ a.user-link {
   border-radius: 0 3px 3px 0;
   background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
 }
-.sortable .dynamic-attribute-row:active {
+.sortable .dynamic-row:active {
   cursor: move;
   background-color: #f5f5f5;
 }
-.dynamic-attribute-label {
+.dynamic-row-label {
   float: left;
   line-height: 26px;
   width: 20%;
 }
-.dynamic-attribute-operator {
+.dynamic-row-operator {
   float: left;
   width: 20%;
   padding-left: 15px;
 }
-.dynamic-attribute-field {
+.dynamic-row-field {
   float: right;
   width: 80%;
 }
@@ -16004,10 +16004,10 @@ a.user-link {
   margin-left: 0;
   margin-right: 8px !important;
 }
-.hasFilter .dynamic-attribute-label {
+.hasFilter .dynamic-row-label {
   width: 100%;
 }
-.hasFilter .dynamic-attribute-operator {
+.hasFilter .dynamic-row-operator {
   padding-left: 0;
 }
 .hasFilter .value-data {
@@ -16015,11 +16015,11 @@ a.user-link {
   width: 100%;
   padding-right: 160px;
 }
-.hasFilter .dynamic-attribute-operator + .value-data {
+.hasFilter .dynamic-row-operator + .value-data {
   padding-left: 15px;
   width: 80%;
 }
-.hasFilter .remove-dynamic-attribute-row-link {
+.hasFilter .remove-dynamic-row-link {
   top: 42px;
 }
 .dynamic-and-for-mixed {
@@ -16044,17 +16044,17 @@ a.user-link {
   float: left;
   width: 100%;
 }
-#RuntimeFiltersForPortletView .dynamic-attribute-row {
+#RuntimeFiltersForPortletView .dynamic-row {
   padding: 0 0 15px 0;
 }
 #RuntimeFiltersForPortletView .value-data {
   width: 60%;
   padding-left: 15px;
 }
-#RuntimeFiltersForPortletView .attribute-rows {
+#RuntimeFiltersForPortletView .dynamic-rows {
   float: none;
 }
-#RuntimeFiltersForPortletView .attribute-rows ul {
+#RuntimeFiltersForPortletView .dynamic-rows ul {
   padding: 15px 15px 5px 15px;
 }
 #RuntimeFiltersForPortletView .view-toolbar-container {

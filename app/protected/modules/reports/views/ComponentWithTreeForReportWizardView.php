@@ -83,7 +83,7 @@
             {
                 $itemsContent            = $this->getNonSortableListContent($items);
             }
-            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId());
+            $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(static::getTreeType()));
             $hiddenInputName             = static::getTreeType() . 'RowCounter';
             $dropZone                    = $this->renderRightSideDropZoneContent();
             $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
@@ -183,14 +183,6 @@
             return $cClipWidget->getController()->clips[static::getTreeType() . 'ReportComponentSortable'];
         }
 
-        /**
-         * @return string
-         */
-        protected function getRowCounterInputId()
-        {
-            return static::getTreeType() . 'RowCounter';
-        }
-
         protected function registerScripts()
         {
             parent::registerScripts();
@@ -230,18 +222,18 @@
          */
         protected function getAjaxForDroppedAttribute()
         {
+            $rowCounterInputId = static::resolveRowCounterInputId(static::getTreeType());
             return ZurmoHtml::ajax(array(
                     'type'     => 'POST',
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' .
                                   $this->getAddAttributeUrl() .
-                                  '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' .
-                                  $this->getRowCounterInputId(). '\').val())',
+                                  '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' . $rowCounterInputId . '\').val())',
                     'beforeSend' => 'js:function(){
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                    $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
+                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                     $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
@@ -254,16 +246,17 @@
          */
         protected function getAjaxForDoubleClickedAttribute()
         {
+            $rowCounterInputId = static::resolveRowCounterInputId(static::getTreeType());
             return ZurmoHtml::ajax(array(
                     'type'     => 'POST',
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
-                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $this->getRowCounterInputId(). '\').val())',
+                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $rowCounterInputId . '\').val())',
                     'beforeSend' => 'js:function(){
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                        $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
+                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();

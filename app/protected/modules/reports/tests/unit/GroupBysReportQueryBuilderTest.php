@@ -26,6 +26,8 @@
 
     class GroupBysReportQueryBuilderTest extends ZurmoBaseTest
     {
+        protected static $chicagoOffsetInSeconds = 0;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -37,6 +39,11 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            //Deal with daylight savings time.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            $this->assertTrue($offsetInSeconds == -18000 || $offsetInSeconds == -21600);
+            self::$chicagoOffsetInSeconds = $offsetInSeconds;
         }
 
         public function testDynamicUserOnClassThatExtendsPerson()
@@ -139,7 +146,8 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'dateTime__Day';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -149,7 +157,8 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'dateTime__Week';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("week({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals("week({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -159,7 +168,8 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'dateTime__Month';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("month({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals("month({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -169,7 +179,8 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'dateTime__Quarter';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("quarter({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals("quarter({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -179,7 +190,8 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'dateTime__Year';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("year({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals("year({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -195,7 +207,8 @@
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'hasMany2___dateTime__Day';
             $content                               = $builder->makeQueryContent(array($groupBy));
-            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL 21600 SECOND)", $content);
+            $this->assertEquals("day({$q}reportmodeltestitem{$q}.{$q}datetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND)", $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -345,14 +358,14 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with one on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
-            $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
-            $groupBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
+            $groupBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
                                                      "{$q}item1{$q}.{$q}createddatetime{$q}";
@@ -429,14 +442,14 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
-            $groupBy->attributeIndexOrDerivedType  = 'account___createdDateTime';
-            $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
+            $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
-            $groupBy2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $groupBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
                                                      "{$q}item{$q}.{$q}modifieddatetime{$q}";
@@ -521,17 +534,17 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
-            $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_SUMMATION);
-            $groupBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
-            $groupBy3                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
+            $groupBy3                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_SUMMATION);
-            $groupBy3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $groupBy3->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
                                                      "{$q}item1{$q}.{$q}createddatetime{$q}, " .
@@ -680,9 +693,9 @@
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
             $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('item',   $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('item',    $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('_user1',  $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('item',    $leftTablesAndAliases[1]['onTableAliasName']);
 
             //2 __User attributes on the same model, one is owned, so not originating both from Item
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
@@ -694,17 +707,16 @@
                 Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
-            $compareContent                        = "{$q}person{$q}.{$q}lastname{$q}, " .
-                                                     "{$q}person1{$q}.{$q}lastname{$q}";
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}, " .
+                                                     "{$q}_user1{$q}.{$q}id{$q}";
             $this->assertEquals($compareContent, $content);
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            $this->assertEquals('_user',               $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('_user',               $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',              $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem',  $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('_user1',              $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('_user',              $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',               $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('_user1',             $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem', $leftTablesAndAliases[1]['onTableAliasName']);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereSameAttribute()
@@ -726,11 +738,18 @@
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
-            //todO: make sure below match
-            $this->assertEquals('_user',   $leftTablesAndAliases[0]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem9',   $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[4]['tableAliasName']);
-            $this->assertEquals('_user1',  $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('_user',                $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem9', $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem1',  $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem',  $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('securableitem1',       $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem1',  $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('item1',                $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('securableitem1',       $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('_user1',               $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('item1',                $leftTablesAndAliases[5]['onTableAliasName']);
         }
 
         public function testDynamicallyDerivedAttributeOneOnSelfAndOneOnRelatedModelWhereDifferentAttributes()
@@ -740,10 +759,10 @@
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
             $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_SUMMATION);
+                                                     Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdByUser__User';
             $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
-                Report::TYPE_SUMMATION);
+                                                     Report::TYPE_SUMMATION);
             $groupBy2->attributeIndexOrDerivedType = 'hasOne___owner__User';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}_user{$q}.{$q}id{$q}, " .
@@ -753,19 +772,14 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            //todO: make sure below match
             $this->assertEquals('_user',                 $leftTablesAndAliases[0]['tableAliasName']);
             $this->assertEquals('item',                  $leftTablesAndAliases[0]['onTableAliasName']);
-            $this->assertEquals('person',                $leftTablesAndAliases[1]['tableAliasName']);
-            $this->assertEquals('_user',                 $leftTablesAndAliases[1]['onTableAliasName']);
-            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[2]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem9',  $leftTablesAndAliases[2]['onTableAliasName']);
-            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[3]['tableAliasName']);
-            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[3]['onTableAliasName']);
-            $this->assertEquals('_user1',                $leftTablesAndAliases[4]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[4]['onTableAliasName']);
-            $this->assertEquals('person1',               $leftTablesAndAliases[5]['tableAliasName']);
-            $this->assertEquals('_user1',                $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem9',  $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem',   $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('_user1',                $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem1',   $leftTablesAndAliases[3]['onTableAliasName']);
         }
 
         public function testDynamicallyDerivedAttributeBothOnRelatedModelWhereDifferentAttributes()
@@ -799,11 +813,7 @@
             $this->assertEquals('_user',                $leftTablesAndAliases[4]['tableAliasName']);
             $this->assertEquals('item',                 $leftTablesAndAliases[4]['onTableAliasName']);
             $this->assertEquals('_user1',               $leftTablesAndAliases[5]['tableAliasName']);
-            $this->assertEquals('_user',                $leftTablesAndAliases[5]['onTableAliasName']);
-            $this->assertEquals('_user1',               $leftTablesAndAliases[6]['tableAliasName']);
-            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[6]['onTableAliasName']);
-            $this->assertEquals('person1',              $leftTablesAndAliases[7]['tableAliasName']);
-            $this->assertEquals('_user1',               $leftTablesAndAliases[7]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[5]['onTableAliasName']);
         }
 
         public function testNestedRelationsThatComeBackOnTheBaseModel()
@@ -1003,7 +1013,10 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributes()
@@ -1026,6 +1039,18 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('customfield',          $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[5]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesNestedTwoLevelsDeep()
@@ -1048,6 +1073,20 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('opportunity',          $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('customfield',          $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('opportunity',          $leftTablesAndAliases[6]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesComingAtItFromANestedPoint()
@@ -1070,7 +1109,20 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('reportmodeltestitem5',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem7',        $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item_reportmodeltestitem5',   $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem5',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('item',                        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item_reportmodeltestitem5',   $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('securableitem',               $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('item',                        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',          $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('securableitem',               $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem',         $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',          $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('customfield',                 $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem',         $leftTablesAndAliases[6]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
@@ -1089,7 +1141,10 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithMixedInAttribute()
@@ -1107,8 +1162,17 @@
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
-            $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('_user',                $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDowButAlsoWithFullCastDown()
@@ -1131,15 +1195,43 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
         }
 
-        /**
-         * echo "<pre>";
-        print_r($joinTablesAdapter->getFromTablesAndAliases());
-        print_r($joinTablesAdapter->getLeftTablesAndAliases());
-        echo "</pre>";
-         */
+        public function testHasManyForHasManyBelongsToOnCastedUpModel()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'reportModelTestItem9s___owner__User';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('reportmodeltestitem91', $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem9',  $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',    $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem91', $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('id',                    $leftTablesAndAliases[1]['tableJoinIdName']);
+            $this->assertEquals('_user',                 $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',    $leftTablesAndAliases[2]['onTableAliasName']);
+        }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
         {

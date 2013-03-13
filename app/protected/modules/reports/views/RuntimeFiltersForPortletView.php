@@ -34,6 +34,7 @@
          */
         public function renderContent()
         {
+            OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
             return $this->renderForm();
         }
 
@@ -66,7 +67,7 @@
             $rowCount       = 0;
             $items          = $this->renderItems($rowCount, $form);
             $itemsContent   = $this->getNonSortableListContent($items);
-            $content       .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
+            $content       .= ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $content       .= $this->renderViewToolBarContainer($form);
             $formEnd        = $clipWidget->renderEndWidget();
             $content       .= $formEnd;
@@ -191,10 +192,10 @@
             $params['label']       = Zurmo::t('ReportsModule', 'Apply');
             $params['htmlOptions'] = array('id'      => 'apply-runtime-filters',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $applyElement          = new SaveButtonActionElement(null, null, null, $params);
             $resetElement          = new RefreshRuntimeFiltersAjaxLinkActionElement(null, null,
                                          $this->params['relationModel']->getId(), array());
-            return $applyElement->render() . $resetElement->render();
+            $applyElement          = new SaveButtonActionElement(null, null, null, $params);
+            return $resetElement->render() . $applyElement->render();
         }
     }
 ?>

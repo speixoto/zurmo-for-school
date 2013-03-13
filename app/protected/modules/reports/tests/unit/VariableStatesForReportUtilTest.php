@@ -46,7 +46,7 @@
         public function testResolveVariableStateAttributeIndexesForComponentWithNoNesting()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                        = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                        = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                              = new FilterForReportForm('ContactsModule', 'Contact',
                                                    Report::TYPE_ROWS_AND_COLUMNS);
@@ -68,7 +68,7 @@
         public function testResolveVariableStateAttributeIndexesForComponentWithSingleNesting()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                          = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                          = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                                = new FilterForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
@@ -90,7 +90,7 @@
         public function testResolveVariableStateAttributeIndexesForComponentWithDoubleNesting()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                          = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                          = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                                = new FilterForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
@@ -112,7 +112,7 @@
         public function testResolveVariableStateAttributeIndexesForComponentWithTwoDoubleNestingCausingTwoVariableStates()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                          = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                          = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                                = new FilterForReportForm('ContactsModule', 'Contact',
                 Report::TYPE_ROWS_AND_COLUMNS);
@@ -135,7 +135,7 @@
         public function testDerivedRelationViaCastedUpModelAttributeWhenThroughARelation()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                          = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                          = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                                = new FilterForReportForm('AccountsModule', 'Account',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
@@ -157,7 +157,7 @@
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                          = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                          = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
@@ -180,7 +180,7 @@
         public function testInferredRelationModelAttributeWithYetAnotherRelation()
         {
             Yii::app()->user->userModel = User::getByUsername('sally');
-            $stateAdapter                          = new ContactsStateMetadataAdapter(array());
+            $stateAdapter                          = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $filter                                = new FilterForReportForm('MeetingsModule', 'Meeting',
                                                      Report::TYPE_ROWS_AND_COLUMNS);

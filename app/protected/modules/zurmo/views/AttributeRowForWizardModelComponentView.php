@@ -129,9 +129,9 @@
             $content .= '</div>';
             if($this->showRemoveLink)
             {
-                $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-attribute-row-link ' . $this->treeType));
+                $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link ' . $this->treeType));
             }
-            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-attribute-row{$resolvedHasFilterOrTriggerClass}"), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-row{$resolvedHasFilterOrTriggerClass}"), $content);
             if($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array(), $content);
@@ -149,7 +149,7 @@
          */
         protected function renderAttributeRowNumberLabel()
         {
-            return ZurmoHtml::tag('span', array('class' => 'dynamic-attribute-row-number-label'),
+            return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label'),
                                           ($this->rowNumber + 1) . '.');
         }
 

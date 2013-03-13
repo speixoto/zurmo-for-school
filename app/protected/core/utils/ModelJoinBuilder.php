@@ -523,7 +523,6 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_string($attributeTableName)');
-            assert('is_string($modelClassName)');
             $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                 $attributeTableName,
                 self::resolveForeignKey($attributeTableName),
@@ -861,6 +860,7 @@
                 if ($modelClassName::getCanHaveBean())
                 {
                     $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    /**
                     if ($castedDownModelClassName::getCanHaveBean())
                     {
                         $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
@@ -873,11 +873,12 @@
                     {
                         throw new NotSupportedException();
                     }
+                     * */
                     $onTableAliasName =     $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                         $castedUpAttributeTableName,
                         self::resolveForeignKey($castedUpAttributeTableName),
-                        $onTableAliasName,
-                        $resolvedTableJoinIdName);
+                        $onTableAliasName);//,
+                        //$resolvedTableJoinIdName);
                 }
             }
             //Add left table if it is not already added
@@ -885,8 +886,8 @@
             $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                 $attributeTableName,
                 self::resolveForeignKey($attributeTableName),
-                $onTableAliasName,
-                $modelClassName::getTableName($modelClassName));
+                $onTableAliasName); //,
+                //$modelClassName::getTableName($modelClassName));
             return $onTableAliasName;
         }
 

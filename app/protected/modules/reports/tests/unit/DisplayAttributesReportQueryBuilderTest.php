@@ -26,6 +26,8 @@
 
     class DisplayAttributesReportQueryBuilderTest extends ZurmoBaseTest
     {
+        protected static $chicagoOffsetInSeconds = 0;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -37,6 +39,11 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            //Deal with daylight savings time.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            $this->assertTrue($offsetInSeconds == -18000 || $offsetInSeconds == -21600);
+            self::$chicagoOffsetInSeconds = $offsetInSeconds;
             DisplayAttributeForReportForm::resetCount();
         }
 
@@ -442,7 +449,8 @@
                                                      Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Day';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col0 ", $content);
+            $this->assertEquals("select day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col0 ", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -456,7 +464,8 @@
                                                      Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Week';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select week({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col0 ", $content);
+            $this->assertEquals("select week({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col0 ", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -470,7 +479,8 @@
                                                      Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Month';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select month({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col0 ", $content);
+            $this->assertEquals("select month({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col0 ", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -484,7 +494,8 @@
                                                      Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Quarter';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select quarter({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col0 ", $content);
+            $this->assertEquals("select quarter({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col0 ", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -498,7 +509,8 @@
                                                      Report::TYPE_SUMMATION);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime__Year';
             $content                               = $builder->makeQueryContent(array($displayAttribute));
-            $this->assertEquals("select year({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col0 ", $content);
+            $this->assertEquals("select year({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col0 ", $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
@@ -550,11 +562,16 @@
             $compareContent .= "max({$q}item{$q}.{$q}createddatetime{$q}) col2, ";
             $compareContent .= "avg({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col3, ";
             $compareContent .= "sum({$q}reportmodeltestitem{$q}.{$q}integer{$q}) col4, ";
-            $compareContent .= "day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col5, ";
-            $compareContent .= "week({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col6, ";
-            $compareContent .= "month({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col7, ";
-            $compareContent .= "quarter({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col8, ";
-            $compareContent .= "year({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL 21600 SECOND) col9 ";
+            $compareContent .= "day({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col5, ";
+            $compareContent .= "week({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col6, ";
+            $compareContent .= "month({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col7, ";
+            $compareContent .= "quarter({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col8, ";
+            $compareContent .= "year({$q}item{$q}.{$q}createddatetime{$q} - INTERVAL " .
+                                abs(self::$chicagoOffsetInSeconds) . " SECOND) col9 ";
 
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
@@ -656,18 +673,18 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with one on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                      = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                     = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
+            $displayAttribute2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}account{$q}.{$q}id{$q} accountid, ";
-            $compareContent .= "{$q}account1{$q}.{$q}id{$q} account1id ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem91{$q}.{$q}id{$q} reportmodeltestitem91id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -742,17 +759,17 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute->attributeIndexOrDerivedType  = 'account___createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
+            $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $displayAttribute2->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}account1{$q}.{$q}id{$q} account1id ";
+            $compareContent  = "select {$q}reportmodeltestitem91{$q}.{$q}id{$q} reportmodeltestitem91id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -834,21 +851,21 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                               Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
-            $displayAttribute3                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
+            $displayAttribute3                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                               Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $displayAttribute3->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent  = "select {$q}account{$q}.{$q}id{$q} accountid, ";
-            $compareContent .= "{$q}account1{$q}.{$q}id{$q} account1id ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem91{$q}.{$q}id{$q} reportmodeltestitem91id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
