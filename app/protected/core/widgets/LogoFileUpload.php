@@ -130,11 +130,11 @@ $(function () {
 EOD;
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
         }
-        
+
         protected function makeDownloadRowScriptContent()
         {
-            $deleteLabel = 'Delete';
-            $removeLabel = Zurmo::t('Core', 'Remove');
+            $deleteLabel   = 'Delete';
+            $removeLabel   = Zurmo::t('Core', 'Remove');
             $scriptContent = <<<EOD
 <script id="template-download" type="text/x-jquery-tmpl">
     <tr class="template-download{{if error}} ui-state-error{{/if}}">
