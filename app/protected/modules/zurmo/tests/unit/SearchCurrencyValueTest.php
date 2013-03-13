@@ -37,7 +37,7 @@
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $searchForm = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm = new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = array(
                                                 array('structurePosition'           => '1',
                                                       'attributeIndexOrDerivedType' => 'amount',
@@ -60,7 +60,7 @@
                                                                   'currency'    => array('id' => '1'),
                                                                   'value'       => '100'),
                                               ));
-            $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm         = new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
             $searchForm->validateDynamicClauses('dynamicClauses', array());
@@ -71,7 +71,7 @@
             $metadata         = array('clauses' => array(), 'structure' => '');
             $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
                 $metadata,
-                new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
+                new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
                 (int)Yii::app()->user->userModel->id,
                 $searchAttributes,
                 $dynamicStructure);
@@ -109,7 +109,7 @@
                                               'amount' => array('relatedData' => true,
                                                                   'currency'    => array('id' => '1')),
                                               ));
-            $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm         = new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
             $searchForm->validateDynamicClauses('dynamicClauses', array());
@@ -120,7 +120,7 @@
             $metadata         = array('clauses' => array(), 'structure' => '');
             $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
                 $metadata,
-                new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
+                new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
                 (int)Yii::app()->user->userModel->id,
                 $searchAttributes,
                 $dynamicStructure);
@@ -151,7 +151,7 @@
                                                                   'currency'    => array('id' => '1'),
                                                                   'value'       => null),
                                               ));
-            $searchForm         = new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
+            $searchForm         = new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem());
             $searchForm->dynamicClauses   = $searchAttributes;
             $searchForm->dynamicStructure = '1';
             $searchForm->validateDynamicClauses('dynamicClauses', array());
@@ -162,7 +162,7 @@
             $metadata         = array('clauses' => array(), 'structure' => '');
             $metadataAdapter = new DynamicSearchDataProviderMetadataAdapter(
                 $metadata,
-                new AAASavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
+                new CurrencyValueTestItemSavedDynamicSearchFormTestModel(new CurrencyValueTestItem(false)),
                 (int)Yii::app()->user->userModel->id,
                 $searchAttributes,
                 $dynamicStructure);

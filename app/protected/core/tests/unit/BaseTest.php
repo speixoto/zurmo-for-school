@@ -51,6 +51,7 @@
                                    Yii::app()->db->password);
             assert('RedBeanDatabase::isSetup()'); // Not Coding Standard
             GeneralCache::forgetAll();
+            BeanModelCache::forgetAll();
             if ($freeze)
             {
                 RedBeanDatabase::freeze();
@@ -94,6 +95,7 @@
             RedBeanDatabase::close();
             assert('!RedBeanDatabase::isSetup()'); // Not Coding Standard
             GeneralCache::forgetAll();
+            BeanModelCache::forgetAll();
         }
 
         public static function resetAndPopulateFilesArrayByFilePathAndName($arrayName, $filePath, $fileName)

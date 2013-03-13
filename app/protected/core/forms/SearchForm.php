@@ -135,7 +135,7 @@
          */
         public function __set($name, $value)
         {
-            if ($this->doesNameResolveNameForDelimiterSplit($name))
+            if (static::doesNameResolveNameForDelimiterSplit($name))
             {
                 return $this->dynamicAttributeData[$name] = $value;
             }
@@ -148,7 +148,7 @@
          */
         public function __get($name)
         {
-            if ($this->doesNameResolveNameForDelimiterSplit($name))
+            if (static::doesNameResolveNameForDelimiterSplit($name))
             {
                 return $this->dynamicAttributeData[$name];
             }
@@ -164,7 +164,7 @@
             {
                 return true;
             }
-            if ($this->doesNameResolveNameForDelimiterSplit($attributeName))
+            if (static::doesNameResolveNameForDelimiterSplit($attributeName))
             {
                 return true;
             }
@@ -232,9 +232,9 @@
          * (non-PHPdoc)
          * @see ModelForm::isRelation()
          */
-        public function isRelation($attributeName)
+        public static function isRelation($attributeName)
         {
-            if ($this->doesNameResolveNameForDelimiterSplit($attributeName))
+            if (static::doesNameResolveNameForDelimiterSplit($attributeName))
             {
                 return false;
             }
@@ -245,9 +245,9 @@
          * (non-PHPdoc)
          * @see ModelForm::getRelationModelClassName()
          */
-        public function getRelationModelClassName($relationName)
+        public static function getRelationModelClassName($relationName)
         {
-            if ($this->doesNameResolveNameForDelimiterSplit($relationName))
+            if (static::doesNameResolveNameForDelimiterSplit($relationName))
             {
                 return false;
             }
@@ -262,7 +262,7 @@
         {
             assert('is_string($attributeName)');
             assert('$attributeName != ""');
-            if ($this->doesNameResolveNameForDelimiterSplit($attributeName))
+            if (static::doesNameResolveNameForDelimiterSplit($attributeName))
             {
                 return true;
             }
@@ -275,7 +275,7 @@
          */
         public function isAttributeRequired($attribute)
         {
-            if ($this->doesNameResolveNameForDelimiterSplit($attribute))
+            if (static::doesNameResolveNameForDelimiterSplit($attribute))
             {
                 return false;
             }
@@ -298,25 +298,26 @@
          */
         public function setAttributes($values, $safeOnly = true)
         {
-            $nonDyanmicAttributeValues = array();
+            $nonDynamicAttributeValues = array();
             foreach ($values as $name => $value)
             {
-                if ($this->doesNameResolveNameForDelimiterSplit($name))
+                if (static::doesNameResolveNameForDelimiterSplit($name))
                 {
                     $this->$name = $value;
                 }
                 else
                 {
-                    $nonDyanmicAttributeValues[$name] = $value;
+                    $nonDynamicAttributeValues[$name] = $value;
                 }
             }
             //Dropdowns can be searched on as mulit-selects.  This below foreach resolves the issue of needing to show
             //multiple values in the dropdown.
             foreach ($values as $name => $value)
             {
-                if ($value != null && $this->model->isAttribute($name) && $this->model->isRelation($name))
+                $modelClassName = get_class($this->model);
+                if ($value != null && $this->model->isAttribute($name) && $modelClassName::isRelation($name))
                 {
-                    $relationModelClassName = $this->model->getRelationModelClassName($name);
+                    $relationModelClassName = $modelClassName::getRelationModelClassName($name);
                     if (($relationModelClassName == 'CustomField' ||
                        is_subclass_of($relationModelClassName, 'CustomField') && isset($value['value']) &&
                        is_array($value['value']) && count($value['value']) > 0))
@@ -325,7 +326,7 @@
                     }
                 }
             }
-            parent::setAttributes($nonDyanmicAttributeValues, $safeOnly);
+            parent::setAttributes($nonDynamicAttributeValues, $safeOnly);
         }
 
         /**

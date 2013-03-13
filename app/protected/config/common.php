@@ -262,6 +262,9 @@
                     ),
                 ),
             ),
+            'phpThumbnail' => array(
+                'class'=>'ext.EPhpThumb.EPhpThumb'
+            ),
         ),
         'controllerMap' => array(
             'min' => 'application.extensions.minscript.controllers.ExtMinScriptController',

@@ -61,7 +61,7 @@
             return 'OpportunitiesModule';
         }
 
-        public function untranslatedAttributeLabels()
+        public static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(), array(
                 'account'  => 'AccountsModuleSingularLabel',

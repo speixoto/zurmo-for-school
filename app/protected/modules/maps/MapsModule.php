@@ -55,8 +55,8 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Maps',
-                        'descriptionLabel' => 'Manage Map Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('MapsModule', 'Maps')",
+                        'descriptionLabel' => "eval:Zurmo::t('MapsModule', 'Manage Map Configuration')",
                         'route'            => '/maps/default/configurationView',
                         'right'            => self::RIGHT_ACCESS_MAPS_ADMINISTRATION,
                     ),

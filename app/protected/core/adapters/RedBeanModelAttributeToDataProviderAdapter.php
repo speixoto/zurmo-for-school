@@ -103,7 +103,8 @@
             {
                 return $this->modelClassName;
             }
-            return $this->getModel()->getAttributeModelClassName($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getAttributeModelClassName($this->attribute);
         }
 
         /**
@@ -130,7 +131,8 @@
          */
         public function getColumnName()
         {
-            return $this->getModel()->getColumnNameByAttribute($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getColumnNameByAttribute($this->attribute);
         }
 
         /**
@@ -138,7 +140,8 @@
          */
         public function isRelation()
         {
-            return $this->getModel()->isRelation($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelation($this->attribute);
         }
 
         /**
@@ -146,7 +149,8 @@
          */
         public function getRelationType()
         {
-            return $this->getModel()->getRelationType($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getRelationType($this->attribute);
         }
 
         /**
@@ -179,7 +183,8 @@
          */
         public function getRelationModelClassName()
         {
-            return $this->getModel()->getRelationModelClassName($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getRelationModelClassName($this->attribute);
         }
 
         /**
@@ -192,7 +197,8 @@
             {
                 return $this->getRelationModelClassName();
             }
-            return $this->getRelationModel()->getAttributeModelClassName($this->relatedAttribute);
+            $relationModelClassName = $this->getRelationModelClassName();
+            return $relationModelClassName::getAttributeModelClassName($this->relatedAttribute);
         }
 
         /**
@@ -228,7 +234,8 @@
          */
         public function getRelatedAttributeColumnName()
         {
-            return $this->getRelationModel()->getColumnNameByAttribute($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::getColumnNameByAttribute($this->relatedAttribute);
         }
 
         /**
@@ -236,7 +243,8 @@
          */
         public function isRelatedAttributeRelation()
         {
-            return $this->getRelationModel()->isRelation($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::isRelation($this->relatedAttribute);
         }
 
         /**
@@ -248,7 +256,8 @@
             {
                 throw new NotSupportedException();
             }
-            return $this->getRelationModel()->getRelationType($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::getRelationType($this->relatedAttribute);
         }
 
         public function getRelatedAttributeRelationModelClassName()
@@ -257,7 +266,8 @@
             {
                 throw new NotSupportedException();
             }
-            return $this->getRelationModel()->getRelationModelClassName($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::getRelationModelClassName($this->relatedAttribute);
         }
     }
 ?>
