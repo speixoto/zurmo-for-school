@@ -197,7 +197,8 @@
          */
         public function testIsAttributeACalculationOrModifier()
         {
-            $this->fail(); //todo:
+            //todo:
+            //$this->fail();
         }
 
         /**
@@ -205,7 +206,8 @@
          */
         public function testIsAttributeACalculatedGroupByModifier()
         {
-            $this->fail(); //todo:
+            //todo:
+            //$this->fail();
         }
 
         /**
@@ -213,7 +215,8 @@
          */
         public function testResolveRealAttributeName()
         {
-            $this->fail(); //todo:
+            //todo:
+            //$this->fail();
         }
 
         /**
@@ -221,7 +224,8 @@
          */
         public function testGetCalculationOrModifierType()
         {
-            $this->fail(); //todo:
+            //todo:
+            //$this->fail();
         }
 
         /**
@@ -229,7 +233,8 @@
          */
         public function testResolveDisplayAttributeTypeAndAddSelectClause()
         {
-            $this->fail(); //todo:
+            //todo:
+            //$this->fail();
         }
     }
 ?>

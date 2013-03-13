@@ -28,8 +28,9 @@
     * Test RedBeanModelAttributeValueToExportValueAdapter functions.
     */
     class ReportToExportAdapterTest extends ZurmoBaseTest
-    {     
-    
+    {
+        public $freeze = false;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -40,7 +41,23 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
-            DisplayAttributeForReportForm::resetCount();            
+            DisplayAttributeForReportForm::resetCount();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
         }
 
         public function testGetDataWithNoRelationsSet()

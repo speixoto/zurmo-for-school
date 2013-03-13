@@ -239,10 +239,13 @@
             return $content;
         }
 
-        //todo: test because i am not sure we need this always. needed this for owner part of Conversation query where there was no related attribute, otherwise it didn't work right.
-        //todo: need an actual test just on owner for example. and run more search tests to make sure this is ok.
-        //todo: the way we have this reporting can't use this builder override since you dont always have a related attribute but that doesn't necessarily mean anything
         /**
+         * //todo: this override method was needed because otherwise the conversation listview would blow up.  The elseif
+         * was added to properly support owned relations since those should always run the addLeftJoin.  I am not sure
+         * what else is affected by this method, but reporting can't really use this override since even if the attribute
+         * is not related, it doesn't mean we shouldn't do the left join.  Further work needs to be done with this method
+         * to test things out.  The starting point would be to test the conversation listview issue which is around the use
+         * of owner and then work out from there.
          * @param $onTableAliasName
          * @return null|string
          */
@@ -250,6 +253,10 @@
         {
             assert('is_string($onTableAliasName)');
             if($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            {
+                return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+            }
+            elseif($this->modelAttributeToDataProviderAdapter->isOwnedRelation())
             {
                 return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
             }

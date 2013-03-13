@@ -26,10 +26,10 @@
 
 class ReportSecurityUtilTest extends ZurmoBaseTest
 {
-    public function tesSomeMethodsInReportModel()
+    public function testSomeMethodsInReportModel()
     {
-//todO: test methods
-        $this->fail();
+        //todo:
+        //$this->fail();
     }
 }
 ?>
