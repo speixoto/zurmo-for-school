@@ -30,15 +30,6 @@
     abstract class ComponentForWorkflowWizardView extends ComponentForWizardModelView
     {
         /**
-         * @param string $componentType
-         * @return string
-         */
-        public static function resolveRowCounterInputId($componentType)
-        {
-            return $componentType . 'RowCounter';
-        }
-
-        /**
          * @return string
          */
         public function getTitle()
