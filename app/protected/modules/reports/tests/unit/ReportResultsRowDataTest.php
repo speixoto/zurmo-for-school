@@ -30,6 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            ContactsModule::loadStartingData();
         }
 
         public function setup()
@@ -188,9 +189,23 @@
 
         public function testWhenResolveValueFromModelHasNoModelAndReturnsProperDefaultModel()
         {
-            $this->fail(); //todo: also we can modify the listAdapters for reporting for currency, and maybe others, so it returns null as a value since $0.00 is incorrect
-            //since there are no related items in this scenario.
+            $reportModelTestItemX         = new ReportModelTestItem();
+            $reportModelTestItemX->string = 'someString';
+            $displayAttributeX            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                            Report::TYPE_SUMMATION);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'string';
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
+
+            $this->assertNull(null, $reportResultsRowData->attribute0);
         }
-        //todO: test getAttributeLabel($attribute)
+
+        public function testGetAttributeLabel()
+        {
+            //todo: regular
+
+            //todo: viaSelect
+
+        }
     }
 ?>

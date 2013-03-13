@@ -1,5 +1,5 @@
 $(window).ready(function(){
-    $(".attribute-to-place").live("mousemove",function(){
+    $(".item-to-place").live("mousemove",function(){
         $(this).draggable({
             helper: function(event){
                 var label = $(event.target).html();
@@ -11,7 +11,7 @@ $(window).ready(function(){
                 return clone;
             },
             revert: "invalid",
-            snap: ".droppable-attribute-container",
+            snap: ".droppable-dynamic-row-container",
             snapMode: "inner",
             cursor: "pointer",
             start: function(event,ui){
@@ -24,8 +24,8 @@ $(window).ready(function(){
     });
     
     var dropped = false;
-    $( ".droppable-attributes-container").droppable({
-        accept: ".attribute-to-place",
+    $( ".droppable-dynamic-rows-container").droppable({
+        accept: ".item-to-place",
         hoverClass: "ui-state-active",
         cursor: "pointer",
         drop: function( event, ui ) {

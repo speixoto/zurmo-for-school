@@ -86,10 +86,10 @@
             $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(static::getTreeType()));
             $hiddenInputName             = static::getTreeType() . 'RowCounter';
             $dropZone                    = $this->renderRightSideDropZoneContent();
-            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $droppableAttributesContent .= $this->renderExtraDroppableAttributesContent();
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                                                            static::getTreeType()), $droppableAttributesContent . $dropZone);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                                            static::getTreeType()), $this->getZeroComponentsContent());
@@ -187,13 +187,13 @@
         {
             parent::registerScripts();
             $script = '
-                $(".droppable-attributes-container.' . static::getTreeType() . '").live("drop",function(event, ui){
+                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".attribute-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-attribute-row-link.' . static::getTreeType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)
@@ -234,7 +234,7 @@
                     }',
                     'success' => 'js:function(data){
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                    $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
+                    $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
                 }'
@@ -257,7 +257,7 @@
                     }',
                     'success' => 'js:function(data){
                         $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                        $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
+                        $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul").append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                 }'
