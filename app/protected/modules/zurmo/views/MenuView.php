@@ -28,13 +28,16 @@
     {
         protected $items;
 
-        public function __construct(array $items)
+        protected $useMinimalDynamicLabelMbMenu;
+
+        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false)
         {
             $this->items = $items;
+            $this->useMinimalDynamicLabelMbMenu = $useMinimalDynamicLabelMbMenu;
         }
 
         /**
-         * Will attemp to get the menu items from cache, otherwise from the appropriate storage, and cache the information
+         * Will attempt to get the menu items from cache, otherwise from the appropriate storage, and cache the information
          * for the next call to this method.
          * @see View::renderContent()
          */
@@ -44,9 +47,18 @@
             {
                 return null;
             }
+            if ($this->useMinimalDynamicLabelMbMenu)
+            {
+                $widgetName = 'MinimalDynamicLabelMbMenu';
+            }
+            else
+            {
+                $widgetName = 'MbMenu';
+            }
+            $widgetPath = 'application.core.widgets.'.$widgetName;
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Tabs");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+            $cClipWidget->widget($widgetPath, array(
                 'items' => $this->items
             ));
             $cClipWidget->endClip();
