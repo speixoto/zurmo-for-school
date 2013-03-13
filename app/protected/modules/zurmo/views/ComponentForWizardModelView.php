@@ -86,6 +86,16 @@
             throw new NotImplementedException();
         }
 
+
+        /**
+         * @param string $componentType
+         * @return string
+         */
+        public static function resolveRowCounterInputId($componentType)
+        {
+            return $componentType . 'RowCounter';
+        }
+
         /**
          * @param WizardForm $model
          * @param WizardActiveForm $form
