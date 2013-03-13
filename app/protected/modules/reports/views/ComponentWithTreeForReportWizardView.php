@@ -190,10 +190,10 @@
                 $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".attribute-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-attribute-row-link.' . static::getTreeType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)
