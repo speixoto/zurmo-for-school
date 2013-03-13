@@ -68,12 +68,13 @@
         {
             $content  = '<div>';
             $content .= $this->renderActionRowNumberLabel();
-            $content .= $this->model->type; //todo: convert to label
+            $toggleLink = ZurmoHtml::tag('span', array('class' => 'toggle-row'), '            _expand/collpase row link (todo)_'); //todo: make it work
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . $toggleLink); //todo: convert to label
             $content .= $this->renderTypeHiddenInputContent();
             $content .= $this->renderRelationHiddenInputContent();
             $content .= $this->renderRelatedModelRelationHiddenInputContent();
             $content .= '</div>';
-            $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-action-row-link'));
+            $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div>';
             $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
             $content .= '</div>';
@@ -81,7 +82,7 @@
             $content .= $this->renderSaveActionElementsContent();
             $content .= '</div>';
             //todo: call correctly as action, fix theme? need to maybe refcator
-            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-attribute-row"), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-row"), $content);
             return ZurmoHtml::tag('li', array(), $content);
         }
 
@@ -90,7 +91,7 @@
          */
         protected function renderActionRowNumberLabel()
         {
-            return ZurmoHtml::tag('span', array('class' => 'dynamic-action-row-number-label'),
+            return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label'),
                 ($this->rowNumber + 1) . '.');
         }
 
@@ -148,13 +149,13 @@
         protected function renderAttributesRowsContent($attributeRows)
         {
             assert('is_array($attributeRows)');
-            $content = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
+            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
             foreach($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
                 $content .= ZurmoHtml::tag('div', array(), $attributeContent);
                 $content .= '<BR><BR>'; //todo: remove once css is in place correctly
             }
-            $content .= ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
+            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
             foreach($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
                 $content .= ZurmoHtml::tag('div', array(), $attributeContent);

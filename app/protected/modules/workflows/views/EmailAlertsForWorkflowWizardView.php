@@ -123,7 +123,7 @@
             $hiddenInputName             = ComponentForWorkflowForm::TYPE_EMAIL_ALERTS . 'RowCounter';
             $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'email-alert-rows'), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                            ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $droppableAttributesContent);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                                            ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $this->getZeroComponentsContent());
@@ -149,7 +149,7 @@
                         'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
                         'success' => 'js:function(data){
                         $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                        $(".droppable-attributes-container.' . ComponentForWorkflowForm::TYPE_EMAIL_ALERTS
+                        $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_ALERTS
                             . '").find(".email-alert-rows").find("ul").first().append(data);
                         rebuildWorkflowEmailAlertRowNumbers("' . get_class($this) . '");
                         $(".' . static::getZeroComponentsClassName() . '").hide();

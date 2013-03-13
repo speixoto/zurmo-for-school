@@ -170,7 +170,9 @@ a.ModalGameNotification a,
 .drop-zone div,
 .dynamic-row,
 .dynamic-row-label,
+.dynamic-action-attribute-should-set-value,
 .dynamic-row-operator,
+.dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field,
 .value-data,
 .report-runtime-availability,
@@ -614,6 +616,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 .z-link,
 #ImportWizardMappingView #sample-column-header a,
 .remove-extra-column-link,
+#show-triggers-structure-div-link,
 #show-filters-structure-div-link {
   padding: 2px 4px;
   -webkit-border-radius: 3px;
@@ -628,6 +631,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 .z-link:hover,
 #ImportWizardMappingView #sample-column-header a:hover,
 .remove-extra-column-link:hover,
+#show-triggers-structure-div-link:hover,
 #show-filters-structure-div-link:hover {
   color: #fff !important;
   text-decoration: underline;
@@ -15969,8 +15973,9 @@ a.user-link {
   position: absolute;
   z-index: 10000;
 }
+.Filters .dynamic-row,
 .Triggers .dynamic-row,
-.Filters .dynamic-row {
+.Actions .dynamic-row {
   padding: 15px 30px;
 }
 .sortable .dynamic-row:hover {
@@ -15990,11 +15995,13 @@ a.user-link {
   line-height: 26px;
   width: 20%;
 }
+.dynamic-action-attribute-should-set-value,
 .dynamic-row-operator {
   float: left;
   width: 20%;
   padding-left: 15px;
 }
+.dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field {
   float: right;
   width: 80%;
@@ -16044,6 +16051,7 @@ a.user-link {
   padding: 5px 0;
   font-weight: bold;
 }
+#show-triggers-structure-wrapper,
 #show-filters-structure-wrapper {
   position: relative;
   z-index: 1;
@@ -16051,9 +16059,11 @@ a.user-link {
   float: left;
   margin-top: 15px;
 }
+#show-triggers-structure-wrapper span,
 #show-filters-structure-wrapper span {
   width: 120px;
 }
+#show-triggers-structure-wrapper input,
 #show-filters-structure-wrapper input {
   text-indent: 50px;
 }
@@ -16286,6 +16296,14 @@ a.user-link {
 }
 .zero-components-view .large-icon:after {
   margin-right: 45px;
+}
+.zero-components-view.Actions {
+  position: relative;
+  top: 0;
+  left: 0;
+}
+.action-type-selector-container {
+  margin-bottom: 15px;
 }
 .FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {

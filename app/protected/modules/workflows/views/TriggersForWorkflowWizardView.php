@@ -118,6 +118,7 @@
             }
             $content  = ZurmoHtml::link(Zurmo::t('WorkflowsModule', 'Modify Structure'), '#',
                             array('id'    => 'show-triggers-structure-div-link',
+                                  'class' => 'z-link',
                                   'style' => $style1));
             $content .= ZurmoHtml::tag('div',
                             array('id'    => 'show-triggers-structure-div',

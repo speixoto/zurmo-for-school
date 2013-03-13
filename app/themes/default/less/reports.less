@@ -246,8 +246,10 @@
     z-index: 10000;
 }
 
+
+.Filters,
 .Triggers,
-.Filters{
+.Actions{
     .dynamic-row{
         padding:15px 30px;
     }
@@ -271,6 +273,7 @@
     ++.border-box;
 }
 
+.dynamic-action-attribute-should-set-value,
 .dynamic-row-operator{
     float: left;
     width:20%;
@@ -278,6 +281,7 @@
     padding-left: 15px;
 }
 
+.dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field{
     float: right;
     width: 80%;
@@ -338,6 +342,7 @@
     font-weight: bold;
 }
 
+#show-triggers-structure-wrapper,
 #show-filters-structure-wrapper{
     position: relative;
     z-index: 1;
@@ -352,6 +357,7 @@
     }
 }
 
+#show-triggers-structure-div-link,
 #show-filters-structure-div-link{
     ++.z-link;
 }
@@ -604,6 +610,19 @@
         margin-right: 45px;
     }
 }
+
+.zero-components-view{
+    &.Actions{
+        position: relative;
+        top:0;
+        left: 0;
+    }
+}
+
+.action-type-selector-container{
+    margin-bottom: 15px;
+}
+
 
 .FilterIconOrSomethingElse,
 .ZeroFilters{

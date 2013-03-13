@@ -138,7 +138,7 @@
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
                                              static::resolveTypeDataAndLabels());
             $content  = Zurmo::t('WorkflowsModule', 'Select action');
-            $content .= '<BR><BR><BR><BR><BR><BR><BR><BR><BR>' . $actionTypeContent; //todo: remove the br's once styled
+            $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
                                                     'style' => "display:none;"), null);
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID,
@@ -160,9 +160,9 @@
             $itemsContent                = $this->getSortableListContent($items, ComponentForWorkflowForm::TYPE_ACTIONS);
             $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_ACTIONS));
             $hiddenInputName             = ComponentForWorkflowForm::TYPE_ACTIONS . 'RowCounter';
-            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'action-rows'), $itemsContent);
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                            ComponentForWorkflowForm::TYPE_ACTIONS), $droppableAttributesContent);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                                            ComponentForWorkflowForm::TYPE_ACTIONS), $this->getZeroComponentsContent());
@@ -329,8 +329,8 @@
                 }',
                 'success' => 'js:function(data){
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                    $(".droppable-attributes-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
-                    . '").find(".action-rows").find("ul").append(data);
+                    $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
+                    . '").find(".dynamic-rows").find("ul").append(data);
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
                     $(".' . static::getZeroComponentsClassName() . '").hide();
                     $("#' . self::ACTION_TYPE_NAME . '").val("");
@@ -354,7 +354,7 @@
         protected function registerRemoveActionScript()
         {
             $script = '
-                $(".remove-dynamic-action-row-link").live("click", function(){
+                $(".remove-dynamic-row-link").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)

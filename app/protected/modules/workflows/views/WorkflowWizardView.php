@@ -74,7 +74,7 @@
                         $('#TriggersTreeArea').html('');
                         $('." . TriggersForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput('TriggersForWorkflowWizardView');
-                        $('#ActionsForWorkflowWizardView').find('.action-rows').find('ul').find('li').remove();
+                        $('#ActionsForWorkflowWizardView').find('.dynamic-rows').find('ul').find('li').remove();
                         $('#actionType option:selected').removeAttr('selected');
                         $('." . ActionsForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         rebuildWorkflowActionRowNumbers('ActionsForWorkflowWizardView');

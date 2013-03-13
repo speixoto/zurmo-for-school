@@ -118,7 +118,7 @@
                 }
                 elseif($valueElement instanceof MixedDateTypesElement)
                 {
-                    $valueElement->editableTemplate = '<div class="dynamic-attribute-operator">{valueType}</div>' .
+                    $valueElement->editableTemplate = '<div class="dynamic-row-operator">{valueType}</div>' .
                                                       '<div class="value-data has-date-inputs">' .
                                                       '<div class="first-value-area">{content}{error}</div></div>';
                 }

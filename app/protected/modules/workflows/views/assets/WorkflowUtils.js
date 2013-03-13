@@ -3,7 +3,7 @@ $(window).ready(function(){
         $(this).draggable({
             helper: function(event){
                 var label = $(event.target).html();
-                var width = $('.wrapper').width() * 0.75 - 55;
+                var width = $('.wrapper').width() * 0.5 - 55;
                 var clone = $('<div class="dynamic-row clone">' + label + '</div>');
                 //clone.width(width);
                 clone.animate({ width : width}, 250);
@@ -79,7 +79,7 @@ function rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput(divId){
 function rebuildWorkflowActionRowNumbers(divId){
     rowCount = 1;
     structure = '';
-    $('#' + divId).find('.dynamic-action-row-number-label').each(function(){
+    $('#' + divId).find('.dynamic-row-number-label').each(function(){
         $(this).html(rowCount + '.');
         rowCount ++;
     });
