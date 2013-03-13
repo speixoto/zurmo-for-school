@@ -73,7 +73,7 @@
             $displayAttribute2    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute2->setModelAliasUsingTableAliasName('model1');  
-            $displayAttribute2->attributeIndexOrDerivedType = 'boolean'; 
+            $displayAttribute2->attributeIndexOrDerivedType = 'boolean';
                     
             //for date attribute                  
             $reportModelTestItem->date = '2013-02-12';
@@ -205,6 +205,13 @@
             $displayAttribute18->setModelAliasUsingTableAliasName('model1');
             $displayAttribute18->attributeIndexOrDerivedType = 'likeContactState';
 
+            //for boolean attribute
+            $reportModelTestItem->owner = Yii::app()->user->userModel;
+            $displayAttribute19    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute19->setModelAliasUsingTableAliasName('model1');
+            $displayAttribute19->attributeIndexOrDerivedType = 'owner__User';
+
 
             $saved                = $reportModelTestItem->save();
             $this->assertTrue($saved);
@@ -215,7 +222,8 @@
                                         $displayAttribute7, $displayAttribute8, $displayAttribute9,
                                         $displayAttribute10, $displayAttribute11, $displayAttribute12,
                                         $displayAttribute13, $displayAttribute14, $displayAttribute15,
-                                        $displayAttribute16, $displayAttribute17, $displayAttribute18), $tempId);
+                                        $displayAttribute16, $displayAttribute17, $displayAttribute18,
+                                        $displayAttribute19), $tempId);
                                                                     
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'model1');
             $adapter            = new ReportToExportAdapter($reportResultsRowData, $report);
@@ -223,11 +231,11 @@
                                          'Integer', 'Phone', 'String', 'Text Area', 'Url', 'Drop Down',
                                          'Currency Value', 'Currency Value Currency', 'Primary Address >> Street 1',
                                          'Primary Email >> Email Address', 'Multi Drop Down',
-                                         'Tag Cloud', 'Radio Drop Down', 'A name for a state');
+                                         'Tag Cloud', 'Radio Drop Down', 'A name for a state', 'Owner');
             $compareRowData     = array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                          10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                          'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
-                                         'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName');
+                                         'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName', 'Clark Kent');
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
         }
