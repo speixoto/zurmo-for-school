@@ -459,16 +459,16 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with one on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 AND 2');
-            $filter                                = new FilterForReportForm('AccountsModule', 'Account',
+            $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'createdDateTime';
             $filter->value                         = '1991-03-04';
             $filter->valueType                     = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
-            $filter2                               = new FilterForReportForm('AccountsModule', 'Account',
+            $filter2                               = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $filter2->attributeIndexOrDerivedType  = 'account___createdDateTime';
+            $filter2->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
             $filter2->value                        = '1991-03-05';
             $filter2->valueType                    = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
             $content                               = $builder->makeQueryContent(array($filter, $filter2));
@@ -567,16 +567,16 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 AND 2');
-            $filter                                = new FilterForReportForm('AccountsModule', 'Account',
+            $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $filter->attributeIndexOrDerivedType   = 'account___createdDateTime';
+            $filter->attributeIndexOrDerivedType   = 'reportModelTestItem9___createdDateTime';
             $filter->value                         = '1991-03-04';
             $filter->valueType                     = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
-            $filter2                               = new FilterForReportForm('AccountsModule', 'Account',
+            $filter2                               = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $filter2->attributeIndexOrDerivedType  = 'account___modifiedDateTime';
+            $filter2->attributeIndexOrDerivedType  = 'reportModelTestItem9___modifiedDateTime';
             $filter2->value                        = '1991-03-05';
             $filter2->valueType                    = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
             $content                               = $builder->makeQueryContent(array($filter, $filter2));
@@ -689,21 +689,21 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new FiltersReportQueryBuilder($joinTablesAdapter, '1 AND 2 AND 3');
-            $filter                                = new FilterForReportForm('AccountsModule', 'Account',
+            $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'createdDateTime';
             $filter->value                         = '1991-03-04';
             $filter->valueType                     = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
-            $filter2                               = new FilterForReportForm('AccountsModule', 'Account',
+            $filter2                               = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $filter2->attributeIndexOrDerivedType  = 'account___createdDateTime';
+            $filter2->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
             $filter2->value                        = '1991-03-05';
             $filter2->valueType                    = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
-            $filter3                               = new FilterForReportForm('AccountsModule', 'Account',
+            $filter3                               = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $filter3->attributeIndexOrDerivedType  = 'account___modifiedDateTime';
+            $filter3->attributeIndexOrDerivedType  = 'reportModelTestItem9___modifiedDateTime';
             $filter3->value                        = '1991-03-06';
             $filter3->valueType                    = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
             $content                               = $builder->makeQueryContent(array($filter, $filter2, $filter3));

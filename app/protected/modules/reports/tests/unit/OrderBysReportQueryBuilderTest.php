@@ -204,14 +204,14 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with one on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter);
-            $orderBy                               = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $orderBy->attributeIndexOrDerivedType  = 'createdDateTime';
-            $orderBy2                              = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
+            $orderBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
             $orderBy2->order                       = 'desc';
             $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
@@ -292,14 +292,14 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter);
-            $orderBy                               = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy->attributeIndexOrDerivedType  = 'account___createdDateTime';
-            $orderBy2                              = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $orderBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $orderBy2->order                       = 'desc';
             $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .
@@ -388,18 +388,18 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new OrderBysReportQueryBuilder($joinTablesAdapter);
-            $orderBy                               = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy                               = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_ROWS_AND_COLUMNS);
             $orderBy->attributeIndexOrDerivedType  = 'createdDateTime';
-            $orderBy2                              = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy2                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
+            $orderBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
             $orderBy2->order                       = 'desc';
-            $orderBy3                              = new OrderByForReportForm('AccountsModule', 'Account',
+            $orderBy3                              = new OrderByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_ROWS_AND_COLUMNS);
-            $orderBy3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $orderBy3->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $orderBy3->order                       = 'desc';
             $content                               = $builder->makeQueryContent(array($orderBy, $orderBy2, $orderBy3));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q} asc, " .

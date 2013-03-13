@@ -358,14 +358,14 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with one on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
-            $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
-            $groupBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
+            $groupBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
                                                      "{$q}item1{$q}.{$q}createddatetime{$q}";
@@ -442,14 +442,14 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
-            $groupBy->attributeIndexOrDerivedType  = 'account___createdDateTime';
-            $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
+            $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_SUMMATION);
-            $groupBy2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $groupBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
                                                      "{$q}item{$q}.{$q}modifieddatetime{$q}";
@@ -534,17 +534,17 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
-            $groupBy                               = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_SUMMATION);
             $groupBy->attributeIndexOrDerivedType  = 'createdDateTime';
-            $groupBy2                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy2                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_SUMMATION);
-            $groupBy2->attributeIndexOrDerivedType = 'account___createdDateTime';
-            $groupBy3                              = new GroupByForReportForm('AccountsModule', 'Account',
+            $groupBy2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
+            $groupBy3                              = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                 Report::TYPE_SUMMATION);
-            $groupBy3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $groupBy3->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($groupBy, $groupBy2, $groupBy3));
             $compareContent                        = "{$q}item{$q}.{$q}createddatetime{$q}, " .
                                                      "{$q}item1{$q}.{$q}createddatetime{$q}, " .
@@ -1205,6 +1205,32 @@
             $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
             $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
             $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
+        }
+
+        public function testHasManyForHasManyBelongsToOnCastedUpModel()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
+            $builder                               = new GroupBysReportQueryBuilder($joinTablesAdapter);
+            $groupBy                               = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem9',
+                                                     Report::TYPE_SUMMATION);
+            $groupBy->attributeIndexOrDerivedType  = 'reportModelTestItem9s___owner__User';
+            $content                               = $builder->makeQueryContent(array($groupBy));
+            $compareContent                        = "{$q}_user{$q}.{$q}id{$q}";
+            $this->assertEquals($compareContent, $content);
+            $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
+            $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
+
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(3, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('reportmodeltestitem91', $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem9',  $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',    $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem91', $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('id',                    $leftTablesAndAliases[1]['tableJoinIdName']);
+            $this->assertEquals('_user',                 $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',    $leftTablesAndAliases[2]['onTableAliasName']);
         }
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()

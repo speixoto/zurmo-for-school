@@ -673,18 +673,18 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with one on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                      = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                     = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
+            $displayAttribute2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}account{$q}.{$q}id{$q} accountid, ";
-            $compareContent .= "{$q}account1{$q}.{$q}id{$q} account1id ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem91{$q}.{$q}id{$q} reportmodeltestitem91id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -759,17 +759,17 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute->attributeIndexOrDerivedType  = 'account___createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute->attributeIndexOrDerivedType  = 'reportModelTestItem9___createdDateTime';
+            $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute2->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $displayAttribute2->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2));
-            $compareContent  = "select {$q}account1{$q}.{$q}id{$q} account1id ";
+            $compareContent  = "select {$q}reportmodeltestitem91{$q}.{$q}id{$q} reportmodeltestitem91id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
@@ -851,21 +851,21 @@
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 casted up attributes with both on a relation that is HAS_MANY_BELONGS_TO
-            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('Account');
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem9');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
             $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
-            $displayAttribute                               = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute                               = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                               Report::TYPE_ROWS_AND_COLUMNS);
             $displayAttribute->attributeIndexOrDerivedType  = 'createdDateTime';
-            $displayAttribute2                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                               Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute2->attributeIndexOrDerivedType = 'account___createdDateTime';
-            $displayAttribute3                              = new DisplayAttributeForReportForm('AccountsModule', 'Account',
+            $displayAttribute2->attributeIndexOrDerivedType = 'reportModelTestItem9___createdDateTime';
+            $displayAttribute3                              = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem9',
                                                               Report::TYPE_ROWS_AND_COLUMNS);
-            $displayAttribute3->attributeIndexOrDerivedType = 'account___modifiedDateTime';
+            $displayAttribute3->attributeIndexOrDerivedType = 'reportModelTestItem9___modifiedDateTime';
             $content                               = $builder->makeQueryContent(array($displayAttribute, $displayAttribute2, $displayAttribute3));
-            $compareContent  = "select {$q}account{$q}.{$q}id{$q} accountid, ";
-            $compareContent .= "{$q}account1{$q}.{$q}id{$q} account1id ";
+            $compareContent  = "select {$q}reportmodeltestitem9{$q}.{$q}id{$q} reportmodeltestitem9id, ";
+            $compareContent .= "{$q}reportmodeltestitem91{$q}.{$q}id{$q} reportmodeltestitem91id ";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
