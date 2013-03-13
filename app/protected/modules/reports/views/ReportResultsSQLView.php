@@ -43,10 +43,10 @@
          */
         protected function renderContent()
         {
-            $sqlContent  = Zurmo::t('ReportsModule', 'Count Query');
+            $sqlContent  = ZurmoHtml::Tag('h3', array(), Zurmo::t('ReportsModule', 'Count Query'));
             $sqlContent .= $this->dataProvider->makeTotalCountSqlQueryForDisplay();
             $content     = ZurmoHtml::tag('div', array(), $sqlContent);
-            $sqlContent  = Zurmo::t('ReportsModule', 'Grid Query');
+            $sqlContent  = ZurmoHtml::Tag('h3', array(), Zurmo::t('ReportsModule', 'Grid Query'));
             $sqlContent .= $this->dataProvider->makeSqlQueryForDisplay();
             $content    .= ZurmoHtml::tag('div', array(), $sqlContent);
             return $content;

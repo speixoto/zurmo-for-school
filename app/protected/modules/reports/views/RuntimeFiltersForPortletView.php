@@ -67,7 +67,7 @@
             $rowCount       = 0;
             $items          = $this->renderItems($rowCount, $form);
             $itemsContent   = $this->getNonSortableListContent($items);
-            $content       .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
+            $content       .= ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $content       .= $this->renderViewToolBarContainer($form);
             $formEnd        = $clipWidget->renderEndWidget();
             $content       .= $formEnd;
