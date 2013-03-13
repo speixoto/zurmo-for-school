@@ -269,10 +269,10 @@
             Yii::app()->clientScript->registerScript('linkedRemovalScript', "
                 //When a group by is removed, remove the corresponding display column and/or order by column if
                 //necessary
-                $('#GroupBysForReportWizardView').find('.remove-dynamic-attribute-row-link').live('click', function()
+                $('#GroupBysForReportWizardView').find('.remove-dynamic-row-link').live('click', function()
                     {
                         var inputIdBeingRemoved = $(this).prev().find('input').first().val();
-                        $('#DisplayAttributesForReportWizardView').find('.dynamic-attribute-row').each(function()
+                        $('#DisplayAttributesForReportWizardView').find('.dynamic-row').each(function()
                             {
                                 if(inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
@@ -280,7 +280,7 @@
                                 }
                             }
                         );
-                        $('#OrderBysForReportWizardView').find('.dynamic-attribute-row').each(function()
+                        $('#OrderBysForReportWizardView').find('.dynamic-row').each(function()
                             {
                                 if(inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
@@ -295,13 +295,13 @@
 
         protected function registerModuleClassNameChangeScriptExtraPart()
         {
-            return  "   $('#OrderBysForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+            return  "   $('#OrderBysForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
                         $('#OrderBysTreeArea').html('');
                         $('." . OrderBysForReportWizardView::getZeroComponentsClassName() . "').show();
-                        $('#GroupBysForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#GroupBysForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
                         $('#GroupBysTreeArea').html('');
                         $('." . GroupBysForReportWizardView::getZeroComponentsClassName() . "').show();
-                        $('#DrillDownDisplayAttributesForReportWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#DrillDownDisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
                         $('#DrillDownDisplayAttributesTreeArea').html('');
                         $('." . DrillDownDisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
                         $('input:radio[name=\"SummationReportWizardForm[ChartForReportForm][type]\"]').filter('[value=\"\"]').attr('checked', true)
