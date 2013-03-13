@@ -147,9 +147,18 @@
         {
             if (is_string($text))
             {
-                $purifier = new CHtmlPurifier();
-                $purifier->options = array('Cache.SerializerPermissions' => 0777);
-                $text = $purifier->purify($text);
+                $safeCharacters     = array('&' => '&amp;');
+                $purifier           = new CHtmlPurifier();
+                $purifier->options  = array('Cache.SerializerPermissions' => 0777);
+                $purifiedText       = $purifier->purify($text);
+                foreach ($safeCharacters as $specialCharacter => $purifiedCode)
+                {
+                    if(strpos($text, $specialCharacter) !== false)
+                    {
+                        $purifiedText = str_replace($purifiedCode, $specialCharacter, $purifiedText);
+                    }
+                }
+                $text = $purifiedText;
             }
             return $text;
         }
