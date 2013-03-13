@@ -246,6 +246,10 @@
          * is not related, it doesn't mean we shouldn't do the left join.  Further work needs to be done with this method
          * to test things out.  The starting point would be to test the conversation listview issue which is around the use
          * of owner and then work out from there.
+         *
+         * ZurmoModelDataProviderUtilTest breaks if we don't have the elseif, but ModulesSearchWithDataProviderTest
+         * breaks if we do and it breaks really bad.
+         *
          * @param $onTableAliasName
          * @return null|string
          */
@@ -256,10 +260,10 @@
             {
                 return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
             }
-            elseif($this->modelAttributeToDataProviderAdapter->isOwnedRelation())
-            {
-                return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
-            }
+            //elseif($this->modelAttributeToDataProviderAdapter->isOwnedRelation())
+            //{
+            //    return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+            //}
             return $onTableAliasName;
         }
 

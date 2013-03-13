@@ -224,7 +224,7 @@
                                                         'ReportModelTestItem',Report::TYPE_SUMMATION);
             $drillDownDisplayAttributes->attributeIndexOrDerivedType    = 'integer__Maximum';
             $drillDownDisplayAttributes->madeViaSelectInsteadOfViaModel = true;            
-            $this->assertTrue($drillDownDisplayAttributes->columnAliasName == 'col0');            
+            $this->assertEquals('col0', $drillDownDisplayAttributes->columnAliasName);
             $summationReportWizardForm->drillDownDisplayAttributes         = array($drillDownDisplayAttributes);
             $summationReportWizardForm->validateDrillDownDisplayAttributes(); 
             $this->assertFalse($summationReportWizardForm->hasErrors());            

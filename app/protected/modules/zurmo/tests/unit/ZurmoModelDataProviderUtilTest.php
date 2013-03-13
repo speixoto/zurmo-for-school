@@ -81,6 +81,7 @@
          */
         public function testResolveShouldAddFromTableWithOwnedCustomFieldAttribute()
         {
+            //todo: this test might be wrong. it might be ok that the leftTableJoinCount is 0.
             $adapter           = new RedBeanModelAttributeToDataProviderAdapter('Account', 'industry');
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
             $builder           = new ModelWhereAndJoinBuilder($adapter, $joinTablesAdapter, true);

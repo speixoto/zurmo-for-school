@@ -38,6 +38,7 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
             DisplayAttributeForReportForm::resetCount();
+            DrillDownDisplayAttributeForReportForm::resetCount();
         }
 
         public function testResolveReportToSavedReport()

@@ -142,7 +142,7 @@
          */
         public static function resetCount()
         {
-            self::$count = 0;
+            static::$count = 0;
         }
 
         /**
