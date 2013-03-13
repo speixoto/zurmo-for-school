@@ -43,7 +43,7 @@
 
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("recentlyViewed");
-            $cClipWidget->widget('application.core.widgets.ExtendedMbMenu', array(
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
                 'items' => $this->renderMenu()
             ));
             $cClipWidget->endClip();
