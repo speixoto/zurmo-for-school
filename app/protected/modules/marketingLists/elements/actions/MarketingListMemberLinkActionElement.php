@@ -48,7 +48,7 @@
             return $this->getGridId(). '-' . $this->modelId;
         }
 
-        // TODO: @Shoaibi: JS breaks for records pulled from following pages when a record is deleted.
+        // TODO: @Shoaibi: Hold/Critical: JS breaks for records pulled from following pages when a record is deleted.
         // Override render method, register a globally generic script if not already registered that handles subscribe, unsubscribe and delete
 
     }

@@ -23,7 +23,7 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-    // TODO: Shoaibi Not Used?
+    // TODO: @Shoaibi: Low: Not Used?
     /**
      * Renders an action bar, search view, and list view.
      */

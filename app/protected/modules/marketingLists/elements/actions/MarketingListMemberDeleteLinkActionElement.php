@@ -48,8 +48,8 @@
 
         protected function getHtmlOptions()
         {
-            $confirmTitle           = Zurmo::t('MarketingListsModule', 'Are you sure you want to unlink this {modelLabel}?',
-                                                            array('{modelLabel}' => $this->getModelSingularLabel())); // TODO: @Shoaibi: Here its all small, and thats how its done.
+            $confirmTitle           = Zurmo::t('MarketingListsModule', 'Are you sure you want to unlink this {modelLabel}?', // TODO: @Shoaibi: Low: change to 'record'
+                                                            array('{modelLabel}' => $this->getModelSingularLabel()));
             $confirmTitle           = Yii::app()->format->text($confirmTitle);
             $htmlOptions            = parent::getHtmlOptions();
             $htmlOptions['id']      = $this->getLinkId();

@@ -63,7 +63,7 @@
 
         public static function makeSortAttributeData()
         {
-            return array('MarketingListMember' => 'createdDateTime'); // TODO: @Shoaibi: change this.
+            return array('MarketingListMember' => 'createdDateTime'); // TODO: @Shoaibi: Low: change this.
         }
   }
 ?>

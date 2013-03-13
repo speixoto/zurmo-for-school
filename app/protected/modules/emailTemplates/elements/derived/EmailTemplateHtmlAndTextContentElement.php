@@ -130,7 +130,6 @@
                                         'content'     => $this->model->htmlContent,
                                 ));
             $cClipWidget->endClip();
-                            // TODO: @Shoaibi/@Amit <label> either needs a line break at the end or margin-bottom.
             $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
             $content                .= $cClipWidget->getController()->clips['Redactor'];
             $content                .= $this->renderHtmlContentAreaError();

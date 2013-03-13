@@ -27,6 +27,7 @@
 
     class SelectContactAndReportLinkActionElement extends LinkActionElement
     {
+        // TODO: @Shoaibi: High: This also refreshes grid.
         public function getActionType()
         {
             return 'Details';
@@ -39,7 +40,7 @@
 
         protected function getDefaultRoute()
         {
-          // TODO: @Shoaibi: has to add the action for this
+          // TODO: @Shoaibi: Medium+: have to add the action for this
         }
 
         public function render()
@@ -70,7 +71,7 @@
 
         protected function registerScripts()
         {
-            // TODO: @Shoaibi: Write JS code to handle events from here and use variableStateController
+            // TODO: @Shoaibi: Medium+: Write JS code to handle events from here and use variableStateController
             Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-listViewContactAndLead', "
                 $('#" . $this->getSelectContactAndLeadId() . "').unbind('click.action').bind('click.action', function()
                     {
@@ -97,7 +98,7 @@
 
         protected function getListViewGridId()
         {
-            // TODO: @Shoaibi: should be probably ported to parent, throws exception, work on why?
+            // TODO: @Shoaibi: Low: should be probably ported to parent, throws exception, work on why?
             if (!isset($this->params['listViewGridId']))
             {
                 throw new NotSupportedException();

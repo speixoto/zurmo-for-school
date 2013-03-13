@@ -26,6 +26,7 @@
 
     class MarketingListsDefaultController extends ZurmoModuleController
     {
+        // TODO: @Shoaibi: Low: Rewrite unit tests for all models, controllers, utils, adapters, etc
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -141,7 +142,7 @@
 
         public function actionDetails($id)
         {
-            // TODO: @Shoaibi: what about ajax?
+            // TODO: @Shoaibi: Low: what about ajax?
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,

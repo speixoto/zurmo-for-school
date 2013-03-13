@@ -47,11 +47,11 @@
 
         public function render()
         {
-            // TODO: @Shoaibi: This needs to display a tooltip style div with some information regarding current item.
+            // TODO: @Shoaibi: Medium: This needs to display a tooltip style div with some information regarding current item.
             $menuItems = array('label' => $this->getLabel(), 'url' => null,
                 'items' => array(
                     array(  'label'   => 'need div here with details?',
-                        'url'     => '#'))); //TODO: @Shoaibi: dont use default route
+                        'url'     => '#'))); //TODO: @Shoaibi: Medium: dont use default route
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(

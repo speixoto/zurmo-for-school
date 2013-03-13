@@ -26,8 +26,8 @@
 
     class MarketingListMembersListView extends SecuredListView
     {
-        // TODO: @Shoaibi: There is an extra spacing in div of portlet, check whats that all about.
-        // TODO: @Shoaibi refactor this and LatestActivitiesListView, create a parent PortletListView Class
+        // TODO: @Shoaibi: Low: There is an extra spacing in div of portlet, check whats that all about.
+        // TODO: @Shoaibi: Low: refactor this and LatestActivitiesListView, create a parent PortletListView Class
         /**
          * Form that has the information for how to display the marketing list member view.
          * @var object MarketingListMembersConfigurationForm
@@ -75,7 +75,7 @@
                         'elements' => array(
                             array('type'                            => 'MarketingListMemberSubscribeLink'),
                             array('type'                            => 'MarketingListMemberUnsubscribeLink'),
-                            array('type'                            => 'MarketingListMemberDeleteLink'), // TODO: @Shoaibi: Rename this, may be unlink
+                            array('type'                            => 'MarketingListMemberDeleteLink'), // TODO: @Shoaibi: Low: Rename this, may be unlink
                         ),
                     ),
                      'panels' => array(

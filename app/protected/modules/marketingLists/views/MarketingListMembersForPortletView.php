@@ -27,7 +27,7 @@
     class MarketingListMembersForPortletView extends ConfigurableMetadataView
                                                                   implements PortletViewInterface
     {
-        // TODO: @Shoaibi refactor this and LatestActivitiesForPortletView, create a parent PortletView Class
+        // TODO: @Shoaibi: Low: refactor this and LatestActivitiesForPortletView, create a parent PortletView Class
         /**
          * Portlet parameters passed in from the portlet.
          * @var array
@@ -81,7 +81,7 @@
                                 'htmlOptions' => array('class' => 'icon-edit'),
                                 'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
                             /*
-                             * // TODO: @Shoaibi: We need mass delete button here too.
+                             * // TODO: @Shoaibi: High: We need mass delete button here too.
                             array('type'  => 'MarketingListsDeleteMembersLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
                                 'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
@@ -93,7 +93,7 @@
             return $metadata;
         }
 
-        // TODO: @Shoaibi: Critical Hide the title bar
+        // TODO: @Shoaibi/@Amit: Low: Hide the title bar
         public function getTitle()
         {
             return null;
@@ -158,7 +158,8 @@
 
         protected function renderMembersSearchFormContent()
         {
-            // TODO: @Shoaibi: Implement Members Search From
+            // TODO: @Shoaibi: High: Implement Members Search From
+            // Global search, do not extend dynamic search
             return ZurmoHtml::tag('div', array('class' => 'marketing-list-members-search-form'), 'Members Search Form goes here');
         }
 
