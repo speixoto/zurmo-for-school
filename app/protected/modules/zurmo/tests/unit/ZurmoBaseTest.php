@@ -45,20 +45,11 @@
             Yii::app()->gamificationObserver; //runs init();
             Yii::app()->gameHelper->resetDeferredPointTypesAndValuesByUserIdToAdd();
             Yii::app()->emailHelper->sendEmailThroughTransport = false;
-            if (static::$activateDefaultLanguages)
-            {
-                Yii::app()->languageHelper->load();
-                Yii::app()->languageHelper->activateLanguagesForTest();
-            }
         }
 
         public static function tearDownAfterClass()
         {
             RedBeanColumnTypeOptimizer::$optimizedTableColumns = array();
-            if (static::$activateDefaultLanguages)
-            {
-                Yii::app()->languageHelper->deactivateLanguagesForTest();
-            }
             parent::tearDownAfterClass();
         }
 
