@@ -205,7 +205,7 @@
             $displayAttribute18->setModelAliasUsingTableAliasName('model1');
             $displayAttribute18->attributeIndexOrDerivedType = 'likeContactState';
 
-            //for boolean attribute
+            //for dynamic user attribute
             $reportModelTestItem->owner = Yii::app()->user->userModel;
             $displayAttribute19    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                      Report::TYPE_ROWS_AND_COLUMNS);
@@ -405,6 +405,13 @@
             $displayAttribute18->setModelAliasUsingTableAliasName('relatedModel');
             $displayAttribute18->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
 
+            //for dynamic user attribute
+            $reportModelTestItem->owner   = Yii::app()->user->userModel;
+            $displayAttribute19           = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2',
+                                            Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute19->setModelAliasUsingTableAliasName('relatedModel');
+            $displayAttribute19->attributeIndexOrDerivedType = 'hasMany2___owner__User';
+
             $saved                = $reportModelTestItem->save();
             $this->assertTrue($saved);
             $tempId               = 1;
@@ -414,7 +421,8 @@
                                         $displayAttribute7, $displayAttribute8, $displayAttribute9,
                                         $displayAttribute10, $displayAttribute11, $displayAttribute12,
                                         $displayAttribute13, $displayAttribute14, $displayAttribute15,
-                                        $displayAttribute16, $displayAttribute17, $displayAttribute18), $tempId);
+                                        $displayAttribute16, $displayAttribute17, $displayAttribute18,
+                                        $displayAttribute19), $tempId);
             $reportResultsRowData->addModelAndAlias($reportModelTestItem,  'relatedModel');
             $adapter     = new ReportToExportAdapter($reportResultsRowData, $report);
             $compareHeaderData  = array('Name',
@@ -435,11 +443,12 @@
                                         'ReportModelTestItems >> Multi Drop Down',
                                         'ReportModelTestItems >> Tag Cloud',
                                         'ReportModelTestItems >> Radio Drop Down',
-                                        'ReportModelTestItems >> A name for a state');
+                                        'ReportModelTestItems >> A name for a state',
+                                        'ReportModelTestItems >> Owner');
             $compareRowData     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                         'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
-                                        'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName');
+                                        'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName', 'Clark Kent');
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
             
@@ -708,12 +717,6 @@
             $compareRowData     = array(9000, true);
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
-        }
-
-        public function testWeAreMissingDynamicUser()
-        {
-            //todo: test dynamic user in the tests above.
-            $this->fail();
         }
     }
 ?>
