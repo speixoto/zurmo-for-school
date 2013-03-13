@@ -15701,12 +15701,12 @@ a.user-link {
   border-bottom: none;
   margin-bottom: 15px;
 }
-#ReportsSearchView .search-view-1 th {
-  width: 15%;
-}
 #ReportsSearchView .search-view-1 td {
   width: 34%;
   padding-right: 1%;
+}
+#ReportsSearchView .search-view-1 th {
+  width: 15%;
 }
 #ReportsSearchView .search-view-1 td + th {
   padding-left: 1%;

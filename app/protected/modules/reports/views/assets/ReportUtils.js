@@ -24,7 +24,7 @@ $(window).ready(function(){
     });
     
     var dropped = false;
-    $( ".droppable-attributes-container").droppable({
+    $( ".droppable-dynamic-rows-container").droppable({
         accept: ".attribute-to-place",
         hoverClass: "ui-state-active",
         cursor: "pointer",
