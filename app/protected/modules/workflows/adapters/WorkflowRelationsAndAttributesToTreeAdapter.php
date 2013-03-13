@@ -126,7 +126,7 @@
             {
                 $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
-                                            'wrapperClass' => 'attribute-to-place');
+                                            'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;
             }
             return $childrenNodeData;

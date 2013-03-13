@@ -7152,6 +7152,14 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 55%;
 }
+.zero-components-view .SavedWorkflow .large-icon:after,
+.splash-view .SavedWorkflow .large-icon:after {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 330px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -15714,18 +15722,23 @@ a.user-link {
 #ReportsSearchView .search-view-1 td:last-child {
   padding-right: 0;
 }
+.ComponentForWorkflowWizardView .view-toolbar-container,
 .ComponentForReportWizardView .view-toolbar-container {
   margin-top: 30px;
 }
+.ComponentForWorkflowWizardView .treeview ul,
 .ComponentForReportWizardView .treeview ul {
   background: none;
 }
+.ComponentForWorkflowWizardView .treeview li:hover,
 .ComponentForReportWizardView .treeview li:hover {
   cursor: pointer;
 }
+.ComponentForWorkflowWizardView .treeview li:active,
 .ComponentForReportWizardView .treeview li:active {
   cursor: move;
 }
+.ComponentForWorkflowWizardView .treeview .ui-draggable-dragging,
 .ComponentForReportWizardView .treeview .ui-draggable-dragging {
   background: none;
   font-weight: bold;
@@ -15753,14 +15766,17 @@ a.user-link {
   -ms-box-shadow: inset 0 1px 0 0 #ffffff;
   box-shadow: inset 0 1px 0 0 #ffffff;
 }
+.ComponentForWorkflowWizardView .radio-input,
 .ComponentForReportWizardView .radio-input {
   margin-bottom: 10px !important;
 }
+#ModuleForWorkflowWizardView table span,
 #ModuleForReportWizardView table span {
   text-align: left;
   display: block;
   margin-bottom: 20px;
 }
+#ModuleForWorkflowWizardView table td,
 #ModuleForReportWizardView table td {
   padding-left: 0;
 }
@@ -15953,6 +15969,7 @@ a.user-link {
   position: absolute;
   z-index: 10000;
 }
+.Triggers .dynamic-row,
 .Filters .dynamic-row {
   padding: 15px 30px;
 }

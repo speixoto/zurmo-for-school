@@ -70,7 +70,7 @@
             Yii::app()->clientScript->registerScript('moduleForWorkflowChangeScript', "
                 $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
                     {
-                        $('#TriggersForWorkflowWizardView').find('.attribute-rows').find('ul').find('li').remove();
+                        $('#TriggersForWorkflowWizardView').find('.dynamic-rows').find('ul').find('li').remove();
                         $('#TriggersTreeArea').html('');
                         $('." . TriggersForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput('TriggersForWorkflowWizardView');

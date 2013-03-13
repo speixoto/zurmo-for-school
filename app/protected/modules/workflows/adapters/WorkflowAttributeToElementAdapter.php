@@ -73,7 +73,7 @@
                                                   'durationSeconds', $this->form, $params);
             $durationElement->editableTemplate  = '{content}{error}'; //todo: remove brs just here for now so we can pick from dd in ui
             $durationContent                    = '<BR><BR><BR>' .$durationElement->render();
-            self::resolveDivWrapperForContent($durationContent, $content, 'dynamic-attribute-duration');
+            self::resolveDivWrapperForContent($durationContent, $content, 'dynamic-row-duration');
             return $content;
         }
 
@@ -140,8 +140,8 @@
                 throw new NotSupportedException();
             }
             $content                                = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
-            self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-attribute-operator');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
+            self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-row-operator');
             $content                               .= $valueContent;
             return $content;
         }
@@ -153,8 +153,8 @@
         {
             $groupByAxisElement = null; //todo: become a edit link and change the name of this from groupby to something else
             $content                                  = 'fxithis'.$this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
-            self::resolveDivWrapperForContent($groupByAxisElement,             $content, 'dynamic-attribute-field');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
+            self::resolveDivWrapperForContent($groupByAxisElement,             $content, 'dynamic-row-field');
             return $content;
         }
     }

@@ -93,7 +93,7 @@
         {
             $shouldSetValueContent               = $this->renderShouldSetValueContent();
             $content                             = null;
-            ZurmoHtml::resolveDivWrapperForContent($this->model->getDisplayLabel(),  $content, 'dynamic-attribute-label');
+            ZurmoHtml::resolveDivWrapperForContent($this->model->getDisplayLabel(),  $content, 'dynamic-row-label');
             ZurmoHtml::resolveDivWrapperForContent($shouldSetValueContent, $content, 'dynamic-action-attribute-should-set-value');
             $content                            .= $this->resolveTypeAndValueContent();
             return $content;
