@@ -48,14 +48,14 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label'       => 'Back to Application',
+                        'label'       => "eval:Zurmo::t('HomeModule', 'Back to Application')",
                         'url'         => array('/home/default'),
                         'itemOptions' => array('class' => 'back-to-app-menu-item')
                     ),
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'Home',
+                        'label' => "eval:Zurmo::t('HomeModule', 'Home')",
                         'url'   => array('/home/default'),
                     ),
                 ),

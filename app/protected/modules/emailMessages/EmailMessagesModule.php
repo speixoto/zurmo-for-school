@@ -72,15 +72,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Email Configuration',
-                        'descriptionLabel' => 'Manage Email Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('EmailMessagesModule', 'Email Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Email Configuration')",
                         'route'            => '/emailMessages/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Data Cleanup',
+                        'label' => "eval:Zurmo::t('EmailMessagesModule', 'Data Cleanup')",
                         'url' => array('/emailMessages/default/matchingList'),
                         'right' => self::RIGHT_ACCESS_EMAIL_MESSAGES,
                         'order' => 7,
@@ -89,15 +89,15 @@
                 'configureSubMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Email SMTP Configuration',
-                        'descriptionLabel' => 'Manage Email SMTP Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('EmailMessagesModule', 'Email SMTP Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Email SMTP Configuration')",
                         'route'            => '/emailMessages/default/configurationEditOutbound',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Email Archiving Configuration',
-                        'descriptionLabel' => 'Manage Email Archiving Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Email Archiving Configuration')",
                         'route'            => '/emailMessages/default/configurationEditArchiving',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),

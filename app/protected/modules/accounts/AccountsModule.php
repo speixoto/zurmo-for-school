@@ -69,14 +69,14 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'AccountsModulePluralLabel',
+                        'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
                         'url'   => array('/accounts/default'),
                         'right' => self::RIGHT_ACCESS_ACCOUNTS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'AccountsModuleSingularLabel',
+                        'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', \$translationParams)",
                         'url'   => array('/accounts/default/create'),
                         'right' => self::RIGHT_CREATE_ACCOUNTS,
                     ),
