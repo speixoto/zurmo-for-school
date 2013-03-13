@@ -50,7 +50,7 @@
                 'globalSearchAttributeNames' => array(),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'Conversations',
+                        'label' => "eval:Zurmo::t('ConversationsModule', 'Conversations')",
                         'url'   => array('/conversations/default'),
                         'right' => self::RIGHT_ACCESS_CONVERSATIONS,
                         'dynamicLabelContent' => 'eval:ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser()'
@@ -58,7 +58,7 @@
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Conversation',
+                        'label' => "eval:Zurmo::t('ConversationsModule', 'Conversation')",
                         'url'   => array('/conversations/default/create'),
                         'right' => self::RIGHT_CREATE_CONVERSATIONS,
                     ),

@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Base model for working with conversations
+     * Base model for working with a conversation
      */
     class Conversation extends OwnedSecurableItem implements MashableActivityInterface
     {

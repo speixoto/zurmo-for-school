@@ -71,14 +71,14 @@
                 'startingState' => 1,
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'ContactsModulePluralLabel',
+                        'label' => "eval:Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', \$translationParams)",
                         'url'   => array('/contacts/default'),
                         'right' => self::RIGHT_ACCESS_CONTACTS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'ContactsModuleSingularLabel',
+                        'label' => "eval:Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', \$translationParams)",
                         'url'   => array('/contacts/default/create'),
                         'right' => self::RIGHT_CREATE_CONTACTS,
                     ),

@@ -90,14 +90,14 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'LeadsModulePluralLabel',
+                        'label' => "eval:Zurmo::t('LeadsModule', 'LeadsModulePluralLabel', \$translationParams)",
                         'url'   => array('/leads/default'),
                         'right' => self::RIGHT_ACCESS_LEADS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'LeadsModuleSingularLabel',
+                        'label' => "eval:Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel', \$translationParams)",
                         'url'   => array('/leads/default/create'),
                         'right' => self::RIGHT_CREATE_LEADS
                     ),

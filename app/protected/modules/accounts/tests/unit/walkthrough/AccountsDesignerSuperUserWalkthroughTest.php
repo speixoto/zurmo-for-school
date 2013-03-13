@@ -42,7 +42,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             Currency::makeBaseCurrency();
-            //Create a account for testing.
+            //Create a account for testing
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
         }
 

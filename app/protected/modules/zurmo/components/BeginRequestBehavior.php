@@ -87,6 +87,7 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handlePublishLogoAssets'));
                 }
             }
         }
@@ -471,6 +472,36 @@
         public function handleDisableGamification($event)
         {
             Yii::app()->gamificationObserver->enabled = false;
+        }
+        
+        public function handlePublishLogoAssets($event)
+        {
+            if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
+            {
+                $logoFileModelId     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                $logoFileModel       = FileModel::getById($logoFileModelId);
+                $logoFileName        = $logoFileModel->name;
+                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                DIRECTORY_SEPARATOR . $logoFileName);
+                if ($logoFileSrc === false)
+                {
+                    $logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                    $logoFile        = FileModel::getById($logoFileModelId);
+                    $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName;
+                    file_put_contents($logoFilePath, $logoFile->fileContent->content, LOCK_EX);
+                    ZurmoConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
+                }
+                else
+                {
+                    if (file_exists($logoFileSrc) === false)
+                    {
+                        $cs = Yii::app()->getClientScript();
+                        $cs->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                        DIRECTORY_SEPARATOR . $logoFileName),
+                                                                                        CClientScript::POS_END);
+                    }
+                }
+            }
         }
      }
 ?>
