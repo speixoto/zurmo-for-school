@@ -856,7 +856,8 @@
             {
                 return false;
             }
-            if($precedingModel->isADerivedRelationViaCastedUpModel($precedingRelation) &&
+            $modelClassName = get_class($precedingModel);
+            if($modelClassName::isADerivedRelationViaCastedUpModel($precedingRelation) &&
                $precedingModel->getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
             {
                 return true;

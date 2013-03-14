@@ -93,9 +93,6 @@
         // class.
         private $modelClassNameToBean                                        = array();
         private $attributeNameToBeanAndClassName                             = array();
-        private $attributeNamesNotBelongsToOrManyMany                        = array();
-        private $derivedRelationNameToTypeModelClassNameAndOppposingRelation = array();
-        private $relationNameToRelationTypeModelClassNameAndOwns             = array();
         private $relationNameToRelatedModel                                  = array();
         private $unlinkedRelationNames                                       = array();
         private $validators                                                  = array();
@@ -137,32 +134,6 @@
             'readOnly'               => 'RedBeanModelReadOnlyValidator',
             'dateTimeDefault'        => 'RedBeanModelDateTimeDefaultValueValidator',
         );
-
-        /**
-         * Utilize an assumptive link when a model (X) has a relationship to another model (Y) and this is the only
-         * relationship between the 2 models.  In this scenario it 'assumes' the link_name is simple.  If X HAS_MANY Y
-         * then on the Y model, the column name will be just x_id.  There is no need for any link information to prefix
-         * the column name.  It 'assumes' it is not needed.
-         * @var integer
-         */
-        const LINK_TYPE_ASSUMPTIVE   = 0;
-
-        /**
-         * Utilize a specific link when a model (X) has 2 relationships to model (Y). Now the link information is needed.
-         * If you specific LINK_TYPE_SPECIFIC, then the 5th parameter in the relation array must also be defined. If you
-         * have X HAS_MANY Y link name = y1 and X HAS_MANY Y link name = y2, then on the y model you will have
-         * the following two columns y1_x_id and y2_x_id.
-         * @var integer
-         */
-        const LINK_TYPE_SPECIFIC     = 1;
-
-        /**
-         * Utilize for a polymorphic relationship.  Similar to LINK_TYPE_SPECIFIC, you must define the 5th parameter
-         * of the relation array.  An example is if Y has a parent relationship, but the parent model can be more than
-         * one type of model.
-         * @var integer
-         */
-        const LINK_TYPE_POLYMORPHIC  = 2;
 
         /**
          * Returns the static model of the specified AR class.
@@ -484,9 +455,6 @@
                 $this->pseudoId,
                 $this->modelClassNameToBean,
                 $this->attributeNameToBeanAndClassName,
-                $this->attributeNamesNotBelongsToOrManyMany,
-                $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation,
-                $this->relationNameToRelationTypeModelClassNameAndOwns,
                 $this->validators,
             ));
         }
@@ -497,17 +465,14 @@
             {
                 $data = unserialize($data);
                 assert('is_array($data)');
-                if (count($data) != 7)
+                if (count($data) != 4)
                 {
                     return null;
                 }
                 $this->pseudoId                                                    = $data[0];
                 $this->modelClassNameToBean                                        = $data[1];
                 $this->attributeNameToBeanAndClassName                             = $data[2];
-                $this->attributeNamesNotBelongsToOrManyMany                        = $data[3];
-                $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation = $data[4];
-                $this->relationNameToRelationTypeModelClassNameAndOwns             = $data[5];
-                $this->validators                                                  = $data[6];
+                $this->validators                                                  = $data[3];
 
                 $this->relationNameToRelatedModel = array();
                 $this->unlinkedRelationNames      = array();
@@ -648,26 +613,6 @@
             }
         }
 
-        protected static function resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, & $linkType,
-                                                                     & $relationLinkName)
-        {
-            if (count($relationTypeModelClassNameAndOwns) == 4 &&
-                $relationTypeModelClassNameAndOwns[3] != self::LINK_TYPE_ASSUMPTIVE)
-            {
-                throw new NotSupportedException();
-            }
-            if (count($relationTypeModelClassNameAndOwns) == 5)
-            {
-                $linkType          = $relationTypeModelClassNameAndOwns[3];
-                $relationLinkName  = $relationTypeModelClassNameAndOwns[4];
-            }
-            else
-            {
-                $linkType          = self::LINK_TYPE_ASSUMPTIVE;
-                $relationLinkName  = null;
-            }
-        }
-
         /**
          * Used for mixins.
          */
@@ -719,10 +664,10 @@
                         {
                             $owns = false;
                         }
-                        $linkType          = null;
-                        $relationLinkName  = null;
-                        self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,
-                                                                 $relationLinkName);
+                       // $linkType          = null;
+                       // $relationLinkName  = null;
+                       // self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,
+                       //                                          $relationLinkName);
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
@@ -739,6 +684,7 @@
                         }
                     }
                 }
+                /**
                 if (isset($metadata[$modelClassName]['derivedRelationsViaCastedUpModel']))
                 {
                     foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName =>
@@ -748,7 +694,7 @@
                                 $relationTypeModelClassNameAndOpposingRelation;
                     }
                 }
-
+                **/
                 // Add model validators. Parent validators are already applied.
                 if (isset($metadata[$modelClassName]['rules']))
                 {
@@ -1535,69 +1481,6 @@ exit;
         public function isAllowedToSetReadOnlyAttribute($attributeName)
         {
             return false;
-        }
-
-        /**
-         * Returns the link type for a
-         * relation name defined by the extending class's getMetadata() method.
-         */
-        public function getRelationLinkType($relationName)
-        {
-            assert("\$this->isRelation('$relationName')");
-            return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][3];
-        }
-
-       /**
-         * Returns the link name for a
-         * relation name defined by the extending class's getMetadata() method.
-         */
-        public function getRelationLinkName($relationName)
-        {
-            assert("\$this->isRelation('$relationName')");
-            return $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName][4];
-        }
-
-        /**
-         * Returns the opposing relation name of a derived relation
-         * defined by the extending class's getMetadata() method.
-         */
-        public function isADerivedRelationViaCastedUpModel($relationName)
-        {
-            if(isset($this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName]))
-            {
-                return true;
-            }
-            return false;
-        }
-
-        /**
-         * Returns the relation type of a derived relation
-         * defined by the extending class's getMetadata() method.
-         */
-        public function getDerivedRelationType($relationName)
-        {
-            assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
-            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][0];
-        }
-
-        /**
-         * Returns the relation model class name of a derived relation
-         * defined by the extending class's getMetadata() method.
-         */
-        public function getDerivedRelationModelClassName($relationName)
-        {
-            assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
-            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][1];
-        }
-
-        /**
-         * Returns the opposing relation name of a derived relation
-         * defined by the extending class's getMetadata() method.
-         */
-        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
-        {
-            assert("\$this->isADerivedRelationViaCastedUpModel('$relationName')");
-            return $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName][2];
         }
 
         /**

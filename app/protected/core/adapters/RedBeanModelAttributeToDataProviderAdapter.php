@@ -463,7 +463,8 @@
 
         public function isAttributeDerivedRelationViaCastedUpModel()
         {
-            if($this->getModel()->isADerivedRelationViaCastedUpModel($this->attribute))
+            $modelClassName = $this->modelClassName;
+            if($modelClassName::isADerivedRelationViaCastedUpModel($this->attribute))
             {
                 return true;
             }
