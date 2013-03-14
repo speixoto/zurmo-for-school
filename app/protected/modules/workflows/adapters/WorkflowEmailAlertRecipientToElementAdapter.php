@@ -66,7 +66,7 @@
         protected function getRecipientContent()
         {
             $content                             = null;
-            ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'email-alert-recipient-label');
+            ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'dynamic-row-label email-alert-recipient-label');
             $content                            .= $this->renderTypeContent();
             $content                            .= $this->renderRecipientTypeContent();
             $content                            .= $this->renderFormAttributesContent();
@@ -111,9 +111,12 @@
                 $dynamicUserTypeElement = new DynamicUserTypeForEmailAlertRecipientStaticDropDownElement(
                                           $this->model, 'dynamicUserType', $this->form, $params);
                 $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
-                $content .= Zurmo::t('WorkflowsModule', 'For all related {relationsDropDown}',
-                            array('{relationsDropDown}' => $relationElement->render()));
-                $content .= $dynamicUserTypeElement ->render();
+                
+                $allRelatedDropdowns  = Zurmo::t('WorkflowsModule', '<span>For all related</span> {relationsDropDown}',
+                                        array('{relationsDropDown}' => $relationElement->render()));
+                $allRelatedDropdowns .= $dynamicUserTypeElement ->render();
+                
+                $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
             elseif($formType == 'DynamicTriggeredUser')
             {
@@ -122,11 +125,14 @@
             elseif($formType == 'StaticAddress')
             {
                 $toNameElement                      = new TextElement($this->model, 'toName', $this->form, $params);
-                $toNameElement->editableTemplate    = '<div class="value-data">{label}{content}{error}</div>';
+                $toNameElement->editableTemplate    = '<div class="value-data"><span>{label}</span>{content}{error}</div>';
                 $toAddressElement                   = new TextElement($this->model, 'toAddress', $this->form, $params);
-                $toAddressElement->editableTemplate = '<div class="value-data">{label}{content}{error}</div>';
-                $content .= $toNameElement->render();
-                $content .= $toAddressElement->render();
+                $toAddressElement->editableTemplate = '<div class="value-data"><span>{label}</span>{content}{error}</div>';
+                $toNameAndAddressElements  = null;
+                $toNameAndAddressElements .= $toNameElement->render();
+                $toNameAndAddressElements .= $toAddressElement->render();
+                $content .= ZurmoHtml::tag('div', array('class' => 'static-address-field'), $toNameAndAddressElements);
+
             }
             elseif($formType == 'StaticGroup')
             {

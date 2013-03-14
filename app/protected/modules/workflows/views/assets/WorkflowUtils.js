@@ -98,7 +98,7 @@ function toggleWorkflowShouldSetValueWrapper(checkboxId)
 function rebuildWorkflowEmailAlertRowNumbers(divId){
     rowCount = 1;
     structure = '';
-    $('#' + divId).find('.dynamic-email-alert-row-number-label').each(function(){
+    $('#' + divId).find('.dynamic-row-number-label').each(function(){
         $(this).html(rowCount + '.');
         rowCount ++;
     });

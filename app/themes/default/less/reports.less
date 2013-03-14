@@ -286,7 +286,8 @@
 
 .Filters,
 .Triggers,
-.Actions{
+.Actions,
+.EmailAlerts{
     .dynamic-row{
         padding:15px 30px;
     }
@@ -648,7 +649,7 @@
 }
 
 .zero-components-view{
-    &.Actions{
+    &.Actions, &.EmailAlerts, &.TimeTrigger{
         position: relative;
         top:0;
         left: 0;
@@ -723,6 +724,39 @@
     }
 }
 
+.ZeroTriggers{
+    .large-icon:after{
+        content:'\20AC'; 
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroActions{
+    .large-icon:after{
+        content:'\20AC'; 
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroEmailAlerts{
+    .large-icon:after{
+        content:'\00A5';
+        .symbly(235px);
+        line-height: 30%;   
+    }
+}
+
+.NoTimeTrigger,
+.ZeroTimeTrigger{
+    .large-icon:after{
+        content:'q';
+        .symbly(235px);
+        line-height: 30%;   
+    }
+}
+
 #ReportResultsSQLView{
     padding: 15px;
     font-family: monospace, monaco, sans-serif;
@@ -739,4 +773,99 @@
     }
 }
 
+.EmailAlerts{
+    .col-0{
+        width:20% !important;
+    }
+    .col-1{
+        width: 80% !important;
+    }
+    .panel{
+        width:100% !important;
+    }
+}
 
+.add-email-alert-button-container{
+    float: left;
+    margin: 30px 0 15px 0;
+}
+
+.email-alert-recipient-rows{
+    ++.border-box;
+    .hasDropDown{
+        float: left;
+        min-width: 20%;
+    }
+    .dynamic-row-label{
+        width: 100%;
+    }
+    .value-data{
+        padding-left: 15px;
+        .hasDropDown{
+            width: 100% !important;
+        }
+    }
+    .dynamic-sub-row{
+        padding:0 20px;
+        > div{
+            position: relative;
+        }
+    }
+    &:hover{
+        .remove-dynamic-email-alert-recipient-row-link{
+            .opacity(100);
+        }
+    }
+}
+
+.remove-dynamic-email-alert-recipient-row-link{
+    position: absolute;
+    right: 0;
+    top: 26px;
+    display: block;
+    .symbly(24px);
+    color:#a7a7a7 !important;
+    .opacity(0);
+    .animateAll(0.2s);
+}
+
+.email-alert-recipient-type-selector-container{
+    width: 20%;
+    margin-top: 30px;
+}
+
+.all-related-field{
+    ++.border-box;
+    float: left;
+    width: 80%;
+    padding-left: 15px;
+    .value-data{
+        width: 44.5%;
+    }
+    > span{
+        float: left;
+        line-height: 26px;
+        + .value-data{
+            float: left;
+        }
+    }
+}
+
+.static-address-field{
+    ++.border-box;
+    float: left;
+    width: 80%;
+    .value-data{
+        width: 50%;
+        float: left;
+        > span{
+            float: left;
+            line-height: 26px;
+            width:25%;
+        }
+        > input {
+            float: left;
+            width: 75%;
+        }
+    }
+}

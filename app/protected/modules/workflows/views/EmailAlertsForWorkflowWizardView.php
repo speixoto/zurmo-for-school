@@ -86,8 +86,8 @@
         {
             $content  = '<div>'; //todo: is this div necessary?
             $content .= $this->renderZeroComponentsContentAndWrapper();
-            $content .= $this->renderAddEmailAlertLinkContentAndWrapper();
             $content .= $this->renderEmailAlertsContentAndWrapper();
+            $content .= $this->renderAddEmailAlertLinkContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -98,7 +98,7 @@
          */
         protected function getZeroComponentsMessageContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select an alert') . '</h2>';
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Set an alert') . '</h2>';
         }
         protected function renderZeroComponentsContentAndWrapper()
         {
@@ -109,7 +109,6 @@
         protected function renderAddEmailAlertLinkContentAndWrapper()
         {
             $content  = $this->renderAddEmailAlertLink(Zurmo::t('WorkflowsModule', 'Add Email Alert'));
-            $content .= '<BR><BR><BR><BR><BR><BR><BR><BR><BR>'; //todo: remove the br's once styled
             return ZurmoHtml::tag('div', array('class' => 'add-email-alert-button-container'), $content);
         }
 
@@ -121,7 +120,7 @@
             $itemsContent                = $this->getNonSortableListContent($items);
             $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS));
             $hiddenInputName             = ComponentForWorkflowForm::TYPE_EMAIL_ALERTS . 'RowCounter';
-            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'email-alert-rows'), $itemsContent);
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                            ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $droppableAttributesContent);
@@ -150,7 +149,7 @@
                         'success' => 'js:function(data){
                         $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_ALERTS
-                            . '").find(".email-alert-rows").find("ul").first().append(data);
+                            . '").find(".dynamic-rows").find("ul").first().append(data);
                         rebuildWorkflowEmailAlertRowNumbers("' . get_class($this) . '");
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                         }',
@@ -201,7 +200,7 @@
         protected function registerRemoveEmailAlertScript()
         {
             $script = '
-                $(".remove-dynamic-email-alert-row-link").live("click", function(){
+                $(".remove-dynamic-row-link").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)

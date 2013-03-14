@@ -89,8 +89,8 @@
         {
             $content  = '<div>'; //todo: is this div necessary?
             $content .= $this->renderZeroComponentsContentAndWrapper();
-            $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderTimeTriggerContentAndWrapper();
+            $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -138,7 +138,7 @@
                 $view                = new AttributeRowForWorkflowComponentView($adapter,
                                        1, $inputPrefixData, $this->model->timeTriggerAttribute,
                                        false, true, $componentType);
-                $timeTriggerContent  = $view->render();
+                $timeTriggerContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), '<ul>'.$view->render().'</ul>');
             }
             else
             {

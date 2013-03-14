@@ -85,7 +85,7 @@
             $content .= $this->renderRecipientContent();
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => self::REMOVE_LINK_CLASS_NAME));
-            $content  = ZurmoHtml::tag('div', array('class' => "dynamic-email-alert-recipient-row"), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => "dynamic-sub-row dynamic-email-alert-recipient-row"), $content);
             if($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array(), $content);
@@ -98,7 +98,7 @@
          */
         protected function renderRecipientRowNumberLabel()
         {
-            return ZurmoHtml::tag('span', array('class' => 'dynamic-email-alert-recipient-row-number-label'),
+            return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label dynamic-email-alert-recipient-row-number-label'),
                    ($this->rowNumber + 1) . '.');
         }
 

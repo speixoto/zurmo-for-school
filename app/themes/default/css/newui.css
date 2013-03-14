@@ -180,7 +180,10 @@ a.ModalGameNotification a,
 .hasDrillDownContent,
 .first-series-and-range-area > div,
 .second-series-and-range-area > div,
-.action-type-selector-container {
+.action-type-selector-container,
+.email-alert-recipient-rows,
+.all-related-field,
+.static-address-field {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -16019,7 +16022,8 @@ a.user-link {
 }
 .Filters .dynamic-row,
 .Triggers .dynamic-row,
-.Actions .dynamic-row {
+.Actions .dynamic-row,
+.EmailAlerts .dynamic-row {
   padding: 15px 30px;
 }
 .sortable .dynamic-row:hover {
@@ -16341,7 +16345,9 @@ a.user-link {
 .zero-components-view .large-icon:after {
   margin-right: 45px;
 }
-.zero-components-view.Actions {
+.zero-components-view.Actions,
+.zero-components-view.EmailAlerts,
+.zero-components-view.TimeTrigger {
   position: relative;
   top: 0;
   left: 0;
@@ -16404,6 +16410,35 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
+.ZeroTriggers .large-icon:after {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroActions .large-icon:after {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroEmailAlerts .large-icon:after {
+  content: '\00A5';
+  font-weight: normal;
+  font-size: 235px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.NoTimeTrigger .large-icon:after,
+.ZeroTimeTrigger .large-icon:after {
+  content: 'q';
+  font-weight: normal;
+  font-size: 235px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
 #ReportResultsSQLView {
   padding: 15px;
   font-family: monospace, monaco, sans-serif;
@@ -16415,6 +16450,99 @@ a.user-link {
 }
 .Triggers .value-data {
   padding-right: 0;
+}
+.EmailAlerts .col-0 {
+  width: 20% !important;
+}
+.EmailAlerts .col-1 {
+  width: 80% !important;
+}
+.EmailAlerts .panel {
+  width: 100% !important;
+}
+.add-email-alert-button-container {
+  float: left;
+  margin: 30px 0 15px 0;
+}
+.email-alert-recipient-rows .hasDropDown {
+  float: left;
+  min-width: 20%;
+}
+.email-alert-recipient-rows .dynamic-row-label {
+  width: 100%;
+}
+.email-alert-recipient-rows .value-data {
+  padding-left: 15px;
+}
+.email-alert-recipient-rows .value-data .hasDropDown {
+  width: 100% !important;
+}
+.email-alert-recipient-rows .dynamic-sub-row {
+  padding: 0 20px;
+}
+.email-alert-recipient-rows .dynamic-sub-row > div {
+  position: relative;
+}
+.email-alert-recipient-rows:hover .remove-dynamic-email-alert-recipient-row-link {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
+.remove-dynamic-email-alert-recipient-row-link {
+  position: absolute;
+  right: 0;
+  top: 26px;
+  display: block;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  color: #a7a7a7 !important;
+  filter: alpha(opacity=0);
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.email-alert-recipient-type-selector-container {
+  width: 20%;
+  margin-top: 30px;
+}
+.all-related-field {
+  float: left;
+  width: 80%;
+  padding-left: 15px;
+}
+.all-related-field .value-data {
+  width: 44.5%;
+}
+.all-related-field > span {
+  float: left;
+  line-height: 26px;
+}
+.all-related-field > span + .value-data {
+  float: left;
+}
+.static-address-field {
+  float: left;
+  width: 80%;
+}
+.static-address-field .value-data {
+  width: 50%;
+  float: left;
+}
+.static-address-field .value-data > span {
+  float: left;
+  line-height: 26px;
+  width: 25%;
+}
+.static-address-field .value-data > input {
+  float: left;
+  width: 75%;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {

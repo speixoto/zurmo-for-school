@@ -58,7 +58,7 @@
 
         protected static function resolveRecipientTypeDataAndLabels()
         {
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Recipient'));
+            $data = array('' => Zurmo::t('WorkflowsModule', 'Add Recipient'));
             return array_merge($data, WorkflowEmailAlertRecipientForm::getTypeValuesAndLabels());
         }
 
@@ -90,14 +90,14 @@
         {
             $content  = '<div>';
             $content .= $this->renderEmailAlertRowNumberLabel();
-            $content .= 'todo some label saying this is an alert?';
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), 'todo some label saying this is an alert?');
             $content .= '</div>';
-            $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-email-alert-row-link'));
+            $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div>';
             $content .= $this->renderEmailAlertContent();
             $content .= '</div>';
             //todo: call correctly as email-alert?, fix theme? need to maybe refcator
-            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-email-alert-row"), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
             return ZurmoHtml::tag('li', array(), $content);
         }
 
@@ -106,7 +106,7 @@
          */
         protected function renderEmailAlertRowNumberLabel()
         {
-            return ZurmoHtml::tag('span', array('class' => 'dynamic-email-alert-row-number-label'),
+            return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label'),
                 ($this->rowNumber + 1) . '.');
         }
 
@@ -144,9 +144,9 @@
         protected function renderRecipientsContent()
         {
             $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';
+            $content .= $this->renderRecipientsContentAndWrapper();
             $content .= $this->renderRecipientSelectorContentAndWrapper();
             $content .= $this->renderHiddenRecipientsInputForValidationContent();
-            $content .= $this->renderRecipientsContentAndWrapper();
             $content .= '</div>';
             return $content;
         }
@@ -240,7 +240,7 @@
             $content = null;
             foreach($items as $item)
             {
-                $content .= ZurmoHtml::tag('li', array(), $item['content']);
+                $content .= ZurmoHtml::tag('li', array('class' => 'dynamic-sub-row'), $item['content']);
             }
             return ZurmoHtml::tag('ul', array(), $content);
         }
