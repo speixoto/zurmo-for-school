@@ -51,14 +51,14 @@
                 'tabMenuItems' => array(),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Mission',
+                        'label' => "eval:Zurmo::t('MissionsModule', 'Mission')",
                         'url'   => array('/missions/default/create'),
                         'right' => self::RIGHT_CREATE_MISSIONS,
                     ),
                 ),
                 'userHeaderMenuItems' => array(
                         array(
-                            'label' => 'My Missions',
+                            'label' => "eval:Zurmo::t('MissionsModule', 'My Missions')",
                             'url'   => array('/missions/default/list' ,
                                                 'type' => MissionsListConfigurationForm::
                                                                 LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED),

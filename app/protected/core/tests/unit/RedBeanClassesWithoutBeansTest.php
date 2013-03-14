@@ -40,11 +40,14 @@
         public function testGetColumnNameByAttribute()
         {
             $a              = new A();
-            $columnName     = $a->getColumnNameByAttribute('name');
+            $columnName     = A::getColumnNameByAttribute('name');
             $this->assertEquals('name', $columnName);
             $extendedNoBean = new ExtendsNoBean();
-            $columnName     = $extendedNoBean->getColumnNameByAttribute('name');
+            $columnName     = ExtendsNoBean::getColumnNameByAttribute('name');
             $this->assertEquals('name', $columnName);
+            $aaa            = new AAA();
+            $columnName     = AAA::getColumnNameByAttribute('noBean');
+            $this->assertEquals('nobean_redbeanmodel_id', $columnName);
         }
     }
 ?>

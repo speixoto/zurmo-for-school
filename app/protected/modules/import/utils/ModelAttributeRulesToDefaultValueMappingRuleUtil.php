@@ -40,8 +40,7 @@
             assert('is_string($attributeName)');
             assert('is_string($ruleAttributeName)');
             assert('is_bool($requiredRuleIsApplicable)');
-            $model    = new $modelClassName(false);
-            assert('$model->isAttribute($attributeName)');
+            assert('$modelClassName::isAnAttribute($attributeName)');
             $metadata = $modelClassName::getMetadata();
             assert('isset($metadata[$modelClassName])');
             $applicableRules = array();
@@ -49,8 +48,7 @@
             {
                 return $applicableRules;
             }
-
-            $modelAttributeClassName = $model->getAttributeModelClassName($attributeName);
+            $modelAttributeClassName = $modelClassName::getAttributeModelClassName($attributeName);
             if (isset($metadata[$modelAttributeClassName]['rules']))
             {
                 $i = 0;

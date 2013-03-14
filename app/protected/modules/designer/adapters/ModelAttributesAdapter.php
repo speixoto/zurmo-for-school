@@ -58,7 +58,7 @@
                 $this->model->getAttributeLabel('id'),
                 'Text'
             );
-            foreach ($this->model->getAttributes() as $attributeName => $notUsed)
+            foreach ($this->model->attributeNames() as $attributeName)
             {
                 if (!$this->model->isRelation($attributeName) ||
                     $this->model->getRelationType($attributeName) == RedBeanModel::HAS_ONE)
@@ -276,7 +276,8 @@
             {
                 throw new NotSupportedException();
             }
-            $modelClassName  = $this->model->getAttributeModelClassName($attributeName);
+            $modelClassName  = get_class($this->model);
+            $modelClassName  = $modelClassName::getAttributeModelClassName($attributeName);
             $metadata        = $modelClassName::getDefaultMetadata();
             if (isset($metadata[$modelClassName]['rules']))
             {

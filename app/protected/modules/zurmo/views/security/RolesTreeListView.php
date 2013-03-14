@@ -92,7 +92,7 @@
 
         protected static function renderUserCount($userCount, $route)
         {
-            if ($userCount)
+            if ($userCount && static::resolveShouldShowLinkableUserCount())
             {
                 $element = new UsersModalListLinkActionElement(Yii::app()->controller->id,
                     Yii::app()->controller->module->id,
@@ -104,6 +104,11 @@
             {
                 return $userCount;
             }
+        }
+
+        protected static function resolveShouldShowLinkableUserCount()
+        {
+            return true;
         }
     }
 ?>

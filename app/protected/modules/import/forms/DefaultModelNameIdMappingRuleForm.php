@@ -48,10 +48,9 @@
         public function __construct($modelClassName, $modelAttributeName)
         {
             parent::__construct($modelClassName, $modelAttributeName);
-            $model = new $modelClassName(false);
-            assert('$model instanceof Item');
-            assert('$model->isRelation($modelAttributeName)');
-            $relationModelClassName       = $model->getRelationModelClassName($modelAttributeName);
+            assert('is_subclass_of($modelClassName, "Item") || $modelClassName == "Item"');
+            assert('$modelClassName::isRelation($modelAttributeName)');
+            $relationModelClassName       = $modelClassName::getRelationModelClassName($modelAttributeName);
             $defaultModuleClassName       = $relationModelClassName::getModuleClassName();
             $this->moduleIdOfDefaultModel = $defaultModuleClassName::getDirectoryName();
         }

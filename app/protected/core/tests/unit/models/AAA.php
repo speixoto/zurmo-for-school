@@ -55,5 +55,10 @@
             );
             return $metadata;
         }
+
+        public static function canSaveMetadata()
+        {
+            return true;
+        }
     }
 ?>

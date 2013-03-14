@@ -214,7 +214,7 @@
         {
             assert("\$this->isAttribute('$attributeName')");
             assert('$attributeName != "id"');
-            $attributeModelClassName = $this->getAttributeModelClassName($attributeName);
+            $attributeModelClassName = static::getAttributeModelClassName($attributeName);
             $metadata = static::getMetadata();
             if (isset($metadata[$attributeModelClassName]['noAudit']) &&
                 in_array($attributeName, $metadata[$attributeModelClassName]['noAudit']))

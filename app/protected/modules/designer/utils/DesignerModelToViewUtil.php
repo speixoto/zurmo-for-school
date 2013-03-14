@@ -38,7 +38,7 @@
             {
                 return new ModelFormAttributesAdapter(new $modelForViewClassName(new $modelClassName()));
             }
-            return new ModelAttributesAdapter(new $modelClassName());
+            return new ModelAttributesAdapter(new $modelClassName(false));
         }
 
         public static function getModelAttributesAdapterByModelForViewClassName($modelForViewClassName, $modelClassName)
@@ -48,7 +48,7 @@
             {
                 return new ModelFormAttributesAdapter(new $modelForViewClassName(new $modelClassName()));
             }
-            return new ModelAttributesAdapter(new $modelClassName());
+            return new ModelAttributesAdapter(new $modelClassName(false));
         }
 
         protected static function getModelForViewClassName($viewClassName, $modelClassName)
