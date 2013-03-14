@@ -71,14 +71,6 @@
                         'right' => self::RIGHT_ACCESS_REPORTS,
                     ),
                 ),
-                'headerMenuItems' => array(
-                    array(
-                        'label' => 'Reports',
-                        'url'   => array('/reports/default'),
-                        'right' => self::RIGHT_ACCESS_REPORTS,
-                        'order' => 8,
-                    ),
-                ),
                 'shortcutsCreateMenuItems' => array(
                     array(
                         'label' => 'Report',

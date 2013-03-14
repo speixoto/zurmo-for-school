@@ -346,7 +346,7 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            return 'js:function(id, options) {console.log(id); makeSmallLoadingSpinner(true, "#"+id); }';
+            return 'js:function(id, options) {makeSmallLoadingSpinner(true, "#"+id); }';
         }
 
         /**

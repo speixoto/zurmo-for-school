@@ -163,6 +163,7 @@
                     'update' => '#' . get_class($this)),
                     array('id'		  => 'refreshPortletLink-' . get_class($this),
                           'class'     => 'refreshPortletLink',
+                          'style'     => "display:none;",
                           'live'      => true,
                           'namespace' => 'refresh'));
         }

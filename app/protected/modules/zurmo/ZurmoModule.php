@@ -144,7 +144,8 @@
                     'leads',
                     'contacts',
                     'opportunities',
-                    'conversations'
+                    'conversations',
+                    'reports',
                 )
             );
             return $metadata;
