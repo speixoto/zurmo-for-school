@@ -446,6 +446,7 @@ a.ModalGameNotification a.attachLoading.z-button {
 .z-button:not(.attachLoading) .z-label,
 a.zButton:not(.attachLoading) .z-label,
 a.z-button:not(.attachLoading) .z-label,
+.white-button:not(.attachLoading) .z-label,
 .search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
 a.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
 #progressBar-links a:not(.attachLoading) .z-label,
