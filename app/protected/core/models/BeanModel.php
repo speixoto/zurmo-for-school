@@ -350,7 +350,6 @@
          */
         public static function generateAnAttributeLabel($attributeName)
         {
-            assert('self::isAnAttribute($attributeName, get_called_class())');
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 

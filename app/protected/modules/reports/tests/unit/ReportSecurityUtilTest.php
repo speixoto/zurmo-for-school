@@ -24,12 +24,76 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-class ReportSecurityUtilTest extends ZurmoBaseTest
-{
-    public function testSomeMethodsInReportModel()
+    class ReportSecurityUtilTest extends ZurmoBaseTest
     {
-        //todo:
-        //$this->fail();
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('bobby');
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testCanCurrentUserCanAccessModule()
+        {
+            $this->assertTrue(ReportSecurityUtil::canCurrentUserCanAccessModule('AccountsModule'));
+            $this->assertTrue(ReportSecurityUtil::canCurrentUserCanAccessModule('ContactsModule'));
+
+        }
+
+        public function testCanCurrentUserAccessAllComponentsWithSuperUser()
+        {
+            $componentForms = array();
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'string';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = 'Jason';
+            $componentForms[] = $filter;
+            $filter2                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $filter2->attributeIndexOrDerivedType = 'hasOne___name';
+            $filter2->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter2->value                       = 'Jason';
+            $componentForms[] = $filter2;
+            $this->assertTrue(ReportSecurityUtil::canCurrentUserAccessAllComponents($componentForms));
+        }
+
+        public function testCanCurrentUserAccessAllComponentsWithLimitedAccessUser()
+        {
+            Yii::app()->user->userModel = User::getByUserName('bobby');
+            $componentForms = array();
+            $filter                              = new FilterForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'officePhone';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = '123456789';
+            $componentForms[] = $filter;
+            $this->assertFalse(ReportSecurityUtil::canCurrentUserAccessAllComponents($componentForms));
+
+            Yii::app()->user->userModel->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
+            Yii::app()->user->userModel->save();
+            $this->assertTrue(ReportSecurityUtil::canCurrentUserAccessAllComponents($componentForms));
+
+            //Test that bobby cannot access the related contacts
+            $filter2                              = new FilterForReportForm('AccountsModule', 'Account',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $filter2->attributeIndexOrDerivedType = 'contacts___website';
+            $filter2->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter2->value                       = 'zurmo.com';
+            $componentForms[] = $filter2;
+            $this->assertFalse(ReportSecurityUtil::canCurrentUserAccessAllComponents($componentForms));
+
+
+            //Now add access, and bobby can.
+            Yii::app()->user->userModel->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);
+            Yii::app()->user->userModel->save();
+            $this->assertTrue(ReportSecurityUtil::canCurrentUserAccessAllComponents($componentForms));
+        }
     }
-}
 ?>
