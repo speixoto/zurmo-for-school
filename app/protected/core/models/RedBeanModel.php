@@ -1332,15 +1332,6 @@
             {
                 if (!static::isRelation($attributeName))
                 {
-                    if(!isset($this->attributeNameToBeanAndClassName[$attributeName]))
-                    {
-                        echo "<pre>";
-                        print_r(static::getAttributeNamesNotBelongsToOrManyManyForModel());
-                        print_r(array_keys($this->attributeNameToBeanAndClassName));
-                        echo "</pre>";
-exit;
-                    }
-
                     $bean       = $this->attributeNameToBeanAndClassName[$attributeName][0];
                     $columnName = strtolower($attributeName);
                     if ($bean->$columnName !== $value)
