@@ -871,7 +871,11 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('item',           $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('activity',       $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',  $leftTablesAndAliases[1]['onTableAliasName']);
+
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributes()
@@ -894,6 +898,18 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('customfield',          $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[5]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesNestedTwoLevelsDeep()
@@ -916,6 +932,20 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('opportunity',          $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('customfield',          $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('opportunity',          $leftTablesAndAliases[6]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithTwoAttributesComingAtItFromANestedPoint()
@@ -938,7 +968,20 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('reportmodeltestitem5',         $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem7',         $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item_reportmodeltestitem5',    $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem5',         $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('item',                         $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item_reportmodeltestitem5',    $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('securableitem',                $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('item',                         $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',           $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('securableitem',                $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('reportmodeltestitem',          $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',           $leftTablesAndAliases[5]['onTableAliasName']);
+            $this->assertEquals('customfield',                  $leftTablesAndAliases[6]['tableAliasName']);
+            $this->assertEquals('reportmodeltestitem',          $leftTablesAndAliases[6]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithItemAttribute()
@@ -957,7 +1000,11 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDownSoFarWithMixedInAttribute()
@@ -976,7 +1023,18 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(6, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('_user',                $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
+            $this->assertEquals('person',               $leftTablesAndAliases[5]['tableAliasName']);
+            $this->assertEquals('_user',                $leftTablesAndAliases[5]['onTableAliasName']);
         }
 
         public function testInferredRelationModelAttributeWithCastingHintToNotCastDowButAlsoWithFullCastDown()
@@ -999,26 +1057,29 @@
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(5, $joinTablesAdapter->getLeftTableJoinCount());
-            //todo: validate the correct table information.
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[0]['tableAliasName']);
+            $this->assertEquals('activity',             $leftTablesAndAliases[0]['onTableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[1]['tableAliasName']);
+            $this->assertEquals('activity_item',        $leftTablesAndAliases[1]['onTableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[2]['tableAliasName']);
+            $this->assertEquals('item',                 $leftTablesAndAliases[2]['onTableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[3]['tableAliasName']);
+            $this->assertEquals('securableitem',        $leftTablesAndAliases[3]['onTableAliasName']);
+            $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
+            $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
         }
-
-        /**
-         * echo "<pre>";
-        print_r($joinTablesAdapter->getFromTablesAndAliases());
-        print_r($joinTablesAdapter->getLeftTablesAndAliases());
-        echo "</pre>";
-         */
 
         public function testDerivedRelationViaCastedUpModelAttributeThatCastsDownTwiceWithNoSkips()
         {
-            //todo: test casting down more than one level. not sure how to test this.. since meetings is only one skip past activity not really testing that castDown fully
+            //todo: test casting down more than one level. not sure how to test this..
+            //since meetings is only one skip past activity not really testing that castDown fully
             //$this->fail();
         }
 
         public function testPolymorphic()
         {
             //todo: test polymorphics too? maybe we wouldnt have any for now? but we should still mark fail test here...
-            //s$this->fail();
+            //$this->fail();
         }
     }
 ?>
