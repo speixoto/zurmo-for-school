@@ -113,8 +113,8 @@
         {
             $content  = '<div>'; //todo: is this div necessary?
             $content .= $this->renderZeroComponentsContentAndWrapper();
-            $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderActionsContentAndWrapper();
+            $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -137,11 +137,13 @@
         {
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
                                              static::resolveTypeDataAndLabels());
-            $content  = Zurmo::t('WorkflowsModule', 'Select action');
+            $content  = ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), Zurmo::t('WorkflowsModule', 'Add action'));
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
+                                                    'class' => 'related-model-selector',
                                                     'style' => "display:none;"), null);
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID,
+                                                    'class' => 'related-model-selector',
                                                     'style' => "display:none;"), null);
             return      ZurmoHtml::tag('div', array('class' => 'action-type-selector-container'), $content);
         }

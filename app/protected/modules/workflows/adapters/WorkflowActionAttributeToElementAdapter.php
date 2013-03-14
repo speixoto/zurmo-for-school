@@ -91,10 +91,10 @@
          */
         protected function getAttributeContent()
         {
-            $shouldSetValueContent               = $this->renderShouldSetValueContent();
-            $content                             = null;
-            ZurmoHtml::resolveDivWrapperForContent($this->model->getDisplayLabel(),  $content, 'dynamic-row-label');
+            $shouldSetValueContent                = $this->renderShouldSetValueContent();
+            $content                              = null;
             ZurmoHtml::resolveDivWrapperForContent($shouldSetValueContent, $content, 'dynamic-action-attribute-should-set-value');
+            ZurmoHtml::resolveDivWrapperForContent($this->model->getDisplayLabel(),  $content, 'dynamic-row-label');
             $content                            .= $this->resolveTypeAndValueContent();
             return $content;
         }

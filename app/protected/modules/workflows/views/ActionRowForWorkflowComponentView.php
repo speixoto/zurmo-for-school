@@ -82,7 +82,7 @@
             $content .= $this->renderSaveActionElementsContent();
             $content .= '</div>';
             //todo: call correctly as action, fix theme? need to maybe refcator
-            $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-row"), $content);
+            $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
             return ZurmoHtml::tag('li', array(), $content);
         }
 
@@ -152,14 +152,12 @@
             $content = ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
             foreach($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
-                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
-                $content .= '<BR><BR>'; //todo: remove once css is in place correctly
+                $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-sub-row'), $attributeContent);
             }
             $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
             foreach($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
-                $content .= ZurmoHtml::tag('div', array(), $attributeContent);
-                $content .= '<BR><BR>'; //todo: remove once css is in place correctly
+                $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-sub-row'), $attributeContent);
             }
             return $content;
         }

@@ -169,6 +169,7 @@ a.ModalGameNotification a,
 .drop-zone,
 .drop-zone div,
 .dynamic-row,
+.dynamic-sub-row,
 .dynamic-row-label,
 .dynamic-action-attribute-should-set-value,
 .dynamic-row-operator,
@@ -178,7 +179,8 @@ a.ModalGameNotification a,
 .report-runtime-availability,
 .hasDrillDownContent,
 .first-series-and-range-area > div,
-.second-series-and-range-area > div {
+.second-series-and-range-area > div,
+.action-type-selector-container {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -192,7 +194,11 @@ a.ModalGameNotification a,
 .dynamic-row:before,
 .dynamic-row:after,
 .dynamic-row > div:before,
-.dynamic-row > div:after {
+.dynamic-row > div:after,
+.dynamic-sub-row:before,
+.dynamic-sub-row:after,
+.action-type-selector-container:before,
+.action-type-selector-container:after {
   content: "";
   display: table;
 }
@@ -200,14 +206,18 @@ a.ModalGameNotification a,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
-.dynamic-row > div:after {
+.dynamic-row > div:after,
+.dynamic-sub-row:after,
+.action-type-selector-container:after {
   clear: both;
 }
 .cf,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
-.dynamic-row > div {
+.dynamic-row > div,
+.dynamic-sub-row,
+.action-type-selector-container {
   zoom: 1;
 }
 .clearfix {
@@ -15968,10 +15978,44 @@ a.user-link {
   -moz-opacity: 1;
   opacity: 1;
 }
+.dynamic-row .z-button {
+  margin-left: 0;
+}
 .dynamic-row.clone {
   padding: 15px;
   position: absolute;
   z-index: 10000;
+}
+.dynamic-sub-row {
+  position: relative;
+  width: 100%;
+  display: block;
+  margin: 0 0 10px 0;
+}
+.dynamic-sub-row .dynamic-action-attribute-should-set-value {
+  padding: 0;
+  width: auto;
+  margin-right: 10px;
+}
+.dynamic-sub-row .dynamic-row-label {
+  width: 25%;
+}
+.dynamic-sub-row .dynamic-action-attribute-type-and-value-wrapper {
+  width: 70%;
+}
+.dynamic-sub-row + h3 {
+  margin-top: 15px;
+}
+.dynamic-action-attribute-type {
+  width: 45%;
+  float: left;
+}
+.dynamic-action-attribute-type > span {
+  line-height: 26px;
+}
+.dynamic-action-attribute-type + .value-data {
+  width: 55%;
+  padding-left: 15px;
 }
 .Filters .dynamic-row,
 .Triggers .dynamic-row,
@@ -16286,7 +16330,7 @@ a.user-link {
   border-right: none;
   margin-right: 0;
   width: 100%;
-  textalign: center;
+  text-align: center;
 }
 .zero-components-view h2 {
   padding-top: 10px;
@@ -16301,9 +16345,28 @@ a.user-link {
   position: relative;
   top: 0;
   left: 0;
+  float: none;
 }
 .action-type-selector-container {
-  margin-bottom: 15px;
+  background: #f0f0f0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 15px 15px 15px 15px;
+  margin: 30px 0 15px 0;
+  float: left;
+  width: 100%;
+}
+.action-type-selector-container > .hasDropDown {
+  float: left;
+  width: 80%;
+}
+.related-model-selector {
+  float: left;
+  width: 80%;
+  margin: 10px 0 0 20%;
 }
 .FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {
@@ -16349,6 +16412,9 @@ a.user-link {
 }
 #ReportResultsSQLView > div + div {
   margin-top: 15px;
+}
+.Triggers .value-data {
+  padding-right: 0;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {

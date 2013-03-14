@@ -238,12 +238,49 @@
             .opacity(100);
         }
     }
+    .z-button{
+        margin-left:0;
+    }
 }
 
 .dynamic-row.clone{
     padding: 15px;
     position: absolute;
     z-index: 10000;
+}
+
+.dynamic-sub-row{
+    ++.cf;
+    ++.border-box;
+    position: relative;
+    width: 100%;
+    display: block;
+    margin:0 0 10px 0;
+    .dynamic-action-attribute-should-set-value{
+        padding: 0;
+        width: auto;
+        margin-right:10px;
+    }
+    .dynamic-row-label{
+        width: 25%;
+    }
+    .dynamic-action-attribute-type-and-value-wrapper{
+        width: 70%;
+    }
+    + h3{
+        margin-top: 15px;
+    }
+}
+.dynamic-action-attribute-type{
+    width: 45%;
+    float: left;
+    > span{
+        line-height: 26px;
+    }
+    + .value-data{
+        width: 55%;
+        padding-left: 15px;
+    }
 }
 
 
@@ -334,7 +371,6 @@
         top:42px;
     }
 }
-
 
 .dynamic-and-for-mixed{
     display: inline-block;
@@ -598,7 +634,7 @@
         border-right:none;
         margin-right: 0;
         width: 100%;
-        textalign:center;
+        text-align:center;
     }
     h2{
         padding-top:10px;
@@ -616,11 +652,33 @@
         position: relative;
         top:0;
         left: 0;
+        float: none;
     }
 }
 
 .action-type-selector-container{
-    margin-bottom: 15px;
+    //margin-bottom: 15px;
+    //.dynamic-row();
+    //float: left;
+    //line-height: 26px;
+    //width: 20%;
+    ++.cf;
+    ++.border-box;
+    background: #f0f0f0;
+    .radius(3px);
+    padding:15px 15px 15px 15px;
+    margin: 30px 0 15px 0;
+    float: left;
+    width: 100%;
+    > .hasDropDown{
+        float: left;
+        width:80%;
+    }
+}
+.related-model-selector{
+    float: left;
+    width: 80%;
+    margin:10px 0 0 20%;
 }
 
 
@@ -674,3 +732,11 @@
         margin-top:15px;
     }
 }
+
+.Triggers{
+    .value-data{
+        padding-right: 0;
+    }
+}
+
+
