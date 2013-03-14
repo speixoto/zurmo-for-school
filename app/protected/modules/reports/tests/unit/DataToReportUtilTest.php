@@ -30,6 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('bobby');
         }
 
         public function setUp()
@@ -40,16 +41,40 @@
 
         public function testResolveReportByWizardPostData()
         {
-            //todo: test to make sure every component get resolved correctly into the report
-            //also test that date/datetime gets converted properly.
-            //DataToReportUtil::resolveReportByWizardPostData(Report $report, $postData, $wizardFormClassName)
-            //$this->fail();
-        }
+            $bobby               = User::getByUserName('bobby');
+            $wizardFormClassName = 'RowsAndColumnsReportWizardForm';
+            $report              = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $data                     = array();
+            $data['moduleClassName']  = 'ReportsTestModule';
+            $data['description']      = 'a description';
+            $data['name']             = 'name';
+            $data['filtersStructure'] = '1 AND 2';
+            $data['ownerId']          = $bobby->id;
+            $data['currencyConversionType']     = Report::CURRENCY_CONVERSION_TYPE_SPOT;
+            $data['spotConversionCurrencyCode'] = 'EUR';
+            $data[ComponentForReportForm::TYPE_FILTERS][] = array('attributeIndexOrDerivedType' => 'date',
+                'operator'                    => 'between',
+                'value'                       => '2/24/12',
+                'secondValue'                 => '2/28/12');
 
-        public function testResolveFilters()
-        {
-            //todo: test each filter type.
-            //$this->fail();
+            DataToReportUtil::resolveReportByWizardPostData($report, array('RowsAndColumnsReportWizardForm' => $data),
+                                                            $wizardFormClassName);
+            $this->assertEquals('ReportsTestModule',                    $report->getModuleClassName());
+            $this->assertEquals('a description',                        $report->getDescription());
+            $this->assertEquals('name',                                 $report->getName());
+            $this->assertEquals('1 AND 2',                              $report->getFiltersStructure());
+            $this->assertEquals($bobby->id,                             $report->getOwner()->id);
+            $this->assertEquals(Report::CURRENCY_CONVERSION_TYPE_SPOT,  $report->getCurrencyConversionType());
+            $this->assertEquals('EUR',                                  $report->getSpotConversionCurrencyCode());
+
+            $filters = $report->getFilters();
+            $this->assertCount(1, $filters);
+            $this->assertEquals('2012-02-24', $filters[0]->value);
+            $this->assertEquals('2012-02-28', $filters[0]->secondValue);
+
+
+            //todo: test rest of components
         }
 
         public function testResolveFiltersAndDateConvertsProperlyToDbFormat()

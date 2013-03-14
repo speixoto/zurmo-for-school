@@ -290,7 +290,7 @@
          */
         public function getDerivedRelationType($relationName)
         {
-            assert("\self::isADerivedRelationViaCastedUpModel('$relationName')");
+            assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
             return $derivedRelations[$relationName][0];
         }
@@ -301,7 +301,7 @@
          */
         public function getDerivedRelationModelClassName($relationName)
         {
-            assert("\self::isADerivedRelationViaCastedUpModel('$relationName')");
+            assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
             return $derivedRelations[$relationName][1];
         }
@@ -312,7 +312,7 @@
          */
         public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
         {
-            assert("\self::isADerivedRelationViaCastedUpModel('$relationName')");
+            assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
             return $derivedRelations[$relationName][2];
         }
