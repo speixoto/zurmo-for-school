@@ -24,22 +24,45 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    Yii::import('application.core.widgets.JuiDatePicker');
-    class ExtendedJuiDatePicker extends JuiDatePicker
+    Yii::import('application.extensions.timepicker.EJuiDateTimePicker');
+    class ZurmoJuiDateTimePicker extends EJuiDateTimePicker
     {
         /**
          * This function overrides the run method from JuiDatePicker
          */
         public function run()
         {
+            $this->resolveDefaultOptions();
+            $this->resolveDefaultLanguage();
+            $this->resolveStyle();
+            parent::run();
+        }
+
+        protected function resolveDefaultOptions()
+        {
+            $this->options['stepMinute'] = 5;
+            $this->options['timeText'] = Zurmo::t('Core', 'Time');
+            $this->options['hourText'] = Zurmo::t('Core', 'Hour');
+            $this->options['minuteText'] = Zurmo::t('Core', 'Minute');
+            $this->options['secondText'] = Zurmo::t('Core', 'Second');
             $this->options['showOn'] = 'both';
             $this->options['buttonText'] = ZurmoHtml::tag('span', array(), '<!--Date-->');
-            $this->options['showButtonPanel'] = true;
             $this->options['buttonImageOnly'] = false;
             $this->options['dateFormat'] = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
                                             DateTimeUtil::getLocaleDateFormat());
+            $this->options['timeFormat'] = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
+                                            DateTimeUtil::getLocaleTimeFormat());
+            $this->options['ampm'] = DateTimeUtil::isLocaleTimeDisplayedAs12Hours();
+        }
+
+        protected function resolveDefaultLanguage()
+        {
             $this->language = YiiToJqueryUIDatePickerLocalization::getLanguage();
-            parent::run();
+        }
+
+        protected function resolveStyle()
+        {
+            $this->htmlOptions['style'] = 'position:relative;z-index:10000;';
         }
     }
 ?>
