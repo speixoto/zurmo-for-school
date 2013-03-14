@@ -541,10 +541,44 @@
             $this->assertEquals($compareStructure, $metadata['structure']);
         }
 
-        public function testIsNullAndIsNotNull()
+        public function testIsNull()
         {
-            //$this->fail();
-            //todo: check isNull, isNotNull, see how this turns up since i think it has to be a null value not sure if that works.
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'string';
+            $filter->operator                    = OperatorRules::TYPE_IS_NULL;
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'string',
+                    'operatorType'         => 'isNull',
+                    'value'                =>  null,
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
+        }
+
+        public function testIsNotNull()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'string';
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_NULL;
+            $metadataAdapter                     = new FilterForReportFormToDataProviderMetadataAdapter($filter);
+            $metadata                            = $metadataAdapter->getAdaptedMetadata();
+            $compareClauses = array(
+                1 => array(
+                    'attributeName'        => 'string',
+                    'operatorType'         => 'isNotNull',
+                    'value'                =>  null,
+                ),
+            );
+            $compareStructure = '1';
+            $this->assertEquals($compareClauses, $metadata['clauses']);
+            $this->assertEquals($compareStructure, $metadata['structure']);
         }
     }
 ?>

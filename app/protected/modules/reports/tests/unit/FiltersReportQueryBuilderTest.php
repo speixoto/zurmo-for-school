@@ -1325,7 +1325,8 @@
         /**
          * Multi-select should utilize a sub-query as part of its query.
          */
-        public function testASingleMultiSelectAttribute()
+
+        public function testASingleMultiSelectAttributeWithOneOfOperator()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
@@ -1353,7 +1354,7 @@
         /**
          * Tag cloud should utilize a sub-query as part of its query.
          */
-        public function testASingleTagCloudAttribute()
+        public function testASingleTagCloudAttributeWithEqualsOperator()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
@@ -1362,15 +1363,15 @@
             $filter                                = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                                      Report::TYPE_ROWS_AND_COLUMNS);
             $filter->attributeIndexOrDerivedType   = 'tagCloud';
-            $filter->value                         = array('a', 'b');
-            $filter->operator                      = OperatorRules::TYPE_ONE_OF;
+            $filter->value                         = 'a';
+            $filter->operator                      = OperatorRules::TYPE_EQUALS;
             $content                               = $builder->makeQueryContent(array($filter));
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $compareContent =   "(1 = (select 1 from {$q}customfieldvalue{$q} customfieldvalue where " .
                                 "{$q}customfieldvalue{$q}.{$q}multiplevaluescustomfield_id{$q} = {$q}" .
                                 "multiplevaluescustomfield{$q}.id and {$q}customfieldvalue{$q}.{$q}value{$q}" .
-                                " IN('a','b') limit 1))";
+                                " = 'a' limit 1))";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());

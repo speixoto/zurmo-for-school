@@ -144,19 +144,20 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_string($operatorType)');
-            assert('is_array($value) && count($value) > 0');
+            assert('(is_array($value) && count($value) > 0) || is_string($value)');
             assert('is_array($where)');
             assert('is_int($whereKey)');
             $relationAttributeModelClassName = $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationModelClassName();
-            if ($relationAttributeModelClassName != 'CustomFieldValue' || $operatorType != 'oneOf')
+            if ($relationAttributeModelClassName != 'CustomFieldValue' && $operatorType != 'allOf')
             {
                 //Until we can add a third parameter to the search adapter metadata, we have to assume we are only doing
                 //this for CustomFieldValue searches. Below we have $joinColumnName, since we don't have any other way
                 //of ascertaining this information for now.
 
-                //only support oneOf for the moment.  Once we add allOf, need to have an alternative sub-query
+                //Once we add allOf, need to have an alternative sub-query
                 //below that uses if/else logic to compare count against how many possibles. then return 1 or 0.
-                throw new NotSupportedException();
+                throw new NotSupportedException('modelClassName: ' . $relationAttributeModelClassName .
+                                                ' operatorType: ' . $operatorType);
             }
             $relationAttributeTableName      = RedBeanModel::getTableName($relationAttributeModelClassName);
             $tableAliasName                  = $relationAttributeTableName;
