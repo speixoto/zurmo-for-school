@@ -1146,8 +1146,8 @@
             $filter->value                         = '1991-03-04';
             $filter->valueType                     = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
             $content                               = $builder->makeQueryContent(array($filter));
-            $compareContent                        = "(({$q}item1{$q}.{$q}createdbydatetime{$q} >= '1991-03-04 00:00:00') and " .
-                "({$q}item1{$q}.{$q}createdbydatetime{$q} <= '1991-03-04 23:59:59'))";
+            $compareContent                        = "(({$q}item1{$q}.{$q}createddatetime{$q} >= '1991-03-04 00:00:00') and " .
+                                                     "({$q}item1{$q}.{$q}createddatetime{$q} <= '1991-03-04 23:59:59'))";
             $leftTablesAndAliases                  = $joinTablesAdapter->getLeftTablesAndAliases();
             $fromTablesAndAliases                  = $joinTablesAdapter->getFromTablesAndAliases();
             $this->assertEquals($compareContent, $content);
