@@ -42,14 +42,14 @@
             $account = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
         }
 
-        public function testSuperUserCustomFieldsWalkthroughForAccountsModule()
+        public function testSuperUserCustomDateNotRequiredFieldWalkthroughForAccountsModule()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //Test create field list.
             $this->resetPostArray();
             $this->setGetArray(array('moduleClassName' => 'AccountsModule'));
             //View creation screen, then create custom field for date custom field type.
-            $this->createDateCustomFieldByModuleForNullValueBug ('AccountsModule', 'date1');
+            $this->createDateNotRequiredCustomFieldByModule ('AccountsModule', 'datenotreq');
             $this->setGetArray(array('moduleClassName' => 'AccountsModule',
                                      'viewClassName'   => 'AccountEditAndDetailsView'));
             $layout = AccountsDesignerWalkthroughHelperUtil::getAccountEditAndDetailsViewLayoutWithAllCustomFieldsPlaced();
@@ -108,7 +108,7 @@
                                                                                   'country' => 'USA'),
                                     'description'                           => 'This is a Description',
                                     'explicitReadWriteModelPermissions'     => array('type' => null),
-                                    'date1Cstm'                             => $date)));
+                                    'datenotreqCstm'                        => $date)));
             $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/create');
 
             //Check the details if they are saved properly for the custom fields.
@@ -148,7 +148,7 @@
             $this->assertEquals($account[0]->description                    , 'This is a Description');
             $this->assertEquals(0                                           , count($readWritePermitables));
             $this->assertEquals(0                                           , count($readOnlyPermitables));
-            $this->assertEquals($account[0]->date1Cstm                       , $dateAssert);
+            $this->assertEquals($account[0]->datenotreqCstm                 , $dateAssert);
         }
         
         public function testEditAnAccountUserAfterTheCustomDateFieldNullValueBugForAccountsModule()
@@ -189,7 +189,7 @@
                                                                                   'country' => 'USA'),
                                     'description'                           => 'This is a Description',
                                     'explicitReadWriteModelPermissions'     => array('type' => null),
-                                    'date1Cstm'                             => ''))); //setting null value 
+                                    'datenotreqCstm'                        => ''))); //setting null value 
             $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/edit');
 
             //Check the details if they are saved properly for the custom fields.
@@ -229,7 +229,7 @@
             $this->assertEquals($account[0]->description                    , 'This is a Description');
             $this->assertEquals(0                                           , count($readWritePermitables));
             $this->assertEquals(0                                           , count($readOnlyPermitables));
-            $this->assertEquals($account[0]->date1Cstm                      , null);
+            $this->assertEquals($account[0]->datenotreqCstm                 , null);
         }
     }
 ?>
