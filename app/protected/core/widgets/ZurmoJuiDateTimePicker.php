@@ -34,7 +34,7 @@
         {
             $this->resolveDefaultOptions();
             $this->resolveDefaultLanguage();
-            $this->resolveStyle();
+            $this->resolveHtmlOptions();
             parent::run();
         }
 
@@ -60,7 +60,7 @@
             $this->language = YiiToJqueryUIDatePickerLocalization::getLanguage();
         }
 
-        protected function resolveStyle()
+        protected function resolveHtmlOptions()
         {
             $this->htmlOptions['style'] = 'position:relative;z-index:10000;';
         }
