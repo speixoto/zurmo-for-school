@@ -305,11 +305,11 @@
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); addListViewSelectedIdsToUrl(id, options); }';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id + " > .list-preloader"); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); }';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id + " > .list-preloader"); }';
             }
         }
 
