@@ -31,16 +31,23 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField'),
-                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
-                    'multipleSomethings' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
-                    'tagCloud'           => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField'),
+                    'industry'           => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
+                    'market'             => array(RedBeanModel::HAS_ONE, 'CustomField', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'market'),
+                    'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
+                    'multipleSomethings' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleSomethings'),
+                    'tagCloud'           => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
+                                            RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
                 ),
                 'elements' => array(
                     'tagCloud'     => 'TagCloud',
                 ),
                 'customFields' => array(
                     'industry'           => 'Industries',
+                    'market'             => 'Markets',
                     'multipleIndustries' => 'MultipleIndustries',
                     'multipleSomethings' => 'MultipleSomethings',
                     'tagCloud'           => 'TagCloud',

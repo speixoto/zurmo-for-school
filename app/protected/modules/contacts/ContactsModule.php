@@ -186,5 +186,10 @@
         {
             return true;
         }
+
+        public static function isReportable()
+        {
+            return true;
+        }
     }
 ?>

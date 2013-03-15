@@ -62,12 +62,12 @@
         public function attributeLabels()
         {
             return array(
-                'host'                                 => Zurmo::t('Default', 'Host'),
-                'port'                                 => Zurmo::t('Default', 'Port'),
-                'bindRegisteredDomain'                 => Zurmo::t('Default', 'Username'),
-                'bindPassword'                         => Zurmo::t('Default', 'Password'),
-                'baseDomain'                           => Zurmo::t('Default', 'Base Domain'),
-                'enabled'                              => Zurmo::t('Default', 'Turn On Ldap')
+                'host'                                 => Zurmo::t('ZurmoModule', 'Host'),
+                'port'                                 => Zurmo::t('ZurmoModule', 'Port'),
+                'bindRegisteredDomain'                 => Zurmo::t('ZurmoModule', 'Username'),
+                'bindPassword'                         => Zurmo::t('ZurmoModule', 'Password'),
+                'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'),
+                'enabled'                              => Zurmo::t('ZurmoModule', 'Turn On Ldap')
             );
         }
     }

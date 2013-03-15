@@ -112,12 +112,12 @@
                     array(
                         'label' => "eval:Zurmo::t('ZurmoModule', 'Forums')",
                         'url' => 'http://zurmo.org/forums/',
-                        'order' => 8,
+                        'order' => 9,
                     ),
                     array(
                         'label' => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
                         'url' => array('/zurmo/default/about'),
-                        'order' => 9,
+                        'order' => 10,
                     ),
                 ),
                 'configureSubMenuItems' => array(
@@ -144,7 +144,8 @@
                     'leads',
                     'contacts',
                     'opportunities',
-                    'conversations'
+                    'conversations',
+                    'reports',
                 )
             );
             return $metadata;

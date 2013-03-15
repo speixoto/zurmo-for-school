@@ -39,14 +39,22 @@
             $model->firstName = 'Sam Smith';
             $adapter = new TextRedBeanModelAttributeValueToExportValueAdapter($model, 'firstName');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('firstName') => 'Sam Smith');
+            $compareData = array('Sam Smith');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('firstName'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model->firstName = '';
             $adapter = new TextRedBeanModelAttributeValueToExportValueAdapter($model, 'firstName');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('firstName') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('firstName'));
             $this->assertEquals($compareData, $data);
         }
     }

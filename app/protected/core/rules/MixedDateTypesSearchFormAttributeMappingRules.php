@@ -29,23 +29,39 @@
      */
     class MixedDateTypesSearchFormAttributeMappingRules extends SearchFormAttributeMappingRules
     {
-        const TYPE_YESTERDAY      = 'Yesterday';
+        const TYPE_YESTERDAY       = 'Yesterday';
 
-        const TYPE_TODAY          = 'Today';
+        const TYPE_TODAY           = 'Today';
 
-        const TYPE_TOMORROW       = 'Tomorrow';
+        const TYPE_TOMORROW        = 'Tomorrow';
 
-        const TYPE_BEFORE         = 'Before';
+        const TYPE_BEFORE          = 'Before';
 
-        const TYPE_AFTER          = 'After';
+        const TYPE_AFTER           = 'After';
 
-        const TYPE_ON             = 'On';
+        const TYPE_ON              = 'On';
 
-        const TYPE_BETWEEN        = 'Between';
+        const TYPE_BETWEEN         = 'Between';
 
-        const TYPE_NEXT_7_DAYS    = 'Next 7 Days';
+        const TYPE_NEXT_7_DAYS     = 'Next 7 Days';
 
-        const TYPE_LAST_7_DAYS    = 'Last 7 Days';
+        const TYPE_LAST_7_DAYS     = 'Last 7 Days';
+
+        const TYPE_IS_TIME_FOR     = 'Is Time From Now';
+
+        const TYPE_WAS_TIME_FOR    = 'Was Time Ago';
+
+        const TYPE_IS_EMPTY        = 'Is Empty';
+
+        const TYPE_IS_NOT_EMPTY    = 'Is Not Empty';
+
+        const TYPE_WAS_ON          = 'Was On';
+
+        const TYPE_BECOMES_ON      = 'Becomes On';
+
+        const TYPE_CHANGES         = 'Changes';
+
+        const TYPE_DOES_NOT_CHANGE = 'Does Not Change';
 
         /**
          * In the event that the type is BEFORE or AFTER, and the firstDate value is not populated, it will be treated
@@ -53,13 +69,14 @@
          * could have validation added, so that the empty firstDate combined with a type of BEFORE or AFTER would not
          * get this far, but for now this is the easiest approach to ensuring a valid BEFORE or AFTER value.
          * @param mixed $value
+         * @return mixed
          */
         public static function resolveValueDataIntoUsableValue($value)
         {
             if (isset($value['type']) && $value['type'] != null)
             {
-                $validValueTypesAndLabels = static::getValidValueTypesAndLabels();
-                if (!isset($validValueTypesAndLabels[$value['type']]))
+                $validValueTypes = static::getValidValueTypes();
+                if (!in_array($value['type'], $validValueTypes))
                 {
                     throw new NotSupportedException();
                 }
@@ -132,7 +149,35 @@
             return $value['secondDate'];
         }
 
-        public static function getValidValueTypesAndLabels()
+        /**
+         * @return array
+         */
+        public static function getValidValueTypes()
+        {
+            return array(   self::TYPE_YESTERDAY,
+                            self::TYPE_TODAY,
+                            self::TYPE_TOMORROW,
+                            self::TYPE_BEFORE,
+                            self::TYPE_AFTER,
+                            self::TYPE_ON,
+                            self::TYPE_BETWEEN,
+                            self::TYPE_NEXT_7_DAYS,
+                            self::TYPE_LAST_7_DAYS,
+                            self::TYPE_IS_TIME_FOR,
+                            self::TYPE_WAS_TIME_FOR,
+                            self::TYPE_IS_EMPTY,
+                            self::TYPE_IS_NOT_EMPTY,
+                            self::TYPE_WAS_ON,
+                            self::TYPE_BECOMES_ON,
+                            self::TYPE_CHANGES,
+                            self::TYPE_DOES_NOT_CHANGE,
+            );
+        }
+
+        /**
+         * @return array
+         */
+        public static function getValueTypesAndLabels()
         {
             return array(self::TYPE_YESTERDAY   => Zurmo::t('Core', 'Yesterday'),
                          self::TYPE_TODAY       => Zurmo::t('Core', 'Today'),
@@ -146,12 +191,60 @@
             );
         }
 
-        public static function getValueTypesRequiringFirstDateInput()
+        /**
+         * @return array
+         */
+        public static function getTimeBasedValueTypesAndLabels()
         {
-            return array(self::TYPE_BEFORE, self::TYPE_AFTER, self::TYPE_ON, self::TYPE_BETWEEN);
+            return array( self::TYPE_BEFORE       => Zurmo::t('Core', 'Before'),
+                          self::TYPE_AFTER        => Zurmo::t('Core', 'After'),
+                          self::TYPE_ON           => Zurmo::t('Core', 'On{date}', array('{date}' => null)),
+                          self::TYPE_BETWEEN      => Zurmo::t('Core', 'Between'),
+                          self::TYPE_IS_EMPTY     => Zurmo::t('Core', 'Is Empty'),
+                          self::TYPE_IS_NOT_EMPTY => Zurmo::t('Core', 'Is Not Empty'),
+            );
         }
 
-            public static function getValueTypesRequiringSecondDateInput()
+        /**
+         * @return array
+         */
+        public static function getTimeOnlyValueTypesAndLabels()
+        {
+            return array(self::TYPE_IS_TIME_FOR   => Zurmo::t('Core', 'Is'),
+                         self::TYPE_WAS_TIME_FOR  => Zurmo::t('Core', 'Was'),
+            );
+        }
+
+        /**
+         * @return array
+         */
+        public static function getValueTypesRequiringFirstDateInput()
+        {
+            return array(self::TYPE_BEFORE, self::TYPE_AFTER, self::TYPE_ON, self::TYPE_BETWEEN, self::TYPE_WAS_ON,
+                         self::TYPE_BECOMES_ON);
+        }
+
+        /**
+         * @return array
+         */
+        public static function getValueTypesRequiringSecondDateInput()
+        {
+            return array(self::TYPE_BETWEEN);
+        }
+
+        /**
+         * @return array
+         */
+        public static function getValueTypesWhereValueIsRequired()
+        {
+            return array(   self::TYPE_BEFORE, self::TYPE_AFTER, self::TYPE_ON, self::TYPE_BETWEEN, self::TYPE_WAS_ON,
+                            self::TYPE_BECOMES_ON);
+        }
+
+        /**
+         * @return array
+         */
+        public static function getValueTypesWhereSecondValueIsRequired()
         {
             return array(self::TYPE_BETWEEN);
         }

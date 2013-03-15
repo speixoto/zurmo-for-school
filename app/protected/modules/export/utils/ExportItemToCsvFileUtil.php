@@ -30,21 +30,24 @@
          * Export data array into csv format and send generated file to web browser
          * or return csv string, depending on $download parameter.
          * @param array $data
+         * @param array $headerData
+         * @param string $exportFileName
          * @param boolean $download. Should send generated csv string to output or not.
+         * @return string output
          */
-        public static function export(& $data, $exportFilename = 'exports.csv', $download = false)
+        public static function export($data, $headerData = array(), $exportFileName = 'exports.csv', $download = false)
         {
+            assert('is_array($headerData)');
+            assert('is_string($exportFileName)');
+            assert('is_bool($download)');
             $output = '';
 
             if (count($data) > 0)
             {
-                $headerRow = array();
-                foreach ($data[0] as $key => $value)
+                if(count($headerData) > 0)
                 {
-                    $headerRow[] = $key;
+                    $output = self::arraytoCsv($headerData, true);
                 }
-                $output = self::arraytoCsv($headerRow, true);
-
                 foreach ($data as $row)
                 {
                     $output .= self::arraytoCsv($row);
@@ -52,8 +55,8 @@
             }
             if ($download)
             {
-                Yii::app()->request->sendFile($exportFilename, $output, self::$mimeType, false);
-                exit;
+                Yii::app()->request->sendFile($exportFileName, $output, self::$mimeType, false);
+                Yii::app()->end(0, false);
             }
             else
             {
@@ -67,6 +70,7 @@
          * @param boolean $isHeaderRow
          * @param string $delimiter
          * @param string $enclosure
+         * @return string
          */
         protected static function arrayToCsv($row, $isHeaderRow = false, $delimiter = ',', $enclosure = '"') // Not Coding Standard
         {

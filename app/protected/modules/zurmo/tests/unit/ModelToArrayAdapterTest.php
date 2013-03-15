@@ -162,7 +162,6 @@
             $this->assertEquals($createStamp, strtotime($data['modifiedDateTime']), '', 2);
             unset($data['createdDateTime']);
             unset($data['modifiedDateTime']);
-
             $this->assertEquals($compareData, $data);
         }
 
@@ -373,7 +372,6 @@
             $this->assertEquals($createStamp, strtotime($data['modifiedDateTime']), '', 2);
             unset($data['createdDateTime']);
             unset($data['modifiedDateTime']);
-
             $this->assertEquals($compareData, $data);
         }
     }

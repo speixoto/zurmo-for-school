@@ -35,6 +35,12 @@
             ModulesSearchWithDataProviderTestHelper::createCustomAttributesForModel(new TestOperatorTypeModel());
         }
 
+        public function setup()
+        {
+
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testGetValidOperatorTypesForAllAttributeTypes()
         {
             $model = new TestOperatorTypeModel();
@@ -59,6 +65,44 @@
             $this->assertEquals('startsWith', ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'textCstm'));
             $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'textAreaCstm'));
             $this->assertEquals('contains',   ModelAttributeToOperatorTypeUtil::getOperatorType($model, 'urlCstm'));
+        }
+
+        public function testGetAvailableOperatorsType()
+        {
+            $model = new TestOperatorTypeModel();
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'integerStandard'));
+            $this->assertNull(  ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'dateStandard'));
+            $this->assertNull(  ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'dateTimeStandard'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'floatStandard'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'emailStandard'));
+            $this->assertNull(  ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'booleanStandard'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'urlStandard'));
+            //Test all custom fields
+            $this->assertNull(  ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'checkBoxCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'currencyCstm'));
+            $this->assertNull(  ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'dateCstm'));
+            $this->assertNull(  ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'dateTimeCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'decimalCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'dropDownCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'integerCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'phoneCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'radioCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'textCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'textAreaCstm'));
+            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
+                                ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($model, 'urlCstm'));
         }
     }
 ?>

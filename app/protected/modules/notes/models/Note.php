@@ -85,7 +85,8 @@
                     'occurredOnDateTime',
                 ),
                 'relations' => array(
-                    'files'       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'files'       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                           RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'socialItems' => array(RedBeanModel::HAS_MANY,  'SocialItem', RedBeanModel::OWNED),
                 ),
                 'rules' => array(

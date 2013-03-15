@@ -24,19 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    /**
+     * Action bar view for the report search and list user interface. Provides buttons like export and update
+     */
+    class SecuredActionBarForReportsSearchAndListView extends SecuredActionBarForSearchAndListView
     {
-        public function resolveData(& $data)
+        /**
+         * @return array
+         */
+        public static function getDefaultMetadata()
         {
-            assert('$this->model->{$this->attribute} instanceof User');
-            if ($this->model->{$this->attribute}->id > 0)
-            {
-                $data[$this->model->getAttributeLabel($this->attribute)] = $this->model->{$this->attribute}->username;
-            }
-            else
-            {
-                $data[$this->model->getAttributeLabel($this->attribute)] = null;
-            }
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'CreateLink',
+                                'htmlOptions' => array('class' => 'icon-create'),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

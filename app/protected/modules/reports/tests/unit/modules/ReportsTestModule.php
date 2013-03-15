@@ -24,49 +24,46 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class RedBeanModelsTest extends BaseTest
+    class ReportsTestModule extends SecurableModule
     {
-        const USERS = 5;
+        const RIGHT_ACCESS_REPORTS_TESTS = 'Access Reports Test Tab';
 
-        private $usernames;
-
-        public function setUp()
+        public function getDependencies()
         {
-            if (!isset($this->usernames))
-            {
-                $this->usernames = TestHelpers::makeUniqueRandomUsernames(RedBeanModelsTest::USERS);
-            }
-            foreach ($this->usernames as $username)
-            {
-                $user = new User();
-                $user->username           = $username;
-                $user->title->value       = 'Mr.';
-                $user->firstName          = $username;
-                $user->lastName           = $username;
-                $user->setPassword(strtolower($username));
-                $this->assertTrue($user->save());
-            }
+            return array(
+            );
         }
 
-        public function tearDown()
+        public static function getDefaultMetadata()
         {
-            foreach ($this->usernames as $username)
-            {
-                $user = User::getByUsername($username);
-                $user->delete();
-            }
+            $metadata = array();
+            $metadata['global'] = array(
+                'tabMenuItems' => array(
+                ),
+                'designerMenuItems' => array(
+                ),
+                'a' => 1,
+                'b' => 2,
+                'c' => 3,
+                //globalSearchAttributeNames is used by A model.
+                'globalSearchAttributeNames' => array('a', 'name')
+            );
+            return $metadata;
         }
 
-        public function testCreateAndIterateLazyModels()
+        public static function getPrimaryModelName()
         {
-            $users = new RedBeanModels('User');
-            $this->assertEquals(count($this->usernames), $users->count());
-            foreach ($users as $user)
-            {
-                $this->assertTrue(in_array($user->username, $this->usernames));
-                $this->assertEquals($user->username, $user->firstName);
-                $this->assertEquals($user->username, $user->lastName);
-            }
+            return 'ReportModelTestItem';
+        }
+
+        public static function getGlobalSearchFormClassName()
+        {
+            return 'ReportModelTestItem';
+        }
+
+        public static function hasPermissions()
+        {
+            return true;
         }
     }
 ?>

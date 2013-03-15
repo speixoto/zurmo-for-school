@@ -137,7 +137,7 @@
         /**
          * Override to handle security/access resolution on links.
          */
-        public function getLinkString($attributeString)
+        public function getLinkString($attributeString, $attribute)
         {
             $string  = 'ActionSecurityUtil::resolveLinkToEditModelForCurrentUser("' . $attributeString . '", ';
             $string .= '$data, "' . $this->getActionModuleClassName() . '", ';

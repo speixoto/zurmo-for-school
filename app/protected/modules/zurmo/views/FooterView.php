@@ -28,7 +28,8 @@
     {
         protected function renderContent()
         {
-            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.');
+            //Do not remove the Zurmo Copyright notice.
+            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.');
         }
     }
 ?>

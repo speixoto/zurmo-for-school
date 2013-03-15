@@ -1050,6 +1050,22 @@
             unset($user);
         }
 
+        /**
+         * @expectedException NotSupportedException
+         */
+        public function testDeleteLastUserInSuperAdministratorsGroup()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            //At this point the super administrator is part of this group
+            $this->assertEquals(1, $superAdminGroup->users->count());
+
+            //Now try to delete super user, It should not work
+            $this->assertFalse(Yii::app()->user->userModel->delete());
+            $this->fail();
+        }
+        
         /*
         * test for checking isActive attribute
         */

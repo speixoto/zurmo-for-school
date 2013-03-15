@@ -84,6 +84,31 @@
 
         const CACHE_IDENTIFIER = 'BeanModelMapping';
 
+        /**
+         * Utilize an assumptive link when a model (X) has a relationship to another model (Y) and this is the only
+         * relationship between the 2 models.  In this scenario it 'assumes' the link_name is simple.  If X HAS_MANY Y
+         * then on the Y model, the column name will be just x_id.  There is no need for any link information to prefix
+         * the column name.  It 'assumes' it is not needed.
+         * @var integer
+         */
+        const LINK_TYPE_ASSUMPTIVE   = 0;
+
+        /**
+         * Utilize a specific link when a model (X) has 2 relationships to model (Y). Now the link information is needed.
+         * If you specific LINK_TYPE_SPECIFIC, then the 5th parameter in the relation array must also be defined. If you
+         * have X HAS_MANY Y link name = y1 and X HAS_MANY Y link name = y2, then on the y model you will have
+         * the following two columns y1_x_id and y2_x_id.
+         * @var integer
+         */
+        const LINK_TYPE_SPECIFIC     = 1;
+
+        /**
+         * Utilize for a polymorphic relationship.  Similar to LINK_TYPE_SPECIFIC, you must define the 5th parameter
+         * of the relation array.  An example is if Y has a parent relationship, but the parent model can be more than
+         * one type of model.
+         * @var integer
+         */
+        const LINK_TYPE_POLYMORPHIC  = 2;
 
         /**
          * @see RedBeanModel::$lastClassInBeanHeirarchy
@@ -104,6 +129,11 @@
          * @var array
          */
         private static   $attributeNamesNotBelongsToOrManyMany;
+
+        /**
+         * @var array
+         */
+        private static $derivedRelationNameToTypeModelClassNameAndOppposingRelation;
 
         /**
          * Can the class have a bean.  Some classes do not have beans as they are just used for modeling purposes
@@ -219,6 +249,75 @@
         }
 
         /**
+         * Returns the link type for a
+         * relation name defined by the extending class's getMetadata() method.
+         */
+        public function getRelationLinkType($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+            return $relationAndOwns[$relationName][3];
+        }
+
+        /**
+         * Returns the link name for a
+         * relation name defined by the extending class's getMetadata() method.
+         */
+        public function getRelationLinkName($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
+            return $relationAndOwns[$relationName][4];
+        }
+
+        /**
+         * Returns the opposing relation name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public static function isADerivedRelationViaCastedUpModel($relationName)
+        {
+            $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
+            if(array_key_exists($relationName, $derivedRelations))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Returns the relation type of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function getDerivedRelationType($relationName)
+        {
+            assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
+            $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
+            return $derivedRelations[$relationName][0];
+        }
+
+        /**
+         * Returns the relation model class name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function getDerivedRelationModelClassName($relationName)
+        {
+            assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
+            $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
+            return $derivedRelations[$relationName][1];
+        }
+
+        /**
+         * Returns the opposing relation name of a derived relation
+         * defined by the extending class's getMetadata() method.
+         */
+        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        {
+            assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
+            $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
+            return $derivedRelations[$relationName][2];
+        }
+
+        /**
          * Given an attribute return the column name.
          * @param string $attributeName
          * @return string
@@ -251,7 +350,6 @@
          */
         public static function generateAnAttributeLabel($attributeName)
         {
-            assert('self::isAnAttribute($attributeName, get_called_class())');
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 
@@ -350,6 +448,18 @@
         }
 
         /**
+         * @return array
+         */
+        protected static function getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel()
+        {
+            if(!PHP_CACHING_ON || !isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]))
+            {
+                self::resolveCacheAndMapMetadataForAllClassesInHeirarchy();
+            }
+            return self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()];
+        }
+
+        /**
          * @param string $modelClassName
          */
         protected static function forgetBeanModel($modelClassName)
@@ -362,6 +472,10 @@
             {
                 unset(self::$relationNameToRelationTypeModelClassNameAndOwns[$modelClassName]);
             }
+            if(isset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]))
+            {
+                unset(self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[$modelClassName]);
+            }
             if(isset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]))
             {
                 unset(self::$attributeNamesNotBelongsToOrManyMany[$modelClassName]);
@@ -371,9 +485,10 @@
 
         protected static function forgetAllBeanModels()
         {
-            self::$attributeNamesToClassNames                      = null;
-            self::$relationNameToRelationTypeModelClassNameAndOwns = null;
-            self::$attributeNamesNotBelongsToOrManyMany            = null;
+            self::$attributeNamesToClassNames                                  = null;
+            self::$relationNameToRelationTypeModelClassNameAndOwns             = null;
+            self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation = null;
+            self::$attributeNamesNotBelongsToOrManyMany                        = null;
             BeanModelCache::forgetAll();
         }
 
@@ -388,6 +503,8 @@
                     $cachedData['attributeNamesNotBelongsToOrManyMany'][get_called_class()];
                 self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]         =
                     $cachedData['relationNameToRelationTypeModelClassNameAndOwns'][get_called_class()];
+                self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]         =
+                    $cachedData['derivedRelationNameToTypeModelClassNameAndOppposingRelation'][get_called_class()];
             }
             catch(NotFoundException $e)
             {
@@ -399,6 +516,8 @@
                     self::$attributeNamesNotBelongsToOrManyMany[get_called_class()];
                 $cachedData['relationNameToRelationTypeModelClassNameAndOwns'][get_called_class()] =
                     self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()];
+                $cachedData['derivedRelationNameToTypeModelClassNameAndOppposingRelation'][get_called_class()] =
+                    self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()];
                 BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
             }
         }
@@ -409,9 +528,10 @@
          */
         private static function mapMetadataForAllClassesInHeirarchy()
         {
-            self::$attributeNamesToClassNames[get_called_class()]                      = array();
-            self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()] = array();
-            self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]            = array();
+            self::$attributeNamesToClassNames[get_called_class()]                                  = array();
+            self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()]             = array();
+            self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()] = array();
+            self::$attributeNamesNotBelongsToOrManyMany[get_called_class()]                        = array();
             foreach (array_reverse(RuntimeUtil::getClassHierarchy(get_called_class(), static::$lastClassInBeanHeirarchy)) as $modelClassName)
             {
                 if ($modelClassName::getCanHaveBean())
@@ -453,7 +573,7 @@
             {
                 foreach ($metadata[$modelClassName]['relations'] as $relationName => $relationTypeModelClassNameAndOwns)
                 {
-                    assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4))');
+                    assert('in_array(count($relationTypeModelClassNameAndOwns), array(2, 3, 4, 5))');
 
                     $relationType           = $relationTypeModelClassNameAndOwns[0];
                     $relationModelClassName = $relationTypeModelClassNameAndOwns[1];
@@ -476,6 +596,7 @@
                     {
                         $owns = false;
                     }
+/**
                     if (count($relationTypeModelClassNameAndOwns) == 4 && $relationType != self::HAS_MANY)
                     {
                         throw new NotSupportedException();
@@ -488,19 +609,54 @@
                     {
                         $relationPolyOneToManyName = null;
                     }
+ * */
+                    $linkType          = null;
+                    $relationLinkName  = null;
+                    self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,
+                          $relationLinkName);
                     assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                         'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                     self::$attributeNamesToClassNames[get_called_class()][$relationName] = $modelClassName;
                     self::$relationNameToRelationTypeModelClassNameAndOwns[get_called_class()][$relationName] =
                         array($relationType,
-                            $relationModelClassName,
-                            $owns,
-                            $relationPolyOneToManyName);
+                              $relationModelClassName,
+                              $owns,
+                              $linkType,
+                              $relationLinkName);
                     if (!in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, self::MANY_MANY)))
                     {
                         self::$attributeNamesNotBelongsToOrManyMany[get_called_class()][] = $relationName;
                     }
                 }
+            }
+            if (isset($metadata[$modelClassName]['derivedRelationsViaCastedUpModel']))
+            {
+                foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName =>
+                         $relationTypeModelClassNameAndOpposingRelation)
+                {
+                    self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()][$relationName] =
+                         $relationTypeModelClassNameAndOpposingRelation;
+                }
+            }
+        }
+
+        protected static function resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, & $linkType,
+                                                                     & $relationLinkName)
+        {
+            if (count($relationTypeModelClassNameAndOwns) == 4 &&
+                $relationTypeModelClassNameAndOwns[3] != self::LINK_TYPE_ASSUMPTIVE)
+            {
+                throw new NotSupportedException();
+            }
+            if (count($relationTypeModelClassNameAndOwns) == 5)
+            {
+                $linkType          = $relationTypeModelClassNameAndOwns[3];
+                $relationLinkName  = $relationTypeModelClassNameAndOwns[4];
+            }
+            else
+            {
+                $linkType          = self::LINK_TYPE_ASSUMPTIVE;
+                $relationLinkName  = null;
             }
         }
     }

@@ -79,7 +79,7 @@
             $sumPart                   = "{$quote}currencyvalue{$quote}.{$quote}value{$quote} ";
             $sumPart                  .= "* {$quote}currencyvalue{$quote}.{$quote}ratetobase{$quote}";
             $selectQueryAdapter->addClause('customfield', 'value', 'stage');
-            $selectQueryAdapter->addSummationClause($sumPart, 'amount');
+            $selectQueryAdapter->addClauseByQueryString("sum({$sumPart})", 'amount');
             $joinTablesAdapter->addFromTableAndGetAliasName('customfield', 'stage_customfield_id', 'opportunity');
             $joinTablesAdapter->addFromTableAndGetAliasName('currencyvalue', 'amount_currencyvalue_id', 'opportunity');
             $groupBy                   = "{$quote}customfield{$quote}.{$quote}value{$quote}";

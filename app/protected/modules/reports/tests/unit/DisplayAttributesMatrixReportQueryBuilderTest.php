@@ -24,60 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserRedBeanModelAttributeValueToExportValueAdapterTest extends ZurmoBaseTest
+    /**
+     * Tests specifically for matrix reports.  Things that are unique to matrix reporting are tested here.
+      */
+    class DisplayAttributesMatrixReportQueryBuilderTest extends ZurmoBaseTest
     {
-        public $freeze = false;
-
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            $super = SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function setUp()
+        public function setup()
         {
             parent::setUp();
-            $freeze = false;
-            if (RedBeanDatabase::isFrozen())
-            {
-                RedBeanDatabase::unfreeze();
-                $freeze = true;
-            }
-            $this->freeze = $freeze;
+            Yii::app()->user->userModel = User::getByUsername('super');
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            DisplayAttributeForReportForm::resetCount();
         }
 
-        public function teardown()
+        public function testMadeViaSelectInsteadOfViaModelDisplayAttributes()
         {
-            if ($this->freeze)
-            {
-                RedBeanDatabase::freeze();
-            }
-            parent::teardown();
-        }
-
-        public function testGetExportValue()
-        {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-
-            $data = array();
-            $model = new ExportTestModelItem();
-            $model->lastName = "Smith";
-            $model->string = "Some Test String";
-            $model->user     = $super;
-            $this->assertTrue($model->save());
-
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('user') => $super->username);
-            $this->assertEquals($compareData, $data);
-
-            $data = array();
-            $model = new ExportTestModelItem();
-            $adapter = new UserRedBeanModelAttributeValueToExportValueAdapter($model, 'user');
-            $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('user') => '');
-            $this->assertEquals($compareData, $data);
+            //todo: test for matrix reporting including all the various types of groupable attributes.
+            //checkbox, date/datetime modifiers, dropdowns, likeContactState
+            //$this->fail();
         }
     }
 ?>

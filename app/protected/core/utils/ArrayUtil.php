@@ -99,7 +99,7 @@
          * @param Array $array
          * @param Mixed $subKey (integer or string)
          * @param string $sortFunctionName
-         * @return sorted array
+         * @return sorted array or empty array if nothing to sort
          */
         public static function subValueSort($array, $subKey, $sortFunctionName)
         {
@@ -119,6 +119,7 @@
                 }
                 return $finalArray;
             }
+            return array();
         }
 
         public static function arrayUniqueRecursive($array)

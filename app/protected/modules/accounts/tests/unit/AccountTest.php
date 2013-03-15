@@ -65,8 +65,11 @@
             $account = Account::getById($id);
             $this->assertEquals('Test Account', $account->name);
             $this->assertEquals('1234567890',   $account->officePhone);
-
-
+            $this->assertSame($user, $account->owner);
+            $id = $account->id;
+            $account->forget();
+            $account = Account::getById($id);
+            $this->assertSame($user, $account->owner);
         }
 
         /**
@@ -79,7 +82,6 @@
             $accounts = Account::getByName('Test Account');
             $this->assertEquals(1, count($accounts));
             $account = $accounts[0];
-
             $email = new Email();
             $email->optOut = 1;
             $email->emailAddress = 'a@a.com';
