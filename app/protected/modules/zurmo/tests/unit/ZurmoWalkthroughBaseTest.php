@@ -302,7 +302,7 @@
             $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Date', $extraPostData, null, true);
         }
         
-        protected function createDateCustomFieldByModuleForNullValueBug($moduleClassName, $name)
+        protected function createDateNotRequiredCustomFieldByModule($moduleClassName, $name)
         {
             $extraPostData = array( 'defaultValueCalculationType' => '', 'isAudited' => '1');
             $this->createCustomAttributeWalkthroughSequence($moduleClassName, $name, 'Date', $extraPostData, null, true);
