@@ -94,10 +94,10 @@
            }
            else
            {
-               $logoThumbFilePath = Yii::getPathOfAlias('webroot.themes.default.images') . DIRECTORY_SEPARATOR . 'Zurmo_logo.png';
+               $logoThumbFilePath = Yii::app()->theme->basePath . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'Zurmo_logo.png';
                $logoThumbFileSrc  = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
-               $logoFileData      = array('name'              => pathinfo($logoThumbFileSrc, PATHINFO_FILENAME),
-                                          'type'              => ZurmoFileHelper::getMimeType($logoThumbFileSrc),
+               $logoFileData      = array('name'              => pathinfo($logoThumbFilePath, PATHINFO_FILENAME),
+                                          'type'              => ZurmoFileHelper::getMimeType($logoThumbFilePath),
                                           'size'              => filesize($logoThumbFilePath),
                                           'thumbnail_url'     => $logoThumbFileSrc);
            }
