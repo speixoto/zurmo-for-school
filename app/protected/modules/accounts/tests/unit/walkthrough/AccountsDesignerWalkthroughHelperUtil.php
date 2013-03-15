@@ -175,6 +175,13 @@
                                 array('cells' =>
                                     array(
                                         array(
+                                            'element' => 'date1Cstm',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
                                             'element' => 'datetimeCstm',
                                         ),
                                     )
