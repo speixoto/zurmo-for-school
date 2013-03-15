@@ -197,7 +197,7 @@
          */
         public function makeAxisCrossingColumnCountAndLeadingHeaderRowsData()
         {
-            $headerData    = array();
+            $headerData    = array('rows' => array());
             $headerData['axisCrossingColumnCount'] = count($this->getYAxisGroupBys());
             $lastSpanCount = $this->getDisplayCalculationsCount();
             foreach(array_reverse($this->getXAxisGroupByDataValues()) as $attributeIndexOrDerivedType => $groupByValues)
@@ -250,25 +250,28 @@
             assert('is_int($attributeKey)');
             assert('is_int($xAxisGroupBysCount)');
             assert('is_int($startingIndex)');
-            foreach($indexedXAxisGroupByDataValues[$startingIndex] as $value)
+            if(isset($indexedXAxisGroupByDataValues[$startingIndex]))
             {
-                $data[$value] = array();
-                if(($startingIndex + 1) == $xAxisGroupBysCount)
+                foreach($indexedXAxisGroupByDataValues[$startingIndex] as $value)
                 {
-                    foreach($this->resolveDisplayAttributes() as $displayAttribute)
+                    $data[$value] = array();
+                    if(($startingIndex + 1) == $xAxisGroupBysCount)
                     {
-                        if($displayAttribute->queryOnly != true)
+                        foreach($this->resolveDisplayAttributes() as $displayAttribute)
                         {
-                            $data[$value][$displayAttribute->attributeIndexOrDerivedType] =
-                                static::resolveColumnAliasName($attributeKey);
-                            $attributeKey ++;
+                            if($displayAttribute->queryOnly != true)
+                            {
+                                $data[$value][$displayAttribute->attributeIndexOrDerivedType] =
+                                    static::resolveColumnAliasName($attributeKey);
+                                $attributeKey ++;
+                            }
                         }
                     }
-                }
-                else
-                {
-                    $this->resolveXAxisGroupingsForColumnNames($data[$value], $indexedXAxisGroupByDataValues,
-                                                               $attributeKey, $xAxisGroupBysCount, $startingIndex + 1);
+                    else
+                    {
+                        $this->resolveXAxisGroupingsForColumnNames($data[$value], $indexedXAxisGroupByDataValues,
+                                                                   $attributeKey, $xAxisGroupBysCount, $startingIndex + 1);
+                    }
                 }
             }
         }
@@ -421,6 +424,7 @@
         {
             if($this->xAxisGroupByDataValues == null)
             {
+                $this->xAxisGroupByDataValues = array();
                 $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
                 $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);
                 $rows               = $this->getRowsData($sql);
@@ -448,6 +452,7 @@
         {
             if($this->yAxisGroupByDataValues == null)
             {
+                $this->yAxisGroupByDataValues = array();
                 $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
                 $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);
                 $rows               = $this->getRowsData($sql);

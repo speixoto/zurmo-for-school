@@ -218,8 +218,10 @@
             {
                 return $data;
             }
+
             foreach($this->secondSeriesValueData as $secondSeriesKey)
             {
+
                 foreach($data as $firstSeriesDataKey => $firstSeriesData)
                 {
                     if(isset($firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)]) &&
@@ -274,7 +276,7 @@
             }
             elseif($displayAttribute->getDisplayElementType() == 'Decimal')
             {
-                return Yii::app()->formatNumber($value);
+                return Yii::app()->numberFormatter->formatDecimal($value);
             }
             elseif($displayAttribute->getDisplayElementType() == 'Integer')
             {
