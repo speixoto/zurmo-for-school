@@ -77,15 +77,17 @@
                             array('type'  => 'SelectContactAndReportLink',
                                 'htmlOptions' => array('class' => 'icon-details'),
                                 'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
+                            // TODO: @Shoaibi: High: Change it with https://bitbucket.org/shoaibi/zurmo/src/2bb67d4e4bd2/app/protected/core/elements/actions/MassEditLinkActionElement.php?at=Mobile
+                            // TODO: @Shoaibi: Low: https://bitbucket.org/shoaibi/zurmo/src/2bb67d4e4bd2/app/protected/core/elements/actions/MassActionLinkActionElement.php?at=Mobile
+                            // TODO: @Shoaibi: High: Break this into 2 buttons
                             array('type'  => 'MarketingListsUpdateLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
                                 'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
-                            /*
-                             * // TODO: @Shoaibi: High: We need mass delete button here too.
-                            array('type'  => 'MarketingListsDeleteMembersLink',
-                                'htmlOptions' => array('class' => 'icon-edit'),
-                                'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
-                            */
+                            // TODO: @Shoaibi: High: We need mass delete button here too.
+                            // TODO: @Shoaibi: Low: https://bitbucket.org/shoaibi/zurmo/src/2bb67d4e4bd2/app/protected/core/elements/actions/MassDeleteLinkActionElement.php?at=Mobile
+                            //array('type'  => 'MarketingListsDeleteMembersLink',
+                            //    'htmlOptions' => array('class' => 'icon-edit'),
+                            //    'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
                         ),
                     ),
                 ),
@@ -150,6 +152,11 @@
                                                                                     array( 'id' => $this->model->id));
         }
 
+        protected function getMembersSearchUrl()
+        {
+            return Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/membersSearchList');
+        }
+
         protected function renderMembersSearchFormAndListContent()
         {
             $listingAndSearchForm = $this->renderMembersSearchFormContent() . $this->renderMembersListContent();
@@ -159,8 +166,11 @@
         protected function renderMembersSearchFormContent()
         {
             // TODO: @Shoaibi: High: Implement Members Search From
-            // Global search, do not extend dynamic search
-            return ZurmoHtml::tag('div', array('class' => 'marketing-list-members-search-form'), 'Members Search Form goes here');
+            //$searchModel                        = new MarketingListMembersSearchForm(new MarketingListMember(false));
+            //$searchView                         = new MarketingListMembersSearchView($searchModel, get_class($searchModel->getModel()));
+            //$marketingListMembersSearchContent  = $searchView->render();
+            $marketingListMembersSearchContent  = 'Form div';
+            return ZurmoHtml::tag('div', array('class' => 'marketing-list-members-search-form'), $marketingListMembersSearchContent);
         }
 
         protected function renderMembersListContent()
@@ -172,6 +182,7 @@
         protected function makeMarketingListMembersListView()
         {
             $uniquePageId  = get_called_class();
+            // TODO: @Shoaibi: Critical: Search box's content isn't restored on request, why?
             $marketingListMembersConfigurationForm = $this->makeMarketingListMembersConfigurationForm();
             $this->resolveMarketingListMembersConfigFormFromRequest($marketingListMembersConfigurationForm);
             $marketingListMembersListViewClassName = $this->getMarketingListMembersListViewClassName();
@@ -274,7 +285,9 @@
             assert('is_string($uniquePageId)');
             assert('$form instanceOf MarketingListMembersConfigurationForm');
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            $searchAttributes   = MarketingListMembersUtil::makeSearchAttributeData($this->model->id, $form->filteredBySubscriptionType);
+            $searchAttributes   = MarketingListMembersUtil::makeSearchAttributeData($this->model->id,
+                                                                                $form->filteredBySubscriptionType,
+                                                                                $form->filteredBySearchTerm);
             $sortAttributes     = MarketingListMembersUtil::makeSortAttributeData();
             return new RedBeanModelsDataProvider($uniquePageId,
                                                     $sortAttributes,

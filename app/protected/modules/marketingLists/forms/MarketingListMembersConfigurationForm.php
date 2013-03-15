@@ -55,10 +55,16 @@
          */
         public $filteredBySubscriptionType = self::FILTERED_USER_ALL;
 
+        /**
+         * Search criteria, could be name or email to filter the marketing list member feed.
+         */
+        public $filteredBySearchTerm = null;
+
         public function rules()
         {
             return array(
                 array('filteredBySubscriptionType', 'type',    'type' => 'string'),
+                array('filteredBySearchTerm',       'type',    'type' => 'string'),
             );
         }
     }

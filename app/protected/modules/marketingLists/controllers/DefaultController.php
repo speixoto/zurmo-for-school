@@ -192,6 +192,5 @@
         {
             return 'MarketingListsSearchForm';
         }
-
     }
 ?>

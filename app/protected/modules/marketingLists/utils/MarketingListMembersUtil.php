@@ -31,7 +31,7 @@
     {
         const CONFIG_MODULE_NAME = 'MarketingListsModule';
 
-        public static function makeSearchAttributeData($marketingListId, $filterBySubscriptionType)
+        public static function makeSearchAttributeData($marketingListId, $filterBySubscriptionType, $filterBySearchTerm)
         {
             assert('is_int($marketingListId)');
             assert('is_string($filterBySubscriptionType)');
@@ -56,6 +56,45 @@
                                                             'value'           =>  $UnsubscribeFlag,
                                                         );
                 $searchAttributeData['structure']   = '(1 and 2)';
+            }
+            if ($filterBySearchTerm)
+            {
+                // TODO: @Shoaibi: Medium: This is crappy.
+                // TODO: @Shoaibi: Medium: is "contains" correct operatorType?
+                $compareRelatedAttributes = array('primaryEmail', 'secondaryEmail', 'firstName', 'lastName', array('firstName', 'lastName'));
+                $clauseStartIndex = count($searchAttributeData['clauses']) + 1;
+                foreach ($compareRelatedAttributes as $index => $relatedAttributeValue)
+                {
+                    $clauseIndex = $clauseStartIndex + $index;
+                    if (is_array($relatedAttributeValue))
+                    {
+                        $relatedAttributeName  = 'concatedAttributeNames';
+                    }
+                    else
+                    {
+                        $relatedAttributeName  =  'relatedAttributeName';
+                    }
+                    $searchAttributeData['clauses'][$clauseIndex] = array(
+                                                                        'attributeName'         => 'contact',
+                                                                        $relatedAttributeName   => $relatedAttributeValue,
+                                                                        'operatorType'          => 'contains',
+                                                                        'value'                 => $filterBySearchTerm
+                                                                    );
+                    if ($clauseIndex == $clauseStartIndex)
+                    {
+                        $structure = ' and (';
+                    }
+                    else
+                    {
+                        $structure = ' or ';
+                    }
+                    $structure .= $clauseIndex;
+                    if ($index == (count($compareRelatedAttributes) -1))
+                    {
+                        $structure .= ')';
+                    }
+                    $searchAttributeData['structure'] = $searchAttributeData['structure'] . $structure;
+                }
             }
             return array(array('MarketingListMember' => $searchAttributeData));
         }

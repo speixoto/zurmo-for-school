@@ -54,10 +54,16 @@
         protected $uniquePageId;
 
         /**
-         * True to show the owned by filter option.
+         * True to show the subscription type filter option.
          * @var boolean
          */
         protected $showFilteredBySubscriptionType = true;
+
+        /**
+         * True to show the search term filter option.
+         * @var boolean
+         */
+        protected $showFilteredBySearchTerm = true;
 
         protected $params;
 
@@ -213,6 +219,16 @@
         {
             assert('$form instanceof ZurmoActiveForm');
             $content      = null;
+            if ($this->showFilteredBySearchTerm)
+            {
+                $element                    = new TextElement($this->configurationForm, // TODO: @Shoaibi: Medium: This should be another element with look and feel of search box
+                                                                'filteredBySearchTerm',
+                                                                $form);
+                $element->editableTemplate  =  ZurmoHtml::tag('div',
+                                                    array('id' => 'MarketingListMembersConfigurationForm_filteredBySearchTerm_area'),
+                                                    '{content}');
+                $content                    .= $element->render();
+            }
             if ($this->showFilteredBySubscriptionType)
             {
                 $element                    = new MarketingListsSubscriptionTypeFilterRadioElement($this->configurationForm,
@@ -221,13 +237,17 @@
                 $element->editableTemplate  =  ZurmoHtml::tag('div',
                                                     array('id' => 'MarketingListMembersConfigurationForm_filteredBySubscriptionType_area'),
                                                     '{content}');
-                $content                    = $element->render();
+                $content                    .= $element->render();
             }
             return $content;
         }
 
         protected function registerConfigurationFormLayoutScripts($form)
         {
+            if (!($this->showFilteredBySearchTerm || $this->showFilteredBySubscriptionType))
+            {
+                return;
+            }
             assert('$form instanceof ZurmoActiveForm');
             $urlScript = 'js:$.param.querystring("' . $this->portletDetailsUrl . '", "' .
                 $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
@@ -243,14 +263,38 @@
                                             $("#filter-portlet-model-bar-' . $this->uniquePageId . '").show();
                         }'
             ));
-            Yii::app()->clientScript->registerScript($this->uniquePageId, "
-                $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').buttonset();
-                $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').change(function()
+            if ($this->showFilteredBySubscriptionType)
+            {
+                Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySubscriptionType', "
+                    $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').buttonset();
+                    $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').change(function()
+                        {
+                            " . $ajaxSubmitScript . "
+                        }
+                    );
+                ");
+            }
+            if ($this->showFilteredBySearchTerm)
+            {
+                Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySearchTerm', "
+                // TODO: @Shoaibi/@Jason Low: We support both, clicking outside and enter
+                $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').change(function()
                     {
                         " . $ajaxSubmitScript . "
                     }
                 );
+                $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').keypress(function(e)
+                    {
+                        if(e.which == 13)
+                        {
+                            " . $ajaxSubmitScript . "
+                            return false;
+                        }
+
+                    }
+                );
                 ");
+            }
         }
     }
 ?>
