@@ -156,7 +156,7 @@
                     'id'              => $this->getValueFirstDateEditableInputId(),
                     'name'            => $this->getValueFirstDateEditableInputName(),
                     'disabled'        => $disabled,
-            ));
+            )));
             $cClipWidget->endClip();
             $content =  $cClipWidget->getController()->clips['EditableDateElement'];
             return      ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
@@ -175,7 +175,7 @@
                     'id'              => $this->getValueSecondDateEditableInputId(),
                     'name'            => $this->getValueSecondDateEditableInputName(),
                     'disabled'        => $disabled,
-            ));
+            )));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateElement'];
             return ZurmoHtml::tag('div', array('class' => 'has-date-select'), $content);
