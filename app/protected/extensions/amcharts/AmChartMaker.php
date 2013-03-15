@@ -32,8 +32,6 @@
 
         public  $height                 = 300;
 
-        public  $valueField             = 'value';
-
         public  $categoryField          = 'displayLabel';
 
         public  $chartIs3d              = false;
@@ -47,6 +45,8 @@
         public  $yAxisName              = null;
 
         public  $yAxisUnitContent       = null;
+
+        private $valueField             = 'value';
 
         private $serial                 = array();
 
@@ -431,7 +431,8 @@
             //Make chart Pie or Serial
             if ($this->chartIsPie)
             {
-                $javascript .="
+                $this->valueField = $this->serial[0]['valueField'];
+                $javascript      .="
                    var chart          = new AmCharts.AmPieChart();
                    chart.dataProvider = chartData_{$this->id};
                    chart.titleField   = '{$this->categoryField}';
@@ -521,7 +522,7 @@
 
         private function renderOnEmptyDataMessage()
         {
-            $errorMessage = Yii::t('Default', 'Not enough data to render chart');
+            $errorMessage = Zurmo::t('Core', 'Not enough data to render chart');
             $content      = ZurmoHtml::tag('span', array('class' => 'empty missing-chart'), $errorMessage);
             $javascript   = "
                     $('#chartContainer{$this->id}').html('" . $content . "');

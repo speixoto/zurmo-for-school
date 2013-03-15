@@ -309,7 +309,6 @@
                 // To-do: Should we check only on attributeIndexOrDerivedType key?
                 if (isset($clause['attributeIndexOrDerivedType']))
                 {
-                    $searchModel = new $modelClassName(false);
                     $attributeIndexOrDerivedType = $clause['attributeIndexOrDerivedType'];
 
                     if (isset($clause[$attributeIndexOrDerivedType]) && is_array($clause[$attributeIndexOrDerivedType]))
@@ -317,9 +316,9 @@
                         $relation = $clause[$attributeIndexOrDerivedType];
 
                         if (isset($relation['modelClassName']) &&
-                            $relation['modelClassName'] != $searchModel->getRelationModelClassName($attributeIndexOrDerivedType) &&
-                            $searchModel->getRelationType($attributeIndexOrDerivedType) == RedBeanModel::MANY_MANY &&
-                            $searchModel->getRelationModelClassName($attributeIndexOrDerivedType) == 'Item')
+                            $relation['modelClassName'] != $modelClassName::getRelationModelClassName($attributeIndexOrDerivedType) &&
+                            $modelClassName::getRelationType($attributeIndexOrDerivedType) == RedBeanModel::MANY_MANY &&
+                            $modelClassName::getRelationModelClassName($attributeIndexOrDerivedType) == 'Item')
                         {
                             $relClassName = $relation['modelClassName'];
                             $relModel = $relClassName::getById((int)$relation['modelId']);

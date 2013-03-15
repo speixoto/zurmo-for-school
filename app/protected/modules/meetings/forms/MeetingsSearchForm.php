@@ -26,5 +26,14 @@
 
     class MeetingsSearchForm extends OwnedSearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Meeting';
+        }
+
+        public function __construct(Meeting $model)
+        {
+            parent::__construct($model);
+        }
     }
 ?>

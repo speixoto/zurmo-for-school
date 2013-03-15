@@ -24,8 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for selecting a type of report to create
+     */
     class ReportWizardTypeView extends MetadataView
     {
+        /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Report Wizard');
+        }
+
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
             $content  = $this->renderTitleContent();
@@ -37,26 +51,28 @@
             return $content;
         }
 
-        public function getTitle()
-        {
-            return Yii::t('Default', 'Report Wizard');
-        }
-
+        /**
+         * @return array
+         */
         protected function getReportTypeData()
         {
             $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Rows and Columns Report'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_ROWS_AND_COLUMNS // Not Coding Standard
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Summation Report'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Summation Report'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_SUMMATION // Not Coding Standard
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Yii::t('Default', 'Matrix Report'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Matrix Report'),
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
                                             );
             return $categories;
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function renderMenu($items)
         {
             $content = '<ul class="configuration-list">';
@@ -76,14 +92,20 @@
             return $content;
         }
 
+        /**
+         * @param $text
+         */
         protected function setLinkText($text)
         {
             $this->linkText = $text;
         }
 
+        /**
+         * @return string
+         */
         protected function getLinkText()
         {
-            return Yii::t('Default', 'Create');
+            return Zurmo::t('ReportsModule', 'Create');
         }
     }
 ?>

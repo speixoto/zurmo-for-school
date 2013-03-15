@@ -174,7 +174,7 @@ $(function () {
                 .appendTo($(this).find('.files')).fadeIn(function () {
                     // Fix for IE7 and lower:
                     $(this).show();
-                    makeToggableSpinner('#'+'fileUpload{$id}', true);
+                    makeOrRemoveTogglableSpinner(true, '#'+'fileUpload{$id}');
                 }).data('data', data);
             if ((that.options.autoUpload || data.autoUpload) &&
                     data.isValidated) {
@@ -234,7 +234,7 @@ EOD;
             echo $html;
         }
 
-        private function makeDownloadRowScriptContent()
+        protected function makeDownloadRowScriptContent()
         {
             $deleteLabel = 'Delete';
             $removeLabel = Zurmo::t('Core', 'Remove');
@@ -259,7 +259,7 @@ EOD;
             return $js;
         }
 
-        private function makeUploadRowScriptContent()
+        protected function makeUploadRowScriptContent()
         {
             $startLabel  = Zurmo::t('Core', 'Start');
             $cancelLabel = Zurmo::t('Core', 'Cancel');

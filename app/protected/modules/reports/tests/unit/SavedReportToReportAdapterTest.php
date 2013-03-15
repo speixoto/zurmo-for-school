@@ -38,6 +38,7 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
             DisplayAttributeForReportForm::resetCount();
+            DrillDownDisplayAttributeForReportForm::resetCount();
         }
 
         public function testResolveReportToSavedReport()
@@ -56,7 +57,7 @@
             $filter = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $filter->attributeIndexOrDerivedType = 'string';
             $filter->value                       = 'aValue';
-            $filter->operator                    = 'Equals';
+            $filter->operator                    = 'equals';
             $filter->availableAtRunTime          = true;
             $report->addFilter($filter);
 
@@ -64,7 +65,7 @@
             $filter->attributeIndexOrDerivedType = 'currencyValue';
             $filter->value                       = 'aValue';
             $filter->secondValue                 = 'bValue';
-            $filter->operator                    = 'Between';
+            $filter->operator                    = 'between';
             $filter->currencyIdForValue          = '4';
             $filter->availableAtRunTime          = true;
             $report->addFilter($filter);
@@ -128,7 +129,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'string',
-                    'operator'					   => 'Equals',
+                    'operator'					   => 'equals',
                 ),
                 array(
                     'availableAtRunTime'           => true,
@@ -138,7 +139,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'currencyValue',
-                    'operator'					   => 'Between',
+                    'operator'					   => 'between',
                 ),
                 array(
                     'availableAtRunTime'           => false,
@@ -175,16 +176,22 @@
             ),
             'DisplayAttributes' => array(
                 array(
-                    'label'						  => 'someNewLabel',
-                    'attributeIndexOrDerivedType' => 'phone',
-                    'columnAliasName'             => 'col0',
+                    'label'						     => 'someNewLabel',
+                    'attributeIndexOrDerivedType'    => 'phone',
+                    'columnAliasName'                => 'col0',
+                    'queryOnly'                      => false,
+                    'valueUsedAsDrillDownFilter'     => false,
+                    'madeViaSelectInsteadOfViaModel' => false,
                 )
             ),
             'DrillDownDisplayAttributes' => array(
                 array(
-                    'label'                       => 'someNewLabel',
-                    'attributeIndexOrDerivedType' => 'firstName',
-                    'columnAliasName'             => 'col0',
+                    'label'                          => 'someNewLabel',
+                    'attributeIndexOrDerivedType'    => 'firstName',
+                    'columnAliasName'                => 'col0',
+                    'queryOnly'                      => false,
+                    'valueUsedAsDrillDownFilter'     => false,
+                    'madeViaSelectInsteadOfViaModel' => false,
                 )
             ));
             $unserializedData = unserialize($savedReport->serializedData);
@@ -234,7 +241,7 @@
             $this->assertNull             ($filters[0]->secondValue);
             $this->assertNull             ($filters[0]->stringifiedModelForValue);
             $this->assertNull             ($filters[0]->valueType);
-            $this->assertEquals           ('Equals',     $filters[0]->operator);
+            $this->assertEquals           ('equals',     $filters[0]->operator);
 
             $this->assertEquals           (true,             $filters[1]->availableAtRunTime);
             $this->assertEquals           ('aValue',         $filters[1]->value);
@@ -243,7 +250,7 @@
             $this->assertEquals           ('bValue',         $filters[1]->secondValue);
             $this->assertNull             ($filters[1]->stringifiedModelForValue);
             $this->assertNull             ($filters[1]->valueType);
-            $this->assertEquals           ('Between',         $filters[1]->operator);
+            $this->assertEquals           ('between',         $filters[1]->operator);
 
             $this->assertEquals           (false,            $filters[2]->availableAtRunTime);
             $this->assertEquals           ('aValue',         $filters[2]->value);

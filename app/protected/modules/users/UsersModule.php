@@ -124,12 +124,12 @@
                         'right' => self::RIGHT_ACCESS_USERS,
                         'items' => array(
                             array(
-                                'label' => 'Create User',
+                                'label' => "eval:Zurmo::t('UsersModule', 'Create User')",
                                 'url'   => array('/users/default/create'),
                                 'right' => self::RIGHT_CREATE_USERS
                             ),
                             array(
-                                'label' => 'Users',
+                                'label' => "eval:Zurmo::t('UsersModule', 'Users')",
                                 'url'   => array('/users/default'),
                                 'right' => self::RIGHT_ACCESS_USERS
                             ),
@@ -144,15 +144,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Users',
-                        'descriptionLabel' => 'Manage Users',
+                        'titleLabel'       => "eval:Zurmo::t('UsersModule', 'Users')",
+                        'descriptionLabel' => "eval:Zurmo::t('UsersModule', 'Manage Users')",
                         'route'            => '/users/default',
                         'right'            => self::RIGHT_ACCESS_USERS,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Users',
+                        'label' => "eval:Zurmo::t('UsersModule', 'Users')",
                         'url' => array('/users/default'),
                         'right' => self::RIGHT_ACCESS_USERS,
                         'order' => 4,
@@ -160,12 +160,12 @@
                 ),
                 'userHeaderMenuItems' => array(
                         array(
-                            'label' => 'My Profile',
+                            'label' => "eval:Zurmo::t('UsersModule', 'My Profile')",
                             'url' => array('/users/default/profile'),
                             'order' => 1,
                         ),
                         array(
-                            'label' => 'Sign out',
+                            'label' => "eval:Zurmo::t('UsersModule', 'Sign out')",
                             'url' => array('/zurmo/default/logout'),
                             'order' => 4,
                         ),
@@ -205,7 +205,7 @@
                 case self::AUDIT_EVENT_USER_LOGGED_OUT:
                     if ($format == 'short')
                     {
-                        return Yii::t('Default', $auditEvent->eventName);
+                        return Zurmo::t('UsersModule', $auditEvent->eventName);
                     }
                     else
                     {
@@ -215,7 +215,7 @@
                 case self::AUDIT_EVENT_USER_PASSWORD_CHANGED:
                     if ($format == 'short')
                     {
-                        return Yii::t('Default', $auditEvent->eventName);
+                        return Zurmo::t('UsersModule', $auditEvent->eventName);
                     }
                     $s       .= strval($auditEvent);
                     $username = unserialize($auditEvent->serializedData);

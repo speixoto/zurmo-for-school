@@ -87,6 +87,7 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handlePublishLogoAssets'));
                 }
             }
         }
@@ -98,7 +99,7 @@
                 Yii::import('application.extensions.sentrylog.RSentryLog');
                 $rSentryLog = Yii::createComponent(
                     array('class' => 'RSentryLog', 'dsn' => Yii::app()->params['sentryDsn']));
-                //Have to invoke component init(), because it is not caled automatically
+                // Have to invoke component init(), because it is not called automatically
                 $rSentryLog->init();
                 $component   = Yii::app()->getComponent('log');
                 $allRoutes   = $component->getRoutes();
@@ -141,9 +142,14 @@
         */
         public function handleImports($event)
         {
+            //Clears file cache so that everything is clean.
+            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
+            {
+                GeneralCache::forgetEntry('filesClassMap');
+            }
             try
             {
-                $filesToInclude = GeneralCache::getEntry('filesToInclude');
+                Yii::$classMap = GeneralCache::getEntry('filesClassMap');
             }
             catch (NotFoundException $e)
             {
@@ -155,11 +161,11 @@
                 {
                     $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
                 }
-                GeneralCache::cacheEntry('filesToInclude', $filesToInclude);
-            }
-            foreach ($filesToInclude as $file)
-            {
-                Yii::import($file);
+                foreach ($filesToInclude as $file)
+                {
+                    Yii::import($file);
+                }
+                GeneralCache::cacheEntry('filesClassMap', Yii::$classMap);
             }
         }
 
@@ -254,6 +260,7 @@
                 $allowedTimeZoneConfirmBypassUrls = array (
                     Yii::app()->createUrl('users/default/confirmTimeZone'),
                     Yii::app()->createUrl('min/serve'),
+                    Yii::app()->createUrl('zurmo/default/logout'),
                 );
                 $reqestedUrl = Yii::app()->getRequest()->getUrl();
                 $isUrlAllowedToByPass = false;
@@ -452,13 +459,13 @@
         public function handleLoadActivitiesObserver($event)
         {
             $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
+            $activitiesObserver->init();
         }
 
         public function handleLoadConversationsObserver($event)
         {
             $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
+            $conversationsObserver->init();
         }
 
         public function handleLoadGamification($event)
@@ -470,6 +477,36 @@
         public function handleDisableGamification($event)
         {
             Yii::app()->gamificationObserver->enabled = false;
+        }
+        
+        public function handlePublishLogoAssets($event)
+        {
+            if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
+            {
+                $logoFileModelId     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                $logoFileModel       = FileModel::getById($logoFileModelId);
+                $logoFileName        = $logoFileModel->name;
+                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                DIRECTORY_SEPARATOR . $logoFileName);
+                if ($logoFileSrc === false)
+                {
+                    $logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                    $logoFile        = FileModel::getById($logoFileModelId);
+                    $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName;
+                    file_put_contents($logoFilePath, $logoFile->fileContent->content, LOCK_EX);
+                    ZurmoConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
+                }
+                else
+                {
+                    if (file_exists($logoFileSrc) === false)
+                    {
+                        $cs = Yii::app()->getClientScript();
+                        $cs->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                        DIRECTORY_SEPARATOR . $logoFileName),
+                                                                                        CClientScript::POS_END);
+                    }
+                }
+            }
         }
      }
 ?>

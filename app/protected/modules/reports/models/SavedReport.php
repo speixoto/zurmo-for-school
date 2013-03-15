@@ -24,13 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Model for saving a report definition.  This does not save report results, but only the definition of how a report
+     * should act when run.  Most information is defined as serializedData.  @see Report model which is used to interact
+     * with most report components views.
+     */
     class SavedReport extends OwnedSecurableItem
     {
         public function __toString()
         {
             if (trim($this->name) == '')
             {
-                return Yii::t('Default', '(Unnamed)');
+                return Zurmo::t('ReportsModule', '(Unnamed)');
             }
             return $this->name;
         }
@@ -65,7 +70,7 @@
                     array('name',                'required'),
                     array('name',                'type',   'type' => 'string'),
                     array('name',                'length', 'max'  => 64),
-                   // array('serializedData',      'required'),
+                    array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
                     array('type',       		 'required'),
                     array('type',       		 'type',   'type' => 'string'),

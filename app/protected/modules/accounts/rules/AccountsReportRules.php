@@ -29,9 +29,17 @@
      */
     class AccountsReportRules extends SecuredReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
-            $metadata = array();
+            $metadata = array(
+                'Account' => array(
+                    'nonReportable' =>
+                    array('accounts', 'account'),
+                )
+            );
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
     }

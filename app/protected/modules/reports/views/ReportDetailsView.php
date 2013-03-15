@@ -24,41 +24,49 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View for managing report details
+      */
     class ReportDetailsView extends DetailsView
     {
+        protected $savedReport;
+
+        /**
+         * Override to support security checks on user rights/permissions.  The savedReport is needed for this
+         */
+        public function __construct($controllerId, $moduleId, Report $model, $title = null, SavedReport$savedReport)
+        {
+            parent::__construct($controllerId, $moduleId, $model);
+            $this->savedReport = $savedReport;
+        }
+
+        /**
+         * @param $model
+         */
         public static function assertModelIsValid($model)
         {
             assert('$model instanceof Report');
         }
 
-        protected function renderContent()
-        {
-            $content = $this->renderTitleContent();
-//todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
-            $this->registerScripts();
-            return $content;
-        }
-
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'ReportDetailsLink',
-                                'htmlOptions' => array('class' => 'icon-details')),
+                           // array('type'  => 'ReportDetailsLink',
+                           //     'htmlOptions' => array('class' => 'icon-details')),
                             array('type'  => 'ReportOptionsLink',
-                                'htmlOptions' => array('class' => 'icon-edit')),
+                                  'htmlOptions' => array('class' => 'icon-edit')),
                             array('type'  => 'ReportExportLink',
-                                'htmlOptions' => array('class' => 'icon-export')),
+                                  'htmlOptions' => array('class' => 'icon-export')),
                             array('type'  => 'ReportTogglePortletsLink',
-                                'htmlOptions' => array('class' => 'hasCheckboxes'),
-                                'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
-                                'hasChart'          => 'eval:$this->model->hasChart()'),
-                            //todo: also: see that all UL's are created with same ID - this is not valid html
+                                  'htmlOptions' => array('class' => 'hasCheckboxes'),
+                                  'hasRuntimeFilters' => 'eval:$this->model->hasRuntimeFilters()',
+                                  'hasChart'          => 'eval:$this->model->hasChart()'),
                         ),
                     ),
                 ),
@@ -66,6 +74,10 @@
             return $metadata;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the Report is new
+         */
         public function getTitle()
         {
             if ($this->model->id > 0)
@@ -73,7 +85,7 @@
                 $moduleClassName = $this->model->moduleClassName;
                 $typesAndLabels  = Report::getTypeDropDownArray();
                 return strval($this->model) . ' - ' .
-                       Yii::t('Default', '{moduleLabel} {typeLabel} Report',
+                       Zurmo::t('ReportsModule', '{moduleLabel} {typeLabel} Report',
                               array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
                                     '{typeLabel}'   => $typesAndLabels[$this->model->type]));
             }
@@ -87,6 +99,63 @@
         {
             $script = '$(".ReportSQLForPortletView").hide();';
             Yii::app()->getClientScript()->registerScript('ReportPortletsDefaultHideScript', $script);
+            Yii::app()->getClientScript()->registerCoreScript('bbq');
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderContent()
+        {
+            $content = $this->renderTitleContent();
+            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
+            $content .= $this->renderActionElementBar(false);
+            $content .= '</div></div>';
+            $this->registerScripts();
+            return $content;
+        }
+
+        protected function shouldRenderToolBarElement($element, $elementInformation)
+        {
+            if(get_class($element) == 'ReportExportLinkActionElement' &&
+               ($this->model->getType() == Report::TYPE_MATRIX || !$this->userCanExportReport()))
+            {
+                return false;
+            }
+            if(get_class($element) == 'ReportOptionsLinkActionElement')
+            {
+                $userCanEditReport   = $this->userCanEditReport();
+                $userCanDeleteReport = $this->userCanDeleteReport();
+                if(!$userCanEditReport && !$userCanDeleteReport)
+                {
+                    return false;
+                }
+                if(!$userCanEditReport)
+                {
+                    $element->setHideEdit();
+                }
+                if(!$userCanDeleteReport)
+                {
+                    $element->setHideDelete();
+                }
+
+            }
+            return true;
+        }
+
+        protected function userCanEditReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Edit', $this->savedReport);
+        }
+
+        protected function userCanDeleteReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Delete', $this->savedReport);
+        }
+
+        protected function userCanExportReport()
+        {
+            return ActionSecurityUtil::canCurrentUserPerformAction('Export', $this->savedReport);
         }
     }
 ?>

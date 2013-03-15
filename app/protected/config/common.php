@@ -83,6 +83,9 @@
             'emailHelper' => array(
                 'class'       => 'application.modules.emailMessages.components.EmailHelper',
             ),
+            'authenticationHelper' => array(
+                'class'       => 'application.modules.zurmo.components.ZurmoAuthenticationHelper',
+            ),
             'errorHandler' => array(
                 'errorAction' => 'zurmo/default/error',
             ),
@@ -114,7 +117,7 @@
                     'js' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yii.js',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.js',
+                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.ba-bbq.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jui/js/jquery-ui.min.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.yiiactiveform.js',
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . '/../yii/framework/web/js/source/jquery.cookie.js',
@@ -202,7 +205,6 @@
                 'massDeleteProgressPageSize'   => 5,
                 'reportResultsListPageSize'    => 20,
                 'reportResultsSubListPageSize' => 5,
-                'unlimitedPageSize'            => 1000000000
             ),
             'performance' => array(
                 'class'          => 'application.core.components.PerformanceMeasurement',
@@ -255,6 +257,7 @@
                 'allowAutoLogin' => true,
                 'class'          => 'WebUser',
                 'loginUrl'       => array('zurmo/default/login'),
+                'loginRequiredAjaxResponse' => 'sessionTimeout',
                 'behaviors' => array(
                     'onAfterLogin' => array(
                         'class' => 'application.modules.gamification.behaviors.WebUserAfterLoginGamificationBehavior'
@@ -285,6 +288,9 @@
                         'cssFile' => false,
                     ),
                 ),
+            ),
+            'phpThumbnail' => array(
+                'class'=>'ext.EPhpThumb.EPhpThumb'
             ),
         ),
         'controllerMap' => array(

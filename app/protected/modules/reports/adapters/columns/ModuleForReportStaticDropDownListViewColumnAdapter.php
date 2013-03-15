@@ -24,13 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with the moduleClassName attribute and displaying it in a report results grid
+     */
     class ModuleForReportStaticDropDownListViewColumnAdapter extends ListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
             return array(
                 'name'   => 'moduleClassName',
-                'header' => Yii::t('Default', 'Module'),
+                'header' => Zurmo::t('ReportsModule', 'Module'),
                 'type'   => 'raw',
                 'value'  => 'ReportUtil::renderNonEditableModuleStringContent($data->moduleClassName)'
             );

@@ -4,12 +4,12 @@
             border-bottom: none;
             margin-bottom: 15px;
         }
-        th{
-            width:15%;
-        }
         td{
             width:34%;
             padding-right: 1%;
+        }
+        th{
+            width:15%;
         }
         td+th{
             padding-left: 1%;
@@ -76,6 +76,9 @@
     .right-side-edit-view-panel{
         width: 30%;
         float: right;
+        position: relative;
+        top:-2px;
+        right:0;
     }
 }
 
@@ -122,6 +125,7 @@
 }
 
 .activate-drop-zone{
+    .animateAll(0.75s);
     .drop-zone{
         .opacity(100);
         z-index: 100;
@@ -159,7 +163,7 @@
     z-index:10000;
 }
 
-.attribute-rows{
+.dynamic-rows{
     float: left;
     width:100%;
     position: relative;
@@ -168,13 +172,13 @@
         list-style: none;
     }
     li + li{
-        .dynamic-attribute-row{
+        .dynamic-row{
             //border-top: none;
         }
     }
 }
 
-.dynamic-attribute-row{
+.dynamic-row{
     ++.cf;
     position: relative;
     width: 100%;
@@ -206,7 +210,7 @@
     label.hasCheckBox{
         margin-left:0 !important;
     }
-    .remove-dynamic-attribute-row-link{
+    .remove-dynamic-row-link{
         position: absolute;
         right: 10px;
         top: 15px;
@@ -216,7 +220,7 @@
         .opacity(0);
         .animateAll(0.2s);
     }
-    .dynamic-attribute-row-number-label{
+    .dynamic-row-number-label{
         position: absolute;
         width: 25px;
         text-align: right;
@@ -232,50 +236,50 @@
         width: auto !important;
     }
     &:hover{
-        .remove-dynamic-attribute-row-link{
+        .remove-dynamic-row-link{
             .opacity(100);
         }
     }
 }
 
-.dynamic-attribute-row.clone{
+.dynamic-row.clone{
     padding: 15px;
     position: absolute;
     z-index: 10000;
 }
 
 .Filters{
-    .dynamic-attribute-row{
+    .dynamic-row{
         padding:15px 30px;
     }
 }
 
 .sortable{
-    .dynamic-attribute-row:hover{
+    .dynamic-row:hover{
         .radius(0 3px 3px 0);
         background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
     }
-    .dynamic-attribute-row:active{
+    .dynamic-row:active{
         cursor: move;
         background-color: #f5f5f5;
     }
 }
 
-.dynamic-attribute-label{
+.dynamic-row-label{
     float: left;
     line-height: 26px;
     width:20%;
     ++.border-box;
 }
 
-.dynamic-attribute-operator{
+.dynamic-row-operator{
     float: left;
     width:20%;
     ++.border-box;
     padding-left: 15px;
 }
 
-.dynamic-attribute-field{
+.dynamic-row-field{
     float: right;
     width: 80%;
     ++.border-box;
@@ -308,10 +312,10 @@
 }
 
 .hasFilter{
-    .dynamic-attribute-label{
+    .dynamic-row-label{
         width:100%;
     }
-    .dynamic-attribute-operator{
+    .dynamic-row-operator{
         padding-left:0;
     }
     .value-data{
@@ -319,11 +323,11 @@
         width: 100%;
         padding-right: 160px;
     }
-    .dynamic-attribute-operator + .value-data{
+    .dynamic-row-operator + .value-data{
         padding-left: 15px;
         width:80%;
     }    
-    .remove-dynamic-attribute-row-link{
+    .remove-dynamic-row-link{
         top:42px;
     }
 }
@@ -358,17 +362,17 @@
     width: 100%;
     .wrapper,
     #edit-form,
-    .dynamic-attribute-row{
+    .dynamic-row{
         ++.unstyle-panel;
     }
-    .dynamic-attribute-row{
+    .dynamic-row{
         padding: 0 0 15px 0;
     }
     .value-data{
         width: 60%;
         padding-left: 15px;
     }
-    .attribute-rows{
+    .dynamic-rows{
         float: none;
         ul{
             padding: 15px 15px 5px 15px;
@@ -398,7 +402,7 @@
         > .items{
             th, td{
                 border-left:1px solid #DFDFDF !important;
-                text-align: center !important;
+                //text-align: center !important;
             }
             th{
                 border-top:1px solid #DFDFDF !important;
@@ -429,6 +433,12 @@
     }
     .items{
         overflow-x: hidden;
+    }
+}
+
+#MatrixReportResultsGridView #report-results-grid-view{
+    > .items th, td{
+        text-align: center !important;
     }
 }
 
@@ -515,6 +525,11 @@
     width: auto;
     float: none;
     clear: left;
+    position: relative;
+    top: 0;
+    right: 0;
+    left: 0;
+    margin-bottom: 15px;
     .buffer{
         padding-left: 22px;
     }
@@ -571,15 +586,20 @@
 .zero-components-view{
     float: left;
     position: absolute;
-    left: 30px;
-    top:0;
+    left: 0;
+    top:75px;
     width: 100%;
     .large-icon{
         border-right:none;
-        margin-right: 30px;
+        margin-right: 0;
+        width: 100%;
+        textalign:center;
     }
     h2{
         padding-top:10px;
+        text-align: center;
+        width: 55%;
+        margin: 0 auto;
     }
     .large-icon:after{
         margin-right: 45px;
@@ -619,7 +639,7 @@
     }
 }
 
-.ZeroDrilDownDisplayAttributes{
+.ZeroDrillDownDisplayAttributes{
     .large-icon:after{
         content:'\00BB'; //"È";
         .symbly(300px);

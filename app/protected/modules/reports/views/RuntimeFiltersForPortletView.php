@@ -29,16 +29,26 @@
      */
     class RuntimeFiltersForPortletView extends ReportResultsComponentForPortletView
     {
+        /**
+         * @return string
+         */
         public function renderContent()
         {
+            OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
             return $this->renderForm();
         }
 
+        /**
+         * @return string
+         */
         public static function getFormId()
         {
             return 'edit-form';
         }
 
+        /**
+         * @return string
+         */
         protected function renderForm()
         {
             $content  = $this->renderRefreshLink();
@@ -46,7 +56,7 @@
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                            'ReportActiveForm',
+                                                            'WizardActiveForm',
                                                             array('id'                      => static::getFormId(),
                                                                   'action'                  => $this->getFormActionUrl(),
                                                                   'enableAjaxValidation'    => true,
@@ -57,7 +67,7 @@
             $rowCount       = 0;
             $items          = $this->renderItems($rowCount, $form);
             $itemsContent   = $this->getNonSortableListContent($items);
-            $content       .= ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $itemsContent);
+            $content       .= ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $content       .= $this->renderViewToolBarContainer($form);
             $formEnd        = $clipWidget->renderEndWidget();
             $content       .= $formEnd;
@@ -65,12 +75,20 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getWizardFormClassName()
         {
             return ReportToWizardFormAdapter::getFormClassNameByType($this->params['relationModel']->getType());
         }
 
-        protected function renderItems(& $rowCount, ReportActiveForm $form)
+        /**
+         * @param integer $rowCount
+         * @param WizardActiveForm $form
+         * @return array
+         */
+        protected function renderItems(& $rowCount, WizardActiveForm $form)
         {
             assert('is_int($rowCount)');
             $items                      = array();
@@ -83,7 +101,7 @@
                 {
                     $nodeIdWithoutTreeType      = $filterForReportForm->attributeIndexOrDerivedType;
                     $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
-                                                  resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                                  resolveInputPrefixData($wizardFormClassName,
                                                   $treeType, $rowCount);
                     $adapter                    = new RuntimeReportAttributeToElementAdapter($inputPrefixData, $filterForReportForm,
                                                   $form, $treeType);
@@ -100,6 +118,10 @@
             return $items;
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
@@ -110,6 +132,9 @@
             return ZurmoHtml::tag('ul', array(), $content);
         }
 
+        /**
+         * @return array
+         */
         protected function getClientOptions()
         {
             return array(
@@ -121,12 +146,19 @@
                     );
         }
 
+        /**
+         * @return string
+         */
         protected function getFormActionUrl()
         {
             return Yii::app()->createUrl('reports/default/applyRuntimeFilters',
                                          array('id' => $this->params["relationModel"]->getId()));
         }
 
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function renderConfigSaveAjax($formName)
         {
             return     "$('#apply-runtime-filters').removeClass('loading');
@@ -137,6 +169,10 @@
                        ";
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderViewToolBarContainer($form)
         {
             $content  = '<div class="view-toolbar-container clearfix">';
@@ -146,16 +182,20 @@
             return $content;
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderViewToolBarLinks($form)
         {
             $params                = array();
-            $params['label']       = Yii::t('Default', 'Apply');
+            $params['label']       = Zurmo::t('ReportsModule', 'Apply');
             $params['htmlOptions'] = array('id'      => 'apply-runtime-filters',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $applyElement          = new SaveButtonActionElement(null, null, null, $params);
             $resetElement          = new RefreshRuntimeFiltersAjaxLinkActionElement(null, null,
                                          $this->params['relationModel']->getId(), array());
-            return $applyElement->render() . $resetElement->render();
+            $applyElement          = new SaveButtonActionElement(null, null, null, $params);
+            return $resetElement->render() . $applyElement->render();
         }
     }
 ?>

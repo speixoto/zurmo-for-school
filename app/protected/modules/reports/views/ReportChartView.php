@@ -29,16 +29,43 @@
      */
     class ReportChartView extends View
     {
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
+        /**
+         * @var SummationReportDataProvider
+         */
         protected $dataProvider;
 
+        /**
+         * @var string
+         */
         protected $uniqueLayoutId;
 
-        protected $maximumGroupsPerChart = 100;
+        /**
+         * @var int
+         */
+        protected static $maximumGroupsPerChart = 100;
 
+        public static function setMaximumGroupsPerChart($value)
+        {
+            assert('is_int($value)');
+            self::$maximumGroupsPerChart = $value;
+        }
+
+        /**
+         * @param string $controllerId
+         * @param string $moduleId
+         * @param SummationReportDataProvider $dataProvider
+         * @param string $uniqueLayoutId
+         */
         public function __construct($controllerId, $moduleId, SummationReportDataProvider $dataProvider, $uniqueLayoutId)
         {
             assert('is_string($controllerId)');
@@ -50,15 +77,21 @@
             $this->uniqueLayoutId         = $uniqueLayoutId;
         }
 
+        /**
+         * @return string
+         */
         public function renderContent()
         {
-            if($this->dataProvider->calculateTotalItemCount() > $this->maximumGroupsPerChart)
+            if($this->dataProvider->calculateTotalItemCount() > self::$maximumGroupsPerChart)
             {
                 return $this->renderMaximumGroupsContent();
             }
             return $this->renderChartContent();
         }
 
+        /**
+         * @return string
+         */
         protected function renderChartContent()
         {
             $reportDataProviderToAmChartMakerAdapter = $this->dataProvider->makeReportDataProviderToAmChartMakerAdapter();
@@ -99,16 +132,23 @@
             return $cClipWidget->getController()->clips['Chart' . $this->uniqueLayoutId];
         }
 
+        /**
+         * @return string
+         */
         protected function renderMaximumGroupsContent()
         {
-            $content  = '<div class="a-class-we-can-call-something-else">';
-            $content .= Yii::t('Default', 'Your report has too many groups to plot. ' .
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('ReportsModule', 'Your report has too many groups to plot. ' .
                                           'Please adjust the filters to reduce the number below {maximum}.',
-                        array('{maximum}' => $this->maximumGroupsPerChart));
-            $content .= '</div>';
+                        array('{maximum}' => self::$maximumGroupsPerChart));
+            $content .= '</p></div>';
             return $content;
         }
 
+        /**
+         * @return null
+         * @throws NotSupportedException if the currency conversion type is invalid
+         */
         protected function resolveYAxisUnitContent()
         {
             if($this->dataProvider->getReport()->getCurrencyConversionType() ==

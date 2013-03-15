@@ -24,10 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for adapting a runtime attribute to an element
+     */
     class RuntimeReportAttributeToElementAdapter extends ReportAttributeToElementAdapter
     {
+        /**
+         * @var bool
+         */
         protected $showAvailableRuntimeFilter = false;
 
+        /**
+         * @return string
+         */
         protected function renderAttributeIndexOrDerivedType()
         {
             $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
@@ -39,21 +48,37 @@
                                           $idInputHtmlOptions);
         }
 
+        /**
+         * @return string|void
+         * @throws NotSupportedException
+         */
         protected function getContentForGroupBy()
         {
             throw new NotSupportedException();
         }
 
+        /**
+         * @return string|void
+         * @throws NotSupportedException
+         */
         protected function getContentForOrderBy()
         {
             throw new NotSupportedException();
         }
 
+        /**
+         * @return string|void
+         * @throws NotSupportedException
+         */
         protected function getContentForDisplayAttribute()
         {
             throw new NotSupportedException();
         }
 
+        /**
+         * @return string|void
+         * @throws NotSupportedException
+         */
         protected function getContentForDrillDownDisplayAttribute()
         {
             throw new NotSupportedException();

@@ -26,10 +26,17 @@
 
     class ReadOptimizationFiltersReportQueryBuilderTest extends ZurmoBaseTest
     {
+        protected static $superUserId;
+
+        protected static $everyoneGroupId;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            self::$superUserId = Yii::app()->user->userModel->id;
+            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            self::$everyoneGroupId = $group->id;
         }
 
         public function setup()
@@ -50,7 +57,8 @@
             $filter->attributeIndexOrDerivedType   = 'ReadOptimization';
             $content                               = $builder->makeQueryContent(array($filter));
             $compareContent = "{$q}ownedsecurableitem{$q}.{$q}securable_id{$q} = (select securable_id " .
-                              "from {$q}reportmodeltestitem_read{$q} where {$q}munge_id{$q} in ('U1', 'G1') limit 1)";
+                              "from {$q}reportmodeltestitem_read{$q} where {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1)";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
@@ -66,7 +74,8 @@
             $filter->attributeIndexOrDerivedType   = 'hasOne___ReadOptimization';
             $content                               = $builder->makeQueryContent(array($filter));
             $compareContent = "{$q}ownedsecurableitem{$q}.{$q}securable_id{$q} = (select securable_id " .
-                              "from {$q}reportmodeltestitem2_read{$q} where {$q}munge_id{$q} in ('U1', 'G1') limit 1)";
+                              "from {$q}reportmodeltestitem2_read{$q} where {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1)";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(2, $joinTablesAdapter->getLeftTableJoinCount());
@@ -88,7 +97,8 @@
             $content                               = $builder->makeQueryContent(array($filter, $filter2));
             $compareContent = "(({$q}ownedsecurableitem{$q}.{$q}owner__user_id{$q} = 'a value') or " .
                               "{$q}ownedsecurableitem{$q}.{$q}securable_id{$q} = (select securable_id " .
-                              "from {$q}reportmodeltestitem_read{$q} where {$q}munge_id{$q} in ('U1', 'G1') limit 1))";
+                              "from {$q}reportmodeltestitem_read{$q} where {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1))";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
@@ -106,7 +116,8 @@
             $filter->operator                      = OperatorRules::TYPE_EQUALS;
             $content                               = $builder->makeQueryContent(array($filter));
             $compareContent = "{$q}ownedsecurableitem1{$q}.{$q}securable_id{$q} = (select securable_id " .
-                              "from {$q}meeting_read{$q} where {$q}munge_id{$q} in ('U1', 'G1') limit 1)";
+                              "from {$q}meeting_read{$q} where {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1)";
             $this->assertEquals($compareContent, $content);
 
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
@@ -124,7 +135,8 @@
             $filter->attributeIndexOrDerivedType   = 'opportunities___meetings___ReadOptimization';
             $content                               = $builder->makeQueryContent(array($filter));
             $compareContent = "{$q}ownedsecurableitem1{$q}.{$q}securable_id{$q} = (select securable_id " .
-                              "from {$q}meeting_read{$q} where {$q}munge_id{$q} in ('U1', 'G1') limit 1)";
+                              "from {$q}meeting_read{$q} where {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1)";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(7, $joinTablesAdapter->getLeftTableJoinCount());
@@ -140,7 +152,8 @@
             $filter->attributeIndexOrDerivedType   = 'Account__activityItems__Inferred___ReadOptimization';
             $content                               = $builder->makeQueryContent(array($filter));
             $compareContent = "{$q}ownedsecurableitem{$q}.{$q}securable_id{$q} = (select securable_id " .
-                              "from {$q}account_read{$q} where {$q}munge_id{$q} in ('U1', 'G1') limit 1)";
+                              "from {$q}account_read{$q} where {$q}munge_id{$q} in ('U" .
+                              self::$superUserId . "', 'G" . self::$everyoneGroupId . "') limit 1)";
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(1, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());

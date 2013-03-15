@@ -24,8 +24,54 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the display attribute components for the report wizard user interface
+     */
     class DisplayAttributesForReportWizardView extends ComponentWithTreeForReportWizardView
     {
+        /**
+         * @return string
+         */
+        public static function getTreeType()
+        {
+            return DisplayAttributeForReportForm::getType();
+        }
+
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Select Display Columns');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'displayAttributesPreviousLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'displayAttributesNextLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getZeroComponentsClassName()
+        {
+            return 'ZeroDisplayAttributes';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderRightSideContent()
         {
             $hiddenInputId       = get_class($this->model) . '_displayAttributes';
@@ -39,49 +85,37 @@
             return $content;
         }
 
-        public static function getTreeType()
-        {
-            return DisplayAttributeForReportForm::getType();
-        }
-
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select Display Columns');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'displayAttributesPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'displayAttributesNextLink';
-        }
-
+        /**
+         * @return bool
+         */
         protected function isListContentSortable()
         {
             return true;
         }
 
+        /**
+         * @return int
+         */
         protected function getItemsCount()
         {
             return count($this->model->displayAttributes);
         }
 
+        /**
+         * @param int $rowCount
+         * @return array|string
+         */
         protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->displayAttributes);
         }
 
-        protected static function getZeroComponentsClassName()
-        {
-            return 'ZeroDisplayAttributes';
-        }
-
+        /**
+         * @return string
+         */
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your display columns here</h2>');
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('ReportsModule', 'Drag or double click your display columns here') . '</h2>';
         }
     }
 ?>

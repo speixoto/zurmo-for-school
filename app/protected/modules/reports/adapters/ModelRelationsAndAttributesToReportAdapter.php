@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Base class for managing adapting model relations and attributes into a report
+     * Base helper class for managing adapting model relations and attributes into a report
      */
     class ModelRelationsAndAttributesToReportAdapter
     {
@@ -33,14 +33,29 @@
 
         const DYNAMIC_RELATION_INFERRED      = 'Inferred';
 
+        /**
+         * @var array for caching purposes
+         */
         private static $adaptersByModelClassNameAndType;
 
+        /**
+         * @var RedBeanModel
+         */
         protected $model;
 
+        /**
+         * @var ReportRules
+         */
         protected $rules;
 
+        /**
+         * @var string
+         */
         protected $reportType;
 
+        /**
+         * @var null|string
+         */
         protected $moduleClassName;
 
         /**
@@ -49,6 +64,13 @@
          */
         private $derivedAttributesData;
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $reportType
+         * @return ModelRelationsAndAttributesToReportAdapter
+         * @throws NotSupportedException if the reportType is invalid or null
+         */
         public static function make($moduleClassName, $modelClassName, $reportType)
         {
             assert('is_string($moduleClassName)');
@@ -82,16 +104,25 @@
             return self::$adaptersByModelClassNameAndType[$modelClassName . $reportType];
         }
 
+        /**
+         * @return RedBeanModel
+         */
         public function getModel()
         {
             return $this->model;
         }
 
+        /**
+         * @return string
+         */
         public function getModelClassName()
         {
             return get_class($this->model);
         }
 
+        /**
+         * @return ReportRules
+         */
         public function getRules()
         {
             return $this->rules;
@@ -120,9 +151,10 @@
         }
 
         /**
-         *
          * Enter description here ...
          * @param string $attribute
+         * @return string
+         * @throws NotSupportedException if the label is missing for the attribute
          */
         public function getAttributeLabel($attribute)
         {
@@ -136,17 +168,22 @@
                 $resolvedAttribute = $this->resolveRealAttributeName($attribute);
             }
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
-            if(!isset($attributesData[$resolvedAttribute]))
+            if(!isset($attributesData[$resolvedAttribute]) && !$this->model->isAttribute($resolvedAttribute))
             {
                 throw new NotSupportedException('Label not found for: ' . $resolvedAttribute);
+            }
+            //PrimaryAddress for example would not be an attribute that is reportable but is still required for getting labels
+            elseif($this->model->isAttribute($resolvedAttribute))
+            {
+                return $this->model->getAttributeLabel($resolvedAttribute);
             }
             return $attributesData[$resolvedAttribute]['label'];
         }
 
         /**
-         *
          * Enter description here ...
-         * @param string $attribute
+         * @param string $relation
+         * @throws NotSupportedException if the label is missing for the relation
          */
         public function getRelationLabel($relation)
         {
@@ -163,6 +200,7 @@
          * Returns true/false if a string passed in is considered a relation from a reporting perspective. In this case
          * a dropDown is not considered a relation because it is reported on as a regular attribute.
          * @param string $relationOrAttribute
+         * @return bool
          */
         public function isReportedOnAsARelation($relationOrAttribute)
         {
@@ -179,7 +217,9 @@
         }
 
         /**
+         * @param string $relation
          * @return module class name.  Resolves for inferred and derived relations
+         * @throws NotSupportedException if the relation string is malformed
          */
         public function getRelationModuleClassName($relation)
         {
@@ -209,7 +249,9 @@
         }
 
         /**
+         * @param string $relation
          * @return model class name.  Resolves for inferred and derived relations
+         * @throws NotSupportedException if the relation is malformed
          */
         public function getRelationModelClassName($relation)
         {
@@ -282,6 +324,11 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @param string $attribute
+         * @return null|string
+         * @throws NotSupportedException if the attribute is a derived attribute
+         */
         public function getAvailableOperatorsType($attribute)
         {
             assert('is_string($attribute)');
@@ -291,7 +338,7 @@
             }
             if($this->isDerivedAttribute($attribute))
             {
-                throw new NotSupportedException($message, $code, $previous);
+                throw new NotSupportedException();
             }
             $resolvedAttribute = $this->resolveRealAttributeName($attribute);
             if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
@@ -302,6 +349,12 @@
             return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
         }
 
+        /**
+         * @param string $attribute
+         * @return null|string
+         * @throws NotSupportedException if the attribute is dynamically derived but not a __User attribute since
+         * this is the only type of dynamically derived attributes that are currently supported
+         */
         public function getFilterValueElementType($attribute)
         {
             assert('is_string($attribute)');
@@ -327,6 +380,12 @@
             return ModeAttributeToReportFilterValueElementTypeUtil::getType($this->model, $resolvedAttribute);
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         * @throws NotSupportedException if the attribute is dynamically derived but not a __User attribute since
+         * this is the only type of dynamically derived attributes that are currently supported
+         */
         public function getDisplayElementType($attribute)
         {
             assert('is_string($attribute)');
@@ -348,12 +407,19 @@
             return $this->getRealModelAttributeType($resolvedAttribute);
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         */
         public function getRealModelAttributeType($attribute)
         {
             assert('is_string($attribute)');
             return ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
         }
 
+        /**
+         * @return array
+         */
         public function getAllRelationsData()
         {
             $attributes = array();
@@ -370,9 +436,9 @@
         /**
          * Resolves relations to only return relations that the user has access too. always returns user relations
          * since this is ok for a user to see when creating or editing a report.
-         *
          * @param User $user
          * @param array $relations
+         * @return array
          * @throws NotSupportedException
          */
         public function getSelectableRelationsDataResolvedForUserAccess(User $user, Array $relations)
@@ -403,7 +469,7 @@
          * Public for testing only
          * @param RedBeanModel $precedingModel
          * @param null $precedingRelation
-         * @return sorted
+         * @return array
          * @throws NotSupportedException
          */
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
@@ -431,16 +497,23 @@
             return $sortedAttributes;
         }
 
-
+        /**
+         * @return array
+         */
         public function getAttributesIncludingDerivedAttributesData()
         {
-            $attributes = array('id' => array('label' => Yii::t('Default', 'Id')));
+            $attributes = array('id' => array('label' => Zurmo::t('ReportsModule', 'Id')));
             $attributes = array_merge($attributes, $this->getAttributesNotIncludingDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
             return $attributes;
         }
 
+        /**
+         * @param string $relation
+         * @return bool
+         * @throws NotSupportedException if the relation string is malformed
+         */
         public function isRelationASingularRelation($relation)
         {
             assert('is_string($relation)');
@@ -478,6 +551,47 @@
             return false;
         }
 
+        /**
+         * Assumes for now that we only need to know about real attributes that are 'owned'.
+         * @param $relation
+         * @return bool
+         * @throws NotSupportedException
+         */
+        public function isOwnedRelation($relation)
+        {
+            assert('is_string($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $relationAndInferredData         = explode($delimiter, $relation);
+            $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+            if(count($relationAndInferredData) == 3)
+            {
+                return false;
+            }
+            elseif(count($relationAndInferredData) == 2)
+            {
+                return false;
+            }
+            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            {
+                return false;
+            }
+            elseif(count($relationAndInferredData) == 1)
+            {
+                return $this->model->isOwnedRelation($relation);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * @param RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return array
+         * @throws NotSupportedException if there the preceding model and relation are not either both defined or both
+         * null
+         */
         public function getInferredRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             if(($precedingModel != null && $precedingRelation == null) ||
@@ -505,6 +619,11 @@
             return $attributes;
         }
 
+        /**
+         * @param string $attribute
+         * @param string $ruleAttributeName
+         * @return array
+         */
         public function getFilterRulesByAttribute($attribute, $ruleAttributeName)
         {
             $rules                        = array();
@@ -531,6 +650,10 @@
             return $rules;
         }
 
+        /**
+         * @param string $relation
+         * @return bool
+         */
         public function relationIsReportedAsAttribute($relation)
         {
             assert('is_string($relation)');
@@ -549,6 +672,10 @@
             return $this->rules->relationIsReportedAsAttribute($this->model, $relation);
         }
 
+        /**
+         * @param string $relation
+         * @return bool
+         */
         public function isDerivedRelationsViaCastedUpModelRelation($relation)
         {
             assert('is_string($relation)');
@@ -560,6 +687,10 @@
             return false;
         }
 
+        /**
+         * @param string $relation
+         * @return bool
+         */
         public function isInferredRelation($relation)
         {
             assert('is_string($relation)');
@@ -571,6 +702,10 @@
             return false;
         }
 
+        /**
+         * @param string $attribute
+         * @return bool
+         */
         public function isDynamicallyDerivedAttribute($attribute)
         {
             assert('is_string($attribute)');
@@ -582,6 +717,10 @@
             return false;
         }
 
+        /**
+         * @param string $attribute
+         * @return null|string
+         */
         public function getRawValueRelatedAttribute($attribute)
         {
             if($this->relationIsReportedAsAttribute($attribute))
@@ -591,6 +730,10 @@
             }
         }
 
+        /**
+         * @param string $attribute
+         * @return bool
+         */
         public function isAttributeReadOptimization($attribute)
         {
             if($attribute == 'ReadOptimization')
@@ -600,6 +743,61 @@
             return false;
         }
 
+        /**
+         * @param string $attribute
+         * @return bool
+         */
+        public function isDerivedAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            $derivedAttributes = $this->getDerivedAttributesData();
+            if(isset($derivedAttributes[$attribute]))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param string attribute
+         * @return real model attribute name.  Parses for Inferred
+         */
+        public function resolveRealAttributeName($attribute)
+        {
+            assert('is_string($attribute)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $attributeAndInferredData   = explode($delimiter, $attribute);
+            if(count($attributeAndInferredData) == 3)
+            {
+                list($modelClassName, $attribute, $notUsed) = $attributeAndInferredData;
+                return $attribute;
+            }
+            elseif(count($attributeAndInferredData) == 2)
+            {
+                list($attribute, $notUsed) = $attributeAndInferredData;
+                return $attribute;
+            }
+            else
+            {
+                return $attribute;
+            }
+        }
+
+        /**
+         * Override when some attributes can be made via select and not via the model. An example of a viaSelect is
+         * SUM(amount) since that is not derived via a model but directly from the results of a query.
+         * @param $attribute
+         * @return bool
+         */
+        public function isDisplayAttributeMadeViaSelect($attribute)
+        {
+            assert('is_string($attribute)');
+            return false;
+        }
+
+        /**
+         * @return array
+         */
         protected function getAttributesNotIncludingDerivedAttributesData()
         {
             $attributes = array();
@@ -616,6 +814,13 @@
             return $attributes;
         }
 
+        /**
+         * @param string $relationModelClassName
+         * @param string $opposingRelation
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return bool
+         */
         protected function derivedRelationLinksToPrecedingRelation($relationModelClassName, $opposingRelation, RedBeanModel $precedingModel = null,
                                                                     $precedingRelation = null)
         {
@@ -632,6 +837,13 @@
             return false;
         }
 
+        /**
+         * @param string $inferredModelClassName
+         * @param string $relation
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return bool
+         */
         protected function inferredRelationLinksToPrecedingRelation($inferredModelClassName, $relation, RedBeanModel $precedingModel = null,
                                                                     $precedingRelation = null)
         {
@@ -644,7 +856,8 @@
             {
                 return false;
             }
-            if($precedingModel->isADerivedRelationViaCastedUpModel($precedingRelation) &&
+            $modelClassName = get_class($precedingModel);
+            if($modelClassName::isADerivedRelationViaCastedUpModel($precedingRelation) &&
                $precedingModel->getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
             {
                 return true;
@@ -652,6 +865,12 @@
             return false;
         }
 
+        /**
+         * @param string $relation
+         * @param null|RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return bool
+         */
         protected function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
                                                             $precedingRelation = null)
         {
@@ -684,6 +903,13 @@
             return false;
         }
 
+        /**
+         * @param RedBeanModel $precedingModel
+         * @param null|string $precedingRelation
+         * @return array
+         * @throws NotSupportedException if there the preceding model and relation are not either both defined or both
+         * null
+         */
         protected function getDerivedRelationsViaCastedUpModelData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             if(($precedingModel != null && $precedingRelation == null) ||
@@ -713,6 +939,9 @@
             return $attributes;
         }
 
+        /**
+         * @return array|null
+         */
         protected function getDerivedAttributesData()
         {
             if ($this->derivedAttributesData == null)
@@ -729,17 +958,9 @@
             return $this->derivedAttributesData;
         }
 
-        public function isDerivedAttribute($attribute)
-        {
-            assert('is_string($attribute)');
-            $derivedAttributes = $this->getDerivedAttributesData();
-            if(isset($derivedAttributes[$attribute]))
-            {
-                return true;
-            }
-            return false;
-        }
-
+        /**
+         * @return array
+         */
         protected function getDynamicallyDerivedAttributesData()
         {
             $attributes = array();
@@ -756,6 +977,10 @@
             return $attributes;
         }
 
+        /**
+         * @param $relation
+         * @return null|string
+         */
         protected function getInferredRelationModelClassNamesForRelation($relation)
         {
             assert('is_string($relation)');
@@ -770,47 +995,15 @@
             }
         }
 
+        /**
+         * @param array $attributes
+         * @param string $attribute
+         */
         private function resolveRelationToSelectableRelationData(& $attributes, $attribute)
         {
             assert('is_array($attributes)');
             assert('is_string($attribute)');
             $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
-        }
-
-        /**
-         * @return real model attribute name.  Parses for Inferred
-         */
-        public function resolveRealAttributeName($attribute)
-        {
-            assert('is_string($attribute)');
-            $delimiter                       = FormModelUtil::DELIMITER;
-            $attributeAndInferredData   = explode($delimiter, $attribute);
-            if(count($attributeAndInferredData) == 3)
-            {
-                list($modelClassName, $attribute, $notUsed) = $attributeAndInferredData;
-                return $attribute;
-            }
-            elseif(count($attributeAndInferredData) == 2)
-            {
-                list($attribute, $notUsed) = $attributeAndInferredData;
-                return $attribute;
-            }
-            else
-            {
-                return $attribute;
-            }
-        }
-
-        /**
-         * Override when some attributes can be made via select and not via the model.
-         * @param $attribute
-         * @return bool
-         */
-        public function isDisplayAttributeMadeViaSelect($attribute)
-        {
-            //todo: document this more
-            assert('is_string($attribute)');
-            return false;
         }
     }
 ?>

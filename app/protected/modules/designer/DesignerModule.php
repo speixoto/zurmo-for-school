@@ -50,7 +50,7 @@
                     !empty($moduleTreeMenuItems))
                 {
                     $tabMenuItems[0]['items'][] = array(
-                        'label' => Yii::t('Default', $module::getModuleLabelByTypeAndLanguage('Plural')),
+                        'label' => Zurmo::t('DesignerModule', $module::getModuleLabelByTypeAndLanguage('Plural')),
                         'url'   => array('/designer/default/modulesMenu', 'moduleClassName' => get_class($module)),
                     );
                 }
@@ -65,15 +65,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Designer',
-                        'descriptionLabel' => 'Manage module fields, layouts, and labels.',
+                        'titleLabel'       => "eval:Zurmo::t('DesignerModule', 'Designer')",
+                        'descriptionLabel' => "eval:Zurmo::t('DesignerModule', 'Manage module fields, layouts, and labels.')",
                         'route'            => '/designer/default',
                         'right'            => self::RIGHT_ACCESS_DESIGNER,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Designer',
+                        'label' => "eval:Zurmo::t('DesignerModule', 'Designer')",
                         'url' => array('/designer/default'),
                         'right' => self::RIGHT_ACCESS_DESIGNER,
                         'order' => 1,

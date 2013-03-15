@@ -36,6 +36,17 @@
         public $modalListPageSize;
         public $dashboardListPageSize;
         public $gamificationModalNotificationsEnabled;
+        public $realtimeUpdatesEnabled;
+        public $logoFileData;
+        public $logoHeight;
+        public $logoWidth;
+
+        const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
+        const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
+        const DEFAULT_LOGO_HEIGHT           = 32;
+        const DEFAULT_LOGO_WIDTH            = 107;
+        const LOGO_FILE_NAME_PREFIX         = 'logo-';
+        const LOGO_THUMB_FILE_NAME_PREFIX   = 'logoThumb-';
 
         public function rules()
         {
@@ -56,6 +67,11 @@
                 array('dashboardListPageSize',                  'type',      'type' => 'integer'),
                 array('dashboardListPageSize',                  'numerical', 'min' => 1),
                 array('gamificationModalNotificationsEnabled',  'boolean'),
+                array('realtimeUpdatesEnabled',                 'boolean'),
+                array('logoHeight',                             'type',      'type' => 'integer'),
+                array('logoWidth',                              'type',      'type' => 'integer'),
+                array('subListPageSize',                        'type',      'type' => 'integer'),
+                array('logoFileData',                           'type',      'type' => 'array'),
             );
         }
 
@@ -69,6 +85,9 @@
                 'modalListPageSize'                     => Zurmo::t('ZurmoModule', 'Popup list page size'),
                 'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
+                'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
+                'logoHeight'                            => Zurmo::t('ZurmoModule', 'Logo Height'),
+                'logoWidth'                             => Zurmo::t('ZurmoModule', 'Logo Width'),
             );
         }
     }

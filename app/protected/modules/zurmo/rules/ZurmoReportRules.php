@@ -30,6 +30,9 @@
      */
     class ZurmoReportRules extends SecuredReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(

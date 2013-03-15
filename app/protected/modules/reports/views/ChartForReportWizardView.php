@@ -24,26 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the chart component for the report wizard user interface
+     */
     class ChartForReportWizardView extends ComponentForReportWizardView
     {
-        protected function renderFormContent()
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
         {
-            $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
-            $this->form->setInputPrefixData($inputPrefixData);
-            $params            = array('inputPrefix' => $inputPrefixData);
-            $content           = '<div class="attributesContainer">';
-            $element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
-                                 array_merge($params, array('addBlank' => true)));
-            $leftSideContent   = $element->render();
-            $element           = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
-            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
-            $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
-            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
-            $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
-            $content          .= '</div>';
-            $this->form->clearInputPrefixData();
-            $this->registerScripts();
-            return $content;
+            return Zurmo::t('ReportsModule', 'Select a Chart');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'chartPreviousLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'chartNextLink';
         }
 
         public function registerScripts()
@@ -57,53 +64,83 @@
                 }
                 $(".chart-selector").live("change", function()
                     {
-                        $("#series-and-range-areas").detach().insertAfter( $(this).parent()  ).removeClass("hidden-element");
-                        arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
-                        if($(this).val() == "")
-                        {
-                            $("#series-and-range-areas").addClass("hidden-element")
-                            $(".first-series-and-range-area").hide();
-                            $(".first-series-and-range-area").find("input:select").prop("disabled", true);
-                        }
-                        else
-                        {
-                            $(".first-series-and-range-area").show();
-                            $(".first-series-and-range-area").find("input:select").prop("disabled", false);
-                        }
-                        if ($.inArray($(this).val(), arr) != -1)
-                        {
-                            $(".second-series-and-range-area").show();
-                            $(".second-series-and-range-area").find("input:select").prop("disabled", false);
-                        }
-                        else
-                        {
-                            $(".second-series-and-range-area").hide();
-                            $(".second-series-and-range-area").find("input:select").prop("disabled", true);
-                        }
+                        onChangeChartType(this);
                     }
                 );
+                function onChangeChartType(changedChartObject)
+                {
+                    $("#series-and-range-areas").detach().insertAfter( $(changedChartObject).parent()  ).removeClass("hidden-element");
+                    arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
+                    if($(changedChartObject).val() == "")
+                    {
+                        $("#series-and-range-areas").addClass("hidden-element")
+                        $(".first-series-and-range-area").hide();
+                        $(".first-series-and-range-area").find("select option:selected").removeAttr("selected");
+                        $(".first-series-and-range-area").find("select").prop("disabled", true);
+                    }
+                    else
+                    {
+                        $(".first-series-and-range-area").show();
+                        $(".first-series-and-range-area").find("select").prop("disabled", false);
+                    }
+                    if ($.inArray($(changedChartObject).val(), arr) != -1)
+                    {
+                        $(".second-series-and-range-area").show();
+                        $(".second-series-and-range-area").find("select").prop("disabled", false);
+                    }
+                    else
+                    {
+                        $(".second-series-and-range-area").hide();
+                        $(".second-series-and-range-area").find("select option:selected").removeAttr("selected");
+                        $(".second-series-and-range-area").find("select").prop("disabled", true);
+                    }
+                }
             ';
             Yii::app()->getClientScript()->registerScript('ChartChangingScript', $script);
         }
 
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select a Chart');
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'chartPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'chartNextLink';
-        }
-
+        /**
+         * @return bool
+         */
         protected function isListContentSortable()
         {
             return true;
+        }
+
+        /**
+         * @return string
+         */
+        protected function renderFormContent()
+        {
+            $inputPrefixData   = array(get_class($this->model), get_class($this->model->chart));
+            $this->form->setInputPrefixData($inputPrefixData);
+            $params            = array('inputPrefix' => $inputPrefixData);
+            $content           = '<div class="attributesContainer">';
+            $element           = new ChartTypeRadioStaticDropDownForReportElement($this->model->chart, 'type', $this->form,
+                array_merge($params, array('addBlank' => true)));
+            $leftSideContent   = $element->render();
+            $element           = new MixedChartRangeAndSeriesElement($this->model->chart, null, $this->form, $params);
+            $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
+            $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
+            $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
+            $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
+            $content          .= '</div>';
+            $content          .= $this->renderChartTipContent();
+            $this->form->clearInputPrefixData();
+            $this->registerScripts();
+            return $content;
+        }
+
+        protected function renderChartTipContent()
+        {
+            $content  = ZurmoHtml::tag('h3', array(), Zurmo::t('Core', 'Quick Tip'));
+            $content .= ZurmoHtml::tag('p', array(),
+                                       Zurmo::t('WorkflowsModule', 'In order to use a grouping as a series field, ' .
+                                                    'the grouping must be added as a display column.'));
+            $content  = ZurmoHtml::tag('div', array(), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => 'buffer'), $content);
+            $content  = ZurmoHtml::tag('div', array('class'    => 'right-side-edit-view-panel'), $content);
+            return $content;
         }
     }
 ?>

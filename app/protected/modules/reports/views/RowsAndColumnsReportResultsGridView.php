@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with row and columns report results in a grid
+     */
     class RowsAndColumnsReportResultsGridView extends ReportResultsGridView
     {
+        /**
+         * @return bool
+         */
         protected function isDataProviderValid()
         {
             if(!$this->dataProvider instanceof RowsAndColumnsReportDataProvider)

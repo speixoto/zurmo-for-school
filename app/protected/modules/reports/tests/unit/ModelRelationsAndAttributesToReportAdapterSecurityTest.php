@@ -51,11 +51,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $relations = $adapter->getSelectableRelationsDataResolvedForUserAccess(Yii::app()->user->userModel, $relations);
-            $this->assertEquals(14, count($relations));
-            $compareData        = array('label' => 'Parent Account');
-            $this->assertEquals($compareData, $relations['account']);
-            $compareData        = array('label' => 'Accounts');
-            $this->assertEquals($compareData, $relations['accounts']);
+            $this->assertEquals(12, count($relations));
             $compareData        = array('label' => 'Billing Address');
             $this->assertEquals($compareData, $relations['billingAddress']);
             $compareData        = array('label' => 'Contacts');
@@ -96,11 +92,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $relations = $adapter->getSelectableRelationsDataResolvedForUserAccess(Yii::app()->user->userModel, $relations);
-            $this->assertEquals(11, count($relations));
-            $compareData        = array('label' => 'Parent Account');
-            $this->assertEquals($compareData, $relations['account']);
-            $compareData        = array('label' => 'Accounts');
-            $this->assertEquals($compareData, $relations['accounts']);
+            $this->assertEquals(9, count($relations));
             $compareData        = array('label' => 'Billing Address');
             $this->assertEquals($compareData, $relations['billingAddress']);
             $compareData        = array('label' => 'Created By User');

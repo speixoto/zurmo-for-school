@@ -258,7 +258,7 @@
             $formula = strtolower($structure);
             if (!self::validateParenthesis($formula))
             {
-                $errorContent = Yii::t('Default', 'Please fix your parenthesis.');
+                $errorContent = Zurmo::t('Core', 'Please fix your parenthesis.');
             }
             else
             {
@@ -273,14 +273,14 @@
                         !(intval($argument) > 0) ||
                         !(preg_match("/\./", $argument) === 0) )
                     {
-                        $errorContent = Yii::t('Default', 'Please use only integers less than {max}.',
+                        $errorContent = Zurmo::t('Core', 'Please use only integers less than {max}.',
                                                           array('{max}' => $clauseCount + 1));
                     }
                 }
             }
             if (isset($errorContent))
             {
-                return Yii::t('Default', 'The structure is invalid. {error}',  array('{error}' => $errorContent));
+                return Zurmo::t('Core', 'The structure is invalid. {error}',  array('{error}' => $errorContent));
             }
         }
 

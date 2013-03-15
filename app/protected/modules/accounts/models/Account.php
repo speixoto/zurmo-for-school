@@ -31,7 +31,7 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
@@ -130,9 +130,9 @@
                     array('name',          'type',    'type' => 'string'),
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                     array('officePhone',   'type',    'type' => 'string'),
-                    array('officePhone',   'length',  'min'  => 1, 'max' => 20),
+                    array('officePhone',   'length',  'min'  => 1, 'max' => 24),
                     array('officeFax',     'type',    'type' => 'string'),
-                    array('officeFax',     'length',  'min'  => 1, 'max' => 20),
+                    array('officeFax',     'length',  'min'  => 1, 'max' => 24),
                     array('website',       'url'),
                 ),
                 'elements' => array(

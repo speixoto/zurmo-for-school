@@ -24,33 +24,54 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the filter components for the report wizard user interface
+     */
     class FiltersForReportWizardView extends ComponentWithTreeForReportWizardView
     {
-        protected function renderExtraDroppableAttributesContent()
-        {
-            return $this->renderStructureContent();
-        }
-
+        /**
+         * @return string
+         */
         public static function getTreeType()
         {
             return FilterForReportForm::getType();
         }
 
+        /**
+         * @return string
+         */
         public static function getWizardStepTitle()
         {
-            return Yii::t('Default', 'Select Filters');
+            return Zurmo::t('ReportsModule', 'Select Filters');
         }
 
+        /**
+         * @return string
+         */
         public static function getPreviousPageLinkId()
         {
             return 'filterBysPreviousLink';
         }
 
+        /**
+         * @return string
+         */
         public static function getNextPageLinkId()
         {
             return 'filterBysNextLink';
         }
 
+        /**
+         * @return string
+         */
+        protected function renderExtraDroppableAttributesContent()
+        {
+            return $this->renderStructureContent();
+        }
+
+        /**
+         * @return string
+         */
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
@@ -72,6 +93,9 @@
                 );");
         }
 
+        /**
+         * @return string
+         */
         protected function renderStructureContent()
         {
             $style1 = '';
@@ -84,7 +108,7 @@
             {
                 $style3 = 'display:none;';
             }
-            $content  = ZurmoHtml::link(Yii::t('Default', 'Modify Structure'), '#',
+            $content  = ZurmoHtml::link(Zurmo::t('ReportsModule', 'Modify Structure'), '#',
                             array('id'    => 'show-filters-structure-div-link',
                                   'style' => $style1));
             $content .= ZurmoHtml::tag('div',
@@ -96,50 +120,75 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderStructureInputContent()
         {
             $idInputHtmlOptions  = array('id'    => $this->getStructureInputId(),
                                          'name'  => $this->getStructureInputName(),
                                          'class' => 'filters-structure-input');
             $content             = $this->form->textField($this->model, 'filtersStructure', $idInputHtmlOptions);
-            $content            .= ZurmoHtml::tag('span', array(), Yii::t('Default', 'Search Operator'));
+            $content            .= ZurmoHtml::tag('span', array(), Zurmo::t('ReportsModule', 'Search Operator'));
             $content            .= $this->form->error($this->model, 'filtersStructure');
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getStructureInputId()
         {
             return get_class($this->model) . '_filtersStructure';
         }
 
+        /**
+         * @return string
+         */
         protected function getStructureInputName()
         {
             return get_class($this->model) . '[filtersStructure]';
         }
 
+        /**
+         * @return string
+         */
         protected function getReportAttributeRowAddOrRemoveExtraScript()
         {
             return 'rebuildReportFiltersAttributeRowNumbersAndStructureInput("' . get_class($this) . '");';
         }
 
+        /**
+         * @return int
+         */
         protected function getItemsCount()
         {
             return count($this->model->filters);
         }
 
+        /**
+         * @param int $rowCount
+         * @return array|string
+         */
         protected function getItemsContent(& $rowCount)
         {
             return $this->renderItems($rowCount, $this->model->filters, true);
         }
 
-        protected static function getZeroComponentsClassName()
+        /**
+         * @return string
+         */
+        public static function getZeroComponentsClassName()
         {
             return 'ZeroFilters';
         }
 
+        /**
+         * @return string
+         */
         protected function getZeroComponentsMessageContent()
         {
-            return Yii::t('Default', '<div class="large-icon"></div><h2>Drag or double click your filters here</h2>');
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('ReportsModule', 'Drag or double click your filters here') . '</h2>';
         }
     }
 ?>

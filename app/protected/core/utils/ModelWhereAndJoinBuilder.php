@@ -144,19 +144,20 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_string($operatorType)');
-            assert('is_array($value) && count($value) > 0');
+            assert('(is_array($value) && count($value) > 0) || is_string($value)');
             assert('is_array($where)');
             assert('is_int($whereKey)');
             $relationAttributeModelClassName = $this->modelAttributeToDataProviderAdapter->getRelatedAttributeRelationModelClassName();
-            if ($relationAttributeModelClassName != 'CustomFieldValue' || $operatorType != 'oneOf')
+            if ($relationAttributeModelClassName != 'CustomFieldValue' && $operatorType != 'allOf')
             {
                 //Until we can add a third parameter to the search adapter metadata, we have to assume we are only doing
                 //this for CustomFieldValue searches. Below we have $joinColumnName, since we don't have any other way
                 //of ascertaining this information for now.
 
-                //only support oneOf for the moment.  Once we add allOf, need to have an alternative sub-query
+                //Once we add allOf, need to have an alternative sub-query
                 //below that uses if/else logic to compare count against how many possibles. then return 1 or 0.
-                throw new NotSupportedException();
+                throw new NotSupportedException('modelClassName: ' . $relationAttributeModelClassName .
+                                                ' operatorType: ' . $operatorType);
             }
             $relationAttributeTableName      = RedBeanModel::getTableName($relationAttributeModelClassName);
             $tableAliasName                  = $relationAttributeTableName;
@@ -172,6 +173,10 @@
                                                DatabaseCompatibilityUtil::getOperatorAndValueWherePart($operatorType, $value) . " limit 1))";
         }
 
+        /**
+         * @param null $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForRelatedId($onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -217,6 +222,11 @@
             }
         }
 
+        /**
+         * @param $tableAliasName
+         * @param $columnName
+         * @return string
+         */
         protected function resolveWhereColumnContentForModifier($tableAliasName, $columnName)
         {
             assert('is_string($tableAliasName)');
@@ -230,10 +240,17 @@
             return $content;
         }
 
-        //todo: test because i am not sure we need this always. needed this for owner part of Conversation query where there was no related attribute, otherwise it didn't work right.
-        //todo: need an actual test just on owner for example. and run more search tests to make sure this is ok.
-        //todo: the way we have this reporting can't use this builder override since you dont always have a related attribute but that doesn't necessarily mean anything
         /**
+         * //todo: this override method was needed because otherwise the conversation listview would blow up.  The elseif
+         * was added to properly support owned relations since those should always run the addLeftJoin.  I am not sure
+         * what else is affected by this method, but reporting can't really use this override since even if the attribute
+         * is not related, it doesn't mean we shouldn't do the left join.  Further work needs to be done with this method
+         * to test things out.  The starting point would be to test the conversation listview issue which is around the use
+         * of owner and then work out from there.
+         *
+         * ZurmoModelDataProviderUtilTest breaks if we don't have the elseif, but ModulesSearchWithDataProviderTest
+         * breaks if we do and it breaks really bad.
+         *
          * @param $onTableAliasName
          * @return null|string
          */
@@ -244,9 +261,16 @@
             {
                 return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
             }
+            //elseif($this->modelAttributeToDataProviderAdapter->isOwnedRelation())
+            //{
+            //    return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
+            //}
             return $onTableAliasName;
         }
 
+        /**
+         * @return string
+         */
         protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier()
         {
             $attributeType = ModelAttributeToMixedTypeUtil::getType(

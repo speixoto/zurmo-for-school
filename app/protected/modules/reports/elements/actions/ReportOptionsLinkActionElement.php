@@ -25,26 +25,56 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to export from a listview.
+     * Class used by reporting detail view user interface to show a options button that when clicked has a dropdown
+     * of links to click
      */
     class ReportOptionsLinkActionElement extends LinkActionElement
     {
+        protected $showEdit   = true;
+
+        protected $showDelete = true;
+
+        public function setHideEdit()
+        {
+            $this->showEdit = false;
+        }
+
+        public function setHideDelete()
+        {
+            $this->showDelete = false;
+        }
+
+        /**
+         * @return string
+         */
         public function getActionType()
         {
             return 'Delete';
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
-            //todo securable on these items from the outside coming in?
-            //todo: need confirmation on delete link.
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                'items' => array(
-                    array(  'label'   => Yii::t('Default', 'Edit'),
-                            'url'     => Yii::app()->createUrl($this->getEditRoute(), array('id' => $this->modelId))),
-                    array(  'label'   => Yii::t('Default', 'Delete'),
-                            'url'     => Yii::app()->createUrl($this->getDeleteRoute(), array('id' => $this->modelId))
-                    )));
+            $menuItems = array('label' => $this->getLabel(), 'url' => null, 'items' => array());
+
+            if($this->showEdit)
+            {
+                $menuItems['items'][] = array('label' => Zurmo::t('ReportsModule', 'Edit'),
+                                                 'url'   => Yii::app()->createUrl($this->getEditRoute(),
+                                                                                  array('id' => $this->modelId)));
+            }
+
+            if($this->showDelete)
+            {
+                $menuItems['items'][] = array('label'       => Zurmo::t('ReportsModule', 'Delete'),
+                                              'url'         => Yii::app()->createUrl($this->getDeleteRoute(),
+                                                                                     array('id' => $this->modelId)),
+                                              'linkOptions' =>
+                                                array('confirm' =>
+                                                    Zurmo::t('ReportsModule', 'Are you sure you want to delete this report?')));
+            }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
@@ -55,21 +85,33 @@
             return $cClipWidget->getController()->clips['ActionMenu'];
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Options');
+            return Zurmo::t('ReportsModule', 'Options');
         }
 
+        /**
+         * @return null
+         */
         protected function getDefaultRoute()
         {
             return null;
         }
 
+        /**
+         * @return string
+         */
         protected function getEditRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/edit/';
         }
 
+        /**
+         * @return string
+         */
         protected function getDeleteRoute()
         {
             return $this->moduleId . '/' . $this->controllerId . '/delete/';

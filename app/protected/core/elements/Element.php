@@ -33,17 +33,17 @@
      */
     abstract class Element
     {
+        public $params;
+
+        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
+
+        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
+
         protected $model;
 
         protected $attribute;
 
         protected $form;
-
-        protected $params;
-
-        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}{error}</td>';
-
-        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{content}</td>';
 
         /**
          * Constructs the element specifying the model and attribute.
@@ -112,6 +112,20 @@
         {
             return $this->form->error($this->model, $this->attribute,
                     array('inputID' => $this->getEditableInputId()));
+        }
+
+        /**
+         * For related models such as Email, Address, and CurrencyValue, a scoped error id is required.  This is because
+         * we treat those related attributes effectively on the base model for showing validation errors.
+         * @param string $inputNameIdPrefix
+         * @param string $attribute
+         * @return string
+         */
+        protected function renderScopedErrorId($inputNameIdPrefix, $attribute)
+        {
+            assert('is_string($inputNameIdPrefix)');
+            assert('is_string($attribute)');
+            return get_class($this->model) . '_' . $inputNameIdPrefix . '_' . $attribute;
         }
 
         /**

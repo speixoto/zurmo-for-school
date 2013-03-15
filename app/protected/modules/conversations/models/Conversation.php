@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base model for working with a conversation
+     */
     class Conversation extends OwnedSecurableItem implements MashableActivityInterface
     {
         public static function getMashableActivityRulesType()
@@ -50,6 +53,18 @@
             catch (AccessDeniedSecurityException $e)
             {
                 return '';
+            }
+        }
+
+        public function resolveIsClosedForNull()
+        {
+            if ($this->isClosed == true)
+            {
+                return 1;
+            }
+            else
+            {
+                return 0;
             }
         }
 
@@ -115,6 +130,7 @@
                     'latestDateTime',
                     'subject',
                     'ownerHasReadLatest',
+                    'isClosed'
                 ),
                 'relations' => array(
                     'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
@@ -134,6 +150,7 @@
                     array('subject',            'type',    'type' => 'string'),
                     array('subject',            'length',  'min'  => 3, 'max' => 255),
                     array('ownerHasReadLatest', 'boolean'),
+                    array('isClosed',           'boolean'),
                 ),
                 'elements' => array(
                     'conversationItems' => 'ConversationItem',

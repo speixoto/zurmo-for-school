@@ -24,8 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with summation drll down report results in a grid
+     */
     class SummationDrillDownReportResultsGridView extends ReportResultsGridView
     {
+        /**
+         * @return bool
+         */
+        public function isUniqueToAPage()
+        {
+            return false;
+        }
+
+        /**
+         * @return string
+         */
+        protected static function getPagerCssClass()
+        {
+            return 'pager horizontal-drill-down';
+        }
+
+        /**
+         * @return bool
+         */
         protected function isDataProviderValid()
         {
             if(!$this->dataProvider instanceof SummationDrillDownReportDataProvider)
@@ -35,21 +57,17 @@
             return true;
         }
 
-        public function isUniqueToAPage()
-        {
-            return false;
-        }
-
+        /**
+         * @return bool
+         */
         protected function rowsAreExpandable()
         {
             return false;
         }
 
-        protected static function getPagerCssClass()
-        {
-            return 'pager horizontalX'; //todo: change to something else. needed so it doesnt cause doulbe up on pager requests.
-        }
-
+        /**
+         * @return array
+         */
         protected function getCGridViewPagerParams()
         {
             $defaultGridViewPagerParams = array(

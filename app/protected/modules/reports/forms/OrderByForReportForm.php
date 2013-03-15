@@ -24,15 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for order by definitions
+     */
     class OrderByForReportForm extends ComponentForReportForm
     {
+        /**
+         * Default sorting order is ascending
+         * @var string
+         */
         public $order = 'asc';
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_ORDER_BYS;
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -42,6 +55,9 @@
             ));
         }
 
+        /**
+         * @return bool
+         */
         public function validateOrder()
         {
             if($this->order == null)
@@ -50,12 +66,16 @@
             }
             if($this->order != 'asc' && $this->order != 'desc')
             {
-                $this->addError('order', Yii::t('Default', 'Order must be asc or desc.'));
+                $this->addError('order', Zurmo::t('ReportsModule', 'Order must be asc or desc.'));
                 return false;
             }
             return true;
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException if the attributeIndexOrDerivedType is null
+         */
         public function getOrderValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)
@@ -63,8 +83,8 @@
                 throw new NotSupportedException();
             }
             $data = array();
-            $data['asc']       = Yii::t('Default', 'Ascending');
-            $data['desc']       = Yii::t('Default', 'Descending');
+            $data['asc']       = Zurmo::t('ReportsModule', 'Ascending');
+            $data['desc']      = Zurmo::t('ReportsModule', 'Descending');
             return $data;
         }
     }

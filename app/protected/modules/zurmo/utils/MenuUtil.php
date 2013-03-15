@@ -447,7 +447,7 @@
             {
                 foreach ($labelElements as $labelElement)
                 {
-                    $menuItems[$itemKey][$labelElement] = Yii::t('Default', $item[$labelElement], $translationParams);
+                    MetadataUtil::resolveEvaluateSubString($menuItems[$itemKey][$labelElement], 'translationParams', $translationParams);
                 }
                 if (isset($item['items']))
                 {

@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for working with Report objects
+     */
     class ReportUtil
     {
+        /**
+         * @param $type
+         * @return null | string
+         */
         public static function renderNonEditableTypeStringContent($type)
         {
             assert('is_string($type)');
@@ -36,6 +43,10 @@
             }
         }
 
+        /**
+         * @param $moduleClassName
+         * @return null | string
+         */
         public static function renderNonEditableModuleStringContent($moduleClassName)
         {
             assert('is_string($moduleClassName)');
@@ -46,6 +57,10 @@
             }
         }
 
+        /**
+         * @param array $attributesData
+         * @return array
+         */
         public static function makeDataAndLabelsForSeriesOrRange(Array $attributesData)
         {
             $dataAndLabels = array();

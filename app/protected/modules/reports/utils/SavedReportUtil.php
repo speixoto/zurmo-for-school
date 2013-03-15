@@ -24,8 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for working with SavedReport objects
+     */
     class SavedReportUtil
     {
+        /**
+         * Given an array of moduleClassNames, construct the searchAttributeData
+         * @param $searchAttributeData
+         * @param $moduleClassNames
+         * @return array
+         */
         public static function resolveSearchAttributeDataByModuleClassNames($searchAttributeData, $moduleClassNames)
         {
             assert('is_array($searchAttributeData)');

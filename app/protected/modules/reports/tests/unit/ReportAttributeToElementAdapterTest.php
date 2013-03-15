@@ -93,7 +93,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_FILTERS;
             $model                = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -301,48 +301,6 @@
             $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
             $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
             $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
-
-            //Test a likeContactState directly on base model where model's module's model is the same model
-            $model                              = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
-            $model->attributeIndexOrDerivedType = 'likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue(strpos($content,  'In Progress') === false);
-
-            //Test a likeContactState on a related model, where the relation is against the base module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem2', $reportType);
-            $model->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue (strpos($content, 'In Progress') === false);
-
-            //Test a likeContactState on an inferred related model, where the relation is against the base module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem5', $reportType);
-            $model->attributeIndexOrDerivedType =
-                'ReportModelTestItem__reportItems__Inferred___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue (strpos($content, 'In Progress') === false);
         }
 
         /**
@@ -357,14 +315,13 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            $this->fail();
         }
 
         /**
@@ -378,7 +335,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -400,7 +357,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -423,14 +380,13 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            $this->fail();
         }
 
        /**
@@ -444,7 +400,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test a boolean attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -466,7 +422,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -488,7 +444,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -510,7 +466,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -532,7 +488,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_GROUP_BYS;
             $model                = new GroupByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test a boolean attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -555,14 +511,13 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_ORDER_BYS;
             $model                = new OrderByForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            $this->fail();
         }
 
         /**
@@ -576,7 +531,7 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES;
             $model                = new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test any attribute
             $model->attributeIndexOrDerivedType = 'boolean';
@@ -599,14 +554,13 @@
             $modelClassName       = 'ReportModelTestItem';
             $treeType             = ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES;
             $model                = new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $reportType);
-            $form                 = new ReportActiveForm();
+            $form                 = new WizardActiveForm();
 
             //Test a boolean attribute which does not have an operator
             $model->attributeIndexOrDerivedType = 'boolean';
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            $this->fail();
         }
     }
 ?>

@@ -28,8 +28,9 @@
     {
         protected function renderContent()
         {
+			//Do not remove the Zurmo Copyright notice.
             $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
-            $copyrightHtml = Yii::t('Default', 'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.');
+            $copyrightHtml = Yii::t('Default', 'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.');
             return $userInterfaceTypeSelectorHtml . $copyrightHtml;
         }
 

@@ -24,10 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     *
+     */
     abstract class ReportItemQueryBuilder
     {
+        /**
+         * @var ComponentForReportForm
+         */
         protected $componentForm;
 
+        /**
+         * @var ModelRelationsAndAttributesToReportAdapter
+         */
         protected $modelToReportAdapter;
 
         /**
@@ -35,8 +44,17 @@
          */
         protected $joinTablesAdapter;
 
+        /**
+         * @var null | integer
+         */
         protected $currencyConversionType;
 
+        /**
+         * @param ComponentForReportForm $componentForm
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter
+         * @param null | integer $currencyConversionType
+         */
         public function __construct(ComponentForReportForm $componentForm,
                                     RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
@@ -49,6 +67,11 @@
             $this->currencyConversionType = $currencyConversionType;
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return null|string
+         */
         protected static function resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -64,6 +87,11 @@
             }
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected static function makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
             $modelToReportAdapter, $attribute)
         {
@@ -72,8 +100,10 @@
                 $modelToReportAdapter->resolveRealAttributeName($attribute), 'id');
         }
 
-
-
+        /**
+         * @return string
+         * @throws NotSupportedException if the $attributeAndRelationData
+         */
         public function resolveComponentAttributeStringContent()
         {
             $attributeAndRelationData = $this->componentForm->getAttributeAndRelationData();
@@ -91,6 +121,11 @@
             }
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute(
                            $modelToReportAdapter, $attribute)
         {
@@ -100,15 +135,21 @@
                        $attribute);
         }
 
+        /**
+         * @return string
+         */
         protected function resolveComponentAttributeStringContentForNonNestedAttribute()
         {
             $attribute                           = $this->componentForm->getAttributeAndRelationData();
-            //todO: if the method cal below is to a static method, then make it static here too.
             $modelAttributeToDataProviderAdapter = $this->makeModelAttributeToDataProviderAdapter(
                                                    $this->modelToReportAdapter, $attribute);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter);
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         protected function resolveComponentAttributeStringContentForNestedAttribute()
         {
             $attributeAndRelationData = $this->componentForm->getAttributeAndRelationData();
@@ -164,6 +205,12 @@
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param $attribute
+         * @return DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter|
+         *         InferredRedBeanModelAttributeToDataProviderAdapter|RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -209,6 +256,12 @@
             }
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param $modelAttributeToDataProviderAdapter
+         * @param string $modelClassName
+         * @param string $realAttributeName
+         */
         protected function resolveCastingHintForAttribute($modelToReportAdapter, $modelAttributeToDataProviderAdapter,
                                                           $modelClassName,
                                                           $realAttributeName)
@@ -219,6 +272,11 @@
             $modelAttributeToDataProviderAdapter->setCastingHintModelClassNameForAttribute($hintModelClassName);
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param $modelAttributeToDataProviderAdapter
+         * @return bool
+         */
         protected function shouldPrematurelyStopBuildingJoinsForAttribute($modelToReportAdapter,
                                                                           $modelAttributeToDataProviderAdapter)
         {
@@ -227,6 +285,10 @@
             return false;
         }
 
+        /**
+         * @param string $tableAliasName
+         * @return string
+         */
         protected function getAttributeClauseQueryStringExtraPart($tableAliasName)
         {
             assert('is_string($tableAliasName)');

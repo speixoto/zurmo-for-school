@@ -55,6 +55,22 @@
 
         const TYPE_IS_NOT_NULL                    = 'isNotNull';
 
+        const TYPE_BECOMES                        = 'becomes';
+
+        const TYPE_WAS                            = 'was';
+
+        const TYPE_BECOMES_ONE_OF                 = 'becomesOneOf';
+
+        const TYPE_WAS_ONE_OF                     = 'wasOneOf';
+
+        const TYPE_CHANGES                        = 'changes';
+
+        const TYPE_DOES_NOT_CHANGE                = 'doesNotChange';
+
+        const TYPE_IS_EMPTY                       = 'isEmpty';
+
+        const TYPE_IS_NOT_EMPTY                   = 'isNotEmpty';
+
         public static function getTranslatedTypeLabel($type)
         {
             assert('is_string($type)');
@@ -68,19 +84,27 @@
 
         public static function translatedTypeLabels()
         {
-            return array(OperatorRules::TYPE_EQUALS                      => Yii::t('Default', 'Equals'),
-                         OperatorRules::TYPE_DOES_NOT_EQUAL              => Yii::t('Default', 'Does Not Equal'),
-                         OperatorRules::TYPE_STARTS_WITH                 => Yii::t('Default', 'Starts With'),
-                         OperatorRules::TYPE_ENDS_WITH                   => Yii::t('Default', 'Ends With'),
-                         OperatorRules::TYPE_CONTAINS                    => Yii::t('Default', 'Contains'),
-                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO    => Yii::t('Default', 'Greater Than Or Equal To'),
-                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO       => Yii::t('Default', 'Less Than Or Equal To'),
-                         OperatorRules::TYPE_GREATER_THAN                => Yii::t('Default', 'Greater Than'),
-                         OperatorRules::TYPE_LESS_THAN                   => Yii::t('Default', 'Less Than'),
-                         OperatorRules::TYPE_ONE_OF                      => Yii::t('Default', 'One Of'),
-                         OperatorRules::TYPE_BETWEEN                     => Yii::t('Default', 'Between'),
-                         OperatorRules::TYPE_IS_NULL                     => Yii::t('Default', 'Is Null'),
-                         OperatorRules::TYPE_IS_NOT_NULL                 => Yii::t('Default', 'Is Not Null'),
+            return array(OperatorRules::TYPE_EQUALS                      => Zurmo::t('Core', 'Equals'),
+                         OperatorRules::TYPE_DOES_NOT_EQUAL              => Zurmo::t('Core', 'Does Not Equal'),
+                         OperatorRules::TYPE_STARTS_WITH                 => Zurmo::t('Core', 'Starts With'),
+                         OperatorRules::TYPE_ENDS_WITH                   => Zurmo::t('Core', 'Ends With'),
+                         OperatorRules::TYPE_CONTAINS                    => Zurmo::t('Core', 'Contains'),
+                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO    => Zurmo::t('Core', 'Greater Than Or Equal To'),
+                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO       => Zurmo::t('Core', 'Less Than Or Equal To'),
+                         OperatorRules::TYPE_GREATER_THAN                => Zurmo::t('Core', 'Greater Than'),
+                         OperatorRules::TYPE_LESS_THAN                   => Zurmo::t('Core', 'Less Than'),
+                         OperatorRules::TYPE_ONE_OF                      => Zurmo::t('Core', 'One Of'),
+                         OperatorRules::TYPE_BETWEEN                     => Zurmo::t('Core', 'Between'),
+                         OperatorRules::TYPE_IS_NULL                     => Zurmo::t('Core', 'Is Null'),
+                         OperatorRules::TYPE_IS_NOT_NULL                 => Zurmo::t('Core', 'Is Not Null'),
+                         OperatorRules::TYPE_BECOMES                     => Zurmo::t('Core', 'Becomes'),
+                         OperatorRules::TYPE_WAS                         => Zurmo::t('Core', 'Was'),
+                         OperatorRules::TYPE_BECOMES_ONE_OF              => Zurmo::t('Core', 'Becomes One Of'),
+                         OperatorRules::TYPE_WAS_ONE_OF                  => Zurmo::t('Core', 'Was One Of'),
+                         OperatorRules::TYPE_CHANGES                     => Zurmo::t('Core', 'Changes'),
+                         OperatorRules::TYPE_DOES_NOT_CHANGE             => Zurmo::t('Core', 'Does Not Change'),
+                         OperatorRules::TYPE_IS_EMPTY                    => Zurmo::t('Core', 'Is Empty'),
+                         OperatorRules::TYPE_IS_NOT_EMPTY                => Zurmo::t('Core', 'Is Not Empty'),
             );
         }
 
@@ -99,7 +123,40 @@
                          OperatorRules::TYPE_BETWEEN,
                          OperatorRules::TYPE_IS_NULL,
                          OperatorRules::TYPE_IS_NOT_NULL,
+                         OperatorRules::TYPE_BECOMES,
+                         OperatorRules::TYPE_WAS,
+                         OperatorRules::TYPE_BECOMES_ONE_OF,
+                         OperatorRules::TYPE_WAS_ONE_OF,
+                         OperatorRules::TYPE_CHANGES,
+                         OperatorRules::TYPE_DOES_NOT_CHANGE,
+                         OperatorRules::TYPE_IS_EMPTY,
+                         OperatorRules::TYPE_IS_NOT_EMPTY,
             );
+        }
+
+        public static function getOperatorsWhereValueIsRequired()
+        {
+            return array(   OperatorRules::TYPE_EQUALS,
+                            OperatorRules::TYPE_DOES_NOT_EQUAL,
+                            OperatorRules::TYPE_STARTS_WITH,
+                            OperatorRules::TYPE_ENDS_WITH,
+                            OperatorRules::TYPE_CONTAINS,
+                            OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
+                            OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
+                            OperatorRules::TYPE_GREATER_THAN,
+                            OperatorRules::TYPE_LESS_THAN,
+                            OperatorRules::TYPE_ONE_OF,
+                            OperatorRules::TYPE_BETWEEN,
+                            OperatorRules::TYPE_BECOMES,
+                            OperatorRules::TYPE_WAS,
+                            OperatorRules::TYPE_BECOMES_ONE_OF,
+                            OperatorRules::TYPE_WAS_ONE_OF,
+            );
+        }
+
+        public static function getOperatorsWhereSecondValueIsRequired()
+        {
+            return array(OperatorRules::TYPE_BETWEEN);
         }
     }
 ?>

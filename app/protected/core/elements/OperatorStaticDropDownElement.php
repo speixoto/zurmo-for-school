@@ -46,7 +46,6 @@
         protected function renderControlEditable()
         {
             $content = parent::renderControlEditable();
-            $this->renderChangeScript();
             return $content;
         }
 
@@ -55,13 +54,33 @@
             return 'getOperatorValuesAndLabels';
         }
 
-        protected function renderChangeScript()
+        public static function getValueTypesRequiringFirstInput()
         {
-            Yii::app()->clientScript->registerScript('operatorRules', "
-                $('.operatorType').change( function()
+            return array(OperatorRules::TYPE_EQUALS,
+                         OperatorRules::TYPE_DOES_NOT_EQUAL,
+                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
+                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
+                         OperatorRules::TYPE_GREATER_THAN,
+                         OperatorRules::TYPE_LESS_THAN,
+                         OperatorRules::TYPE_ONE_OF,
+                         OperatorRules::TYPE_BETWEEN,
+                         OperatorRules::TYPE_STARTS_WITH,
+                         OperatorRules::TYPE_ENDS_WITH,
+                         OperatorRules::TYPE_CONTAINS);
+        }
+
+        public static function getValueTypesRequiringSecondInput()
+        {
+            return array(OperatorRules::TYPE_BETWEEN);
+        }
+
+        public static function registerOnLoadAndOnChangeScript()
+        {
+            Yii::app()->clientScript->registerScript('operatorOnLoadAndOnChangeScript', "
+                $('.operatorType').live('change', function()
                     {
-                        arr  = " . CJSON::encode($this->getValueTypesRequiringFirstInput()) . ";
-                        arr2 = " . CJSON::encode($this->getValueTypesRequiringSecondInput()) . ";
+                        arr  = " . CJSON::encode(self::getValueTypesRequiringFirstInput()) . ";
+                        arr2 = " . CJSON::encode(self::getValueTypesRequiringSecondInput()) . ";
                         var firstValueArea  = $(this).parent().parent().parent().find('.value-data').find('.first-value-area');
                         var secondValueArea = $(this).parent().parent().parent().find('.value-data').find('.second-value-area');
                         if ($.inArray($(this).val(), arr) != -1)
@@ -106,26 +125,6 @@
                     }
                 );
             ");
-        }
-
-        public static function getValueTypesRequiringFirstInput()
-        {
-            return array(OperatorRules::TYPE_EQUALS,
-                         OperatorRules::TYPE_DOES_NOT_EQUAL,
-                         OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
-                         OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
-                         OperatorRules::TYPE_GREATER_THAN,
-                         OperatorRules::TYPE_LESS_THAN,
-                         OperatorRules::TYPE_ONE_OF,
-                         OperatorRules::TYPE_BETWEEN,
-                         OperatorRules::TYPE_STARTS_WITH,
-                         OperatorRules::TYPE_ENDS_WITH,
-                         OperatorRules::TYPE_CONTAINS);
-        }
-
-        public static function getValueTypesRequiringSecondInput()
-        {
-            return array(OperatorRules::TYPE_BETWEEN);
         }
     }
 ?>

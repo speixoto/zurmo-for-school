@@ -25,49 +25,64 @@
      ********************************************************************************/
 
     /**
-     * Class to render link to export from a listview.
+     * Class to render link to toggle portlets for a report grid view
      */
     class ReportTogglePortletsLinkActionElement extends LinkActionElement
     {
+        /**
+         * @return null
+         */
         public function getActionType()
         {
             return null;
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             $content  = null;
             if($this->hasRuntimeFilters())
             {
                 $htmlOptions = array('onClick' => 'js:$(".RuntimeFiltersForPortletView").toggle();');
-                $label       = ZurmoHtml::label(Yii::t('Default', 'Filters'), Yii::t('Default', 'Filters'), array('class' => 'label-for-report-widgets'));
-                $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'Filters'), true, $htmlOptions) . $label;
+                $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Filters'), Zurmo::t('ReportsModule', 'Filters'), array('class' => 'label-for-report-widgets'));
+                $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Filters'), true, $htmlOptions) . $label;
             }
             if($this->hasChart())
             {
                 $htmlOptions = array('onClick' => 'js:$(".ReportChartForPortletView").toggle();');
-                $label       = ZurmoHtml::label(Yii::t('Default', 'Chart'), Yii::t('Default', 'Chart'), array('class' => 'label-for-report-widgets'));
-                $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'Chart'), true, $htmlOptions) . $label;
+                $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Chart'), Zurmo::t('ReportsModule', 'Chart'), array('class' => 'label-for-report-widgets'));
+                $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Chart'), true, $htmlOptions) . $label;
             }
             $htmlOptions = array('onClick' => 'js:$(".ReportResultsGridForPortletView").toggle();');
-            $label       = ZurmoHtml::label(Yii::t('Default', 'Grid'), Yii::t('Default', 'Grid'), array('class' => 'label-for-report-widgets'));
-            $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'Grid'), true, $htmlOptions) . $label;
+            $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Grid'), Zurmo::t('ReportsModule', 'Grid'), array('class' => 'label-for-report-widgets'));
+            $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Grid'), true, $htmlOptions) . $label;
             $htmlOptions = array('onClick' => 'js:$(".ReportSQLForPortletView").toggle();');
-            $label       = ZurmoHtml::label(Yii::t('Default', 'SQL'), Yii::t('Default', 'SQL'), array('class' => 'label-for-report-widgets'));
-            $content    .= ZurmoHtml::checkBox(Yii::t('Default', 'SQL'), false, $htmlOptions) . $label;
+            $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'SQL'), Zurmo::t('ReportsModule', 'SQL'), array('class' => 'label-for-report-widgets'));
+            $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'SQL'), false, $htmlOptions) . $label;
             return ZurmoHtml::tag('div', $this->getHtmlOptions(), $content );
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Toggle Results'); //todo: better label? where does this even show up? designer only?
+            return Zurmo::t('ReportsModule', 'Toggle Results');
         }
 
+        /**
+         * @return null
+         */
         protected function getDefaultRoute()
         {
             return null;
         }
 
+        /**
+         * @return bool
+         */
         protected function hasRuntimeFilters()
         {
             if (!isset($this->params['hasRuntimeFilters']))
@@ -77,6 +92,9 @@
             return $this->params['hasRuntimeFilters'];
         }
 
+        /**
+         * @return bool
+         */
         protected function hasChart()
         {
             if (!isset($this->params['hasChart']))

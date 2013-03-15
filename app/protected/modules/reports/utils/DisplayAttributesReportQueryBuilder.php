@@ -29,8 +29,16 @@
      */
     class DisplayAttributesReportQueryBuilder extends ReportQueryBuilder
     {
+        /**
+         * @var RedBeanModelSelectQueryAdapter
+         */
         protected $selectQueryAdapter;
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param RedBeanModelSelectQueryAdapter $selectQueryAdapter
+         * @param null | integer $currencyConversionType
+         */
         public function __construct(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     RedBeanModelSelectQueryAdapter $selectQueryAdapter, $currencyConversionType = null)
         {
@@ -39,6 +47,10 @@
             $this->selectQueryAdapter = $selectQueryAdapter;
         }
 
+        /**
+         * @param array $components
+         * @return string
+         */
         public function makeQueryContent(Array $components)
         {
             $content = null;

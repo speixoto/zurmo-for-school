@@ -62,7 +62,7 @@
         protected function renderEditableFirstSeriesContent()
         {
             $htmlOptions = array(
-                'empty'  => Yii::t('Default', '(None)'),
+                'empty'  => Zurmo::t('ReportsModule', '(None)'),
                 'id'     => $this->getFirstSeriesEditableInputId(),
             );
             $label       = $this->form->labelEx($this->model, 'firstSeries',
@@ -80,7 +80,7 @@
         protected function renderEditableFirstRangeContent()
         {
            $htmlOptions = array(
-                'empty' => Yii::t('Default', '(None)'),
+                'empty' => Zurmo::t('ReportsModule', '(None)'),
                 'id'    => $this->getFirstRangeEditableInputId(),
            );
            $label        = $this->form->labelEx($this->model, 'firstRange',
@@ -98,7 +98,7 @@
         protected function renderEditableSecondSeriesContent()
         {
            $htmlOptions = array(
-                'empty' => Yii::t('Default', '(None)'),
+                'empty' => Zurmo::t('ReportsModule', '(None)'),
                 'id'    => $this->getSecondSeriesEditableInputId(),
            );
            $label        = $this->form->labelEx($this->model, 'secondSeries',
@@ -116,7 +116,7 @@
         protected function renderEditableSecondRangeContent()
         {
            $htmlOptions = array(
-                'empty' => Yii::t('Default', '(None)'),
+                'empty' => Zurmo::t('ReportsModule', '(None)'),
                 'id'    => $this->getSecondRangeEditableInputId(),
            );
            $label        = $this->form->labelEx($this->model, 'secondRange',

@@ -29,11 +29,13 @@
      */
     class StickyReportUtil extends StickyUtil
     {
-
+        /**
+         * @param Report $report
+         * @param array $stickyData
+         */
         public static function resolveStickyDataToReport(Report $report, array $stickyData)
         {
             if(!isset($stickyData[ComponentForReportForm::TYPE_FILTERS]))
-
             {
                 return;
             }
@@ -42,8 +44,9 @@
             {
                 if(isset($filters[$filterKey]))
                 {
-                    if($filterData['operator'] == OperatorRules::TYPE_IS_NULL ||
-                       $filterData['operator'] == OperatorRules::TYPE_IS_NOT_NULL)
+                    if(isset($filterData['operator']) &&
+                       ($filterData['operator'] == OperatorRules::TYPE_IS_NULL ||
+                       $filterData['operator'] == OperatorRules::TYPE_IS_NOT_NULL))
                     {
                         $filterData['value']       = null;
                         $filterData['secondValue'] = null;

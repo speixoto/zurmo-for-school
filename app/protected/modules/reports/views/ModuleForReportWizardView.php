@@ -24,12 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for selecting the module for the report wizard user interface
+     */
     class ModuleForReportWizardView extends ComponentForReportWizardView
     {
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Select Module');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'moduleCancelLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'moduleNextLink';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderFormContent()
         {
             $element                   = new ModuleForReportRadioDropDownElement($this->model, 'moduleClassName',
-                                                                                 $this->form);
+                $this->form);
             $element->editableTemplate = '{label}{content}';
 
             $content  = $this->form->errorSummary($this->model);
@@ -43,32 +73,20 @@
             return $content;
         }
 
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Select Module');
-        }
-
+        /**
+         * @return string
+         */
         protected function renderPreviousPageLinkContent()
         {
             if($this->model->isNew())
             {
-                $label = Yii::t('Default', 'Cancel');
+                $label = Zurmo::t('ReportsModule', 'Cancel');
             }
             else
             {
-                $label = Yii::t('Default', 'Cancel Changes');
+                $label = Zurmo::t('ReportsModule', 'Cancel Changes');
             }
             return ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $label), '#', array('id' => static::getPreviousPageLinkId()));
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'moduleCancelLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'moduleNextLink';
         }
     }
 ?>

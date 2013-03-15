@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for managing adapting model relations and attributes into a matrix report
+     */
     class ModelRelationsAndAttributesToMatrixReportAdapter extends ModelRelationsAndAttributesToSummableReportAdapter
     {
         /**

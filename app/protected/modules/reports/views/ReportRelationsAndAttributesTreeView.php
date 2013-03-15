@@ -24,55 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportRelationsAndAttributesTreeView extends View
+    /**
+     * View for displaying a tree view widget for certain tree type and based on the report type
+     */
+    class ReportRelationsAndAttributesTreeView extends WizardModelRelationsAndAttributesTreeView
     {
-        protected $type;
-
-        protected $treeType;
-
-        protected $formName;
-
-        public function __construct($type, $treeType, $formName)
+        public static function getControllerId()
         {
-            assert('is_string($type)');
-            assert('is_string($treeType)');
-            assert('is_string($formName)');
-            $this->type     = $type;
-            $this->treeType = $treeType;
-            $this->formName = $formName;
-        }
-
-        public function isUniqueToAPage()
-        {
-            return false;
-        }
-
-        protected function renderContent()
-        {
-            $content      = null;
-            $cClipWidget  = new CClipWidget();
-            $cClipWidget->beginClip("ZurmoTreeView");
-            $cClipWidget->widget('application.core.widgets.ZurmoTreeView', array(
-            'id'          => $this->getTreeId(),
-            'url'         => $this->getDataUrl(),
-            'options' => array('formName' => $this->formName),
-            'htmlOptions' => array(
-                'class'   => 'treeview-red' //todo: use different theme class.
-            )));
-            $cClipWidget->endClip();
-            $content .= $cClipWidget->getController()->clips['ZurmoTreeView'];
-            return $content;
-        }
-
-        protected function getDataUrl()
-        {
-            return  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                        array_merge($_GET, array('type' => $this->type, 'treeType' => $this->treeType)));
-        }
-
-        protected function getTreeId()
-        {
-            return $this->treeType . 'TreeView';
+            return 'reports';
         }
     }
 ?>

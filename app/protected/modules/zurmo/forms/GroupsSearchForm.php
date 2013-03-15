@@ -29,5 +29,14 @@
      */
     class GroupsSearchForm extends SearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Group';
+        }
+
+        public function __construct(Group $model)
+        {
+            parent::__construct($model);
+        }
     }
 ?>

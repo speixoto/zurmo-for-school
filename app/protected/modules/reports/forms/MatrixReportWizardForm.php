@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Matrix report form used to manage interaction between a Report and the user interface
+     */
     class MatrixReportWizardForm extends ReportWizardForm
     {
+        /**
+         * Validates that at least one x and y axis groupBy has been selected.
+         * @return bool
+         */
         public function validateGroupBys()
         {
             $validated  = parent::validateGroupBys();
@@ -45,7 +52,7 @@
             if(!$xAxisFound || !$yAxisFound)
             {
                 $this->addError( 'groupBys',
-                                    Yii::t('Default', 'At least one x-axis and one y-axis grouping must be selected'));
+                                    Zurmo::t('ReportsModule', 'At least one x-axis and one y-axis grouping must be selected'));
                 $validated = false;
             }
             return $validated;

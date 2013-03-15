@@ -24,24 +24,48 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for adapting a FilterForReportForm into search metadata
+     */
     class FilterForReportFormToDataProviderMetadataAdapter
     {
+        /**
+         * @var FilterForReportForm
+         */
         protected $filter;
 
+        /**
+         * @var string
+         */
         protected $structure;
 
+        /**
+         * @var int
+         */
         protected $structureCount = 1;
 
+        /**
+         * @var array
+         */
         protected $clauses = array();
 
+        /**
+         * @var ModelRelationsAndAttributesToReportAdapter
+         */
         protected $modelRelationsAndAttributesToReportAdapter;
 
+        /**
+         * @param FilterForReportForm $filter
+         */
         public function __construct(FilterForReportForm $filter)
         {
             $this->filter = $filter;
             $this->modelRelationsAndAttributesToReportAdapter = $this->makeModelRelationsAndAttributesToReportAdapter();
         }
 
+        /**
+         * @return array
+         */
         public function getAdaptedMetadata()
         {
             $this->resetClausesAndStructure();
@@ -112,10 +136,6 @@
             }
         }
 
-        /**
-         * Attributes like boolean, phone, string, and textArea, dateTime, date, integer and float
-         * @param string $attribute
-         */
         protected function resolveNonRelationNonDerivedAttributeClauseAndStructure()
         {
             if($this->filter->getValueElementType() == 'MixedDateTypesForReport')
@@ -126,7 +146,7 @@
             {
                 $this->resolveNumericAttributeClauseAndStructure();
             }
-            elseif($this->filter->getValueElementType() == 'BooleanForReportStaticDropDown')
+            elseif($this->filter->getValueElementType() == 'BooleanForWizardStaticDropDown')
             {
                 $this->resolveBooleanAttributeClauseAndStructure();
             }
@@ -164,6 +184,10 @@
             }
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the displayElementType is not Date or DateTime, which means it is invalid
+         */
         protected function getDateOrDateTimeRulesClassName()
         {
             $displayElementType = $this->modelRelationsAndAttributesToReportAdapter->getDisplayElementType(
@@ -184,6 +208,10 @@
 
         /**
          * Utilized to process date and dateTime clauses properly
+         * @param string $rulesClassName
+         * @param array $attributesAndRelations
+         * @param mixed $value
+         * @return mixed
          */
         protected function resolveForValueByRules($rulesClassName, $attributesAndRelations, $value)
         {
@@ -301,7 +329,9 @@
             $this->structure  = '1';
         }
 
-
+        /**
+         * @return string
+         */
         protected function getRealAttributeName()
         {
             return $this->modelRelationsAndAttributesToReportAdapter->resolveRealAttributeName(
@@ -313,6 +343,10 @@
             $this->clauses    = array();
             $this->structure  = null;
         }
+
+        /**
+         * @return ModelRelationsAndAttributesToReportAdapter
+         */
         protected function makeModelRelationsAndAttributesToReportAdapter()
         {
             return ModelRelationsAndAttributesToReportAdapter::make(

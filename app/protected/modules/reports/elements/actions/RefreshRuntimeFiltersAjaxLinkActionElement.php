@@ -24,24 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * A class used to render a refresh ajax link for the report detail view
+     */
     class RefreshRuntimeFiltersAjaxLinkActionElement extends AjaxLinkActionElement
     {
+        /**
+         * @param $controllerId
+         * @param $moduleId
+         * @param $modelId
+         * @param array $params
+         */
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
             $params['htmlOptions'] = array('id' => 'reset-runtime-filters', 'class'  => 'attachLoading z-button white-button');
             parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
 
+        /**
+         * @return null
+         */
         public function getActionType()
         {
             return null;
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Reset');
+            return Zurmo::t('ReportsModule', 'Reset');
         }
 
+        /**
+         * @return mixed
+         */
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl('reports/default/resetRuntimeFilters/',
@@ -49,6 +67,9 @@
             );
         }
 
+        /**
+         * @return string
+         */
         protected function getLabel()
         {
             $content  = ZurmoHtml::tag('span', array('class' => 'z-spinner'), null);
@@ -57,11 +78,14 @@
             return $content;
         }
 
+        /**
+         * @return array
+         */
         protected function getAjaxOptions()
         {
             return array(
                     'beforeSend' => 'js:function(){
-                                        attachLoadingSpinner("reset-runtime-filters", true);
+                                        makeOrRemoveLoadingSpinner(true, "#reset-runtime-filters");
                                         $("#reset-runtime-filters").addClass("attachLoadingTarget");
                                         $("#reset-runtime-filters").addClass("loading");
                                         $("#reset-runtime-filters").addClass("loading-ajax-submit");
@@ -72,11 +96,6 @@
                                         $("#ReportChartForPortletView").find(".refreshPortletLink").click();
                                         $("#ReportSQLForPortletView").find(".refreshPortletLink").click();
                                     }');
-            //beforeSend attach loading...
-            //success
-                //refresh runtime area.
-                //refresh chart area
-                //refresh main results area
         }
     }
 ?>

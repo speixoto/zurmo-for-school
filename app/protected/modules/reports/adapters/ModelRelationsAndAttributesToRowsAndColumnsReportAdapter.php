@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for managing adapting model relations and attributes into a rows and columns report
+     */
     class ModelRelationsAndAttributesToRowsAndColumnsReportAdapter extends ModelRelationsAndAttributesToReportAdapter
     {
+        /**
+         * @return array
+         */
         public function getAttributesForFilters()
         {
             $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
@@ -34,6 +40,9 @@
             return $sortedAttributes;
         }
 
+        /**
+         * @return array
+         */
         public function getAttributesForDisplayAttributes()
         {
             $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
@@ -43,6 +52,9 @@
             return $sortedAttributes;
         }
 
+        /**
+         * @return array
+         */
         public function getAttributesForOrderBys()
         {
             $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
@@ -52,6 +64,10 @@
             return $sortedAttributes;
         }
 
+        /**
+         * @param array $attributes
+         * @return array
+         */
         protected function resolveAttributesForOrderBys(Array $attributes)
         {
             $resolvedAttributes = array();

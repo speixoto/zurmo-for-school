@@ -24,11 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class to work with POST data and adapting that into a Report object
+     */
     class DataToReportUtil
     {
+        /**
+         * @param Report $report
+         * @param array $postData
+         * @param string $wizardFormClassName
+         */
         public static function resolveReportByWizardPostData(Report $report, $postData, $wizardFormClassName)
         {
             assert('is_array($postData)');
+            assert('is_string($wizardFormClassName)');
             $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
             if(isset($data['description']))
             {
@@ -71,6 +80,10 @@
             self::resolveChart                      ($data, $report);
         }
 
+        /**
+         * @param array $data
+         * @param Report $report
+         */
         public static function resolveFilters($data, Report $report)
         {
             $report->removeAllFilters();
@@ -92,6 +105,12 @@
             }
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $reportType
+         * @param array $filtersData
+         * @return array
+         */
         public static function sanitizeFiltersData($moduleClassName, $reportType, array $filtersData)
         {
             assert('is_string($moduleClassName)');
@@ -107,6 +126,13 @@
             return $sanitizedFiltersData;
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $reportType
+         * @param array $filterData
+         * @return array
+         */
         protected static function sanitizeFilterData($moduleClassName, $modelClassName, $reportType, $filterData)
         {
             assert('is_string($moduleClassName)');
@@ -133,6 +159,10 @@
             return $filterData;
         }
 
+        /**
+         * @param array $data
+         * @param Report $report
+         */
         protected static function resolveOrderBys($data, Report $report)
         {
             $report->removeAllOrderBys();
@@ -153,9 +183,14 @@
             }
         }
 
+        /**
+         * @param array $data
+         * @param Report $report
+         */
         protected static function resolveDisplayAttributes($data, Report $report)
         {
             $report->removeAllDisplayAttributes();
+            DisplayAttributeForReportForm::resetCount();
             $moduleClassName = $report->getModuleClassName();
             if(count($displayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
@@ -175,9 +210,14 @@
             }
         }
 
+        /**
+         * @param array $data
+         * @param Report $report
+         */
         protected static function resolveDrillDownDisplayAttributes($data, Report $report)
         {
             $report->removeAllDrillDownDisplayAttributes();
+            DrillDownDisplayAttributeForReportForm::resetCount();
             $moduleClassName = $report->getModuleClassName();
             if(count($drillDownDisplayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
@@ -197,6 +237,10 @@
             }
         }
 
+        /**
+         * @param array $data
+         * @param Report $report
+         */
         protected static function resolveGroupBys($data, Report $report)
         {
             $report->removeAllGroupBys();
@@ -217,6 +261,10 @@
             }
         }
 
+        /**
+         * @param array $data
+         * @param Report $report
+         */
         protected static function resolveChart($data, Report $report)
         {
             if($report->getType() != Report::TYPE_SUMMATION)

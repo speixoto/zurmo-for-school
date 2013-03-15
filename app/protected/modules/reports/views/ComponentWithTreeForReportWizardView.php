@@ -24,22 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base view class for components that appear in the report wizard and have a tree widget to select attributes
+     */
     abstract class ComponentWithTreeForReportWizardView extends ComponentForReportWizardView
     {
+        /**
+         * @return integer
+         */
         abstract protected function getItemsCount();
 
+        /**
+         * @param integer $rowCount
+         * @return string
+         */
         abstract protected function getItemsContent(& $rowCount);
 
+        /**
+         * Override in child class
+         * @throws NotImplementedException
+         */
         public static function getTreeType()
         {
             throw new NotImplementedException();
         }
 
+        /**
+         * @return string
+         */
         public static function getTreeDivId()
         {
             return static::getTreeType() . 'TreeArea';
         }
 
+        /**
+         * @return string
+         */
         protected function renderFormContent()
         {
             $content              = $this->renderAttributesAndRelationsTreeContent();
@@ -48,6 +68,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRightSideContent()
         {
             $rowCount                    = 0;
@@ -60,34 +83,40 @@
             {
                 $itemsContent            = $this->getNonSortableListContent($items);
             }
-            $idInputHtmlOptions          = array('id' => $this->getRowCounterInputId());
+            $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(static::getTreeType()));
             $hiddenInputName             = static::getTreeType() . 'RowCounter';
-            $splashContent               = $this->renderSplashArea();
             $dropZone                    = $this->renderRightSideDropZoneContent();
-            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'attribute-rows'), $splashContent . $itemsContent);
+            $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $droppableAttributesContent .= $this->renderExtraDroppableAttributesContent();
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
-            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-attributes-container ' .
+            $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                                                            static::getTreeType()), $droppableAttributesContent . $dropZone);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                                            static::getTreeType()), $this->getZeroComponentsContent());
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRightSideDropZoneContent()
         {
-            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), ZurmoHtml::tag('div', array(), Yii::t('Default', 'Drop Here')));
-        }
-        
-        protected function renderExtraDroppableAttributesContent()
-        {   
-        }
-        
-        protected function renderSplashArea()
-        {
-            //return ZurmoHtml::tag('div', array('class' => 'splash'), 'Splash');
+            return ZurmoHtml::tag('div', array('class' => 'drop-zone'), ZurmoHtml::tag('div', array(), Zurmo::t('ReportsModule', 'Drop Here')));
         }
 
+        /**
+         * Override in child class as needed
+         */
+        protected function renderExtraDroppableAttributesContent()
+        {
+        }
+
+        /**
+         * @param integer $rowCount
+         * @param array $componentData
+         * @param bool $trackableStructurePosition
+         * @return array
+         */
         protected function renderItems(& $rowCount, $componentData, $trackableStructurePosition = false)
         {
             assert('is_int($rowCount)');
@@ -99,7 +128,7 @@
             {
                 $nodeIdWithoutTreeType      = $component->attributeIndexOrDerivedType;
                 $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
-                                              resolveInputPrefixData($nodeIdWithoutTreeType, $wizardFormClassName,
+                                              resolveInputPrefixData($wizardFormClassName,
                                               $this->getTreeType(), $rowCount);
                 $adapter                    = new ReportAttributeToElementAdapter($inputPrefixData, $component,
                                               $this->form, $this->getTreeType());
@@ -115,6 +144,10 @@
             return $items;
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
@@ -125,6 +158,10 @@
             return ZurmoHtml::tag('ul', array(), $content);
         }
 
+        /**
+         * @param array $items
+         * @return string
+         */
         protected function getSortableListContent(Array $items)
         {
             $cClipWidget = new CClipWidget();
@@ -146,27 +183,22 @@
             return $cClipWidget->getController()->clips[static::getTreeType() . 'ReportComponentSortable'];
         }
 
-        protected function getRowCounterInputId()
-        {
-            return static::getTreeType() . 'RowCounter';
-        }
-
         protected function registerScripts()
         {
             parent::registerScripts();
             $script = '
-                $(".droppable-attributes-container.' . static::getTreeType() . '").live("drop",function(event, ui){
+                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".attribute-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
-                $(".remove-dynamic-attribute-row-link.' . static::getTreeType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)
                     {
-                        $(".' . static::getZeroComponentsClassName() . '").show();
+                        $(".' . static::getZeroComponentsClassName() . '").fadeIn(400);
                     }
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     return false;
@@ -175,6 +207,9 @@
             Yii::app()->getClientScript()->registerScript(static::getTreeType() . 'ReportComponentForTreeScript', $script);
         }
 
+        /**
+         * @return string
+         */
         protected function getAddAttributeUrl()
         {
             return  Yii::app()->createUrl('reports/default/addAttributeFromTree',
@@ -182,69 +217,66 @@
                                                  'treeType' => static::getTreeType())));
         }
 
+        /**
+         * @return string
+         */
         protected function getAjaxForDroppedAttribute()
         {
+            $rowCounterInputId = static::resolveRowCounterInputId(static::getTreeType());
             return ZurmoHtml::ajax(array(
                     'type'     => 'POST',
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' .
                                   $this->getAddAttributeUrl() .
-                                  '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' .
-                                  $this->getRowCounterInputId(). '\').val())',
+                                  '", "nodeId=" + ui.helper.attr("id") + "&rowNumber="  + $(\'#' . $rowCounterInputId . '\').val())',
                     'beforeSend' => 'js:function(){
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                    $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
-                    $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
+                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                    $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
-                    $(".' . static::getZeroComponentsClassName() . '").hide();
+                    $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
                 }'
             ));
         }
-        
+
+        /**
+         * @return string
+         */
         protected function getAjaxForDoubleClickedAttribute()
         {
+            $rowCounterInputId = static::resolveRowCounterInputId(static::getTreeType());
             return ZurmoHtml::ajax(array(
                     'type'     => 'POST',
                     'data'     => 'js:$("#' . $this->form->getId() . '").serialize()',
                     'url'      => 'js:$.param.querystring("' . $this->getAddAttributeUrl() . '",
-                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $this->getRowCounterInputId(). '\').val())',
+                                        "nodeId=" + event.currentTarget.id + "&rowNumber=" + $(\'#' . $rowCounterInputId . '\').val())',
                     'beforeSend' => 'js:function(){
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                        $(\'#' . $this->getRowCounterInputId(). '\').val(parseInt($(\'#' . $this->getRowCounterInputId() . '\').val()) + 1);
-                        $(".droppable-attributes-container.' . static::getTreeType() . '").parent().find(".attribute-rows").find("ul").append(data);
+                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                        $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul").append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                 }'
             ));
         }
 
+        /**
+         * Override in child class as needed
+         */
         protected function getReportAttributeRowAddOrRemoveExtraScript()
         {
         }
 
+        /**
+         * @return bool
+         */
         protected function isListContentSortable()
         {
             return false;
-        }
-
-        protected function getZeroComponentsContent()
-        {
-            if($this->getItemsCount() > 0)
-            {
-                $style = ' style="display:none;"';
-            }
-            else
-            {
-                $style = null;
-            }
-            $content = '<div class="' . static::getZeroComponentsClassName() . '" ' . $style . '>';
-            $content .= $this->getZeroComponentsMessageContent();
-            $content .= '</div>';
-            return $content;
         }
     }
 ?>

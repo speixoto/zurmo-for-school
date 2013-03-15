@@ -62,6 +62,10 @@
             return self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return bool
+         */
         public static function resolveCanUseFromJoins($onTableAliasName)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -72,6 +76,11 @@
             return true;
         }
 
+        /**
+         * @param $tableAliasName
+         * @param $resolvedSortColumnName
+         * @return string
+         */
         public static function resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName)
         {
             assert('is_string($tableAliasName)');
@@ -114,16 +123,6 @@
             return self::resolveGroupByColumnNameString($tableAliasName, $resolvedGroupByColumnName);
         }
 
-        protected static function resolveGroupByColumnNameString($tableAliasName, $resolvedSortColumnName)
-        {
-            assert('is_string($tableAliasName)');
-            assert('is_string($resolvedSortColumnName)');
-            $groupBy  = DatabaseCompatibilityUtil::quoteString($tableAliasName);
-            $groupBy .= '.';
-            $groupBy .= DatabaseCompatibilityUtil::quoteString($resolvedSortColumnName);
-            return $groupBy;
-        }
-
         /**
          * Override from RedBeanModelDataProvider to support multiple
          * where clauses for the same attribute and operatorTypes
@@ -151,6 +150,21 @@
                 return strtr(strtolower($metadata["structure"]), $where);
             }
             return;
+        }
+
+        /**
+         * @param $tableAliasName
+         * @param $resolvedSortColumnName
+         * @return string
+         */
+        protected static function resolveGroupByColumnNameString($tableAliasName, $resolvedSortColumnName)
+        {
+            assert('is_string($tableAliasName)');
+            assert('is_string($resolvedSortColumnName)');
+            $groupBy  = DatabaseCompatibilityUtil::quoteString($tableAliasName);
+            $groupBy .= '.';
+            $groupBy .= DatabaseCompatibilityUtil::quoteString($resolvedSortColumnName);
+            return $groupBy;
         }
 
         /**

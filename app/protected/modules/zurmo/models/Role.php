@@ -30,7 +30,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('role', "name = :name ", array(':name' => $name)); 
+            $bean = R::findOne('role', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -49,7 +49,7 @@
             return $this->name;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(), array(
                 'role' => 'Parent Role',

@@ -27,96 +27,12 @@
     /**
      * Adds specific input id/name/value handling for Report filter usage
      */
-    class MixedDateTypesForReportElement extends MixedDateTypesElement
+    class MixedDateTypesForReportElement extends MixedDateTypesForWizardElement
     {
-        public $editableTemplate = '<th>{label}</th><td colspan="{colspan}">{valueType}{content}{error}</td>';
-
-        public $nonEditableTemplate = '<th>{label}</th><td colspan="{colspan}">{valueType}{content}</td>';
-
-        protected function renderEditable()
-        {
-            $data = array();
-            $data['label']     = $this->renderLabel();
-            $data['valueType'] = $this->renderEditableValueTypeContent();
-            $data['content']   = $this->renderControlEditable();
-            $data['error']     = $this->renderError();
-            $data['colspan']   = $this->getColumnSpan();
-            return $this->resolveContentTemplate($this->editableTemplate, $data);
-        }
-
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
             assert('$model instanceof FilterForReportForm');
             parent::__construct($model, $attribute, $form, $params);
-        }
-
-        protected function renderEditableValueTypeContent()
-        {
-            $content = parent::renderEditableValueTypeContent();
-            $error   = $this->form->error($this->model, 'valueType',
-                                          array('inputID' => $this->getValueTypeEditableInputId()));
-            return $content . $error;
-        }
-
-        protected function renderEditableFirstDateContent()
-        {
-            $content = parent::renderEditableFirstDateContent();
-            $error   = $this->form->error($this->model, 'value',
-                                          array('inputID' => $this->getValueFirstDateEditableInputId()));
-            return $content . $error;
-        }
-
-        protected function renderEditableSecondDateContent()
-        {
-            $content = parent::renderEditableSecondDateContent();
-            $error   = $this->form->error($this->model, 'secondValue',
-                                          array('inputID' => $this->getValueSecondDateEditableInputId()));
-            return $content . $error;
-        }
-
-        protected function getValueTypeEditableInputId()
-        {
-            return $this->getEditableInputId('valueType');
-        }
-
-        protected function getValueFirstDateEditableInputId()
-        {
-            return $this->getEditableInputId('value');
-        }
-
-        protected function getValueSecondDateEditableInputId()
-        {
-            return $this->getEditableInputId('secondValue');
-        }
-
-        protected function getValueTypeEditableInputName()
-        {
-            return $this->getEditableInputName('valueType');
-        }
-
-        protected function getValueFirstDateEditableInputName()
-        {
-            return $this->getEditableInputName('value');
-        }
-
-        protected function getValueSecondDateEditableInputName()
-        {
-            return $this->getEditableInputName('secondValue');
-        }
-
-        protected function getValueFirstDate()
-        {
-            return ArrayUtil::getArrayValue($this->model, 'value');
-        }
-
-        protected function getValueSecondDate()
-        {
-            return ArrayUtil::getArrayValue($this->model, 'secondValue');
-        }
-
-        protected function getValueType()
-        {
-            return ArrayUtil::getArrayValue($this->model, 'valueType');
         }
     }
 ?>

@@ -29,6 +29,9 @@
      */
     class ReportTypeStaticDropDownElement extends StaticDropDownFormElement
     {
+        /**
+         * @return array
+         */
         protected function getDropDownArray()
         {
             return Report::getTypeDropDownArray();

@@ -35,18 +35,57 @@
          */
         protected $params;
 
+        /**
+         * @var string
+         */
         protected $controllerId;
 
+        /**
+         * @var string
+         */
         protected $moduleId;
 
-        protected $model;
-
+        /**
+         * @var string
+         */
         protected $uniqueLayoutId;
 
+        /**
+         * @var array
+         */
         protected $viewData;
 
         /**
+         * @return bool
+         */
+        public static function canUserConfigure()
+        {
+            return false;
+        }
+
+        /**
+         * What kind of PortletRules this view follows
+         * @return string PortletRulesType
+         */
+        public static function getPortletRulesType()
+        {
+            return 'ModelDetails';
+        }
+
+        /**
+         * The view's module class name.
+         * @return string
+         */
+        public static function getModuleClassName()
+        {
+            return 'ReportsModule';
+        }
+
+        /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
+         * @param array $viewData
+         * @param array $params
+         * @param string $uniqueLayoutId
          */
         public function __construct($viewData, $params, $uniqueLayoutId)
         {
@@ -61,16 +100,25 @@
             $this->uniqueLayoutId = $uniqueLayoutId;
         }
 
+        /**
+         * @return null
+         */
         public function getTitle()
         {
             return null;
         }
 
+        /**
+         * @return string
+         */
         protected function resolveAndGetPaginationRoute()
         {
             return 'defaultPortlet/myListDetails';
         }
 
+        /**
+         * @return array
+         */
         protected function resolveAndGetPaginationParams()
         {
             return array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId']));
@@ -79,6 +127,7 @@
         /**
          * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
          * refresh the portlet content.
+         * @return string
          */
         protected function getPortletDetailsUrl()
         {
@@ -93,6 +142,7 @@
         /**
          * Url to go to after an action is completed. Typically returns user to either a model's detail view or
          * the home page dashboard.
+         * @return string
          */
         protected function getNonAjaxRedirectUrl()
         {
@@ -100,38 +150,20 @@
                                                         array( 'id' => $this->params['relationModel']->getId()));
         }
 
-        public static function canUserConfigure()
-        {
-            return false;
-        }
-
         /**
-         * What kind of PortletRules this view follows
-         * @return PortletRulesType as string.
+         * @return string
          */
-        public static function getPortletRulesType()
-        {
-            return 'ModelDetails';
-        }
-
-        /**
-         * The view's module class name.
-         */
-        public static function getModuleClassName()
-        {
-            return 'ReportsModule';
-        }
-
         protected function renderRefreshLink()
         {
             $containerId = get_class($this);
             return ZurmoHtml::ajaxLink('refresh', $this->getPortletDetailsUrl(), array(
                     'type'   => 'GET',
                     'beforeSend' => 'function ( xhr ) {jQuery("#' . $containerId .
-                                    '").html("");makeLargeLoadingSpinner("' . $containerId . '");}',
+                                    '").html("");makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
                     'update' => '#' . get_class($this)),
                     array('id'		  => 'refreshPortletLink-' . get_class($this),
                           'class'     => 'refreshPortletLink',
+                          'style'     => "display:none;",
                           'live'      => true,
                           'namespace' => 'refresh'));
         }

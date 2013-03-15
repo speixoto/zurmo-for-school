@@ -46,7 +46,7 @@
             //need to somehow override to pass not to default to currency
             $activeCurrenciesElement   = new CurrencyIdForAModelsRelatedCurrencyValueDropDownElement(
                                                                 $this->model, $this->attribute, $this->form, $params);
-            $activeCurrenciesElement->editableTemplate = '{content}{error}';
+            $activeCurrenciesElement->editableTemplate = '{content}';
             $content  = '<div class="hasParallelFields">';
             $content .= ZurmoHtml::tag('div', array('class' => 'quarter'), $activeCurrenciesElement->render());
             $content .= ZurmoHtml::tag('div', array('class' => 'threeQuarters'),
@@ -59,13 +59,15 @@
         protected function renderEditableValueTextField($model, $form, $inputNameIdPrefix, $attribute)
         {
             //need to override a resolveValue to NOT default to 0 if not specifically null
+            $id =  $this->getEditableInputId($inputNameIdPrefix, $attribute);
             $htmlOptions = array(
                 'name' =>  $this->getEditableInputName($inputNameIdPrefix, $attribute),
-                'id'   =>  $this->getEditableInputId($inputNameIdPrefix, $attribute),
+                'id'   => $id,
                 'value' => $this->resolveAndGetEditableValue($model, $attribute),
             );
             $textField = $form->textField($model, $attribute, $htmlOptions);
-            $error     = $form->error    ($model, $attribute);
+            $error     = $form->error    ($model, $attribute, array('inputID' => $id), true, true,
+                                          $this->renderScopedErrorId($inputNameIdPrefix, $attribute));
             return $textField . $error;
         }
 

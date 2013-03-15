@@ -24,8 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with matrix report results in a grid
+     */
     class MatrixReportResultsGridView extends ReportResultsGridView
     {
+        /**
+         * @var int
+         */
+        protected static $maximumGroupsCount = 400;
+
+        /**
+         * @return string
+         */
+        protected function renderResultsGridContent()
+        {
+            if($this->dataProvider->calculateTotalGroupingsCount() > self::$maximumGroupsCount)
+            {
+                return $this->renderMaximumGroupsContent();
+            }
+            return parent::renderResultsGridContent();
+        }
+
+        /**
+         * @return bool
+         */
         protected function isDataProviderValid()
         {
             if(!$this->dataProvider instanceof MatrixReportDataProvider)
@@ -35,6 +58,22 @@
             return true;
         }
 
+        /**
+         * @return string
+         */
+        protected function renderMaximumGroupsContent()
+        {
+            $content  = '<div class="general-issue-notice"><span class="icon-notice"></span><p>';
+            $content .= Zurmo::t('ReportsModule', 'Your report has too many groupings to plot. ' .
+                'Please adjust the filters to reduce the number below {maximum}. ' .
+                '<br />The maximum is calculated as x-axis groupings multiplied by y-axis groupings',
+                array('{maximum}' => self::$maximumGroupsCount));
+            $content .= '</p></div>';
+            return $content;
+        }
+        /**
+         * @return array
+         */
         protected function getCGridViewColumns()
         {
             $columns        = array();
@@ -74,12 +113,12 @@
                     }
                 }
             }
-
-
-
             return $columns;
         }
 
+        /**
+         * @return array
+         */
         protected function getLeadingHeaders()
         {
             return $this->dataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();

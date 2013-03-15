@@ -24,9 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with the row and column reports in the report wizard
+     */
     class RowsAndColumnsReportWizardView extends ReportWizardView
     {
-        protected function renderContainingViews(ReportActiveForm $form)
+        /**
+         * @param WizardActiveForm $form
+         * @return string
+         */
+        protected function renderContainingViews(WizardActiveForm $form)
         {
             $moduleForReportWizardView            = new ModuleForReportWizardView ($this->model, $form);
             $filtersForReportWizardView           = new FiltersForReportWizardView($this->model, $form, true);
@@ -43,6 +50,10 @@
             return $gridView->render();
         }
 
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function renderConfigSaveAjax($formName)
         {
             assert('is_string($formName)');
@@ -108,6 +119,7 @@
                 $('#" . FiltersForReportWizardView::getPreviousPageLinkId() . "').bind('click', function()
                     {
                         $('#" . static::getValidationScenarioInputId() . "').val('" . ReportWizardForm::MODULE_VALIDATION_SCENARIO . "');
+                        $('#" . WizardActiveForm::makeErrorsSummaryId(static::getFormId()) . "').hide();
                         $('#ModuleForReportWizardView').show();
                         $('#FiltersForReportWizardView').hide();
                         return false;
@@ -141,6 +153,14 @@
                     }
                 );
             ");
+        }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
+            return  "   $('#OrderBysForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#OrderBysTreeArea').html('');
+                        $('." . OrderBysForReportWizardView::getZeroComponentsClassName() . "').show();
+                    ";
         }
     }
 ?>

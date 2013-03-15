@@ -24,23 +24,50 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for display attribute definitions
+     */
     class DisplayAttributeForReportForm extends ComponentForReportForm
     {
         const COLUMN_ALIAS_PREFIX = 'col';
+
+        /**
+         * @var string
+         */
+        public $label;
+
+        /**
+         * Each display attribute has a unique column alias name that helps identify it during the rendering of the grid
+         * @var string
+         */
+        public $columnAliasName;
+
+        /**
+         * Some display attributes can be used just for querying and not for displaying in the grid.
+         * @var bool
+         */
+        public $queryOnly                      = false;
+
+        /**
+         * In the case of summation with drill down, a display attribute value can be used to build the filter
+         * for the drill down results.
+         * @var bool
+         */
+        public $valueUsedAsDrillDownFilter     = false;
+
+        /**
+         * Some display attributes such as account name, are rendered using the model.  This is because in a query
+         * select id from account, the account model is created and then $account->name is used.  But other display
+         * attributes such as integer (SUM) would be use the value directly from the select statement like
+         * select SUM(integer) from account.
+         * @var bool
+         */
+        public $madeViaSelectInsteadOfViaModel = false;
+
         /**
          * @var integer the counter for generating automatic column alias names
          */
         protected static $count = 0;
-
-        public $label;
-
-        public $columnAliasName;
-
-        public $queryOnly = false;
-
-        public $valueUsedAsDrillDownFilter = false;
-
-        public $madeViaSelectInsteadOfViaModel = false;
 
         /**
          * Indicates the model alias for working with the resultsRowData. Sometimes there can be the same related model
@@ -50,11 +77,20 @@
          */
         protected $modelAliasUsingTableAliasName;
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_DISPLAY_ATTRIBUTES;
         }
 
+        /**
+         * Sets the columnAliasName as unique across all instances of DisplayAttributeReportForms
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $reportType
+         */
         public function __construct($moduleClassName, $modelClassName, $reportType)
         {
             parent::__construct($moduleClassName, $modelClassName, $reportType);
@@ -77,6 +113,9 @@
             return $attributeNames;
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -85,6 +124,10 @@
             ));
         }
 
+        /**
+         * @param string $name
+         * @param mixed $value
+         */
         public function __set($name, $value)
         {
             parent::__set($name, $value);
@@ -94,24 +137,35 @@
             }
         }
 
+        /**
+         * Used primarily by testing to reset the count used to define the unique column alias names.
+         */
         public static function resetCount()
         {
-            self::$count = 0;
+            static::$count = 0;
         }
 
+        /**
+         * @param $modelAliasUsingTableAliasName
+         */
         public function setModelAliasUsingTableAliasName($modelAliasUsingTableAliasName)
         {
             assert('is_string($modelAliasUsingTableAliasName)');
             $this->modelAliasUsingTableAliasName = $modelAliasUsingTableAliasName;
         }
 
+        /**
+         * @return string
+         */
         public function getModelAliasUsingTableAliasName()
         {
             return $this->modelAliasUsingTableAliasName;
         }
 
-
-
+        /**
+         * @param $key
+         * @return string
+         */
         public function resolveAttributeNameForGridViewColumn($key)
         {
             assert('is_int($key)');
@@ -123,6 +177,11 @@
             return ReportResultsRowData::resolveAttributeNameByKey($key);
         }
 
+        /**
+         * An example of a linkable attribute is if you run a report on contacts, and show a column of account names.
+         * The account name can be linkable to the account record.
+         * @return bool
+         */
         public function isALinkableAttribute()
         {
             $resolvedAttribute = $this->getResolvedAttribute();
@@ -133,6 +192,9 @@
             return false;
         }
 
+        /**
+         * @return mixed
+         */
         public function getRawValueRelatedAttribute()
         {
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
@@ -185,11 +247,11 @@
             {
                 if($value)
                 {
-                    $translatedValue = Yii::t('Default', 'Yes');
+                    $translatedValue = Zurmo::t('ReportsModule', 'Yes');
                 }
                 elseif($value == false && $value != '')
                 {
-                    $translatedValue = Yii::t('Default', 'No');
+                    $translatedValue = Zurmo::t('ReportsModule', 'No');
                 }
             }
             if($translatedValue === null)

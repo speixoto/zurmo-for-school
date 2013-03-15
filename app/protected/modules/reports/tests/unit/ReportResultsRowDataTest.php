@@ -30,6 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            ContactsModule::loadStartingData();
         }
 
         public function setup()
@@ -154,7 +155,6 @@
             $displayAttribute4->attributeIndexOrDerivedType = 'createdDateTime__Day';
             $displayAttribute4->valueUsedAsDrillDownFilter = true;
 
-
             $displayAttribute5 = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                  Report::TYPE_SUMMATION);
             $displayAttribute5->attributeIndexOrDerivedType = 'owner__User';
@@ -174,11 +174,11 @@
             $reportResultsRowData->addSelectedColumnNameAndValue('col3', 15);
             $data   = $reportResultsRowData->getDataParamsForDrillDownAjaxCall();
             $userId = Yii::app()->user->userModel->id;
-            $this->assertEquals('dropDownValue', $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('dropDown')]);
-            $this->assertEquals(45.05,           $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('currencyValue')]);
-            $this->assertEquals(15,              $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('createdDateTime__Day')]);
-            $this->assertEquals($userId,         $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('owner__User')]);
-            $this->assertEquals('someName',      $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('likeContactState')]);
+            $this->assertEquals('dropDownValue',           $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('dropDown')]);
+            $this->assertEquals(45.05,                     $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('currencyValue')]);
+            $this->assertEquals(15,                        $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('createdDateTime__Day')]);
+            $this->assertEquals($userId,                   $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('owner__User')]);
+            $this->assertEquals($reportModelTestItem7->id, $data[ReportResultsRowData::resolveDataParamKeyForDrillDown('likeContactState')]);
         }
 
         public function testResolveDataParamKeyForDrillDown()
@@ -189,8 +189,37 @@
 
         public function testWhenResolveValueFromModelHasNoModelAndReturnsProperDefaultModel()
         {
-            $this->fail(); //todo: also we can modify the listAdapters for reporting for currency, and maybe others, so it returns null as a value since $0.00 is incorrect
-            //since there are no related items in this scenario.
+            $reportModelTestItemX         = new ReportModelTestItem();
+            $reportModelTestItemX->string = 'someString';
+            $displayAttributeX            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                            Report::TYPE_SUMMATION);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'string';
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
+            $this->assertNull($reportResultsRowData->attribute0);
+        }
+
+        public function testGetAttributeLabel()
+        {
+            $reportModelTestItemX         = new ReportModelTestItem();
+            $reportModelTestItemX->string = 'someString';
+            $displayAttributeX            = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                            Report::TYPE_SUMMATION);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'string';
+            $displayAttributeY = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                 Report::TYPE_SUMMATION);
+            $displayAttributeY->attributeIndexOrDerivedType = 'integer__Maximum';
+
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX, $displayAttributeY), 4);
+            $reportResultsRowData->addModelAndAlias($reportModelTestItemX, 'abc');
+            $reportResultsRowData->addSelectedColumnNameAndValue('col1', 55);
+
+            //Test a viaModel attribute
+            $this->assertEquals('String', $reportResultsRowData->getAttributeLabel('attribute0'));
+
+            //Test a viaSelect attriubte
+            $this->assertEquals('Integer -(Max)', $reportResultsRowData->getAttributeLabel('col1'));
         }
     }
 ?>

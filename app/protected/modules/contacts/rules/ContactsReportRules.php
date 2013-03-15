@@ -29,6 +29,9 @@
      */
     class ContactsReportRules extends SecuredReportRules
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -40,7 +43,7 @@
                     'availableOperatorsTypes' =>
                         array('state' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>
-                        array('state' => 'ContactStateStaticDropDownForReport'),
+                        array('state' => 'AllContactStatesStaticDropDownForWizardModel'),
                     'relationsReportedAsAttributesSortAttributes' =>
                         array('state' => 'name'),
                     'relationsReportedAsAttributesGroupByAttributes' =>
@@ -52,6 +55,11 @@
             return array_merge(parent::getDefaultMetadata(), $metadata);
         }
 
+        /**
+         * @param User $user
+         * @return null|string|void
+         * @throws NotSupportedException
+         */
         public static function getVariableStateModuleLabel(User $user)
         {
             assert('$user->id > 0');
@@ -63,15 +71,15 @@
             }
             elseif($adapterName == 'LeadsStateMetadataAdapter')
             {
-                return Yii::t('Default', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+                return Zurmo::t('ContactsModule', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
             elseif($adapterName == 'ContactsStateMetadataAdapter')
             {
-                return Yii::t('Default', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+                return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
             elseif($adapterName === null)
             {
-                return Yii::t('Default', 'ContactsModulePluralLabel and LeadsModulePluralLabel',
+                return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel and LeadsModulePluralLabel',
                        LabelUtil::getTranslationParamsForAllModules());
             }
             else
@@ -80,6 +88,10 @@
             }
         }
 
+        /**
+         * @param User $user
+         * @return bool
+         */
         public static function canUserAccessModuleInAVariableState(User $user)
         {
             assert('$user->id > 0');
@@ -91,6 +103,10 @@
             return false;
         }
 
+        /**
+         * @param User $user
+         * @return null | string
+         */
         public static function resolveStateAdapterUserHasAccessTo(User $user)
         {
             assert('$user->id > 0');

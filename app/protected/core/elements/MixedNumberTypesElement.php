@@ -39,7 +39,9 @@
             $secondValueSpanAreaId              = $this->getSecondValueEditableInputId() . '-second-value-area';
             $startingDivStyleFirstValue  = null;
             $startingDivStyleSecondValue  = null;
-            if (in_array($this->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
+            if (in_array($this->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL,
+                                                     OperatorRules::TYPE_CHANGES, OperatorRules::TYPE_DOES_NOT_CHANGE,
+                                                     OperatorRules::TYPE_IS_EMPTY, OperatorRules::TYPE_IS_NOT_EMPTY)))
             {
                 $startingDivStyleFirstValue = "display:none;";
             }
@@ -54,7 +56,7 @@
             $content .= ZurmoHtml::tag('div', array('id'    => $secondValueSpanAreaId,
                                                     'class' => 'second-value-area',
                                                     'style' => $startingDivStyleSecondValue),
-                                                    ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Yii::t('Default', 'and')) .
+                                                    ZurmoHtml::Tag('span', array('class' => 'dynamic-and-for-mixed'), Zurmo::t('Core', 'and')) .
                                                     $this->renderEditableSecondValueContent());
             return $content;
         }

@@ -71,6 +71,7 @@
                                     'port'                              => '565',
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
+                                    'security'                          => 'ssl',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
             $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
             $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
@@ -108,6 +109,44 @@
             $this->assertEquals('143',     Yii::app()->imap->imapPort);
             $this->assertEquals('0',     Yii::app()->imap->imapSSL);
             $this->assertEquals('INBOX',     Yii::app()->imap->imapFolder);
+        }
+
+        public function testSuperUserModifyEmailArchivingConfigurationImapWithValidation()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            //checking with blank values for required fields
+            $this->resetGetArray();
+            $this->setPostArray(array('EmailArchivingConfigurationForm' => array(
+                                    'imapHost'                          => '',
+                                    'imapUsername'                      => '',
+                                    'imapPassword'                      => '',
+                                    'imapPort'                          => '',
+                                    'imapSSL'                           => '0',
+                                    'imapFolder'                        => '')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditArchiving');
+            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Username cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Password cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Port cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Folder cannot be blank.') === false);
+        }
+
+        public function testSuperUserModifyEmailSMTPConfigurationOutboundWithValidation()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $super2 = User::getByUsername('super2');
+
+            //checking with blank values for required fields
+            $this->resetGetArray();
+            $this->setPostArray(array('EmailSmtpConfigurationForm' => array(
+                                    'host'                              => '',
+                                    'port'                              => '',
+                                    'username'                          => 'myuser',
+                                    'password'                          => 'apassword',
+                                    'userIdOfUserToSendNotificationsAs' => $super2->id)));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditOutbound');
+            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Port cannot be blank.') === false);
         }
     }
 ?>

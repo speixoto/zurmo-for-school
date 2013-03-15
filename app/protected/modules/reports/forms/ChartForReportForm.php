@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class that defines the chart for use by summation reports.  A chart is optional.
+     */
     class ChartForReportForm extends ConfigurableMetadataModel
     {
         /**
@@ -32,16 +35,41 @@
          */
         public $type;
 
+        /**
+         * First series in a chart, for example: opportunities sales stage
+         * @var string
+         */
         public $firstSeries;
 
+        /**
+         * First range in a chart, for example: opportunities amount (SUM)
+         * @var string
+         */
         public $firstRange;
 
+        /**
+         * If the chart supports 2 series, then this would be a second series from the report.
+         * An example would grouping by opportunity sales stage and then (second series) by owner.
+         * @var string
+         */
         public $secondSeries;
 
+        /**
+         * If the chart supports 2 ranges, then this would be a second range from the report
+         * @var string
+         */
         public $secondRange;
 
+        /**
+         * Array of available series for this chart.  Depends on other report definitions
+         * @var array string
+         */
         private $availableSeriesDataAndLabels;
 
+        /**
+         * Array of available ranges for this chart.  Depends on other report definitions
+         * @var array string
+         */
         private $availableRangeDataAndLabels;
 
         public function rules()
@@ -61,6 +89,13 @@
             return array();
         }
 
+        /**
+         * Depending on other report definitions, a chart may or may not be available.  When creating a chart,
+         * define the available series and ranges based on those definitions.  For example, if you have not selected
+         * a grouping, then there would be no available series.
+         * @param array $availableSeriesDataAndLabels
+         * @param array $availableRangeDataAndLabels
+         */
         public function __construct($availableSeriesDataAndLabels = array(), $availableRangeDataAndLabels = array())
         {
             assert('is_array($availableSeriesDataAndLabels) || $availableSeriesDataAndLabels == null');
@@ -69,16 +104,10 @@
             $this->availableRangeDataAndLabels  = $availableRangeDataAndLabels;
         }
 
-        public function getModuleClassName()
-        {
-            return $this->moduleClassName;
-        }
-
-        public function getModelClassName()
-        {
-            return $this->modelClassName;
-        }
-
+        /**
+         * Validates that the first and second series/ranges are properly formed.
+         * @return bool
+         */
         public function validateSeriesAndRange()
         {
             $passedValidation = true;
@@ -86,38 +115,42 @@
             {
                 if($this->firstSeries == null)
                 {
-                    $this->addError('firstSeries', Yii::t('Default', 'First Series cannot be blank.'));
+                    $this->addError('firstSeries', Zurmo::t('ReportsModule', 'First Series cannot be blank.'));
                     $passedValidation = false;
                 }
                 if($this->firstRange == null)
                 {
-                    $this->addError('firstRange', Yii::t('Default', 'First Range cannot be blank.'));
+                    $this->addError('firstRange', Zurmo::t('ReportsModule', 'First Range cannot be blank.'));
                     $passedValidation = false;
                 }
                 if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
                 {
-                    $this->addError('secondSeries', Yii::t('Default', 'Second Series cannot be blank.'));
+                    $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series cannot be blank.'));
                     $passedValidation = false;
                 }
                 if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
                 {
-                    $this->addError('secondRange', Yii::t('Default', 'Second Range cannot be blank.'));
+                    $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range cannot be blank.'));
                     $passedValidation = false;
                 }
                 if($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
                 {
-                    $this->addError('secondSeries', Yii::t('Default', 'Second Series must be unique.'));
+                    $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series must be unique.'));
                     $passedValidation = false;
                 }
                 if($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
                 {
-                    $this->addError('secondRange', Yii::t('Default', 'Second Range must be unique.'));
+                    $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range must be unique.'));
                     $passedValidation = false;
                 }
             }
             return $passedValidation;
         }
 
+        /**
+         * Returns array of chart types and their corresponding labels
+         * @return array
+         */
         public function getTypeDataAndLabels()
         {
             $data  = array();
@@ -129,21 +162,33 @@
             return $data;
         }
 
+        /**
+         * @return array
+         */
         public function getAvailableFirstSeriesDataAndLabels()
         {
             return $this->availableSeriesDataAndLabels;
         }
 
+        /**
+         * @return array
+         */
         public function getAvailableFirstRangeDataAndLabels()
         {
             return $this->availableRangeDataAndLabels;
         }
 
+        /**
+         * @return array
+         */
         public function getAvailableSecondSeriesDataAndLabels()
         {
             return $this->availableSeriesDataAndLabels;
         }
 
+        /**
+         * @return array
+         */
         public function getAvailableSecondRangeDataAndLabels()
         {
             return $this->availableRangeDataAndLabels;

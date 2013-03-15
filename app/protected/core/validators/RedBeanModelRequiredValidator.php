@@ -39,7 +39,7 @@
         // definition must match that of the base class.
         protected function validateAttribute(/*RedBeanModel*/ $model, $attributeName)
         {
-            if ($model->isRelation($attributeName))
+            if ($model::isRelation($attributeName))
             {
                 if ($this->requiredValue !== null)
                 {
@@ -50,7 +50,7 @@
                     }
                     else
                     {
-                        $message = Yii::t('yii', '{attribute} must be {value}.',
+                        $message = Zurmo::t('Core', '{attribute} must be {value}.',
                                           array('{value}' => $this->requiredValue));
                     }
                     $this->addError($model, $attributeName, $message);
@@ -65,7 +65,7 @@
                         }
                         else
                         {
-                            $message = Yii::t('yii', '{attribute} cannot be blank.');
+                            $message = Zurmo::t('Core', '{attribute} cannot be blank.');
                         }
                         $this->addError($model, $attributeName, $message);
                     }
@@ -80,7 +80,7 @@
                         }
                         else
                         {
-                            $message = Yii::t('yii', '{attribute} cannot be blank.');
+                            $message = Zurmo::t('Core', '{attribute} cannot be blank.');
                         }
                         $this->addError($model, $attributeName, $message);
                     }
@@ -94,7 +94,7 @@
                     }
                     else
                     {
-                        $message = Yii::t('yii', '{attribute} cannot be blank.');
+                        $message = Zurmo::t('Core', '{attribute} cannot be blank.');
                     }
                     $this->addError($model, $attributeName, $message);
                 }

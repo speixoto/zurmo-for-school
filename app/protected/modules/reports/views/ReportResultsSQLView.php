@@ -24,20 +24,29 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View to display SQL queries of the count and result data
+     */
     class ReportResultsSQLView extends View
     {
+        /**
+         * @param $dataProvider
+         */
         public function __construct($dataProvider)
         {
             assert('$dataProvider instanceof ReportDataProvider');
             $this->dataProvider = $dataProvider;
         }
 
+        /**
+         * @return string
+         */
         protected function renderContent()
         {
-            $sqlContent  = Yii::t('Default', 'Count Query');
+            $sqlContent  = ZurmoHtml::Tag('h3', array(), Zurmo::t('ReportsModule', 'Count Query'));
             $sqlContent .= $this->dataProvider->makeTotalCountSqlQueryForDisplay();
             $content     = ZurmoHtml::tag('div', array(), $sqlContent);
-            $sqlContent  = Yii::t('Default', 'Grid Query');
+            $sqlContent  = ZurmoHtml::Tag('h3', array(), Zurmo::t('ReportsModule', 'Grid Query'));
             $sqlContent .= $this->dataProvider->makeSqlQueryForDisplay();
             $content    .= ZurmoHtml::tag('div', array(), $sqlContent);
             return $content;

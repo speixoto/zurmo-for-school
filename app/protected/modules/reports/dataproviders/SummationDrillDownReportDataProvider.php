@@ -24,13 +24,23 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Data provider a report that is a summation with drill down report
+     */
     class SummationDrillDownReportDataProvider extends RowsAndColumnsReportDataProvider
     {
+        /**
+         * @return array
+         */
         public function resolveDisplayAttributes()
         {
             return $this->report->getDrillDownDisplayAttributes();
         }
 
+        /**
+         * @return bool|void
+         * @throws NotSupportedException if the report is not valid for this data provider
+         */
         protected function isReportValidType()
         {
             if($this->report->getType() != Report::TYPE_SUMMATION)
@@ -39,16 +49,28 @@
             }
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
         protected function makeOrderBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             return null;
         }
 
+        /**
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @return null|string
+         */
         protected function makeGroupBysContent(RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter)
         {
             return null;
         }
 
+        /**
+         * @param array $filters
+         * @return array
+         */
         protected function makeReadPermissionsAttributeIndexes(array $filters)
         {
             $attributeIndexes = array();

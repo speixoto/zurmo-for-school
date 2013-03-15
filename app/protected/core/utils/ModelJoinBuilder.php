@@ -125,6 +125,11 @@
             return $this->tableAliasNameForRelatedModel;
         }
 
+        /**
+         * @param null $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         public function resolveJoins($onTableAliasName = null, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -149,6 +154,11 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param null $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         public function resolveOnlyAttributeJoins($onTableAliasName = null, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
@@ -159,6 +169,10 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param null $onTableAliasName
+         * @return null | string
+         */
         public function resolveOnTableAliasName($onTableAliasName = null)
         {
             if($onTableAliasName == null)
@@ -168,19 +182,11 @@
             return $onTableAliasName;
         }
 
-        private function resolveOnTableAliasNameForDerivedRelationViaCastedUpModel()
-        {
-            if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
-            {
-                $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
-            }
-            else
-            {
-                $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
-            }
-            return $onTableAliasName;
-        }
-
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function resolveJoinsForAttribute($onTableAliasName, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName)');
@@ -208,6 +214,11 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function resolveJoinsForDerivedRelationViaCastedUpModel($onTableAliasName, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName)');
@@ -232,6 +243,11 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function resolveJoinsForDerivedRelationViaCastedUpModelThatIsCastedUp($onTableAliasName, $canUseFromJoins = true)
         {
             $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
@@ -247,6 +263,10 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForDerivedRelationViaCastedUpModelThatIsManyToMany($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -265,6 +285,12 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         * @throws NotImplementedException
+         */
         protected function resolveJoinsForInferredRelation($onTableAliasName, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName)');
@@ -287,6 +313,11 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function resolveJoinsForInferredRelationThatIsCastedUp($onTableAliasName, $canUseFromJoins = true)
         {
             $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
@@ -305,6 +336,10 @@
             }
         }
 
+        /**
+         * @param $attributeModelClassName
+         * @return string
+         */
         protected function resolveAttributeModelClassNameWithCastingHintForCastingDown($attributeModelClassName)
         {
             assert('is_string($attributeModelClassName)');
@@ -315,6 +350,11 @@
             return $attributeModelClassName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName)');
@@ -330,18 +370,31 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForAttributeOnSameModelThatIsARelation($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             return $this->resolveLeftJoinsForARelationAttribute($onTableAliasName);
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return mixed
+         */
         protected function resolveJoinsForAttributeOnSameModelThatIsNotARelation($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             return $onTableAliasName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function resolveJoinsForAttributeOnDifferentModelThatIsARelation($onTableAliasName, $canUseFromJoins = true)
         {
             assert('is_string($onTableAliasName)');
@@ -357,12 +410,21 @@
             return $this->resolveLeftJoinsForARelationAttribute($onTableAliasName);
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveLeftJoinsForARelationAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
             return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param bool $canUseFromJoins
+         * @return null|string
+         */
         protected function
                   resolveJoinsForAttributeOnDifferentModelThatIsNotARelation($onTableAliasName, $canUseFromJoins = true)
         {
@@ -378,6 +440,10 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return string
+         */
         protected function addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -391,6 +457,10 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function addMixedInOrCastedUpLeftJoinsForAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -404,6 +474,10 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return string
+         */
         protected function addFromJoinsForAttributeThatIsMixedIn($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -429,54 +503,10 @@
             return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
         }
 
-        private function processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName)
-        {
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeModelClassName)');
-            $attributeTableName = $attributeModelClassName::getTableName($attributeModelClassName);
-            $tableAliasName     = $attributeTableName;
-            $castedDownModelClassName = $modelClassName;
-            while (get_parent_class($modelClassName) != $attributeModelClassName &&
-                   get_parent_class($modelClassName) != 'RedBeanModel')
-            {
-                $castedDownFurtherModelClassName = $castedDownModelClassName;
-                $castedDownModelClassName        = $modelClassName;
-                $modelClassName                  = get_parent_class($modelClassName);
-                if ($modelClassName::getCanHaveBean())
-                {
-                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
-                    if (!$this->joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
-                    {
-                        if ($castedDownModelClassName::getCanHaveBean())
-                        {
-                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownModelClassName);
-                        }
-                        elseif ($castedDownFurtherModelClassName::getCanHaveBean())
-                        {
-                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
-                        }
-                        else
-                        {
-                            throw new NotSupportedException();
-                        }
-                        $onTableAliasName = $this->joinTablesAdapter->addFromTableAndGetAliasName(
-                            $castedUpAttributeTableName,
-                            self::resolveForeignKey($castedUpAttributeTableName),
-                            $onTableAliasName);
-                    }
-                }
-            }
-            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
-            {
-                $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
-                $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
-                    $attributeTableName,
-                    self::resolveForeignKey($attributeTableName),
-                    $modelClassName::getTableName($modelClassName));
-            }
-            return $tableAliasName;
-        }
-
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function addLeftJoinsForAttributeThatIsMixedIn($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -484,11 +514,15 @@
             return $this->addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName);
         }
 
+        /**
+         * @param $onTableAliasName
+         * @param $attributeTableName
+         * @return null|string
+         */
         protected function addLeftJoinForMixedInAttribute($onTableAliasName, $attributeTableName)
         {
             assert('is_string($onTableAliasName)');
             assert('is_string($attributeTableName)');
-            assert('is_string($modelClassName)');
             $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
                 $attributeTableName,
                 self::resolveForeignKey($attributeTableName),
@@ -496,6 +530,10 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName)
         {
             $modelClassName          = $this->modelAttributeToDataProviderAdapter->getResolvedModelClassName();
@@ -503,63 +541,11 @@
             return $this->resolveAndProcessLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
         }
 
-        private function resolveAndProcessLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
-        {
-            assert('is_string($onTableAliasName)');
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeModelClassName)');
-            if($modelClassName == $attributeModelClassName)
-            {
-                return $onTableAliasName;
-            }
-            return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
-        }
-
-        private function processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
-        {
-            assert('is_string($onTableAliasName)');
-            assert('is_string($modelClassName)');
-            assert('is_string($attributeModelClassName)');
-            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
-            $castedDownModelClassName = $modelClassName;
-            while (get_parent_class($modelClassName) != $attributeModelClassName &&
-                   get_parent_class($modelClassName) != 'RedBeanModel')
-            {
-                $castedDownFurtherModelClassName = $castedDownModelClassName;
-                $castedDownModelClassName        = $modelClassName;
-                $modelClassName                  = get_parent_class($modelClassName);
-                if ($modelClassName::getCanHaveBean())
-                {
-                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
-                    if ($castedDownModelClassName::getCanHaveBean())
-                    {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
-                    }
-                    elseif ($castedDownFurtherModelClassName::getCanHaveBean())
-                    {
-                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
-                    }
-                    else
-                    {
-                        throw new NotSupportedException();
-                    }
-                    $onTableAliasName =     $this->joinTablesAdapter->addLeftTableAndGetAliasName(
-                        $castedUpAttributeTableName,
-                        self::resolveForeignKey($castedUpAttributeTableName),
-                        $onTableAliasName,
-                        $resolvedTableJoinIdName);
-                }
-            }
-            //Add left table if it is not already added
-            $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
-            $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
-                $attributeTableName,
-                self::resolveForeignKey($attributeTableName),
-                $onTableAliasName,
-                $modelClassName::getTableName($modelClassName));
-            return $onTableAliasName;
-        }
-
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         * @throws NotSupportedException
+         */
         protected function addLeftJoinsForARelationAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -599,6 +585,10 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -626,6 +616,10 @@
             }
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForForARelationAttributeThatIsAHasManyVariant($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -639,6 +633,10 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveJoinsForForARelationAttributeThatIsAHasOne($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
@@ -652,6 +650,12 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $modelClassName
+         * @param $castedDownModelClassName
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function resolveAndProcessLeftJoinsForAttributeThatIsCastedDownOrUp($modelClassName,
                                                                                       $castedDownModelClassName,
                                                                                       $onTableAliasName)
@@ -683,6 +687,12 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $modelClassName
+         * @param $castedDownModelClassName
+         * @param $onTableAliasName
+         * @return null|string
+         */
         protected function processLeftJoinsForAttributeThatIsCastedDown($modelClassName, $castedDownModelClassName,
                                                                         $onTableAliasName)
         {
@@ -706,6 +716,11 @@
             return $onTableAliasName;
         }
 
+        /**
+         * @param $modelClassName
+         * @param $castedDownModelClassName
+         * @return array
+         */
         protected function resolveModelDerivationPathToItemForCastingDown($modelClassName, $castedDownModelClassName)
         {
             assert('is_string($modelClassName)');
@@ -726,6 +741,12 @@
             return $modelDerivationPathToItem;
         }
 
+        /**
+         * @param $modelClassName
+         * @param $castedDownModelClassName
+         * @return mixed
+         * @throws NotSupportedException
+         */
         protected static function resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName)
         {
             assert('is_string($modelClassName)');
@@ -742,6 +763,148 @@
             {
                 return $modelClassName;
             }
+        }
+
+        /**
+         * @param $modelClassName
+         * @param $attributeModelClassName
+         * @return string
+         * @throws NotSupportedException
+         */
+        private function processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeModelClassName)');
+            $attributeTableName = $attributeModelClassName::getTableName($attributeModelClassName);
+            $tableAliasName     = $attributeTableName;
+            $castedDownModelClassName = $modelClassName;
+            while (get_parent_class($modelClassName) != $attributeModelClassName &&
+                get_parent_class($modelClassName) != 'RedBeanModel')
+            {
+                $castedDownFurtherModelClassName = $castedDownModelClassName;
+                $castedDownModelClassName        = $modelClassName;
+                $modelClassName                  = get_parent_class($modelClassName);
+                if ($modelClassName::getCanHaveBean())
+                {
+                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    if (!$this->joinTablesAdapter->isTableInFromTables($castedUpAttributeTableName))
+                    {
+                        if ($castedDownModelClassName::getCanHaveBean())
+                        {
+                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                        }
+                        elseif ($castedDownFurtherModelClassName::getCanHaveBean())
+                        {
+                            $onTableAliasName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                        }
+                        else
+                        {
+                            throw new NotSupportedException();
+                        }
+                        $onTableAliasName = $this->joinTablesAdapter->addFromTableAndGetAliasName(
+                            $castedUpAttributeTableName,
+                            self::resolveForeignKey($castedUpAttributeTableName),
+                            $onTableAliasName);
+                    }
+                }
+            }
+            if (!$this->joinTablesAdapter->isTableInFromTables($attributeTableName))
+            {
+                $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
+                $tableAliasName   = $this->joinTablesAdapter->addFromTableAndGetAliasName(
+                    $attributeTableName,
+                    self::resolveForeignKey($attributeTableName),
+                    $modelClassName::getTableName($modelClassName));
+            }
+            return $tableAliasName;
+        }
+
+        /**
+         * @param $onTableAliasName
+         * @param $modelClassName
+         * @param $attributeModelClassName
+         * @return null|string
+         */
+        private function resolveAndProcessLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeModelClassName)');
+            if($modelClassName == $attributeModelClassName)
+            {
+                return $onTableAliasName;
+            }
+            return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName);
+        }
+
+        /**
+         * @param $onTableAliasName
+         * @param $modelClassName
+         * @param $attributeModelClassName
+         * @return null|string
+         * @throws NotSupportedException
+         */
+        private function processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName, $attributeModelClassName)
+        {
+            assert('is_string($onTableAliasName)');
+            assert('is_string($modelClassName)');
+            assert('is_string($attributeModelClassName)');
+            $attributeTableName       = $attributeModelClassName::getTableName($attributeModelClassName);
+            $castedDownModelClassName = $modelClassName;
+            while (get_parent_class($modelClassName) != $attributeModelClassName &&
+                get_parent_class($modelClassName) != 'RedBeanModel')
+            {
+                $castedDownFurtherModelClassName = $castedDownModelClassName;
+                $castedDownModelClassName        = $modelClassName;
+                $modelClassName                  = get_parent_class($modelClassName);
+                if ($modelClassName::getCanHaveBean())
+                {
+                    $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+                    /**
+                    if ($castedDownModelClassName::getCanHaveBean())
+                    {
+                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownModelClassName);
+                    }
+                    elseif ($castedDownFurtherModelClassName::getCanHaveBean())
+                    {
+                        $resolvedTableJoinIdName = $castedDownModelClassName::getTableName($castedDownFurtherModelClassName);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                     * */
+                    $onTableAliasName =     $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                        $castedUpAttributeTableName,
+                        self::resolveForeignKey($castedUpAttributeTableName),
+                        $onTableAliasName);//,
+                        //$resolvedTableJoinIdName);
+                }
+            }
+            //Add left table if it is not already added
+            $modelClassName   = static::resolveModelClassNameThatCanHaveTable($modelClassName, $castedDownModelClassName);
+            $onTableAliasName = $this->joinTablesAdapter->addLeftTableAndGetAliasName(
+                $attributeTableName,
+                self::resolveForeignKey($attributeTableName),
+                $onTableAliasName); //,
+                //$modelClassName::getTableName($modelClassName));
+            return $onTableAliasName;
+        }
+
+        /**
+         * @return mixed
+         */
+        private function resolveOnTableAliasNameForDerivedRelationViaCastedUpModel()
+        {
+            if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
+            {
+                $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
+            }
+            else
+            {
+                $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getAttributeTableName();
+            }
+            return $onTableAliasName;
         }
     }
 ?>

@@ -33,7 +33,7 @@
                 $fullName = $this->getFullName();
                 if ($fullName == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Zurmo::t('ReportsModule', '(Unnamed)');
                 }
                 return $fullName;
             }
@@ -57,7 +57,7 @@
             return join(' ' , $fullName);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(

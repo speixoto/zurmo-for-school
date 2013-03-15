@@ -143,14 +143,13 @@
         public static function resolveSortAttributeColumnName($modelClassName, &$joinTablesAdapter, $sortAttribute)
         {
             assert('$sortAttribute === null || is_string($sortAttribute) && $sortAttribute != ""');
-            $model = new $modelClassName(false);
             $sortRelatedAttribute = null;
-            if ($model->isRelation($sortAttribute))
+            if ($modelClassName::isRelation($sortAttribute))
             {
-                $relationType = $model->getRelationType($sortAttribute);
+                $relationType = $modelClassName::getRelationType($sortAttribute);
                 //MANY_MANY not supported currently for sorting.
                 assert('$relationType != RedBeanModel::MANY_MANY');
-                $relationModelClassName = $model->getRelationModelClassName($sortAttribute);
+                $relationModelClassName = $modelClassName::getRelationModelClassName($sortAttribute);
                 $sortRelatedAttribute   = self::getSortAttributeName($relationModelClassName);
             }
             $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
@@ -205,14 +204,15 @@
         }
 
         /**
-         * See the yii documentation. This function is made public for unit testing.
+         * See the yii documentation. This function is made public for unit testing.  Setting $selectDistinct to true
+         * since the count should always be on unique ids
          */
         public function calculateTotalItemCount()
         {
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($this->modelClassName);
             $where             = $this->makeWhere($this->modelClassName, $this->searchAttributeData, $joinTablesAdapter);
             $modelClassName    = $this->modelClassName;
-            return $modelClassName::getCount($joinTablesAdapter, $where, $this->modelClassName, $joinTablesAdapter->getSelectDistinct());
+            return $modelClassName::getCount($joinTablesAdapter, $where, $this->modelClassName, true);
         }
 
         /**

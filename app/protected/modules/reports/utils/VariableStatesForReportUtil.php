@@ -24,8 +24,21 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
+    /**
+     * Class to help resolve variable states.  When a filter is used from a related model, if that model's module has
+     * variable states, then the appropriate states must be added as additional attribute data to later be filtered on.
+     * If for example you are using an account's contact's name, then you need to filter contacts by states that do not
+     * include leads.
+     */
     class VariableStatesForReportUtil extends ComponentTraversalUtil
     {
+        /**
+         * @param $modelClassName
+         * @param array $attributeIndexes
+         * @param null $attributeIndexPrefix
+         * @throws PartialRightsForReportSecurityException if the current user is lacking rights to at least one of the
+         * states.
+         */
         public static function resolveAttributeIndexes($modelClassName, & $attributeIndexes, $attributeIndexPrefix = null)
         {
             assert('is_string($modelClassName)');
@@ -38,7 +51,7 @@
                 if($stateAdapterClassName !== null && $stateAdapterClassName !== false)
                 {
                     $stateAttributeName = $stateAdapterClassName::getStateAttributeName();
-                    $stateAdapter       = new $stateAdapterClassName(array());
+                    $stateAdapter       = new $stateAdapterClassName(array('clauses' => array(), 'structure' => ''));
                     $attributeIndexes[$attributeIndexPrefix] = array($stateAttributeName, $stateAdapter->getStateIds());
                 }
                 elseif($stateAdapterClassName === false)

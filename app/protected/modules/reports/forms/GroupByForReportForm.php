@@ -24,15 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Component form for group by definitions
+     */
     class GroupByForReportForm extends ComponentForReportForm
     {
+        /**
+         * Default axis is the x-axis
+         * @var string
+         */
         public $axis = 'x';
 
+        /**
+         * @return string component type
+         */
         public static function getType()
         {
             return static::TYPE_GROUP_BYS;
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -42,6 +55,9 @@
             ));
         }
 
+        /**
+         * @return bool
+         */
         public function validateAxis()
         {
             if($this->axis == null)
@@ -50,12 +66,16 @@
             }
             if($this->axis != 'x' && $this->axis != 'y')
             {
-                $this->addError('axis', Yii::t('Default', 'Axis must be x or y.'));
+                $this->addError('axis', Zurmo::t('ReportsModule', 'Axis must be x or y.'));
                 return false;
             }
             return true;
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException if the attributeIndexOrDerivedType is null
+         */
         public function getAxisValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)
@@ -63,8 +83,8 @@
                 throw new NotSupportedException();
             }
             $data = array();
-            $data['x']       = Yii::t('Default', 'X-Axis');
-            $data['y']       = Yii::t('Default', 'Y-Axis');
+            $data['x']       = Zurmo::t('ReportsModule', 'X-Axis');
+            $data['y']       = Zurmo::t('ReportsModule', 'Y-Axis');
             return $data;
         }
     }

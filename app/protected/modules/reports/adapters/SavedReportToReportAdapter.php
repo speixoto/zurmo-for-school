@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class to adapt a SavedReport object to a Report object
+     */
     class SavedReportToReportAdapter
     {
+        /**
+         * @param $savedReport
+         * @return Report
+         */
         public static function makeReportBySavedReport($savedReport)
         {
             $report = new Report();
@@ -88,7 +95,11 @@
             return $report;
         }
 
-        public static function resolveReportToSavedReport($report, $savedReport)
+        /**
+         * @param Report $report
+         * @param SavedReport$savedReport
+         */
+        public static function resolveReportToSavedReport(Report $report, SavedReport $savedReport)
         {
             $savedReport->description     = $report->getDescription();
             $savedReport->moduleClassName = $report->getModuleClassName();
@@ -117,6 +128,10 @@
             $savedReport->serializedData   = serialize($data);
         }
 
+        /**
+         * @param ChartForReportForm $chartForReportForm
+         * @return array
+         */
         protected static function makeArrayFromChartForReportFormAttributesData(ChartForReportForm $chartForReportForm)
         {
             $data = array();
@@ -127,6 +142,10 @@
             return $data;
         }
 
+        /**
+         * @param array $componentFormsData
+         * @return array
+         */
         protected static function makeArrayFromComponentFormsAttributesData(Array $componentFormsData)
         {
             $data = array();
@@ -140,7 +159,12 @@
             return $data;
         }
 
-        protected static function makeComponentFormAndPopulateReportFromData($componentFormsData, $report, $componentPrefix)
+        /**
+         * @param array $componentFormsData
+         * @param Report $report
+         * @param null|string $componentPrefix
+         */
+        protected static function makeComponentFormAndPopulateReportFromData($componentFormsData, Report $report, $componentPrefix)
         {
             $moduleClassName    = $report->getModuleClassName();
             $addMethodName      = 'add' . $componentPrefix;

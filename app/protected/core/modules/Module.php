@@ -165,14 +165,14 @@
             switch ($type)
             {
                 case 'Singular':
-                    return Yii::t('Default', static::getSingularModuleLabel());
+                    return Zurmo::t('Core', static::getSingularModuleLabel());
                 case 'SingularLowerCase':
-                    $string  = Yii::t('Default', static::getSingularModuleLabel(), array(), null, $language);
+                    $string  = Zurmo::t('Core', static::getSingularModuleLabel(), array(), null, $language);
                     return TextUtil::strToLowerWithDefaultEncoding($string);
                 case 'Plural':
-                    return Yii::t('Default', static::getPluralModuleLabel(), array(), null, $language);
+                    return Zurmo::t('Core', static::getPluralModuleLabel(), array(), null, $language);
                 case 'PluralLowerCase':
-                    $string  = Yii::t('Default', static::getPluralModuleLabel(), array(), null, $language);
+                    $string  = Zurmo::t('Core', static::getPluralModuleLabel(), array(), null, $language);
                     return TextUtil::strToLowerWithDefaultEncoding($string);
             }
         }
@@ -455,8 +455,6 @@
 
         /**
          * Returns metadata for the module.
-         * Does caching only if the user is not specified. This can potentially be changed to cache when the user is
-         * specified but must be investigated further before doing this.
          * @see getDefaultMetadata()
          * @param $user The current user.
          * @returns An array of metadata.

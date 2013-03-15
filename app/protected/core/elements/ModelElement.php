@@ -151,21 +151,30 @@
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
                     'search'   => 'js: function(event, ui)
                                   {
-                                      var context = $("#' . $this->getIdForTextField() . '").parent();
-                                      $(".model-select-icon", context).fadeOut(100);
-                                      makeToggableSpinner(context, true);
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeOut(100);
+                                       makeOrRemoveTogglableSpinner(true, context);
                                   }',
                     'open'     => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeToggableSpinner(context, false);
+                                       makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'close'    => 'js: function(event, ui)
                                   {
-                                      var context = $("#' . $this->getIdForTextField() . '").parent();
-                                      $(".model-select-icon", context).fadeIn(250);
-                                      makeToggableSpinner(context, false);
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeIn(250);
+                                       makeOrRemoveTogglableSpinner(false, context);
+                                  }',
+                    'response' => 'js: function(event, ui)
+                                  {
+                                       if (ui.content.length < 1)
+                                       {
+                                           var context = $("#' . $this->getIdForTextField() . '").parent();
+                                           $(".model-select-icon", context).fadeIn(250);
+                                           makeOrRemoveTogglableSpinner(false, context);
+                                       }
                                   }'
                 ),
                 'htmlOptions' => array(

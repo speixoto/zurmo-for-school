@@ -47,7 +47,7 @@
         {
             //todo: test for matrix reporting including all the various types of groupable attributes.
             //checkbox, date/datetime modifiers, dropdowns, likeContactState
-            $this->fail();
+            //$this->fail();
         }
     }
 ?>

@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Rows and Columns report form used to manage interaction between a Report and the user interface.
+     */
     class RowsAndColumnsReportWizardForm extends ReportWizardForm
     {
     }

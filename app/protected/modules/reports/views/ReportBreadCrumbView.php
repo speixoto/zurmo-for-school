@@ -25,13 +25,16 @@
      ********************************************************************************/
 
     /**
-     * View that renders missions module breadcrumb content
+     * View that renders reports module breadcrumb content
      */
     class ReportBreadCrumbView extends BreadCrumbView
     {
+        /**
+         * @return string
+         */
         protected function getHomeLinkLabel()
         {
-            return Yii::t('Default', 'Reports');
+            return Zurmo::t('ReportsModule', 'Reports');
         }
     }
 ?>

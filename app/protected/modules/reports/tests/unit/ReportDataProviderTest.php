@@ -141,7 +141,7 @@
             $filtersStructure   = '';
             $filters            = array();
             $filters = $reportDataProvider->resolveFiltersForVariableStates($filters, $filtersStructure);
-            $stateAdapter = new ContactsStateMetadataAdapter(array());
+            $stateAdapter = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $this->assertEquals(1, count($filters));
             $this->assertEquals('state', $filters[0]->attributeIndexOrDerivedType);
@@ -160,7 +160,7 @@
             $filtersStructure   = '';
             $filters            = array();
             $filters = $reportDataProvider->resolveFiltersForVariableStates($filters, $filtersStructure);
-            $stateAdapter = new LeadsStateMetadataAdapter(array());
+            $stateAdapter = new LeadsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $this->assertEquals(1, count($filters));
             $this->assertEquals('state', $filters[0]->attributeIndexOrDerivedType);
@@ -173,7 +173,6 @@
         /**
          * @expectedException PartialRightsForReportSecurityException
          **/
-
         public function testPartialRightsForReportSecurityExceptionThrown()
         {
             Yii::app()->user->userModel = User::getByUsername('nobody');
@@ -184,7 +183,6 @@
             $filtersStructure   = '';
             $filters            = array();
             $reportDataProvider->resolveFiltersForVariableStates($filters, $filtersStructure);
-            $this->fail();
         }
 
         public function testResolveFiltersForVariableStatesWithOneDisplayAttributeAndOneFilterForANonSuperUserWhoCanSeeOneState()
@@ -208,7 +206,7 @@
             $filter->value                       = 'Zurmo';
             $filters                             = array($filter);
             $filters = $reportDataProvider->resolveFiltersForVariableStates($filters, $filtersStructure);
-            $stateAdapter = new ContactsStateMetadataAdapter(array());
+            $stateAdapter = new ContactsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $this->assertEquals(3, count($filters));
             $this->assertEquals('contacts___state',         $filters[1]->attributeIndexOrDerivedType);
@@ -241,7 +239,7 @@
             $filter->value                       = 'Zurmo';
             $filters                             = array($filter);
             $filters = $reportDataProvider->resolveFiltersForVariableStates($filters, $filtersStructure);
-            $stateAdapter = new LeadsStateMetadataAdapter(array());
+            $stateAdapter = new LeadsStateMetadataAdapter(array('clauses' => array(), 'structure' => ''));
             $this->assertTrue(count($stateAdapter->getStateIds()) > 0);
             $this->assertEquals(3, count($filters));
             $this->assertEquals('contacts___state',         $filters[1]->attributeIndexOrDerivedType);

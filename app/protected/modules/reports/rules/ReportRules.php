@@ -28,71 +28,20 @@
      * Base class of report rules that assist with reporting data.  Extend this class to make
      * a set of ReportRules that is for a specific module or a combiniation of modules and/or models.
      */
-    abstract class ReportRules
+    abstract class ReportRules extends ModelToComponentRules
     {
-        protected $modelClassName;
-
-        public static function makeByModuleClassName($moduleClassName)
+        public static function getRulesName()
         {
-            assert('is_string($moduleClassName)');
-            $rulesClassName = $moduleClassName::getPluralCamelCasedName() . 'ReportRules';
-            return new $rulesClassName();
+            return 'ReportRules';
         }
 
         /**
-         * Returns metadata for use in the rules.  Will attempt to retrieve from cache if
-         * available, otherwill retrieve from database and cache.
-         * @see getDefaultMetadata()
-         * @param $user The current user.
-         * @returns An array of metadata.
+         * Some relations such as a CustomField are shown as non-related nodes in the report wizard. For a custom field
+         * this method would return true for example.  Whereas account -> opportunities would return false.
+         * @param RedBeanModel $model
+         * @param $relation
+         * @return bool
          */
-        public static function getMetadata()
-        {
-            $className = get_called_class();
-            try
-            {
-                return GeneralCache::getEntry($className . 'Metadata');
-            }
-            catch (NotFoundException $e)
-            {
-            }
-            $metadata = MetadataUtil::getMetadata($className);
-            if (YII_DEBUG)
-            {
-                $className::assertMetadataIsValid($metadata);
-            }
-            GeneralCache::cacheEntry($className . 'Metadata', $metadata);
-            return $metadata;
-        }
-
-        /**
-         * Sets new metadata.
-         * @param $metadata An array of metadata.
-         * @param $user The current user.
-         */
-        public static function setMetadata(array $metadata)
-        {
-            $className = get_called_class();
-            if (YII_DEBUG)
-            {
-                $className::assertMetadataIsValid($metadata);
-            }
-            MetadataUtil::setMetadata($className, $metadata);
-            GeneralCache::cacheEntry($className . 'Metadata', $metadata);
-        }
-
-        /**
-         * Returns default metadata for use in automatically generating the rules.
-         */
-        public static function getDefaultMetadata()
-        {
-            return array();
-        }
-
-        protected static function assertMetadataIsValid(array $metadata)
-        {
-        }
-
         public function relationIsReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -116,6 +65,11 @@
             return false;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return bool
+         */
         public function attributeIsReportable(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
@@ -129,41 +83,11 @@
             return true;
         }
 
-        public function getDerivedAttributeTypesData(RedBeanModel $model)
-        {
-            $derivedAttributeTypesData = array();
-            $metadata = static::getMetadata();
-            foreach (array_reverse(RuntimeUtil::getClassHierarchy(
-                                   get_class($model), $model::getLastClassInBeanHeirarchy())) as $modelClassName)
-            {
-                if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['derivedAttributeTypes']))
-                {
-                    foreach($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
-                    {
-
-                        $elementClassName          = $derivedAttributeType . 'Element';
-                        $derivedAttributeTypesData
-                        [$derivedAttributeType]    = array('label'                => $elementClassName::getDisplayName(),
-                                                           'derivedAttributeType' => $derivedAttributeType);
-                    }
-                }
-            }
-            return $derivedAttributeTypesData;
-        }
-
-        public function getAvailableOperatorsTypes(RedBeanModel $model, $attribute)
-        {
-            assert('is_string($attribute)');
-            $modelClassName = $model->getAttributeModelClassName($attribute);
-            $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['availableOperatorsTypes']) &&
-               isset($attribute, $metadata[$modelClassName]['availableOperatorsTypes'][$attribute]))
-            {
-                return $metadata[$modelClassName]['availableOperatorsTypes'][$attribute];
-            }
-            return null;
-        }
-
+        /**
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @return null | string
+         */
         public function getFilterValueElementType(RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
@@ -177,6 +101,12 @@
             return null;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $relation
+         * @return string
+         * @throws NotSupportedException if the relation is not really reported as an attribute
+         */
         public function getSortAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -206,6 +136,12 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $relation
+         * @return null|string
+         * @throws NotSupportedException if the relation is not really reported as an attribute
+         */
         public function getGroupByRelatedAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -235,6 +171,11 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param $relation
+         * @return null | string
+         */
         public function getRawValueRelatedAttributeForRelationReportedAsAttribute(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
@@ -248,30 +189,6 @@
                     return $metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation];
                 }
             }
-        }
-
-        public static function getVariableStateModuleLabel(User $user)
-        {
-            assert('$user->id > 0');
-            throw new NotImplementedException();
-        }
-
-        public static function canUserAccessModuleInAVariableState(User $user)
-        {
-            assert('$user->id > 0');
-            throw new NotImplementedException();
-        }
-
-        public static function resolveStateAdapterUserHasAccessTo(User $user)
-        {
-            assert('$user->id > 0');
-            throw new NotImplementedException();
-        }
-
-        public static function getVariableStateValuesForUser($modelClassName, User $user)
-        {
-            assert('is_string($modelClassName)');
-            assert('$user->id > 0');
         }
     }
 ?>

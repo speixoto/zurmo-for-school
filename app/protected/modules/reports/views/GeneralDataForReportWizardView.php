@@ -24,8 +24,38 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View class for the general data component for the report wizard user interface
+     */
     class GeneralDataForReportWizardView extends ComponentForReportWizardView
     {
+        /**
+         * @return string
+         */
+        public static function getWizardStepTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Save Report');
+        }
+
+        /**
+         * @return string
+         */
+        public static function getPreviousPageLinkId()
+        {
+            return 'generalDataPreviousLink';
+        }
+
+        /**
+         * @return string
+         */
+        public static function getNextPageLinkId()
+        {
+            return 'generalDataSaveAndRunLink';
+        }
+
+        /**
+         * @return string
+         */
         protected function renderFormContent()
         {
             $content           = '<div class="attributesContainer">';
@@ -38,7 +68,7 @@
             $element           = new CurrencyConversionTypeStaticDropDownElement(
                                  $this->model, 'currencyConversionType', $this->form);
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
-            $element           = new CurrencyStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode',
+            $element           = new CurrencyCodeStaticDropDownFormElement($this->model, 'spotConversionCurrencyCode',
                                  $this->form, array('addBlank' => true));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr></table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
@@ -49,9 +79,12 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRightSideFormLayout()
         {
-            $content  = '<h3>' . Yii::t('Default', 'Rights and Permissions') . '</h3><div id="owner-box">';
+            $content  = '<h3>' . Zurmo::t('ReportsModule', 'Rights and Permissions') . '</h3><div id="owner-box">';
             $element  = new OwnerNameIdElement($this->model, 'null', $this->form);
             $element->editableTemplate = '{label}{content}{error}';
             $content .= $element->render().'</div>';
@@ -62,28 +95,16 @@
             return $content;
         }
 
-        public static function getWizardStepTitle()
-        {
-            return Yii::t('Default', 'Save Report');
-        }
-
+        /**
+         * @return string
+         */
         protected function renderNextPageLinkContent()
         {
             $params = array();
-            $params['label']       = Yii::t('Default', 'Save and Run');
+            $params['label']       = Zurmo::t('ReportsModule', 'Save and Run');
             $params['htmlOptions'] = array('id' => static::getNextPageLinkId(), 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $searchElement = new SaveButtonActionElement(null, null, null, $params);
             return $searchElement->render();
-        }
-
-        public static function getPreviousPageLinkId()
-        {
-            return 'generalDataPreviousLink';
-        }
-
-        public static function getNextPageLinkId()
-        {
-            return 'generalDataSaveAndRunLink';
         }
 
         protected function registerScripts()
@@ -97,18 +118,18 @@
             Yii::app()->clientScript->registerScript('currencyConversionTypeHelper', "
                 if($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                 {
-                    $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').hide();
+                    $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $currencyConversionTypeSelectId . "').change( function()
                     {
                         if($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                         {
-                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').show();
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().show();
                         }
                         else
                         {
                             $('#" . $spotConversionCurrencyCodeSelectId . "').val('');
-                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').hide();
+                            $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().hide();
                         }
                     }
                 );

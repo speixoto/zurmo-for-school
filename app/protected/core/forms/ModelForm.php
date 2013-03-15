@@ -35,6 +35,15 @@
 
         protected $model;
 
+        /**
+         * Override in child to implement.
+         * @throws NotImplementedException
+         */
+        protected static function getRedBeanModelClassName()
+        {
+            throw new NotImplementedException();
+        }
+
         public function __construct(RedBeanModel $model)
         {
             $this->model = $model;
@@ -84,26 +93,42 @@
          * If the attribute exists on the form, then assume it is not a relation since the form
          * does not support relational attributes.
          */
-        public function isRelation($attributeName)
+        public static function isOwnedRelation($attributeName)
         {
-            if (property_exists($this, $attributeName))
+            if (property_exists(get_called_class(), $attributeName))
             {
                 return false;
             }
-            return $this->model->isRelation($attributeName);
+            $modelClassName = static::getRedBeanModelClassName();
+            return $modelClassName::isOwnedRelation($attributeName);
         }
 
         /**
          * If the attribute exists on the form, then assume it is not a relation since the form
          * does not support relational attributes.
          */
-        public function getRelationModelClassName($relationName)
+        public static function isRelation($attributeName)
         {
-            if (property_exists($this, $relationName))
+            if (property_exists(get_called_class(), $attributeName))
             {
                 return false;
             }
-            return $this->model->getRelationModelClassName($relationName);
+            $modelClassName = static::getRedBeanModelClassName();
+            return $modelClassName::isRelation($attributeName);
+        }
+
+        /**
+         * If the attribute exists on the form, then assume it is not a relation since the form
+         * does not support relational attributes.
+         */
+        public static function getRelationModelClassName($relationName)
+        {
+            if (property_exists(get_called_class(), $relationName))
+            {
+                return false;
+            }
+            $modelClassName = static::getRedBeanModelClassName();
+            return $modelClassName::getRelationModelClassName($relationName);
         }
 
         /**

@@ -24,15 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class for working with full name derived attribute and displaying it in a report results grid
+     */
     class FullNameForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
+        /**
+         * @return array
+         */
         public function renderGridViewData()
         {
             if ($this->getIsLink())
             {
                 return array(
                     'name' => 'lastName',
-                    'header' => Yii::t('Default', 'Name'),
+                    'header' => Zurmo::t('ReportsModule', 'Name'),
                     'type' => 'raw',
                     'value' => $this->view->getLinkString('$data->getModel("' . $this->attribute . '")', $this->attribute),
                 );
@@ -41,7 +47,7 @@
             {
                 return array(
                     'name' => 'lastName',
-                    'header' => Yii::t('Default', 'Name'),
+                    'header' => Zurmo::t('ReportsModule', 'Name'),
                     'value'  => 'strval($data->getModel("' . $this->attribute . '"))',
                 );
             }

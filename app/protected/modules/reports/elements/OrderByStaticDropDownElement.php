@@ -30,6 +30,9 @@
      */
     class OrderByStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getOrderValuesAndLabels';

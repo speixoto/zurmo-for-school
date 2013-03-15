@@ -24,32 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ReportAttributeToElementAdapter
+    /**
+     * Helper class for adapting an attribute to an Element
+     */
+    class ReportAttributeToElementAdapter extends WizardModelAttributeToElementAdapter
     {
-        protected $inputPrefixData;
 
-        protected $model;
-
-        protected $form;
-
-        //protected $attribute;
-
-        protected $treeType;
-
+        /**
+         * @var bool
+         */
         protected $showAvailableRuntimeFilter = true;
 
-        public function __construct(Array $inputPrefixData, $model, $form, $treeType)
-        {
-            assert('count($inputPrefixData) > 1');
-            assert('$model instanceof ComponentForReportForm');
-            assert('$form instanceof ReportActiveForm');
-            assert('is_string($treeType)');
-            $this->inputPrefixData      = $inputPrefixData;
-            $this->model                = $model;
-            $this->form                 = $form;
-            $this->treeType             = $treeType;
-        }
-
+        /**
+         * @return string
+         * @throws NotSupportedException if the treeType is invalid or null
+         */
         public function getContent()
         {
             $this->form->setInputPrefixData($this->inputPrefixData);
@@ -81,17 +70,10 @@
             return $content;
         }
 
-        protected function renderAttributeIndexOrDerivedType()
-        {
-            $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
-            $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
-                                            array_merge($this->inputPrefixData, array('attributeIndexOrDerivedType')));
-            $idInputHtmlOptions  = array('id' => $hiddenInputId);
-            return ZurmoHtml::hiddenField($hiddenInputName, $this->model->getAttributeIndexOrDerivedType(),
-                                          $idInputHtmlOptions);
-        }
-
+        /**
+         * @return string
+         * @throws NotSupportedException if the valueElementType is null
+         */
         protected function getContentForFilter()
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
@@ -121,7 +103,7 @@
                 }
                 elseif($valueElement instanceof MixedDateTypesElement)
                 {
-                    $valueElement->editableTemplate = '<div class="dynamic-attribute-operator">{valueType}</div>' .
+                    $valueElement->editableTemplate = '<div class="dynamic-row-operator">{valueType}</div>' .
                                                       '<div class="value-data has-date-inputs">' .
                                                       '<div class="first-value-area">{content}{error}</div></div>';
                 }
@@ -130,7 +112,8 @@
                     $startingDivStyleFirstValue     = null;
                     if (in_array($this->model->getOperator(), array(OperatorRules::TYPE_IS_NULL, OperatorRules::TYPE_IS_NOT_NULL)))
                     {
-                        $startingDivStyleFirstValue = "display:none;";
+                        $startingDivStyleFirstValue         = "display:none;";
+                        $valueElement->params['disabled']   = 'disabled';
                     }
                     $valueElement->editableTemplate = '<div class="value-data"><div class="first-value-area" style="' .
                                                       $startingDivStyleFirstValue . '">{content}{error}</div></div>';
@@ -142,8 +125,8 @@
                 throw new NotSupportedException();
             }
             $content                                = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
-            self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-attribute-operator');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
+            self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-row-operator');
             $content                               .= $valueContent;
             if($this->showAvailableRuntimeFilter)
             {
@@ -156,6 +139,11 @@
             return $content;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the reportType is rows and columns since that report type does not have
+         * group bys
+         */
         protected function getContentForGroupBy()
         {
             if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS)
@@ -175,11 +163,16 @@
                 $groupByAxisElement                   = null;
             }
             $content                                  = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
-            self::resolveDivWrapperForContent($groupByAxisElement,             $content, 'dynamic-attribute-field');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
+            self::resolveDivWrapperForContent($groupByAxisElement,             $content, 'dynamic-row-field');
             return $content;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the reportType is rows and columns since that report type does not have
+         * order bys
+         */
         protected function getContentForOrderBy()
         {
             if($this->model->getReportType() == Report::TYPE_MATRIX)
@@ -192,11 +185,14 @@
             $directionElement->editableTemplate = '{content}{error}';
             $directionElement                   = $directionElement->render();
             $content                            = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
-            self::resolveDivWrapperForContent($directionElement,               $content, 'dynamic-attribute-field');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
+            self::resolveDivWrapperForContent($directionElement,               $content, 'dynamic-row-field');
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function getContentForDisplayAttribute()
         {
             $params                                = array('inputPrefix' => $this->inputPrefixData);
@@ -204,11 +200,15 @@
             $displayLabelElement->editableTemplate = '{content}{error}';
             $displayLabelElement                   = $displayLabelElement->render();
             $content                               = $this->renderAttributeIndexOrDerivedType();
-            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-attribute-label');
-            self::resolveDivWrapperForContent($displayLabelElement,            $content, 'dynamic-attribute-field');
+            self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
+            self::resolveDivWrapperForContent($displayLabelElement,            $content, 'dynamic-row-field');
             return $content;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException if the reportType is not summation, since only summation has drill down.
+         */
         protected function getContentForDrillDownDisplayAttribute()
         {
             if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS ||
@@ -217,22 +217,6 @@
                 throw new NotSupportedException();
             }
             return $this->getContentForDisplayAttribute();
-        }
-
-        protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
-        {
-            if($class != null)
-            {
-                $htmlOptions = array('class' => $class);
-            }
-            else
-            {
-                $htmlOptions = array();
-            }
-            if($innerContent != null)
-            {
-                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
-            }
         }
     }
 ?>

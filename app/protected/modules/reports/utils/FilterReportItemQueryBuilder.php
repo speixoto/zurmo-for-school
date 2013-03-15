@@ -24,10 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Create the query string part for the SQL where part
+     */
     class FilterReportItemQueryBuilder extends ReportItemQueryBuilder
     {
+        /**
+         * @var null | string
+         */
         protected $filtersStructure;
 
+        /**
+         * @param $modelToReportAdapter
+         * @param $modelAttributeToDataProviderAdapter
+         * @param string $modelClassName
+         * @param string $realAttributeName
+         */
         public function resolveCastingHintForAttribute($modelToReportAdapter, $modelAttributeToDataProviderAdapter,
                                                           $modelClassName,
                                                           $realAttributeName)
@@ -47,14 +59,18 @@
             }
         }
 
+        /**
+         * @param $modelAttributeToDataProviderAdapter
+         * @param null | string $onTableAliasName
+         * @return string
+         */
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName = null)
         {
-            //todo: split if /else into 2 sub methods
             if($modelAttributeToDataProviderAdapter instanceof ReadOptimizationDerivedAttributeToDataProviderAdapter)
             {
                 $builder        = new ReadOptimizationModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
                 $clausePosition = 1;
-                $where          = null;
+                $where          = array();
                 $builder->resolveJoinsAndBuildWhere(null, null, $clausePosition, $where, $onTableAliasName);
                 return $where[1];
             }
@@ -63,23 +79,38 @@
                 $modelClassName  = $modelAttributeToDataProviderAdapter->getResolvedModelClassName();
                 $metadataAdapter = new FilterForReportFormToDataProviderMetadataAdapter($this->componentForm);
                 $attributeData   = $metadataAdapter->getAdaptedMetadata();
-                //todO: we need a way to not setDistinct from here. right now that just defaults to true in ModelDataProviderUtil::makeWhere, so maybe we need
-                //todo: override util that we then dont set it or something. also need test, that requires data  provider tests to work right. or we can test distinct is still false on all existing builder tests..
+                //todo: right now in makeWhere we always set setDistinct to true when instantiating new ModelWhereAndJoinBuilder
+                //todo: but when we are calling makeWhere from here we should not set that to true. or should it? TBD
                 return ModelDataProviderUtil::makeWhere($modelClassName, $attributeData, $this->joinTablesAdapter,
                                                         $onTableAliasName);
             }
         }
 
+        /**
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapterForRelationReportedAsAttribute($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            assert('is_string($attribute)'); //todo: why is this also using a sortAttribute from the rule. seems strange
+            assert('is_string($attribute)');
             $sortAttribute = $modelToReportAdapter->getRules()->getSortAttributeForRelationReportedAsAttribute(
                              $modelToReportAdapter->getModel(), $attribute);
             return new RedBeanModelAttributeToDataProviderAdapter($modelToReportAdapter->getModelClassName(),
-                $attribute, $sortAttribute);
+                             $attribute, $sortAttribute);
         }
 
+        /**
+         * In the event $modelToReportAdapter is summable and is a calculated group by modifier, unlike
+         * DisplayAttributeReportItemQueryBuilder->makeModelAttributeToDataProviderAdapter, we do not need to
+         * resolve the relatedAttribute when creating the RedBeanModelAttributeToDataProviderAdapter since currently
+         * the attributes can only be date or dateTime.
+         * @param $modelToReportAdapter
+         * @param string $attribute
+         * @return DerivedRelationViaCastedUpRedBeanModelAttributeToDataProviderAdapter |
+         * ReadOptimizationDerivedAttributeToDataProviderAdapter | RedBeanModelAttributeToDataProviderAdapter
+         */
         protected function makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
@@ -92,14 +123,11 @@
             if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                 $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
             {
-                //todO: document that we dont have to do like displayAttributeBuilder where it resolves for related attribute, since really this can only be date/datetime coluumns. at least for now
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
                     $modelToReportAdapter->resolveRealAttributeName($attribute));
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }
-
-        //todo: test multi because multi is sub-select so in fact we do use sub-select for multiple dropdown.. multiples need to be sub-query
     }
 ?>

@@ -65,7 +65,46 @@
             $this->assertEquals('changedValue', $filters[0]->value);
         }
 
-        //todo: test when isNull or isNotNull that the empty string gets converted properly to null. also check date
-        //since it uses value type, we might need to check valueType sometimes too and convert to null. not sure.
+        public function testIsNullConvertsEmptyStringToNull()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'string';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = 'Zurmo';
+            $report                              = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->addFilter($filter);
+            $stickyData                                         = array();
+            $stickyData[ComponentForReportForm::TYPE_FILTERS][] = array('operator' => OperatorRules::TYPE_IS_NULL,
+                                                                        'value'    => '');
+            StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            $filters                             = $report->getFilters();
+            $this->assertCount(1, $filters);
+            $this->assertEquals(OperatorRules::TYPE_IS_NULL, $filters[0]->operator);
+            $this->assertNull(null, $filters[0]->value);
+        }
+
+        public function testDateTimeConvertsValueTypeToNullWhenNeeded()
+        {
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'dateTime';
+            $filter->value                       = '2011-05-05';
+            $filter->valueType                   = MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON;
+            $report                              = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->addFilter($filter);
+            $stickyData                                         = array();
+            $stickyData[ComponentForReportForm::TYPE_FILTERS][] =
+                array('valueType' => MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY, 'value'    => '');
+            StickyReportUtil::resolveStickyDataToReport($report, $stickyData);
+            $filters = $report->getFilters();
+            $this->assertCount(1, $filters);
+            $this->assertEquals(MixedDateTypesSearchFormAttributeMappingRules::TYPE_TODAY, $filters[0]->valueType);
+            $this->assertNull(null, $filters[0]->value);
+        }
     }
 ?>

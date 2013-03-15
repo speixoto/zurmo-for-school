@@ -39,14 +39,22 @@
             $model->integer = 10;
             $adapter = new IntegerRedBeanModelAttributeValueToExportValueAdapter($model, 'integer');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('integer') => 10);
+            $compareData = array(10);
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('integer'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new IntegerRedBeanModelAttributeValueToExportValueAdapter($model, 'integer');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('integer') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('integer'));
             $this->assertEquals($compareData, $data);
         }
     }

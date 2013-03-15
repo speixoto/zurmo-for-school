@@ -24,164 +24,64 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    abstract class ReportWizardView extends View
+    /**
+     * Base class for working with the report wizard
+     */
+    abstract class ReportWizardView extends WizardView
     {
-        protected $model;
-
-        abstract protected function registerClickFlowScript();
-
-        abstract protected function renderContainingViews(ReportActiveForm $form);
-
-        abstract protected function renderConfigSaveAjax($formName);
-
-        public function __construct(ReportWizardForm $model)
+        public static function getControllerId()
         {
-            $this->model = $model;
+            return 'reports';
         }
 
-        public function isUniqueToAPage()
-        {
-            return true;
-        }
-
-        public static function getFormId()
-        {
-            return 'edit-form';
-        }
-
+        /**
+         * @return string
+         */
         public function getTitle()
         {
-            return Yii::t('Default', 'Report Wizard');
+            return Zurmo::t('ReportsModule', 'Report Wizard');
         }
 
-        protected function renderContent()
-        {
-            $content  = $this->renderForm();
-            $this->registerScripts();
-            $this->registerCss();
-            return $content;
-        }
-
-        protected function renderForm()
-        {
-            $content  = '<div class="wrapper">';
-            $content .= $this->renderTitleContent();
-            $content .= '<div class="wide form">';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                            'ReportActiveForm',
-                                                            array('id'                      => static::getFormId(),
-                                                                  'action'                  => $this->getFormActionUrl(),
-                                                                  'enableAjaxValidation'    => true,
-                                                                  'clientOptions'           => $this->getClientOptions(),
-                                                                  'modelClassNameForError'  => get_class($this->model))
-                                                            );
-            $content .= $formStart;
-            $content .= static::renderValidationScenarioInputContent();
-            $content .= $this->renderContainingViews($form);
-            $formEnd  = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $content .= '</div></div>';
-            return $content;
-        }
-
-        protected function getClientOptions()
-        {
-            return array(
-                        'validateOnSubmit'  => true,
-                        'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
-                        'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
-                    );
-        }
-
-        protected function getFormActionUrl()
-        {
-            return Yii::app()->createUrl('reports/default/save',
-                                         array('type' => $this->model->type, 'id' => $this->model->id));
-        }
-
-        protected function registerScripts()
-        {
-            Yii::app()->getClientScript()->registerCoreScript('treeview');
-            Yii::app()->clientScript->registerScriptFile(
-                Yii::app()->getAssetManager()->publish(
-                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
-            $this->registerClickFlowScript();
-        }
-
-        protected function registerCss()
-        {
-            Yii::app()->getClientScript()->registerCssFile(Yii::app()->getClientScript()->getCoreScriptUrl() .
-                                                           '/treeview/jquery.treeview.css');
-        }
-
-        protected static function renderValidationScenarioInputContent()
-        {
-            $idInputHtmlOptions  = array('id' => static::getValidationScenarioInputId());
-            $hiddenInputName     = 'validationScenario';
-            return ZurmoHtml::hiddenField($hiddenInputName, static::getStartingValidationScenario(), $idInputHtmlOptions);
-        }
-
+        /**
+         * @return string
+         */
         protected static function getStartingValidationScenario()
         {
             return ReportWizardForm::MODULE_VALIDATION_SCENARIO;
         }
 
-        protected static function getValidationScenarioInputId()
+        protected function registerScripts()
         {
-            return 'componentType';
+            parent::registerScripts();
+            Yii::app()->getClientScript()->registerCoreScript('treeview');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.modules.reports.views.assets')) . '/ReportUtils.js');
+            $this->registerClickFlowScript();
+            $this->registerModuleClassNameChangeScript();
         }
 
-        protected function getSaveAjaxString($formName)
+        protected function registerModuleClassNameChangeScript()
         {
-            $saveRedirectToDetailsUrl = Yii::app()->createUrl('reports/default/details');
-            $saveRedirectToListUrl    = Yii::app()->createUrl('reports/default/list');
-            return ZurmoHtml::ajax(array(
-                                            'type'     => 'POST',
-                                            'data'     => 'js:$("#' . $formName . '").serialize()',
-                                            'url'      =>  $this->getFormActionUrl(),
-                                            'dataType' => 'json',
-                                            'success'  => 'js:function(data){
-                                                if(data.redirectToList)
-                                                {
-                                                    url = "' . $saveRedirectToListUrl . '";
-                                                }
-                                                else
-                                                {
-                                                    url = "' . $saveRedirectToDetailsUrl . '" + "?id=" + data.id
-                                                }
-                                                window.location.href = url;
-                                            }'
-                                          ));
-        }
-
-        protected function renderTreeViewAjaxScriptContent($formName, $componentViewClassName)
-        {
-            assert('is_string($formName)');
-            assert('is_string($componentViewClassName)');
-            $url    =  Yii::app()->createUrl('reports/default/relationsAndAttributesTree',
-                       array_merge($_GET, array('type' => $this->model->type,
-                                                'treeType' => $componentViewClassName::getTreeType())));
-            $script = "
-                $('#" . FiltersForReportWizardView::getTreeDivId() . "').addClass('loading');
-                makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
-                $.ajax({
-                    url : '" . $url . "',
-                    type : 'POST',
-                    data : $('#" . $formName . "').serialize(),
-                    success : function(data)
+            $moduleClassNameId = get_class($this->model) .  '[moduleClassName]';
+            Yii::app()->clientScript->registerScript('moduleForReportChangeScript', "
+                $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
                     {
-                        $('#" . $componentViewClassName::getTreeDivId() . "').html(data);
-                    },
-                    error : function()
-                    {
-                        //todo: error call
+                        $('#FiltersForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#FiltersTreeArea').html('');
+                        $('." . FiltersForReportWizardView::getZeroComponentsClassName() . "').show();
+                        rebuildReportFiltersAttributeRowNumbersAndStructureInput('FiltersForReportWizardView');
+                        $('#DisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#DisplayAttributesTreeArea').html('');
+                        $('." . DisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
+                        " . $this->registerModuleClassNameChangeScriptExtraPart() . "
                     }
-                });
-            ";
-            return $script;
+                );
+            ");
+        }
+
+        protected function registerModuleClassNameChangeScriptExtraPart()
+        {
         }
     }
 ?>

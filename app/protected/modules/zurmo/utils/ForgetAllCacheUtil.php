@@ -39,6 +39,7 @@
             RightsCache::forgetAll();
             PoliciesCache::forgetAll();
             GeneralCache::forgetAll();
+            BeanModelCache::forgetAll();
             Currency::resetCaches(); //php only cache
         }
     }

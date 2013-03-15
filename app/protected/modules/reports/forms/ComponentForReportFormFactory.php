@@ -24,31 +24,44 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class to create ComponentForReportForm based objects
+     */
     class ComponentForReportFormFactory
     {
-        public static function makeByTreeType($moduleClassName, $modelClassName, $type, $treeType)
+        /**
+         * Make and return the correct ComponentForReportForm based object
+         * @param $moduleClassName string
+         * @param $modelClassName string
+         * @param $type string
+         * @param $componentType string
+         * @return DisplayAttributeForReportForm|DrillDownDisplayAttributeForReportForm|FilterForReportForm|
+         *         GroupByForReportForm|OrderByForReportForm
+         * @throws NotSupportedException
+         */
+        public static function makeByComponentType($moduleClassName, $modelClassName, $type, $componentType)
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
             assert('is_string($type)');
-            assert('is_string($treeType)');
-            if($treeType == ComponentForReportForm::TYPE_FILTERS)
+            assert('is_string($componentType)');
+            if($componentType == ComponentForReportForm::TYPE_FILTERS)
             {
                 return new FilterForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
+            elseif($componentType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 return new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($treeType == ComponentForReportForm::TYPE_ORDER_BYS)
+            elseif($componentType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
                 return new OrderByForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($treeType == ComponentForReportForm::TYPE_GROUP_BYS)
+            elseif($componentType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 return new GroupByForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif($componentType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 return new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $type);
             }
