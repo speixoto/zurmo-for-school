@@ -175,6 +175,13 @@
                                 array('cells' =>
                                     array(
                                         array(
+                                            'element' => 'datenotreqCstm',
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
                                             'element' => 'datetimeCstm',
                                         ),
                                     )
