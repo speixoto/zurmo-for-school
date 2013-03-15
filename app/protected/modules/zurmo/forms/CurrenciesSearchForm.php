@@ -29,5 +29,9 @@
      */
     class CurrenciesSearchForm extends SearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Currency';
+        }
     }
 ?>

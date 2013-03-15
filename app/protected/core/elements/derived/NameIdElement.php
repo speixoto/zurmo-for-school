@@ -37,9 +37,14 @@
          */
         protected $nameAttributeName;
 
+        public function setNameAttributeName($nameAttributeName)
+        {
+            assert('is_string($nameAttributeName)');
+            $this->nameAttributeName = $nameAttributeName;
+        }
+
         protected function renderControlEditable()
         {
-            assert('$this->attribute == "null"');
             return $this->renderEditableContent();
         }
 
@@ -60,7 +65,7 @@
 
         protected function renderError()
         {
-            return $this->form->error($this->model, $this->nameAttributeName, array('inputID' => $this->getIdForTextField()));
+            return $this->form->error($this->model, $this->idAttributeId, array('inputID' => $this->getIdForHiddenField()));
         }
 
         protected function getIdForHiddenField()
@@ -118,5 +123,15 @@
         protected function getResolvedModel()
         {
             return $this->model;
+        }
+
+        /**
+         * SourceModelId is not important for using the NameIdElement
+         * (non-PHPdoc)
+         * @see ModelElement::resolveSourceModelIdForModalTransferInformation()
+         */
+        protected function resolveSourceModelIdForModalTransferInformation()
+        {
+            return array();
         }
     }

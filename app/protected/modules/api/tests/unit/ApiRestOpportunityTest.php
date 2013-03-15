@@ -625,7 +625,7 @@
                 'dynamicSearch' => array(
                     'dynamicClauses' => array(
                         array(
-                            'attributeIndexOrDerivedType' => 'contacts'. DynamicSearchUtil::RELATION_DELIMITER .'id',
+                            'attributeIndexOrDerivedType' => 'contacts'. FormModelUtil::RELATION_DELIMITER .'id',
                             'structurePosition' => 1,
                             'contacts' => array(
                                 'id' => $firstContact->id

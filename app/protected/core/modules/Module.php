@@ -455,8 +455,6 @@
 
         /**
          * Returns metadata for the module.
-         * Does caching only if the user is not specified. This can potentially be changed to cache when the user is
-         * specified but must be investigated further before doing this.
          * @see getDefaultMetadata()
          * @param $user The current user.
          * @returns An array of metadata.
@@ -542,7 +540,10 @@
                 foreach ($directoryFiles as $filePath)
                 {
                     $filePathInfo = pathinfo($filePath);
-                    $classNames[] = $filePathInfo['filename'];
+                    if($filePathInfo['extension'] == 'php')
+                    {
+                        $classNames[] = $filePathInfo['filename'];
+                    }
                 }
             }
             return $classNames;
@@ -565,6 +566,14 @@
          */
         public static function getDemoDataMakerClassName()
         {
+        }
+
+        /**
+         * Override in modules that are reportable in the reporting module
+         */
+        public static function isReportable()
+        {
+            return false;
         }
     }
 ?>

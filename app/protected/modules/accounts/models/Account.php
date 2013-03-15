@@ -31,7 +31,7 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
@@ -102,14 +102,25 @@
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'Account'),
                     'accounts'         => array(RedBeanModel::HAS_MANY,             'Account'),
-                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
+                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'billingAddress'),
                     'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
                     'opportunities'    => array(RedBeanModel::HAS_MANY,             'Opportunity'),
-                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED),
-                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'shippingAddress'),
+                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'type'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('annualRevenue', 'type',    'type' => 'float'),

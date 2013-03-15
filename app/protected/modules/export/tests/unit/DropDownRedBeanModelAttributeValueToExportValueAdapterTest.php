@@ -79,14 +79,22 @@
 
             $adapter = new DropDownRedBeanModelAttributeValueToExportValueAdapter($model, 'dropDown');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('dropDown') => 'Test2');
+            $compareData = array('Test2');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('dropDown'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new DropDownRedBeanModelAttributeValueToExportValueAdapter($model, 'dropDown');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('dropDown') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('dropDown'));
             $this->assertEquals($compareData, $data);
         }
     }

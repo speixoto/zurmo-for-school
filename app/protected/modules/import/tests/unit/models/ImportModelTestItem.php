@@ -26,7 +26,7 @@
 
     class ImportModelTestItem extends OwnedSecurableItem
     {
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
@@ -56,16 +56,25 @@
             ),
                 'relations' => array(
                     'currencyValue'    => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
-                    'dropDown'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'radioDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'multiDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED),
-                    'tagCloud'         => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED),
-                    'hasOne'           => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem2'),
+                    'dropDown'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDown'),
+                    'radioDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'radioDropDown'),
+                    'multiDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
+                    'tagCloud'         => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
+                    'hasOne'           => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem2', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
                     'hasMany'          => array(RedBeanModel::MANY_MANY, 'ImportModelTestItem3'),
-                    'hasOneAlso'       => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem4'),
-                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED),
-                    'primaryAddress'   => array(RedBeanModel::HAS_ONE,   'Address', RedBeanModel::OWNED),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED),
+                    'hasOneAlso'       => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem4', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOneAlso'),
+                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'primaryAddress'   => array(RedBeanModel::HAS_ONE,   'Address', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
 
                 ),
                 'rules' => array(

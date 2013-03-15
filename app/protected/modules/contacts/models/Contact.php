@@ -31,7 +31,7 @@
             return ZurmoModelSearch::getModelsByFullName('Contact', $name);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
@@ -81,12 +81,22 @@
                 ),
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_ONE,   'Account'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
+                    'industry'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
                     'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
-                    'secondaryAddress' => array(RedBeanModel::HAS_ONE,   'Address',          RedBeanModel::OWNED),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email',            RedBeanModel::OWNED),
-                    'source'           => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'state'            => array(RedBeanModel::HAS_ONE,   'ContactState'),
+                    'secondaryAddress' => array(RedBeanModel::HAS_ONE,   'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryAddress'),
+                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'source'           => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
+                    'state'            => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'state'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('companyName',      'type',    'type' => 'string'),

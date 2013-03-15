@@ -114,8 +114,7 @@
         public function getCustomFieldAttributesNotUsedInOtherDependencyAttributes()
         {
             $modelClassName           = $this->modelClassName;
-            $model                    = new $modelClassName(false);
-            $attributeNames           = CustomFieldUtil::getCustomFieldAttributeNames($model);
+            $attributeNames           = CustomFieldUtil::getCustomFieldAttributeNames($modelClassName);
             $dropDownDependencyModels = DropDownDependencyDerivedAttributeMetadata::getAllByModelClassName($this->modelClassName);
             foreach ($dropDownDependencyModels as $dropDownDependency)
             {
@@ -135,7 +134,7 @@
             $attributeNamesAndLabels = array();
             foreach ($attributeNames as $attributeName)
             {
-                $attributeNamesAndLabels[$attributeName] = $model->getAttributeLabel($attributeName);
+                $attributeNamesAndLabels[$attributeName] = $modelClassName::getAnAttributeLabel($attributeName);
             }
             return $attributeNamesAndLabels;
         }

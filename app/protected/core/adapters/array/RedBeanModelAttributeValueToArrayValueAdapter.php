@@ -38,6 +38,7 @@
 
         public function __construct($model, $attribute)
         {
+            assert('is_string($attribute)');
             $this->model     = $model;
             $this->attribute = $attribute;
         }
@@ -49,7 +50,6 @@
         public function resolveData(& $data)
         {
             $data[$this->attribute] = $this->model->{$this->attribute};
-            return;
         }
     }
 ?>

@@ -42,16 +42,16 @@
                 }
                 if ($valuesString == '')
                 {
-                    $data[$this->model->getAttributeLabel($this->attribute)] = null;
+                    $data[] = null;
                 }
                 else
                 {
-                    $data[$this->model->getAttributeLabel($this->attribute)] = rtrim($valuesString, ', ');
+                    $data[] = rtrim($valuesString, ', ');
                 }
             }
             else
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = null;
+                $data[] = null;
             }
         }
     }

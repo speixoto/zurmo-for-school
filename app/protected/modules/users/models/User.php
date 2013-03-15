@@ -117,6 +117,12 @@
             }
         }
 
+        protected static function getMixedInModelClassNames()
+        {
+            return array('Person');
+        }
+
+
         protected function linkBeans()
         {
             // Link the beans up the inheritance hierarchy, skipping
@@ -413,7 +419,7 @@
             return true;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
@@ -628,11 +634,12 @@
                     'isActive'
                 ),
                 'relations' => array(
-                    'currency'         => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'           => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'          => array(RedBeanModel::HAS_ONE,             'User'),
-                    'role'             => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes'       => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
+                    'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
+                    'manager'    => array(RedBeanModel::HAS_ONE,             'User', RedBeanModel::NOT_OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'manager'),
+                    'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
                     'emailAccounts'    => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
                     'emailSignatures'  => array(RedBeanModel::HAS_MANY,            'EmailSignature',         RedBeanModel::OWNED),
                 ),
@@ -769,7 +776,17 @@
             }
             return $emailSignature;
         }
-
+        
+        public function isDeletable()
+        {
+            $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($superAdminGroup->users->count() == 1 && $superAdminGroup->contains($this))
+            {
+                return false;
+            }
+            return parent::isDeletable();
+        }
+        
         /**
         * to change isActive attribute  properly during save
         */

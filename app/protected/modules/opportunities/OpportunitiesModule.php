@@ -67,14 +67,14 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'OpportunitiesModulePluralLabel',
+                        'label' => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', \$translationParams)",
                         'url'   => array('/opportunities/default'),
                         'right' => self::RIGHT_ACCESS_OPPORTUNITIES,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'OpportunitiesModuleSingularLabel',
+                        'label' => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModuleSingularLabel', \$translationParams)",
                         'url'   => array('/opportunities/default/create'),
                         'right' => self::RIGHT_CREATE_OPPORTUNITIES,
                     ),
@@ -129,6 +129,11 @@
         }
 
         public static function hasPermissions()
+        {
+            return true;
+        }
+
+        public static function isReportable()
         {
             return true;
         }

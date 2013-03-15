@@ -74,15 +74,15 @@
                         //continue;
                     }
 
-                    $unSerialzedData = unserialize($exportItem->serializedData);
-                    if ($unSerialzedData instanceOf RedBeanModelDataProvider)
+                    $unserializedData = unserialize($exportItem->serializedData);
+                    if ($unserializedData instanceOf RedBeanModelDataProvider)
                     {
-                        $formattedData = $unSerialzedData->getData();
+                        $formattedData = $unserializedData->getData();
                     }
                     else
                     {
                         $formattedData = array();
-                        foreach ($unSerialzedData as $idToExport)
+                        foreach ($unserializedData as $idToExport)
                         {
                             $model = call_user_func(array($exportItem->modelClassName, 'getById'), intval($idToExport));
                             $formattedData[] = $model;
@@ -91,25 +91,28 @@
 
                     if ($exportItem->exportFileType == 'csv')
                     {
+                        $headerData = array();
                         foreach ($formattedData as $model)
                         {
                             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
                             {
                                 $modelToExportAdapter  = new ModelToExportAdapter($model);
-                                $data[] = $modelToExportAdapter->getData();
+                                if(count($headerData) == 0)
+                                {
+                                    $headerData        = $modelToExportAdapter->getHeaderData();
+                                }
+                                $data[]                = $modelToExportAdapter->getData();
                             }
                         }
-                        $output = ExportItemToCsvFileUtil::export($data);
-
-                        $fileContent          = new FileContent();
-                        $fileContent->content = $output;
-
-                        $exportFileModel = new ExportFileModel();
+                        $output                       = ExportItemToCsvFileUtil::export($data, $headerData);
+                        $fileContent                  = new FileContent();
+                        $fileContent->content         = $output;
+                        $exportFileModel              = new ExportFileModel();
                         $exportFileModel->fileContent = $fileContent;
-                        $exportFileModel->name = $exportItem->exportFileName . ".csv";
-                        $exportFileModel->type    = 'application/octet-stream';
-                        $exportFileModel->size    = strlen($output);
-                        $saved         = $exportFileModel->save();
+                        $exportFileModel->name        = $exportItem->exportFileName . ".csv";
+                        $exportFileModel->type        = 'application/octet-stream';
+                        $exportFileModel->size        = strlen($output);
+                        $saved                        = $exportFileModel->save();
 
                         if ($saved)
                         {

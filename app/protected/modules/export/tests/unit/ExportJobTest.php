@@ -95,14 +95,16 @@
             // Get csv string via regular csv export process(directly, not in background)
             // We suppose that csv generated thisway is corrected, this function itself
             // is tested in another test.
-            $data = array();
-            $rows = $dataProvider->getData();
+            $data                  = array();
+            $rows                  = $dataProvider->getData();
+            $modelToExportAdapter  = new ModelToExportAdapter($rows[0]);
+            $headerData            = $modelToExportAdapter->getHeaderData();
             foreach ($rows as $model)
             {
                 $modelToExportAdapter  = new ModelToExportAdapter($model);
                 $data[] = $modelToExportAdapter->getData();
             }
-            $output = ExportItemToCsvFileUtil::export($data, 'test.csv', false);
+            $output = ExportItemToCsvFileUtil::export($data, $headerData, 'test.csv', false);
             $this->assertEquals($output, $fileModel->fileContent->content);
 
             // Check if user got notification message, and if its type is ExportProcessCompleted

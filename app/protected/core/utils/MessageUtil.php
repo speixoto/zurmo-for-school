@@ -333,12 +333,11 @@
                             $modelReflectionClass->isSubclassOf('OwnedModel') &&
                             !$modelReflectionClass->isAbstract())
                         {
-                           $model              = new $modelClassName(false);
-                           $modelAttributes    = $model->attributeNames();
-                           $untranslatedLabels = $model->getUntranslatedAttributeLabels();
+                           $modelAttributes    = $modelClassName::getAttributeNames();
+                           $untranslatedLabels = $modelClassName::untranslatedAttributeLabels();
                            foreach ($modelAttributes as $attributeName)
                            {
-                                $attributeLabel = $model->getAttributeLabel($attributeName);
+                                $attributeLabel = $modelClassName::getAnAttributeLabel($attributeName);
                                 if (isset($untranslatedLabels[$attributeName]))
                                 {
                                     $translatedLabel = Zurmo::t('Core', $untranslatedLabels[$attributeName],
@@ -360,11 +359,11 @@
                                 }
                                //Find attributes that are a CustomField relation. This means there is drop down values
                                //that will need to be translated.
-                               if ($model->isRelation($attributeName) &&
-                                   ($model->getRelationModelClassName($attributeName) == 'OwnedCustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'CustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'MultipleValuesCustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'OwnedMultipleValuesCustomField'))
+                               if ($modelClassName::isRelation($attributeName) &&
+                                   ($modelClassName::getRelationModelClassName($attributeName) == 'OwnedCustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'CustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'MultipleValuesCustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'OwnedMultipleValuesCustomField'))
                                 {
                                     $customFieldData = CustomFieldDataModelUtil::
                                                        getDataByModelClassNameAndAttributeName($modelClassName, $attributeName);

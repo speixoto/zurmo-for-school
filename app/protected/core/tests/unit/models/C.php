@@ -39,11 +39,15 @@
                 ),
                 'relations' => array(
                     'e'           => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eRequired'   => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eUnique'     => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eDefaulted1' => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eDefaulted2' => array(RedBeanModel::HAS_ONE,  'E'),
-                    'eMany'       => array(RedBeanModel::HAS_MANY, 'E'),
+                    'eRequired'   => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'eUnique'     => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'eDefaulted1' => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eDefaulted1'),
+                    'eDefaulted2' => array(RedBeanModel::HAS_ONE,  'E', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eDefaulted2'),
+                    'eMany'       => array(RedBeanModel::HAS_MANY, 'E')
                 ),
                 'rules' => array(
                     array('eRequired',    'required'),

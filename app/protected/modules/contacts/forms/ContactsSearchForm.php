@@ -36,6 +36,16 @@
         public $anyOptOutEmail;
         public $fullName;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Contact';
+        }
+
+        public function __construct(Contact $model)
+        {
+            parent::__construct($model);
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(

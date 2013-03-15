@@ -57,7 +57,7 @@
             return join(' ' , $fullName);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(
@@ -86,9 +86,12 @@
                     'officeFax',
                 ),
                 'relations' => array(
-                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED),
-                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED),
-                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'title'),
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),

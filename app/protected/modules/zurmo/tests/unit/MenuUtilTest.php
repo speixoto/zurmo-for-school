@@ -40,9 +40,8 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-
             $this->assertEquals(3, count($menu));
-            $this->assertEquals(6, count($menu['items']));
+            $this->assertEquals(7, count($menu['items']));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
             $this->assertEquals(0, count($menu));
@@ -76,7 +75,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(6, count($menu));
+            $this->assertEquals(7, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(1, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
@@ -131,7 +130,7 @@
             $backupMetadata                           = $metadata;
             $metadata['global']['shortcutsCreateMenuItems'] = array(
                 array(
-                    'label' => 'AccountsModuleSingularLabel',
+                    'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
                     'url'   => array('/accounts/default/create'),
                     'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
                 ),
@@ -143,7 +142,7 @@
                 'url'   => null,
                 'items' => array(
                         array(
-                            'label' => 'Account',
+                            'label' => 'Accounts',
                             'url'   => array('/accounts/default/create'),
                             'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
                         ),
@@ -171,6 +170,11 @@
                             'label' => 'Opportunity',
                             'url'   => array('/opportunities/default/create'),
                             'right' => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                        ),
+                        array(
+                            'label' => 'Report',
+                            'url'   => array('/reports/default/selectType'),
+                            'right' => ReportsModule::RIGHT_CREATE_REPORTS,
                         ),
                 ),
             );

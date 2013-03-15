@@ -30,9 +30,8 @@
 
         protected function renderContent()
         {
-            $content  = $this->renderTitleContent();
+            $content      = $this->renderTitleContent();
             $categoryData = $this->getCategoryData();
-            $categoryLabels = $this->getCategoriesArray();
             foreach ($categoryData as $category => $categoryItems)
             {
                 $categoryItems   = static::sortCategoryItems($categoryItems);

@@ -67,8 +67,7 @@
             {
                 return $value;
             }
-            $model                   = new $modelClassName(false);
-            $relationModelClassName = $model->getRelationModelClassName($attributeName);
+            $relationModelClassName = $modelClassName::getRelationModelClassName($attributeName);
             if ($mappingRuleData["type"] == RelatedModelValueTypeMappingRuleForm::ZURMO_MODEL_ID)
             {
                 try

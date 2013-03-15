@@ -106,7 +106,8 @@
                                               'compareAttribute' => 'endDateTime'),
                 ),
                 'relations' => array(
-                    'category'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'category'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'category'),
                 ),
                 'elements' => array(
                     'endDateTime'   => 'DateTime',
@@ -123,7 +124,7 @@
             return $metadata;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function untranslatedAttributeLabels()
         {
             return array_merge(parent::untranslatedAttributeLabels(),
                 array(

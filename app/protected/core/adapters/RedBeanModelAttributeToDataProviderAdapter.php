@@ -52,6 +52,16 @@
          */
         protected $model;
 
+        /**
+         * @var string|null
+         */
+        protected $castingHintAttributeModelClassName;
+
+        /**
+         * @var string|null
+         */
+        protected $castingHintStartingModelClassName;
+
         private $relatedModel;
 
         /**
@@ -67,6 +77,52 @@
             $this->modelClassName   = $modelClassName;
             $this->attribute        = $attribute;
             $this->relatedAttribute = $relatedAttribute;
+        }
+
+        /**
+         * Utilizing casting hint to ensure a castUp or castDown procedure done in ModelJoinBuilder for example
+         * does not cast too far down or up when looking for the end node of a relation.  For example, if you are
+         * coming from meeting into account via activityItems, but the final attribute is owner, then you don't need
+         * to cast all the way down to account.
+         *
+         * @param string $castingHintAttributeModelClassName
+         */
+        public function setCastingHintModelClassNameForAttribute($castingHintAttributeModelClassName)
+        {
+            assert('is_string($castingHintAttributeModelClassName)');
+            $this->castingHintAttributeModelClassName = $castingHintAttributeModelClassName;
+        }
+
+        /**
+         * @return string
+         */
+        public function getCastingHintModelClassNameForAttribute()
+        {
+            return $this->castingHintAttributeModelClassName;
+        }
+
+        /**
+         * @param string|null $castingHintStartingModelClassName
+         */
+        public function setCastingHintStartingModelClassName($castingHintStartingModelClassName)
+        {
+            assert('is_string($castingHintStartingModelClassName) || $castingHintStartingModelClassName == null');
+            $this->castingHintStartingModelClassName = $castingHintStartingModelClassName;
+        }
+
+        /**
+         * Resolves what the model class name is to use as the starting point.  For cast hinting it is possible
+         * the starting model class name is already casted up, therefore casting up further is not required.
+         * @see setCastingHintModelClassNameForAttribute
+         * @return string
+         */
+        public function getResolvedModelClassName()
+        {
+            if($this->castingHintStartingModelClassName != null)
+            {
+                return $this->castingHintStartingModelClassName;
+            }
+            return $this->getModelClassName();
         }
 
         public function getModelClassName()
@@ -103,7 +159,8 @@
             {
                 return $this->modelClassName;
             }
-            return $this->getModel()->getAttributeModelClassName($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getAttributeModelClassName($this->attribute);
         }
 
         /**
@@ -130,7 +187,8 @@
          */
         public function getColumnName()
         {
-            return $this->getModel()->getColumnNameByAttribute($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getColumnNameByAttribute($this->attribute);
         }
 
         /**
@@ -138,7 +196,8 @@
          */
         public function isRelation()
         {
-            return $this->getModel()->isRelation($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelation($this->attribute);
         }
 
         /**
@@ -146,7 +205,44 @@
          */
         public function getRelationType()
         {
-            return $this->getModel()->getRelationType($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getRelationType($this->attribute);
+        }
+
+        public function isOwnedRelation()
+        {
+            if(!$this->getModel()->isRelation($this->attribute))
+            {
+                return false;
+            }
+            return $this->getModel()->isOwnedRelation($this->attribute);
+        }
+
+        /**
+         * @return bool
+         */
+        public function isRelationTypeAHasManyVariant()
+        {
+            if($this->getRelationType() == RedBeanModel::HAS_MANY  ||
+               $this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               $this->getRelationType() == RedBeanModel::HAS_ONE_BELONGS_TO)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isRelationTypeAHasOneVariant()
+        {
+            if($this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               $this->getRelationType() == RedBeanModel::HAS_ONE)
+            {
+                return true;
+            }
+            return false;
         }
 
         /**
@@ -179,7 +275,8 @@
          */
         public function getRelationModelClassName()
         {
-            return $this->getModel()->getRelationModelClassName($this->attribute);
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getRelationModelClassName($this->attribute);
         }
 
         /**
@@ -192,7 +289,8 @@
             {
                 return $this->getRelationModelClassName();
             }
-            return $this->getRelationModel()->getAttributeModelClassName($this->relatedAttribute);
+            $relationModelClassName = $this->getRelationModelClassName();
+            return $relationModelClassName::getAttributeModelClassName($this->relatedAttribute);
         }
 
         /**
@@ -210,7 +308,47 @@
         public function getRelationTableName()
         {
             $modelClassName = $this->getRelationModelClassName();
-            return $modelClassName::getTableName($modelClassName);
+            if($this->canRelationHaveTable())
+            {
+                return $modelClassName::getTableName($modelClassName);
+            }
+            else
+            {
+                while (get_parent_class($modelClassName) != 'RedBeanModel')
+                {
+                    $modelClassName = get_parent_class($modelClassName);
+                    if($modelClassName::getCanHaveBean())
+                    {
+                        return $modelClassName::getTableName($modelClassName);
+                    }
+                }
+                throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * If the attribute is a relation, returns the relation model class name or the next available that
+         * can have a table
+         */
+        public function getRelationModelClassNameThatCanHaveATable()
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            if($this->canRelationHaveTable())
+            {
+                return $modelClassName;
+            }
+            else
+            {
+                while (get_parent_class($modelClassName) != 'RedBeanModel')
+                {
+                    $modelClassName = get_parent_class($modelClassName);
+                    if($modelClassName::getCanHaveBean())
+                    {
+                        return $modelClassName;
+                    }
+                }
+                throw new NotSupportedException();
+            }
         }
 
         /**
@@ -228,7 +366,8 @@
          */
         public function getRelatedAttributeColumnName()
         {
-            return $this->getRelationModel()->getColumnNameByAttribute($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::getColumnNameByAttribute($this->relatedAttribute);
         }
 
         /**
@@ -236,7 +375,8 @@
          */
         public function isRelatedAttributeRelation()
         {
-            return $this->getRelationModel()->isRelation($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::isRelation($this->relatedAttribute);
         }
 
         /**
@@ -248,16 +388,163 @@
             {
                 throw new NotSupportedException();
             }
-            return $this->getRelationModel()->getRelationType($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::getRelationType($this->relatedAttribute);
         }
 
+        /**
+         * @return mixed
+         * @throws NotSupportedException
+         */
         public function getRelatedAttributeRelationModelClassName()
         {
             if (!$this->isRelatedAttributeRelation())
             {
                 throw new NotSupportedException();
             }
-            return $this->getRelationModel()->getRelationModelClassName($this->relatedAttribute);
+            $modelClassName = $this->getRelationModelClassName();
+            return $modelClassName::getRelationModelClassName($this->relatedAttribute);
+        }
+
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
+        public function getManyToManyTableName()
+        {
+            if($this->getRelationType() != RedBeanModel::MANY_MANY)
+            {
+                throw new NotSupportedException();
+            }
+            $attributeName = $this->getAttribute();
+            return $this->getModel()->{$attributeName}->getTableName();
+        }
+
+        /**
+         * @return bool
+         */
+        public function isAttributeMixedIn()
+        {
+            if ($this->getModelClassName() == 'User' &&
+                $this->getAttributeModelClassName() == 'Person')
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isAttributeOnDifferentModel()
+        {
+            if($this->getAttributeModelClassName() == $this->getModelClassName())
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Resolve which column to use when querying a many to many relation.
+         * @return string
+         */
+        public function resolveManyToManyColumnName()
+        {
+            if ($this->getRelatedAttribute() != 'id')
+            {
+               return $this->getRelatedAttributeColumnName();
+            }
+            else
+            {
+                return $this->getRelationTableName() . '_id';
+            }
+        }
+
+        public function isAttributeDerivedRelationViaCastedUpModel()
+        {
+            $modelClassName = $this->modelClassName;
+            if($modelClassName::isADerivedRelationViaCastedUpModel($this->attribute))
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function getCastedUpModelClassNameForDerivedRelation()
+        {
+            if(!$this->isAttributeDerivedRelationViaCastedUpModel())
+            {
+                throw new NotSupportedException();
+            }
+            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $relationModel          = new $relationModelClassName();
+            return $relationModel->getRelationModelClassName($opposingRelationName);
+        }
+
+
+        public function getManyToManyTableNameForDerivedRelationViaCastedUpModel()
+        {
+            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $relationModel          = new $relationModelClassName();
+
+            if($this->getModel()->getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
+            {
+                throw new NotSupportedException();
+            }
+            $attributeName = $this->getAttribute();
+            return $relationModel->{$opposingRelationName}->getTableName();
+        }
+
+        /**
+         * In the case of account -> meeting, this method returns 'Activity' since 'Activity' is the model that the
+         * opposing relation rests on.  This is different than getDerivedRelationModelClassName which would be 'Meeting'.
+         * Sometimes both are the same model, it just depends if the final model class is casted down or not
+         * @return mixed
+         */
+        public function getOpposingRelationModelClassName()
+        {
+            $relationModelClassName = $this->getDerivedRelationViaCastedUpModelClassName();
+            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $relationModel          = new $relationModelClassName();
+            return $relationModel->getAttributeModelClassName($opposingRelationName);
+        }
+
+        /**
+         * @return mixed
+         */
+        public function getDerivedRelationViaCastedUpModelClassName()
+        {
+            return $this->getModel()->getDerivedRelationModelClassName($this->getAttribute());
+        }
+
+        public function getOpposingRelationTableName()
+        {
+            $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
+            return $opposingRelationModelClassName::getTableName($opposingRelationModelClassName);
+        }
+
+        public function isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName()
+        {
+            $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
+            $derivedRelationModelClassName   = $this->getDerivedRelationViaCastedUpModelClassName();
+            if($opposingRelationModelClassName != $derivedRelationModelClassName)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * Extend as needed to support inferred relations
+         * @see InferredRedBeanModelAttributeToDataProviderAdapter
+         * @return bool
+         */
+        public function isInferredRelation()
+        {
+            return false;
         }
     }
 ?>

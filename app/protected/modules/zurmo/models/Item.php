@@ -170,8 +170,10 @@
                     'modifiedDateTime',
                 ),
                 'relations' => array(
-                    'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User'),
-                    'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User'),
+                    'createdByUser'  => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'createdByUser'),
+                    'modifiedByUser' => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
                 ),
                 'rules' => array(
                     array('createdDateTime',  'required'),
@@ -212,7 +214,7 @@
         {
             assert("\$this->isAttribute('$attributeName')");
             assert('$attributeName != "id"');
-            $attributeModelClassName = $this->getAttributeModelClassName($attributeName);
+            $attributeModelClassName = static::getAttributeModelClassName($attributeName);
             $metadata = static::getMetadata();
             if (isset($metadata[$attributeModelClassName]['noAudit']) &&
                 in_array($attributeName, $metadata[$attributeModelClassName]['noAudit']))

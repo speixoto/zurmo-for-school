@@ -671,7 +671,7 @@
                 'dynamicSearch' => array(
                     'dynamicClauses' => array(
                         array(
-                            'attributeIndexOrDerivedType' => 'opportunities'. DynamicSearchUtil::RELATION_DELIMITER .'id',
+                            'attributeIndexOrDerivedType' => 'opportunities'. FormModelUtil::RELATION_DELIMITER .'id',
                             'structurePosition' => 1,
                             'opportunities' => array(
                                 'id' => $firstOpportunity->id
