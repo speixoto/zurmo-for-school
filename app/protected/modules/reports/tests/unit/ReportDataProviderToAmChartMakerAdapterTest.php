@@ -117,7 +117,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $data                       = array(1 =>
-                                                array(ReportDataProviderToAmChartMakerAdapter::FIRST_SERIES_VALUE_PREFIX . 0
+                                                array(ReportDataProviderToAmChartMakerAdapter::FIRST_SERIES_VALUE . 0
                                                 => 500.42134),
                                                 2 =>
                                                 array(ReportDataProviderToAmChartMakerAdapter::SECOND_SERIES_VALUE . 0

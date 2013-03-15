@@ -26,14 +26,39 @@
 
 class ReportTest extends ZurmoBaseTest
 {
-    public function testSomeMethodsInReportModel()
+    public function testHasRuntimeFilters()
     {
         //todo: hasRuntimeFilters()
+    }
+
+    public function testGetDisplayAttributeIndex()
+    {
+        //todo: getDisplayAttributeIndex
+    }
+
+    public function testGetDisplayAttributeByAttribute()
+    {
+        //todo: getDisplayAttributeByAttribute
+    }
+
+    public function testResolveGroupBysAsFilters()
+    {
         //todo: resolveGroupBysAsFilters(Array $getData)
-        //todO: test for variable state getReportableModulesAndLabelsForCurrentUser()
-        //todo: test for variable state getReportableModulesClassNamesCurrentUserHasAccessTo()
+    }
+
+    public function testGetReportableModulesAndLabelsForCurrentUser()
+    {
+        //todO: test for variable state ::getReportableModulesAndLabelsForCurrentUser()
+    }
+
+    public function testGetReportableModulesClassNamesCurrentUserHasAccessTo()
+    {
+        //todo: test for variable state ::getReportableModulesClassNamesCurrentUserHasAccessTo()
+    }
+
+    public function testCanCurrentUserProperlyRenderResults()
+    {
         //todo: test canCurrentUserProperlyRenderResults() variable states, regular modules, super and regular users
-        //$this->fail();
     }
 }
 ?>

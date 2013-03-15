@@ -301,50 +301,6 @@
             $this->assertTrue (strpos($content,  '"some[prefix][secondValue]"')        === false);
             $this->assertFalse(strpos($content,  '"some[prefix][availableAtRunTime]"') === false);
             $this->assertTrue (strpos($content,  'multiple="multiple"') === false);
-            //todo: this stopped working, but not sure it is correct, so remmed out for now.
-/**
-            //Test a likeContactState directly on base model where model's module's model is the same model
-            $model                              = new FilterForReportForm($moduleClassName, $modelClassName, $reportType);
-            $model->attributeIndexOrDerivedType = 'likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue(strpos($content,  'In Progress') === false);
-
-            //Test a likeContactState on a related model, where the relation is against the base module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem2', $reportType);
-            $model->attributeIndexOrDerivedType = 'hasMany2___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue (strpos($content, 'In Progress') === false);
-
-            //Test a likeContactState on an inferred related model, where the relation is against the base module
-            $model                              = new FilterForReportForm($moduleClassName,
-                                                                          'ReportModelTestItem5', $reportType);
-            $model->attributeIndexOrDerivedType =
-                'ReportModelTestItem__reportItems__Inferred___likeContactState';
-            $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
-                                                                                      $form, $treeType);
-            $content                            = $adapter->getContent();
-            $this->assertNotNull($content);
-            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
-            $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
-            $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
-            $this->assertFalse(strpos($content, 'Qualified')   === false);
-            $this->assertTrue (strpos($content, 'In Progress') === false);
- * **/
         }
 
         /**
@@ -366,8 +322,6 @@
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            //todo:
-            //$this->fail();
         }
 
         /**
@@ -433,8 +387,6 @@
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            //todo:
-            //$this->fail();
         }
 
        /**
@@ -566,8 +518,6 @@
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            //todo:
-            //$this->fail();
         }
 
         /**
@@ -611,8 +561,6 @@
             $adapter                            = new ReportAttributeToElementAdapter($inputPrefixData, $model,
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
-            //todo:
-            //$this->fail();
         }
     }
 ?>

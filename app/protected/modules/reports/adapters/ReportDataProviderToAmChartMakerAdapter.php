@@ -29,7 +29,7 @@
      */
     class ReportDataProviderToAmChartMakerAdapter
     {
-        const FIRST_SERIES_VALUE_PREFIX     = 'FirstSeriesValue';
+        const FIRST_SERIES_VALUE            = 'FirstSeriesValue';
 
         const FIRST_SERIES_DISPLAY_LABEL    = 'FirstSeriesDisplayLabel';
 
@@ -80,7 +80,7 @@
         public static function resolveFirstSeriesValueName($key)
         {
             assert('is_int($key)');
-            return self::FIRST_SERIES_VALUE_PREFIX . $key;
+            return self::FIRST_SERIES_VALUE . $key;
         }
 
         /**
