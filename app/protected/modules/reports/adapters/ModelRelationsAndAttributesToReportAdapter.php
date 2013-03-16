@@ -953,7 +953,7 @@
         protected function getDerivedAttributesData()
         {
             if (!isset(self::$derivedAttributesData[get_class($this->model)]) ||
-                self::$derivedAttributesData[get_class($this->model)] == null)
+                self::$derivedAttributesData[get_class($this->model)] === null)
             {
                 $attributes = array();
                 $calculatedAttributes = CalculatedDerivedAttributeMetadata::getAllByModelClassName(get_class($this->model));
