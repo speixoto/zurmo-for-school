@@ -149,7 +149,7 @@
                         'success' => 'js:function(data){
                         $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_ALERTS
-                            . '").find(".dynamic-rows").find("ul").first().append(data);
+                            . '").find(".dynamic-rows").find("ul:first").first().append(data);
                         rebuildWorkflowEmailAlertRowNumbers("' . get_class($this) . '");
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                         }',

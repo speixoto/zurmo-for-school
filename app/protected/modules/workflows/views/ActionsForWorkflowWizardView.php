@@ -127,6 +127,7 @@
         {
             return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select an action below') . '</h2>';
         }
+
         protected function renderZeroComponentsContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
@@ -166,8 +167,6 @@
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                            ComponentForWorkflowForm::TYPE_ACTIONS), $droppableAttributesContent);
-            $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
-                                           ComponentForWorkflowForm::TYPE_ACTIONS), $this->getZeroComponentsContent());
             return $content;
         }
 
@@ -332,7 +331,7 @@
                 'success' => 'js:function(data){
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
-                    . '").find(".dynamic-rows").find("ul").append(data);
+                    . '").find(".dynamic-rows").find("ul:first").append(data);
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
                     $(".' . static::getZeroComponentsClassName() . '").hide();
                     $("#' . self::ACTION_TYPE_NAME . '").val("");
