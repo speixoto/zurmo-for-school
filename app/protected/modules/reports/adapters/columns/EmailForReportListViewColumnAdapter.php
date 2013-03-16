@@ -27,13 +27,13 @@
     /**
      * Used for example by reporting, since the attribute is emailAddress and the model is the Email model.
      */
-    class EmailListViewColumnAdapter extends TextListViewColumnAdapter
+    class EmailForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
         public function renderGridViewData()
         {
             return array(
                 'name'  => $this->attribute,
-                'value' => 'EmailMessageUtil::renderEmailAddressAsMailToOrModalLinkStringContent($data->' . $this->attribute . ', $data)',
+                'value' => 'Yii::app()->format->email($data->' . $this->attribute . ')',
                 'type'  => 'raw',
                 'htmlOptions' => array( 'class' => 'email')
             );
