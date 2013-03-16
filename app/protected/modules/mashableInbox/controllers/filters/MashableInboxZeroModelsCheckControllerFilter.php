@@ -46,8 +46,13 @@
             {
                 return true;
             }
-            $moduleClassName = $modelClassName::getModuleClassName();
-            $messageViewClassName         = $moduleClassName::getPluralCamelCasedName() . 'ZeroModelsYetView';
+            $moduleClassName              = $modelClassName::getModuleClassName();
+            $mashableRules                = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+            if ($mashableRules->getZeroModelViewClassName() == null)
+            {
+                return true;
+            }
+            $messageViewClassName         = $mashableRules->getZeroModelViewClassName();
             $messageView                  = new $messageViewClassName($this->controller->getId(),
                                                                       $moduleClassName::getDirectoryName(),
                                                                       $modelClassName);

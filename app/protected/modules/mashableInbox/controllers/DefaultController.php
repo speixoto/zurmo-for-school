@@ -43,7 +43,7 @@
 
         public function actionList($modelClassName = null) {
             assert('is_string($modelClassName) || $modelClassName == null');
-            $this->pageSize           = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+            $this->pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
             $mashableInboxForm  = new MashableInboxForm();
             $getData            = GetUtil::getData();

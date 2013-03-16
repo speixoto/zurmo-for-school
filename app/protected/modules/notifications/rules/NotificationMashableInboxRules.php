@@ -45,6 +45,11 @@
             return 'NotificationsForUserListView';
         }
 
+        public function getZeroModelViewClassName()
+        {
+            return null;
+        }
+
         public function getMachableInboxOrderByAttributeName()
         {
             return 'createdDateTime';

@@ -50,12 +50,19 @@
                 $this->setGetArray(array('modelClassName' => $modelClassName));
                 $content        = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
                 $mashableRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
-                $this->assertContains($mashableRules->getListViewClassName(),   $content);
-                $this->assertContains('list-view-markRead',                     $content);
-                $this->assertContains('list-view-markUnread',                   $content);
-                foreach (array_keys($mashableRules->getMassOptions()) as $massAction)
+                if ($mashableRules->getZeroModelViewClassName() !== null)
                 {
-                    $this->assertContains('list-view-' . $massAction, $content);
+                    $this->assertContains($mashableRules->getZeroModelViewClassName(), $content);
+                }
+                else
+                {
+                    $this->assertContains($mashableRules->getListViewClassName(),   $content);
+                    $this->assertContains('list-view-markRead',                     $content);
+                    $this->assertContains('list-view-markUnread',                   $content);
+                    foreach (array_keys($mashableRules->getMassOptions()) as $massAction)
+                    {
+                        $this->assertContains('list-view-' . $massAction, $content);
+                    }
                 }
             }
         }

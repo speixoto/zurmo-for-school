@@ -117,6 +117,17 @@
             return $moduleClassName::getPluralCamelCasedName() . 'ListView';
         }
 
+        /**
+         * The list view class name that will be used to display a ZeroModelView
+         * @return string
+         */
+        public function getZeroModelViewClassName()
+        {
+            $modelClassName  = $this->getModelClassName();
+            $moduleClassName = $modelClassName::getModuleClassName();
+            return $moduleClassName::getPluralCamelCasedName() . 'ZeroModelsYetView';
+        }
+
         public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = '')
         {
             $modelClassName             = $this->getModelClassName();
@@ -165,7 +176,7 @@
                                     array("class" => "last-comment"),
                                     $model->comments[$lastCommentNumber]->description
                                 );
-            }            
+            }
             return $content;
         }
 
