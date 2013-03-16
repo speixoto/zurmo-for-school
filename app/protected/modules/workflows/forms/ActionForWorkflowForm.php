@@ -27,7 +27,7 @@
     /**
      * Class that defines the actions used for a workflow
      */
-    class ActionForWorkflowForm extends ConfigurableMetadataModel
+    class ActionForWorkflowForm extends ConfigurableMetadataModel implements RowKeyInterface
     {
         /**
          * This action is if you trigger an account and then update attributes in that same account for example.
@@ -103,6 +103,11 @@
         private $_modelClassName;
 
         /**
+         * @var int
+         */
+        private $_rowKey;
+
+        /**
          * @return array
          */
         public static function getTypeDataAndLabels()
@@ -151,6 +156,11 @@
             return $dataAndLabels;
         }
 
+        public function getRowKey()
+        {
+            return $this->_rowKey;
+        }
+
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
             return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getRequiredAttributesForActions');
@@ -164,12 +174,14 @@
         /**
          * @param string $modelClassName
          */
-        public function __construct($modelClassName, $workflowType)
+        public function __construct($modelClassName, $workflowType, $rowKey = 0)
         {
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
+            assert('is_int($rowKey)');
             $this->_modelClassName = $modelClassName;
             $this->_workflowType   = $workflowType;
+            $this->_rowKey         = $rowKey;
         }
 
         /**

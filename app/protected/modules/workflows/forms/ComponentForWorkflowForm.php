@@ -27,7 +27,7 @@
     /**
      * Base class for managing workflow components.  Time Trigger, triggers and actions all extend this class
      */
-    abstract class ComponentForWorkflowForm extends ConfigurableMetadataModel
+    abstract class ComponentForWorkflowForm extends ConfigurableMetadataModel implements RowKeyInterface
     {
         //todo: either we have too many unused methods in this class or this can somehow be better
         //refactored to share with ComponentForReportForm
@@ -87,12 +87,22 @@
         private   $_attributeIndexOrDerivedType;
 
         /**
+         * @var int
+         */
+        private $_rowKey;
+
+        /**
          * Override in children class to @return the correct component type
          * @throws NotImplementedException
          */
         public static function getType()
         {
             throw new NotImplementedException();
+        }
+
+        public function getRowKey()
+        {
+            return $this->_rowKey;
         }
 
         /**
@@ -148,14 +158,16 @@
          * @param string $modelClassName
          * @param string $workflowType
          */
-        public function __construct($moduleClassName, $modelClassName, $workflowType)
+        public function __construct($moduleClassName, $modelClassName, $workflowType, $rowKey = 0)
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
-            assert(is_string($workflowType));
+            assert('is_string($workflowType)');
+            assert('is_int($rowKey)');
             $this->moduleClassName = $moduleClassName;
             $this->modelClassName  = $modelClassName;
             $this->workflowType    = $workflowType;
+            $this->_rowKey         = $rowKey;
         }
 
         /**

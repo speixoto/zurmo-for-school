@@ -160,36 +160,43 @@
             $moduleClassName    = $workflow->getModuleClassName();
             $addMethodName      = 'add' . $componentPrefix;
             $componentClassName = $componentPrefix . 'ForWorkflowForm';
+            $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
             {
                 $component      = new $componentClassName($moduleClassName,
                                                           $moduleClassName::getPrimaryModelName(),
-                                                          $workflow->getType());
+                                                          $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->{$addMethodName}($component);
+                $rowKey ++;
             }
         }
 
         protected static function makeActionForWorkflowFormAndPopulateWorkflowFromData($componentFormsData, $workflow)
         {
             $moduleClassName    = $workflow->getModuleClassName();
+            $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
             {
-                $component      = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->getType());
+                $component      = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName(),
+                                                            $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->addAction($component);
+                $rowKey ++;
             }
         }
 
         protected static function makeEmailAlertForWorkflowFormAndPopulateWorkflowFromData($componentFormsData, $workflow)
         {
             $moduleClassName    = $workflow->getModuleClassName();
+            $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
             {
                 $component      = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(),
-                                  $workflow->getType());
+                                                                $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->addEmailAlert($component);
+                $rowKey ++;
             }
         }
     }

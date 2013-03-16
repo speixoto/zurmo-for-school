@@ -27,7 +27,7 @@
     /**
      * Class that defines the email alerts used for a workflow
      */
-    class EmailAlertForWorkflowForm extends ConfigurableMetadataModel
+    class EmailAlertForWorkflowForm extends ConfigurableMetadataModel implements RowKeyInterface
     {
         const SEND_FROM_TYPE_DEFAULT      = 'Default';
 
@@ -78,6 +78,11 @@
         private $_modelClassName;
 
         /**
+         * @var int
+         */
+        private $_rowKey;
+
+        /**
          * @param $attributeName string
          * @return string
          */
@@ -87,17 +92,23 @@
             return self::EMAIL_ALERT_RECIPIENTS . '_' .  $attributeName . '_';
         }
 
+        public function getRowKey()
+        {
+            return $this->_rowKey;
+        }
         /**
          * @param string $modelClassName
          * @param string $workflowType
          * @param int $rowNumber
          */
-        public function __construct($modelClassName, $workflowType)
+        public function __construct($modelClassName, $workflowType, $rowKey = 0)
         {
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
+            assert('is_int($rowKey)');
             $this->_modelClassName = $modelClassName;
             $this->_workflowType   = $workflowType;
+            $this->_rowKey         = $rowKey;
         }
 
         /**

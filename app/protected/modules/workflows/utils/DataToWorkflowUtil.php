@@ -67,10 +67,10 @@
             if(count($triggersData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TRIGGERS)) > 0)
             {
                 $sanitizedTriggersData = self::sanitizeTriggersData($moduleClassName, $workflow->getType(), $triggersData);
-                foreach($sanitizedTriggersData as $triggerData)
+                foreach($sanitizedTriggersData as $key => $triggerData)
                 {
                     $trigger = new TriggerForWorkflowForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                          $workflow->getType());
+                                                          $workflow->getType(), $key);
                     $trigger->setAttributes($triggerData);
                     $workflow->addTrigger($trigger);
                 }
@@ -86,9 +86,9 @@
             assert('is_string($moduleClassName)');
             assert('is_string($workflowType)');
             $sanitizedTriggersData = array();
-            foreach($triggersData as $triggerData)
+            foreach($triggersData as $key => $triggerData)
             {
-                $sanitizedTriggersData[] = static::sanitizeTriggerData($moduleClassName, $workflowType, $triggerData);
+                $sanitizedTriggersData[$key] = static::sanitizeTriggerData($moduleClassName, $workflowType, $triggerData);
             }
             return $sanitizedTriggersData;
         }
@@ -104,10 +104,12 @@
             $moduleClassName = $workflow->getModuleClassName();
             if(count($actionsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_ACTIONS)) > 0)
             {
-                foreach($actionsData as $actionData)
+                foreach($actionsData as $key => $actionData)
                 {
-                    $sanitizedActionData = static::sanitizeActionData($moduleClassName::getPrimaryModelName(), $actionData, $workflow->type);
-                    $action              = new ActionForWorkflowForm($moduleClassName::getPrimaryModelName(), $workflow->type);
+                    $sanitizedActionData = static::sanitizeActionData($moduleClassName::getPrimaryModelName(),
+                                                                      $actionData, $workflow->type);
+                    $action              = new ActionForWorkflowForm ($moduleClassName::getPrimaryModelName(),
+                                                                      $workflow->type, $key);
                     $action->setAttributes($sanitizedActionData);
                     $workflow->addAction($action);
                 }
@@ -160,10 +162,10 @@
             $moduleClassName = $workflow->getModuleClassName();
             if(count($emailAlertsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS)) > 0)
             {
-                foreach($emailAlertsData as $emailAlertData)
+                foreach($emailAlertsData as $key => $emailAlertData)
                 {
                     $emailAlert = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(),
-                                  $workflow->type);
+                                  $workflow->type, $key);
                     $emailAlert->setAttributes($emailAlertData);
                     $workflow->addEmailAlert($emailAlert);
                 }
