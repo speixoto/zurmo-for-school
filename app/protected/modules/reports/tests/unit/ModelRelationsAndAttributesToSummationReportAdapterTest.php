@@ -197,7 +197,16 @@
          */
         public function testIsAttributeACalculationOrModifier()
         {
-            $this->fail(); //todo:
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $this->assertTrue ($adapter->isAttributeACalculationOrModifier('Count'));
+            $this->assertFalse($adapter->isAttributeACalculationOrModifier('phone'));
+            $this->assertTrue ($adapter->isAttributeACalculationOrModifier('date__Day'));
+            $this->assertTrue ($adapter->isAttributeACalculationOrModifier('integer__Maximum'));
         }
 
         /**
@@ -205,7 +214,16 @@
          */
         public function testIsAttributeACalculatedGroupByModifier()
         {
-            $this->fail(); //todo:
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $this->assertFalse ($adapter->isAttributeACalculatedGroupByModifier('Count'));
+            $this->assertFalse ($adapter->isAttributeACalculatedGroupByModifier('phone'));
+            $this->assertTrue  ($adapter->isAttributeACalculatedGroupByModifier('date__Day'));
+            $this->assertFalse ($adapter->isAttributeACalculatedGroupByModifier('integer__Maximum'));
         }
 
         /**
@@ -213,7 +231,16 @@
          */
         public function testResolveRealAttributeName()
         {
-            $this->fail(); //todo:
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $this->assertEquals ('id', $adapter->resolveRealAttributeName('Count'));
+            $this->assertEquals ('string', $adapter->resolveRealAttributeName('string'));
+            $this->assertEquals ('owner', $adapter->resolveRealAttributeName('owner__User'));
+            $this->assertEquals ('owner', $adapter->resolveRealAttributeName('ReportsTestModel__owner__Inferred'));
         }
 
         /**
@@ -221,7 +248,14 @@
          */
         public function testGetCalculationOrModifierType()
         {
-            $this->fail(); //todo:
+            $model              = new ReportModelTestItem();
+            $rules              = new ReportsTestReportRules(); //ReportsTestModule rules
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ModelRelationsAndAttributesToSummationReportAdapter($model, $rules, $report->getType());
+            $this->assertEquals('Maximum',   $adapter->getCalculationOrModifierType('integer__Maximum'));
+            $this->assertEquals('something', $adapter->getCalculationOrModifierType('something'));
         }
 
         /**
@@ -229,7 +263,8 @@
          */
         public function testResolveDisplayAttributeTypeAndAddSelectClause()
         {
-            $this->fail(); //todo:
+            //todo:
+            //$this->fail();
         }
     }
 ?>

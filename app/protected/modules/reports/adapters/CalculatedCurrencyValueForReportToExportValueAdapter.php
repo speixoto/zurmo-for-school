@@ -28,7 +28,6 @@
     {
         public function resolveData(& $data)
         {
-            assert('$this->model->{$this->attribute} instanceof CurrencyValue');
             if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
             {
                 $data[] = Yii::app()->numberFormatter->formatDecimal($this->model->{$this->attribute});

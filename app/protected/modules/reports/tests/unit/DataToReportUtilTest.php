@@ -30,6 +30,7 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            UserTestHelper::createBasicUser('bobby');
         }
 
         public function setUp()
@@ -38,18 +39,120 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testResolveReportByWizardPostData()
+        public function testRowsAndColumnsResolveReportByWizardPostData()
         {
-            //todo: test to make sure every component get resolved correctly into the report
-            //also test that date/datetime gets converted properly.
-            //DataToReportUtil::resolveReportByWizardPostData(Report $report, $postData, $wizardFormClassName)
-            $this->fail();
+            $bobby               = User::getByUserName('bobby');
+            $wizardFormClassName = 'RowsAndColumnsReportWizardForm';
+            $report              = new Report();
+            $report->setType(Report::TYPE_ROWS_AND_COLUMNS);
+            $data                     = array();
+            $data['moduleClassName']  = 'ReportsTestModule';
+            $data['description']      = 'a description';
+            $data['name']             = 'name';
+            $data['filtersStructure'] = '1 AND 2';
+            $data['ownerId']          = $bobby->id;
+            $data['currencyConversionType']     = Report::CURRENCY_CONVERSION_TYPE_SPOT;
+            $data['spotConversionCurrencyCode'] = 'EUR';
+            $data[ComponentForReportForm::TYPE_FILTERS][]   = array('attributeIndexOrDerivedType' => 'date',
+                                                                    'valueType'                    => 'Between',
+                                                                    'value'                       => '2/24/12',
+                                                                    'secondValue'                 => '2/28/12');
+            $data[ComponentForReportForm::TYPE_ORDER_BYS][] = array('attributeIndexOrDerivedType' => 'string',
+                                                                    'order' => 'desc');
+            $data[ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES][] = array('attributeIndexOrDerivedType' => 'phone',
+                                                                             'label' => 'custom');
+            DataToReportUtil::resolveReportByWizardPostData($report, array('RowsAndColumnsReportWizardForm' => $data),
+                                                            $wizardFormClassName);
+            $this->assertEquals('ReportsTestModule',                    $report->getModuleClassName());
+            $this->assertEquals('a description',                        $report->getDescription());
+            $this->assertEquals('name',                                 $report->getName());
+            $this->assertEquals('1 AND 2',                              $report->getFiltersStructure());
+            $this->assertEquals($bobby->id,                             $report->getOwner()->id);
+            $this->assertEquals(Report::CURRENCY_CONVERSION_TYPE_SPOT,  $report->getCurrencyConversionType());
+            $this->assertEquals('EUR',                                  $report->getSpotConversionCurrencyCode());
+
+            $filters = $report->getFilters();
+            $this->assertCount(1, $filters);
+            $this->assertEquals('date',       $filters[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('Between',    $filters[0]->valueType);
+            $this->assertEquals('2012-02-24', $filters[0]->value);
+            $this->assertEquals('2012-02-28', $filters[0]->secondValue);
+            $orderBys = $report->getOrderBys();
+            $this->assertCount(1, $orderBys);
+            $this->assertEquals('string', $orderBys[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('desc',   $orderBys[0]->order);
+            $displayAttributes = $report->getDisplayAttributes();
+            $this->assertCount(1, $orderBys);
+            $this->assertEquals('phone',  $displayAttributes[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('custom', $displayAttributes[0]->label);
         }
 
-        public function testResolveFilters()
+        public function testSummationResolveReportByWizardPostData()
         {
-            //todo: test each filter type.
-            $this->fail();
+            $bobby               = User::getByUserName('bobby');
+            $wizardFormClassName = 'SummationReportWizardForm';
+            $report              = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $data                     = array();
+            $data['moduleClassName']  = 'ReportsTestModule';
+            $data['description']      = 'a description';
+            $data['name']             = 'name';
+            $data['filtersStructure'] = '1 AND 2';
+            $data['ownerId']          = $bobby->id;
+            $data['currencyConversionType']     = Report::CURRENCY_CONVERSION_TYPE_SPOT;
+            $data['spotConversionCurrencyCode'] = 'EUR';
+            $data[ComponentForReportForm::TYPE_FILTERS][]   = array('attributeIndexOrDerivedType' => 'date',
+                                                                    'valueType'                    => 'Between',
+                                                                    'value'                       => '2/24/12',
+                                                                    'secondValue'                 => '2/28/12');
+            $data[ComponentForReportForm::TYPE_ORDER_BYS][] = array('attributeIndexOrDerivedType' => 'string',
+                                                                    'order' => 'desc');
+            $data[ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES][] = array('attributeIndexOrDerivedType' => 'phone',
+                                                                             'label' => 'custom');
+            $data[ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES][] =
+                                                                       array('attributeIndexOrDerivedType' => 'string',
+                                                                             'label' => 'custom string');
+            $data[ComponentForReportForm::TYPE_GROUP_BYS][] = array('attributeIndexOrDerivedType' => 'string',
+                                                                    'axis' => 'y');
+            $data['ChartForReportForm'] = array('type'        => ChartRules::TYPE_BAR_2D,
+                                                'firstSeries' => 'string',
+                                                'firstRange'  => 'integer__Maximum');
+            DataToReportUtil::resolveReportByWizardPostData($report, array('SummationReportWizardForm' => $data),
+                                                            $wizardFormClassName);
+            $this->assertEquals('ReportsTestModule',                    $report->getModuleClassName());
+            $this->assertEquals('a description',                        $report->getDescription());
+            $this->assertEquals('name',                                 $report->getName());
+            $this->assertEquals('1 AND 2',                              $report->getFiltersStructure());
+            $this->assertEquals($bobby->id,                             $report->getOwner()->id);
+            $this->assertEquals(Report::CURRENCY_CONVERSION_TYPE_SPOT,  $report->getCurrencyConversionType());
+            $this->assertEquals('EUR',                                  $report->getSpotConversionCurrencyCode());
+
+            $filters = $report->getFilters();
+            $this->assertCount(1, $filters);
+            $this->assertEquals('date',       $filters[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('Between',    $filters[0]->valueType);
+            $this->assertEquals('2012-02-24', $filters[0]->value);
+            $this->assertEquals('2012-02-28', $filters[0]->secondValue);
+            $orderBys = $report->getOrderBys();
+            $this->assertCount(1, $orderBys);
+            $this->assertEquals('string', $orderBys[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('desc',   $orderBys[0]->order);
+            $displayAttributes = $report->getDisplayAttributes();
+            $this->assertCount(1, $displayAttributes);
+            $this->assertEquals('phone',  $displayAttributes[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('custom', $displayAttributes[0]->label);
+            $groupBys = $report->getGroupBys();
+            $this->assertCount(1, $groupBys);
+            $this->assertEquals('string', $groupBys[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('y',   $groupBys[0]->axis);
+            $drillDownDisplayAttributes = $report->getDrillDownDisplayAttributes();
+            $this->assertCount(1, $drillDownDisplayAttributes);
+            $this->assertEquals('string',        $drillDownDisplayAttributes[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('custom string', $drillDownDisplayAttributes[0]->label);
+            $chart = $report->getChart();
+            $this->assertEquals(ChartRules::TYPE_BAR_2D, $chart->type);
+            $this->assertEquals('string', $chart->firstSeries);
+            $this->assertEquals('integer__Maximum', $chart->firstRange);
         }
 
         public function testResolveFiltersAndDateConvertsProperlyToDbFormat()
@@ -59,13 +162,14 @@
             $report->setModuleClassName('ReportsTestModule');
             $data   = array();
             $data[ComponentForReportForm::TYPE_FILTERS][] = array('attributeIndexOrDerivedType' => 'date',
-                                                                  'operator'                    => 'between',
+                                                                  'valueType'                   => 'Between',
                                                                   'value'                       => '2/24/12',
                                                                   'secondValue'                 => '2/28/12');
 
             DataToReportUtil::resolveFilters($data, $report);
             $filters = $report->getFilters();
             $this->assertCount(1, $filters);
+            $this->assertEquals('Between', $filters[0]->valueType);
             $this->assertEquals('2012-02-24', $filters[0]->value);
             $this->assertEquals('2012-02-28', $filters[0]->secondValue);
         }

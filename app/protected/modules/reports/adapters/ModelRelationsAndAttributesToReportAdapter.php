@@ -62,7 +62,33 @@
          * Caching property to improve performance
          * @var array | null
          */
-        private $derivedAttributesData;
+        private static $derivedAttributesData;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $attributesNotIncludingDerivedAttributesData;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $inferredRelationsData;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $dynamicallyDerivedAttributesData;
+
+        public static function forgetAll()
+        {
+            self::$derivedAttributesData = null;
+            self::$attributesNotIncludingDerivedAttributesData = null;
+            self::$inferredRelationsData = null;
+            self::$dynamicallyDerivedAttributesData = null;
+        }
 
         /**
          * @param string $moduleClassName
@@ -234,7 +260,8 @@
             }
             elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
-                $modelClassName = $this->model->getDerivedRelationModelClassName($relation);
+                $modelClassName = get_class($this->model);
+                $modelClassName = $modelClassName::getDerivedRelationModelClassName($relation);
                 return $modelClassName::getModuleClassName();
             }
             elseif(count($relationAndInferredData) == 1)
@@ -256,6 +283,7 @@
         public function getRelationModelClassName($relation)
         {
             assert('is_string($relation)');
+
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
@@ -280,7 +308,8 @@
              * **/
             elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
-                return $this->model->getDerivedRelationModelClassName($relation);
+                $modelClassName = get_class($this->model);
+                return $modelClassName::getDerivedRelationModelClassName($relation);
             }
             elseif(count($relationAndInferredData) == 1)
             {
@@ -517,26 +546,28 @@
         public function isRelationASingularRelation($relation)
         {
             assert('is_string($relation)');
+            $modelClassName                  = get_class($this->model);
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
             if(count($relationAndInferredData) == 3)
             {
-                list($modelClassName, $relation, $notUsed) = $relationAndInferredData;
-                $type = $this->model->getRelationType($relation);
+                list($modelClassNameNotUsed, $relation, $notUsed) = $relationAndInferredData;
+                $type = $modelClassName::getRelationType($relation);
             }
             elseif(count($relationAndInferredData) == 2)
             {
                 list($relation, $notUsed) = $relationAndInferredData;
-                $type = $this->model->getRelationType($relation);
+                $type = $modelClassName::getRelationType($relation);
             }
             elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
-                $type = $this->model->getDerivedRelationType($relation);
+                $type = $modelClassName::getDerivedRelationType($relation);
             }
             elseif(count($relationAndInferredData) == 1)
             {
-                $type = $this->model->getRelationType($relation);
+
+                $type = $modelClassName::getRelationType($relation);
             }
             else
             {
@@ -599,6 +630,11 @@
             {
                 throw new NotSupportedException();
             }
+            $cacheKey = get_class($this->model) . $precedingModel . $precedingRelation;
+            if(isset(self::$inferredRelationsData[$cacheKey]))
+            {
+                return self::$inferredRelationsData[$cacheKey];
+            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -616,7 +652,8 @@
                     }
                 }
             }
-            return $attributes;
+            self::$inferredRelationsData[$cacheKey] = $attributes;
+            return self::$inferredRelationsData[$cacheKey];
         }
 
         /**
@@ -800,6 +837,10 @@
          */
         protected function getAttributesNotIncludingDerivedAttributesData()
         {
+            if(isset(self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)]))
+            {
+                return self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)];
+            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -811,7 +852,8 @@
                     $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            return $attributes;
+            self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)] = $attributes;
+            return self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)];
         }
 
         /**
@@ -856,8 +898,9 @@
             {
                 return false;
             }
-            if($precedingModel->isADerivedRelationViaCastedUpModel($precedingRelation) &&
-               $precedingModel->getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
+            $modelClassName = get_class($precedingModel);
+            if($modelClassName::isADerivedRelationViaCastedUpModel($precedingRelation) &&
+               $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($precedingRelation) == $relation)
             {
                 return true;
             }
@@ -877,25 +920,27 @@
             {
                 return false;
             }
+            $modelClassName          = get_class($this->model);
+            $precedingModelClassName = get_class($precedingModel);
             //Check if the relation is a derived relation in which case return false because it is handled by
             //@see self::inferredRelationLinksToPrecedingRelation
-            if(!$precedingModel->isAttribute($precedingRelation))
+            if(!$precedingModelClassName::isAnAttribute($precedingRelation))
             {
                 return false;
             }
-            if(get_class($precedingModel) != $this->model->getRelationmodelClassName($relation))
+            if($precedingModelClassName != $modelClassName::getRelationModelClassName($relation))
             {
                 return false;
             }
-            if( $precedingModel->getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
-                $this->model->getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
+            if( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_ASSUMPTIVE)
             {
                 return true;
             }
             //Check for LINK_TYPE_SPECIFIC
-            if( $precedingModel->getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
-                $this->model->getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
-                $precedingModel->getRelationLinkName($precedingRelation) == $this->model->getRelationLinkName($relation))
+            if( $precedingModelClassName::getRelationLinkType($precedingRelation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $modelClassName::getRelationLinkType($relation) == RedBeanModel::LINK_TYPE_SPECIFIC &&
+                $precedingModelClassName::getRelationLinkName($precedingRelation) == $modelClassName::getRelationLinkName($relation))
             {
                 return true;
             }
@@ -924,9 +969,10 @@
                 {
                     foreach($metadata[$modelClassName]["derivedRelationsViaCastedUpModel"] as $relation => $derivedRelationData)
                     {
+                        $modelClassName = get_class($this->model);
                         if(!$this->derivedRelationLinksToPrecedingRelation(
-                            $this->model->getDerivedRelationModelClassName($relation),
-                            $this->model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation),
+                            $modelClassName::getDerivedRelationModelClassName($relation),
+                            $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($relation),
                             $precedingModel,
                             $precedingRelation))
                         {
@@ -943,7 +989,8 @@
          */
         protected function getDerivedAttributesData()
         {
-            if ($this->derivedAttributesData == null)
+            if (!isset(self::$derivedAttributesData[get_class($this->model)]) ||
+                self::$derivedAttributesData[get_class($this->model)] === null)
             {
                 $attributes = array();
                 $calculatedAttributes = CalculatedDerivedAttributeMetadata::getAllByModelClassName(get_class($this->model));
@@ -952,9 +999,10 @@
                     $attributes[$attribute->name] = array('label' => $attribute->getLabelByLanguage(Yii::app()->language),
                                                           'derivedAttributeType' => 'CalculatedNumber');
                 }
-                $this->derivedAttributesData = array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
+                self::$derivedAttributesData[get_class($this->model)] =
+                    array_merge($attributes, $this->rules->getDerivedAttributeTypesData($this->model));
             }
-            return $this->derivedAttributesData;
+            return self::$derivedAttributesData[get_class($this->model)];
         }
 
         /**
@@ -962,6 +1010,10 @@
          */
         protected function getDynamicallyDerivedAttributesData()
         {
+            if(isset(self::$dynamicallyDerivedAttributesData[get_class($this->model)]))
+            {
+                return self::$dynamicallyDerivedAttributesData[get_class($this->model)];
+            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -973,7 +1025,8 @@
                         array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            return $attributes;
+            self::$dynamicallyDerivedAttributesData[get_class($this->model)] = $attributes;
+            return self::$dynamicallyDerivedAttributesData[get_class($this->model)];
         }
 
         /**

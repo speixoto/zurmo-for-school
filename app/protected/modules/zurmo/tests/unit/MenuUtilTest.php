@@ -75,7 +75,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(6, count($menu));
+            $this->assertEquals(7, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(1, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
@@ -101,7 +101,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(10, count($menu));
+            $this->assertEquals(9, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
             $this->assertEquals(3, count($menu));
@@ -130,7 +130,7 @@
             $backupMetadata                           = $metadata;
             $metadata['global']['shortcutsCreateMenuItems'] = array(
                 array(
-                    'label' => 'AccountsModuleSingularLabel',
+                    'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
                     'url'   => array('/accounts/default/create'),
                     'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
                 ),
@@ -142,7 +142,7 @@
                 'url'   => null,
                 'items' => array(
                         array(
-                            'label' => 'Account',
+                            'label' => 'Accounts',
                             'url'   => array('/accounts/default/create'),
                             'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
                         ),

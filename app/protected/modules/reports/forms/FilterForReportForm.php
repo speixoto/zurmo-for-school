@@ -282,9 +282,9 @@
         {
             $modelClassName       = $this->getResolvedAttributeModelClassName();
             $attribute            = $this->getResolvedAttribute();
-            $model                = new $modelClassName();
-            if($model->isAttribute($attribute))
+            if($modelClassName::isAnAttribute($attribute))
             {
+                $model            = new $modelClassName(false);
                 $dataAndLabels    = CustomFieldDataUtil::
                                     getDataIndexedByDataAndTranslatedLabelsByLanguage($model->{$attribute}->data, Yii::app()->language);
                 return $dataAndLabels;

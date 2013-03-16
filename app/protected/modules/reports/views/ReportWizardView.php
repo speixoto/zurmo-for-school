@@ -67,11 +67,11 @@
             Yii::app()->clientScript->registerScript('moduleForReportChangeScript', "
                 $('input:radio[name=\"" . $moduleClassNameId . "\"]').live('change', function()
                     {
-                        $('#FiltersForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#FiltersForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('#FiltersTreeArea').html('');
                         $('." . FiltersForReportWizardView::getZeroComponentsClassName() . "').show();
                         rebuildReportFiltersAttributeRowNumbersAndStructureInput('FiltersForReportWizardView');
-                        $('#DisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#DisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('#DisplayAttributesTreeArea').html('');
                         $('." . DisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
                         " . $this->registerModuleClassNameChangeScriptExtraPart() . "

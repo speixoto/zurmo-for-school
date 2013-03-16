@@ -29,6 +29,16 @@
         public $anyEmail;
         public $fullName;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'User';
+        }
+
+        public function __construct(User $model)
+        {
+            parent::__construct($model);
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(

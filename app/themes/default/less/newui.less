@@ -2062,12 +2062,12 @@ div.wide.form{
    }
 }
 
-.loading .list-preloader{
+.loading > .list-preloader{
     display:block;
 }
 
 .cgrid-view.loading{
-    .list-preloader{
+    > .list-preloader{
         display:block;
     }
 }
@@ -2558,6 +2558,14 @@ div.wide.form{
     }
     #removeSavedSearch{
         line-height: 26px;
+        float: left;
+        margin-left: 20px;
+        .icon:after{
+            position: relative;
+            top:0;
+            left: 0;
+            right:0;
+        }
     }
     #save-advanced-search{
         margin:0;

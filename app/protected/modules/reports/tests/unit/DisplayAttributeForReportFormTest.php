@@ -38,6 +38,23 @@
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new ReportModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
+
+            $values = array(
+                'Test1',
+                'Test2',
+                'Test3',
+                'Sample',
+                'Demo',
+            );
+            $labels = array('fr' => array('Test1 fr', 'Test2 fr', 'Test3 fr', 'Sample fr', 'Demo fr'),
+                            'de' => array('Test1 de', 'Test2 de', 'Test3 de', 'Sample de', 'Demo de'),
+            );
+            $customFieldData = CustomFieldData::getByName('ReportTestDropDown');
+            $customFieldData->serializedData   = serialize($values);
+            $customFieldData->serializedLabels = serialize($labels);
+            $saved = $customFieldData->save();
+            assert($saved);    // Not Coding Standard
+            ContactsModule::loadStartingData();
         }
 
         public function setup()
@@ -165,16 +182,68 @@
             $this->assertEquals('Text',                      $displayAttribute->getDisplayElementType());
         }
 
-        public function testResolveValueAsLabelForHeaderCell()
+        public function testResolveValueAsLabelForHeaderCellForADropDown()
         {
-            //todO:
-            $this->fail();
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                    Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'dropDown';
+            $this->assertEquals('Sample', $displayAttribute->resolveValueAsLabelForHeaderCell('Sample'));
+            //Test translating to a different language
+            $oldLanguage = Yii::app()->language;
+            Yii::app()->language = 'de';
+            $this->assertEquals('Sample de', $displayAttribute->resolveValueAsLabelForHeaderCell('Sample'));
+            Yii::app()->language = $oldLanguage;
+        }
+
+        public function testResolveValueAsLabelForHeaderCellForACheckBox()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'boolean';
+            $this->assertEquals('Yes', $displayAttribute->resolveValueAsLabelForHeaderCell(true));
+            //false will evaluate as '', so it wont show No, not sure if this is right
+            $this->assertEquals('No',  $displayAttribute->resolveValueAsLabelForHeaderCell('0'));
+            $this->assertEquals('',    $displayAttribute->resolveValueAsLabelForHeaderCell(''));
+        }
+
+        public function testResolveValueAsLabelForHeaderCellForADynamicUser()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'owner__User';
+            $this->assertEquals('Clark Kent', $displayAttribute->resolveValueAsLabelForHeaderCell(Yii::app()->user->userModel->id));
+        }
+
+        public function testResolveValueAsLabelForHeaderCellForAString()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'string';
+            $this->assertEquals('', $displayAttribute->resolveValueAsLabelForHeaderCell(null));
+        }
+
+        public function testResolveValueAsLabelForHeaderCellForAnAttributeLikeContactState()
+        {
+            $contactStates = ContactState::getAll();
+            $displayAttribute = new DisplayAttributeForReportForm('ContactsModule', 'Contact',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'state';
+            $this->assertEquals('Recycled', $contactStates[2]->name);
+            $this->assertEquals('Recycled', $displayAttribute->resolveValueAsLabelForHeaderCell($contactStates[2]->id));
         }
 
         public function testGetDisplayLabel()
         {
-            //test owned like primary address -> street1.  normal, and various types of related ones.
-            $this->fail();
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_SUMMATION);
+            $displayAttribute->attributeIndexOrDerivedType = 'string';
+            $this->assertEquals('String', $displayAttribute->getDisplayLabel());
+            $displayAttribute->attributeIndexOrDerivedType = 'hasOne___name';
+            $this->assertEquals('ReportModelTestItem2 >> Name', $displayAttribute->getDisplayLabel());
+            $displayAttribute->attributeIndexOrDerivedType = 'hasMany___name';
+            $this->assertEquals('ReportModelTestItem3s >> Name', $displayAttribute->getDisplayLabel());
+            $displayAttribute->attributeIndexOrDerivedType = 'primaryAddress___street1';
+            $this->assertEquals('Primary Address >> Street 1', $displayAttribute->getDisplayLabel());
         }
     }
 ?>

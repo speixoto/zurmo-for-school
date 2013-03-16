@@ -50,6 +50,13 @@
             $user = UserTestHelper::createBasicUser('Steven');
             $account = new Account();
             $account->owner       = $user;
+            $account->name        = DataUtil::purifyHtml("Tom & Jerry's Account");
+            $this->assertEquals("Tom & Jerry's Account", $account->name);
+            $this->assertTrue($account->save());
+            $id = $account->id;
+            unset($account);
+            $account = Account::getById($id);
+            $this->assertEquals("Tom & Jerry's Account", $account->name);
             $account->name        = 'Test Account';
             $account->officePhone = '1234567890';
             $this->assertTrue($account->save());
@@ -600,7 +607,6 @@
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new Account());
             $adapter->setAttributeMetadataFromForm($attributeForm);
-
             $compareData = array(
                 '747',
                 'A380',

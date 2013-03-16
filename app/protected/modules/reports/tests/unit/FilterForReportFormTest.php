@@ -638,8 +638,51 @@
          */
         public function testValidateMultiSelectDropDownAttribute()
         {
-            //todo:
-            $this->fail();
+            //Test equals (non-array) and it is null
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'multiDropDown';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+
+            //Test equals (non-array) and it is empty
+            $filter->value                       = '';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test equals (non-array) and it is properly populated
+            $filter->value                       = 'someValue';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test oneOf (array) and it is null
+            $filter->operator                    = OperatorRules::TYPE_ONE_OF;
+            $filter->value                       = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is empty array
+            $filter->value                       = array();
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is properly populated
+            $filter->value                       = array('aFirstValue', 'aSecondValue');
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -647,8 +690,51 @@
          */
         public function testValidateTagCloudAttribute()
         {
-            //todo:
-            $this->fail();
+            //Test equals (non-array) and it is null
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'tagCloud';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+
+            //Test equals (non-array) and it is empty
+            $filter->value                       = '';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test equals (non-array) and it is properly populated
+            $filter->value                       = 'someValue';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test oneOf (array) and it is null
+            $filter->operator                    = OperatorRules::TYPE_ONE_OF;
+            $filter->value                       = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is empty array
+            $filter->value                       = array();
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is properly populated
+            $filter->value                       = array('aFirstValue', 'aSecondValue');
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -656,8 +742,51 @@
          */
         public function testValidateRadioDropDownAttribute()
         {
-            //todo:
-            $this->fail();
+            //Test equals (non-array) and it is null
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'radioDropDown';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+
+            //Test equals (non-array) and it is empty
+            $filter->value                       = '';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test equals (non-array) and it is properly populated
+            $filter->value                       = 'someValue';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test oneOf (array) and it is null
+            $filter->operator                    = OperatorRules::TYPE_ONE_OF;
+            $filter->value                       = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is empty array
+            $filter->value                       = array();
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Test oneOf (array) and it is properly populated
+            $filter->value                       = array('aFirstValue', 'aSecondValue');
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -665,8 +794,31 @@
          */
         public function testValidateTextAreaAttribute()
         {
-            //todo:
-            $this->fail();
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'textArea';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors    = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->value                       = 'Jason';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test when not null is set as attribute, now the value is not required
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_NULL;
+            $filter->value                       = null;
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -674,8 +826,31 @@
          */
         public function testValidateUrlAttribute()
         {
-            //todo:
-            $this->fail();
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'url';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors    = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->value                       = 'http://www.zurmo.com';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test when not null is set as attribute, now the value is not required
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_NULL;
+            $filter->value                       = null;
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -683,8 +858,31 @@
          */
         public function testValidatePhoneAttribute()
         {
-            //todo:
-            $this->fail();
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'phone';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors    = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->value                       = 'Jason';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test when not null is set as attribute, now the value is not required
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_NULL;
+            $filter->value                       = null;
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
@@ -692,19 +890,91 @@
          */
         public function testValidateFloatAttribute()
         {
-            //todo:
-            $this->fail();
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'float';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //value is expected to be an float
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $filter->value                       = 'Zurmo';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value must be float.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //also check value as 456. should pass
+            $filter->value                       = 456;
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check for between, but with strings
+            $filter->operator                    = OperatorRules::TYPE_BETWEEN;
+            $filter->value                       = 'test';
+            $filter->secondValue                 = 'test2';
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'        => array('Value must be float.'),
+                'secondValue'  => array('Second Value must be float.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            //Now check with floats. but missing the second value
+            $filter->value                       = 345;
+            $filter->secondValue                 = null;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('secondValue'     => array('Second Value must be float.'));
+
+            //now check for between with both filled in with floats
+            $filter->value                       = 345;
+            $filter->secondValue                 = 456;
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //now check when floats are strings, but should resolve as float
+            $filter->value                       = '345';
+            $filter->secondValue                 = '456';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
         }
 
         /**
          * @depends testValidatePhoneAttribute
          */
-        public function testValidateAvailableAtRunTime()
+        public function testValidateEmailAttribute()
         {
-            //todo: (boolean)
-            $this->fail();
-        }
+            $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                                   Report::TYPE_ROWS_AND_COLUMNS);
+            $filter->attributeIndexOrDerivedType = 'primaryEmail___emailAddress';
+            $validated = $filter->validate();
+            $this->assertFalse($validated);
+            $errors    = $filter->getErrors();
+            $compareErrors                       = array('operator'  => array('Operator cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
 
-        //todo: email type.
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
+            $validated                           = $filter->validate();
+            $this->assertFalse($validated);
+            $errors                              = $filter->getErrors();
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+
+            $filter->value                       = 'someone@zurmo.com';
+            $validated                           = $filter->validate();
+            $this->assertTrue($validated);
+
+            //Test when not null is set as attribute, now the value is not required
+            $filter->operator                    = OperatorRules::TYPE_IS_NOT_NULL;
+            $filter->value                       = null;
+            $validated = $filter->validate();
+            $this->assertTrue($validated);
+        }
     }
 ?>

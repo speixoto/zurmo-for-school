@@ -26,5 +26,14 @@
 
     class OpportunitiesSearchForm extends OwnedSearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Opportunity';
+        }
+
+        public function __construct(Opportunity $model)
+        {
+            parent::__construct($model);
+        }
     }
 ?>

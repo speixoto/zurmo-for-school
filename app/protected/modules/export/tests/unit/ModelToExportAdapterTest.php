@@ -124,6 +124,11 @@
             $headerData  = $adapter->getHeaderData();
             $compareData = array(
                 $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
                 'Bob',
                 'Bob',
                 '1',
@@ -161,14 +166,14 @@
                 null,
                 null,
                 null,
-                'super',
-                'stubDateTime',
-                'stubDateTime',
-                'super',
-                'super',
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
                 $testItem->getAttributeLabel('firstName'),
                 $testItem->getAttributeLabel('lastName'),
                 $testItem->getAttributeLabel('boolean'),
@@ -205,13 +210,7 @@
                 'Secondary Email - Email Address',
                 'Secondary Email - Is Invalid',
                 'Secondary Email - Opt Out',
-
                 $testItem->getAttributeLabel('user'),
-                $testItem->getAttributeLabel('owner'),
-                $testItem->getAttributeLabel('createdDateTime'),
-                $testItem->getAttributeLabel('modifiedDateTime'),
-                $testItem->getAttributeLabel('createdByUser'),
-                $testItem->getAttributeLabel('modifiedByUser'),
             );
 
             // Because small delay in IO operation, allow tresholds
@@ -279,6 +278,11 @@
             $headerData  = $adapter->getHeaderData();
             $compareData = array(
                 $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
                 'Bob2',
                 'Bob2',
                 '1',
@@ -316,14 +320,14 @@
                 null,
                 null,
                 null,
-                'super',
-                'stubDateTime',
-                'stubDateTime',
-                'super',
-                'super',
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
                 $testItem->getAttributeLabel('firstName'),
                 $testItem->getAttributeLabel('lastName'),
                 $testItem->getAttributeLabel('boolean'),
@@ -360,13 +364,7 @@
                 'Secondary Email - Email Address',
                 'Secondary Email - Is Invalid',
                 'Secondary Email - Opt Out',
-
                 $testItem->getAttributeLabel('user'),
-                $testItem->getAttributeLabel('owner'),
-                $testItem->getAttributeLabel('createdDateTime'),
-                $testItem->getAttributeLabel('modifiedDateTime'),
-                $testItem->getAttributeLabel('createdByUser'),
-                $testItem->getAttributeLabel('modifiedByUser'),
             );
 
             // Because small delay in IO operation, allow tresholds
@@ -442,6 +440,11 @@
             $headerData  = $adapter->getHeaderData();
             $compareData = array(
                 $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
                 'Bob3',
                 'Bob3',
                 '1',
@@ -479,14 +482,14 @@
                 null,
                 null,
                 null,
-                'super',
-                'stubDateTime',
-                'stubDateTime',
-                'super',
-                'super',
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
                 $testItem->getAttributeLabel('firstName'),
                 $testItem->getAttributeLabel('lastName'),
                 $testItem->getAttributeLabel('boolean'),
@@ -523,13 +526,7 @@
                 'Secondary Email - Email Address',
                 'Secondary Email - Is Invalid',
                 'Secondary Email - Opt Out',
-
                 $testItem->getAttributeLabel('user'),
-                $testItem->getAttributeLabel('owner'),
-                $testItem->getAttributeLabel('createdDateTime'),
-                $testItem->getAttributeLabel('modifiedDateTime'),
-                $testItem->getAttributeLabel('createdByUser'),
-                $testItem->getAttributeLabel('modifiedByUser'),
             );
 
             // Because small delay in IO operation, allow tresholds

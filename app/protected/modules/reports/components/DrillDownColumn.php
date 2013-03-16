@@ -29,6 +29,8 @@
      * Column class for managing the drill down link column.  This is used by summation drill down reports when rendering
      * the each row.  There is a drill down column, that when clicked will expand the drill down results grid for that
      * row
+     * Added &page=1 to ensure drillDown always starts at page 1.  Assumes there is at least one parameter always passed.
+     * Not perfect, but works ok for now.
      */
     class DrillDownColumn extends CGridColumn
     {
@@ -36,13 +38,13 @@
         {
             // Begin Not Coding Standard
             $script = <<<END
-jQuery('.drillDownExpandAndLoadLink').live('click', function(){
+jQuery('.drillDownExpandAndLoadLink').unbind('click'); jQuery('.drillDownExpandAndLoadLink').live('click', function(){
     $(this).hide();
     $(this).parent().find('.drillDownCollapseLink').first().show();
     $(this).parentsUntil('tr').parent().next().show();
     var loadDivId = $(this).parentsUntil('tr').parent().addClass('expanded-row').next().find('.drillDownContent').attr('id');
     $.ajax({
-        url      : $(this).data('url'),
+        url      : $(this).data('url') + '&page=1',
         type     : 'GET',
         beforeSend : function(){
             makeLargeLoadingSpinner(true, "#"+loadDivId);
@@ -55,12 +57,12 @@ jQuery('.drillDownExpandAndLoadLink').live('click', function(){
         }
     });
 });
-jQuery('.drillDownExpandLink').live('click', function(){
+jQuery('.drillDownExpandLink').unbind('click'); jQuery('.drillDownExpandLink').live('click', function(){
     $(this).hide();
     $(this).parent().find('.drillDownCollapseLink').first().show();
     $(this).parentsUntil('tr').parent().addClass('expanded-row').next().show();
 });
-jQuery('.drillDownCollapseLink').live('click', function(){
+jQuery('.drillDownCollapseLink').unbind('click');jQuery('.drillDownCollapseLink').live('click', function(){
     $(this).hide();
     $(this).parent().find('.drillDownExpandLink').first().show();
     $(this).parentsUntil('tr').parent().removeClass('expanded-row').next().hide();

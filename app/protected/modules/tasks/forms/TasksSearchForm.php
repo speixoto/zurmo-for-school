@@ -26,5 +26,14 @@
 
     class TasksSearchForm extends OwnedSearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Task';
+        }
+
+        public function __construct(Task $model)
+        {
+            parent::__construct($model);
+        }
     }
 ?>

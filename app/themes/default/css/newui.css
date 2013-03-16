@@ -451,45 +451,45 @@ a#customFieldDataData_AddInputButton.attachLoading.z-button,
 a.ModalGameNotification a.attachLoading.z-button {
   color: #fff;
 }
-.modal-view-toolbar a:not(.attachLoading) span,
-.modal-view-toolbar input[type="submit"]:not(.attachLoading) span,
-.modal-view-toolbar input[type="button"]:not(.attachLoading) span,
-.form-toolbar a:not(.attachLoading) span,
-.form-toolbar input[type="submit"]:not(.attachLoading) span,
-.form-toolbar input[type="button"]:not(.attachLoading) span,
-.zButton:not(.attachLoading) span,
-.z-button:not(.attachLoading) span,
-a.zButton:not(.attachLoading) span,
-a.z-button:not(.attachLoading) span,
-.white-button:not(.attachLoading) span,
-.search-form-tools input[type="submit"]:not(.attachLoading) span,
-a.search-form-tools input[type="submit"]:not(.attachLoading) span,
-#progressBar-links a:not(.attachLoading) span,
-a#progressBar-links a:not(.attachLoading) span,
-#InstallPageView .AppContainer a:not(.attachLoading) span,
-a#InstallPageView .AppContainer a:not(.attachLoading) span,
-#InstallPageView #install-form input[type="submit"]:not(.attachLoading) span,
-a#InstallPageView #install-form input[type="submit"]:not(.attachLoading) span,
-.configuration-list li a:not(.attachLoading) span,
-a.configuration-list li a:not(.attachLoading) span,
-table.configuration-list td:last-child a:not(.attachLoading) span,
-atable.configuration-list td:last-child a:not(.attachLoading) span,
-.multiselect-holder input[type="button"]:not(.attachLoading) span,
-a.multiselect-holder input[type="button"]:not(.attachLoading) span,
-.EmailTestingButton:not(.attachLoading) span,
-a.EmailTestingButton:not(.attachLoading) span,
-.file-upload-box .ui-icon-plusthick:not(.attachLoading) span,
-a.file-upload-box .ui-icon-plusthick:not(.attachLoading) span,
-.ui-datepicker .ui-datepicker-current:not(.attachLoading) span,
-a.ui-datepicker .ui-datepicker-current:not(.attachLoading) span,
-.ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
-a.ui-datepicker .ui-datepicker-close:not(.attachLoading) span,
-.designer-toolbar input[type="submit"]:not(.attachLoading) span,
-a.designer-toolbar input[type="submit"]:not(.attachLoading) span,
-#customFieldDataData_AddInputButton:not(.attachLoading) span,
-a#customFieldDataData_AddInputButton:not(.attachLoading) span,
-.ModalGameNotification a:not(.attachLoading) span,
-a.ModalGameNotification a:not(.attachLoading) span {
+.modal-view-toolbar a:not(.attachLoading) .z-label,
+.modal-view-toolbar input[type="submit"]:not(.attachLoading) .z-label,
+.modal-view-toolbar input[type="button"]:not(.attachLoading) .z-label,
+.form-toolbar a:not(.attachLoading) .z-label,
+.form-toolbar input[type="submit"]:not(.attachLoading) .z-label,
+.form-toolbar input[type="button"]:not(.attachLoading) .z-label,
+.zButton:not(.attachLoading) .z-label,
+.z-button:not(.attachLoading) .z-label,
+a.zButton:not(.attachLoading) .z-label,
+a.z-button:not(.attachLoading) .z-label,
+.white-button:not(.attachLoading) .z-label,
+.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
+a.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
+#progressBar-links a:not(.attachLoading) .z-label,
+a#progressBar-links a:not(.attachLoading) .z-label,
+#InstallPageView .AppContainer a:not(.attachLoading) .z-label,
+a#InstallPageView .AppContainer a:not(.attachLoading) .z-label,
+#InstallPageView #install-form input[type="submit"]:not(.attachLoading) .z-label,
+a#InstallPageView #install-form input[type="submit"]:not(.attachLoading) .z-label,
+.configuration-list li a:not(.attachLoading) .z-label,
+a.configuration-list li a:not(.attachLoading) .z-label,
+table.configuration-list td:last-child a:not(.attachLoading) .z-label,
+atable.configuration-list td:last-child a:not(.attachLoading) .z-label,
+.multiselect-holder input[type="button"]:not(.attachLoading) .z-label,
+a.multiselect-holder input[type="button"]:not(.attachLoading) .z-label,
+.EmailTestingButton:not(.attachLoading) .z-label,
+a.EmailTestingButton:not(.attachLoading) .z-label,
+.file-upload-box .ui-icon-plusthick:not(.attachLoading) .z-label,
+a.file-upload-box .ui-icon-plusthick:not(.attachLoading) .z-label,
+.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
+a.ui-datepicker .ui-datepicker-current:not(.attachLoading) .z-label,
+.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
+a.ui-datepicker .ui-datepicker-close:not(.attachLoading) .z-label,
+.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
+a.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
+#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
+a#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
+.ModalGameNotification a:not(.attachLoading) .z-label,
+a.ModalGameNotification a:not(.attachLoading) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .white-button .z-label {
@@ -545,7 +545,7 @@ a.ModalGameNotification a:not(.attachLoading) span {
 .default-btn.attachLoading.z-button {
   color: #fff;
 }
-.default-btn:not(.attachLoading) span {
+.default-btn:not(.attachLoading) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 /*
@@ -7024,10 +7024,10 @@ div.wide.form label.hasCheckBox {
   height: auto;
   display: block;
 }
-.loading .list-preloader {
+.loading > .list-preloader {
   display: block;
 }
-.cgrid-view.loading .list-preloader {
+.cgrid-view.loading > .list-preloader {
   display: block;
 }
 /*
@@ -7618,6 +7618,14 @@ div.wide.form label.hasCheckBox {
 }
 #save-search-area #removeSavedSearch {
   line-height: 26px;
+  float: left;
+  margin-left: 20px;
+}
+#save-search-area #removeSavedSearch .icon:after {
+  position: relative;
+  top: 0;
+  left: 0;
+  right: 0;
 }
 #save-search-area #save-advanced-search {
   margin: 0;
@@ -11315,7 +11323,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AppContent.ImportWizardView #addExtraColumnButton.attachLoading.z-button {
   color: #fff;
 }
-.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) span {
+.AppContent.ImportWizardView #addExtraColumnButton:not(.attachLoading) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .AppContent.ImportWizardView .required-fields {
@@ -12090,7 +12098,7 @@ div.wide.form .errorMessage {
 .addfileinput-button span.attachLoading.z-button {
   color: #fff;
 }
-.addfileinput-button span:not(.attachLoading) span {
+.addfileinput-button span:not(.attachLoading) .z-label {
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .addfileinput-button input {

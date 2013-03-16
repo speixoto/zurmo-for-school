@@ -26,51 +26,164 @@
 
     class MatrixReportDataProviderTest extends ZurmoBaseTest
     {
+        public $freeze = false;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function setup()
+        public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
         }
 
         public function testResolveDisplayAttributes()
         {
-            $this->fail();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Maximum';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy          = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'float';
+            $groupBy->axis    = 'y';
+            $report->addGroupBy($groupBy);
+            $reportDataProvider = new MatrixReportDataProvider($report);
+            $displayAttributes = $reportDataProvider->resolveDisplayAttributes();
+            $this->assertCount(2, $displayAttributes);
         }
 
         public function testResolveGroupBys()
         {
-            $this->fail();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $groupBy          = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'integer';
+            $groupBy->axis = 'x';
+            $groupBy2         = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy2->attributeIndexOrDerivedType = 'float';
+            $groupBy2->axis   = 'y';
+            $report->addGroupBy($groupBy);
+            $report->addGroupBy($groupBy2);
+            $reportDataProvider = new MatrixReportDataProvider($report);
+            $groupBys = $reportDataProvider->resolveGroupBys();
+            $this->assertCount(2, $groupBys);
+            $this->assertEquals('float',   $groupBys[0]->getAttributeIndexOrDerivedType());
+            $this->assertEquals('integer', $groupBys[1]->getAttributeIndexOrDerivedType());
         }
 
         public function testGetXAxisGroupByDataValuesCount()
         {
-            $this->fail();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Maximum';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy          = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'float';
+            $groupBy->axis    = 'x';
+            $report->addGroupBy($groupBy);
+            $reportDataProvider = new MatrixReportDataProvider($report);
+            $count = $reportDataProvider->getXAxisGroupByDataValuesCount();
+            $this->assertEquals(1, $count);
         }
 
         public function testGetYAxisGroupByDataValuesCount()
         {
-            $this->fail();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Maximum';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy          = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'float';
+            $groupBy->axis    = 'y';
+            $report->addGroupBy($groupBy);
+            $reportDataProvider = new MatrixReportDataProvider($report);
+            $count = $reportDataProvider->getYAxisGroupByDataValuesCount();
+            $this->assertEquals(0, $count);
         }
 
         public function testMakeXAxisGroupingsForColumnNamesData()
         {
-            $this->fail();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Maximum';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy          = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'float';
+            $groupBy->axis    = 'x';
+            $report->addGroupBy($groupBy);
+            $reportDataProvider = new MatrixReportDataProvider($report);
+            $data               = $reportDataProvider->makeXAxisGroupingsForColumnNamesData();
+            $this->assertEquals(array(), $data);
         }
 
         public function testMakeAxisCrossingColumnCountAndLeadingHeaderRowsData()
         {
-            $this->fail();
-        }
-
-        public function testGetDisplayAttributeByAttribute()
-        {
-            $this->fail();
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $report = new Report();
+            $report->setType(Report::TYPE_MATRIX);
+            $report->setModuleClassName('ReportsTestModule');
+            $report->setFiltersStructure('');
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $displayAttribute->attributeIndexOrDerivedType = 'integer__Maximum';
+            $report->addDisplayAttribute($displayAttribute);
+            $groupBy          = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_MATRIX);
+            $groupBy->attributeIndexOrDerivedType = 'float';
+            $groupBy->axis    = 'x';
+            $report->addGroupBy($groupBy);
+            $reportDataProvider = new MatrixReportDataProvider($report);
+            $data               = $reportDataProvider->makeAxisCrossingColumnCountAndLeadingHeaderRowsData();
+            $compareData        = array('rows' => array(), 'axisCrossingColumnCount' => 0);
+            $this->assertEquals($compareData, $data);
         }
     }
 ?>

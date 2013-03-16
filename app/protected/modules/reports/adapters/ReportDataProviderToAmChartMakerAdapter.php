@@ -29,7 +29,7 @@
      */
     class ReportDataProviderToAmChartMakerAdapter
     {
-        const FIRST_SERIES_VALUE_PREFIX     = 'FirstSeriesValue';
+        const FIRST_SERIES_VALUE            = 'FirstSeriesValue';
 
         const FIRST_SERIES_DISPLAY_LABEL    = 'FirstSeriesDisplayLabel';
 
@@ -80,7 +80,7 @@
         public static function resolveFirstSeriesValueName($key)
         {
             assert('is_int($key)');
-            return self::FIRST_SERIES_VALUE_PREFIX . $key;
+            return self::FIRST_SERIES_VALUE . $key;
         }
 
         /**
@@ -218,8 +218,10 @@
             {
                 return $data;
             }
+
             foreach($this->secondSeriesValueData as $secondSeriesKey)
             {
+
                 foreach($data as $firstSeriesDataKey => $firstSeriesData)
                 {
                     if(isset($firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)]) &&
@@ -274,7 +276,7 @@
             }
             elseif($displayAttribute->getDisplayElementType() == 'Decimal')
             {
-                return Yii::app()->formatNumber($value);
+                return Yii::app()->numberFormatter->formatDecimal($value);
             }
             elseif($displayAttribute->getDisplayElementType() == 'Integer')
             {
