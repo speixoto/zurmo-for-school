@@ -1750,10 +1750,10 @@
                             {
                                 $linkName = null;
                             }
-                            elseif ($this->getRelationType($relationName) == self::HAS_ONE &&
-                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
-                                $linkName = strtolower($this->getRelationLinkName($relationName));
+                                $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
                             unset($this->unlinkedRelationNames[$key]);
@@ -1795,14 +1795,14 @@
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
                                 if (strtolower($linkName) == strtolower($relatedModelClassName) ||
-                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
                                 }
                                 elseif ($relationType == self::HAS_ONE &&
-                                        $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                                 {
-                                    $linkName = strtolower($this->getRelationLinkName($relationName));
+                                    $linkName = strtolower(static::getRelationLinkName($relationName));
                                 }
                                 elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
                                         $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)

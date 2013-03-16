@@ -252,7 +252,7 @@
          * Returns the link type for a
          * relation name defined by the extending class's getMetadata() method.
          */
-        public function getRelationLinkType($relationName)
+        public static function getRelationLinkType($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
@@ -263,7 +263,7 @@
          * Returns the link name for a
          * relation name defined by the extending class's getMetadata() method.
          */
-        public function getRelationLinkName($relationName)
+        public static function getRelationLinkName($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
@@ -288,7 +288,7 @@
          * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationType($relationName)
+        public static function getDerivedRelationType($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -299,7 +299,7 @@
          * Returns the relation model class name of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationModelClassName($relationName)
+        public static function getDerivedRelationModelClassName($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -310,7 +310,7 @@
          * Returns the opposing relation name of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        public static function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
