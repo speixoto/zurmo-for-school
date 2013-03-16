@@ -295,13 +295,13 @@
 
         protected function registerModuleClassNameChangeScriptExtraPart()
         {
-            return  "   $('#OrderBysForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+            return  "   $('#OrderBysForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('#OrderBysTreeArea').html('');
                         $('." . OrderBysForReportWizardView::getZeroComponentsClassName() . "').show();
-                        $('#GroupBysForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#GroupBysForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('#GroupBysTreeArea').html('');
                         $('." . GroupBysForReportWizardView::getZeroComponentsClassName() . "').show();
-                        $('#DrillDownDisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+                        $('#DrillDownDisplayAttributesForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('#DrillDownDisplayAttributesTreeArea').html('');
                         $('." . DrillDownDisplayAttributesForReportWizardView::getZeroComponentsClassName() . "').show();
                         $('input:radio[name=\"SummationReportWizardForm[ChartForReportForm][type]\"]').filter('[value=\"\"]').attr('checked', true)

@@ -596,20 +596,6 @@
                     {
                         $owns = false;
                     }
-/**
-                    if (count($relationTypeModelClassNameAndOwns) == 4 && $relationType != self::HAS_MANY)
-                    {
-                        throw new NotSupportedException();
-                    }
-                    if (count($relationTypeModelClassNameAndOwns) == 4)
-                    {
-                        $relationPolyOneToManyName = $relationTypeModelClassNameAndOwns[3];
-                    }
-                    else
-                    {
-                        $relationPolyOneToManyName = null;
-                    }
- * */
                     $linkType          = null;
                     $relationLinkName  = null;
                     self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,

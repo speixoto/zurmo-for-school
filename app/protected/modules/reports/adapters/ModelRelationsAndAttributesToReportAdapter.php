@@ -65,6 +65,32 @@
         private static $derivedAttributesData;
 
         /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $attributesNotIncludingDerivedAttributesData;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $inferredRelationsData;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $dynamicallyDerivedAttributesData;
+
+        public static function forgetAll()
+        {
+            self::$derivedAttributesData = null;
+            self::$attributesNotIncludingDerivedAttributesData = null;
+            self::$inferredRelationsData = null;
+            self::$dynamicallyDerivedAttributesData = null;
+        }
+
+        /**
          * @param string $moduleClassName
          * @param string $modelClassName
          * @param string $reportType
@@ -604,6 +630,11 @@
             {
                 throw new NotSupportedException();
             }
+            $cacheKey = get_class($this->model) . $precedingModel . $precedingRelation;
+            if(isset(self::$inferredRelationsData[$cacheKey]))
+            {
+                return self::$inferredRelationsData[$cacheKey];
+            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -621,7 +652,8 @@
                     }
                 }
             }
-            return $attributes;
+            self::$inferredRelationsData[$cacheKey] = $attributes;
+            return self::$inferredRelationsData[$cacheKey];
         }
 
         /**
@@ -805,6 +837,10 @@
          */
         protected function getAttributesNotIncludingDerivedAttributesData()
         {
+            if(isset(self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)]))
+            {
+                return self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)];
+            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -816,7 +852,8 @@
                     $attributes[$attribute] = array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            return $attributes;
+            self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)] = $attributes;
+            return self::$attributesNotIncludingDerivedAttributesData[get_class($this->model)];
         }
 
         /**
@@ -973,6 +1010,10 @@
          */
         protected function getDynamicallyDerivedAttributesData()
         {
+            if(isset(self::$dynamicallyDerivedAttributesData[get_class($this->model)]))
+            {
+                return self::$dynamicallyDerivedAttributesData[get_class($this->model)];
+            }
             $attributes = array();
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
@@ -984,7 +1025,8 @@
                         array('label' => $this->model->getAttributeLabel($attribute));
                 }
             }
-            return $attributes;
+            self::$dynamicallyDerivedAttributesData[get_class($this->model)] = $attributes;
+            return self::$dynamicallyDerivedAttributesData[get_class($this->model)];
         }
 
         /**

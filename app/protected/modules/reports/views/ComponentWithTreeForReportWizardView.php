@@ -234,7 +234,7 @@
                     }',
                     'success' => 'js:function(data){
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                    $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul").append(data);
+                    $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first").append(data);
                     ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                     $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
                 }'
@@ -257,7 +257,7 @@
                     }',
                     'success' => 'js:function(data){
                         $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                        $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul").append(data);
+                        $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first").append(data);
                         ' . $this->getReportAttributeRowAddOrRemoveExtraScript() . '
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                 }'
