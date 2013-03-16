@@ -161,7 +161,7 @@
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
-            assert(is_string($reportType));
+            assert('is_string($reportType)');
             assert('is_int($rowKey)');
             $this->moduleClassName = $moduleClassName;
             $this->modelClassName  = $modelClassName;

@@ -350,17 +350,5 @@
             }
             return $passedValidation;
         }
-
-        /**
-         * @param $treeType string
-         * @param $count integer
-         * @return string
-         */
-        protected static function resolveErrorAttributePrefix($treeType, $count)
-        {
-            assert('is_string($treeType)');
-            assert('is_int($count)');
-            return $treeType . '_' . $count . '_';
-        }
     }
 ?>
