@@ -303,7 +303,7 @@
          */
         public function setDescription($description)
         {
-            assert('is_string($description)');
+            assert('is_string($description) || $description == null');
             $this->description = $description;
         }
 

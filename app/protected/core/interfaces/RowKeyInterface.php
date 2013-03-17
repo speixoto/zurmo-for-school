@@ -24,27 +24,12 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ActivitiesModule extends Module
+    /**
+     * Implemented by wizard component forms for example, that then allow the validation to understand the real
+     * row key whether from a saved model or from a posted array.
+     */
+    interface RowKeyInterface
     {
-        public function getDependencies()
-        {
-            return array(
-                'accounts',
-                'contacts',
-                'configuration',
-                'leads',
-                'opportunities',
-                'zurmo');
-        }
-
-        public function getRootModelNames()
-        {
-            return array();
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('ActivitiesModule', 'Activity', array(), null, $language);
-        }
+        public function getRowKey();
     }
 ?>

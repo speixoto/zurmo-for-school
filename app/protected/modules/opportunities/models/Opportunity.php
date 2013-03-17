@@ -61,11 +61,12 @@
             return 'OpportunitiesModule';
         }
 
-        public static function untranslatedAttributeLabels()
+        public static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
-                'account'  => 'AccountsModuleSingularLabel',
-                'contacts' => 'ContactsModulePluralLabel'));
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'account'  => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params, null, $language),
+                'contacts' => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',   $params, null, $language)));
         }
 
         /**

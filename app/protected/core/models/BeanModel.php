@@ -353,54 +353,48 @@
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 
-        public static function getAbbreviatedAttributeLabel($attributeName)
-        {
-            return static::getAbbreviatedAttributeLabelByLanguage($attributeName, Yii::app()->language);
-        }
-
         /**
-         * Public for message checker only.
-         */
-        public static function getUntranslatedAbbreviatedAttributeLabels()
-        {
-            return static::untranslatedAbbreviatedAttributeLabels();
-        }
-
-        /**
-         * Array of untranslated abbreviated attribute labels.
-         */
-        protected static function untranslatedAbbreviatedAttributeLabels()
-        {
-            return array();
-        }
-
-        protected static function untranslatedAttributeLabels()
-        {
-            return array();
-        }
-
-        /**
-         * Given an attributeName and a language, retrieve the translated attribute label. Attempts to find a customized
+         * Given an attributeName, retrieve the translated attribute label. Attempts to find a customized
          * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
          * @param string $attributeName
-         * @param string $language
          * @return string - translated attribute label
          */
-        protected static function getAbbreviatedAttributeLabelByLanguage($attributeName, $language)
+        public static function getAbbreviatedAttributeLabel($attributeName)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
-            $labels = static::untranslatedAbbreviatedAttributeLabels();
+            $labels = static::translatedAbbreviatedAttributeLabels(Yii::app()->language);
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => static::generateAnAttributeLabel($attributeName)),
-                    Zurmo::t('Default', $labels[$attributeName],
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                    $labels[$attributeName]);
             }
             else
             {
                 return null;
             }
+        }
+
+        /**
+         * Public for message checker only
+         * @param $language
+         * @return array;
+         */
+        public static function getTranslatedAttributeLabels($language)
+        {
+            return static::translatedAttributeLabels($language);
+        }
+
+        /**
+         * Array of untranslated abbreviated attribute labels.
+         */
+        protected static function translatedAbbreviatedAttributeLabels($language)
+        {
+            return array();
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array();
         }
 
         /**

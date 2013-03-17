@@ -31,13 +31,14 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'account'       => 'Parent AccountsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel',
+                    'account'       => Zurmo::t('AccountsModule', 'Parent AccountsModuleSingularLabel',  $params, null, $language),
+                    'contacts'      => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',           $params, null, $language),
+                    'opportunities' => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                 )
             );
         }

@@ -24,27 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ActivitiesModule extends Module
+    /**
+     * Used for example by reporting, since the attribute is emailAddress and the model is the Email model.
+     */
+    class EmailForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
-        public function getDependencies()
+        public function renderGridViewData()
         {
             return array(
-                'accounts',
-                'contacts',
-                'configuration',
-                'leads',
-                'opportunities',
-                'zurmo');
-        }
-
-        public function getRootModelNames()
-        {
-            return array();
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('ActivitiesModule', 'Activity', array(), null, $language);
+                'name'  => $this->attribute,
+                'value' => 'Yii::app()->format->email($data->' . $this->attribute . ')',
+                'type'  => 'raw',
+                'htmlOptions' => array( 'class' => 'email')
+            );
         }
     }
 ?>

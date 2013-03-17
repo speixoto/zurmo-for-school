@@ -191,7 +191,6 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            //todo if attribute model class name is abstract
             if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
             {
                 return $this->resolveJoinsForDerivedRelationViaCastedUpModel($onTableAliasName, $canUseFromJoins);

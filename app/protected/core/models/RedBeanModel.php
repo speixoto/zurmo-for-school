@@ -1482,31 +1482,19 @@
 
         /**
          * See the yii documentation.
-         * RedBeanModels utilize untranslatedAttributeLabels to store any attribute information, which
-         * can then be translated in this method.
+         * RedBeanModels utilize translatedAttributeLabels to store any attribute information.
          */
         public function attributeLabels()
         {
-            $attributeLabels = array();
-            foreach (static::untranslatedAttributeLabels() as $attributeName => $label)
-            {
-                $attributeLabels[$attributeName] = Zurmo::t('Core', $label);
-            }
-            return $attributeLabels;
+            return static::translatedAttributeLabels(Yii::app()->language);
         }
 
         /**
-         * RedBeanModels utilize untranslatedAbbreviatedAttributeLabels to store any abbreviated attribute information, which
-         * can then be translated in this method.
+         * Public method
          */
         public function abbreviatedAttributeLabels()
         {
-            $abbreviatedAttributeLabels = array();
-            foreach (static::untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
-            {
-                $abbreviatedAttributeLabels[$attributeName] = Zurmo::t('Core', $label);
-            }
-            return $abbreviatedAttributeLabels;
+            return static::translatedAbbreviatedAttributeLabels(Yii::app()->language);
         }
 
         /**
@@ -2318,7 +2306,7 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            $labels       = static::untranslatedAttributeLabels();
+            $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
             if ($customLabel != null)
             {
@@ -2326,12 +2314,12 @@
             }
             elseif (isset($labels[$attributeName]))
             {
-                return Zurmo::t('Core', $labels[$attributeName],
-                              LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return $labels[$attributeName];
             }
             else
             {
-                //should do a T:: wrapper here too.
+                //This is a last resort if the translated attribute was not located.  Make sure to define all
+                //attributes in translatedAttributeLabels($language)
                 return Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
         }

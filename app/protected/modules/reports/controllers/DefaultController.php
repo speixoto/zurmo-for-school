@@ -248,7 +248,7 @@
                                                       (int)$rowNumber, $inputPrefixData, $attribute,
                                                       (bool)$trackableStructurePosition, true, $treeType);
             $content               = $view->render();
-            $view->renderAddAttributeErrorSettingsScript($form, $wizardFormClassName, get_class($model), $inputPrefixData);
+            $form->renderAddAttributeErrorSettingsScript($view::getFormId());
             Yii::app()->getClientScript()->setToAjaxMode();
             Yii::app()->getClientScript()->render($content);
             echo $content;

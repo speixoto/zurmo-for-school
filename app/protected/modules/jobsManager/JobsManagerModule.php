@@ -59,9 +59,9 @@
             return self::RIGHT_ACCESS_JOBSMANAGER;
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'JobManager';
+            return Zurmo::t('JobManagerModule', 'Job Manager', array(), null, $language);
         }
 
         public function getRootModelNames()

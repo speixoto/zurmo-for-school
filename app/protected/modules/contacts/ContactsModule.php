@@ -43,12 +43,13 @@
             return array('Contact');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                              = LabelUtil::getTranslationParamsForAllModules();
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_CONTACTS] = 'Create ContactsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_CONTACTS] = 'Delete ContactsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_CONTACTS] = 'Access ContactsModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_CONTACTS] = Zurmo::t('ContactsModule', 'Create ContactsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_CONTACTS] = Zurmo::t('ContactsModule', 'Delete ContactsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_CONTACTS] = Zurmo::t('ContactsModule', 'Access ContactsModulePluralLabel Tab', $params);
             return $labels;
         }
 

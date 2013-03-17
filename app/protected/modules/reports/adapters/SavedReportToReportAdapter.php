@@ -169,13 +169,16 @@
             $moduleClassName    = $report->getModuleClassName();
             $addMethodName      = 'add' . $componentPrefix;
             $componentClassName = $componentPrefix . 'ForReportForm';
+            $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
             {
                 $component      = new $componentClassName($moduleClassName,
                                                           $moduleClassName::getPrimaryModelName(),
-                                                          $report->getType());
+                                                          $report->getType(),
+                                                          $rowKey);
                 $component->setAttributes($componentFormData);
                 $report->{$addMethodName}($component);
+                $rowKey ++;
             }
         }
     }
