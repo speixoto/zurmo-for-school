@@ -74,7 +74,7 @@
         protected function resolveExportClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
             $displayElementType = $displayAttribute->getDisplayElementType();
-            if(@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
+            if(@class_exists($displayElementType . 'ForReportToExportValueAdapter'))
             {
                 return $displayElementType . 'ForReportToExportValueAdapter';
             }
