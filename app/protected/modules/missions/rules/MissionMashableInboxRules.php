@@ -164,7 +164,7 @@
             $model          = $modelClassName::getById($modelId);
             MissionsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, false);
         }
-        
+
         public function hasUserReadLatest($modelId)
         {
             assert('$modelId > 0');

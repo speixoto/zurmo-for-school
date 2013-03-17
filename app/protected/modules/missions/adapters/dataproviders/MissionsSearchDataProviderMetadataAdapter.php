@@ -61,7 +61,7 @@
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
                 $structure .= $startingCount;
             }
@@ -70,7 +70,7 @@
                 $adaptedMetadata['clauses'][$startingCount] = array(
                     'attributeName' => 'takenByUser',
                     'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
                 $adaptedMetadata['clauses'][$startingCount + 1] = array(
                     'attributeName' => 'status',
@@ -91,7 +91,7 @@
                 $adaptedMetadata['clauses'][$startingCount + 1] = array(
                     'attributeName' => 'createdByUser',
                     'operatorType'  => 'doesNotEqual',
-                    'value'         => Yii::app()->user->userModel->id,
+                    'value'         => Yii::app()->user->userModel->getClassId('Item'),
                 );
                 $structure .= $startingCount . ' and ' . ($startingCount + 1);
             }

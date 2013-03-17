@@ -308,7 +308,7 @@
                     'clauses'       => array(1 => 'testClause1ForSecondMetadata',
                                              2 => 'testClause2ForSecondMetadata',
                                         ),
-                    'structure'     => '4 and 5',
+                    'structure'     => '1 and 2',
             );
             $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata, false);
             $this->assertEquals($mergedMetadata['clauses'],   array(1 => 'testClause1',
@@ -331,6 +331,26 @@
                                       2 => 'testClause1ForSecondMetadata'),
                                 $mergedMetadata['clauses']);
             $this->assertEquals('(1) and (2)', $mergedMetadata['structure']);
+
+            $firstMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1'),
+                    'structure'     => '1',
+            );
+            $secondMetadata  = array(
+                    'clauses'       => array(1 => 'testClause1ForSecondMetadata',
+                                             2 => 'testClause2ForSecondMetadata',
+                                             3 => 'testClause3ForSecondMetadata',
+                                             4 => 'testClause4ForSecondMetadata'),
+                    'structure'     => '((1 and 2) or (3 and 4))',
+            );
+            $mergedMetadata = MashableUtil::mergeMetada($firstMetadata, $secondMetadata);
+            $this->assertEquals(array(1 => 'testClause1',
+                                      2 => 'testClause1ForSecondMetadata',
+                                      3 => 'testClause2ForSecondMetadata',
+                                      4 => 'testClause3ForSecondMetadata',
+                                      5 => 'testClause4ForSecondMetadata'),
+                                $mergedMetadata['clauses']);
+            $this->assertEquals('(1) and (((2 and 3) or (4 and 5)))', $mergedMetadata['structure']);
         }
 
     }

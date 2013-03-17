@@ -218,14 +218,10 @@
             {
                 return $firstMetadata;
             }
-
             $firstMetadataClausesCount = count($firstMetadata['clauses']);
-            $clauseNumber = count($firstMetadata['clauses']) + 1;
-            foreach ($secondMetadata['clauses'] as $clause)
+            foreach ($secondMetadata['clauses'] as $clauseNumber => $clause)
             {
-                $patterns[]     = '/' . ($clauseNumber - $firstMetadataClausesCount). '/';
-                $replacements[] = (string)$clauseNumber;
-                $firstMetadata['clauses'][$clauseNumber++] = $clause;
+                $firstMetadata['clauses'][$clauseNumber + $firstMetadataClausesCount] = $clause;
             }
             if ($isAnd)
             {
@@ -236,7 +232,7 @@
                 $operator = ' or ';
             }
             $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
-                                          '(' . preg_replace($patterns, $replacements, $secondMetadata['structure']) . ')';
+                                          '(' . preg_replace("/([0-9])/e", "$1 + " . $firstMetadataClausesCount, $secondMetadata['structure']) . ')';
             return $firstMetadata;
         }
     }
