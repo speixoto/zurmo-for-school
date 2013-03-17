@@ -50,7 +50,7 @@
                 'globalSearchAttributeNames' => array(),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Conversation',
+                        'label' => "eval:Zurmo::t('ConversationsModule', 'Conversation')",
                         'url'   => array('/conversations/default/create'),
                         'right' => self::RIGHT_CREATE_CONVERSATIONS,
                     ),

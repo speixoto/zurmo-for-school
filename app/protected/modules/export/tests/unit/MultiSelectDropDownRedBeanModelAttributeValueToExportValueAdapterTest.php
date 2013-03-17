@@ -84,14 +84,22 @@
 
             $adapter = new MultiSelectDropDownRedBeanModelAttributeValueToExportValueAdapter($model, 'multiDropDown');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('multiDropDown') => 'Multi 1, Multi 3');
+            $compareData = array('Multi 1, Multi 3');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('multiDropDown'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new MultiSelectDropDownRedBeanModelAttributeValueToExportValueAdapter($model, 'multiDropDown');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('multiDropDown') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('multiDropDown'));
             $this->assertEquals($compareData, $data);
         }
     }

@@ -44,8 +44,8 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Job Manager',
-                        'descriptionLabel' => 'Manage Scheduled Jobs',
+                        'titleLabel'       => "eval:Zurmo::t('JobsManagerModule', 'Job Manager')",
+                        'descriptionLabel' => "eval:Zurmo::t('JobsManagerModule', 'Manage Scheduled Jobs')",
                         'route'            => '/jobsManager/default/list',
                         'right'            => self::RIGHT_ACCESS_JOBSMANAGER,
                     ),
@@ -59,9 +59,9 @@
             return self::RIGHT_ACCESS_JOBSMANAGER;
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'JobManager';
+            return Zurmo::t('JobManagerModule', 'Job Manager', array(), null, $language);
         }
 
         public function getRootModelNames()

@@ -34,7 +34,12 @@
         public $differentOperatorB;
         public $concatedName;
 
-        public function __construct(RedBeanModel $model)
+        protected static function getRedBeanModelClassName()
+        {
+            return 'AAA';
+        }
+
+        public function __construct(AAA $model)
         {
             parent::__construct($model);
         }

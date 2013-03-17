@@ -216,13 +216,13 @@
         }
 
         /**
-         * Test validating agains a MixedRelationsModel
+         * Test validating against a MixedRelationsModel
          */
         public function testValidateDynamicClauses()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $searchForm->dynamicClauses   = array(
                                                 array('structurePosition'           => '1',
                                                       'attributeIndexOrDerivedType' => 'primaryA',

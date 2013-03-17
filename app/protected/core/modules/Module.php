@@ -127,26 +127,30 @@
         }
 
         /**
+         * Override in all children modules to ensure proper availability of module labels in the translation system.
+         * If the override is not available, then it will generate a label as a last resort.
+         * @param string $language
          * @return string - singular module label.
          */
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            $name = static::getPluralModuleLabel();
+            $name = static::getPluralModuleLabel($language);
             $name = substr($name, 0, strlen($name) - 1);
-            return $name;
+            return Zurmo::t('Core', $name, array(), null, $language);
         }
 
         /**
-         * Gets the modules display label which is its name
-         * with spaces in title case. Can be overridden
-         * if the automatically created name is not appropriate.
+         * Override in all children modules to ensure proper availability of module labels in the translation system
+         * If the override is not available, then it will generate a label as a last resort.
+         * @param string $language
+         * @return string - plural module label
          */
-        protected static function getPluralModuleLabel()
+        protected static function getPluralModuleLabel($language)
         {
             $calledClassName = get_called_class();
             $name = $calledClassName::getDirectoryName();
             $name = preg_replace('/([A-Z])/', ' \1', $name);
-            return ucfirst($name);
+            return Zurmo::t('Core', ucfirst($name), array(), null, $language);
         }
 
         public static function getModuleLabelByTypeAndLanguage($type, $language = null)
@@ -165,14 +169,14 @@
             switch ($type)
             {
                 case 'Singular':
-                    return Zurmo::t('Core', static::getSingularModuleLabel());
+                    return static::getSingularModuleLabel($language);
                 case 'SingularLowerCase':
-                    $string  = Zurmo::t('Core', static::getSingularModuleLabel(), array(), null, $language);
+                    $string  = static::getSingularModuleLabel($language);
                     return TextUtil::strToLowerWithDefaultEncoding($string);
                 case 'Plural':
-                    return Zurmo::t('Core', static::getPluralModuleLabel(), array(), null, $language);
+                    return static::getPluralModuleLabel($language);
                 case 'PluralLowerCase':
-                    $string  = Zurmo::t('Core', static::getPluralModuleLabel(), array(), null, $language);
+                    $string  = static::getPluralModuleLabel($language);
                     return TextUtil::strToLowerWithDefaultEncoding($string);
             }
         }
@@ -455,8 +459,6 @@
 
         /**
          * Returns metadata for the module.
-         * Does caching only if the user is not specified. This can potentially be changed to cache when the user is
-         * specified but must be investigated further before doing this.
          * @see getDefaultMetadata()
          * @param $user The current user.
          * @returns An array of metadata.
@@ -542,7 +544,10 @@
                 foreach ($directoryFiles as $filePath)
                 {
                     $filePathInfo = pathinfo($filePath);
-                    $classNames[] = $filePathInfo['filename'];
+                    if($filePathInfo['extension'] == 'php')
+                    {
+                        $classNames[] = $filePathInfo['filename'];
+                    }
                 }
             }
             return $classNames;
@@ -565,6 +570,14 @@
          */
         public static function getDemoDataMakerClassName()
         {
+        }
+
+        /**
+         * Override in modules that are reportable in the reporting module
+         */
+        public static function isReportable()
+        {
+            return false;
         }
     }
 ?>

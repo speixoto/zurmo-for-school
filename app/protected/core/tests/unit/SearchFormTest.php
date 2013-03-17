@@ -39,7 +39,7 @@
          */
         public function testGetSearchFormAttributeMappingRulesTypeByAttributeWithInvalidAttribute()
         {
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $searchForm::getSearchFormAttributeMappingRulesTypeByAttribute('AttributeDoesNotExist');
         }
 
@@ -48,7 +48,7 @@
          */
         public function testGetSearchFormAttributeMappingRulesTypeByAttributeWithValidAttribute()
         {
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $mappingRulesType = $searchForm::getSearchFormAttributeMappingRulesTypeByAttribute('differentOperatorA');
             $this->assertEquals('OwnedItemsOnly', $mappingRulesType);
         }
@@ -58,13 +58,13 @@
          */
         public function testInvalidDynamicDateAttributeOnForm()
         {
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $searchForm->something__NotReal;
         }
 
         public function testDynamicDateAttributeOnForm()
         {
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
 
             //Test get and set.
             $this->assertEquals(null, $searchForm->date__Date);
@@ -89,7 +89,7 @@
             $this->assertEquals($compareData, $searchForm->attributeNames());
 
             //Check some other methods to make sure they work ok.
-            $this->assertFalse ($searchForm->isRelation('date__Date'));
+            $this->assertFalse ($searchForm::isRelation('date__Date'));
             $this->assertTrue  ($searchForm->isAttribute('date__Date'));
             $this->assertFalse ($searchForm->isAttributeRequired('date__Date'));
 
@@ -128,7 +128,7 @@
 
         public function testDynamicDateTimeAttributeOnForm()
         {
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
 
             //Test get and set.
             $this->assertEquals(null, $searchForm->dateTime__DateTime);
@@ -136,7 +136,7 @@
             $this->assertEquals('aTest', $searchForm->dateTime__DateTime);
 
             //Check some other methods to make sure they work ok.
-            $this->assertFalse ($searchForm->isRelation('dateTime__DateTime'));
+            $this->assertFalse ($searchForm::isRelation('dateTime__DateTime'));
             $this->assertTrue  ($searchForm->isAttribute('dateTime__DateTime'));
             $this->assertFalse ($searchForm->isAttributeRequired('dateTime__DateTime'));
 

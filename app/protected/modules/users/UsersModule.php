@@ -68,13 +68,26 @@
             return array('User');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $labels                                = array();
-            $labels[self::RIGHT_LOGIN_VIA_WEB]     = 'Sign in Via Web';
-            $labels[self::RIGHT_LOGIN_VIA_MOBILE]  = 'Sign in Via Mobile';
-            $labels[self::RIGHT_LOGIN_VIA_WEB_API] = 'Sign in Via Web API';
-            return array_merge(parent::getUntranslatedRightsLabels(), $labels);
+            $labels[self::RIGHT_LOGIN_VIA_WEB]     = Zurmo::t('UsersModule', 'Sign in Via Web');
+            $labels[self::RIGHT_LOGIN_VIA_MOBILE]  = Zurmo::t('UsersModule', 'Sign in Via Mobile');
+            $labels[self::RIGHT_LOGIN_VIA_WEB_API] = Zurmo::t('UsersModule', 'Sign in Via Web API');
+            $labels[self::RIGHT_CREATE_USERS]      = Zurmo::t('UsersModule', 'Create Users');
+            $labels[self::RIGHT_ACCESS_USERS]      = Zurmo::t('UsersModule', 'Access Users Tab');
+            return $labels;
+        }
+
+        public static function getTranslatedPolicyLabels()
+        {
+            $labels                                          = array();
+            $labels[self::POLICY_ENFORCE_STRONG_PASSWORDS]   = Zurmo::t('UsersModule', 'Enforce Strong Passwords');
+            $labels[self::POLICY_MINIMUM_PASSWORD_LENGTH]    = Zurmo::t('UsersModule', 'Minimum Password Length');
+            $labels[self::POLICY_MINIMUM_USERNAME_LENGTH]    = Zurmo::t('UsersModule', 'Minimum Username Length');
+            $labels[self::POLICY_PASSWORD_EXPIRES]           = Zurmo::t('UsersModule', 'Password Expires');
+            $labels[self::POLICY_PASSWORD_EXPIRY_DAYS]       = Zurmo::t('UsersModule', 'Password Expiry Days');
+            return $labels;
         }
 
         public static function getStrongerPolicy($policyName, array $values)
@@ -124,12 +137,12 @@
                         'right' => self::RIGHT_ACCESS_USERS,
                         'items' => array(
                             array(
-                                'label' => 'Create User',
+                                'label' => "eval:Zurmo::t('UsersModule', 'Create User')",
                                 'url'   => array('/users/default/create'),
                                 'right' => self::RIGHT_CREATE_USERS
                             ),
                             array(
-                                'label' => 'Users',
+                                'label' => "eval:Zurmo::t('UsersModule', 'Users')",
                                 'url'   => array('/users/default'),
                                 'right' => self::RIGHT_ACCESS_USERS
                             ),
@@ -144,15 +157,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Users',
-                        'descriptionLabel' => 'Manage Users',
+                        'titleLabel'       => "eval:Zurmo::t('UsersModule', 'Users')",
+                        'descriptionLabel' => "eval:Zurmo::t('UsersModule', 'Manage Users')",
                         'route'            => '/users/default',
                         'right'            => self::RIGHT_ACCESS_USERS,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Users',
+                        'label' => "eval:Zurmo::t('UsersModule', 'Users')",
                         'url' => array('/users/default'),
                         'right' => self::RIGHT_ACCESS_USERS,
                         'order' => 4,
@@ -160,12 +173,12 @@
                 ),
                 'userHeaderMenuItems' => array(
                         array(
-                            'label' => 'My Profile',
+                            'label' => "eval:Zurmo::t('UsersModule', 'My Profile')",
                             'url' => array('/users/default/profile'),
                             'order' => 1,
                         ),
                         array(
-                            'label' => 'Sign out',
+                            'label' => "eval:Zurmo::t('UsersModule', 'Sign out')",
                             'url' => array('/zurmo/default/logout'),
                             'order' => 4,
                         ),

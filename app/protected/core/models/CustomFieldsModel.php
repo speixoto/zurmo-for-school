@@ -33,68 +33,59 @@
          */
         protected static $lastClassInBeanHeirarchy = 'CustomFieldsModel';
 
+        protected function unrestrictedGet($attributeName)
+        {
+            $memberOrModel = parent::unrestrictedGet($attributeName);
+            //todo: imperfect since maybe a dropdown has no values yet. so need some php caching here.
+            if(is_object($memberOrModel) && $memberOrModel instanceof BaseCustomField && !($memberOrModel->data->id > 0) )
+            {
+                $metadata = $this->getMetadata();
+                foreach ($metadata as $unused => $classMetadata)
+                {
+                    if (isset($classMetadata['customFields']))
+                    {
+                        foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
+                        {
+                            if($customFieldName == $attributeName)
+                            {
+                                $customFieldData = CustomFieldData::getByName($customFieldDataName);
+                                $memberOrModel->data = $customFieldData;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+            return $memberOrModel;
+        }
+
         protected function constructDerived($bean, $setDefaults)
         {
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
             assert('is_bool($setDefaults)');
             parent::constructDerived($bean, $setDefaults);
-            $metadata = $this->getMetadata();
-            foreach ($metadata as $unused => $classMetadata)
+            if($setDefaults && $bean === null)
             {
-                if (isset($classMetadata['customFields']))
+                $metadata = $this->getMetadata();
+                foreach ($metadata as $unused => $classMetadata)
                 {
-                    foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
+                    if (isset($classMetadata['customFields']))
                     {
-                        $customField     = $this->unrestrictedGet($customFieldName);
-                        $customFieldData = CustomFieldData::getByName($customFieldDataName);
-                        if ($bean === null)
+                        foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
                         {
+                            $customField     = $this->unrestrictedGet($customFieldName);
                             if ($customField instanceof CustomField &&
-                                ($customField->value === null || $customField->value === '') && $setDefaults)
+                                ($customField->value === null || $customField->value === ''))
                             {
-                                $customField->value = $customFieldData->defaultValue;
+                                $customField->value = $customField->data->defaultValue;
                             }
                             elseif ($customField instanceof MultipleValuesCustomField &&
-                                 $customField->values->count() == 0 && $setDefaults && isset($customFieldData->defaultValue))
+                                 $customField->values->count() == 0 && isset($customField->data->defaultValue))
                             {
                                 $customFieldValue = new CustomFieldValue();
-                                $customFieldValue->value = $customFieldData->defaultValue;
+                                $customFieldValue->value = $customField->data->defaultValue;
                                 $customField->values->add($customFieldValue);
                             }
-                        }
-                        $customField->data = $customFieldData;
-                    }
-                }
-            }
-        }
-
-        /**
-         * Utilized for existing models, that were not originally saved with a new custom field.  This will be utilized
-         * to ensure cached models properly generate information needed by the existing model. Construct incomplete does
-         * not run on new models.  This only needs to run on custom fields that have been created after a model was
-         * created, so the model does not have a  value for the linking id in the table.
-         * (non-PHPdoc)
-         * @see RedBeanModel::constructIncomplete()
-         */
-        protected function constructIncomplete($bean)
-        {
-            assert('$bean === null || $bean instanceof RedBean_OODBBean');
-            parent::constructIncomplete($bean);
-            $metadata = $this->getMetadata();
-            foreach ($metadata as $unused => $classMetadata)
-            {
-                if (isset($classMetadata['customFields']))
-                {
-                    foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
-                    {
-                        $customFieldModelClassName = $this->getAttributeModelClassName($customFieldName);
-                        $classBean                 = $this->getClassBean($customFieldModelClassName);
-                        $columnName                = static::getForeignKeyName($customFieldModelClassName, $customFieldName);
-                        if ($classBean->{$columnName} == null)
-                        {
-                            $customField       = $this->unrestrictedGet($customFieldName);
-                            $customFieldData   = CustomFieldData::getByName($customFieldDataName);
-                            $customField->data = $customFieldData;
                         }
                     }
                 }

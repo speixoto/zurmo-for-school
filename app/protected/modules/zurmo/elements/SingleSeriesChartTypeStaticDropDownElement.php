@@ -28,14 +28,7 @@
     {
         protected function getDropDownArray()
         {
-            return array(
-                'Column2D' => Zurmo::t('ZurmoModule', '2D Vertical Bar Graph'),
-                'Column3D' => Zurmo::t('ZurmoModule', '3D Vertical Bar Graph'),
-                'Bar2D'    => Zurmo::t('ZurmoModule', '2D Horizontal Bar Graph'),
-                'Donut2D'  => Zurmo::t('ZurmoModule', '2D Donut Chart'),
-                'Pie2D'    => Zurmo::t('ZurmoModule', '2D Pie Chart'),
-                'Pie3D'    => Zurmo::t('ZurmoModule', '3D Pie Chart'),
-            );
+            return ChartRules::getSingleSeriesDataAndLabels();
         }
     }
 ?>

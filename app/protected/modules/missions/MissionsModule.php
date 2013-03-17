@@ -51,7 +51,7 @@
                 'tabMenuItems' => array(),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Mission',
+                        'label' => "eval:Zurmo::t('MissionsModule', 'Mission')",
                         'url'   => array('/missions/default/create'),
                         'right' => self::RIGHT_CREATE_MISSIONS,
                     ),

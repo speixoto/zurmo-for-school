@@ -41,7 +41,7 @@
                 {
                     LdapConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Zurmo::t('Default', 'Ldap Configuration saved successfully.')
+                        Zurmo::t('ZurmoModule', 'Ldap Configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }
@@ -93,20 +93,20 @@
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;
                     $baseDomain                = $configurationForm->baseDomain;
-                    $testConnectionResults     = LdapUtil::establishConnection($host, $port, $bindRegisteredDomain,
-                                                                               $bindPassword, $baseDomain);
-                    if ($testConnectionResults)
+                    $testConnectionResults     = LdapUtil::establishConnection($host,$port,$bindRegisteredDomain,
+                                                                               $bindPassword,$baseDomain);
+                    if($testConnectionResults)
                     {
-                       $messageContent = Zurmo::t('Default', 'Successfully Connected to Ldap Server') . "\n";
+                       $messageContent = Zurmo::t('ZurmoModule', 'Successfully Connected to Ldap Server') . "\n";
                     }
                     else
                     {
-                       $messageContent = Zurmo::t('Default', 'Unable to connect to Ldap server') . "\n";
+                       $messageContent = Zurmo::t('ZurmoModule', 'Unable to connect to Ldap server') . "\n";
                     }
                 }
                 else
                 {
-                    $messageContent = Zurmo::t('Default', 'All fields are required') . "\n";
+                    $messageContent = Zurmo::t('ZurmoModule', 'All fields are required') . "\n";
                 }
                 Yii::app()->getClientScript()->setToAjaxMode();
                 $messageView = new TestLdapConnectionView($messageContent);

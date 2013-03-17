@@ -43,12 +43,13 @@
             return array('Contact');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                              = LabelUtil::getTranslationParamsForAllModules();
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_CONTACTS] = 'Create ContactsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_CONTACTS] = 'Delete ContactsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_CONTACTS] = 'Access ContactsModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_CONTACTS] = Zurmo::t('ContactsModule', 'Create ContactsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_CONTACTS] = Zurmo::t('ContactsModule', 'Delete ContactsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_CONTACTS] = Zurmo::t('ContactsModule', 'Access ContactsModulePluralLabel Tab', $params);
             return $labels;
         }
 
@@ -71,14 +72,14 @@
                 'startingState' => 1,
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'ContactsModulePluralLabel',
+                        'label' => "eval:Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', \$translationParams)",
                         'url'   => array('/contacts/default'),
                         'right' => self::RIGHT_ACCESS_CONTACTS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'ContactsModuleSingularLabel',
+                        'label' => "eval:Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', \$translationParams)",
                         'url'   => array('/contacts/default/create'),
                         'right' => self::RIGHT_CREATE_CONTACTS,
                     ),
@@ -183,6 +184,11 @@
         }
 
         public static function hasPermissions()
+        {
+            return true;
+        }
+
+        public static function isReportable()
         {
             return true;
         }

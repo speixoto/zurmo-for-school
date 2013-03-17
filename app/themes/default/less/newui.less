@@ -1100,7 +1100,7 @@ body > .ui-autocomplete{
             margin-right:0 !important;
             .clearfix();
 	}
-        #right-side-edit-view-panel{
+        .right-side-edit-view-panel{
             top:55px;
         }
         #inline-edit-form .panel{
@@ -2141,12 +2141,12 @@ div.wide.form{
    }
 }
 
-.loading .list-preloader{
+.loading > .list-preloader{
     display:block;
 }
 
 .cgrid-view.loading{
-    .list-preloader{
+    > .list-preloader{
         display:block;
     }
 }
@@ -2246,6 +2246,11 @@ div.wide.form{
         content:"j";
         .symbly(250px);
         line-height: 60%;
+    }
+    .SavedReport .large-icon:after{
+        content:"V";
+        .symbly(320px);
+        line-height: 55%;
     }
 }
 
@@ -2727,7 +2732,7 @@ div.wide.form{
             width:100% !important;
         }
     }
-    #right-side-edit-view-panel{
+    .right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
         float:left !important;
@@ -2836,16 +2841,15 @@ div.wide.form{
     }
 }
 
-#right-side-edit-view-panel{
+.right-side-edit-view-panel{
+    width:30%;
+    float:right;
     position:absolute;
     right:15px;
     top:15px;
-}
-
-.right-side-edit-view-panel,
-#right-side-edit-view-panel{
-    width:30%;
-    float:right;
+    p{
+        line-height: 140%;
+    }
     h3{
         margin-bottom:8px;
     }
@@ -4658,4 +4662,5 @@ div.hasHalfs{
 @import 'tablet.less';
 @import 'thread-view.less';
 @import 'email.less';
+@import 'reports.less';
 @import 'media-queries.less';

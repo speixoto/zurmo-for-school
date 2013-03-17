@@ -117,6 +117,12 @@
             }
         }
 
+        protected static function getMixedInModelClassNames()
+        {
+            return array('Person');
+        }
+
+
         protected function linkBeans()
         {
             // Link the beans up the inheritance hierarchy, skipping
@@ -413,15 +419,15 @@
             return true;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'timeZone' => 'Time Zone',
-                    'title'    => 'Salutation',
-                    'primaryEmail' => 'Email',
-                    'primaryAddress' => 'Address',
+                    'fullName' =>       Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
+                    'timeZone' =>       Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
+                    'title'    =>       Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
+                    'primaryEmail' =>   Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
+                    'primaryAddress' => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
                 )
             );
         }
@@ -628,11 +634,12 @@
                     'isActive'
                 ),
                 'relations' => array(
-                    'currency'         => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'           => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'          => array(RedBeanModel::HAS_ONE,             'User'),
-                    'role'             => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes'       => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
+                    'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
+                    'manager'    => array(RedBeanModel::HAS_ONE,             'User', RedBeanModel::NOT_OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'manager'),
+                    'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
                     'emailAccounts'    => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
                     'emailSignatures'  => array(RedBeanModel::HAS_MANY,            'EmailSignature',         RedBeanModel::OWNED),
                 ),
@@ -769,7 +776,17 @@
             }
             return $emailSignature;
         }
-
+        
+        public function isDeletable()
+        {
+            $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($superAdminGroup->users->count() == 1 && $superAdminGroup->contains($this))
+            {
+                return false;
+            }
+            return parent::isDeletable();
+        }
+        
         /**
         * to change isActive attribute  properly during save
         */

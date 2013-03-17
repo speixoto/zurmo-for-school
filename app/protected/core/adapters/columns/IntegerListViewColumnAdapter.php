@@ -26,5 +26,12 @@
 
     class IntegerListViewColumnAdapter extends TextListViewColumnAdapter
     {
+        public function renderGridViewData()
+        {
+            return array(
+                'type' => 'Number',
+                'name'  => $this->attribute,
+            );
+        }
     }
 ?>

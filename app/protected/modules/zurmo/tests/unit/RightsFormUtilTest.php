@@ -433,6 +433,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ReportsModule'  => array(
+                    'RIGHT_CREATE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_CREATE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_DELETE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_ACCESS_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'SocialItemsModule'  => array(
                     'RIGHT_ACCESS_SOCIAL_ITEMS'   => array(
                         'displayName' => 'Access Social Items',
@@ -837,6 +857,26 @@
                     ),
                     'RIGHT_ACCESS_MISSIONS'   => array(
                         'displayName' => MissionsModule::RIGHT_ACCESS_MISSIONS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ReportsModule'  => array(
+                    'RIGHT_CREATE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_CREATE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_DELETE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_ACCESS_REPORTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -1247,6 +1287,26 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'ReportsModule'  => array(
+                    'RIGHT_CREATE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_CREATE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_DELETE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_ACCESS_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
                 'SocialItemsModule'  => array(
                     'RIGHT_ACCESS_SOCIAL_ITEMS'   => array(
                         'displayName' => 'Access Social Items',
@@ -1646,6 +1706,26 @@
                     ),
                     'RIGHT_ACCESS_MISSIONS'   => array(
                         'displayName' => MissionsModule::RIGHT_ACCESS_MISSIONS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'ReportsModule'  => array(
+                    'RIGHT_CREATE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_CREATE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_DELETE_REPORTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_REPORTS'   => array(
+                        'displayName' => ReportsModule::RIGHT_ACCESS_REPORTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,

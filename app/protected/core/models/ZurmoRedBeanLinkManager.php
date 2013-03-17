@@ -68,12 +68,23 @@
             }
         }
 
-        public static function getKeys( RedBean_OODBBean $bean, $typeName )
+        public static function getKeys( RedBean_OODBBean $bean, $typeName, $name = null)
         {
-            $fieldName = self::getLinkField($typeName);
-            $id = (int)$bean->$fieldName;
-            $ids = R::getCol("select id from {$typeName} where " . $bean->getMeta("type") . "_id" . " = {$bean->id}");
+            $fieldName    = self::getLinkField($typeName, $name);
+            $id           = (int)$bean->$fieldName;
+            $columnPrefix = self::resolveColumnPrefix($name);
+            $columnName   = $columnPrefix . $bean->getMeta("type") . '_id';
+
+            $ids = R::getCol("select id from {$typeName} where " . $columnName . " = {$bean->id}");
             return $ids;
+        }
+
+        public static function resolveColumnPrefix($linkName)
+        {
+            if($linkName != null)
+            {
+                return $linkName .= '_';
+            }
         }
     }
 ?>

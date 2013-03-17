@@ -48,7 +48,7 @@
                         {
                             $designerType = ModelAttributeToDesignerTypeUtil::getDesignerType(
                                                 $model, $attributeName);
-                            if ($designerType == 'Date')
+                            if ($designerType == 'Date' && !empty($value))
                             {
                                 $data[$attributeName] = DateTimeUtil::resolveValueForDateDBFormatted($value);
                             }

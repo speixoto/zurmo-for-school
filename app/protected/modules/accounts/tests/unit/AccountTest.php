@@ -50,6 +50,13 @@
             $user = UserTestHelper::createBasicUser('Steven');
             $account = new Account();
             $account->owner       = $user;
+            $account->name        = DataUtil::purifyHtml("Tom & Jerry's Account");
+            $this->assertEquals("Tom & Jerry's Account", $account->name);
+            $this->assertTrue($account->save());
+            $id = $account->id;
+            unset($account);
+            $account = Account::getById($id);
+            $this->assertEquals("Tom & Jerry's Account", $account->name);
             $account->name        = 'Test Account';
             $account->officePhone = '1234567890';
             $this->assertTrue($account->save());
@@ -58,16 +65,11 @@
             $account = Account::getById($id);
             $this->assertEquals('Test Account', $account->name);
             $this->assertEquals('1234567890',   $account->officePhone);
-
-            //test with & in Account Name
-            $account->owner       = $user;
-            $account->name        = DataUtil::purifyHtml("Tom & Jerry's Account");
-            $this->assertEquals("Tom & Jerry's Account", $account->name);
-            $this->assertTrue($account->save());
+            $this->assertSame($user, $account->owner);
             $id = $account->id;
-            unset($account);
+            $account->forget();
             $account = Account::getById($id);
-            $this->assertEquals("Tom & Jerry's Account", $account->name);
+            $this->assertSame($user, $account->owner);
         }
 
         /**
@@ -80,7 +82,6 @@
             $accounts = Account::getByName('Test Account');
             $this->assertEquals(1, count($accounts));
             $account = $accounts[0];
-
             $email = new Email();
             $email->optOut = 1;
             $email->emailAddress = 'a@a.com';
@@ -606,7 +607,6 @@
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new Account());
             $adapter->setAttributeMetadataFromForm($attributeForm);
-
             $compareData = array(
                 '747',
                 'A380',

@@ -49,10 +49,10 @@
             return $this->name;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
-                'role' => 'Parent Role',
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'role' => Zurmo::t('ZurmoModule', 'Parent Role', array(), null, $language)
             ));
         }
 

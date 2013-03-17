@@ -70,13 +70,15 @@
         {
             if (count($this->dynamicClauses) > 0)
             {
-                $formula = strtolower($this->$attribute);
-                if (!$this->validateParenthesis($formula))
+                if(null != $errorMessage = SQLOperatorUtil::
+                           resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->$attribute,
+                          count($this->dynamicClauses)))
                 {
-                    $errorContent = Zurmo::t('Core', 'Please fix your parenthesis.');
+                    $this->addError('dynamicStructure', $errorMessage);
                 }
                 else
                 {
+                    $formula = strtolower($this->dynamicStructure);
                     $formula = str_replace("(", "", $formula);
                     $formula = str_replace(")", "", $formula);
                     $arguments = preg_split("/or|and/", $formula);
@@ -96,38 +98,6 @@
                 {
                     $this->addError('dynamicStructure', Zurmo::t('Core', 'The structure is invalid. {error}', array('{error}' => $errorContent)));
                 }
-            }
-        }
-
-        /*
-         * Function for validation of parenthesis in a formula
-         */
-        protected function  validateParenthesis($formula)
-        {
-            $val = 0;
-            for ($i = 0; $i <= strlen($formula); $i++)
-            {
-                $char = substr($formula, $i, 1);
-                if ($char === "(")
-                {
-                    $val += 1;
-                }
-                elseif ($char === ")")
-                {
-                    $val -= 1;
-                }
-                if ($val < 0)
-                {
-                    return false;
-                }
-            }
-            if ($val !== 0)
-            {
-                return false;
-            }
-            else
-            {
-                return true;
             }
         }
 

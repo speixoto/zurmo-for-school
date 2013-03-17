@@ -69,8 +69,6 @@
 	}
 }
 
-
-
 /*Missions*/
 #MyMissionsForPortletView{
     > div{
@@ -95,7 +93,6 @@
             }
         }
         label:hover{
-            //++.themeBackgroundColor;
             color:#FFF;
             .radius(3px) !important;
             border:none;
@@ -105,7 +102,6 @@
             display:none;
         }
         .ui-state-active{
-            //++.themeBackgroundColor;
             color:#FFF;
             .radius(3px) !important;
             border:none;
@@ -143,4 +139,21 @@
     .mission-status{
         .smaller();
     }
+}
+
+/*Charts*/
+.missing-chart{
+	display: block;
+	text-align: center;
+	position: relative;
+	top: 50%;
+	margin-top: -34px;
+	font-size: 12px;
+	&:before{
+		 content:"j";
+        .symbly(24px);
+		margin-right:10px;
+		position: relative;
+		top: 1px;
+	}
 }

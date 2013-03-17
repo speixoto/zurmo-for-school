@@ -48,14 +48,14 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label'       => 'Back to Application',
+                        'label'       => "eval:Zurmo::t('HomeModule', 'Back to Application')",
                         'url'         => array('/home/default'),
                         'itemOptions' => array('class' => 'back-to-app-menu-item')
                     ),
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'Home',
+                        'label' => "eval:Zurmo::t('HomeModule', 'Home')",
                         'url'   => array('/home/default'),
                     ),
                 ),
@@ -63,9 +63,9 @@
             return $metadata;
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Home';
+            return Zurmo::t('HomeModule', 'Home', array(), null, $language);
         }
 
         public static function getDeleteRight()

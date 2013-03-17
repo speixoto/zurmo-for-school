@@ -165,10 +165,10 @@
             return true;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
-                'group' => 'Parent Group',
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'group' => Zurmo::t('ZurmoModule', 'Parent Group', array(), null, $language)
             ));
         }
 
@@ -350,7 +350,7 @@
                     array('name', 'required'),
                     array('name', 'unique'),
                     array('name', 'type',   'type' => 'string'),
-                    array('name', 'length', 'min'  => 3, 'max' => 64),
+                    array('name', 'length', 'min'  => 2, 'max' => 64),
                 ),
                 'defaultSortAttribute' => 'name'
             );

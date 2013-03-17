@@ -55,13 +55,13 @@
                          );
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $labels                                    = array();
-            $labels[self::RIGHT_ACCESS_CONFIGURATION]  = 'Access Email Configuration';
-            $labels[self::RIGHT_CREATE_EMAIL_MESSAGES] = 'Create Emails';
-            $labels[self::RIGHT_DELETE_EMAIL_MESSAGES] = 'Delete Emails';
-            $labels[self::RIGHT_ACCESS_EMAIL_MESSAGES] = 'Access Emails Tab';
+            $labels[self::RIGHT_ACCESS_CONFIGURATION]  = Zurmo::t('EmailMessagesModule', 'Access Email Configuration');
+            $labels[self::RIGHT_CREATE_EMAIL_MESSAGES] = Zurmo::t('EmailMessagesModule', 'Create Emails');
+            $labels[self::RIGHT_DELETE_EMAIL_MESSAGES] = Zurmo::t('EmailMessagesModule', 'Delete Emails');
+            $labels[self::RIGHT_ACCESS_EMAIL_MESSAGES] = Zurmo::t('EmailMessagesModule', 'Access Emails Tab');
             return $labels;
         }
 
@@ -72,15 +72,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Email Configuration',
-                        'descriptionLabel' => 'Manage Email Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('EmailMessagesModule', 'Email Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Email Configuration')",
                         'route'            => '/emailMessages/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Data Cleanup',
+                        'label' => "eval:Zurmo::t('EmailMessagesModule', 'Data Cleanup')",
                         'url' => array('/emailMessages/default/matchingList'),
                         'right' => self::RIGHT_ACCESS_EMAIL_MESSAGES,
                         'order' => 7,
@@ -89,15 +89,15 @@
                 'configureSubMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Email SMTP Configuration',
-                        'descriptionLabel' => 'Manage Email SMTP Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('EmailMessagesModule', 'Email SMTP Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Email SMTP Configuration')",
                         'route'            => '/emailMessages/default/configurationEditOutbound',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Email Archiving Configuration',
-                        'descriptionLabel' => 'Manage Email Archiving Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('EmailMessagesModule', 'Email Archiving Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('EmailMessagesModule', 'Manage Email Archiving Configuration')",
                         'route'            => '/emailMessages/default/configurationEditArchiving',
                         'right'            => self::RIGHT_ACCESS_CONFIGURATION,
                     ),

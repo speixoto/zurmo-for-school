@@ -39,7 +39,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $metadata = SearchFormAttributesToSearchDataProviderMetadataUtil::getMetadata($searchForm, 'anyA', 'xyz');
             $compareData = array(array('primaryA'   => array('value' => array('name' => 'xyz'))),
                                  array('secondaryA' => array('value' => array('name' => 'xyz'))));
@@ -71,7 +71,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
 
             //TEST when no value present
             $metadata = SearchFormAttributesToSearchDataProviderMetadataUtil::
@@ -197,7 +197,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
 
             //Make sure the timeZone is different than UTC for testing.
             Yii::app()->user->userModel->timeZone = 'America/Chicago';
@@ -347,7 +347,7 @@
             $super                      = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 
-            $searchForm = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
 
             //Make sure the timeZone is different than UTC for testing.
             Yii::app()->user->userModel->timeZone = 'America/Chicago';

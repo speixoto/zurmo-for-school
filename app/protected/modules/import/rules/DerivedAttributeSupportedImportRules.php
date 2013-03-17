@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Base class of import rules for models that support importing a derived attribute. An example is activites.
+     * Base class of import rules for models that support importing a derived attribute. An example is activities.
      * ActivityItems is a MANY_MANY of Items, but for import, the casted down models need to be imported such
      * as accounts, contacts, and opportunities. Extend this class for any models that require this suppoprt.  Currently
      * this only supports one real attribute on the model that has this type of setup.
