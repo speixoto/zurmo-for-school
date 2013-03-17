@@ -108,7 +108,8 @@
                             secondValueArea.hide();
                             secondValueArea.find(':input, select').prop('disabled', true);
                         }
-                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
+                        arr  = " . CJSON::encode(self::getValuesRequiringMultipleSelect()) . ";
+                        if($.inArray($(this).val(), arr) != -1)
                         {
                             var newName = $(this).parent().parent().parent().find('.value-data')
                                           .find('.flexible-drop-down').attr('name') + '[]';
@@ -130,6 +131,14 @@
                     }
                 );
             ");
+        }
+
+        public static function getValuesRequiringMultipleSelect()
+        {
+            return array(OperatorRules::TYPE_ONE_OF,
+                OperatorRules::TYPE_BECOMES_ONE_OF,
+                OperatorRules::TYPE_WAS_ONE_OF
+            );
         }
     }
 ?>
