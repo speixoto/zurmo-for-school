@@ -64,7 +64,7 @@
             $conversation     = new Conversation(false);
             $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
                 $conversation,
-                Yii::app()->user->userModel->id,
+                Yii::app()->user->userModel->getClassId('Item'),
                 array(),
                 $option
             );
@@ -83,7 +83,7 @@
                 $metadata['clauses'][2] = array(
                         'attributeName'        => 'owner',
                         'operatorType'         => 'equals',
-                        'value'                => Yii::app()->user->userModel->id
+                        'value'                => Yii::app()->user->userModel->getClassId('Item')
                     );
                 $metadata['clauses'][3] = array(
                         'attributeName'        => 'conversationParticipants',
@@ -156,7 +156,7 @@
                 }
             }
         }
-       
+
         public function hasUserReadLatest($modelId)
         {
             assert('$modelId > 0');

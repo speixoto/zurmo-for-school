@@ -87,7 +87,7 @@
                 $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
                 $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and ' . ($startingCount + 2);
             }
@@ -112,7 +112,7 @@
                 $adaptedMetadata['clauses'][$startingCount + 3] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
                 $structure .= '( ' . $startingCount . ' or ' . ($startingCount + 1) . ' ) and (' . ($startingCount + 2) . ' or ' . ($startingCount + 3) . ')';
             }
@@ -132,7 +132,7 @@
                 $adaptedMetadata['clauses'][$startingCount + 2] = array(
                     'attributeName' => 'owner',
                     'operatorType'  => 'equals',
-                    'value'         => Yii::app()->user->userModel->id
+                    'value'         => Yii::app()->user->userModel->getClassId('Item')
                 );
                 $structure .= $startingCount . ' and (' . ($startingCount + 1) . ' or ' . ($startingCount + 2) . ')';
             }

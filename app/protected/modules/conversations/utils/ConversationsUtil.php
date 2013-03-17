@@ -68,7 +68,7 @@
             assert('$user->id > 0');
             assert('is_bool($hasReadLatest)');
             $save = false;
-            if ($user == $conversation->owner)
+            if ($user->getClassId('Item') == $conversation->owner->getClassId('Item'))
             {
                 if ($conversation->ownerHasReadLatest != $hasReadLatest)
                 {
