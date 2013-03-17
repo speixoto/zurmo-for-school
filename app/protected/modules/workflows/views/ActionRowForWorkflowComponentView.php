@@ -127,21 +127,47 @@
 
         protected function makeAttributeRows()
         {
-            $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
-                                       self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
             $inputPrefixData   = $this->inputPrefixData;
             $inputPrefixData[] = ActionForWorkflowForm::ACTION_ATTRIBUTES;
-            //echo $this->model->type . 'abc'; //todo if update variant, then do all. isTypeAnUpdateVariant()
-            foreach($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
+            if($this->model->isTypeAnUpdateVariant())
+            {
+                return $this->resolveAttributeRowsForUpdateTypes($inputPrefixData);
+            }
+            else
+            {
+                return $this->resolveAttributeRowsForCreateTypes($inputPrefixData);
+            }
+        }
+
+        protected function resolveAttributeRowsForUpdateTypes($inputPrefixData)
+        {
+            assert('is_array($inputPrefixData)');
+            $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
+                                       self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
+            foreach($this->model->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
                                    $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
+                $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
+            }
+            return $attributeRows;
+        }
+
+        protected function resolveAttributeRowsForCreateTypes($inputPrefixData)
+        {
+            assert('is_array($inputPrefixData)');
+            $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
+                                       self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
+            foreach($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
+            {
+                $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
+                    $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
                 $attributeRows[self::REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             foreach($this->model->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                                   $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
+                    $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
                 $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             return $attributeRows;
@@ -150,12 +176,20 @@
         protected function renderAttributesRowsContent($attributeRows)
         {
             assert('is_array($attributeRows)');
-            $content = ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
+            $content = null;
+            if(count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0)
+            {
+                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
+            }
             foreach($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
                 $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-sub-row'), $attributeContent);
             }
-            $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
+            if(count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0 &&
+               count($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX]) > 0)
+            {
+                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
+            }
             foreach($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
                 $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-sub-row'), $attributeContent);
