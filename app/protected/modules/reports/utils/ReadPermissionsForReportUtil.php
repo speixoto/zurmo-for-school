@@ -39,7 +39,8 @@
             assert('is_string($modelClassName)');
             assert('is_string($attributeIndexPrefix) || $attributeIndexPrefix == null');
             $moduleClassName = $modelClassName::getModuleClassName();
-            if ($modelClassName::hasReadPermissionsOptimization() &&$moduleClassName != null &&
+            if (is_subclass_of($modelClassName, 'SecurableItem') &&
+                $modelClassName::hasReadPermissionsOptimization() &&$moduleClassName != null &&
                 is_subclass_of($moduleClassName, 'SecurableModule'))
             {
                 $permission = PermissionsUtil::getActualPermissionDataForReadByModuleNameForCurrentUser($moduleClassName);

@@ -129,6 +129,7 @@
          * @param $modelClassName
          * @param array $metadata - array expected to have clauses and structure elements
          * @param $joinTablesAdapter
+         * @param null | string $onTableAliasName
          * @return string
          */
         public static function makeWhere($modelClassName, array $metadata, $joinTablesAdapter, $onTableAliasName = null)
@@ -173,6 +174,7 @@
          * @param array $clauseInformation
          * @param array $where
          * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | string $onTableAliasName
          * @throws NotSupportedException
          */
         protected static function processMetadataClause($modelClassName, $clausePosition, $clauseInformation, & $where,
@@ -225,6 +227,7 @@
          * @param array $clauseInformation
          * @param array $where
          * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | string $onTableAliasName
          */
         protected static function processMetadataContainingRelatedModelDataClause($modelClassName,
                                                                                   $clausePosition,
@@ -245,7 +248,7 @@
             $builder                             = new ModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter,
                                                    $joinTablesAdapter, true);
                                                    $builder->resolveJoins($onTableAliasName,
-                                                   self::resolveCanUseFromJoins($onTableAliasName)); //todo: when we used the onTableAliasName returned value things broke in tests which i think makes sense...
+                                                   self::resolveCanUseFromJoins($onTableAliasName));
             $relationModelClassName              = $modelAttributeToDataProviderAdapter->getRelationModelClassName();
             //if there is no more relatedModelData then we know this is the end of the nested information.
             if (isset($clauseInformation['relatedModelData']['relatedModelData']))
@@ -273,6 +276,7 @@
          * @param string $modelClassName
          * @param array $concatedAttributeNames
          * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param null | string $onTableAliasName
          * @return array
          */
         protected static function makeTableAliasAndColumnNamesForNonRelatedConcatedAttributes( $modelClassName,

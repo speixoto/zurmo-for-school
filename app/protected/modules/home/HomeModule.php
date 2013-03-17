@@ -63,9 +63,9 @@
             return $metadata;
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Home';
+            return Zurmo::t('HomeModule', 'Home', array(), null, $language);
         }
 
         public static function getDeleteRight()

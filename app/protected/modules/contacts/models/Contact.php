@@ -31,13 +31,14 @@
             return ZurmoModelSearch::getModelsByFullName('Contact', $name);
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'state'         => 'Status',
-                    'account'       => 'AccountsModuleSingularLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel'
+                    'state'         => Zurmo::t('ContactsModule', 'Status',                         $params, null, $language),
+                    'account'       => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
+                    'opportunities' => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                 )
             );
         }

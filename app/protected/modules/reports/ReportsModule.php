@@ -111,14 +111,9 @@
             return self::RIGHT_DELETE_REPORTS;
         }
 
-        public static function getDefaultDataMakerClassName()
-        {
-          //  return 'ReportsDefaultDataMaker';
-        }
-
         public static function getDemoDataMakerClassName()
         {
-          //  return 'ReportsDemoDataMaker';
+            return 'ReportsDemoDataMaker';
         }
 
         /**
