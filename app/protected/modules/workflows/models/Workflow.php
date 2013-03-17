@@ -44,9 +44,13 @@
          */
         private $id;
 
+        private $isActive;
+
         private $moduleClassName;
 
         private $name;
+
+        private $order;
 
         private $triggerOn;
 
@@ -124,6 +128,28 @@
             return $this->name;
         }
 
+        public function getDescription()
+        {
+            return $this->description;
+        }
+
+        public function setDescription($description)
+        {
+            assert('is_string($description)');
+            $this->description = $description;
+        }
+
+        public function getIsActive()
+        {
+            return $this->isActive;
+        }
+
+        public function setIsActive($isActive)
+        {
+            assert('is_bool($isActive)');
+            $this->isActive = $isActive;
+        }
+
         public function getModuleClassName()
         {
             return $this->moduleClassName;
@@ -135,15 +161,15 @@
             $this->moduleClassName = $moduleClassName;
         }
 
-        public function getDescription()
+        public function getOrder()
         {
-            return $this->description;
+            return $this->order;
         }
 
-        public function setDescription($description)
+        public function setOrder($order)
         {
-            assert('is_string($description)');
-            $this->description = $description;
+            assert('is_int($order)');
+            $this->order = $order;
         }
 
         public function getTriggerOn()

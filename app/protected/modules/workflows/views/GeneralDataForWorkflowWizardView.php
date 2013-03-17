@@ -68,6 +68,8 @@
             $element           = new TriggerOnStaticDropDownElement(
                                  $this->model, 'triggerOn', $this->form);
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
+            $element           = new CheckBoxElement($this->model, 'isActive', $this->form);
+            $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
             $leftSideContent  .= '</table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $leftSideContent);
             $content          .= '</div>';

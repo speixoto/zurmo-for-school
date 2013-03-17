@@ -94,6 +94,8 @@
             $workflow->setTriggersStructure('1 AND 2');
             $workflow->setTimeTriggerAttribute('something');
             $workflow->setId(5);
+            $workflow->setIsActive(true);
+            $workflow->setOrder(6);
             $workflow->setName('my workflow rule');
             $workflow->setTriggerOn(Workflow::TRIGGER_ON_NEW);
             $workflow->setType(Workflow::TYPE_ON_SAVE);
@@ -105,6 +107,8 @@
             $this->assertEquals('1 AND 2',                $workflow->getTriggersStructure());
             $this->assertEquals('something',              $workflow->getTimeTriggerAttribute());
             $this->assertEquals(5,                        $workflow->getId());
+            $this->assertTrue  ($workflow->getIsActive());
+            $this->assertEquals(6,                        $workflow->getOrder());
             $this->assertEquals('my workflow rule',       $workflow->getName());
             $this->assertEquals(Workflow::TRIGGER_ON_NEW, $workflow->getTriggerOne());
             $this->assertEquals(Workflow::TYPE_ON_SAVE,   $workflow->getType());

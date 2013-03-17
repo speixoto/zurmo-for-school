@@ -110,6 +110,7 @@
         protected function setCommonAttributes(WorkflowWizardForm $formModel)
         {
             $formModel->id                   = $this->workflow->getId();
+            $formModel->isActive             = $this->workflow->getIsActive();
             $formModel->description          = $this->workflow->getDescription();
             $formModel->moduleClassName      = $this->workflow->getModuleClassName();
             $formModel->name                 = $this->workflow->getName();

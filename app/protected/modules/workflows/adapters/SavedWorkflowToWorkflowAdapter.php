@@ -34,8 +34,10 @@
                 $workflow->setId((int)$savedWorkflow->id);
             }
             $workflow->setDescription($savedWorkflow->description);
+            $workflow->setIsActive((bool)$savedWorkflow->isActive);
             $workflow->setModuleClassName($savedWorkflow->moduleClassName);
             $workflow->setName($savedWorkflow->name);
+            $workflow->setOrder((int)$savedWorkflow->order);
             $workflow->setType($savedWorkflow->type);
             $workflow->setTriggerOn($savedWorkflow->triggerOn);
             if($savedWorkflow->serializedData != null)
@@ -68,8 +70,10 @@
         public static function resolveWorkflowToSavedWorkflow(Workflow $workflow, SavedWorkflow $savedWorkflow)
         {
             $savedWorkflow->description     = $workflow->getDescription();
+            $savedWorkflow->isActive        = $workflow->getIsActive();
             $savedWorkflow->moduleClassName = $workflow->getModuleClassName();
             $savedWorkflow->name            = $workflow->getName();
+            $savedWorkflow->order           = $workflow->getOrder();
             $savedWorkflow->triggerOn       = $workflow->getTriggerOn();
             $savedWorkflow->type            = $workflow->getType();
             $data = array();

@@ -52,20 +52,24 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'description',
+                    'isActive',
                     'moduleClassName',
                     'name',
+                    'order',
                     'serializedData',
                     'triggerOn',
                     'type'
                 ),
                 'rules' => array(
                     array('description',         'type',   'type' => 'string'),
+                    array('isActive',            'boolean'),
                     array('moduleClassName',     'required'),
                     array('moduleClassName',     'type',   'type' => 'string'),
                     array('moduleClassName',     'length', 'max'  => 64),
                     array('name',                'required'),
                     array('name',                'type',   'type' => 'string'),
                     array('name',                'length', 'max'  => 64),
+                    array('order',               'type',    'type' => 'integer'),
                     array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
                     array('type',       		 'required'),

@@ -34,6 +34,10 @@
             {
                 $workflow->setDescription($data['description']);
             }
+            if(isset($data['isActive']))
+            {
+                $workflow->setIsActive((bool)$data['isActive']);
+            }
             if(isset($data['moduleClassName']))
             {
                 $workflow->setModuleClassName($data['moduleClassName']);

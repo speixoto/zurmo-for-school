@@ -38,27 +38,29 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testResolveReportToSavedWorkflow()
+        public function testResolveWorkflowToSavedWorkflow()
         {
             $workflow      = new Workflow();
             $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
             $workflow->setModuleClassName('WorkflowsTestModule');
             $workflow->setName           ('myFirstReport');
             $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW);
-            $workflow->setType           (Report::TYPE_ROWS_AND_COLUMNS);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
             $workflow->setTriggersStructure('1 and 2 or 3');
 
             $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'string';
             $trigger->value                       = 'aValue';
-            $trigger->operator                    = 'Equals';
+            $trigger->operator                    = 'equals';
             $workflow->addTrigger($trigger);
 
             $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'currencyValue';
             $trigger->value                       = 'aValue';
             $trigger->secondValue                 = 'bValue';
-            $trigger->operator                    = 'Between';
+            $trigger->operator                    = 'between';
             $trigger->currencyIdForValue          = '4';
             $workflow->addTrigger($trigger);
 
@@ -84,13 +86,15 @@
             $savedReport = new SavedWorkflow();
             $this->assertNull($savedReport->serializedData);
 
-            SavedReportToReportAdapter::resolveReportToSavedReport($workflow, $savedReport);
+            SavedWorkflowToWorkflowAdapter::resolveReportToSavedReport($workflow, $savedReport);
 
             $this->assertEquals('WorkflowsTestModule',         $savedReport->moduleClassName);
+            $this->assertTrue($savedReport->isActive);
             $this->assertEquals('myFirstReport',               $savedReport->name);
             $this->assertEquals('aDescription',                $savedReport->description);
+            $this->assertEquals(5,                             $savedReport->order);
             $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedReport->triggerOn);
-            $this->assertEquals(Report::TYPE_ROWS_AND_COLUMNS, $savedReport->type);
+            $this->assertEquals(Workflow::TYPE_ON_SAVE,        $savedReport->type);
             $this->assertEquals('1 and 2 or 3',                $workflow->getTriggersStructure());
             $compareData = array('Triggers' => array(
                 array(
@@ -100,7 +104,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'string',
-                    'operator'					   => 'Equals',
+                    'operator'					   => 'equals',
                 ),
                 array(
                     'currencyIdForValue'           => '4',
@@ -109,7 +113,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'currencyValue',
-                    'operator'					   => 'Between',
+                    'operator'					   => 'between',
                 ),
                 array(
                     'currencyIdForValue'           => null,
@@ -156,6 +160,8 @@
             $this->assertEquals    	      ('WorkflowsTestModule',         $workflow->getModuleClassName());
             $this->assertEquals           ('myFirstReport',               $workflow->getName());
             $this->assertEquals           ('aDescription',                $workflow->getDescription());
+            $this->assertTrue             ($workflow->getIsActive());
+            $this->assertEquals           (5,                             $workflow->getOrder());
             $this->assertEquals           (Workflow::TRIGGER_ON_NEW,      $workflow->getTriggerOn());
             $this->assertEquals           (Report::TYPE_ROWS_AND_COLUMNS, $workflow->getType());
             $this->assertEquals           ('1 and 2 or 3',                $workflow->getTriggersStructure());
@@ -168,7 +174,7 @@
             $this->assertNull             ($triggers[0]->secondValue);
             $this->assertNull             ($triggers[0]->stringifiedModelForValue);
             $this->assertNull             ($triggers[0]->valueType);
-            $this->assertEquals           ('Equals',     $triggers[0]->operator);
+            $this->assertEquals           ('equals',     $triggers[0]->operator);
 
             $this->assertEquals           (true,             $triggers[1]->availableAtRunTime);
             $this->assertEquals           ('aValue',         $triggers[1]->value);
@@ -177,7 +183,7 @@
             $this->assertEquals           ('bValue',         $triggers[1]->secondValue);
             $this->assertNull             ($triggers[1]->stringifiedModelForValue);
             $this->assertNull             ($triggers[1]->valueType);
-            $this->assertEquals           ('Between',         $triggers[1]->operator);
+            $this->assertEquals           ('between',         $triggers[1]->operator);
 
             $this->assertEquals           (false,            $triggers[2]->availableAtRunTime);
             $this->assertEquals           ('aValue',         $triggers[2]->value);

@@ -43,7 +43,15 @@
 
         const GENERAL_DATA_VALIDATION_SCENARIO      = 'ValidateForGeneralData';
 
+        /**
+         * @var string
+         */
         public $description;
+
+        /**
+         * @var boolean
+         */
+        public $isActive;
 
         /**
          * @var string
@@ -102,6 +110,7 @@
         {
             return array(
                 array('description', 	      'type',              'type' => 'string'),
+                array('isActive',             'boolean'),
                 array('name', 			      'type',        	   'type' => 'string'),
                 array('name', 			      'length',   		   'max' => 64),
                 array('name', 			      'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),

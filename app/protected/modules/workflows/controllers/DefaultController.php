@@ -130,6 +130,7 @@
             assert('is_string($type)');
             $workflow         = new Workflow();
             $workflow->setType($type);
+            $workflow->setIsActive(true);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
             $view             = new WorkflowsPageView(ZurmoDefaultViewUtil::
                                                     makeViewWithBreadcrumbsForCurrentUser(
@@ -163,6 +164,7 @@
             $workflow                  = null;
             $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
 
+
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $model                     =  $workflowToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
@@ -170,6 +172,7 @@
                 $this->actionValidate($postData, $model);
             }
             SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            SavedWorkflowUtil::resolveOrder($savedWorkflow);
             if($savedWorkflow->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
