@@ -538,7 +538,7 @@
         /**
          * @depends testGetAvailableAttributesForOnSaveTriggers
          */
-        public function testGetAvailableAttributesForOnSaveActionAttributes()
+        public function testGetAvailableAttributesForOnSaveCreateActionAttributes()
         {
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsTestWorkflowRules();
@@ -625,7 +625,92 @@
         }
 
         /**
-         * @depends testGetAvailableAttributesForOnSaveActionAttributes
+         * @depends testGetAvailableAttributesForOnSaveCreateActionAttributes
+         */
+        public function testGetAvailableAttributesForOnSaveUpdateActionAttributes()
+        {
+            $model              = new WorkflowModelTestItem();
+            $rules              = new WorkflowsTestWorkflowRules();
+            $workflow             = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
+
+            $attributes = $adapter->getAllAttributesForActions();
+            $this->assertEquals(41, count($attributes));
+            $compareData        = array('label' => 'Last Name');
+            $this->assertEquals($compareData, $attributes['lastName']);
+            $compareData        = array('label' => 'String');
+            $this->assertEquals($compareData, $attributes['string']);
+            $compareData        = array('label' => 'Owner');
+            $this->assertEquals($compareData, $attributes['owner__User']);
+            $compareData        = array('label' => 'First Name');
+            $this->assertEquals($compareData, $attributes['firstName']);
+            $compareData        = array('label' => 'Boolean');
+            $this->assertEquals($compareData, $attributes['boolean']);
+            $compareData        = array('label' => 'Date');
+            $this->assertEquals($compareData, $attributes['date']);
+            $compareData        = array('label' => 'Date Time');
+            $this->assertEquals($compareData, $attributes['dateTime']);
+            $compareData        = array('label' => 'Float');
+            $this->assertEquals($compareData, $attributes['float']);
+            $compareData        = array('label' => 'Integer');
+            $this->assertEquals($compareData, $attributes['integer']);
+            $compareData        = array('label' => 'Phone');
+            $this->assertEquals($compareData, $attributes['phone']);
+            $compareData        = array('label' => 'Text Area');
+            $this->assertEquals($compareData, $attributes['textArea']);
+            $compareData        = array('label' => 'Url');
+            $this->assertEquals($compareData, $attributes['url']);
+            $compareData        = array('label' => 'Drop Down');
+            $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
+            $compareData        = array('label' => 'Radio Drop Down');
+            $this->assertEquals($compareData, $attributes['radioDropDown']);
+            $compareData        = array('label' => 'Multi Drop Down');
+            $this->assertEquals($compareData, $attributes['multiDropDown']);
+            $compareData        = array('label' => 'Tag Cloud');
+            $this->assertEquals($compareData, $attributes['tagCloud']);
+            $compareData        = array('label' => 'Used As Attribute');
+            $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            //Currency is treated as a relation workflowed as an attribute just like drop downs
+            $compareData        = array('label' => 'Currency Value');
+            $this->assertEquals($compareData, $attributes['currencyValue']);
+            //likeContactState is a relation workflowed as attribute.
+            //Makes sure the label is using the proper label translation via attributeLabels
+            $compareData        = array('label' => 'A name for a state');
+            $this->assertEquals($compareData, $attributes['likeContactState']);
+            //Add in owned primaryAddress, and primaryEmail, and secondaryEmail attributes
+            $compareData        = array('label' => 'Primary Address >> City');
+            $this->assertEquals($compareData, $attributes['primaryAddress___city']);
+            $compareData        = array('label' => 'Primary Address >> Country');
+            $this->assertEquals($compareData, $attributes['primaryAddress___country']);
+            $compareData        = array('label' => 'Primary Address >> Postal Code');
+            $this->assertEquals($compareData, $attributes['primaryAddress___postalCode']);
+            $compareData        = array('label' => 'Primary Address >> State');
+            $this->assertEquals($compareData, $attributes['primaryAddress___state']);
+            $compareData        = array('label' => 'Primary Address >> Street 1');
+            $this->assertEquals($compareData, $attributes['primaryAddress___street1']);
+            $compareData        = array('label' => 'Primary Address >> Street 2');
+            $this->assertEquals($compareData, $attributes['primaryAddress___street2']);
+            //Email fields
+            $compareData        = array('label' => 'Primary Email >> Email Address');
+            $this->assertEquals($compareData, $attributes['primaryEmail___emailAddress']);
+            $compareData        = array('label' => 'Primary Email >> Opt Out');
+            $this->assertEquals($compareData, $attributes['primaryEmail___optOut']);
+            $compareData        = array('label' => 'Primary Email >> Is Invalid');
+            $this->assertEquals($compareData, $attributes['primaryEmail___isInvalid']);
+            $compareData        = array('label' => 'Secondary Email >> Email Address');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___emailAddress']);
+            $compareData        = array('label' => 'Secondary Email >> Opt Out');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___optOut']);
+            $compareData        = array('label' => 'Secondary Email >> Is Invalid');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___isInvalid']);
+        }
+
+        /**
+         * @depends testGetAvailableAttributesForOnSaveUpdateActionAttributes
          */
         public function testGetAllAvailableOnSaveRelationsForActionTypeRelation()
         {
@@ -886,7 +971,7 @@
         /**
          * @depends testGetAvailableAttributesForByTimeTimeTrigger
          */
-        public function testGetAvailableAttributesForByTimeActionAttributes()
+        public function testGetAvailableAttributesForByTimeCreateActionAttributes()
         {
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsTestWorkflowRules();
@@ -973,7 +1058,92 @@
         }
 
         /**
-         * @depends testGetAvailableAttributesForByTimeActionAttributes
+         * @depends testGetAvailableAttributesForByTimeCreateActionAttributes
+         */
+        public function testGetAvailableAttributesForByTimeUpdateActionAttributes()
+        {
+            $model              = new WorkflowModelTestItem();
+            $rules              = new WorkflowsTestWorkflowRules();
+            $workflow             = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToOnSaveWorkflowAdapter($model, $rules, $workflow->getType());
+
+            $attributes = $adapter->getAllAttributesForActions();
+            $this->assertEquals(41, count($attributes));
+            $compareData        = array('label' => 'Last Name');
+            $this->assertEquals($compareData, $attributes['lastName']);
+            $compareData        = array('label' => 'String');
+            $this->assertEquals($compareData, $attributes['string']);
+            $compareData        = array('label' => 'Owner');
+            $this->assertEquals($compareData, $attributes['owner__User']);
+            $compareData        = array('label' => 'First Name');
+            $this->assertEquals($compareData, $attributes['firstName']);
+            $compareData        = array('label' => 'Boolean');
+            $this->assertEquals($compareData, $attributes['boolean']);
+            $compareData        = array('label' => 'Date');
+            $this->assertEquals($compareData, $attributes['date']);
+            $compareData        = array('label' => 'Date Time');
+            $this->assertEquals($compareData, $attributes['dateTime']);
+            $compareData        = array('label' => 'Float');
+            $this->assertEquals($compareData, $attributes['float']);
+            $compareData        = array('label' => 'Integer');
+            $this->assertEquals($compareData, $attributes['integer']);
+            $compareData        = array('label' => 'Phone');
+            $this->assertEquals($compareData, $attributes['phone']);
+            $compareData        = array('label' => 'Text Area');
+            $this->assertEquals($compareData, $attributes['textArea']);
+            $compareData        = array('label' => 'Url');
+            $this->assertEquals($compareData, $attributes['url']);
+            $compareData        = array('label' => 'Drop Down');
+            $this->assertEquals($compareData, $attributes['dropDown']);
+            $compareData        = array('label' => 'Drop Down 2');
+            $this->assertEquals($compareData, $attributes['dropDown2']);
+            $compareData        = array('label' => 'Radio Drop Down');
+            $this->assertEquals($compareData, $attributes['radioDropDown']);
+            $compareData        = array('label' => 'Multi Drop Down');
+            $this->assertEquals($compareData, $attributes['multiDropDown']);
+            $compareData        = array('label' => 'Tag Cloud');
+            $this->assertEquals($compareData, $attributes['tagCloud']);
+            $compareData        = array('label' => 'Used As Attribute');
+            $this->assertEquals($compareData, $attributes['usedAsAttribute']);
+            //Currency is treated as a relation workflowed as an attribute just like drop downs
+            $compareData        = array('label' => 'Currency Value');
+            $this->assertEquals($compareData, $attributes['currencyValue']);
+            //likeContactState is a relation workflowed as attribute.
+            //Makes sure the label is using the proper label translation via attributeLabels
+            $compareData        = array('label' => 'A name for a state');
+            $this->assertEquals($compareData, $attributes['likeContactState']);
+            //Add in owned primaryAddress, and primaryEmail, and secondaryEmail attributes
+            $compareData        = array('label' => 'Primary Address >> City');
+            $this->assertEquals($compareData, $attributes['primaryAddress___city']);
+            $compareData        = array('label' => 'Primary Address >> Country');
+            $this->assertEquals($compareData, $attributes['primaryAddress___country']);
+            $compareData        = array('label' => 'Primary Address >> Postal Code');
+            $this->assertEquals($compareData, $attributes['primaryAddress___postalCode']);
+            $compareData        = array('label' => 'Primary Address >> State');
+            $this->assertEquals($compareData, $attributes['primaryAddress___state']);
+            $compareData        = array('label' => 'Primary Address >> Street 1');
+            $this->assertEquals($compareData, $attributes['primaryAddress___street1']);
+            $compareData        = array('label' => 'Primary Address >> Street 2');
+            $this->assertEquals($compareData, $attributes['primaryAddress___street2']);
+            //Email fields
+            $compareData        = array('label' => 'Primary Email >> Email Address');
+            $this->assertEquals($compareData, $attributes['primaryEmail___emailAddress']);
+            $compareData        = array('label' => 'Primary Email >> Opt Out');
+            $this->assertEquals($compareData, $attributes['primaryEmail___optOut']);
+            $compareData        = array('label' => 'Primary Email >> Is Invalid');
+            $this->assertEquals($compareData, $attributes['primaryEmail___isInvalid']);
+            $compareData        = array('label' => 'Secondary Email >> Email Address');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___emailAddress']);
+            $compareData        = array('label' => 'Secondary Email >> Opt Out');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___optOut']);
+            $compareData        = array('label' => 'Secondary Email >> Is Invalid');
+            $this->assertEquals($compareData, $attributes['secondaryEmail___isInvalid']);
+        }
+
+        /**
+         * @depends testGetAvailableAttributesForByTimeUpdateActionAttributes
          */
         public function testGetAllAvailableByTimeRelationsForActionTypeRelation()
         {

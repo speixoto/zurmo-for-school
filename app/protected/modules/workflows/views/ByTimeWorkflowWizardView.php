@@ -149,7 +149,7 @@
                     {
                         $('#" . static::getValidationScenarioInputId() . "').val('" . WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                         $('#TriggersForWorkflowWizardView').show();
-                        $('#EmailAlertsForWorkflowWizardView').hide();
+                        $('#ActionsForWorkflowWizardView').hide();
                         return false;
                     }
                 );

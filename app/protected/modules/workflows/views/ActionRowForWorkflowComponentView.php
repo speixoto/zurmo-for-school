@@ -131,6 +131,7 @@
                                        self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
             $inputPrefixData   = $this->inputPrefixData;
             $inputPrefixData[] = ActionForWorkflowForm::ACTION_ATTRIBUTES;
+            //echo $this->model->type . 'abc'; //todo if update variant, then do all. isTypeAnUpdateVariant()
             foreach($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,

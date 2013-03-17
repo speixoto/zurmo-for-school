@@ -108,7 +108,7 @@
                             secondValueArea.hide();
                             secondValueArea.find(':input, select').prop('disabled', true);
                         }
-                        arr  = " . CJSON::encode(self::getValuesRequiringMultipleSelect()) . ";
+                        arr  = " . CJSON::encode(self::getValuesRequiringMultiSelect()) . ";
                         if($.inArray($(this).val(), arr) != -1)
                         {
                             var newName = $(this).parent().parent().parent().find('.value-data')
@@ -133,7 +133,7 @@
             ");
         }
 
-        public static function getValuesRequiringMultipleSelect()
+        public static function getValuesRequiringMultiSelect()
         {
             return array(OperatorRules::TYPE_ONE_OF,
                 OperatorRules::TYPE_BECOMES_ONE_OF,

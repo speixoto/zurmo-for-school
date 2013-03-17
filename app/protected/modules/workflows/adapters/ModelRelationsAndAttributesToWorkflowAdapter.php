@@ -298,7 +298,20 @@
         }
 
         /**
-         * Override and implement in children classes
+         * Used by update actions since there is no difference between required and non-required.
+         * @return sorted array
+         */
+        public function getAllAttributesForActions()
+        {
+            $attributes       = $this->resolveAttributesForActionsOrTimeTriggerData(true, true);
+            $attributes       = array_merge($attributes,
+                                $this->resolveDynamicallyDerivedAttributesForActionsOrTimeTriggerData(true, true));
+            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
+            return $sortedAttributes;
+        }
+
+        /**
+         * @return sorted array
          */
         public function getRequiredAttributesForActions()
         {
@@ -310,7 +323,7 @@
         }
 
         /**
-         * Override and implement in children classes
+         * @return sorted array
          */
         public function getNonRequiredAttributesForActions()
         {

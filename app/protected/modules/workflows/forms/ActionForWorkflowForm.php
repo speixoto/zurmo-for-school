@@ -161,6 +161,27 @@
             return $this->_rowKey;
         }
 
+        public function isTypeAnUpdateVariant()
+        {
+            if($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_UPDATE_RELATED)
+            {
+                return true;
+            }
+            elseif($this->type == self::TYPE_CREATE || $this->type == self::TYPE_CREATE_RELATED)
+            {
+                return false;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        public function resolveAllActionAttributeFormsAndLabelsAndSort()
+        {
+            return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getAllAttributesForActions');
+        }
+
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
             return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getRequiredAttributesForActions');
@@ -515,7 +536,9 @@
 
         protected function resolveActionAttributeFormsAndLabelsAndSortByMethod($methodToCall)
         {
-            assert('$methodToCall == "getNonRequiredAttributesForActions" || $methodToCall == "getRequiredAttributesForActions"');
+            assert('$methodToCall == "getNonRequiredAttributesForActions" ||
+                    $methodToCall == "getRequiredAttributesForActions" ||
+                    $methodToCall == "getAllAttributesForActions"');
             $modelClassName                   = $this->getModelClassNameAndResolveForRelations();
             $attributeFormsIndexedByAttribute = array();
             $adapter = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),

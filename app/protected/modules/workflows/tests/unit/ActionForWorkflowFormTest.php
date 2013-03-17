@@ -208,6 +208,15 @@
         /**
          * @depends testResolveAllRequiredActionAttributeFormsAndLabelsAndSort
          */
+        public function testResolveAllActionAttributeFormsAndLabelsAndSort()
+        {
+            //todo: fix this and adjust because this is for update, the other required and nonRequired are only for create
+            $this->fail();
+        }
+
+        /**
+         * @depends testResolveAllActionAttributeFormsAndLabelsAndSort
+         */
         public function testResolveAllNonRequiredActionAttributeFormsAndLabelsAndSort()
         {
             $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);

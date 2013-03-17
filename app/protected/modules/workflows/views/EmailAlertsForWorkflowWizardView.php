@@ -124,8 +124,6 @@
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
                                            ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $droppableAttributesContent);
-            $content                    .= ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
-                                           ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $this->getZeroComponentsContent());
             return $content;
         }
 
