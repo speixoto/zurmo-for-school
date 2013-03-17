@@ -136,7 +136,6 @@
                                                 'listPageSize', get_class(Yii::app()->controller->module));
             $metadataByOption           = $this->getMetadataFilteredByOption($option);
             $metadataByOptionAndFilter  = MashableUtil::mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
-            print_r($metadataByOptionAndFilter);
             $metadata                   = MashableUtil::mergeMetada($metadataByOptionAndFilter, $this->getSearchAttributeData($searchTerm));
 
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
