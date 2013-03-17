@@ -34,9 +34,9 @@
             return array('configuration', 'zurmo');
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'RSS Reader';
+            return Zurmo::t('RssReaderModule', 'RSS Reader', array(), null, $language);
         }
     }
 ?>

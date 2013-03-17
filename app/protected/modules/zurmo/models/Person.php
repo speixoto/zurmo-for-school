@@ -57,12 +57,12 @@
             return join(' ' , $fullName);
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'title'    => 'Salutation',
+                    'fullName' => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'title'    => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
                 )
             );
         }

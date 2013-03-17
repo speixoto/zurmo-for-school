@@ -207,7 +207,7 @@
                     $messagesInMessageFile = require($messageFileName);
                     if (!is_array($messagesInMessageFile))
                     {
-                        $problems[] = "$shortFileName is not a valid message file.\n";
+                        $problems[] = "$messageFileName is not a valid message file.\n";
                         continue;
                     }
                     $messagesInMessageFile = array_keys($messagesInMessageFile);
@@ -334,15 +334,14 @@
                             !$modelReflectionClass->isAbstract())
                         {
                            $modelAttributes    = $modelClassName::getAttributeNames();
-                           $untranslatedLabels = $modelClassName::untranslatedAttributeLabels();
+                           $translatedLabels = $modelClassName::getTranslatedAttributeLabels(Yii::app()->language);
                            foreach ($modelAttributes as $attributeName)
                            {
                                 $attributeLabel = $modelClassName::getAnAttributeLabel($attributeName);
-                                if (isset($untranslatedLabels[$attributeName]))
+                                if (isset($translatedLabels[$attributeName]))
                                 {
-                                    $translatedLabel = Zurmo::t('Core', $untranslatedLabels[$attributeName],
-                                                                         LabelUtil::getTranslationParamsForAllModules());
-                                    if ($untranslatedLabels[$attributeName] == $attributeLabel ||
+                                    $translatedLabel = $translatedLabels[$attributeName];
+                                    if ($translatedLabels[$attributeName] == $attributeLabel ||
                                        $translatedLabel != $attributeLabel)
                                     {
                                         $fileNamesToCategoriesToMessages[$entry]['Default'][] = $attributeLabel;
@@ -350,7 +349,7 @@
                                     else
                                     {
                                         $fileNamesToCategoriesToMessages[$entry]['Default'][] =
-                                        $untranslatedLabels[$attributeName];
+                                        $translatedLabels[$attributeName];
                                     }
                                 }
                                 else
@@ -486,8 +485,8 @@
     function getSecurableModuleRightsPoliciesAndAuditEventLabels($moduleClassName)
     {
         assert('is_string($moduleClassName)');
-        $rightsNames     = $moduleClassName::getUntranslatedRightsLabels();
-        $policiesNames   = $moduleClassName::getUntranslatedPolicyLabels();
+        $rightsNames     = $moduleClassName::getTranslatedRightsLabels();
+        $policiesNames   = $moduleClassName::getTranslatedPolicyLabels();
         $auditEventNames = $moduleClassName::getAuditEventNames();
         $labelsData      = array_merge($rightsNames, $policiesNames);
         return             array_merge($labelsData, $auditEventNames);
