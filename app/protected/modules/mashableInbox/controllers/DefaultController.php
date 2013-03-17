@@ -202,10 +202,6 @@
                                                 true,
                                                 $modelClassNamesAndSearchAttributeMetadataForMashableInbox,
                                                 array('pagination' => array('pageSize' => $this->pageSize)));
-            $paginationParams
-                = array(
-
-                );
             $listView
                 = new MashableInboxListView($this->getId(),
                                             $this->getModule()->getId(),
@@ -214,7 +210,7 @@
                                             array(),
                                             null,
                                             array(
-                                                'paginationParams' => array_merge(GetUtil::getData(), $paginationParams)
+                                                'paginationParams' => GetUtil::getData()
                                             ));
             return $listView;
         }

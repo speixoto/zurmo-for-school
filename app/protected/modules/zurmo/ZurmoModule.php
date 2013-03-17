@@ -144,7 +144,7 @@
                     'accounts',
                     'leads',
                     'contacts',
-                    'opportunities'
+                    'opportunities',
                     'reports',
                 )
             );

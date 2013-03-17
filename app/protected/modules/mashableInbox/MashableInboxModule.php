@@ -45,9 +45,9 @@
             );
             return $metadata;
         }
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Inbox';
+            return Zurmo::t('MashableInboxModule', 'Inbox', array(), null, $language);
         }
 
     }

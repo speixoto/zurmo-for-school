@@ -134,9 +134,12 @@
             $orderBy                    = $this->getMachableInboxOrderByAttributeName();
             $pageSize                   = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                                 'listPageSize', get_class(Yii::app()->controller->module));
-            $metadataByOption           = $this->getMetadataFilteredByOption($option);
-            $metadataByOptionAndFilter  = MashableUtil::mergeMetada($metadataByOption, $this->getMetadataFilteredByFilteredBy($filteredBy));
-            $metadata                   = MashableUtil::mergeMetada($metadataByOptionAndFilter, $this->getSearchAttributeData($searchTerm));
+            $metadataByOptionAndFilter  = MashableUtil::mergeMetada(
+                                                    $this->getMetadataFilteredByOption($option),
+                                                    $this->getMetadataFilteredByFilteredBy($filteredBy));
+            $metadata                   = MashableUtil::mergeMetada(
+                                                    $metadataByOptionAndFilter,
+                                                    $this->getSearchAttributeData($searchTerm));
 
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
