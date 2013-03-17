@@ -28,9 +28,16 @@
     {
         const RIGHT_ACCESS_DESIGNER = 'Access Designer Tool';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                              = array();
+            $labels[self::RIGHT_ACCESS_DESIGNER] = Zurmo::t('DesignerModule', 'Access Designer Tool');
+            return $labels;
+        }
+
         public function getDependencies()
         {
-           return array('zurmo');
+            return array('zurmo');
         }
 
         public static function getAdminTabMenuItems($user = null)

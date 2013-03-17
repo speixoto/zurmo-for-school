@@ -71,11 +71,13 @@
         public static function getTranslatedRightsLabels()
         {
             $labels                                = array();
-            $labels[self::RIGHT_LOGIN_VIA_WEB]     = Zurmo::t('UsersModule', 'Sign in Via Web');
-            $labels[self::RIGHT_LOGIN_VIA_MOBILE]  = Zurmo::t('UsersModule', 'Sign in Via Mobile');
-            $labels[self::RIGHT_LOGIN_VIA_WEB_API] = Zurmo::t('UsersModule', 'Sign in Via Web API');
-            $labels[self::RIGHT_CREATE_USERS]      = Zurmo::t('UsersModule', 'Create Users');
-            $labels[self::RIGHT_ACCESS_USERS]      = Zurmo::t('UsersModule', 'Access Users Tab');
+
+            $labels[self::RIGHT_CHANGE_USER_PASSWORDS]  = Zurmo::t('UsersModule', 'Change User Passwords');
+            $labels[self::RIGHT_LOGIN_VIA_WEB]          = Zurmo::t('UsersModule', 'Sign in Via Web');
+            $labels[self::RIGHT_LOGIN_VIA_MOBILE]       = Zurmo::t('UsersModule', 'Sign in Via Mobile');
+            $labels[self::RIGHT_LOGIN_VIA_WEB_API]      = Zurmo::t('UsersModule', 'Sign in Via Web API');
+            $labels[self::RIGHT_CREATE_USERS]           = Zurmo::t('UsersModule', 'Create Users');
+            $labels[self::RIGHT_ACCESS_USERS]           = Zurmo::t('UsersModule', 'Access Users Tab');
             return $labels;
         }
 

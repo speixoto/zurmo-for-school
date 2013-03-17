@@ -32,12 +32,19 @@
     {
         const RIGHT_ACCESS_JOBSMANAGER = 'Access Jobs Manager Tab';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                              = array();
+            $labels[self::RIGHT_ACCESS_JOBSMANAGER] = Zurmo::t('JobsManagerModule', 'Access Jobs Manager Tab');
+            return $labels;
+        }
+
         public function getDependencies()
         {
            return array('notifications', 'zurmo');
         }
 
-            public static function getDefaultMetadata()
+        public static function getDefaultMetadata()
         {
             $metadata = array();
             $metadata['global'] = array(
