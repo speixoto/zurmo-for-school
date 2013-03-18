@@ -286,7 +286,9 @@ function makeSmallLoadingSpinner(state, context){
 }
 
 function makeLargeLoadingSpinner(state, context){
-    $(context).append('<span class="big-spinner"></span>');
+    if($(context).find('.big-spinner').length === 0){
+        $(context).append('<span class="big-spinner"></span>');
+    }
     var style = {
         lines  : 10,
         length : 6,
