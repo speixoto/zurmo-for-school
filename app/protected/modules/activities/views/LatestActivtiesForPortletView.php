@@ -161,7 +161,7 @@
                 $persistantUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
                     $this->params['portletId'],
                     $persistantUserConfigItem);
-                if(isset($persistantUserConfigItemValue))
+                if (isset($persistantUserConfigItemValue))
                 {
                     $latestActivitiesConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
                 }
@@ -309,11 +309,10 @@
         {
             return true;
         }
-        /**/
 
         public static function processBeforeDelete($portletId)
         {
-            foreach(static::$persistantUserPortletConfigs as $persistantUserConfigItem)
+            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
             {
                 $property = static::resolvePropertyName($persistantUserConfigItem);
                 if (method_exists(get_called_class(), $property) && static::$property())

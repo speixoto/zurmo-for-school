@@ -33,7 +33,7 @@
                 return array(
                     'name' => $this->attribute,
                     'type' => 'raw',
-                    'value' => $this->view->getLinkString('$data->' . $this->attribute),
+                    'value' => $this->view->getLinkString('$data->' . $this->attribute, $this->attribute),
                 );
             }
             else

@@ -26,10 +26,12 @@
 
     class A extends RedBeanModel
     {
+        private static $testingIssetAndEmpty;
+
         public static function getByName($name)
         {
             assert('is_string($name)');
-            assert('$name != ""');            
+            assert('$name != ""');
             $bean = R::findOne('a', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
@@ -75,6 +77,30 @@
         public static function getModuleClassName()
         {
             return 'TestModule';
+        }
+
+        public static function setIssetAndEmptyAsEmpty()
+        {
+            self::$testingIssetAndEmpty[get_called_class()] = array();
+        }
+
+        public static function setIssetAndEmptyWithString()
+        {
+            self::$testingIssetAndEmpty[get_called_class()] = 'string';
+        }
+
+        public static function setIssetAndEmptyWithNull()
+        {
+            unset(self::$testingIssetAndEmpty[get_called_class()]);
+        }
+
+        public static function isPrivateStaticIsset()
+        {
+            if(!isset(self::$testingIssetAndEmpty[get_called_class()]))
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

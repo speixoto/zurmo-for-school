@@ -34,6 +34,11 @@
         public $differentOperatorB;
         public $concatedName;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'CCC';
+        }
+
         public function __construct(RedBeanModel $model)
         {
             parent::__construct($model);

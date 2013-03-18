@@ -34,7 +34,7 @@
                 'name' => 'lastName',
                 'header' => Zurmo::t('Core', 'Name'),
                 'type' => 'raw',
-                'value' => $this->view->getLinkString('$data'),
+                'value' => $this->view->getLinkString('$data', $this->attribute),
                 );
             }
             else

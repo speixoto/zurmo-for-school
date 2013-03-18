@@ -24,6 +24,9 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Base model for working with a conversation
+     */
     class Conversation extends OwnedSecurableItem implements MashableActivityInterface
     {
         public static function getMashableActivityRulesType()
@@ -98,7 +101,7 @@
             );
             $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Conversation');
-            $where  = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
+            $where             = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
             return self::getCount($joinTablesAdapter, $where, null, true);
         }
 
@@ -130,10 +133,13 @@
                     'isClosed'
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'conversationItems'        => array(RedBeanModel::MANY_MANY, 'Item'),
-                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant', RedBeanModel::OWNED),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant',
+                                                        RedBeanModel::OWNED),
+                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description',        'type',    'type' => 'string'),

@@ -55,22 +55,18 @@
                 $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
             }
 
-            if (count($models) == 0)
+            if (count($models) == 1)
             {
-                throw new NotFoundException();
-            }
-            elseif (count($models) > 1)
-            {
-                return NotSupportedException();
+                return $models[0];
             }
             else
             {
-                return $models[0];
+                throw new NotFoundException();
             }
         }
 
         /**
-         * Get informations from email message, for example sender, recipient, subject...
+         * Get information from email message, for example sender, recipient, subject...
          * It is quite different for forwarded messages, because we need to parse email
          * body to get those information.
          * @param ImapMessage $emailMessage
@@ -120,26 +116,28 @@
                 $emailRecipients = array(
                     array(
                         'email' => $emailMessage->fromEmail,
-                        'name'  => $emailMessage->fromName
+                        'name'  => $emailMessage->fromName,
+                        'type'  => EmailMessageRecipient::TYPE_TO
                     )
                 );
             }
             else
             {
                 // Zurmo user sent email, so recipients are in 'To' and 'CC' fields
-                $emailRecipients = $emailMessage->to;
-
                 foreach ($emailMessage->to as $key => $value)
                 {
+                    $emailMessage->to[$key]['type'] = EmailMessageRecipient::TYPE_TO;
                     if ($value['email'] == Yii::app()->imap->imapUsername)
                     {
                         unset($emailMessage->to[$key]);
                     }
                 }
+                $emailRecipients = $emailMessage->to;
                 if (!empty($emailMessage->cc))
                 {
                     foreach ($emailMessage->cc as $key => $value)
                     {
+                        $emailMessage->cc[$key]['type'] = EmailMessageRecipient::TYPE_CC;
                         if ($value['email'] == Yii::app()->imap->imapUsername)
                         {
                             unset($emailMessage->cc[$key]);
@@ -213,12 +211,10 @@
             $userCanAccessContacts = RightsUtil::canUserAccessModule('ContactsModule', $user);
             $userCanAccessLeads    = RightsUtil::canUserAccessModule('LeadsModule',    $user);
             $userCanAccessAccounts = RightsUtil::canUserAccessModule('AccountsModule', $user);
-            $userCanAccessUsers    = RightsUtil::canUserAccessModule('UsersModule',    $user);
             return self::getPersonsAndAccountsByEmailAddress($emailAddress,
-                                                                 $userCanAccessContacts,
-                                                                 $userCanAccessLeads,
-                                                                 $userCanAccessAccounts,
-                                                                 $userCanAccessUsers);
+                                                             $userCanAccessContacts,
+                                                             $userCanAccessLeads,
+                                                             $userCanAccessAccounts);
         }
 
         /**
@@ -227,20 +223,17 @@
          * @param boolean $userCanAccessContacts
          * @param boolean $userCanAccessLeads
          * @param boolean $userCanAccessAccounts
-         * @param boolean $userCanAccessUsers
          * @return Contact || Account || User || NULL || array of objects
          */
         public static function getPersonsAndAccountsByEmailAddress($emailAddress,
                                                                    $userCanAccessContacts  = false,
                                                                    $userCanAccessLeads     = false,
-                                                                   $userCanAccessAccounts  = false,
-                                                                   $userCanAccessUsers     = false)
+                                                                   $userCanAccessAccounts  = false)
         {
             assert('is_string($emailAddress)');
             assert('is_bool($userCanAccessContacts)');
             assert('is_bool($userCanAccessLeads)');
             assert('is_bool($userCanAccessAccounts)');
-            assert('is_bool($userCanAccessUsers)');
             $personsAndAccounts    = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
             {
@@ -254,11 +247,10 @@
                 $personsAndAccounts = array_merge($personsAndAccounts,
                                                   AccountSearch::getAccountsByAnyEmailAddress($emailAddress, 1));
             }
-            if ($userCanAccessUsers)
-            {
-                $personsAndAccounts = array_merge($personsAndAccounts,
-                                                  UserSearch::getUsersByEmailAddress($emailAddress));
-            }
+
+            $personsAndAccounts = array_merge($personsAndAccounts,
+                                              UserSearch::getUsersByEmailAddress($emailAddress));
+
             return $personsAndAccounts;
         }
 
@@ -268,20 +260,18 @@
          * @param boolean $userCanAccessContacts
          * @param boolean $userCanAccessLeads
          * @param boolean $userCanAccessAccounts
-         * @param boolean $userCanAccessUsers
          * @return Contact || Account || User || NULL
          */
         public static function resolvePersonOrAccountByEmailAddress($emailAddress,
                                                                       $userCanAccessContacts = false,
                                                                       $userCanAccessLeads = false,
-                                                                      $userCanAccessAccounts = false,
-                                                                      $userCanAccessUsers = false)
+                                                                      $userCanAccessAccounts = false)
         {
             assert('is_string($emailAddress)');
             assert('is_bool($userCanAccessContacts)');
             assert('is_bool($userCanAccessLeads)');
             assert('is_bool($userCanAccessAccounts)');
-            assert('is_bool($userCanAccessUsers)');
+
             $personOrAccount   = null;
             $contactsOrLeads   = array();
             if ($userCanAccessContacts || $userCanAccessLeads)
@@ -310,11 +300,7 @@
                 }
                 else
                 {
-                    $users = array();
-                    if ($userCanAccessUsers)
-                    {
-                        $users = UserSearch::getUsersByEmailAddress($emailAddress);
-                    }
+                    $users = UserSearch::getUsersByEmailAddress($emailAddress);
                     if (count($users))
                     {
                         $personOrAccount = $users[0];

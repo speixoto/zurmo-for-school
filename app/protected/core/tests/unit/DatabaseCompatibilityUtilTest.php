@@ -54,6 +54,12 @@
             $this->databaseBackupTestFile = INSTANCE_ROOT . '/protected/runtime/databaseBackupTest.sql';
         }
 
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
         public function setup()
         {
             RedBeanDatabase::close();
@@ -399,7 +405,7 @@
                                                                                              $this->temporaryDatabaseUsername,
                                                                                              $this->temporaryDatabasePassword,
                                                                                              $this->temporaryDatabasePort);
-            $this->assertGreaterThan(0, $maxSpRecursionDepth);
+            $this->assertGreaterThanOrEqual(0, $maxSpRecursionDepth);
         }
 
         public function testGetDatabaseThreadStackValue()
@@ -708,6 +714,28 @@
                     // Do nothing
                 }
             }
+        }
+
+        public function testMakeTimeZoneAdjustmentContent()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->assertNull(DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+            $tempTimeZone                         = Yii::app()->user->userModel->timeZone;
+
+            Yii::app()->user->userModel->timeZone = 'America/Chicago';
+            //Deal with daylight savings time.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            $this->assertTrue($offsetInSeconds == -18000 || $offsetInSeconds == -21600);
+
+            $compareContent                       = ' - INTERVAL ' . abs($offsetInSeconds) . ' SECOND';
+            $this->assertEquals($compareContent, DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+
+            Yii::app()->user->userModel->timeZone = 'Asia/Tokyo';
+            $compareContent                       = ' + INTERVAL 32400 SECOND';
+            $this->assertEquals($compareContent, DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent());
+
+            Yii::app()->user->userModel->timeZone = $tempTimeZone;
         }
     }
 ?>

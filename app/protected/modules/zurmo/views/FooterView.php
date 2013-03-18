@@ -28,7 +28,48 @@
     {
         protected function renderContent()
         {
-            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2012. All Rights reserved.');
+			//Do not remove the Zurmo Copyright notice.
+            $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
+            $copyrightHtml = Yii::t('Default', 'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.');
+            return $userInterfaceTypeSelectorHtml . $copyrightHtml;
+        }
+
+        /**
+         * Render section for selection user interface type.
+         * Show only if user is using mobile and tablet devices.
+         */
+        protected function renderUserInterfaceTypeSelector()
+        {
+            $content = '';
+            $htmlOptions = array('class' => 'ui-chooser');
+            if (!Yii::app()->userInterface->isResolvedToDesktop())
+            {
+                if (Yii::app()->userInterface->isDesktop())
+                {
+                    if (Yii::app()->userInterface->isResolvedToMobile())
+                    {
+                        $content = ZurmoHtml::link(Yii::t('Default', 'Show mobile'),
+                                                   Yii::app()->createUrl('zurmo/default/userInterface',
+                                                                         array('userInterface' => UserInterface::MOBILE)),
+                                                   $htmlOptions);
+                    }
+                    elseif (Yii::app()->userInterface->isResolvedToTablet())
+                    {
+                        $content = ZurmoHtml::link(Yii::t('Default', 'Show tablet'),
+                                                   Yii::app()->createUrl('zurmo/default/userInterface',
+                                                                         array('userInterface' => UserInterface::TABLET)),
+                                                   $htmlOptions);
+                    }
+                }
+                else
+                {
+                    $content = ZurmoHtml::link(Yii::t('Default', 'Full Site'),
+                                               Yii::app()->createUrl('zurmo/default/userInterface',
+                                                                     array('userInterface' => UserInterface::DESKTOP)),
+                                               $htmlOptions);
+                }
+            }
+            return $content;
         }
     }
 ?>

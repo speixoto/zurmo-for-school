@@ -27,117 +27,41 @@
     /**
      * Class to render link to mass delete from a listview.
      */
-    class MassDeleteLinkActionElement extends LinkActionElement
+    class MassDeleteLinkActionElement extends MassActionLinkActionElement
     {
         public function getActionType()
         {
             return 'MassDelete';
         }
 
-       public function render()
+        protected function getSelectedMenuNameSuffix()
         {
-            $gridId         = $this->getListViewGridId();
-            $selectedName   = $gridId . '-deleteMassActionSelected';
-            $allName        = $gridId . '-deleteMassActionAll';
-            Yii::app()->clientScript->registerScript($gridId . '-listViewDeleteMassActionSelected', "
-                $('#" . $gridId . "-deleteMassActionSelected').unbind('click.action');
-                $('#" . $gridId . "-deleteMassActionSelected').bind('click.action', function()
-                    {
-                        if ($('#" . $gridId . "-selectedIds').val() == '')
-                        {
-                            alert('" . Zurmo::t('Core', 'You must select at least one record') . "');
-                            $(this).val('');
-                            return false;
-                        }
-                        var options =
-                        {
-                            url     : $.fn.yiiGridView.getUrl('" . $gridId . "'),
-                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
-                        }
-                        if (options.url.split( '?' ).length == 2)
-                        {
-                            options.url = options.baseUrl +'/'+ 'massDelete' + '?' + options.url.split( '?' )[1];
-                        }
-                        else
-                        {
-                            options.url = options.baseUrl +'/'+ 'massDelete';
-                        }
-                        addListViewSelectedIdsToUrl('" . $gridId . "', options);
-                        var data = '' + 'massDelete=' + '&selectAll=&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-            ");
-            Yii::app()->clientScript->registerScript($gridId . '-listViewDeleteMassActionAll', "
-                $('#" . $gridId . "-deleteMassActionAll').unbind('click.action');
-                $('#" . $gridId . "-deleteMassActionAll').bind('click.action', function()
-                    {
-                        var options =
-                        {
-                            url     : $.fn.yiiGridView.getUrl('" . $gridId . "'),
-                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
-                        }
-                        if (options.url.split( '?' ).length == 2)
-                        {
-                            options.url = options.baseUrl +'/'+ 'massDelete' + '?' + options.url.split( '?' )[1];
-                        }
-                        else
-                        {
-                            options.url = options.baseUrl +'/'+ 'massDelete';
-                        }
-                        var data = '' + 'massDelete=' + '&selectAll=1&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-            ");
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                                    'items' => array(
-                                        array(  'label'   => Zurmo::t('Core', 'Selected'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $selectedName)),
-                                        array(  'label'   => Zurmo::t('Core', 'All Results'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $allName))));
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ListViewDeleteMassActionMenu'),
-                'items'                   => array($menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return '-deleteMassActionSelected';
+        }
+
+        protected function getAllMenuNameSuffix()
+        {
+            return '-deleteMassActionAll';
+        }
+
+        protected function getActionName()
+        {
+            return 'massDelete';
+        }
+
+        protected function getScriptNameSuffixForSelectedMenu()
+        {
+            return '-listViewDeleteMassActionSelected';
+        }
+
+        protected function getScriptNameSuffixForAllMenu()
+        {
+            return '-listViewDeleteMassActionAll';
         }
 
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Delete');
-        }
-
-        protected function getListViewGridId()
-        {
-            if (!isset($this->params['listViewGridId']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['listViewGridId'];
-        }
-
-        protected function getPageVarName()
-        {
-            if (!isset($this->params['pageVarName']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['pageVarName'];
-        }
-
-        protected function getDefaultRoute()
-        {
-            return $this->moduleId . '/' . $this->controllerId . '/massdelete/';
         }
     }
 ?>

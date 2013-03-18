@@ -39,6 +39,17 @@
         const AUDIT_EVENT_ITEM_DELETED            = 'Item Deleted';
         const AUDIT_EVENT_ITEM_VIEWED             = 'Item Viewed';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                                             = array();
+            $labels[self::RIGHT_ACCESS_ADMINISTRATION]          = Zurmo::t('ZurmoModule', 'Access Administration Tab');
+            $labels[self::RIGHT_BULK_WRITE]                     = Zurmo::t('ZurmoModule', 'Mass Update');
+            $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
+            $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
+            $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('ZurmoModule', 'Mass Delete');
+            return $labels;
+        }
+
         public function canDisable()
         {
             return false;
@@ -68,63 +79,63 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Global Configuration',
-                        'descriptionLabel' => 'Manage Global Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Global Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Global Configuration')",
                         'route'            => '/zurmo/default/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Currency Configuration',
-                        'descriptionLabel' => 'Manage Currency Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Currency Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Currency Configuration')",
                         'route'            => '/zurmo/currency/configurationList',
                         'right'            => self::RIGHT_ACCESS_CURRENCY_CONFIGURATION,
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Languages',
-                        'descriptionLabel' => 'Manage Active Languages',
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Languages')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Active Languages')",
                         'route'            => '/zurmo/language/configurationList',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Developer Tools',
-                        'descriptionLabel' => 'Access Developer Tools',
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Developer Tools')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Access Developer Tools')",
                         'route'            => '/zurmo/development/',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Authentication Configuration',
-                        'descriptionLabel' => 'Manage Authentication Configuration',
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Authentication Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Authentication Configuration')",
                         'route'            => '/zurmo/authentication/configurationEdit',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Settings',
+                        'label' => "eval:Zurmo::t('ZurmoModule', 'Settings')",
                         'url' => array('/configuration'),
                         'right' => self::RIGHT_ACCESS_ADMINISTRATION,
                         'order' => 6,
                     ),
                     array(
-                        'label' => 'Forums',
+                        'label' => "eval:Zurmo::t('ZurmoModule', 'Forums')",
                         'url' => 'http://zurmo.org/forums/',
-                        'order' => 8,
+                        'order' => 9,
                     ),
                     array(
-                        'label' => 'About Zurmo',
+                        'label' => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
                         'url' => array('/zurmo/default/about'),
-                        'order' => 9,
+                        'order' => 10,
                     ),
                 ),
                 'configureSubMenuItems' => array(
                     array(
                         'category'         => self::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Ldap Configuration',
-                        'descriptionLabel' => 'Manage Ldap Authentication',
+                        'titleLabel'       => "eval:Zurmo::t('ZurmoModule', 'Ldap Configuration')",
+                        'descriptionLabel' => "eval:Zurmo::t('ZurmoModule', 'Manage Ldap Authentication')",
                         'route'            => '/zurmo/ldap/configurationEditLdap',
                         'right'            => self::RIGHT_ACCESS_GLOBAL_CONFIGURATION,
                     ),
@@ -144,7 +155,8 @@
                     'leads',
                     'contacts',
                     'opportunities',
-                    'conversations'
+                    'conversations',
+                    'reports',
                 )
             );
             return $metadata;

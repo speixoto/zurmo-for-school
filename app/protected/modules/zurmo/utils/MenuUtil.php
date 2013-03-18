@@ -100,6 +100,7 @@
                         $moduleMenuItemsInOrder[$order]             = self::resolveMenuItemsForLanguageLocalization(
                                                                       $moduleMenuItems, get_class($module));
                         $moduleMenuItemsInOrder[$order][0]['moduleId'] = $moduleId;
+                        $moduleMenuItemsInOrder[$order][0]['itemOptions'] = array('id' => $moduleId);
                     }
                 }
             }
@@ -446,7 +447,7 @@
             {
                 foreach ($labelElements as $labelElement)
                 {
-                    $menuItems[$itemKey][$labelElement] = Zurmo::t('ZurmoModule', $item[$labelElement], $translationParams);
+                    MetadataUtil::resolveEvaluateSubString($menuItems[$itemKey][$labelElement], 'translationParams', $translationParams);
                 }
                 if (isset($item['items']))
                 {

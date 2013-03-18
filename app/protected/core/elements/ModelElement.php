@@ -71,6 +71,13 @@
          */
         protected static $nonEditableActionType = 'Details';
 
+
+        public function setIdAttributeId($idAttributeId)
+        {
+            assert('is_string($idAttributeId)');
+            $this->idAttributeId = $idAttributeId;
+        }
+
         protected function renderControlEditable()
         {
             assert('$this->model->{$this->attribute} instanceof RedBeanModel');
@@ -144,21 +151,30 @@
                     'appendTo' => 'js:$("#' . $this->getIdForTextField() . '").parent().parent()',
                     'search'   => 'js: function(event, ui)
                                   {
-                                      var context = $("#' . $this->getIdForTextField() . '").parent();
-                                      $(".model-select-icon", context).fadeOut(100);
-                                      makeToggableSpinner(context, true);
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeOut(100);
+                                       makeOrRemoveTogglableSpinner(true, context);
                                   }',
                     'open'     => 'js: function(event, ui)
                                   {
                                        var context = $("#' . $this->getIdForTextField() . '").parent();
                                        $(".model-select-icon", context).fadeIn(250);
-                                       makeToggableSpinner(context, false);
+                                       makeOrRemoveTogglableSpinner(false, context);
                                   }',
                     'close'    => 'js: function(event, ui)
                                   {
-                                      var context = $("#' . $this->getIdForTextField() . '").parent();
-                                      $(".model-select-icon", context).fadeIn(250);
-                                      makeToggableSpinner(context, false);
+                                       var context = $("#' . $this->getIdForTextField() . '").parent();
+                                       $(".model-select-icon", context).fadeIn(250);
+                                       makeOrRemoveTogglableSpinner(false, context);
+                                  }',
+                    'response' => 'js: function(event, ui)
+                                  {
+                                       if (ui.content.length < 1)
+                                       {
+                                           var context = $("#' . $this->getIdForTextField() . '").parent();
+                                           $(".model-select-icon", context).fadeIn(250);
+                                           makeOrRemoveTogglableSpinner(false, context);
+                                       }
                                   }'
                 ),
                 'htmlOptions' => array(
@@ -331,11 +347,15 @@
          */
         protected function getModalTransferInformation()
         {
-            return array(
+            return array_merge(array(
                     'sourceIdFieldId' => $this->getIdForHiddenField(),
-                    'sourceNameFieldId' => $this->getIdForTextField(),
-                    'sourceModelId'     => $this->model->id,
-            );
+                    'sourceNameFieldId' => $this->getIdForTextField()
+            ), $this->resolveSourceModelIdForModalTransferInformation());
+        }
+
+        protected function resolveSourceModelIdForModalTransferInformation()
+        {
+            return array('sourceModelId' => $this->model->id);
         }
 
         protected function getSelectLinkStartingStyle()

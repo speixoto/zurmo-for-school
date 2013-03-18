@@ -71,6 +71,7 @@
                                     'port'                              => '565',
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
+                                    'security'                          => 'ssl',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
             $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
             $this->assertEquals('Email configuration saved successfully.', Yii::app()->user->getFlash('notification'));
@@ -109,7 +110,7 @@
             $this->assertEquals('0',     Yii::app()->imap->imapSSL);
             $this->assertEquals('INBOX',     Yii::app()->imap->imapFolder);
         }
-        
+
         public function testSuperUserModifyEmailArchivingConfigurationImapWithValidation()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -122,14 +123,14 @@
                                     'imapPort'                          => '',
                                     'imapSSL'                           => '0',
                                     'imapFolder'                        => '')));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditArchiving'); 
-            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);            
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditArchiving');
+            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Username cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Password cannot be blank.') === false);
             $this->assertFalse(strpos($content, 'Port cannot be blank.') === false);
-            $this->assertFalse(strpos($content, 'Folder cannot be blank.') === false);                                 
+            $this->assertFalse(strpos($content, 'Folder cannot be blank.') === false);
         }
-        
+
         public function testSuperUserModifyEmailSMTPConfigurationOutboundWithValidation()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -143,9 +144,9 @@
                                     'username'                          => 'myuser',
                                     'password'                          => 'apassword',
                                     'userIdOfUserToSendNotificationsAs' => $super2->id)));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditOutbound'); 
-            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);            
-            $this->assertFalse(strpos($content, 'Port cannot be blank.') === false);                              
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailMessages/default/configurationEditOutbound');
+            $this->assertFalse(strpos($content, 'Host cannot be blank.') === false);
+            $this->assertFalse(strpos($content, 'Port cannot be blank.') === false);
         }
     }
 ?>

@@ -28,10 +28,8 @@
      * Base class for showing in the user interface when there are no models yet visible for a particular user
      * in a given module.
      */
-    abstract class ZeroModelsYetView extends View
+    abstract class ZeroModelsYetView extends SplashView
     {
-        public $cssClasses = array('splash-view');
-
         protected $controllerId;
 
         protected $moduleId;
@@ -39,8 +37,6 @@
         protected $actionId;
 
         abstract protected function getCreateLinkDisplayLabel();
-
-        abstract protected function getMessageContent();
 
         public function __construct($controllerId, $moduleId, $modelClassName)
         {

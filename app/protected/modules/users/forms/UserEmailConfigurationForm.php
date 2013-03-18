@@ -33,6 +33,11 @@
 
         public $emailSignatureHtmlContent;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'EmailAccount';
+        }
+
         public function __construct(EmailAccount $model)
         {
             $this->model = $model;

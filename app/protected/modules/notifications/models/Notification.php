@@ -104,8 +104,9 @@
                     'type',
                 ),
                 'relations' => array(
-                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage'),
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage', RedBeanModel::NOT_OWNED),
+                    'owner' =>               array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner',  'required'),

@@ -44,8 +44,10 @@ class TestDateTimeUserModel extends RedBeanModel
                 array('modifiedByUser'  , 'type', 'type' => 'integer')
             ),
             'relations' => array(
-                'createdByUser'  => array(RedBeanModel::HAS_ONE, 'User'),
-                'modifiedByUser' => array(RedBeanModel::HAS_ONE, 'User'),
+                'createdByUser'  => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'createdByUser'),
+                'modifiedByUser' => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'modifiedByUser'),
             ),
         );
         return $metadata;

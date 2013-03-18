@@ -118,8 +118,8 @@
 
         public static function setDefaultPermissionGroupSetting(User $user, $value, $defaultPermissionSetting)
         {
-            assert('is_null($value) || is_int($value)');
-            assert('is_null($defaultPermissionSetting) || is_int($defaultPermissionSetting)');
+            assert('$value === null || is_int($value)');
+            assert('$defaultPermissionSetting === null || is_int($defaultPermissionSetting)');
             if ($defaultPermissionSetting == UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP)
             {
                 ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',

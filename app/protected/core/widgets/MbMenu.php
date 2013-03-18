@@ -189,7 +189,7 @@
                 {
                     $htmlOptions = array();
                 }
-                $resolvedLabelContent = '<span>' . $item['label'] .
+                $resolvedLabelContent = '<em></em><span>' . $item['label'] .
                                         static::resolveAndGetSpanAndDynamicLabelContent($item) . '</span>';
                 if ((isset($item['ajaxLinkOptions'])))
                 {

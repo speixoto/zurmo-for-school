@@ -31,6 +31,11 @@
     {
         public $recipientsData;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'EmailMessage';
+        }
+
         public function __construct(EmailMessage $model)
         {
             $this->model = $model;

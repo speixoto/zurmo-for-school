@@ -83,8 +83,8 @@
             $this->assertEquals(preg_match('%<input id="Account_explicitReadWriteModelPermissions_type_1" value="2"'.
                 ' checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
                 $content), 1);
-            $this->assertEquals(preg_match('%<option value="'.$group->id.
-                '" selected="selected">'.$group->name.'</option>%', $content), 1);
+            $this->assertEquals(preg_match('%<option value="' . $group->id .
+                '" selected="selected">' . $group->name . '</option>%', $content), 1);
         }
 
         /**
@@ -108,7 +108,7 @@
                     'checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
                 $content), 1);
             // test that no dropdown item is selected
-            $this->assertEquals(preg_match('%<option value="(\d+)" selected="selected">(.*)</option>%', $content), 0);
+            $this->assertEquals(preg_match('%<option value="(\d+)" selected="selected">(.*)</option>%', $content), 0); // Not Coding Standard
         }
 
         public function testGlobalDefaultsLoadedOnCreateInAbsenceOfUserDefaultPermissions()
@@ -122,7 +122,7 @@
                     'checked="checked" type="radio" name="Account\[explicitReadWriteModelPermissions\]\[type\]" />%',
                 $content), 1);
             // test that no downdown item is selected
-            $this->assertEquals(preg_match('%<option value="(\d+)" selected="selected">(.*)</option>%', $content), 0);
+            $this->assertEquals(preg_match('%<option value="(\d+)" selected="selected">(.*)</option>%', $content), 0); // Not Coding Standard
         }
     }
 ?>

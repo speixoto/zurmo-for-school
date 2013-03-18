@@ -40,14 +40,22 @@
 
             $adapter = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'email');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('email') => 'a@a.com');
+            $compareData = array('a@a.com');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('email'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'email');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('email') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('email'));
             $this->assertEquals($compareData, $data);
         }
     }

@@ -23,54 +23,54 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-     
+
      /**
      * Helper class to create a connection object and test connection for Ldap.
      */
     class LdapUtil
-    {        
+    {
         /**
          * Given an host and port, a LdapConnection is created and returned.
          * @param string $host
          * @param string $port
          * @return bool $ldapConnection
          */
-        public static function makeConnection($host,$port)
-        {  
+        public static function makeConnection($host, $port)
+        {
             assert('is_string($host)');
-            assert('is_int($port)');        
-            $ldapConnection = ldap_connect($host,$port);            
-            LDAP_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
-            LDAP_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0); 
-            return $ldapConnection;                         
+            assert('is_int($port)');
+            $ldapConnection = ldap_connect($host, $port);
+            ldap_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
+            ldap_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0);
+            return $ldapConnection;
         }
-        
+
         /**
          * Send a connection Request.  Can use to determine if the Ldap settings are configured correctly.
          * @param ZurmoAuthenticationHelper $zurmoAuthenticationHelper
          * @param server $host
          * @param username $bindRegisteredDomain
-         * @param password $bindPassword, 
-         * @param base domain $baseDomain		 
-         */ 
+         * @param password $bindPassword,
+         * @param base domain $baseDomain
+         */
         public static function establishConnection($host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
-        {	
+        {
             assert('is_string($host)');
             assert('is_int($port)');
             assert('is_string($bindRegisteredDomain)');
             assert('is_string($bindPassword)');
-            assert('is_string($baseDomain)');            			
-            $ldapConnection = self::makeConnection($host,$port);
+            assert('is_string($baseDomain)');
+            $ldapConnection = self::makeConnection($host, $port);
             //checking user type
-            $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; //for admin access
+            $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; // Not Coding Standard
             // bind with appropriate dn to give update access
-            if (@ldap_bind($ldapConnection, $bindRegisteredDomain, $bindPassword))  
+            if (@ldap_bind($ldapConnection, $bindRegisteredDomain, $bindPassword))
             {
                return $ldapConnection;
-            } 
-            else 
-            { 
+            }
+            else
+            {
                return false;
-            }                			   				
+            }
         }
     }

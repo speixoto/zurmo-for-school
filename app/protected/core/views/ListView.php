@@ -27,7 +27,7 @@
     /**
      * The base View for a module's list view.
      */
-    abstract class ListView extends ModelView
+    abstract class ListView extends ModelView implements ListViewInterface
     {
         protected $controllerId;
 
@@ -72,7 +72,7 @@
 
         /**
          * Constructs a list view specifying the controller as
-         * well as the model that will have its details displayed.
+         * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
          */
         public function __construct(
             $controllerId,
@@ -305,11 +305,11 @@
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); }';
             }
         }
 
@@ -411,7 +411,7 @@
             return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
         }
 
-        public function getLinkString($attributeString)
+        public function getLinkString($attributeString, $attribute)
         {
             $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';

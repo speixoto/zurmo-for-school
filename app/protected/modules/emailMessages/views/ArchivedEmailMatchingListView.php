@@ -80,7 +80,7 @@
         {
             return array();
         }
-        
+
         /**
          * Override so the pagination link works properly.
          * (non-PHPdoc)

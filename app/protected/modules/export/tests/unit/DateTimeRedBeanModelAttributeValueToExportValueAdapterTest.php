@@ -39,14 +39,22 @@
             $model->dateTime = '2002-04-03 02:00:43';
             $adapter = new DateTimeRedBeanModelAttributeValueToExportValueAdapter($model, 'dateTime');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('dateTime') => '2002-04-03 02:00:43');
+            $compareData = array('2002-04-03 02:00:43');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('dateTime'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new DateTimeRedBeanModelAttributeValueToExportValueAdapter($model, 'dateTime');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('dateTime') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('dateTime'));
             $this->assertEquals($compareData, $data);
         }
     }

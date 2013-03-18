@@ -39,14 +39,22 @@
             $model->float = '1.32';
             $adapter = new DecimalRedBeanModelAttributeValueToExportValueAdapter($model, 'float');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('float') => 1.32);
+            $compareData = array(1.32);
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('float'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new DecimalRedBeanModelAttributeValueToExportValueAdapter($model, 'float');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('float') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('float'));
             $this->assertEquals($compareData, $data);
         }
     }

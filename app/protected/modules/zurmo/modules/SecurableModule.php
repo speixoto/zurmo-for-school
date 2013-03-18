@@ -43,26 +43,9 @@
             return $rightNames;
         }
 
-        public static function getUntranslatedRightsLabels()
-        {
-            $labels = array();
-            $rightsNames = self::getRightsNames();
-            foreach ($rightsNames as $name)
-            {
-                $labels[$name] = $name;
-            }
-            return $labels;
-        }
-
         public static function getTranslatedRightsLabels()
         {
-            $moduleTranslations = LabelUtil::getTranslationParamsForAllModules();
-            $labels             = array();
-            foreach (static::getUntranslatedRightsLabels() as $name => $label)
-            {
-                $labels[$name] = Zurmo::t('ZurmoModule', $label, $moduleTranslations);
-            }
-            return $labels;
+            return array();
         }
 
         /**
@@ -82,26 +65,9 @@
             return $policyNames;
         }
 
-        public static function getUntranslatedPolicyLabels()
-        {
-            $labels = array();
-            $policyNames = self::getPolicyNames();
-            foreach ($policyNames as $name)
-            {
-                $labels[$name] = Zurmo::t('ZurmoModule', $name);
-            }
-            return $labels;
-        }
-
         public static function getTranslatedPolicyLabels()
         {
-            $moduleTranslations = LabelUtil::getTranslationParamsForAllModules();
-            $labels             = array();
-            foreach (static::getUntranslatedPolicyLabels() as $name => $label)
-            {
-                $labels[$name] = Zurmo::t('ZurmoModule', $label, $moduleTranslations);
-            }
-            return $labels;
+            return array();
         }
 
         public static function getAuditEventNames()

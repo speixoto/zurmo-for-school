@@ -67,7 +67,7 @@
         protected function assertModelIsValid()
         {
             assert('$this->model instanceof ModelForm || $this->model instanceof ConfigurableMetadataModel ||
-                    $this->model instanceof SecurableItem');
+                    $this->model instanceof SecurableItem || $this->model instanceof CFormModel');
             assert('$this->getExplicitReadWriteModelPermissions() instanceof ExplicitReadWriteModelPermissions');
             assert('$this->getExplicitReadWriteModelPermissions()->getReadOnlyPermitablesCount() == 0');
             assert('$this->getExplicitReadWriteModelPermissions()->getReadWritePermitablesCount() >= 0');

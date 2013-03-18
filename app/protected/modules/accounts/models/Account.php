@@ -31,13 +31,14 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'account'       => 'Parent AccountsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel',
+                    'account'       => Zurmo::t('AccountsModule', 'Parent AccountsModuleSingularLabel',  $params, null, $language),
+                    'contacts'      => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',           $params, null, $language),
+                    'opportunities' => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                 )
             );
         }
@@ -102,14 +103,25 @@
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'Account'),
                     'accounts'         => array(RedBeanModel::HAS_MANY,             'Account'),
-                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
+                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'billingAddress'),
                     'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
                     'opportunities'    => array(RedBeanModel::HAS_MANY,             'Opportunity'),
-                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED),
-                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'shippingAddress'),
+                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'type'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('annualRevenue', 'type',    'type' => 'float'),
@@ -119,9 +131,9 @@
                     array('name',          'type',    'type' => 'string'),
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                     array('officePhone',   'type',    'type' => 'string'),
-                    array('officePhone',   'length',  'min'  => 1, 'max' => 20),
+                    array('officePhone',   'length',  'min'  => 1, 'max' => 24),
                     array('officeFax',     'type',    'type' => 'string'),
-                    array('officeFax',     'length',  'min'  => 1, 'max' => 20),
+                    array('officeFax',     'length',  'min'  => 1, 'max' => 24),
                     array('website',       'url'),
                 ),
                 'elements' => array(

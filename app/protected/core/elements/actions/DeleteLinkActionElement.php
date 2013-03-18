@@ -42,6 +42,7 @@
             {
                 $htmlOptions = $this->getHtmlOptions();
                 $htmlOptions = $this->resolveConfirmAlertInHtmlOptions($htmlOptions);
+                $htmlOptions = $this->resolveSimpleLinkClassHtmlOptions($htmlOptions);
                 return ZurmoHtml::link(
                     $this->resolveLabelAndWrap(),
                     $this->route,
@@ -76,6 +77,19 @@
 
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
+            return $htmlOptions;
+        }
+
+        protected function resolveSimpleLinkClassHtmlOptions($htmlOptions)
+        {
+            if(isset($htmlOptions['class']))
+            {
+                $htmlOptions['class'] .= ' simple-link';
+            }
+            else
+            {
+                $htmlOptions['class'] = 'simple-link';
+            }
             return $htmlOptions;
         }
     }

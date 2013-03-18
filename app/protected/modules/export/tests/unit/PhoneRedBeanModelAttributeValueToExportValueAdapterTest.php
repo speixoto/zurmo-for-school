@@ -39,14 +39,22 @@
             $model->phone = '5345435353';
             $adapter = new PhoneRedBeanModelAttributeValueToExportValueAdapter($model, 'phone');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('phone') => '5345435353');
+            $compareData = array('5345435353');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('phone'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new PhoneRedBeanModelAttributeValueToExportValueAdapter($model, 'phone');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('phone') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('phone'));
             $this->assertEquals($compareData, $data);
         }
     }

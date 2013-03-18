@@ -57,12 +57,12 @@
             return join(' ' , $fullName);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'title'    => 'Salutation',
+                    'fullName' => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'title'    => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
                 )
             );
         }
@@ -86,9 +86,12 @@
                     'officeFax',
                 ),
                 'relations' => array(
-                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED),
-                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED),
-                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'title'),
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),
@@ -101,11 +104,11 @@
                     array('lastName',       'type',   'type' => 'string'),
                     array('lastName',       'length', 'min'  => 2, 'max' => 32),
                     array('mobilePhone',    'type',   'type' => 'string'),
-                    array('mobilePhone',    'length', 'min'  => 1, 'max' => 20),
+                    array('mobilePhone',    'length', 'min'  => 1, 'max' => 24),
                     array('officePhone',    'type',   'type' => 'string'),
-                    array('officePhone',    'length', 'min'  => 1, 'max' => 20),
+                    array('officePhone',    'length', 'min'  => 1, 'max' => 24),
                     array('officeFax',      'type',   'type' => 'string'),
-                    array('officeFax',      'length', 'min'  => 1, 'max' => 20),
+                    array('officeFax',      'length', 'min'  => 1, 'max' => 24),
                 ),
                 'elements' => array(
                     'mobilePhone'    => 'Phone',
