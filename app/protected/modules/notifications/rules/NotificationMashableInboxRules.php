@@ -138,7 +138,7 @@
                 ),
             );
             $searchAttributeData['structure'] = '1';
-            if ($searchTerm != '')
+            if ($searchTerm !== null)
             {
                 $searchAttributeData['clauses'][2] = array(
                         'attributeName'        => 'notificationMessage',
