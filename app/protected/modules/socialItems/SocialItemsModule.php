@@ -41,7 +41,7 @@
             return array('SocialItem');
         }
 
-            public static function getTranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $labels                                  = array();
             $labels[self::RIGHT_ACCESS_SOCIAL_ITEMS] = Zurmo::t('SocialItemsModule', 'Access Social Items');

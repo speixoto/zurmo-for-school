@@ -38,6 +38,15 @@
             );
         }
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                                   = array();
+            $labels[self::RIGHT_CREATE_CONVERSATIONS] = Zurmo::t('ContactsModule', 'Create Conversations');
+            $labels[self::RIGHT_DELETE_CONVERSATIONS] = Zurmo::t('ContactsModule', 'Delete Conversations');
+            $labels[self::RIGHT_ACCESS_CONVERSATIONS] = Zurmo::t('ContactsModule', 'Access Conversations Tab');
+            return $labels;
+        }
+
         public function getRootModelNames()
         {
             return array('Conversation', 'ConversationParticipant');

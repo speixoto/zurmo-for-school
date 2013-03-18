@@ -28,6 +28,13 @@
     {
         const RIGHT_ACCESS_IMPORT = 'Access Import Tool';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                            = array();
+            $labels[self::RIGHT_ACCESS_IMPORT] = Zurmo::t('ImportModule', 'Access Import Tool');
+            return $labels;
+        }
+
         public function getDependencies()
         {
            return array('zurmo');

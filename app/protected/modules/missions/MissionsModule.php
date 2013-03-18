@@ -30,6 +30,15 @@
         const RIGHT_DELETE_MISSIONS = 'Delete Missions';
         const RIGHT_ACCESS_MISSIONS = 'Access Missions Tab';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                              = array();
+            $labels[self::RIGHT_CREATE_MISSIONS] = Zurmo::t('MissionsModule', 'Create Missions');
+            $labels[self::RIGHT_DELETE_MISSIONS] = Zurmo::t('MissionsModule', 'Delete Missions');
+            $labels[self::RIGHT_ACCESS_MISSIONS] = Zurmo::t('MissionsModule', 'Access Missions Tab');
+            return $labels;
+        }
+
         public function getDependencies()
         {
             return array(

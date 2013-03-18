@@ -109,8 +109,7 @@
                     'ownerHasReadLatest',
                 ),
                 'relations' => array(
-                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage', RedBeanModel::NOT_OWNED,
-                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'notificationMessage'),
+                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage', RedBeanModel::NOT_OWNED),
                     'owner' =>               array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
                 ),

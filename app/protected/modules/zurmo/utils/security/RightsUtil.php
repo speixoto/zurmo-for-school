@@ -51,7 +51,7 @@
                         {
                             if (!isset($rightLabels[$right]))
                             {
-                                throw new NotSupportedException();
+                                throw new NotSupportedException($right);
                             }
                             $explicit = $permitable->getExplicitActualRight  ($moduleClassName, $right);
                             $inherited = $permitable->getInheritedActualRight($moduleClassName, $right);
