@@ -105,6 +105,7 @@
                     'sellPrice',
                     'status',
                     'type',
+                    'sellPriceFormula'
                 ),
                 'relations' => array(
                     'products'                  => array(RedBeanModel::MANY_MANY, 'Product'),
@@ -135,6 +136,8 @@
                     'sellPrice'           => 'CurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
+                    'sellPriceFormula'	  => 'SellPriceFormulaInformation'
+
                 ),
                 'customFields' => array(
                 ),

@@ -59,9 +59,9 @@
                     array('name',                        'length',  'min'  => 3,  'max' => 64),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
                 ),
-                'elements' => array(
-                    'type'                => 'SellPriceFormulaTypeDropDown',
-                ),
+//                'elements' => array(
+//                    'type'                => 'SellPriceFormulaTypeDropDown',
+//                ),
                 'defaultSortAttribute' => 'name',
                 'customFields' => array(
                 ),
@@ -77,6 +77,21 @@
         public static function canSaveMetadata()
         {
             return true;
+        }
+
+        /**
+         * @return array of sellpriceformula values and labels
+         */
+        public static function getNameDropDownArray()
+        {
+            return array(
+                null                                       => Yii::t('Default', '--'),
+                SellPriceFormula::TYPE_EDITABLE            => Yii::t('Default', 'Editable'),
+                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'Discount From List'),
+                SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', 'Markup Over Cost'),
+                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Profit Margin'),
+                SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List'),
+            );
         }
     }
 ?>
