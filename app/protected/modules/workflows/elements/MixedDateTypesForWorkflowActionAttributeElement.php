@@ -37,7 +37,7 @@
             $cClipWidget->widget('application.core.widgets.ZurmoJuiDatePicker', array(
                 'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
                                          $this->model->value),
-		'htmlOptions'         => $this->getHtmlOptionsForFirstValue(),
+                'htmlOptions'         => $this->getHtmlOptionsForFirstValue(),
             ));
             $cClipWidget->endClip();
             $inputContent  = $cClipWidget->getController()->clips['EditableDateElement'];

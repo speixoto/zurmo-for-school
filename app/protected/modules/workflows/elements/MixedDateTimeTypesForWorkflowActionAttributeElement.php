@@ -35,7 +35,7 @@
             $value       = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->value);
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateTimeElement");
-	    $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
+            $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
                 'value'      => $value,
                 'htmlOptions' => $this->getHtmlOptionsForFirstValue(),
             ));
