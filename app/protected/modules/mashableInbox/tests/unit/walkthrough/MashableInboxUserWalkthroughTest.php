@@ -225,5 +225,27 @@
             $this->assertTrue((bool)MissionsUtil::hasUserReadMissionLatest($mission, $super));
         }
 
+        public function testModuleSecurityAccess()
+        {
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $nobody                     = UserTestHelper::createBasicUser('nobody');
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('nobody');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default');
+            foreach ($this->modelsWithMashableInboxInterface as $modelClassName)
+            {
+                $this->setGetArray(array('modelClassName' => $modelClassName));
+                $moduleClassName = $modelClassName::getModuleClassName();
+                if (is_subclass_of($moduleClassName, 'SecurableModule'))
+                {
+                    $this->runControllerShouldResultInAccessFailureAndGetContent('mashableInbox/default/list');
+                }
+                else
+                {
+                    $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+                }
+                $mashableRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
+            }
+        }
+
     }
 ?>

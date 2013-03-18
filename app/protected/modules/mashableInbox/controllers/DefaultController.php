@@ -33,12 +33,31 @@
 
         public function filters()
         {
-            return array(
+            $modelClassName     = ArrayUtil::getArrayValue(GetUtil::getData(), 'modelClassName');
+
+            if ($modelClassName === null)
+            {
+                return parent::filters();
+            }
+            $moduleClassName    = $modelClassName::getModuleClassName();
+            if (!is_subclass_of($moduleClassName, 'SecurableModule'))
+            {
+                return parent::filters();
+            }
+            return array_merge(parent::filters(),
                 array(
-                    self::MASHABLE_INBOX_ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
-                    'controller'  => $this,
-                ),
+                    array(
+                        self::getRightsFilterPath(),
+                        'moduleClassName' => $moduleClassName,
+                        'rightName' => $moduleClassName::getAccessRight(),
+                    ),
+                    array(
+                        self::MASHABLE_INBOX_ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
+                        'controller'  => $this,
+                    ),
+                )
             );
+
         }
 
         public function actionList($modelClassName = null) {
