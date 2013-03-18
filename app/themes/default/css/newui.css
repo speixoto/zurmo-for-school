@@ -6477,7 +6477,7 @@ tr.even {
   font-size: 11px;
 }
 td.empty {
-  display: table-cell;
+  display: table-cell !important;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -15979,7 +15979,7 @@ a.user-link {
 .dynamic-row-label {
   float: left;
   line-height: 26px;
-  width: 20%;
+  width: 25%;
 }
 .dynamic-row-operator {
   float: left;
@@ -15988,11 +15988,14 @@ a.user-link {
 }
 .dynamic-row-field {
   float: right;
-  width: 80%;
+  width: 75%;
 }
 .value-data {
   float: right;
   width: 80%;
+}
+.first-value-area + .second-value-area {
+  margin-top: 10px;
 }
 .report-runtime-availability {
   min-width: 145px;
