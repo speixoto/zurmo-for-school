@@ -35,6 +35,15 @@
 
         const RIGHT_ACCESS_REPORTS = 'Access Reports Tab';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                             = array();
+            $labels[self::RIGHT_CREATE_REPORTS] = Zurmo::t('ReportsModule', 'Create Reports');
+            $labels[self::RIGHT_DELETE_REPORTS] = Zurmo::t('ReportsModule', 'Delete Reports');
+            $labels[self::RIGHT_ACCESS_REPORTS] = Zurmo::t('ReportsModule', 'Access Reports Tab');
+            return $labels;
+        }
+
         /**
          * @return array
          */
@@ -111,14 +120,9 @@
             return self::RIGHT_DELETE_REPORTS;
         }
 
-        public static function getDefaultDataMakerClassName()
-        {
-          //  return 'ReportsDefaultDataMaker';
-        }
-
         public static function getDemoDataMakerClassName()
         {
-          //  return 'ReportsDemoDataMaker';
+            return 'ReportsDemoDataMaker';
         }
 
         /**
@@ -128,7 +132,7 @@
          */
         public static function getGlobalSearchFormClassName()
         {
-            return 'UsersSearchForm';
+            return 'ReportsSearchForm';
         }
 
         /**

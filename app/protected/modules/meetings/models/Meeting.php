@@ -124,12 +124,12 @@
             return $metadata;
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'endDateTime'   => 'End Time',
-                    'startDateTime' => 'Start Time',
+                    'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',   array(), null, $language),
+                    'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time', array(), null, $language),
                 )
             );
         }

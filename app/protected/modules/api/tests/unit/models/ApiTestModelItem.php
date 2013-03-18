@@ -34,9 +34,9 @@
             return self::getByNameOrEquivalent('firstName', $name);
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'fullName' => 'Name',
                 )

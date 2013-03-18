@@ -79,6 +79,40 @@
         }
 
         /**
+         * Use this method to register dynamically created attributes during an ajax call.  An example is if you
+         * add a filter or trigger, the inputs need to be added to the yiiactiveform so that validation handling can work
+         * properly.  This method replaces the id and model elements with the correctly needed values.
+         * Only adds inputs that have not been added already
+         */
+        public function renderAddAttributeErrorSettingsScript($formId)
+        {
+            assert('is_string($formId)');
+            $attributes             = $this->getAttributes();
+            $encodedErrorAttributes = CJSON::encode(array_values($attributes));
+            $script = "
+                var settings = $('#" . $formId . "').data('settings');
+                $.each(" . $encodedErrorAttributes . ", function(i)
+                {
+                    var newId = this.id;
+                    var alreadyInArray = false;
+                    $.each(settings.attributes, function (i)
+                    {
+                        if(newId == this.id)
+                        {
+                            alreadyInArray = true;
+                        }
+                    });
+                    if(alreadyInArray == false)
+                    {
+                        settings.attributes.push(this);
+                    }
+                });
+                $('#" . $formId . "').data('settings', settings);
+            ";
+            Yii::app()->getClientScript()->registerScript('AddAttributeErrorSettingsScript' . $formId, $script);
+        }
+
+        /**
          *
          * Override for special handling of dynamically added attributes.  Allows for overriding the model class name
          * and id.

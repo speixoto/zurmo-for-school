@@ -477,8 +477,9 @@
             {
                 throw new NotSupportedException();
             }
-            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
-            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $modelClassName         = $this->modelClassName;
+            $relationModelClassName = $modelClassName::getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
             return $relationModel->getRelationModelClassName($opposingRelationName);
         }
@@ -486,11 +487,12 @@
 
         public function getManyToManyTableNameForDerivedRelationViaCastedUpModel()
         {
-            $relationModelClassName = $this->getModel()->getDerivedRelationModelClassName($this->attribute);
-            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $modelClassName         = $this->modelClassName;
+            $relationModelClassName = $modelClassName::getDerivedRelationModelClassName($this->attribute);
+            $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
 
-            if($this->getModel()->getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
+            if($modelClassName::getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
             {
                 throw new NotSupportedException();
             }
@@ -506,8 +508,9 @@
          */
         public function getOpposingRelationModelClassName()
         {
+            $modelClassName         = $this->modelClassName;
             $relationModelClassName = $this->getDerivedRelationViaCastedUpModelClassName();
-            $opposingRelationName   = $this->getModel()->getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
+            $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
             return $relationModel->getAttributeModelClassName($opposingRelationName);
         }
@@ -517,7 +520,8 @@
          */
         public function getDerivedRelationViaCastedUpModelClassName()
         {
-            return $this->getModel()->getDerivedRelationModelClassName($this->getAttribute());
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::getDerivedRelationModelClassName($this->getAttribute());
         }
 
         public function getOpposingRelationTableName()

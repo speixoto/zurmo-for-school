@@ -35,44 +35,44 @@
 
         public function testResolveFirstSeriesValueName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName('abc');
-            $this->assertEquals('FirstSeriesValueabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName(5);
+            $this->assertEquals('FirstSeriesValue5', $value);
         }
 
         public function testResolveFirstSeriesDisplayLabelName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesDisplayLabelName('abc');
-            $this->assertEquals('FirstSeriesDisplayLabelabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesDisplayLabelName(5);
+            $this->assertEquals('FirstSeriesDisplayLabel5', $value);
         }
 
         public function testResolveFirstRangeDisplayLabelName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName('abc');
-            $this->assertEquals('FirstRangeDisplayLabelabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName(5);
+            $this->assertEquals('FirstRangeDisplayLabel5', $value);
         }
 
         public function testResolveFirstSeriesFormattedValueName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesFormattedValueName('abc');
-            $this->assertEquals('FirstSeriesFormattedValueabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesFormattedValueName(5);
+            $this->assertEquals('FirstSeriesFormattedValue5', $value);
         }
 
         public function testResolveSecondSeriesValueName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName('abc');
-            $this->assertEquals('SecondSeriesValueabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName(5);
+            $this->assertEquals('SecondSeriesValue5', $value);
         }
 
         public function testResolveSecondSeriesDisplayLabelName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName('abc');
-            $this->assertEquals('SecondSeriesDisplayLabelabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName(5);
+            $this->assertEquals('SecondSeriesDisplayLabel5', $value);
         }
 
         public function testResolveSecondSeriesFormattedValueName()
         {
-            $value = ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesFormattedValueName('abc');
-            $this->assertEquals('SecondSeriesFormattedValueabc', $value);
+            $value = ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesFormattedValueName(5);
+            $this->assertEquals('SecondSeriesFormattedValue5', $value);
         }
 
         public function testGetType()

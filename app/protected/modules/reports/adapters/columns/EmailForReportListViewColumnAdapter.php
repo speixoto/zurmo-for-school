@@ -25,36 +25,18 @@
      ********************************************************************************/
 
     /**
-     * Module to manage exports
+     * Used for example by reporting, since the attribute is emailAddress and the model is the Email model.
      */
-    class ExportModule extends SecurableModule
+    class EmailForReportListViewColumnAdapter extends ForReportListViewColumnAdapter
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
-
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusThreshold = 2500;
-
-        public static function getTranslatedRightsLabels()
+        public function renderGridViewData()
         {
-            $labels                                    = array();
-            $labels[self::RIGHT_ACCESS_EXPORT]  = Zurmo::t('ExportModule', 'Access Export Tool');
-            return $labels;
-        }
-
-        public function getDependencies()
-        {
-           return array('zurmo');
-        }
-
-        public function getRootModelNames()
-        {
-            return array('ExportItem', 'ExportFileModel');
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_EXPORT;
+            return array(
+                'name'  => $this->attribute,
+                'value' => 'Yii::app()->format->email($data->' . $this->attribute . ')',
+                'type'  => 'raw',
+                'htmlOptions' => array( 'class' => 'email')
+            );
         }
     }
 ?>

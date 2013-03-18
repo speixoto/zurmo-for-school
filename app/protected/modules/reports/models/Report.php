@@ -303,7 +303,7 @@
          */
         public function setDescription($description)
         {
-            assert('is_string($description)');
+            assert('is_string($description) || $description == null');
             $this->description = $description;
         }
 
@@ -662,6 +662,7 @@
          * attributeIndexOrDerivedType
          * @param $attribute
          * @return mixed
+         * @throws NotFoundException if it is not found
          */
         public function getDisplayAttributeByAttribute($attribute)
         {
@@ -672,6 +673,7 @@
                     return $displayAttribute;
                 }
             }
+            throw new NotFoundException();
         }
 
         /**

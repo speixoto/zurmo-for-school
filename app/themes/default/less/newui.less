@@ -1649,7 +1649,7 @@ tr.even{
 }
 
 td.empty{
-    display: table-cell;
+    display:table-cell !important;
 }
 
 /*forms*/
@@ -1989,6 +1989,7 @@ label.hasCheckBox{
 }
 
 div.wide.form{
+    position: relative;
     label.hasCheckBox{
         margin-top:0 !important; //was !important
     }
@@ -2073,12 +2074,12 @@ div.wide.form{
    }
 }
 
-.loading .list-preloader{
+.loading > .list-preloader{
     display:block;
 }
 
 .cgrid-view.loading{
-    .list-preloader{
+    > .list-preloader{
         display:block;
     }
 }
@@ -2717,6 +2718,23 @@ div.wide.form{
 
 .more-panels-link{
     font-size:11px;
+}
+
+.ui-overlay-block{
+    z-index:250000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    .big-spinner{
+        position: relative;
+        top:30%;
+        left: 50%;
+        margin: 0 0 0 -34px;
+    }
 }
 
 .address-fields{

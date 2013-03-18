@@ -28,7 +28,7 @@
      * Base class for managing report components.  Filters, group bys, order bys, display attributes, Drill down
      * display attributes all extend this class
      */
-    abstract class ComponentForReportForm extends ConfigurableMetadataModel
+    abstract class ComponentForReportForm extends ConfigurableMetadataModel implements RowKeyInterface
     {
         /**
          * Divider used for displaying labels that cross relations. An example is Account's >> Opportunities
@@ -91,12 +91,22 @@
         private   $_attributeIndexOrDerivedType;
 
         /**
+         * @var int
+         */
+        private $_rowKey;
+
+        /**
          * Override in children class to @return the correct component type
          * @throws NotImplementedException
          */
         public static function getType()
         {
             throw new NotImplementedException();
+        }
+
+        public function getRowKey()
+        {
+            return $this->_rowKey;
         }
 
         /**
@@ -147,14 +157,16 @@
          * @param string $modelClassName
          * @param string $reportType
          */
-        public function __construct($moduleClassName, $modelClassName, $reportType)
+        public function __construct($moduleClassName, $modelClassName, $reportType, $rowKey = 0)
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
-            assert(is_string($reportType));
+            assert('is_string($reportType)');
+            assert('is_int($rowKey)');
             $this->moduleClassName = $moduleClassName;
             $this->modelClassName  = $modelClassName;
             $this->reportType      = $reportType;
+            $this->_rowKey         = $rowKey;
         }
 
         /**

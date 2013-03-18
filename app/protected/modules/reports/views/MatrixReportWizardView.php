@@ -157,7 +157,7 @@
 
         protected function registerModuleClassNameChangeScriptExtraPart()
         {
-            return  "   $('#GroupBysForReportWizardView').find('.dynamic-rows').find('ul').find('li').remove();
+            return  "   $('#GroupBysForReportWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
                         $('#GroupBysTreeArea').html('');
                         $('." . GroupBysForReportWizardView::getZeroComponentsClassName() . "').show();
                     ";

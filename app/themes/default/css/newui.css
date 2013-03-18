@@ -6609,7 +6609,7 @@ tr.even {
   font-size: 11px;
 }
 td.empty {
-  display: table-cell;
+  display: table-cell !important;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -7055,6 +7055,9 @@ label.hasCheckBox + label {
   margin-left: 8px;
   margin-top: 6px;
 }
+div.wide.form {
+  position: relative;
+}
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
 }
@@ -7138,10 +7141,10 @@ div.wide.form label.hasCheckBox {
   height: auto;
   display: block;
 }
-.loading .list-preloader {
+.loading > .list-preloader {
   display: block;
 }
-.cgrid-view.loading .list-preloader {
+.cgrid-view.loading > .list-preloader {
   display: block;
 }
 /*
@@ -7931,6 +7934,22 @@ div.wide.form label.hasCheckBox {
 }
 .more-panels-link {
   font-size: 11px;
+}
+.ui-overlay-block {
+  z-index: 250000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+}
+.ui-overlay-block .big-spinner {
+  position: relative;
+  top: 30%;
+  left: 50%;
+  margin: 0 0 0 -34px;
 }
 .address-fields div:last-child {
   padding-bottom: 0;
@@ -15881,6 +15900,11 @@ a.user-link {
   min-width: 120px;
   height: 30px;
   border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
   background-color: #ededed;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
@@ -15891,11 +15915,6 @@ a.user-link {
   background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
-  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
-  -o-box-shadow: inset 0 1px 0 0 #ffffff;
-  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
-  box-shadow: inset 0 1px 0 0 #ffffff;
 }
 .ComponentForReportWizardView .radio-input {
   margin-bottom: 10px !important;
@@ -16115,7 +16134,7 @@ a.user-link {
 .dynamic-row-label {
   float: left;
   line-height: 26px;
-  width: 20%;
+  width: 25%;
 }
 .dynamic-row-operator {
   float: left;
@@ -16124,11 +16143,14 @@ a.user-link {
 }
 .dynamic-row-field {
   float: right;
-  width: 80%;
+  width: 75%;
 }
 .value-data {
   float: right;
   width: 80%;
+}
+.first-value-area + .second-value-area {
+  margin-top: 10px;
 }
 .report-runtime-availability {
   min-width: 145px;
@@ -16210,7 +16232,8 @@ a.user-link {
   width: auto;
 }
 .ReportResultsComponentForPortletView {
-  min-height: 100px;
+  position: relative;
+  min-height: 90px;
 }
 .ReportResultsComponentForPortletView .big-spinner {
   float: left;
@@ -16254,8 +16277,17 @@ a.user-link {
   background-image: -o-linear-gradient(top, #222222, #333333);
   background-image: linear-gradient(top, #222222, #333333);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222222', endColorstr='#333333', GradientType=0);
-  color: #DFDFDF;
+  color: #EFEFEF;
   border: 1px solid #333;
+}
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row td a,
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row th a {
+  color: #EFEFEF;
+}
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row td a:hover,
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row th a:hover {
+  color: #fff;
+  text-decoration: underline;
 }
 .ReportResultsGridView .items {
   overflow-x: hidden;
@@ -16316,9 +16348,6 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   position: relative;
   left: 5px;
-}
-.ReportResultsComponentForPortletView {
-  position: relative;
 }
 .refreshPortletLink {
   position: absolute;
