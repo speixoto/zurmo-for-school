@@ -53,7 +53,7 @@
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
         {
-            $metadata = SavedWorkflowUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
+            $metadata = SavedWorkflowsUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
                         Workflow::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo());
         }
 
@@ -172,7 +172,7 @@
                 $this->actionValidate($postData, $model);
             }
             SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             if($savedWorkflow->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);

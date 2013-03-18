@@ -26,15 +26,6 @@
 
     class SavedWorkflow extends Item
     {
-        public function __toString()
-        {
-            if (trim($this->name) == '')
-            {
-                return Yii::t('Default', '(Unnamed)');
-            }
-            return $this->name;
-        }
-
         public static function getByName($name)
         {
             assert('is_string($name) && $name != ""');
@@ -91,6 +82,20 @@
         public static function getModuleClassName()
         {
             return 'WorkflowsModule';
+        }
+
+        public function __toString()
+        {
+            if (trim($this->name) == '')
+            {
+                return Yii::t('Default', '(Unnamed)');
+            }
+            return $this->name;
+        }
+
+        public function getActiveByModuleClassNameAndIsNewModel($moduleClassName, $isNewModel)
+        {
+            return array();
         }
     }
 ?>

@@ -27,7 +27,7 @@
     /**
      * Helper class for working with SavedWorkflow objects
      */
-    class SavedWorkflowUtil
+    class SavedWorkflowsUtil
     {
         /**
          * Given an array of moduleClassNames, construct the searchAttributeData
@@ -100,6 +100,50 @@
                 $savedWorkflow->order = (int)$maxOrder +  1;
             }
         }
-    }
 
+        /**
+         * Given a RedBeanModel, query workflow rules and process any beforeSave triggers for either on-save or
+         * by-time workflows.  Called from @see WokflowsObserver->processWorkflowBeforeSave
+         * @param Item $model
+         * @throws NotSupportedException if the workflow type is not valid
+         */
+        public static function resolveBeforeSaveByModel(Item $model)
+        {
+            $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel(
+                                             $model::getModuleClassName(), $model->isNewModel);
+            foreach($savedWorkflows as $savedWorkflow)
+            {
+                $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+                if(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
+                {
+                    if($workflow->getType() == Workflow::TYPE_BY_TIME)
+                    {
+                       // $byTimeWorkflowInQueue = new ByTimeWorkflowInQueue();
+                       // $byTimeWorkflowInQueue->processDateTime = 'xxx';
+                    }
+                    elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+                    {
+                        WorkflowActionsUtil::processBeforeSave($workflow, $model);
+                        $model->addWorkflowToProcessAfterSave($workflow);
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                }
+            }
+        }
+
+        /**
+         * Given a RedBeanModel, process afterSave email messages.
+         * @param Item $model
+         */
+        public static function resolveAfterSaveByModel(Item $model)
+        {
+            foreach($model->getWorkflowsToProcessAfterSave() as $workflow)
+            {
+                WorkflowEmailMessagesUtil::processAfterSave($workflow, $model);
+            }
+        }
+    }
 ?>

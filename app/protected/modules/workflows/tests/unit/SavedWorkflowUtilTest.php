@@ -24,7 +24,7 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class SavedWorkflowUtilTest extends ZurmoBaseTest
+    class SavedWorkflowsUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -48,7 +48,7 @@
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = Workflow::TYPE_ON_SAVE;
             $this->assertNull($savedWorkflow->order);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(1, $savedWorkflow->order);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
@@ -62,7 +62,7 @@
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = Workflow::TYPE_ON_SAVE;
             $this->assertNull($savedWorkflow->order);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(2, $savedWorkflow->order);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
@@ -75,7 +75,7 @@
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = Workflow::TYPE_ON_SAVE;
             $this->assertNull($savedWorkflow->order);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(3, $savedWorkflow->order);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
@@ -88,7 +88,7 @@
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = Workflow::TYPE_ON_SAVE;
             $this->assertNull($savedWorkflow->order);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(1, $savedWorkflow->order);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
@@ -96,12 +96,12 @@
 
             $savedWorkflow = SavedWorkflow::getById($savedWorkflowId2);
             $this->assertEquals(2, $savedWorkflow->order);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(2, $savedWorkflow->order);
 
             //Change the moduleClassName to opportunities, it should show 1
             $savedWorkflow->moduleClassName = 'OpportunitiesModule';
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(1, $savedWorkflow->order);
 
             //Delete the workflow. When creating a new AccountsWorkflow, it should show order 4 since the max
@@ -116,10 +116,22 @@
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = Workflow::TYPE_ON_SAVE;
             $this->assertNull($savedWorkflow->order);
-            SavedWorkflowUtil::resolveOrder($savedWorkflow);
+            SavedWorkflowsUtil::resolveOrder($savedWorkflow);
             $this->assertEquals(4, $savedWorkflow->order);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
+        }
+
+        public function testResolveBeforeSaveByModel()
+        {
+            $this->fail();
+            //resolveBeforeSaveByRedBeanModel($model)
+        }
+
+        public function testResolveAfterSaveByModel()
+        {
+            $this->fail();
+            //resolveAfterSaveByRedBeanModel($model)
         }
     }
 ?>

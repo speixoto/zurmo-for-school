@@ -24,33 +24,23 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class SavedWorkflowTest extends ZurmoBaseTest
+    class WorkflowMessageInQueueTest extends ZurmoBaseTest
     {
-        public function testSetAndGetModel()
+        public static function setUpBeforeClass()
         {
-            $savedWorkflow                  = new SavedWorkflow();
-            $savedWorkflow->name            = 'some workflow';
-            $savedWorkflow->description     = 'description';
-            $savedWorkflow->moduleClassName = 'moduleClassName';
-            $savedWorkflow->type            = 'some type';
-            $savedWorkflow->serializedData  = serialize(array('something'));
-            $saved                        = $savedWorkflow->save();
-            $this->assertTrue($saved);
-            $savedWorkflowId                = $savedWorkflow->id;
-            $savedWorkflow->forget();
-
-            $savedWorkflow                  = SavedWorkflow::getById($savedWorkflowId);
-            $this->assertEquals('some workflow',               $savedWorkflow->name);
-            $this->assertEquals('description',                 $savedWorkflow->description);
-            $this->assertEquals('moduleClassName',             $savedWorkflow->moduleClassName);
-            $this->assertEquals('some type',                   $savedWorkflow->type);
-            $this->assertEquals(serialize(array('something')), $savedWorkflow->serializedData);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
         }
 
-        public function testGetActiveByModuleClassNameAndIsNewModel()
+        public function setup()
         {
-            //todo:
-            //getActiveByModuleClassNameAndIsNewModel($moduleClassName, $isNewModel)
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
+        public function testMethods()
+        {
+            //todO:
             $this->fail();
         }
     }

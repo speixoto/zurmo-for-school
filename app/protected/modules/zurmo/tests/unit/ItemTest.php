@@ -219,5 +219,13 @@
             $this->assertEquals($super, $account->createdByUser);
             $this->assertEquals($user, $account->modifiedByUser);
          }
+
+        public function testWorkflowsToProcessAfterSave()
+        {
+            //todo:
+            //--Item getWorkflowsToProcessAfterSave
+            //--Item addWorkflowToProcessAfterSave
+            $this->fail();
+        }
     }
 ?>

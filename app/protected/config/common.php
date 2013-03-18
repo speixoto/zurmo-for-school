@@ -286,6 +286,9 @@
                     ),
                 ),
             ),
+            'workflowsObserver' => array(
+                'class' => 'application.modules.workflow.observers.WorkflowsObserver',
+            ),
             'phpThumbnail' => array(
                 'class'=>'ext.EPhpThumb.EPhpThumb'
             ),
