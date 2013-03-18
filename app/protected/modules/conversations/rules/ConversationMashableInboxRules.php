@@ -106,7 +106,7 @@
             return $metadata;
         }
 
-        public function getSearchAttributeData($searchTerm)
+        public function getSearchAttributeData($searchTerm = null)
         {
             $metadata['clauses'][1] = array(
                             'attributeName'        => 'subject',

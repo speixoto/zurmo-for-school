@@ -197,5 +197,24 @@
 
         }
 
+        public function testSearch()
+        {
+            $super                      = User::getByUsername('super');
+            $steven                     = User::getByUsername('steven');
+            Yii::app()->user->userModel = $super;
+            $createdConversation        = $this->createAndSaveNewConversationForUser($super, $steven);
+            $metadataForSearch          = $this->rules->getSearchAttributeData();
+            $dataProvider               = new RedBeanModelDataProvider('Conversation', null, false, $metadataForSearch);
+            $data                       = $dataProvider->getData();
+            $this->assertEquals(1, count($data));
+            $metadataForSearch          = $this->rules->getSearchAttributeData("sub");
+            $dataProvider               = new RedBeanModelDataProvider('Conversation', null, false, $metadataForSearch);
+            $data                       = $dataProvider->getData();
+            $this->assertEquals(1, count($data));
+            $metadataForSearch          = $this->rules->getSearchAttributeData("description");
+            $dataProvider               = new RedBeanModelDataProvider('Conversation', null, false, $metadataForSearch);
+            $data                       = $dataProvider->getData();
+            $this->assertEquals(0, count($data));
+        }
     }
 ?>

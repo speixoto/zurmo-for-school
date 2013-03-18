@@ -128,7 +128,7 @@
                     'latestDateTime'    => 'DateTime',
                     'reward'            => 'TextArea',
                 ),
-                'defaultSortAttribute' => 'subject',
+                'defaultSortAttribute' => 'description',
                 'noAudit' => array(
                     'description',
                     'dueDateTime',

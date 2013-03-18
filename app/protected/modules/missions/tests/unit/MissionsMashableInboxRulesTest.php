@@ -151,5 +151,24 @@
             $this->assertNotContains('result(s)',               $content);
         }
 
+        public function testSearch()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $this->deleteAllMissions();
+            $this->createAndSaveNewMissionForUser($super);
+            $searchAttributeData        = $this->rules->getSearchAttributeData();
+            $dataProvider               = new RedBeanModelDataProvider('Mission', null, false, $searchAttributeData);
+            $data                       = $dataProvider->getData();
+            $this->assertEquals(1, count($data));
+            $metadataForSearch          = $this->rules->getSearchAttributeData("mis");
+            $dataProvider               = new RedBeanModelDataProvider('Mission', null, false, $metadataForSearch);
+            $data                       = $dataProvider->getData();
+            $this->assertEquals(1, count($data));
+            $metadataForSearch          = $this->rules->getSearchAttributeData("subject");
+            $dataProvider               = new RedBeanModelDataProvider('Mission', null, false, $metadataForSearch);
+            $data                       = $dataProvider->getData();
+            $this->assertEquals(0, count($data));
+        }
     }
 ?>
