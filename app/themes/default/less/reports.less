@@ -45,8 +45,8 @@
             min-width: 120px;
             height: 30px;
             border:1px solid #ccc;
-            #gradient > .vertical(#f6f6f6, #ededed);
             .b-shadow(inset 0 1px 0 0 #ffffff);
+            #gradient > .vertical( #f6f6f6, #ededed );
         }
     }
     .radio-input {
@@ -387,7 +387,8 @@
 }
 
 .ReportResultsComponentForPortletView{
-    min-height: 100px;
+    position: relative;
+    min-height: 90px;
     .big-spinner{
         float: left;
         position: relative;
@@ -425,8 +426,15 @@
             .expanded-row{
                 td, th{
                     #gradient > .vertical( #222, #333 );
-                    color: #DFDFDF;
+                    color: #EFEFEF;
                     border: 1px solid #333;
+                    a{
+                        color: #EFEFEF;
+                        &:hover{
+                            color: #fff;
+                            text-decoration: underline;
+                        }
+                    }
                 }
             }
         }
@@ -494,10 +502,6 @@
     .symbly(18px);
     position: relative;
     left: 5px;
-}
-
-.ReportResultsComponentForPortletView{
-    position: relative;
 }
 
 .refreshPortletLink{
