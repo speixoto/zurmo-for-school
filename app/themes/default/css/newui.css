@@ -6924,6 +6924,9 @@ label.hasCheckBox + label {
   margin-left: 8px;
   margin-top: 6px;
 }
+div.wide.form {
+  position: relative;
+}
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
 }
@@ -7800,6 +7803,22 @@ div.wide.form label.hasCheckBox {
 }
 .more-panels-link {
   font-size: 11px;
+}
+.ui-overlay-block {
+  z-index: 250000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+}
+.ui-overlay-block .big-spinner {
+  position: relative;
+  top: 30%;
+  left: 50%;
+  margin: 0 0 0 -34px;
 }
 .address-fields div:last-child {
   padding-bottom: 0;
