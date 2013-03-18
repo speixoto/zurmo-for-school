@@ -34,20 +34,10 @@
         {
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateElement");
-            $cClipWidget->widget('application.core.widgets.JuiDatePicker', array(
-                //'attribute'           => $this->attribute,
+            $cClipWidget->widget('application.core.widgets.ZurmoJuiDatePicker', array(
                 'value'               => DateTimeUtil::resolveValueForDateLocaleFormattedDisplay(
                                          $this->model->value),
-                'language'            => YiiToJqueryUIDatePickerLocalization::getLanguage(),
-                'htmlOptions'         => $this->getHtmlOptionsForFirstValue(),
-                'options'             => array(
-                    'showOn'          => 'both',
-                    'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),
-                    'showButtonPanel' => true,
-                    'buttonImageOnly' => false,
-                    'dateFormat'      => YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                        DateTimeUtil::getLocaleDateFormat()),
-                ),
+		'htmlOptions'         => $this->getHtmlOptionsForFirstValue(),
             ));
             $cClipWidget->endClip();
             $inputContent  = $cClipWidget->getController()->clips['EditableDateElement'];
