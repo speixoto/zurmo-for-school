@@ -15980,6 +15980,10 @@ a.user-link {
   position: absolute;
   z-index: 10000;
 }
+.glow {
+  background-color: #ffffe0;
+  border-color: #e6db55;
+}
 .Filters .dynamic-row {
   padding: 15px 30px;
 }
