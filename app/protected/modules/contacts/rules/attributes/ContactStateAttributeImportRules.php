@@ -39,6 +39,9 @@
             return Zurmo::t('ContactsModule', 'Status');
         }
 
+        /**
+         * @return array
+         */
         public function getRealModelAttributeNames()
         {
             return array('state');

@@ -35,6 +35,10 @@
                     'requiredDateTime',
                     'startDateTime',
                 ),
+                'relations' => array(
+                    'hasOne'           => array(RedBeanModel::HAS_ONE,   'ImportModelTestItem3', RedBeanModel::NOT_OWNED,
+                                          RedBeanModel::LINK_TYPE_SPECIFIC, 'hasOne'),
+                ),
                 'rules' => array(
                     array('requiredDateTime', 'type', 'type' => 'datetime'),
                     array('requiredDateTime', 'required'),
