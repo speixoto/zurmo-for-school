@@ -31,16 +31,6 @@
             assert('$model instanceof MarketingList');
         }
 
-        protected function renderContent()
-        {
-            $content = $this->renderTitleContent();
-//todo: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
-            $content .= '<div class="view-toolbar-container clearfix"><div class="view-toolbar">';
-            $content .= $this->renderActionElementBar(false);
-            $content .= '</div></div>';
-            return $content;
-        }
-
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -51,7 +41,11 @@
                                 'htmlOptions' => array('class' => 'icon-details')),
                             array('type'  => 'MarketingListsOptionsLink',
                                 'htmlOptions' => array('class' => 'icon-edit')),
-                            //todo: also: see that all UL's are created with same ID - this is not valid html
+                            array('type'  => 'MarketingListsTogglePortletsLink',
+                                'htmlOptions' => array('class' => 'hasCheckboxes'),
+                                'membersPortletClass'           => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS,
+                                'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS,),
+                            // TODO: @Shoaibi: also: see that all UL's are created with same ID - this is not valid html
                         ),
                     ),
                 ),
@@ -61,35 +55,18 @@
 
         public function getTitle()
         {
-            if ($this->model->id > 0)
-            {
-                $moduleClassName = $this->model->moduleClassName;
-                $typesAndLabels  = Report::getTypeDropDownArray();
-                return strval($this->model) . ' - ' .
-                    Yii::t('Default', '{moduleLabel} {typeLabel} MarketingList',
-                        array('{moduleLabel}' => $moduleClassName::getModuleLabelByTypeAndLanguage('Singular'),
-                            '{typeLabel}'   => $typesAndLabels[$this->model->type]));
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return strval($this->model);
         }
 
-        protected function renderActionElementBar($renderedInForm)
+        protected function renderContent()
         {
-            $selectContactAndReportLinkActionElement  = new SelectContactAndReportLinkActionElement(
-                $this->controllerId,
-                $this->moduleId,
-                $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-select')));
-            $updateMarketingListsLinkActionElement  = new UpdateMarketingListsLinkActionElement(
-                $this->controllerId,
-                $this->moduleId,
-                $this->modelId,
-                array('htmlOptions' => array('class'   => 'icon-update')));
-            $content .= $selectContactAndReportLinkActionElement->render();
-            $content .= $updateMarketingListsLinkActionElement->render();
+            $actionElementBarContent        = $this->renderActionElementBar(false);
+            // TODO: @Shoaibi: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
+            $content                        = $this->renderTitleContent();
+            $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
+                                                ZurmoHtml::tag('div', array('class' => 'view-toolbar'),
+                                                                                    $actionElementBarContent)
+                                                );
             return $content;
         }
     }

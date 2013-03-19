@@ -25,30 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Cancel conversion link.
+     * View that renders email template module breadcrumb content
      */
-    class CancelMarketingListsLinkActionElement extends LinkActionElement
+    class EmailTemplateBreadCrumbView extends BreadCrumbView
     {
-        public function getActionType()
+        protected function getHomeLinkLabel()
         {
-            return 'Details';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Cancel');
-        }
-
-        protected function getDefaultRoute()
-        {
-            if (!empty($this->modelId))
-            {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return Zurmo::t('Default', 'Email Templates');
         }
     }
 ?>

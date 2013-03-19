@@ -27,6 +27,7 @@
 
     class SelectContactAndReportLinkActionElement extends LinkActionElement
     {
+        // TODO: @Shoaibi: Medium: This also refreshes grid.
         public function getActionType()
         {
             return 'Details';
@@ -34,48 +35,75 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Select');
+            return Zurmo::t('Default', 'Select');
         }
 
         protected function getDefaultRoute()
         {
-          //todo: has to add the action for this
+          // TODO: @Shoaibi: Medium+: have to add the action for this
         }
-       public function render()
+
+        public function render()
         {
-            $gridId         = $this->getListViewGridId();
-            $selectContact   = $gridId . '-selectContactAndLead';
-            $selectReport        = $gridId . '-selectReport';
-            Yii::app()->clientScript->registerScript($gridId . '-listViewContactAndLead', "
-                $('#" . $gridId . "-selectContactAndLead').unbind('click.action');
-                $('#" . $gridId . "-selectContactAndLead').bind('click.action', function()
-                    {
-                    }   
-                );
-            ");
-            Yii::app()->clientScript->registerScript($gridId . '-listViewReport', "
-                $('#" . $gridId . "-selectReport').unbind('click.action');
-                $('#" . $gridId . "-selectReport').bind('click.action', function()
+            $cClipWidget    = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                                'htmlOptions' => array('id' => 'ListViewSelectContactAndReportMenu'),
+                                'items'                   => array($this->renderMenuItem()),
+                            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
+        }
+
+        public function renderMenuItem()
+        {
+            $this->registerScripts();
+            return array('label' => $this->getLabel(), 'url' => null,
+                'items' => array(
+                    array(  'label'   => Zurmo::t('Default', 'Contact/Lead'),
+                        'url'     => '#',
+                        'itemOptions' => array( 'id'   => $this->getSelectContactAndLeadId())),
+                    array(  'label'   => Zurmo::t('Default', 'Reports'),
+                        'url'     => '#',
+                        'itemOptions' => array( 'id'   => $this->getSelectReportId()))));
+
+        }
+
+        protected function registerScripts()
+        {
+            // TODO: @Shoaibi: Medium+: Write JS code to handle events from here and use variableStateController
+            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-listViewContactAndLead', "
+                $('#" . $this->getSelectContactAndLeadId() . "').unbind('click.action').bind('click.action', function()
                     {
                     }
                 );
             ");
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                                    'items' => array(
-                                        array(  'label'   => Yii::t('Default', 'Contact/Lead'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $selectContact)),
-                                        array(  'label'   => Yii::t('Default', 'Reports'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $selectReport))));
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ListViewSelectContactAndReportMenu'),
-                'items'                   => array($menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-listViewReport', "
+                $('#"  . $this->getSelectReportId() . "').unbind('click.action').bind('click.action', function()
+                    {
+                    }
+                );
+            ");
+        }
+
+        protected function getSelectContactAndLeadId()
+        {
+            return $this->getListViewGridId() . '-selectContactAndLead';
+        }
+
+        protected function getSelectReportId()
+        {
+            return $this->getListViewGridId() . '-selectReport';
+        }
+
+        protected function getListViewGridId()
+        {
+            // TODO: @Shoaibi: Low: should be probably ported to parent, throws exception, work on why?
+            if (!isset($this->params['listViewGridId']))
+            {
+                throw new NotSupportedException();
+            }
+            return $this->params['listViewGridId'];
         }
     }
 ?>

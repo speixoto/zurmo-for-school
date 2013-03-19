@@ -32,6 +32,8 @@
      */
     class EmailTemplatesSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
+        protected $super;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -40,82 +42,159 @@
             Yii::app()->user->userModel = $super;
 
             //Setup test data owned by the super user.
-            EmailTemplateTestHelper::createEmailTemplateByName(1, 'Test Subject', 'Test Name', 'Test HtmlContent', 'Test TextContent');
-            EmailTemplateTestHelper::createEmailTemplateByName(1, 'Test Subject1', 'Test Name1', 'Test HtmlContent1', 'Test TextContent1');
+            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_WORKFLOW, 'Test Subject', 'Contact',
+                                                                    'Test Name', 'Test HtmlContent', 'Test TextContent');
+            EmailTemplateTestHelper::createEmailTemplateByName(EmailTemplate::TYPE_CONTACT, 'Test Subject1', 'Contact',
+                                                                    'Test Name1', 'Test HtmlContent1', 'Test TextContent1');
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            $this->super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
         }
 
         public function testSuperUserAllDefaultControllerActions()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
-            //Test all default controller actions that do not require any POST/GET variables to be passed.
-            //This does not include portlet controller actions.
+            // Test all default controller actions that do not require any POST/GET variables to be passed.
+            // This does not include portlet controller actions.
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
-
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/list');
-            $this->assertFalse(strpos($content, 'anyMixedAttributes') === false);
-            //Test the search or paging of the listview.
-            Yii::app()->clientScript->reset(); //to make sure old js doesn't make it to the UI
-            $this->setGetArray(array('ajax' => 'list-view'));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/list');
-            $this->assertTrue(strpos($content, 'anyMixedAttributes') === false);
-            $this->resetGetArray();
-
-            $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(2, count($emailTemplates));
-            
-            $emailTemplateNameId = self::getModelIdByModelNameAndName ('EmailTemplate', 'Test Name');
-            $this->setGetArray(array('id' => $emailTemplateNameId));
-            $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
-
-            //Save emailTemplate.
-            $emailTemplateName = EmailTemplate::getById($emailTemplateNameId);
-            $this->assertEquals('Test Subject', $emailTemplateName->subject);
-            $this->setPostArray(array('EmailTemplate' => array('subject' => 'Test Subject')));
-            //Test having a failed validation on the emailTemplate during save.
-            $this->setGetArray (array('id'      => $emailTemplateNameId));
-            $this->setPostArray(array('EmailTemplate' => array('name' => '')));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
-            $this->assertFalse(strpos($content, 'Name cannot be blank') === false);
         }
 
-         
-        public function testSuperUserDeleteAction()
+        public function testSuperUserListAction()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'Test Name');
-
-            //Delete an emailTemplate.
-            $this->setGetArray(array('id' => $emailTemplateId));
-            $this->resetPostArray();
-            $this->runControllerWithRedirectExceptionAndGetContent('emailTemplates/default/delete');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/list');
+            $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
+            $this->assertTrue   (substr_count($content, '2 result(s)') !== false);
+            $this->assertEquals (substr_count($content, 'Test Name'), 2);
+            $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
+            $this->assertFalse  (strpos($content,       'anyMixedAttributes') !== false);
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(1, count($emailTemplates));
+            $this->assertEquals (2,                     count($emailTemplates));
         }
 
         public function testSuperUserCreateAction()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            //Create a new emailTemplate.
-            $this->resetGetArray();
+            // Create a new emailTemplate and test validator.
             $this->setPostArray(array('EmailTemplate' => array(
-                                            'type'        => 1,
-                                            'name'        => 'New Test EmailTemplate',
-                                            'subject'     => 'New Test Subject',
-                                            'textContent' => 'New Text Content')));
+                'type'              => EmailTemplate::TYPE_CONTACT,
+                'name'              => 'New Test EmailTemplate',
+                'subject'           => 'New Test Subject')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            $this->assertTrue(strpos($content, 'Create Email Template') !== false);
+            $this->assertTrue(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type_value">') !== false);
+            $this->assertTrue(strpos($content, '<option value="1">Workflow</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="2" selected="selected">Contact</option>') !== false);
+            $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);
+            $this->assertTrue(strpos($content, 'Model Class Name cannot be blank.') !== false);
+
+            // Create a new emailTemplate and test merge tags validator.
+            $this->setPostArray(array('EmailTemplate' => array(
+                'type'              => EmailTemplate::TYPE_WORKFLOW,
+                'modelClassName'    => 'Account',
+                'name'              => 'New Test EmailTemplate',
+                'subject'           => 'New Test Subject',
+                'textContent'       => 'This is text content [[INVALID^TAG]]',
+                'htmlContent'       => 'This is Html content [[INVALIDTAG]]',
+                )));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+            $this->assertTrue(strpos($content, 'Create Email Template') !== false);
+            $this->assertTrue(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type_value">') !== false);
+            $this->assertTrue(strpos($content, '<option value="1" selected="selected">Workflow</option>') !== false);
+            $this->assertTrue(strpos($content, '<option value="2">Contact</option>') !== false);
+            $this->assertTrue(strpos($content, 'INVALID^TAG') !== false);
+            $this->assertTrue(strpos($content, 'INVALIDTAG') !== false);
+            $this->assertEquals(2, substr_count($content, 'INVALID^TAG'));
+            $this->assertEquals(2, substr_count($content, 'INVALIDTAG'));
+
+            // Create a new emailTemplate and save it.
+            $this->setPostArray(array('EmailTemplate' => array(
+                'type'              => EmailTemplate::TYPE_CONTACT,
+                'name'              => 'New Test EmailTemplate',
+                'modelClassName'    => 'Contact',
+                'subject'           => 'New Test Subject',
+                'textContent'       => 'New Text Content')));
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/create');
-            $emailTemplate = EmailTemplate::getByName('New Test EmailTemplate');
-            $this->assertEquals(1, count($emailTemplate));
-            $this->assertTrue  ($emailTemplate[0]->id > 0);
-            $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/details', array('id' => $emailTemplate[0]->id));
+            $emailTemplateId = $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Test EmailTemplate');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->assertTrue  ($emailTemplate->id > 0);
+            $this->assertEquals('New Test Subject', $emailTemplate->subject);
+            $this->assertEquals('New Text Content', $emailTemplate->textContent);
+            $this->assertTrue  ($emailTemplate->owner == $this->super);
+            $compareRedirectUrl = Yii::app()->createUrl('emailTemplates/default/details', array('id' => $emailTemplate->id));
             $this->assertEquals($compareRedirectUrl, $redirectUrl);
-            $this->assertEquals('New Test Subject', $emailTemplate[0]->subject);
-            $this->assertTrue  ($emailTemplate[0]->owner == $super);
             $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals(2, count($emailTemplate));
+            $this->assertEquals(3, count($emailTemplates));
         }
 
+        public function testSuperUserEditAction()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'Test Name');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->setGetArray(array('id' => $emailTemplateId));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
+            $this->assertTrue(strpos($content, '<input id="EmailTemplate_name" name="EmailTemplate[name]"' .
+                                        ' type="text" maxlength="64" value="'. $emailTemplate->name . '" />') !== false);
+            $this->assertTrue(strpos($content, '<input id="EmailTemplate_subject" name="EmailTemplate[subject]"' .
+                ' type="text" maxlength="64" value="'. $emailTemplate->subject . '" />') !== false);
+            $this->assertTrue(strpos($content, '<textarea id="EmailTemplate_textContent" name="EmailTemplate[textContent]"' .
+                ' rows="6" cols="50">'. $emailTemplate->textContent . '</textarea>') !== false);
+            $this->assertTrue(strpos($content, '<textarea id=\'EmailTemplate_htmlContent\' name=\'EmailTemplate[htmlContent]\'>' .
+                $emailTemplate->htmlContent . '</textarea>') !== false);
+
+            // Test having a failed validation on the emailTemplate during save.
+            $this->setGetArray (array('id' => $emailTemplateId));
+            $this->setPostArray(array('EmailTemplate' => array('name' => '', 'htmlContent' => '', 'textContent' => '')));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/edit');
+            $this->assertTrue(strpos($content, 'Name cannot be blank') !== false);
+            $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);
+
+            // Send a valid post and verify saved data.
+            $this->setPostArray(array('EmailTemplate' => array(
+                                    'name' => 'New Name',
+                                    'subject' => 'New Subject',
+                                    'type' => EmailTemplate::TYPE_WORKFLOW,
+                                    'htmlContent' => 'New HTML Content',
+                                    'textContent' => 'New Text Content')));
+            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('emailTemplates/default/edit');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $this->assertEquals('New Subject', $emailTemplate->subject);
+            $this->assertEquals('New Name', $emailTemplate->name);
+            $this->assertEquals(EmailTemplate::TYPE_WORKFLOW, $emailTemplate->type);
+            $this->assertEquals('New Text Content', $emailTemplate->textContent);
+            $this->assertEquals('New HTML Content', $emailTemplate->htmlContent);
+        }
+
+        public function testSuperUserDetailsAction()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Name');
+            $emailTemplate = EmailTemplate::getById($emailTemplateId);
+            $types = EmailTemplate::getTypeDropDownArray();
+            $this->setGetArray(array('id' => $emailTemplateId));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/details');
+            $this->assertTrue(strpos($content, '<span class="ellipsis-content">' . $emailTemplate->name . '</span>') !== false);
+            $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/edit?id=' . $emailTemplateId) !== false);
+            $this->assertTrue(strpos($content, 'emailTemplates/default/delete?id=' . $emailTemplateId) !== false);
+            $this->assertTrue(strpos($content, '<th>Type</th><td colspan="1">' . $types[(int)$emailTemplate->type] . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
+            $this->assertTrue(strpos($content, '<div class="tabs-nav"><a class="active-tab" href="#tab1">') !== false);
+            $this->assertTrue(strpos($content, '<a href="#tab2">') !== false);
+        }
+
+        public function testSuperUserDeleteAction()
+        {
+            $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Name');
+            //Delete an emailTemplate.
+            $this->setGetArray(array('id' => $emailTemplateId));
+            $this->resetPostArray();
+            $content = $this->runControllerWithRedirectExceptionAndGetContent('emailTemplates/default/delete');
+            $emailTemplates = EmailTemplate::getAll();
+            $this->assertEquals(2, count($emailTemplates));
+        }
     }
 ?>

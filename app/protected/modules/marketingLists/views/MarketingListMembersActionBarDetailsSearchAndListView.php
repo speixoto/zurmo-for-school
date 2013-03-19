@@ -23,7 +23,7 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
+    // TODO: @Shoaibi: Low: Not Used?
     /**
      * Renders an action bar, search view, and list view.
      */
@@ -35,7 +35,7 @@
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
-            parent::__construct(4, 1);
+            parent::__construct(3, 1);
             $detailsView         = new MarketingListDetailsView($controllerId, $moduleId, $marketingList);
             $searchView          = new MarketingListMembersSearchView($searchModel, get_class($listModel));
             $listView            = new MarketingListMembersListView($controllerId, $moduleId,

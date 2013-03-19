@@ -25,72 +25,139 @@
      ********************************************************************************/
 
     /**
-     
+     * Element used to display text and html areas on EmailTemplateEditAndDetailsView
      */
     class EmailTemplateHtmlAndTextContentElement extends Element implements DerivedElementInterface
     {
+        const HTML_CONTENT_INPUT_NAME = 'htmlContent';
+
+        const TEXT_CONTENT_INPUT_NAME = 'textContent';
+
+        public static function getModelAttributeNames()
+        {
+            return array(
+                static::HTML_CONTENT_INPUT_NAME,
+                static::TEXT_CONTENT_INPUT_NAME,
+            );
+        }
+
+        public static function renderModelAttributeLabel($name)
+        {
+            $labels = static::renderLabels();
+            return $labels[$name];
+        }
+
+        protected static function renderLabels()
+        {
+            $labels = array(
+                            Zurmo::t('EmailTemplatesModule', 'Html Content'),
+                            Zurmo::t('EmailTemplatesModule', 'Text Content'),
+                            );
+            return array_combine(static::getModelAttributeNames(), $labels);
+        }
+
+        protected function renderHtmlContentAreaLabel()
+        {
+            return static::renderModelAttributeLabel(static::HTML_CONTENT_INPUT_NAME);
+        }
+
+        protected function renderTextContentAreaLabel()
+        {
+            return static::renderModelAttributeLabel(static::TEXT_CONTENT_INPUT_NAME);
+        }
+
+        protected function resolveTabbedContent($plainTextContent, $htmlContent)
+        {
+            $this->registerTabbedContentScripts();
+            $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
+            $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
+            $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink);
+
+            $plainTextDiv       = ZurmoHtml::tag('div',
+                                                array('id' => 'tab1',
+                                                      'class' => 'active-tab tab email-template-' . static::TEXT_CONTENT_INPUT_NAME),
+                                                $plainTextContent);
+            $htmlContentDiv     = ZurmoHtml::tag('div',
+                                                array('id' => 'tab2',
+                                                      'class' => 'tab email-template-' . static::HTML_CONTENT_INPUT_NAME),
+                                                $htmlContent);
+            return ZurmoHtml::tag('div', array('class' => 'email-template-content'), $tabContent . $plainTextDiv . $htmlContentDiv);
+        }
+
+        protected function registerTabbedContentScripts()
+        {
+            Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
+                    $('.tabs-nav a').click( function(){
+                        //the menu items
+                        $('.active-tab', $(this).parent()).removeClass('active-tab');
+                        $(this).addClass('active-tab');
+                        //the sections
+                        var _old = $('.tab.active-tab'); //maybe add context here for tab-container
+                        _old.fadeToggle();
+                        var _new = $( $(this).attr('href') );
+                        _new.fadeToggle(300, 'linear', function(){
+                                _old.removeClass('active-tab');
+                                _new.addClass('active-tab');
+                        });
+                        return false;
+                    });
+                ");
+
+        }
+
         protected function renderControlNonEditable()
         {
-            $emailMessageTemplate = new EmailTemplate();
             assert('$this->attribute == null');
-            if ($emailMessageTemplate->htmlContent != null)
-            {
-                return Yii::app()->format->html($emailMessageTemplate->htmlContent);
-            }
-            elseif ($emailMessageTemplate->textContent != null)
-            {
-                return Yii::app()->format->text($emailMessageTemplate->textContent);
-            }
+            return $this->resolveTabbedContent($this->model->textContent, $this->model->htmlContent);
         }
 
         protected function renderControlEditable()
         {
-          $content = '<div class="email-template-textcontent">';
-          $content .= $this->renderTextContentArea();
-          $content .= '<div>';
-          $content .= '<div class="email-template-htmlcontent">';
-          $content .= $this->renderHtmlContentArea();
-          $content .= '<div>';
-          return $content;
+            return $this->resolveTabbedContent($this->renderTextContentArea(), $this->renderHtmlContentArea());
         }
 
+        // REVIEW : @Shoaibi Create a HTML element out of it.
         protected function renderHtmlContentArea()
         {
-            $inputNameIdPrefix       = $this->attribute;
-            $attribute               = 'htmlContent';
-            $id                      = $this->getEditableInputId  ($inputNameIdPrefix, $attribute);
+            $id                      = $this->getEditableInputId(static::HTML_CONTENT_INPUT_NAME);
             $htmlOptions             = array();
             $htmlOptions['id']       = $id;
-            $htmlOptions['name']     = $this->getEditableInputName($inputNameIdPrefix, $attribute);
-            $cClipWidget   = new CClipWidget();
+            $htmlOptions['name']     = $this->getEditableInputName(static::HTML_CONTENT_INPUT_NAME);
+            $cClipWidget             = new CClipWidget();
             $cClipWidget->beginClip("Redactor");
             $cClipWidget->widget('application.core.widgets.Redactor', array(
                                         'htmlOptions' => $htmlOptions,
                                         'content'     => $this->model->htmlContent,
-            ));
+                                ));
             $cClipWidget->endClip();
-            $content  = $cClipWidget->getController()->clips['Redactor'];
-            $content .= $this->form->error($this->model, $attribute);
+            $content                 = ZurmoHtml::label($this->renderHtmlContentAreaLabel(), $id);
+            $content                .= $cClipWidget->getController()->clips['Redactor'];
+            $content                .= $this->renderHtmlContentAreaError();
             return $content;
         }
 
          protected function renderTextContentArea()
          {
-            $inputNameIdPrefix       = $this->attribute;
-            $attribute               = 'textContent';
-            $content = null;
-            $textContentElement  = new TextAreaElement($this->model, 'textContent');
-            $textContentElement->nonEditableTemplate = '<div class="text-content">{content}</div>';
-            $content .= $textContentElement->render();
-            $content .= $this->form->error($this->model, $attribute);
-            return $content;
+            $textContentElement                         = new TextAreaElement($this->model, static::TEXT_CONTENT_INPUT_NAME, $this->form);
+            $textContentElement->editableTemplate       = $this->editableTemplate;
+            return $textContentElement->render();
          }
-        public static function getModelAttributeNames()
+
+        protected function renderHtmlContentAreaError()
         {
-            return array(
-                'htmlContent',
-                'textContent',
-            );
+            if (strpos($this->editableTemplate, '{error}') !== false)
+            {
+                return $this->form->error($this->model, static::HTML_CONTENT_INPUT_NAME);
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        protected function renderLabel()
+        {
+            return null;
         }
      }
 ?>

@@ -26,7 +26,6 @@
 
     class MarketingListMember extends OwnedModel
     {
-
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -56,13 +55,15 @@
                     'unsubscribed',
                 ),
                 'relations' => array(
-                    'contact'   => array(RedBeanModel::HAS_ONE,              'Contact'),
+                    'contact'       => array(RedBeanModel::HAS_ONE,                 'Contact'),
+                    'marketingList' => array(RedBeanModel::HAS_ONE,                 'MarketingList'),
                 ),
                 'rules' => array(
                     array('createdDateTime',       'required'),
                     array('createdDateTime',       'type', 'type' => 'datetime'),
                     array('modifiedDateTime',      'type', 'type' => 'datetime'),
                     array('unsubscribed',          'boolean'),
+                    array('unsubscribed',          'default', 'value' => false),
                 ),
                 'elements' => array(
                     'createdDateTime'  => 'DateTime',

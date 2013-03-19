@@ -31,12 +31,36 @@
     {
         public function getActionType()
         {
-            return 'Details';
+            return 'Delete';
         }
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Options');
+            return Zurmo::t('MarketingListsModule', 'Options');
+        }
+
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        public function render()
+        {
+            $deleteElement          = new MarketingListDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId, $this->params);
+            $deleteElementContent   = $deleteElement->renderMenuItem();
+            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId, $this->params);
+            $editElementContent     = $editElement->renderMenuItem();
+            // TODO: @Shoaibi: securable on these items from the outside coming in?
+            $menuItems              = array('label' => $this->getLabel(), 'url' => null,
+                                                'items' => array( $editElementContent, $deleteElementContent));
+            $cClipWidget            = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                                                'htmlOptions'   => array('id' => 'ListViewOptionsActionMenu'),
+                                                'items'         => array($menuItems),
+                                            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
         }
     }
 ?>

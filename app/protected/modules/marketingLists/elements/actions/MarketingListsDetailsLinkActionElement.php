@@ -25,7 +25,8 @@
      ********************************************************************************/
 
     /**
-     * MarketingList Detail link.
+     * Class to render a fly-out link from the report detailsview.  When this link is clicked, a little div will
+     * open up that display additional information about the marketing list
      */
     class MarketingListsDetailsLinkActionElement extends LinkActionElement
     {
@@ -36,8 +37,29 @@
 
         protected function getDefaultLabel()
         {
-            return Yii::t('Default', 'Details');
+            return Zurmo::t('MarketingListsModule', 'Details');
         }
 
+        protected function getDefaultRoute()
+        {
+            return null;
+        }
+
+        public function render()
+        {
+            // TODO: @Shoaibi: Medium: This needs to display a tooltip style div with some information regarding current item.
+            $menuItems = array('label' => $this->getLabel(), 'url' => null,
+                'items' => array(
+                    array(  'label'   => 'need div here with details?',
+                        'url'     => '#'))); //TODO: @Shoaibi: Medium: dont use default route
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("ActionMenu");
+            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+                'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
+                'items'                   => array($menuItems),
+            ));
+            $cClipWidget->endClip();
+            return $cClipWidget->getController()->clips['ActionMenu'];
+        }
     }
 ?>

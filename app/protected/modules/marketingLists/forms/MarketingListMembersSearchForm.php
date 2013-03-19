@@ -24,6 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    // TODO: @Shoaibi: no used?
     class MarketingListMembersSearchForm extends SearchForm
     {
         public $anyEmail;
@@ -40,14 +41,13 @@
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
-                'anyEmail'           => Yii::t('Default', 'Any Email Address'),
-                'fullName'           => Yii::t('Default', 'Name'),
+                'anyEmail'           => Zurmo::t('Default', 'Any Email Address'),
+                'fullName'           => Zurmo::t('Default', 'Name'),
             ));
         }
 
         public function getAttributesMappedToRealAttributesMetadata()
         {
-            //todo: need to add support for related concated, and related related here..
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
                 'anyEmail' => array(
                     array('contact', 'primaryEmail',   'emailAddress'),
@@ -59,17 +59,6 @@
                     array('contact', 'concatedAttributeNames' => array('firstName', 'lastName'))
                 ),
             ));
-        }
-
-        /**
-         * Since the parent class looks at the module metadata, we need to override this since the module metadata
-         * globalSearchAttributeNames is specific to MarketingList and not MarketingListMember
-         * @param array $realAttributesMetadata
-         */
-        public function resolveMixedSearchAttributeMappedToRealAttributesMetadata(& $realAttributesMetadata)
-        {
-            //todo: make this method take concrete attributes, no need to look elsewhere as we know specifically
-            //the available attributes for this.
         }
     }
 ?>

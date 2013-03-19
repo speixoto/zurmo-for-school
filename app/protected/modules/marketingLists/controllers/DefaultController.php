@@ -26,13 +26,15 @@
 
     class MarketingListsDefaultController extends ZurmoModuleController
     {
+        // TODO: @Shoaibi: Low: Rewrite unit tests for all models, controllers, utils, adapters, etc
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
+                                                                        'listPageSize', get_class($this->getModule()));
             $marketingList                  = new MarketingList(false);
             $searchForm                     = new MarketingListsSearchForm($marketingList);
-            $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView', get_class($this->getModule()));
+            $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView',
+                                                                                        get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
@@ -50,12 +52,15 @@
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView(
-                    $searchForm,
-                    $pageSize,
-                    MarketingListsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                    $dataProvider
-                );
+                $mixedView = new ActionBarAndListView(
+                                                        $this->getId(),
+                                                        $this->getModule()->getId(),
+                                                        $marketingList,
+                                                        'MarketingLists',
+                                                        $dataProvider,
+                                                        array(),
+                                                        'MarketingListsActionBarForListView'
+                                                    );
                 $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
@@ -66,12 +71,13 @@
         {
            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
-                                                 Yii::t('Default', 'Create Marketing List'));
+                                                 Zurmo::t('Default', 'Create Marketing List'));
             $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $editView));
             echo $view->render();
         }
 
+        /*
         public function actionDetails($id)
         {
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
@@ -87,7 +93,7 @@
                                               $pageSize,
                                               null,
                                               'MarketingListMembersSearchView'
-                                              );*/
+                                              );/
             $searchAttributes = array();
             $metadataAdapter  = new MarketingListsMembersSearchDataProviderMetadataAdapter(
                 $marketingListMember,
@@ -122,7 +128,6 @@
         protected function makeActionBarDetailsSearchAndListView(MarketingList $marketingList,
                                                                  MarketingListMembersSearchForm $searchModel, $dataProvider)
         {
-            assert('is_string($actionBarViewClassName)');
             $listModel = $searchModel->getModel();
             return new MarketingListMembersActionBarDetailsSearchAndListView(
                         $this->getId(),
@@ -132,6 +137,25 @@
                         $listModel,
                         $dataProvider,
                         GetUtil::resolveSelectedIdsFromGet());
+        }
+        */
+
+        public function actionDetails($id)
+        {
+            // TODO: @Shoaibi: Low: what about ajax?
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                            array(strval($marketingList), 'MarketingListsModule'), $marketingList);
+            $breadCrumbView             = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this,
+                                                                            'MarketingListsSearchView', $marketingList);
+            $detailsAndRelationsView    = $this->makeDetailsAndRelationsView($marketingList, 'MarketingListsModule',
+                                                                                'MarketingListDetailsAndRelationsView',
+                                                                                Yii::app()->request->getRequestUri(),
+                                                                                $breadCrumbView);
+            $view                       = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                                                makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            echo $view->render();
         }
 
 
@@ -149,7 +173,7 @@
 
         public function actionDelete($id)
         {
-            $marketingList = MarketingList::GetById(intval($id));
+            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($marketingList);
             $marketingList->delete();
             $this->redirect(array($this->getId() . '/index'));

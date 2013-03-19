@@ -48,6 +48,8 @@
 
         protected $labelsHaveOwnCells = true;
 
+        public $alwaysShowErrorSummary = false;
+
         /**
          * Set the labels to have their own cells or not.
          * @param boolean $hasOwnCells
@@ -68,7 +70,7 @@
         public function render()
         {
             $content        = '';
-            if ($this->shouldRenderTabbedPanels())
+            if ($this->alwaysShowErrorSummary || $this->shouldRenderTabbedPanels())
             {
                 $content .= $this->errorSummaryContent;
             }

@@ -32,7 +32,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelMarketingListsLink'),
+                            array('type'  => 'MarketingListsCancelLink'),
                             array('type'  => 'SaveButton'),
                         ),
                     ),
@@ -56,6 +56,24 @@
                                             ),
                                         ),
                                     )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'fromName', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'fromAddress', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    ),
                                 ),
                             ),
                         ),

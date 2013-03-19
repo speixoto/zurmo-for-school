@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2011 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -24,27 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class for working with Email Template models.
-     */
-    class EmailTemplateUtil
+    class MarketingListMemberSubscribeLinkActionElement extends MarketingListMemberLinkActionElement
     {
-
-        public static function getTypeDropDownArray()
+        public static function shouldRenderByRowModel($model)
         {
-            return array(
-                null                 => Yii::t('Default', '--'),
-            );
+            return ($model->unsubscribed == true);
         }
 
-        public static function renderNonEditableTypeStringContent($isHotType)
+        public function getActionType()
         {
-            assert('is_int($isHotType) || $isHotType == null');
-            $dropDownArray = self::getIsHotTypeDropDownArray();
-            if (!empty($dropDownArray[$isHotType]))
-            {
-                return Yii::app()->format->text($dropDownArray[$isHotType]);
-            }
+            return 'Edit';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('MarketingListsModule', 'Subscribe');
+        }
+
+        protected function getActionId()
+        {
+            return 'toggleUnsubscribed';
         }
     }
 ?>

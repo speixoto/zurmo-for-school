@@ -25,30 +25,13 @@
      ********************************************************************************/
 
     /**
-     * Cancel Email Template link.
+     * Element for displaying the email template type options.
      */
-    class CancelEmailTemplatesLinkActionElement extends LinkActionElement
+    class EmailTemplateTypeElement extends StaticDropDownFormElement
     {
-        public function getActionType()
+        protected function getDropDownArray()
         {
-            return 'Details';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Yii::t('Default', 'Cancel');
-        }
-
-        protected function getDefaultRoute()
-        {
-            if (!empty($this->modelId))
-            {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            return EmailTemplate::getTypeDropDownArray();
         }
     }
 ?>

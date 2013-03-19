@@ -28,7 +28,7 @@
     {
         protected function getSubtitle()
         {
-            return Yii::t('Default', 'MarketingListsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return Zurmo::t('Default', 'MarketingListsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

@@ -32,13 +32,33 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
+                            array('type'    => 'EmailTemplateCancelLink', 'renderType' => 'Edit'),
+                            array('type'    => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type'    => 'EditLink', 'renderType' => 'Details'),
+                            array('type'    => 'EmailTemplateDeleteLink'),
                         ),
                     ),
                     'panels' => array(
                         array(
                             'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'EmailTemplateType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                                 array('cells' =>
                                     array(
                                         array(
@@ -67,25 +87,77 @@
 
         protected function renderRightSideFormLayoutForEdit($form)
         {
-            $content = null;
-            return $content;
+            return null;
         }
 
         protected function renderAfterFormLayout($form)
         {
-            $content = null;
-            $content .= '<div class="email-template-comtent"></div>' . "\n";
-            $content .= '<div>' . "\n";
-            $element  = new EmailTemplateHtmlAndTextContentElement($this->model, null , $form);
-            $content .= $element->render();
-            $content .= '</div>' . "\n";
-            return $content;
+            Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
+                        $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
+                        {
+                            selectedOptionValue                 = $(this).find(':selected').val();
+                            modelClassNameDropDown              = $('#EmailTemplate_modelClassName_value');
+                            modelClassNameTr                    = modelClassNameDropDown.parent().parent().parent();
+                            animationSpeed                      = 400;
+                            if (selectedOptionValue == " . EmailTemplate::TYPE_WORKFLOW . ")
+                            {
+                                modelClassNameTr.show(animationSpeed);
+                            }
+                            else if (selectedOptionValue == " . EmailTemplate::TYPE_CONTACT . ")
+                            {
+                                modelClassNameTr.hide(animationSpeed, function()
+                                    {
+                                    modelClassNameDropDown.val('Contact');
+                                    });
+                            }
+                            else
+                            {
+                            }
+                        }
+                        );
+                    ");
+            return $this->renderHtmlAndTextContentElement($this->model, null, $form);
         }
 
         protected function getNewModelTitleLabel()
         {
-            return Yii::t('Default', 'Create EmailTemplatesModuleSingularLabel',
+            return Zurmo::t('Default', 'Create EmailTemplatesModuleSingularLabel',
                                      LabelUtil::getTranslationParamsForAllModules());
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent($form = null)
+        {
+            return $this->renderHtmlAndTextContentElement($this->model, null, $form) .
+                        parent::renderAfterFormLayout($form);
+        }
+
+        protected function renderHtmlAndTextContentElement($model, $attribute, $form)
+        {
+            $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
+            if (!is_null($form))
+            {
+                $this->resolveElementDuringFormLayoutRender($element);
+            }
+            else
+            {
+            }
+            return ZurmoHtml::tag('div', array('class' => 'email-template-combined-content'), $element->render());
+        }
+
+        protected function resolveElementDuringFormLayoutRender(& $element)
+        {
+            if ($this->alwaysShowErrorSummary())
+            {
+                $element->editableTemplate = str_replace('{error}', '', $element->editableTemplate);
+            }
+            else
+            {
+            }
+        }
+
+        protected function alwaysShowErrorSummary()
+        {
+            return true;
         }
     }
 ?>

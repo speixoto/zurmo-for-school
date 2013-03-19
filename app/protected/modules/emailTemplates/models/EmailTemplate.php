@@ -26,6 +26,10 @@
 
     class EmailTemplate extends OwnedSecurableItem
     {
+        const TYPE_WORKFLOW = 1;
+
+        const TYPE_CONTACT  = 2;
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -36,13 +40,31 @@
             return 'EmailTemplatesModule';
         }
 
+        public static function getTypeDropDownArray()
+        {
+             return array(
+                 self::TYPE_WORKFLOW     => Zurmo::t('EmailTemplatesModule', 'Workflow'),
+                 self::TYPE_CONTACT      => Zurmo::t('EmailTemplatesModule', 'Contact'),
+             );
+        }
+
+        public static function renderNonEditableTypeStringContent($type)
+        {
+            assert('is_int($type) || $type == null');
+            $dropDownArray = self::getTypeDropDownArray();
+            if (!empty($dropDownArray[$type]))
+            {
+                return Yii::app()->format->text($dropDownArray[$type]);
+            }
+        }
+
         public function __toString()
         {
             try
             {
                 if (trim($this->name) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Zurmo::t('Default', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -77,23 +99,37 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
+                    'modelClassName',
                     'name',
                     'subject',
+                    'language',
                     'htmlContent',
                     'textContent',
                 ),
                 'rules' => array(
-                    array('type',                 'required'),
-                    array('type',                 'type',    'type' => 'integer'),
-                    array('type',                 'length',  'min'  => 1),
-                    array('name',                 'required'),
-                    array('name',                 'type',    'type' => 'string'),
-                    array('name',                 'length',  'min'  => 3, 'max' => 64),
-                    array('subject',              'required'),
-                    array('subject',              'type',    'type' => 'string'),
-                    array('subject',              'length',  'min'  => 3, 'max' => 64),
-                    array('htmlContent',          'type',    'type' => 'string'),
-                    array('textContent',          'type',    'type' => 'string'),
+                    array('type',                       'required'),
+                    array('type',                       'type',    'type' => 'integer'),
+                    array('type',                       'numerical', 'min' => self::TYPE_WORKFLOW,
+                                                                'max' => self::TYPE_CONTACT),
+                    array('modelClassName',             'required'),
+                    array('modelClassName',             'type',     'type' => 'string'),
+                    array('modelClassName',             'length', 'max' => 64),
+                    array('modelClassName',             'validateModelExists', 'except' => 'autoBuildDatabase'),
+                    array('name',                       'required'),
+                    array('name',                       'type',    'type' => 'string'),
+                    array('name',                       'length',  'min'  => 3, 'max' => 64),
+                    array('subject',                    'required'),
+                    array('subject',                    'type',    'type' => 'string'),
+                    array('subject',                    'length',  'min'  => 3, 'max' => 64),
+                    array('language',                   'type',    'type' => 'string'),
+                    array('language',                   'length',  'min' => 2, 'max' => 2),
+                    array('language',                   'setToUserDefaultLanguage'),
+                    array('htmlContent',                'type',    'type' => 'string'),
+                    array('textContent',                'type',    'type' => 'string'),
+                    array('htmlContent',                'validateHtmlContentAndTextContent'),
+                    array('textContent',                'validateHtmlContentAndTextContent'),
+                    array('htmlContent',                'validateMergeTags'),
+                    array('textContent',                'validateMergeTags'),
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',
@@ -101,6 +137,86 @@
                 ),
             );
             return $metadata;
+        }
+
+        public function validateModelExists($attribute, $params)
+        {
+            if (!empty($this->$attribute))
+            {
+                if (@class_exists($this->$attribute))
+                {
+                    if (is_subclass_of($this->$attribute, 'RedBeanModel'))
+                    {
+                    }
+                    else
+                    {
+                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
+                    }
+                }
+                else
+                {
+                    $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name does not exist.'));
+                }
+            }
+            else
+            {
+            }
+        }
+
+        public function validateHtmlContentAndTextContent($attribute, $params)
+        {
+            if (empty($this->textContent) && empty($this->htmlContent))
+            {
+                $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.'));
+            }
+            else
+            {
+            }
+        }
+
+        public function setToUserDefaultLanguage($attribute, $params)
+        {
+            if (empty($this->$attribute))
+            {
+                $this->$attribute = Yii::app()->user->userModel->language;
+            }
+            else
+            {
+            }
+        }
+
+        public function validateMergeTags($attribute, $params)
+        {
+            if (!empty($this->$attribute) && @class_exists($this->modelClassName))
+            {
+                $model          = new $this->modelClassName(false);
+                $mergeTagsUtil  = MergeTagsUtilFactory::make($this->type, $this->language, $this->$attribute);
+                $invalidTags    = array();
+                if (!$mergeTagsUtil->extractMergeTagsPlaceHolders() ||
+                                    $mergeTagsUtil->resolveMergeTagsArrayToAttributes($model, $invalidTags, null))
+                {
+                }
+                else
+                {
+                    if (!empty($invalidTags))
+                    {
+                        foreach ($invalidTags as $tag)
+                        {
+                            $errorMessage = EmailTemplateHtmlAndTextContentElement::renderModelAttributeLabel($attribute) .
+                                            ': Invalid MergeTag({mergeTag}) used.';
+                            $this->addError($attribute, Zurmo::t('EmailTemplatesModule', $errorMessage,
+                                                        array('{mergeTag}' => $tag)));
+                        }
+                    }
+                    else
+                    {
+                        $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
+                    }
+                }
+            }
+            else
+            {
+            }
         }
     }
 ?>

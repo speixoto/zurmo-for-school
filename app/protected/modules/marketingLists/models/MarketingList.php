@@ -42,7 +42,7 @@
             {
                 if (trim($this->name) == '')
                 {
-                    return Yii::t('Default', '(Unnamed)');
+                    return Zurmo::t('Default', '(Unnamed)');
                 }
                 return $this->name;
             }
@@ -78,6 +78,8 @@
                 'members' => array(
                     'name',
                     'description',
+                    'fromName',
+                    'fromAddress',
                 ),
                 'relations' => array(
                     'marketingListMembers'         => array(RedBeanModel::HAS_MANY,   'MarketingListMember'),
@@ -88,6 +90,11 @@
                     array('name',          'type',    'type' => 'string'),
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                     array('description',   'type',    'type' => 'string'),
+                    array('fromName',      'type', 'type' => 'string'),
+                    array('fromName',      'length',  'min'  => 3, 'max' => 64),
+                    array('fromAddress',   'type', 'type' => 'string'),
+                    array('fromAddress',   'length',  'min'  => 6, 'max' => 64),
+                    array('fromAddress',   'email', 'except' => 'autoBuildDatabase'),
                 ),
                 'elements' => array(
                     'description'                  => 'TextArea',
