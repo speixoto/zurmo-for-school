@@ -45,7 +45,6 @@
         const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
         const DEFAULT_LOGO_HEIGHT           = 32;
         const DEFAULT_LOGO_WIDTH            = 107;
-        const LOGO_FILE_NAME_PREFIX         = 'logo-';
         const LOGO_THUMB_FILE_NAME_PREFIX   = 'logoThumb-';
 
         public function rules()

@@ -82,7 +82,7 @@
 
         public static function getLogoAttributes(& $form)
         {
-           if(!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId')))
+           if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId')))
            {
                $logoThumbFileId  = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
                $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id'=>$logoThumbFileId));
@@ -110,27 +110,27 @@
         {
            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', $form->logoHeight);
            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoWidth', $form->logoWidth);
-
-           if(!is_null(Yii::app()->user->getState('logoFileName')))
+           if (Yii::app()->user->getState('deleteCustomLogo') === true)
            {
                if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId') !== null)
                {
-                   $logoFileModelId     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
-                   $logoFileModel       = FileModel::getById($logoFileModelId);
-                   $currentLogoFileName = $logoFileModel->name;
-                   $currentLogoFilePath = Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $currentLogoFileName;
-                   if (file_exists($currentLogoFilePath))
-                   {
-                       unlink($currentLogoFilePath);
-                   }
+                   self::deleteCurrentCustomLogo();
+                   ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', null);
+                   ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', null);
+                   Yii::app()->user->setState('deleteCustomLogo', null);
                }
-               $logoFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_FILE_NAME_PREFIX . Yii::app()->user->getState('logoFileName');
+           }
+           if (!is_null(Yii::app()->user->getState('logoFileName')))
+           {
+               $logoFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . Yii::app()->user->getState('logoFileName');
+               self::resizeLogoImageFile($logoFilePath, $logoFilePath, $form->logoWidth, $form->logoHeight);
                $logoFileName = Yii::app()->user->getState('logoFileName');
                $logoFileId   = self::saveLogoFile($logoFileName, $logoFilePath, 'logoFileModelId');
                self::publishLogo($logoFileName, $logoFilePath);
+               self::deleteCurrentCustomLogo();
+               ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
                $thumbFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $logoFileName;
                $thumbFileId = self::saveLogoFile($logoFileName, $thumbFilePath, 'logoThumbFileModelId');
-               ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
                ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', $thumbFileId);
                Yii::app()->user->setState('logoFileName', null);
            }
@@ -138,11 +138,7 @@
 
         public static function resolveLogoWidth()
         {
-           if(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth') != null)
-           {
-               $logoWidth = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth');
-           }
-           else
+           if(!($logoWidth = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth')))
            {
                $logoWidth = ZurmoConfigurationForm::DEFAULT_LOGO_WIDTH;
            }
@@ -151,11 +147,7 @@
 
         public static function resolveLogoHeight()
         {
-           if(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight') != null)
-           {
-               $logoHeight = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight');
-           }
-           else
+           if(!($logoHeight = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight')))
            {
                $logoHeight = ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT;
            }
@@ -196,16 +188,32 @@
 
         public static function publishLogo($logoFileName, $logoFilePath)
         {
-            if(!is_dir(Yii::getPathOfAlias('application.runtime.uploads')))
+            if (!is_dir(Yii::getPathOfAlias('application.runtime.uploads')))
             {
-                mkdir(Yii::getPathOfAlias('application.runtime.uploads'));
+                mkdir(Yii::getPathOfAlias('application.runtime.uploads'), 0755, true); // set recursive flag and permissions 0755
             }
-            copy($logoFilePath,Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $logoFileName);
+            copy($logoFilePath, Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $logoFileName);
+            Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $logoFileName);
+        }
 
-            $cs = Yii::app()->getClientScript();
-            $cs->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
-                                                                            DIRECTORY_SEPARATOR . $logoFileName),
-                                                                            CClientScript::POS_END);
+        public static function deleteCurrentCustomLogo()
+        {
+            if ($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
+            {
+                //Get path of currently uploaded logo, required to delete/unlink legacy logo from runtime/uploads
+                $logoFileModel       = FileModel::getById($logoFileModelId);
+                $currentLogoFileName = $logoFileModel->name;
+                $currentLogoFilePath = Yii::getPathOfAlias('application.runtime.uploads') . DIRECTORY_SEPARATOR . $currentLogoFileName;
+                if (file_exists($currentLogoFilePath))
+                {
+                    unlink($currentLogoFilePath);
+                }
+            }
+        }
+
+        public static function resizeLogoImageFile($sourcePath, $destinationPath, $newWidth, $newHeight)
+        {
+            WideImage::load($sourcePath)->resize($newWidth, $newHeight)->saveToFile($destinationPath);
         }
     }
 ?>

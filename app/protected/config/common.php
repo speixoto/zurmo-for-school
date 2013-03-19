@@ -286,9 +286,6 @@
                     ),
                 ),
             ),
-            'phpThumbnail' => array(
-                'class'=>'ext.EPhpThumb.EPhpThumb'
-            ),
         ),
         'controllerMap' => array(
             'min' => 'application.extensions.minscript.controllers.ExtMinScriptController',
@@ -308,6 +305,7 @@
             'application.modules.install.serviceHelpers.ServiceHelper',
             'application.modules.install.serviceHelpers.SetIncludePathServiceHelper',
             'application.modules.install.utils.InstallUtil',
+            'application.extensions.wideImage.WideImage',
         ),
 
         'modules' => array(
