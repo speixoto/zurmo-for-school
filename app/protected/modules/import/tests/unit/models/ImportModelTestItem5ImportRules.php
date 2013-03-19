@@ -24,46 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Base class for defining a derived attribute's import rules.
-     */
-    abstract class DerivedAttributeImportRules extends AttributeImportRules
+    class ImportModelTestItem5ImportRules extends DerivedAttributeSupportedImportRules
     {
-        public function getModelAttributeName()
+        public static function getModelClassName()
         {
-            throw new NotSupportedException();
+            return 'ImportModelTestItem5';
+        }
+
+        public static function getDerivedAttributeTypes()
+        {
+            return array_merge(parent::getDerivedAttributeTypes(), array('ImportModelTestItem3Derived'));
         }
 
         /**
-         * Override  when there are real model attributes that the
-         * derived attribute correspond to.
-         * @see AttributeImportRules::getRealModelAttributeNames()
-         * @return array
+         * The derived attribute ImportModelTestItem3Derived corresponds to the hasMany attribute on ImportModelTestItem
          */
-        public function getRealModelAttributeNames()
+        public static function getActualModelAttributeNameForDerivedAttribute()
         {
-            return array();
-        }
-
-        /**
-         * Override in any derived children classes to ensure a display label is available.
-         * @see AttributeImportRules::getDisplayLabel()
-         */
-        public function getDisplayLabel()
-        {
-            throw new NotImplementedException();
-        }
-
-        /**
-         * Derived attribute import rules need to implement this method individually.  Override for each derived
-         * atribute import rule and implement as needed.
-         * @param mixed $value
-         * @param array $columnMappingData
-         * @param object $importSanitizeResultsUtil
-         */
-        public function resolveValueForImport($value, $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil)
-        {
-            throw new NotImplementedException();
+            return 'hasOne';
         }
     }
 ?>

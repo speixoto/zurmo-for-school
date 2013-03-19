@@ -39,6 +39,9 @@
             return Zurmo::t('UsersModule', 'Status');
         }
 
+        /**
+         * @return array
+         */
         public function getRealModelAttributeNames()
         {
             return array();

@@ -99,6 +99,101 @@
         /**
          * @depends testBooleanAcceptableValuesMappingAndSqlOneOfString
          */
+        public function testImportDataAnalysisResultsForMultiSelectWithNothingWrong()
+        {
+            Yii::app()->user->userModel        = User::getByUsername('super');
+            $import                            = new Import();
+            $serializedData['importRulesType'] = 'ImportModelTestItem';
+            $import->serializedData            = serialize($serializedData);
+            $this->assertTrue($import->save());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest2.csv', $import->getTempTableName());
+            $mappingData = array(
+                'column_1' => array('attributeIndexOrDerivedType' => 'multiDropDown',      'type' => 'importColumn',
+                    'mappingRulesData' => array(
+                        'DefaultValueMultiSelectDropDownModelAttributeMappingRuleForm' =>
+                        array('defaultValue' => null))),
+            );
+            $serializedData                = unserialize($import->serializedData);
+            $serializedData['mappingData'] = $mappingData;
+            $import->serializedData        = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $config       = array('pagination' => array('pageSize' => 2));
+            //This test csv has a header row.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+
+            //Run data analyzer
+            $importDataAnalyzer = new ImportDataAnalyzer($importRules, $dataProvider);
+            foreach ($mappingData as $columnName => $columnMappingData)
+            {
+                $importDataAnalyzer->analyzeByColumnNameAndColumnMappingData($columnName, $columnMappingData);
+            }
+            $messagesData = $importDataAnalyzer->getMessagesData();
+            $compareData = array();
+            $this->assertEquals($compareData, $messagesData);
+            $importInstructionsData   = $importDataAnalyzer->getImportInstructionsData();
+            $compareInstructionsData  = array('column_1' =>
+                                            array('MultiSelectDropDown' =>
+                                                array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array())));
+            $this->assertEquals($compareInstructionsData, $importInstructionsData);
+            ImportUtil::setDataAnalyzerMessagesDataToImport($import, $messagesData);
+            $compareData = unserialize($import->serializedData);
+            $compareData = $compareData['dataAnalyzerMessagesData'];
+            $this->assertEquals($compareData, $messagesData);
+        }
+
+        /**
+         * It should not throw an exception even though the mappingRuleForm is missing.  This could happen if the
+         * multi-select default value is unselected entirely
+         * @depends testImportDataAnalysisResultsForMultiSelectWithNothingWrong
+         */
+        public function testImportDataAnalysisResultsForMultiSelectMissingMappingRuleForm()
+        {
+            Yii::app()->user->userModel        = User::getByUsername('super');
+            $import                            = new Import();
+            $serializedData['importRulesType'] = 'ImportModelTestItem';
+            $import->serializedData            = serialize($serializedData);
+            $this->assertTrue($import->save());
+            ImportTestHelper::createTempTableByFileNameAndTableName('importAnalyzerTest2.csv', $import->getTempTableName());
+            $mappingData = array(
+                'column_1' => array('attributeIndexOrDerivedType' => 'multiDropDown',      'type' => 'importColumn',
+                                    'mappingRulesData' => array()),
+            );
+            $serializedData                = unserialize($import->serializedData);
+            $serializedData['mappingData'] = $mappingData;
+            $import->serializedData        = serialize($serializedData);
+            $this->assertTrue($import->save());
+
+            $importRules  = ImportRulesUtil::makeImportRulesByType('ImportModelTestItem');
+            $config       = array('pagination' => array('pageSize' => 2));
+            //This test csv has a header row.
+            $dataProvider = new ImportDataProvider($import->getTempTableName(), true, $config);
+
+            //Run data analyzer
+            $importDataAnalyzer = new ImportDataAnalyzer($importRules, $dataProvider);
+            foreach ($mappingData as $columnName => $columnMappingData)
+            {
+                $importDataAnalyzer->analyzeByColumnNameAndColumnMappingData($columnName, $columnMappingData);
+            }
+            $messagesData = $importDataAnalyzer->getMessagesData();
+            $compareData = array();
+            $this->assertEquals($compareData, $messagesData);
+            $importInstructionsData   = $importDataAnalyzer->getImportInstructionsData();
+            $compareInstructionsData  = array('column_1' =>
+                                            array('MultiSelectDropDown' =>
+                                                array(DropDownSanitizerUtil::ADD_MISSING_VALUE => array())));
+            $this->assertEquals($compareInstructionsData, $importInstructionsData);
+            ImportUtil::setDataAnalyzerMessagesDataToImport($import, $messagesData);
+            $compareData = unserialize($import->serializedData);
+            $compareData = $compareData['dataAnalyzerMessagesData'];
+            $this->assertEquals($compareData, $messagesData);
+        }
+
+
+        /**
+         * @depends testImportDataAnalysisResultsForMultiSelectMissingMappingRuleForm
+         */
         public function testImportDataAnalysisResults()
         {
             Yii::app()->user->userModel        = User::getByUsername('super');

@@ -39,6 +39,9 @@
             return Zurmo::t('UsersModule', 'Password');
         }
 
+        /**
+         * @return array
+         */
         public function getRealModelAttributeNames()
         {
             return array('hash');
