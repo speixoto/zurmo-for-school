@@ -52,6 +52,7 @@
          * Provides the same information as @see getModelAttributeName.  In the case of DerivedAttributeImportRules this
          * produces only the attributes that the derived attribute corresponds to.
          * @see AttributeImportRules::getRealModelAttributeNames()
+         * @return array
          */
         public function getRealModelAttributeNames()
         {

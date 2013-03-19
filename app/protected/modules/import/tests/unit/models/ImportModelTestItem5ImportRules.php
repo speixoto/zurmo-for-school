@@ -24,19 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Api helper class
-     */
-    class ZurmoApiHelper extends CApplicationComponent
+    class ImportModelTestItem5ImportRules extends DerivedAttributeSupportedImportRules
     {
-        /**
-         * Generate response
-         * @param ApiResult $result
-         */
-        public function sendResponse($result)
+        public static function getModelClassName()
         {
-            $responseClassName = Yii::app()->apiRequest->getResponseClassName();
-            $responseClassName::generateOutput($result);
+            return 'ImportModelTestItem5';
+        }
+
+        public static function getDerivedAttributeTypes()
+        {
+            return array_merge(parent::getDerivedAttributeTypes(), array('ImportModelTestItem3Derived'));
+        }
+
+        /**
+         * The derived attribute ImportModelTestItem3Derived corresponds to the hasMany attribute on ImportModelTestItem
+         */
+        public static function getActualModelAttributeNameForDerivedAttribute()
+        {
+            return 'hasOne';
         }
     }
 ?>

@@ -55,6 +55,7 @@
         /**
          * Since the attributes can be derived or real, this method provides a uniform api that can be called regardless
          * of whether the attribute is derived or not, and will produce the real model attribute names if available.
+         * @return array
          */
         abstract public function getRealModelAttributeNames();
 

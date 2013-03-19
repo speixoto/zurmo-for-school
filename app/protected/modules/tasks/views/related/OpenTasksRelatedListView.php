@@ -96,8 +96,14 @@
                     'attributeName'        => 'completed',
                     'operatorType'         => 'doesNotEqual',
                     'value'                => (bool)1
-                ));
-            $searchAttributeData['structure'] = '(1 and 2)';
+                ),
+                3 => array(
+                    'attributeName'        => 'completed',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                )
+            );
+            $searchAttributeData['structure'] = '(1 and (2 OR 3))';
             return $searchAttributeData;
         }
 

@@ -5842,6 +5842,7 @@ body > .ui-autocomplete {
   position: relative;
   height: 40px;
   display: block;
+  z-index: 0;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
@@ -16245,6 +16246,10 @@ a.user-link {
   padding: 15px;
   position: absolute;
   z-index: 10000;
+}
+.glow {
+  background-color: #ffffe0;
+  border-color: #e6db55;
 }
 .Filters .dynamic-row {
   padding: 15px 30px;

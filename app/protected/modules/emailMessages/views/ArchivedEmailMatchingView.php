@@ -225,6 +225,36 @@
             ");
         }
 
+        protected function renderOnClickScriptForDelete()
+        {
+            $route = $this->getDefaultRouteForDelete();
+            $onClickScript           = ZurmoHtml::ajax(
+                                            array(
+                                                "type"      => "GET",
+                                                "url"       => $route,
+                                                'success'   => "function()
+                                                                {
+                                                                    if (confirm('" . Zurmo::t('EmailMessagesModule', 'Are you sure you want to delete?') . "'))
+                                                                    {
+                                                                         $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
+                                                                         $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
+                                                                         {
+                                                                            text: '" . Zurmo::t('EmailMessagesModule', 'Deleted successfully') . "',
+                                                                            permanent: false,
+                                                                            showIcon: true,
+                                                                         })
+                                                                         if ($('.email-archive-item').length == 0)
+                                                                         {
+                                                                            window.location.reload();
+                                                                         }
+                                                                    }
+                                                                }",
+                                            )
+                                        );
+            $onClickScript          .= "return false;";
+            return $onClickScript;
+        }
+
         protected function renderSelectLinkContent()
         {
             if ($this->userCanAccessContacts && $this->userCanAccessLeads)
@@ -295,8 +325,7 @@
         {
             $htmlOptions = $this->getHtmlOptionsForDelete();
             $route = $this->getDefaultRouteForDelete();
-            $ajaxOptions = $this->getAjaxOptionsForDelete();
-            $content = ' &#183; ' . ZurmoHtml::ajaxLink(Zurmo::t('EmailMessagesModule', 'Delete'), $route, $ajaxOptions,
+            $content = ' &#183; ' . ZurmoHtml::link(Zurmo::t('EmailMessagesModule', 'Delete'), $route,
                                      $htmlOptions);
             return $content;
         }
@@ -307,31 +336,11 @@
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/delete/', $params);
         }
 
-        protected function getAjaxOptionsForDelete()
-        {
-            return array('type'     => 'GET',
-                         'success'  => "function()
-                                       {
-                                           $('#wrapper-" . $this->uniqueId . "').parent().parent().remove();
-                                           $('#" . self::getNotificationBarId() . "').jnotifyAddMessage(
-                                           {
-                                              text: '" . Zurmo::t('EmailMessagesModule', 'Deleted successfully') . "',
-                                              permanent: false,
-                                              showIcon: true,
-                                           })
-                                           if ($('.email-archive-item').length == 0)
-                                           {
-                                              window.location.reload();
-                                           }
-                                       }
-            ");
-        }
-
         protected function getHtmlOptionsForDelete()
         {
             $htmlOptions['id']      = 'delete-link-' . $this->uniqueId;
             $htmlOptions['class']   = 'z-action-link';
-            $htmlOptions['confirm'] = Zurmo::t('EmailMessagesModule', 'Are you sure you want to delete?');
+            $htmlOptions["onClick"] = $this->renderOnClickScriptForDelete();
             return $htmlOptions;
         }
 

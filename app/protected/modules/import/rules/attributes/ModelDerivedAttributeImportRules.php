@@ -50,10 +50,11 @@
          * have access to that information in this class, we don't know the import rule type, we cannot return anything.
          * Resolving what attribute to save the derived model to will need to be handled outside of this class.
          * @see DerivedAttributeSupportedImportRules::getRealModelAttributeNameForDerivedAttribute()
+         * @return array
          */
         public function getRealModelAttributeNames()
         {
-            return null;
+            return array();
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()

@@ -41,10 +41,42 @@
             return array('Number', 'Required');
         }
 
+        /**
+         * There is a special way you can import rateToBase and currencyCode for an amount attribute.
+         * if the column data is formatted like: $54.67__1.2__USD  then it will split the column and properly
+         * handle rate and currency code.  Eventually this will be exposed in the user interface
+         *
+         * @param mixed $value
+         * @param array $columnMappingData
+         * @param ImportSanitizeResultsUtil $importSanitizeResultsUtil
+         * @return array
+         */
         public function resolveValueForImport($value, $columnMappingData, ImportSanitizeResultsUtil $importSanitizeResultsUtil)
         {
             $attributeNames = $this->getRealModelAttributeNames();
             $modelClassName = $this->getModelClassName();
+            $parts          = explode(FormModelUtil::DELIMITER, $value);
+            if(count($parts) == 3)
+            {
+                $value          = $parts[0];
+                $rateToBase     = $parts[1];
+                try
+                {
+                    $currency   = Currency::getByCode($parts[2]);
+                }
+                catch(NotFoundException $e)
+                {
+                    $currency   = null;
+                    $importSanitizeResultsUtil->addMessage('Currency Code: ' . $parts[2] . ' is invalid.');
+                    $importSanitizeResultsUtil->setModelShouldNotBeSaved();
+                }
+            }
+            else
+            {
+                $rateToBase = $columnMappingData['mappingRulesData']['CurrencyRateToBaseModelAttributeMappingRuleForm']
+                              ['rateToBase'];
+                $currency   = Currency::getById((int)$columnMappingData['mappingRulesData']['CurrencyIdModelAttributeMappingRuleForm']['id']);
+            }
             $sanitizedValue = ImportSanitizerUtil::
                               sanitizeValueBySanitizerTypes(static::getSanitizerUtilTypesInProcessingOrder(),
                                                             $modelClassName, $this->getModelAttributeName(),
@@ -54,11 +86,10 @@
                 $sanitizedValue = 0;
             }
             $currencyValue             = new CurrencyValue();
+            $currencyValue->setScenario('importModel');
             $currencyValue->value      = $sanitizedValue;
-            $currencyValue->rateToBase = $columnMappingData['mappingRulesData']['CurrencyRateToBaseModelAttributeMappingRuleForm']
-                                         ['rateToBase'];
-            $currencyValue->currency   = Currency::
-                                         getById((int)$columnMappingData['mappingRulesData']['CurrencyIdModelAttributeMappingRuleForm']['id']);
+            $currencyValue->rateToBase = $rateToBase;
+            $currencyValue->currency   = $currency;
             return array($this->getModelAttributeName() => $currencyValue);
         }
     }

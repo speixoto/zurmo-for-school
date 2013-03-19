@@ -34,7 +34,7 @@
         {
             return array(
                 'configuration',
-                'zurmo',
+                'zurmo'
             );
         }
 
@@ -47,6 +47,11 @@
         {
             $metadata = array();
             return $metadata;
+        }
+
+        public static function getSingularCamelCasedName()
+        {
+            return 'Api';
         }
     }
 ?>
