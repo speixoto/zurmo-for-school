@@ -28,7 +28,7 @@
     {
         public function renderGridViewData()
         {
-            $memberName         = 'strval($data->contact) . " [ " . strval($data->contact->primaryEmail) . " ] "'; // TODO: @Shoaibi: Critical: Disable this
+            $memberName         = 'strval($data->contact)';
             $memberStatusPrefix = ' ."\t(" . ';
             $memberStatus       = 'Zurmo::t("' . $this->view->getContainerModuleClassName() . '", (($data->unsubscribed == true)? "Unsubscribed" : "Subscribed"))';
             $memberStatusSuffix = ' . ")"';

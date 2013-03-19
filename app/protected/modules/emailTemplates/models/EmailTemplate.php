@@ -126,8 +126,10 @@
                     array('language',                   'setToUserDefaultLanguage'),
                     array('htmlContent',                'type',    'type' => 'string'),
                     array('textContent',                'type',    'type' => 'string'),
-                    array('htmlContent, textContent',   'validateHtmlContentAndTextContent'),
-                    array('htmlContent, textContent',   'validateMergeTags'),
+                    array('htmlContent',                'validateHtmlContentAndTextContent'),
+                    array('textContent',                'validateHtmlContentAndTextContent'),
+                    array('htmlContent',                'validateMergeTags'),
+                    array('textContent',                'validateMergeTags'),
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',

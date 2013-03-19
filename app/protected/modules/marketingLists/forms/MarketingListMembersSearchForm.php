@@ -48,7 +48,6 @@
 
         public function getAttributesMappedToRealAttributesMetadata()
         {
-            //TODO: @Shoaibi: High: need to add support for related concated, and related related here..
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
                 'anyEmail' => array(
                     array('contact', 'primaryEmail',   'emailAddress'),

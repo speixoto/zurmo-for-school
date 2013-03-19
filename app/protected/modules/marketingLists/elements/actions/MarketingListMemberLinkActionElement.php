@@ -26,7 +26,9 @@
 
     abstract class MarketingListMemberLinkActionElement extends ListRowActionElement implements RowModelShouldRenderInterface
     {
-        const CONTROLLER_ID = 'defaultPortlet';
+        const CONTROLLER_ID             = 'defaultPortlet';
+
+        const LINK_ACTION_ELEMENT_CLASS = 'marketing-list-member-actions-link';
 
         abstract protected function getActionId();
 
@@ -36,20 +38,79 @@
             return Yii::app()->createUrl($this->moduleId . '/' . static::CONTROLLER_ID . '/' . $this->getActionId() , $params);
         }
 
+        public function render()
+        {
+            throw new NotSupportedException;
+        }
+
+        public function renderMenuItem()
+        {
+            $this->registerScripts();
+            return array(
+                'label'           => $this->getLabel(),
+                'url'             => $this->getDefaultRoute(),
+                'linkOptions'     => $this->getHtmlOptions(),
+            );
+        }
+
         protected function getHtmlOptions()
         {
             $htmlOptions            = parent::getHtmlOptions();
             $htmlOptions['id']      = $this->getLinkId();
+            $htmlOptions['class']   = static::LINK_ACTION_ELEMENT_CLASS;
             return $htmlOptions;
         }
 
         protected function getLinkId()
         {
-            return $this->getGridId(). '-' . $this->modelId;
+            return $this->getGridId(). '-' . strtolower($this->getActionType()) . '-' . $this->modelId;
         }
 
-        // TODO: @Shoaibi/@Jason Critical: JS breaks for records pulled from following pages when a record is deleted.
-        // TODO: @Shoaibi: Low: Override render method, register a globally generic script if not already registered that handles subscribe, unsubscribe and delete
+        protected function registerScripts()
+        {
+            $this->registerUnifiedEventHander();
+        }
 
+        protected function registerUnifiedEventHander()
+        {
+            if (Yii::app()->clientScript->isScriptRegistered('marketingListMemberLinkActionElementEventHandler'))
+            {
+                return;
+            }
+            else
+            {
+                $unlinkConfirmMessage   = CJavaScript::quote(Zurmo::t('MarketingListsModule', 'Are you sure you want to unlink this record?'));
+                $errorMessage           = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
+                Yii::app()->clientScript->registerScript('marketingListMemberLinkActionElementEventHandler', '
+                    $("a.' . static::LINK_ACTION_ELEMENT_CLASS . '").unbind("click.action").bind("click.action", function(event)
+                        {
+                            linkUrl = $(this).attr("href");
+                            linkId  = $(this).attr("id");
+                            if (linkId.indexOf("delete") !== -1 && !onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
+                            {
+                                // TODO: @Shoaibi/@Jason: Low: Should probably only use preventDefault()
+                                event.preventDefault();
+                                return false;
+                            }
+                            $.ajax({
+                                "error"     : function(xhr, textStatus, errorThrown)
+                                                {
+                                                    alert("' . $errorMessage . '");
+                                                },
+                                "success"   : function()
+                                                {
+                                                    $("#" + linkId).closest(".items").parent().find(".pager").find(".refresh").find("a").click();
+                                                },
+                                "url"       : linkUrl,
+                                "cache"	    : false
+                            });
+                            // TODO: @Shoaibi/@Jason: Low: Should probably only use preventDefault()
+                            event.preventDefault();
+                            return false;
+                        }
+                    );
+                ');
+            }
+        }
     }
 ?>

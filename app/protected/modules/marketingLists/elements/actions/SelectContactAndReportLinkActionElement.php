@@ -27,7 +27,7 @@
 
     class SelectContactAndReportLinkActionElement extends LinkActionElement
     {
-        // TODO: @Shoaibi: High: This also refreshes grid.
+        // TODO: @Shoaibi: Medium: This also refreshes grid.
         public function getActionType()
         {
             return 'Details';

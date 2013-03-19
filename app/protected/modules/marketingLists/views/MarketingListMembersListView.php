@@ -81,7 +81,7 @@
                         'elements' => array(
                             array('type'                            => 'MarketingListMemberSubscribeLink'),
                             array('type'                            => 'MarketingListMemberUnsubscribeLink'),
-                            array('type'                            => 'MarketingListMemberDeleteLink'), // TODO: @Shoaibi: Low: Rename this, may be unlink
+                            array('type'                            => 'MarketingListMemberDeleteLink'), // TODO: @Shoaibi/@Jason: Low: Rename this, may be unlink
                         ),
                     ),
                      'panels' => array(
@@ -183,20 +183,6 @@
             );
         }
 
-        /**
-         * Override to not run global eval, since it causes doubling up of ajax requests on the pager.
-         * (non-PHPdoc)
-         * @see ListView::getCGridViewAfterAjaxUpdate()
-         */
-        protected function getCGridViewAfterAjaxUpdate()
-        {
-            // Begin Not Coding Standard
-            return 'js:function(id, data) {
-                            processAjaxSuccessError(id, data);
-                        }';
-            // End Not Coding Standard
-        }
-
         protected function renderConfigurationForm()
         {
             $formName   = 'marketing-list-member-configuration-form';
@@ -221,7 +207,7 @@
             $content      = null;
             if ($this->showFilteredBySearchTerm)
             {
-                $element                    = new TextElement($this->configurationForm, // TODO: @Shoaibi: Medium: This should be another element with look and feel of search box
+                $element                    = new TextElement($this->configurationForm, // TODO: @Shoaibi/@Jason: Medium: This should be another element with look and feel of search box
                                                                 'filteredBySearchTerm',
                                                                 $form);
                 $element->editableTemplate  =  ZurmoHtml::tag('div',
@@ -266,8 +252,9 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySubscriptionType', "
-                    $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').buttonset();
-                    $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').change(function()
+                    createButtonSetIfNotAlreadyExist('MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
+                    //$('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').buttonset();
+                    $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "
                         }
@@ -278,19 +265,18 @@
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySearchTerm', "
                 // TODO: @Shoaibi/@Jason Low: We support both, clicking outside and enter
-                $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').change(function()
+                $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').unbind('change.action').bind('change.action', function(event)
                     {
                         " . $ajaxSubmitScript . "
                     }
                 );
-                $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').keypress(function(e)
+                $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').unbind('keypress.action').bind('keypress.action', function(event)
                     {
-                        if(e.which == 13)
+                        if(event.which == 13)
                         {
                             " . $ajaxSubmitScript . "
                             return false;
                         }
-
                     }
                 );
                 ");

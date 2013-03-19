@@ -59,27 +59,52 @@
             }
             if ($filterBySearchTerm)
             {
-                // TODO: @Shoaibi: Medium: This is crappy.
-                // TODO: @Shoaibi: Medium: is "contains" correct operatorType?
-                $compareRelatedAttributes = array('primaryEmail', 'secondaryEmail', 'firstName', 'lastName', array('firstName', 'lastName'));
+                // TODO: @Shoaibi/@Jason: Medium: is "contains" correct operatorType?
+                $searchTermAttributeClauses = array(
+                                                array(  'attributeName'             => 'contact',
+                                                        'relatedAttributeName'      => 'firstName',
+                                                        'operatorType'              => 'contains',
+                                                        'value'                     => $filterBySearchTerm
+                                                    ),
+                                                array(  'attributeName'             => 'contact',
+                                                        'relatedAttributeName'      => 'lastName',
+                                                        'operatorType'              => 'contains',
+                                                        'value'                     => $filterBySearchTerm
+                                                ),
+                    /*
+                     // TODO: @Jason: High: Bug: Undefined Index: attributeName
+
+                                                array(  'attributeName'             => 'contact',
+                                                        'relatedModelData'          => array(
+                                                            'concatedAttributeNames'        => array('firstName', 'lastName'),
+                                                            'operatorType'                  => 'contains',
+                                                            'value'                         => $filterBySearchTerm
+                                                        ),
+                                                ),
+                    /**/
+                                                array(  'attributeName'             => 'contact',
+                                                        'relatedModelData'          => array(
+                                                            'attributeName'                 => 'primaryEmail',
+                                                            'relatedAttributeName'          => 'emailAddress',
+                                                            'operatorType'                  => 'contains',
+                                                            'value'                         => $filterBySearchTerm
+                                                        ),
+                                                ),
+                                                array(  'attributeName'             => 'contact',
+                                                        'relatedModelData'          => array(
+                                                            'attributeName'                 => 'secondaryEmail',
+                                                            'relatedAttributeName'          => 'emailAddress',
+                                                            'operatorType'                  => 'contains',
+                                                            'value'                         => $filterBySearchTerm
+                                                        ),
+                                                ),
+                                            );
+
                 $clauseStartIndex = count($searchAttributeData['clauses']) + 1;
-                foreach ($compareRelatedAttributes as $index => $relatedAttributeValue)
+                foreach ($searchTermAttributeClauses as $index => $searchTermAttributeClause)
                 {
                     $clauseIndex = $clauseStartIndex + $index;
-                    if (is_array($relatedAttributeValue))
-                    {
-                        $relatedAttributeName  = 'concatedAttributeNames';
-                    }
-                    else
-                    {
-                        $relatedAttributeName  =  'relatedAttributeName';
-                    }
-                    $searchAttributeData['clauses'][$clauseIndex] = array(
-                                                                        'attributeName'         => 'contact',
-                                                                        $relatedAttributeName   => $relatedAttributeValue,
-                                                                        'operatorType'          => 'contains',
-                                                                        'value'                 => $filterBySearchTerm
-                                                                    );
+                    $searchAttributeData['clauses'][$clauseIndex] = $searchTermAttributeClause;
                     if ($clauseIndex == $clauseStartIndex)
                     {
                         $structure = ' and (';
@@ -89,7 +114,7 @@
                         $structure = ' or ';
                     }
                     $structure .= $clauseIndex;
-                    if ($index == (count($compareRelatedAttributes) -1))
+                    if ($index == (count($searchTermAttributeClauses) -1))
                     {
                         $structure .= ')';
                     }
@@ -102,7 +127,7 @@
 
         public static function makeSortAttributeData()
         {
-            return array('MarketingListMember' => 'createdDateTime'); // TODO: @Shoaibi: Low: change this.
+            return array('MarketingListMember' => 'createdDateTime'); // TODO: @Shoaibi/@Jason: Low: change this.
         }
   }
 ?>
