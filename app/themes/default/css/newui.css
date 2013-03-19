@@ -9733,7 +9733,7 @@ div.hasHalfs .twoThirds {
   display: block;
 }
 .progress-counter {
-  padding: 15px;
+  padding: 15px 15px 15px 15px;
 }
 #progressBar-links {
   margin-top: 15px;
