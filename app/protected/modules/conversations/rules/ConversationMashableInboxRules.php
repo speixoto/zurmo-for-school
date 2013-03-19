@@ -64,7 +64,7 @@
             $conversation     = new Conversation(false);
             $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
                 $conversation,
-                Yii::app()->user->userModel->getClassId('Item'),
+                Yii::app()->user->userModel->id,
                 array(),
                 $option
             );
@@ -83,7 +83,7 @@
                 $metadata['clauses'][2] = array(
                         'attributeName'        => 'owner',
                         'operatorType'         => 'equals',
-                        'value'                => Yii::app()->user->userModel->getClassId('Item')
+                        'value'                => Yii::app()->user->userModel->id
                     );
                 $metadata['clauses'][3] = array(
                         'attributeName'        => 'conversationParticipants',
