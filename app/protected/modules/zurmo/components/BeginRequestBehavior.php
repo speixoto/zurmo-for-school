@@ -499,27 +499,26 @@
         {
             if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
             {
-                $logoFileModelId     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
-                $logoFileModel       = FileModel::getById($logoFileModelId);
-                $logoFileName        = $logoFileModel->name;
-                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
-                                                                                DIRECTORY_SEPARATOR . $logoFileName);
-                if ($logoFileSrc === false)
+                $logoFileModelId        = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                $logoFileModel          = FileModel::getById($logoFileModelId);
+                $logoFileSrc            = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                         DIRECTORY_SEPARATOR . $logoFileModel->name);
+                //logoFile is either not published or we have dangling url for asset
+                if ($logoFileSrc === false || file_exists($logoFileSrc) === false)
                 {
-                    $logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
-                    $logoFile        = FileModel::getById($logoFileModelId);
-                    $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileName;
-                    file_put_contents($logoFilePath, $logoFile->fileContent->content, LOCK_EX);
-                    ZurmoConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
-                }
-                else
-                {
-                    if (file_exists($logoFileSrc) === false)
+                    //Logo file is not published in assets
+                    //Check if it exists in runtime/uploads
+                    if(file_exists(Yii::getPathOfAlias('application.runtime.uploads')) === false)
                     {
-                        $cs = Yii::app()->getClientScript();
-                        $cs->registerScriptFile(Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
-                                                                                        DIRECTORY_SEPARATOR . $logoFileName),
-                                                                                        CClientScript::POS_END);
+                        $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileModel->name;
+                        file_put_contents($logoFilePath, $logoFileModel->fileContent->content, LOCK_EX);
+                        ZurmoConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
+                    }
+                    else
+                    {
+                        //Logo File exist in runtime/uploads but not published
+                        Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                               DIRECTORY_SEPARATOR . $logoFileModel->name);
                     }
                 }
             }
