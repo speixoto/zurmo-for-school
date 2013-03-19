@@ -31,7 +31,7 @@
     {
         public function actionCustomGet()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ApiModule', 'The id specified was invalid.');
@@ -43,14 +43,14 @@
 
         public function actionCustomList()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             $result    =  $this->processList($params);
             Yii::app()->apiHelper->sendResponse($result);
         }
 
         public function actionCustomPost()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['data']))
             {
                 $message = Zurmo::t('ApiModule', 'Please provide data.');
@@ -62,7 +62,7 @@
 
         public function actionCustomUpdate()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ApiModule', 'The id specified was invalid.');
@@ -74,7 +74,7 @@
 
         public function actionCustomDelete()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ApiModule', 'The id specified was invalid.');

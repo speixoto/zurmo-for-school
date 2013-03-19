@@ -23,20 +23,51 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-
-    /**
-     * Api helper class
-     */
-    class ZurmoApiHelper extends CApplicationComponent
+    class ApiRules
     {
-        /**
-         * Generate response
-         * @param ApiResult $result
-         */
-        public function sendResponse($result)
+        public static function getRequestClassName()
         {
-            $responseClassName = Yii::app()->apiRequest->getResponseClassName();
-            $responseClassName::generateOutput($result);
+            if (self::getRequestType() == ApiRequest::REST)
+            {
+                $requestClassName = 'ApiRestRequest';
+            }
+            elseif (self::getRequestType() == ApiRequest::SOAP)
+            {
+                $requestClassName = 'ApiSoapRequest';
+            }
+            else
+            {
+                $message = Yii::t('Default', 'Invalid API request type.');
+                throw new ApiException($message);
+            }
+            return $requestClassName;
+        }
+
+        public static function getResultClassName()
+        {
+            return 'ApiResult';
+        }
+
+        /**
+         * Get request type from HTTP headers
+         */
+        protected static function getRequestType()
+        {
+            if (isset($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']))
+            {
+                if (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'rest')
+                {
+                    return ApiRequest::REST;
+                }
+                elseif (strtolower($_SERVER['HTTP_ZURMO_API_REQUEST_TYPE']) == 'soap')
+                {
+                    return ApiRequest::SOAP;
+                }
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

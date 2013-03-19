@@ -305,6 +305,7 @@
             'application.modules.install.serviceHelpers.ServiceHelper',
             'application.modules.install.serviceHelpers.SetIncludePathServiceHelper',
             'application.modules.install.utils.InstallUtil',
+            'application.modules.api.components.ApiRequest',
             'application.extensions.wideImage.WideImage',
         ),
 

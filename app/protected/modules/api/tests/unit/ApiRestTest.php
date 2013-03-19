@@ -29,16 +29,24 @@
     */
     class ApiRestTest extends ApiBaseTest
     {
-        protected function login($username = 'super', $password = 'super')
+        protected function login($username = 'super', $password = 'super', $type = 'json')
         {
             $headers = array(
-                'Accept: application/json',
+                'Accept: application/' . $type,
                 'ZURMO_AUTH_USERNAME: ' . $username,
                 'ZURMO_AUTH_PASSWORD: ' . $password,
                 'ZURMO_API_REQUEST_TYPE: REST',
             );
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/zurmo/api/login', 'POST', $headers);
-            $response = json_decode($response, true);
+
+            if ($type == 'json')
+            {
+                $response = json_decode($response, true);
+            }
+            elseif ($type == 'xml')
+            {
+                $response = XML2Array::createArray($response);
+            }
 
             if ($response['status'] == ApiResponse::STATUS_SUCCESS)
             {
@@ -48,6 +56,11 @@
             {
                 return false;
             }
+        }
+
+        protected function loginXml($username = 'super', $password = 'super')
+        {
+            return $this->login($username, $password, 'xml');
         }
     }
 ?>
