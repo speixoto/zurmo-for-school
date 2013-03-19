@@ -143,8 +143,15 @@
             $content .= $this->renderContainingViews($form);
             $formEnd  = $clipWidget->renderEndWidget();
             $content .= $formEnd;
+            $content .= $this->renderUIOverLayBlock();
             $content .= '</div></div>';
             return $content;
+        }
+        
+        protected function renderUIOverLayBlock()
+        {
+            $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+            return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), $spinner);
         }
 
         /**
