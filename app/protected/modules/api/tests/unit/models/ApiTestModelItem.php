@@ -34,9 +34,9 @@
             return self::getByNameOrEquivalent('firstName', $name);
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'fullName' => 'Name',
                 )
@@ -64,16 +64,24 @@
                     'apiTestModelItem'  => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'ApiTestModelItem'),
                     'modelItems'        => array(RedBeanModel::HAS_MANY,             'ApiTestModelItem'),
                     'currencyValue'     => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
-                    'dropDown'          => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'radioDropDown'     => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'multiDropDown'     => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED),
-                    'tagCloud'          => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED),
-                    'modelItem2'        => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem2'),
+                    'dropDown'          => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'dropDown'),
+                    'radioDropDown'     => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'radioDropDown'),
+                    'multiDropDown'     => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
+                    'tagCloud'          => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
+                    'modelItem2'        => array(RedBeanModel::HAS_ONE,   'ApiTestModelItem2', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'modelItem2'),
                     'modelItems3'       => array(RedBeanModel::MANY_MANY, 'ApiTestModelItem3'),
                     'modelItems4'       => array(RedBeanModel::HAS_MANY,  'ApiTestModelItem4'),
-                    'primaryEmail'      => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED),
-                    'primaryAddress'    => array(RedBeanModel::HAS_ONE,   'Address', RedBeanModel::OWNED),
-                    'secondaryEmail'    => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED),
+                    'primaryEmail'      => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'primaryAddress'    => array(RedBeanModel::HAS_ONE,   'Address', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'secondaryEmail'    => array(RedBeanModel::HAS_ONE,   'Email', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
                 ),
                 'rules' => array(
                     array('firstName', 'type',   'type' => 'string'),

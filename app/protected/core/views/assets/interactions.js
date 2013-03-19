@@ -64,7 +64,7 @@ $(window).ready(function(){
             appChromeHeight = 80 + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('.AppContainer').height(  bufferHeight   );
+                $('.AppContainer').css('min-height', bufferHeight);
             }
         //rest of app
         } else {
@@ -72,7 +72,7 @@ $(window).ready(function(){
             appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
+                $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
             }
         }
     }
@@ -146,16 +146,18 @@ $(window).ready(function(){
 /*
  * this function takes care of the save/cancel buttons' position in long forms, ie. edit account.
  */
+var windowTop, diff;
 
 function dockFloatingBar(){
     if ($('.float-bar').find('.disable-float-bar').length == 0) {
-        var windowTop, diff;
         windowTop = $(window).scrollTop();
-        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
         if( windowTop > diff ) {
             $('.float-bar .view-toolbar-container').addClass('dock');
         } else {
-            $('.float-bar .view-toolbar-container').removeClass('dock');
+            if( $('.wrapper').height() > $('.AppNavigation').height() ) {
+                $('.float-bar .view-toolbar-container').removeClass('dock');
+            }
         }
     }
 }
@@ -312,14 +314,16 @@ function makeSmallLoadingSpinner(state, context){
 }
 
 function makeLargeLoadingSpinner(state, context){
-    $(context).append('<span class="big-spinner"></span>');
+    if($(context).find('.big-spinner').length === 0){
+        $(context).append('<span class="big-spinner"></span>');
+    }
     var style = {
         lines  : 10,
-        length : 8,
-        width  : 5,
-        radius : 8,
+        length : 6,
+        width  : 4,
+        radius : 7,
         color  : '#CCCCCC',
-        speed  : 2.5,
+        speed  : 2.6,
         trail  : 37,
         top    : 0,
         left   : 0

@@ -31,9 +31,9 @@
            return array('zurmo');
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Configuration';
+            return Zurmo::t('ConfigurationModule', 'Configuration', array(), null, $language);
         }
 
         public static function getDefaultMetadata()

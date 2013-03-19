@@ -42,9 +42,11 @@
             $model->currency = $currencies[0];
             $adapter = new CurrencyRedBeanModelAttributeValueToExportValueAdapter($model, 'currency');
             $adapter->resolveData($data);
-            $compareData = array(
-                $model->getAttributeLabel('currency') => $currencies[0]->code
-            );
+            $compareData = array($currencies[0]->code);
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('currency'));
             $this->assertEquals($compareData, $data);
 
             // Test when model doesn't contain currency data.
@@ -52,9 +54,11 @@
             $model = new ExportTestModelItem();
             $adapter = new CurrencyRedBeanModelAttributeValueToExportValueAdapter($model, 'currency');
             $adapter->resolveData($data);
-            $compareData = array(
-                $model->getAttributeLabel('currency') => ''
-            );
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('currency'));
             $this->assertEquals($compareData, $data);
         }
     }

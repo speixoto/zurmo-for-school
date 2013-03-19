@@ -33,8 +33,17 @@
          * Use when multiple attribute names
          * need to be combined together into one string that can easily
          * be parsed later.
+         * @see FormModelUtil::RELATION_DELIMITER which is 3 ___
          */
         const DELIMITER = '__';
+
+        /**
+         * Use when multiple relation attribute names
+         * need to be combined together into one string that can easily
+         * be parsed later.
+         * @see FormModelUtil::DELIMITER which is only 2 __
+         */
+        const RELATION_DELIMITER = '___';
 
         public static function getDerivedAttributeNameFromTwoStrings($string1, $string2)
         {

@@ -40,7 +40,7 @@
          */
         public function actionCreate()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['data']))
             {
                 $message = Zurmo::t('UsersModule', 'Please provide data.');
@@ -57,7 +57,7 @@
          */
         public function actionUpdate()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('UsersModule', 'The ID specified was invalid.');

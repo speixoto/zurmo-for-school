@@ -47,6 +47,7 @@
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', 40);
             $logoFileName = 'testImage.png';
             $logoFilePath = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName;
+            ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $logoFilePath, 120, 40);
             $logoFileId   = ZurmoConfigurationFormAdapter::saveLogoFile($logoFileName, $logoFilePath, 'logoFileModelId');
             ZurmoConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
@@ -71,10 +72,8 @@
             $form->logoHeight            = 32;
             $logoFileName2               = 'testLogo.png';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
-            copy($logoFilePath2,
-                 sys_get_temp_dir().DIRECTORY_SEPARATOR.ZurmoConfigurationForm::LOGO_FILE_NAME_PREFIX.$logoFileName2);
-            copy($logoFilePath2,
-                 sys_get_temp_dir().DIRECTORY_SEPARATOR.ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX.$logoFileName2);
+            copy($logoFilePath2, sys_get_temp_dir().DIRECTORY_SEPARATOR . $logoFileName2);
+            copy($logoFilePath2, sys_get_temp_dir().DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX.$logoFileName2);
             Yii::app()->user->setState('logoFileName', $logoFileName2);
             ZurmoConfigurationFormAdapter::setConfigurationFromForm($form);
             $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();

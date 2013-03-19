@@ -792,7 +792,8 @@
 
             $this->assertEquals($originalMetadata['Account']['rules'], $metadata['Account']['rules']);
             $newRelation = $metadata['Account']['relations']['newRelationCstm'];
-            $this->assertEquals(array(RedBeanModel::HAS_ONE,  'OwnedCustomField', RedBeanModel::OWNED), $newRelation);
+            $this->assertEquals(array(RedBeanModel::HAS_ONE,  'OwnedCustomField', RedBeanModel::OWNED,
+                                      RedBeanModel::LINK_TYPE_SPECIFIC, 'newRelationCstm'), $newRelation);
             $this->assertEquals('Things', $metadata['Account']['customFields']['newRelationCstm']);
 
             //on a new account, does the serialized data show correctly.

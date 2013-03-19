@@ -61,11 +61,12 @@
             return 'OpportunitiesModule';
         }
 
-        public static function untranslatedAttributeLabels()
+        public static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
-                'account'  => 'AccountsModuleSingularLabel',
-                'contacts' => 'ContactsModulePluralLabel'));
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'account'  => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params, null, $language),
+                'contacts' => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',   $params, null, $language)));
         }
 
         /**
@@ -103,10 +104,18 @@
                 ),
                 'relations' => array(
                     'account'       => array(RedBeanModel::HAS_ONE,   'Account'),
-                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
+                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'amount'),
                     'contacts'      => array(RedBeanModel::MANY_MANY, 'Contact'),
-                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
+                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
+                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('amount',        'required'),

@@ -39,6 +39,17 @@
         const AUDIT_EVENT_ITEM_DELETED            = 'Item Deleted';
         const AUDIT_EVENT_ITEM_VIEWED             = 'Item Viewed';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                                             = array();
+            $labels[self::RIGHT_ACCESS_ADMINISTRATION]          = Zurmo::t('ZurmoModule', 'Access Administration Tab');
+            $labels[self::RIGHT_BULK_WRITE]                     = Zurmo::t('ZurmoModule', 'Mass Update');
+            $labels[self::RIGHT_ACCESS_GLOBAL_CONFIGURATION]    = Zurmo::t('ZurmoModule', 'Access Global Configuration');
+            $labels[self::RIGHT_ACCESS_CURRENCY_CONFIGURATION]  = Zurmo::t('ZurmoModule', 'Access Currency Configuration');
+            $labels[self::RIGHT_BULK_DELETE]                    = Zurmo::t('ZurmoModule', 'Mass Delete');
+            return $labels;
+        }
+
         public function canDisable()
         {
             return false;
@@ -112,12 +123,12 @@
                     array(
                         'label' => "eval:Zurmo::t('ZurmoModule', 'Forums')",
                         'url' => 'http://zurmo.org/forums/',
-                        'order' => 8,
+                        'order' => 9,
                     ),
                     array(
                         'label' => "eval:Zurmo::t('ZurmoModule', 'About Zurmo')",
                         'url' => array('/zurmo/default/about'),
-                        'order' => 9,
+                        'order' => 10,
                     ),
                 ),
                 'configureSubMenuItems' => array(
@@ -144,7 +155,8 @@
                     'leads',
                     'contacts',
                     'opportunities',
-                    'conversations'
+                    'conversations',
+                    'reports',
                 )
             );
             return $metadata;

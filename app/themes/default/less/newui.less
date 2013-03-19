@@ -32,6 +32,9 @@
     display:none !important;
     visibility:hidden !important;
 }
+.temp-hidden{
+    display:none;
+}
 
 .disabled-select-element{
     pointer-events:none;
@@ -54,6 +57,7 @@ body{
     font-family:"Helvetica Neue", Helvetica, Arial, sans-serif;
     font-size:12px;
     color: #545454;
+
     -webkit-font-smoothing: antialiased;
     -moz-font-smoothing: antialiased;
     -o-font-smoothing: antialiased;
@@ -328,7 +332,6 @@ footer, header, hgroup, menu, nav, section {
         }
     }
 }
-
 
 .notifications-link{
     z-index: 10;
@@ -659,21 +662,21 @@ body > .ui-autocomplete{
 }
 
 .ui-multiselect {
-  padding:0;
-  text-align:left;
-  span.ui-icon {
-    float:right;
-  }
+    padding:0;
+    text-align:left;
+    span.ui-icon {
+        float:right;
+    }
 }
 
 .ui-multiselect-single .ui-multiselect-checkboxes input {
-  position:absolute !important;
-  top:auto !important;
-  left:-9999px;
+    position:absolute !important;
+    top:auto !important;
+    left:-9999px;
 }
 
 .ui-multiselect-single .ui-multiselect-checkboxes label {
-  padding:5px !important;
+    padding:5px !important;
 }
 
 .ui-multiselect-header {
@@ -996,18 +999,18 @@ body > .ui-autocomplete{
 #RecentlyViewedView {
 	/*deafult for if an icon doesnt exist*/
 	li{
-		em:before{
-            content: "z";
-        }
+	    em:before{
+                content: "z";
+            }
 	}
 	li.type-ConversationsModule{
-		em{
-            padding-top:3px;
-            padding-right:3px;
-        }
-        em:before{
-            content: "b";
-        }
+	    em{
+                padding-top:3px;
+                padding-right:3px;
+            }
+            em:before{
+                content: "b";
+            }
     }
     li.type-UsersModule{
         em:before{
@@ -1066,12 +1069,16 @@ body > .ui-autocomplete{
             content: "Q";
         }
     }
-        
+    li.type-ReportsModule{
+        em:before{
+            content: "V";
+        }
+    }       
 }
 
 /*=Content*/
 .AppContent{
-	.radius(0 0 5px 5px);
+    .radius(0 0 5px 5px);
     padding:20px 20px 0 20px;
     margin-left:172px;
     margin-bottom:20px;
@@ -1079,30 +1086,27 @@ body > .ui-autocomplete{
     .clearfix();
     .single-column{
     	padding-right:0 !important;
-		> .GridView{
-			display:block;
-			width:100% !important;
-		}
-		.panel{
-			width:70%;
-			float:left;
+        > .GridView{
+            display:block;
+            width:100% !important;
+        }
+        .panel{
+            width:70%;
+            float:left;
             position: relative;
-			td, th{
-				padding-bottom:10px !important;
-			}
-		}
-		.juiportlet-widget,
-		.details-table{
-			margin-right:0 !important;
+        }
+        .juiportlet-widget,
+        .details-table{
+            margin-right:0 !important;
             .clearfix();
-		}
-		#right-side-edit-view-panel{
-			top:55px;
-		}
-		#inline-edit-form .panel{
-			width:100%;
-		}
 	}
+        .right-side-edit-view-panel{
+            top:55px;
+        }
+        #inline-edit-form .panel{
+            width:100%;
+        }
+    }
 }
 
 .DynamicSearchView{
@@ -1150,12 +1154,16 @@ body > .ui-autocomplete{
 
 /*=Inner toolbar*/
 .float-bar{
+    width: 100%;
+    float: left;
+    position: relative;
     height: 40px;
     display: block;
+	z-index: 0;
     .view-toolbar-container{
         z-index:222222;
         position:fixed !important;
-        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5)");
+        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3)");
         #gradient > .vertical-three-colors( #f5f5f5, #f5f5f5, 80%, #ffffff );
         padding-bottom:15px;
         margin-left: -20px;
@@ -1315,6 +1323,21 @@ form,
     top:-2px;
 }
 
+#ListViewDetailsActionMenu .parent > a:before,
+.icon-details:before{
+    content: 'T';
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+#ListViewOptionsActionMenu .parent > a:before,
+.icon-options:before{
+    content: "n";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
     content: "2";
@@ -1412,6 +1435,32 @@ form,
     top:-2px;
 }
 
+.icon-notice:before{
+    content: "j";
+    .view-toolbar-icons();
+}
+
+.general-issue-notice{
+    text-align: center;
+    width:75%;
+    margin:10px auto 15px auto;
+    position: relative;
+    .icon-notice{
+        display: block;
+        line-height: 1;
+        margin-bottom: 10px;
+    }
+    .icon-notice:before{
+        margin: 0;
+        font-size:100px;
+        line-height: 60px !important;
+    }
+    p{
+        font-size: 14px;
+        line-height: 21px;
+    }
+}
+
 /*=Footer*/
 #FooterView{
     margin:20px 3% 0 3%;
@@ -1447,17 +1496,15 @@ caption, th, td {
     font-weight: normal;
     text-align: left;
 }
+
 #list-view{
     overflow-x:auto;
-    position:relative;
-    
+    position:relative;    
     background:
         -webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
         -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,        
         -webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
         -webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
-        
-
     background-repeat: no-repeat;
     //background-color: white;
     background-size:
@@ -1465,14 +1512,12 @@ caption, th, td {
         40px 100%, 
         20px 100%,
         20px 100%;
-    
     /* Opera doesn't support this in the shorthand */
     background-attachment:
         local,
         local,
         scroll,
         scroll;
-
 }
 
 table.items{
@@ -1524,12 +1569,28 @@ table.items{
             border-bottom: none;
         }
         tr{
-			td:first-child:not(.checkbox-column),
-			th:first-child:not(.checkbox-column){
-				padding-left:10px;
-			}
-		}   
+            td:first-child:not(.checkbox-column),
+            th:first-child:not(.checkbox-column){
+                    padding-left:10px;
+            }
+        }   
     }
+}
+
+.sort-link:after{
+    //content:"↑";
+    margin-left: 10px;
+    font-size: 12px;
+    position: relative;
+    top: -1px;
+}
+
+.sort-link.asc:after{
+    content:"↑";
+}
+
+.sort-link.desc:after{
+    content:"↓";
 }
 
 tr.odd{
@@ -1578,7 +1639,7 @@ tr.even{
 }
 
 td.empty{
-    display: table-cell;
+    display:table-cell !important;
 }
 
 /*forms*/
@@ -1653,9 +1714,9 @@ td.empty{
 }
 
 .AppContent label{
-    font-size:12px !important;
+    font-size:12px;
     color:#666;
-    font-weight:400 !important;
+    font-weight:400;
 }
 
 /*=Form Edit Account*/
@@ -1687,7 +1748,7 @@ td.empty{
         color:#656565;
         display:inline-block;
         .t-shadow( rgba(255, 255, 255, 0.8) 0px 1px);
-        
+        .smaller();
         .z-label{
             padding:0 10px 0 10px;
             float:none;
@@ -1709,6 +1770,7 @@ td.empty{
     .icon-create .z-label:before{
     	content: "Y";
         .view-toolbar-icons();
+        font-size:22px;
         top:-2px;
         margin:0 5px 0 0 !important;
     }
@@ -1725,6 +1787,41 @@ td.empty{
         top:-1px;
         color:#fff;
         margin-left:0;
+    }
+}
+
+body div.form-toolbar{
+    a.simple-link:not(.z-button){
+        background:none !important;
+        background-image:none !important;
+        .b-shadow( ~"none  !important" );
+        .radius(~"0 !important");
+        padding:0  !important;
+        border: none !important;
+        margin:!important;
+        text-decoration:underline;
+        font-weight:normal;
+        &:hover{
+            span.z-label{
+                background:none !important;
+                background-image:none !important;
+                background: transparent !important;
+            }
+        }
+        span.z-label{
+            background:none !important;
+            background-image:none !important;
+            .b-shadow( ~"none  !important" );
+            .radius(~"0 !important");
+            padding:0  !important;
+            border: none !important;
+            margin-left:10px;
+            text-decoration:underline;
+            font-weight:normal;
+            &:before{
+                content:""  !important;
+            }
+        }
     }
 }
 
@@ -1886,6 +1983,7 @@ label.hasCheckBox{
 }
 
 div.wide.form{
+    position: relative;
     label.hasCheckBox{
         margin-top:0 !important; //was !important
     }
@@ -1970,12 +2068,12 @@ div.wide.form{
    }
 }
 
-.loading .list-preloader{
+.loading > .list-preloader{
     display:block;
 }
 
 .cgrid-view.loading{
-    .list-preloader{
+    > .list-preloader{
         display:block;
     }
 }
@@ -1984,7 +2082,8 @@ div.wide.form{
 #NoUserEmailConfigurationYetView,
 #NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView*/
-.splash-view{
+.zero-components-view,
+.splash-view {
     h2{
         font-family:"Times New Roman", Times, serif;
         font-style:italic;
@@ -2068,6 +2167,17 @@ div.wide.form{
         content:"g";
         .symbly(325px);
         line-height: 52%;
+    }
+    .missing-report:after,
+    .Report .large-icon:after{
+        content:"j";
+        .symbly(250px);
+        line-height: 60%;
+    }
+    .SavedReport .large-icon:after{
+        content:"V";
+        .symbly(320px);
+        line-height: 55%;
     }
 }
 
@@ -2237,7 +2347,7 @@ div.wide.form{
     }
     .search-view-1{
         ++.flyout;
-        z-index:1100;
+        z-index:0;
         min-width:400px;
         max-width:75%;
         height:auto;
@@ -2359,14 +2469,13 @@ div.wide.form{
         width: 100%;
         > span:first-child + div{
             margin-right: 0 !important;
-            width: 46%;
+            width: 45%;
             float: left;
         }
         .criteria-value-container{
             margin-right: 30px !important;
-            width: 46%;
+            width: 45%;
             float: right;
-            position: relative;
         }
         .has-model-select{
             float:left;
@@ -2515,7 +2624,7 @@ div.wide.form{
             width:100% !important;
         }
     }
-    #right-side-edit-view-panel{
+    .right-side-edit-view-panel{
         margin-bottom:15px;
         position:relative !important;
         float:left !important;
@@ -2605,6 +2714,23 @@ div.wide.form{
     font-size:11px;
 }
 
+.ui-overlay-block{
+    z-index:250000;
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(255, 255, 255, 0.8);
+    display: none;
+    .big-spinner{
+        position: relative;
+        top:30%;
+        left: 50%;
+        margin: 0 0 0 -34px;
+    }
+}
+
 .address-fields{
     div:last-child{
         padding-bottom:0; 
@@ -2624,12 +2750,15 @@ div.wide.form{
     }
 }
 
-#right-side-edit-view-panel{
+.right-side-edit-view-panel{
+    width:30%;
+    float:right;
     position:absolute;
     right:15px;
     top:15px;
-    width:30%;
-    float:right;
+    p{
+        line-height: 140%;
+    }
     h3{
         margin-bottom:8px;
     }
@@ -2941,22 +3070,21 @@ div.wide.form{
     .box-sizing();
 }
 
-.TitleBarAndDetailsView,
-.ProgressView,
-#MetadataViewEditView,
-.TableOfContentsView,
-.DetailsView,
-.EditAndDetailsView{
-    > div{
-        margin-bottom:20px;
-        border:1px solid #ccc;
-        .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
-        #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
-        .form form{
-            border:none;
-            background:none;
-            .b-shadow(none);
-        }
+.wrapper,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container),
+.ProgressView           > div:not(.view-toolbar-container),
+#MetadataViewEditView   > div:not(.view-toolbar-container),
+.TableOfContentsView    > div:not(.view-toolbar-container),
+.DetailsView            > div:not(.view-toolbar-container),
+.EditAndDetailsView     > div:not(.view-toolbar-container){
+   margin-bottom:20px;
+   border:1px solid #ccc;
+   .b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
+   #gradient > .vertical-three-colors( #ffffff, #f5f5f5, 80%, #f5f5f5 );
+   .form form{
+        border:none;
+        background:none;
+        .b-shadow(none);
     }
     h1{
         text-indent:15px;
@@ -3470,7 +3598,7 @@ div.hasHalfs{
             height:50px;
             float:left;
             margin-left:0;
-            margin-top:-4px;
+            margin-top:-6px;
             width:auto;
             label{
                 margin:0 5px 0 0;
@@ -4083,6 +4211,9 @@ div.hasHalfs{
     }
 }
 
+
+
+
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView{
     #edit-form table{
@@ -4308,27 +4439,21 @@ div.hasHalfs{
     text-indent: -9999px;
     margin-right: 5px;
 }
-
 .facebook span{
     background-position: -88px bottom !important;
 }
-
 .twitter span{
     background-position: -22px bottom !important;
 }
-
 .linkedin span{
     background-position: -66px bottom !important;
 }
-
 .rss span{
     background-position: 0 bottom !important;
 }
-
 .bitbucket span{
     background-position: -132px bottom !important;
 }
-
 .pivotal span{
     background-position: 100% bottom !important;
 }
@@ -4336,16 +4461,16 @@ div.hasHalfs{
 /*=RSS Widget*/
 .rssBody{
     line-height: 140%;
-    ul{
-        list-style: none;
-    }
-    li{
-        padding:10px 15px;
-        border-bottom:1px solid #dfdfdf;
-        &:last-child{
-            border-bottom:none;
-        }
-    }
+	ul{
+		list-style: none;
+	}
+	li{
+		padding:10px 15px;
+		border-bottom:1px solid #dfdfdf;
+		&:last-child{
+			border-bottom:none;
+		}
+	}
 }
 
 /*=Search Results - Mixed Search Results*/
@@ -4412,7 +4537,7 @@ div.hasHalfs{
         margin-right:15px;
         position: relative;
         top:1px;
-    }
+    } 
 }
 
 @import 'widget-juiportlets.less';
@@ -4432,4 +4557,5 @@ div.hasHalfs{
 @import 'tablet.less';
 @import 'thread-view.less';
 @import 'email.less';
+@import 'reports.less';
 @import 'media-queries.less';

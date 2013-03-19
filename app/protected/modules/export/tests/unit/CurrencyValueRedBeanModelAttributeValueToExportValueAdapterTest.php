@@ -76,17 +76,24 @@
 
             $adapter = new CurrencyValueRedBeanModelAttributeValueToExportValueAdapter($model, 'currencyValue');
             $adapter->resolveData($data);
-            $compareData = array(
-                $model->getAttributeLabel('currencyValue') => $currencyValue->value,
-                $model->getAttributeLabel('currencyValue') . " " . Zurmo::t('ExportModule', 'Currency') => $currencyValue->currency->code
-            );
+            $compareData = array($currencyValue->value, $currencyValue->currency->code);
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('currencyValue'),
+                $model->getAttributeLabel('currencyValue') . " " . Zurmo::t('ZurmoModule', 'Currency'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new CurrencyValueRedBeanModelAttributeValueToExportValueAdapter($model, 'currencyValue');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('currencyValue') => '');
+            $compareData = array('', '');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('currencyValue'),
+                                 $model->getAttributeLabel('currencyValue') . " " . Zurmo::t('ZurmoModule', 'Currency'));
             $this->assertEquals($compareData, $data);
         }
     }

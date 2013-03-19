@@ -42,8 +42,8 @@
             );
             $customFieldData = CustomFieldData::getByName('ExportTestMultiDropDown');
             $customFieldData->serializedData = serialize($multiSelectValues);
-            $save = $customFieldData->save();
-            assert('$save'); // Not Coding Standard
+            $saved = $customFieldData->save();
+            assert('$saved'); // Not Coding Standard
 
             $tagCloudValues = array(
                 'Cloud 1',
@@ -52,8 +52,8 @@
             );
             $customFieldData = CustomFieldData::getByName('ExportTestTagCloud');
             $customFieldData->serializedData = serialize($tagCloudValues);
-            $save = $customFieldData->save();
-            assert('$save'); // Not Coding Standard
+            $saved = $customFieldData->save();
+            assert('$saved'); // Not Coding Standard
         }
 
         public function setUp()
@@ -112,7 +112,7 @@
             $customFieldValue->value = 'Cloud 3';
             $testItem->tagCloud->values->add($customFieldValue);
 
-            $createStamp         = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $createStamp = strtotime(DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
             $this->assertTrue($testItem->save());
             $id = $testItem->id;
             $testItem->forget();
@@ -121,63 +121,112 @@
             $testItem    = ExportTestModelItem::getById($id);
             $adapter     = new ModelToExportAdapter($testItem);
             $data        = $adapter->getData();
-
+            $headerData  = $adapter->getHeaderData();
             $compareData = array(
-                $testItem->getAttributeLabel('id')                => $id,
-                $testItem->getAttributeLabel('firstName')         => 'Bob',
-                $testItem->getAttributeLabel('lastName')          => 'Bob',
-                $testItem->getAttributeLabel('boolean')           => 1,
-                $testItem->getAttributeLabel('date')              => '2002-04-03',
-                $testItem->getAttributeLabel('dateTime')          => '2002-04-03 02:00:43',
-                $testItem->getAttributeLabel('float')             => 54.22,
-                $testItem->getAttributeLabel('integer')           => 10,
-                $testItem->getAttributeLabel('phone')             => '21313213',
-                $testItem->getAttributeLabel('string')            => 'aString',
-                $testItem->getAttributeLabel('textArea')          => 'Some Text Area',
-                $testItem->getAttributeLabel('url')               => 'http://www.asite.com',
-                $testItem->getAttributeLabel('email')             => 'a@a.com',
-                $testItem->getAttributeLabel('currency')          => null,
-                $testItem->getAttributeLabel('currencyValue')     => null,
-                $testItem->getAttributeLabel('dropDown')          => null,
-                $testItem->getAttributeLabel('radioDropDown')     => null,
-                $testItem->getAttributeLabel('hasOne')            => null,
-                $testItem->getAttributeLabel('hasOneAlso')        => null,
-
-                'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid'    => null,
-                'Primary Email - Opt Out'       => null,
-
-                'Primary Address - City'        => null,
-                'Primary Address - Country'     => null,
-                'Primary Address - Invalid'     => null,
-                'Primary Address - Latitude'    => null,
-                'Primary Address - Longitude'   => null,
-                'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1'    => null,
-                'Primary Address - Street 2'    => null,
-                'Primary Address - State'       => null,
-
-                'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid'    => null,
-                'Secondary Email - Opt Out'       => null,
-
-                $testItem->getAttributeLabel('user')              => null,
-                $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdByUser')     => 'super',
-                $testItem->getAttributeLabel('modifiedByUser')    => 'super',
-                $testItem->getAttributeLabel('multiDropDown')     => 'Multi 1, Multi 3',
-                $testItem->getAttributeLabel('tagCloud')          => 'Cloud 2, Cloud 3',
+                $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
+                'Bob',
+                'Bob',
+                '1',
+                '2002-04-03',
+                '2002-04-03 02:00:43',
+                54.22,
+                10,
+                '21313213',
+                'aString',
+                'Some Text Area',
+                'http://www.asite.com',
+                'a@a.com',
+                null,
+                null,
+                null,
+                null,
+                null,
+                'Multi 1, Multi 3',
+                'Cloud 2, Cloud 3',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            );
+            $compareHeaderData = array(
+                $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
+                $testItem->getAttributeLabel('firstName'),
+                $testItem->getAttributeLabel('lastName'),
+                $testItem->getAttributeLabel('boolean'),
+                $testItem->getAttributeLabel('date'),
+                $testItem->getAttributeLabel('dateTime'),
+                $testItem->getAttributeLabel('float'),
+                $testItem->getAttributeLabel('integer'),
+                $testItem->getAttributeLabel('phone'),
+                $testItem->getAttributeLabel('string'),
+                $testItem->getAttributeLabel('textArea'),
+                $testItem->getAttributeLabel('url'),
+                $testItem->getAttributeLabel('email'),
+                $testItem->getAttributeLabel('currency'),
+                $testItem->getAttributeLabel('currencyValue'),
+                $testItem->getAttributeLabel('currencyValue') . ' ' . Zurmo::t('ZurmoModule', 'Currency'),
+                $testItem->getAttributeLabel('dropDown'),
+                $testItem->getAttributeLabel('radioDropDown'),
+                $testItem->getAttributeLabel('multiDropDown'),
+                $testItem->getAttributeLabel('tagCloud'),
+                $testItem->getAttributeLabel('hasOne'),
+                $testItem->getAttributeLabel('hasOneAlso'),
+                'Primary Email - Email Address',
+                'Primary Email - Is Invalid',
+                'Primary Email - Opt Out',
+                'Primary Address - City',
+                'Primary Address - Country',
+                'Primary Address - Invalid',
+                'Primary Address - Latitude',
+                'Primary Address - Longitude',
+                'Primary Address - Postal Code',
+                'Primary Address - Street 1',
+                'Primary Address - Street 2',
+                'Primary Address - State',
+                'Secondary Email - Email Address',
+                'Secondary Email - Is Invalid',
+                'Secondary Email - Opt Out',
+                $testItem->getAttributeLabel('user'),
             );
 
             // Because small delay in IO operation, allow tresholds
-            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('createdDateTime')]), '', 2);
-            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('modifiedDateTime')]), '', 2);
-            unset($data[$testItem->getAttributeLabel('createdDateTime')]);
-            unset($data[$testItem->getAttributeLabel('modifiedDateTime')]);
-
-            $this->assertEquals($compareData, $data);
+            $createdDateTimeKey = array_search($testItem->getAttributeLabel('createdDateTime'), $headerData);
+            $modifiedDateTimeKey = array_search($testItem->getAttributeLabel('modifiedDateTime'), $headerData);
+            $this->assertEquals($createStamp, strtotime($data[$createdDateTimeKey]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$modifiedDateTimeKey]), '', 2);
+            $data[$createdDateTimeKey]  = 'stubDateTime';
+            $data[$modifiedDateTimeKey] = 'stubDateTime';
+            $this->assertEquals($compareData,       $data);
+            $this->assertEquals($compareHeaderData, $headerData);
         }
 
+        /**
+         * @depends testGetDataWithNoRelationsSet
+         */
         public function testGetDataWithAllHasOneOrOwnedRelationsSet()
         {
             $super = User::getByUsername('super');
@@ -226,64 +275,112 @@
             $testItem    = ExportTestModelItem::getById($id);
             $adapter     = new ModelToExportAdapter($testItem);
             $data        = $adapter->getData();
+            $headerData  = $adapter->getHeaderData();
             $compareData = array(
-                $testItem->getAttributeLabel('id')                => $id,
-                $testItem->getAttributeLabel('firstName')         => 'Bob2',
-                $testItem->getAttributeLabel('lastName')          => 'Bob2',
-                $testItem->getAttributeLabel('boolean')           => 1,
-                $testItem->getAttributeLabel('date')              => '2002-04-03',
-                $testItem->getAttributeLabel('dateTime')          => '2002-04-03 02:00:43',
-                $testItem->getAttributeLabel('float')             => 54.22,
-                $testItem->getAttributeLabel('integer')           => 10,
-                $testItem->getAttributeLabel('phone')             => '21313213',
-                $testItem->getAttributeLabel('string')            => 'aString',
-                $testItem->getAttributeLabel('textArea')          => 'Some Text Area',
-                $testItem->getAttributeLabel('url')               => 'http://www.asite.com',
-                $testItem->getAttributeLabel('email')             => 'a@a.com',
-                $testItem->getAttributeLabel('currency')          => null,
-                $testItem->getAttributeLabel('currencyValue')     => 100,
-                $testItem->getAttributeLabel('dropDown')          => $values[1],
-                $testItem->getAttributeLabel('radioDropDown')     => null,
-                $testItem->getAttributeLabel('multiDropDown')     => null,
-                $testItem->getAttributeLabel('tagCloud')          => null,
-                $testItem->getAttributeLabel('hasOne')            => null,
-                $testItem->getAttributeLabel('hasOneAlso')        => null,
-
-                'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid'    => null,
-                'Primary Email - Opt Out'       => null,
-
-                'Primary Address - City'        => null,
-                'Primary Address - Country'     => null,
-                'Primary Address - Invalid'     => null,
-                'Primary Address - Latitude'    => null,
-                'Primary Address - Longitude'   => null,
-                'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1'    => null,
-                'Primary Address - Street 2'    => null,
-                'Primary Address - State'       => null,
-
-                'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid'    => null,
-                'Secondary Email - Opt Out'       => null,
-
-                'Currency Value Currency'         => 'USD',
-
-                $testItem->getAttributeLabel('user')              => null,
-                $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdByUser')     => 'super',
-                $testItem->getAttributeLabel('modifiedByUser')    => 'super',
+                $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
+                'Bob2',
+                'Bob2',
+                '1',
+                '2002-04-03',
+                '2002-04-03 02:00:43',
+                54.22,
+                10,
+                '21313213',
+                'aString',
+                'Some Text Area',
+                'http://www.asite.com',
+                'a@a.com',
+                null,
+                100,
+                'USD',
+                'Test2',
+                'Test2',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            );
+            $compareHeaderData = array(
+                $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
+                $testItem->getAttributeLabel('firstName'),
+                $testItem->getAttributeLabel('lastName'),
+                $testItem->getAttributeLabel('boolean'),
+                $testItem->getAttributeLabel('date'),
+                $testItem->getAttributeLabel('dateTime'),
+                $testItem->getAttributeLabel('float'),
+                $testItem->getAttributeLabel('integer'),
+                $testItem->getAttributeLabel('phone'),
+                $testItem->getAttributeLabel('string'),
+                $testItem->getAttributeLabel('textArea'),
+                $testItem->getAttributeLabel('url'),
+                $testItem->getAttributeLabel('email'),
+                $testItem->getAttributeLabel('currency'),
+                $testItem->getAttributeLabel('currencyValue'),
+                $testItem->getAttributeLabel('currencyValue') . ' ' . Zurmo::t('ZurmoModule', 'Currency'),
+                $testItem->getAttributeLabel('dropDown'),
+                $testItem->getAttributeLabel('radioDropDown'),
+                $testItem->getAttributeLabel('multiDropDown'),
+                $testItem->getAttributeLabel('tagCloud'),
+                $testItem->getAttributeLabel('hasOne'),
+                $testItem->getAttributeLabel('hasOneAlso'),
+                'Primary Email - Email Address',
+                'Primary Email - Is Invalid',
+                'Primary Email - Opt Out',
+                'Primary Address - City',
+                'Primary Address - Country',
+                'Primary Address - Invalid',
+                'Primary Address - Latitude',
+                'Primary Address - Longitude',
+                'Primary Address - Postal Code',
+                'Primary Address - Street 1',
+                'Primary Address - Street 2',
+                'Primary Address - State',
+                'Secondary Email - Email Address',
+                'Secondary Email - Is Invalid',
+                'Secondary Email - Opt Out',
+                $testItem->getAttributeLabel('user'),
             );
 
             // Because small delay in IO operation, allow tresholds
-            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('createdDateTime')]), '', 2);
-            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('modifiedDateTime')]), '', 2);
-            unset($data[$testItem->getAttributeLabel('createdDateTime')]);
-            unset($data[$testItem->getAttributeLabel('modifiedDateTime')]);
-
-            $this->assertEquals($compareData, $data);
+            $createdDateTimeKey = array_search($testItem->getAttributeLabel('createdDateTime'), $headerData);
+            $modifiedDateTimeKey = array_search($testItem->getAttributeLabel('modifiedDateTime'), $headerData);
+            $this->assertEquals($createStamp, strtotime($data[$createdDateTimeKey]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$modifiedDateTimeKey]), '', 2);
+            $data[$createdDateTimeKey]  = 'stubDateTime';
+            $data[$modifiedDateTimeKey] = 'stubDateTime';
+            $this->assertEquals($compareData,       $data);
+            $this->assertEquals($compareHeaderData, $headerData);
         }
 
+        /**
+         * @depends testGetDataWithAllHasOneOrOwnedRelationsSet
+         */
         public function testGetDataWithHasOneRelatedModel()
         {
             $super = User::getByUsername('super');
@@ -340,63 +437,107 @@
             $testItem    = ExportTestModelItem::getById($id);
             $adapter     = new ModelToExportAdapter($testItem);
             $data        = $adapter->getData();
-
+            $headerData  = $adapter->getHeaderData();
             $compareData = array(
-                $testItem->getAttributeLabel('id')                => $id,
-                $testItem->getAttributeLabel('firstName')         => 'Bob3',
-                $testItem->getAttributeLabel('lastName')          => 'Bob3',
-                $testItem->getAttributeLabel('boolean')           => 1,
-                $testItem->getAttributeLabel('date')              => '2002-04-03',
-                $testItem->getAttributeLabel('dateTime')          => '2002-04-03 02:00:43',
-                $testItem->getAttributeLabel('float')             => 54.22,
-                $testItem->getAttributeLabel('integer')           => 10,
-                $testItem->getAttributeLabel('phone')             => '21313213',
-                $testItem->getAttributeLabel('string')            => 'aString',
-                $testItem->getAttributeLabel('textArea')          => 'Some Text Area',
-                $testItem->getAttributeLabel('url')               => 'http://www.asite.com',
-                $testItem->getAttributeLabel('email')             => 'a@a.com',
-                $testItem->getAttributeLabel('currency')          => null,
-                $testItem->getAttributeLabel('currencyValue')     => 100,
-                $testItem->getAttributeLabel('dropDown')          => null,
-                $testItem->getAttributeLabel('radioDropDown')     => null,
-                $testItem->getAttributeLabel('multiDropDown')     => null,
-                $testItem->getAttributeLabel('tagCloud')          => null,
-                $testItem->getAttributeLabel('hasOne') . " - Name"   => strval($testItem2),
-                $testItem->getAttributeLabel('hasOneAlso') . " - Name" => strval($testItem4),
-
-                'Primary Email - Email Address' => null,
-                'Primary Email - Is Invalid'    => null,
-                'Primary Email - Opt Out'       => null,
-
-                'Primary Address - City'        => null,
-                'Primary Address - Country'     => null,
-                'Primary Address - Invalid'     => null,
-                'Primary Address - Latitude'    => null,
-                'Primary Address - Longitude'   => null,
-                'Primary Address - Postal Code' => null,
-                'Primary Address - Street 1'    => null,
-                'Primary Address - Street 2'    => null,
-                'Primary Address - State'       => null,
-
-                'Secondary Email - Email Address' => null,
-                'Secondary Email - Is Invalid'    => null,
-                'Secondary Email - Opt Out'       => null,
-
-                'Currency Value Currency'         => 'USD',
-
-                $testItem->getAttributeLabel('user')              => null,
-                $testItem->getAttributeLabel('owner')             => 'super',
-                $testItem->getAttributeLabel('createdByUser')     => 'super',
-                $testItem->getAttributeLabel('modifiedByUser')    => 'super',
+                $id,
+                'stubDateTime',
+                'stubDateTime',
+                'super',
+                'super',
+                'super',
+                'Bob3',
+                'Bob3',
+                '1',
+                '2002-04-03',
+                '2002-04-03 02:00:43',
+                54.22,
+                10,
+                '21313213',
+                'aString',
+                'Some Text Area',
+                'http://www.asite.com',
+                'a@a.com',
+                null,
+                100,
+                'USD',
+                null,
+                null,
+                null,
+                null,
+                '(None)',
+                '(None)',
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+                null,
+            );
+            $compareHeaderData = array(
+                $testItem->getAttributeLabel('id'),
+                $testItem->getAttributeLabel('createdDateTime'),
+                $testItem->getAttributeLabel('modifiedDateTime'),
+                $testItem->getAttributeLabel('createdByUser'),
+                $testItem->getAttributeLabel('modifiedByUser'),
+                $testItem->getAttributeLabel('owner'),
+                $testItem->getAttributeLabel('firstName'),
+                $testItem->getAttributeLabel('lastName'),
+                $testItem->getAttributeLabel('boolean'),
+                $testItem->getAttributeLabel('date'),
+                $testItem->getAttributeLabel('dateTime'),
+                $testItem->getAttributeLabel('float'),
+                $testItem->getAttributeLabel('integer'),
+                $testItem->getAttributeLabel('phone'),
+                $testItem->getAttributeLabel('string'),
+                $testItem->getAttributeLabel('textArea'),
+                $testItem->getAttributeLabel('url'),
+                $testItem->getAttributeLabel('email'),
+                $testItem->getAttributeLabel('currency'),
+                $testItem->getAttributeLabel('currencyValue'),
+                $testItem->getAttributeLabel('currencyValue') . ' ' . 'Currency',
+                $testItem->getAttributeLabel('dropDown'),
+                $testItem->getAttributeLabel('radioDropDown'),
+                $testItem->getAttributeLabel('multiDropDown'),
+                $testItem->getAttributeLabel('tagCloud'),
+                $testItem->getAttributeLabel('hasOne') . ' - ' . 'Name',
+                $testItem->getAttributeLabel('hasOneAlso') . ' - ' . 'Name',
+                'Primary Email - Email Address',
+                'Primary Email - Is Invalid',
+                'Primary Email - Opt Out',
+                'Primary Address - City',
+                'Primary Address - Country',
+                'Primary Address - Invalid',
+                'Primary Address - Latitude',
+                'Primary Address - Longitude',
+                'Primary Address - Postal Code',
+                'Primary Address - Street 1',
+                'Primary Address - Street 2',
+                'Primary Address - State',
+                'Secondary Email - Email Address',
+                'Secondary Email - Is Invalid',
+                'Secondary Email - Opt Out',
+                $testItem->getAttributeLabel('user'),
             );
 
             // Because small delay in IO operation, allow tresholds
-            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('createdDateTime')]), '', 2);
-            $this->assertEquals($createStamp, strtotime($data[$testItem->getAttributeLabel('modifiedDateTime')]), '', 2);
-            unset($data[$testItem->getAttributeLabel('createdDateTime')]);
-            unset($data[$testItem->getAttributeLabel('modifiedDateTime')]);
-
-            $this->assertEquals($compareData, $data);
+            $createdDateTimeKey = array_search($testItem->getAttributeLabel('createdDateTime'), $headerData);
+            $modifiedDateTimeKey = array_search($testItem->getAttributeLabel('modifiedDateTime'), $headerData);
+            $this->assertEquals($createStamp, strtotime($data[$createdDateTimeKey]), '', 2);
+            $this->assertEquals($createStamp, strtotime($data[$modifiedDateTimeKey]), '', 2);
+            $data[$createdDateTimeKey]  = 'stubDateTime';
+            $data[$modifiedDateTimeKey] = 'stubDateTime';
+            $this->assertEquals($compareData,       $data);
+            $this->assertEquals($compareHeaderData, $headerData);
         }
     }
 ?>

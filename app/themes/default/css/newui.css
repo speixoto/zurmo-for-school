@@ -13,6 +13,7 @@
 .z-button,
 a.zButton,
 a.z-button,
+.white-button,
 .default-btn .modal-view-toolbar a,
 .default-btn .modal-view-toolbar input[type="submit"],
 .default-btn .modal-view-toolbar input[type="button"],
@@ -23,6 +24,7 @@ a.z-button,
 .default-btn .z-button,
 .default-btn a.zButton,
 .default-btn a.z-button,
+.default-btn .white-button,
 .default-btn,
 .z-label,
 .search-form-tools input[type="submit"],
@@ -68,6 +70,7 @@ a.EmailTestingButton,
 .AppContent.ImportWizardView #addExtraColumnButton .z-button,
 .AppContent.ImportWizardView #addExtraColumnButton a.zButton,
 .AppContent.ImportWizardView #addExtraColumnButton a.z-button,
+.AppContent.ImportWizardView #addExtraColumnButton .white-button,
 .AppContent.ImportWizardView #addExtraColumnButton .search-form-tools input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton a.search-form-tools input[type="submit"],
 .AppContent.ImportWizardView #addExtraColumnButton #progressBar-links a,
@@ -101,6 +104,7 @@ a.file-upload-box .ui-icon-plusthick,
 .addfileinput-button span .z-button,
 .addfileinput-button span a.zButton,
 .addfileinput-button span a.z-button,
+.addfileinput-button span .white-button,
 .addfileinput-button span .search-form-tools input[type="submit"],
 .addfileinput-button span a.search-form-tools input[type="submit"],
 .addfileinput-button span #progressBar-links a,
@@ -159,7 +163,20 @@ a.ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton .ModalGameNotification a,
 .AppContent.ImportWizardView #addExtraColumnButton a.ModalGameNotification a,
 .addfileinput-button span .ModalGameNotification a,
-.addfileinput-button span a.ModalGameNotification a {
+.addfileinput-button span a.ModalGameNotification a,
+.hasTree,
+.dynamic-droppable-area,
+.drop-zone,
+.drop-zone div,
+.dynamic-row,
+.dynamic-row-label,
+.dynamic-row-operator,
+.dynamic-row-field,
+.value-data,
+.report-runtime-availability,
+.hasDrillDownContent,
+.first-series-and-range-area > div,
+.second-series-and-range-area > div {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -169,18 +186,26 @@ a.ModalGameNotification a,
 .recipient:before,
 .recipient:after,
 #NoUserEmailConfigurationYetView:before,
-#NoUserEmailConfigurationYetView:after {
+#NoUserEmailConfigurationYetView:after,
+.dynamic-row:before,
+.dynamic-row:after,
+.dynamic-row > div:before,
+.dynamic-row > div:after {
   content: "";
   display: table;
 }
 .cf:after,
 .recipient:after,
-#NoUserEmailConfigurationYetView:after {
+#NoUserEmailConfigurationYetView:after,
+.dynamic-row:after,
+.dynamic-row > div:after {
   clear: both;
 }
 .cf,
 .recipient,
-#NoUserEmailConfigurationYetView {
+#NoUserEmailConfigurationYetView,
+.dynamic-row,
+.dynamic-row > div {
   zoom: 1;
 }
 .clearfix {
@@ -228,6 +253,7 @@ a.ModalGameNotification a,
 .z-button,
 a.zButton,
 a.z-button,
+.white-button,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 #progressBar-links a,
@@ -294,6 +320,7 @@ a.ModalGameNotification a {
 .z-button:before,
 a.zButton:before,
 a.z-button:before,
+.white-button:before,
 .search-form-tools input[type="submit"]:before,
 a.search-form-tools input[type="submit"]:before,
 #progressBar-links a:before,
@@ -335,6 +362,7 @@ a.ModalGameNotification a:before {
 .z-button:after,
 a.zButton:after,
 a.z-button:after,
+.white-button:after,
 .search-form-tools input[type="submit"]:after,
 a.search-form-tools input[type="submit"]:after,
 #progressBar-links a:after,
@@ -377,6 +405,7 @@ a.ModalGameNotification a:after {
 .z-button.attachLoading.z-button,
 a.zButton.attachLoading.z-button,
 a.z-button.attachLoading.z-button,
+.white-button.attachLoading.z-button,
 .search-form-tools input[type="submit"].attachLoading.z-button,
 a.search-form-tools input[type="submit"].attachLoading.z-button,
 #progressBar-links a.attachLoading.z-button,
@@ -417,6 +446,7 @@ a.ModalGameNotification a.attachLoading.z-button {
 .z-button:not(.attachLoading) .z-label,
 a.zButton:not(.attachLoading) .z-label,
 a.z-button:not(.attachLoading) .z-label,
+.white-button:not(.attachLoading) .z-label,
 .search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
 a.search-form-tools input[type="submit"]:not(.attachLoading) .z-label,
 #progressBar-links a:not(.attachLoading) .z-label,
@@ -445,6 +475,15 @@ a.designer-toolbar input[type="submit"]:not(.attachLoading) .z-label,
 a#customFieldDataData_AddInputButton:not(.attachLoading) .z-label,
 .ModalGameNotification a:not(.attachLoading) .z-label,
 a.ModalGameNotification a:not(.attachLoading) .z-label {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.white-button .z-label {
+  color: #666 !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 .default-btn {
@@ -574,7 +613,8 @@ table.configuration-list td:last-child a.loading .z-icon,
 .zLink,
 .z-link,
 #ImportWizardMappingView #sample-column-header a,
-.remove-extra-column-link {
+.remove-extra-column-link,
+#show-filters-structure-div-link {
   padding: 2px 4px;
   -webkit-border-radius: 3px;
   -moz-border-radius: 3px;
@@ -587,7 +627,8 @@ table.configuration-list td:last-child a.loading .z-icon,
 .zLink:hover,
 .z-link:hover,
 #ImportWizardMappingView #sample-column-header a:hover,
-.remove-extra-column-link:hover {
+.remove-extra-column-link:hover,
+#show-filters-structure-div-link:hover {
   color: #fff !important;
   text-decoration: underline;
 }
@@ -616,7 +657,10 @@ table.configuration-list td:last-child a.loading .z-icon,
 }
 .unstyle-panel,
 #NoteInlineEditForPortletView .wide.form,
-#inline-edit-form {
+#inline-edit-form,
+#RuntimeFiltersForPortletView .wrapper,
+#RuntimeFiltersForPortletView #edit-form,
+#RuntimeFiltersForPortletView .dynamic-row {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -668,6 +712,10 @@ body.blue .themeColor-focus {
   -o-box-shadow: 0 0 1px 1px #282a76;
   -ms-box-shadow: 0 0 1px 1px #282a76;
   box-shadow: 0 0 1px 1px #282a76;
+}
+body.blue .juiportlet-widget-placeholder,
+body.blue .drop-zone {
+  border: 2px dashed #282a76;
 }
 body.blue h1,
 body.blue h2,
@@ -721,12 +769,16 @@ body.blue .juiportlet-widget-head a.edit:hover .icon:after,
 body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
 body.blue a.simple-link,
+body.blue a.simple-link .z-label,
+body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
 body.blue #clear-search-linkmodal,
 body.blue .z-action-link,
-body.blue .showAllCommentsLink {
+body.blue .showAllCommentsLink .treeview span:hover .z-action-link,
+body.blue .drop-zone,
+body.blue .missing-chart {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -774,7 +826,8 @@ body.blue .ui-tooltip-default .ui-tooltip-icon,
 body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
-body.blue #clear-search-link {
+body.blue #clear-search-link,
+body.blue #show-filters-structure-div-link {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -940,7 +993,9 @@ body.blue .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-la
 body.blue .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.blue .form-toolbar a:not(.attachLoading):hover .z-label,
 body.blue .form-toolbar a:not(.z-button):hover .z-label,
-body.blue .configuration-list li a:hover .z-label {
+body.blue .configuration-list li a:hover .z-label,
+body.blue .white-button:hover .z-label,
+body.blue .white-button:hover .z-label {
   color: #7cb830 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1201,6 +1256,10 @@ body.brown .themeColor-focus {
   -ms-box-shadow: 0 0 1px 1px #547980;
   box-shadow: 0 0 1px 1px #547980;
 }
+body.brown .juiportlet-widget-placeholder,
+body.brown .drop-zone {
+  border: 2px dashed #547980;
+}
 body.brown h1,
 body.brown h2,
 body.brown h3,
@@ -1253,12 +1312,16 @@ body.brown .juiportlet-widget-head a.edit:hover .icon:after,
 body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
 body.brown a.simple-link,
+body.brown a.simple-link .z-label,
+body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
 body.brown #clear-search-linkmodal,
 body.brown .z-action-link,
-body.brown .showAllCommentsLink {
+body.brown .showAllCommentsLink .treeview span:hover .z-action-link,
+body.brown .drop-zone,
+body.brown .missing-chart {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1306,7 +1369,8 @@ body.brown .ui-tooltip-default .ui-tooltip-icon,
 body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
-body.brown #clear-search-link {
+body.brown #clear-search-link,
+body.brown #show-filters-structure-div-link {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1472,7 +1536,9 @@ body.brown .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-l
 body.brown .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.brown .form-toolbar a:not(.attachLoading):hover .z-label,
 body.brown .form-toolbar a:not(.z-button):hover .z-label,
-body.brown .configuration-list li a:hover .z-label {
+body.brown .configuration-list li a:hover .z-label,
+body.brown .white-button:hover .z-label,
+body.brown .white-button:hover .z-label {
   color: #b88f30 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -1733,6 +1799,10 @@ body.lime .themeColor-focus {
   -ms-box-shadow: 0 0 1px 1px #2b434f;
   box-shadow: 0 0 1px 1px #2b434f;
 }
+body.lime .juiportlet-widget-placeholder,
+body.lime .drop-zone {
+  border: 2px dashed #2b434f;
+}
 body.lime h1,
 body.lime h2,
 body.lime h3,
@@ -1785,12 +1855,16 @@ body.lime .juiportlet-widget-head a.edit:hover .icon:after,
 body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
 body.lime a.simple-link,
+body.lime a.simple-link .z-label,
+body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
 body.lime #clear-search-linkmodal,
 body.lime .z-action-link,
-body.lime .showAllCommentsLink {
+body.lime .showAllCommentsLink .treeview span:hover .z-action-link,
+body.lime .drop-zone,
+body.lime .missing-chart {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -1838,7 +1912,8 @@ body.lime .ui-tooltip-default .ui-tooltip-icon,
 body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
-body.lime #clear-search-link {
+body.lime #clear-search-link,
+body.lime #show-filters-structure-div-link {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2004,7 +2079,9 @@ body.lime .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-la
 body.lime .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.lime .form-toolbar a:not(.attachLoading):hover .z-label,
 body.lime .form-toolbar a:not(.z-button):hover .z-label,
-body.lime .configuration-list li a:hover .z-label {
+body.lime .configuration-list li a:hover .z-label,
+body.lime .white-button:hover .z-label,
+body.lime .white-button:hover .z-label {
   color: #bcc98e !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2265,6 +2342,10 @@ body.cherry .themeColor-focus {
   -ms-box-shadow: 0 0 1px 1px #6c8092;
   box-shadow: 0 0 1px 1px #6c8092;
 }
+body.cherry .juiportlet-widget-placeholder,
+body.cherry .drop-zone {
+  border: 2px dashed #6c8092;
+}
 body.cherry h1,
 body.cherry h2,
 body.cherry h3,
@@ -2317,12 +2398,16 @@ body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
 body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
 body.cherry a.simple-link,
+body.cherry a.simple-link .z-label,
+body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
 body.cherry #clear-search-linkmodal,
 body.cherry .z-action-link,
-body.cherry .showAllCommentsLink {
+body.cherry .showAllCommentsLink .treeview span:hover .z-action-link,
+body.cherry .drop-zone,
+body.cherry .missing-chart {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2370,7 +2455,8 @@ body.cherry .ui-tooltip-default .ui-tooltip-icon,
 body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
-body.cherry #clear-search-link {
+body.cherry #clear-search-link,
+body.cherry #show-filters-structure-div-link {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -2536,7 +2622,9 @@ body.cherry .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-
 body.cherry .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.cherry .form-toolbar a:not(.attachLoading):hover .z-label,
 body.cherry .form-toolbar a:not(.z-button):hover .z-label,
-body.cherry .configuration-list li a:hover .z-label {
+body.cherry .configuration-list li a:hover .z-label,
+body.cherry .white-button:hover .z-label,
+body.cherry .white-button:hover .z-label {
   color: #933140 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -2797,6 +2885,10 @@ body.turquoise .themeColor-focus {
   -ms-box-shadow: 0 0 1px 1px #447799;
   box-shadow: 0 0 1px 1px #447799;
 }
+body.turquoise .juiportlet-widget-placeholder,
+body.turquoise .drop-zone {
+  border: 2px dashed #447799;
+}
 body.turquoise h1,
 body.turquoise h2,
 body.turquoise h3,
@@ -2849,12 +2941,16 @@ body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
 body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
 body.turquoise a.simple-link,
+body.turquoise a.simple-link .z-label,
+body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
 body.turquoise #clear-search-linkmodal,
 body.turquoise .z-action-link,
-body.turquoise .showAllCommentsLink {
+body.turquoise .showAllCommentsLink .treeview span:hover .z-action-link,
+body.turquoise .drop-zone,
+body.turquoise .missing-chart {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -2902,7 +2998,8 @@ body.turquoise .ui-tooltip-default .ui-tooltip-icon,
 body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
-body.turquoise #clear-search-link {
+body.turquoise #clear-search-link,
+body.turquoise #show-filters-structure-div-link {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3068,7 +3165,9 @@ body.turquoise .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover 
 body.turquoise .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.turquoise .form-toolbar a:not(.attachLoading):hover .z-label,
 body.turquoise .form-toolbar a:not(.z-button):hover .z-label,
-body.turquoise .configuration-list li a:hover .z-label {
+body.turquoise .configuration-list li a:hover .z-label,
+body.turquoise .white-button:hover .z-label,
+body.turquoise .white-button:hover .z-label {
   color: #44bbcc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -3329,6 +3428,10 @@ body.violet .themeColor-focus {
   -ms-box-shadow: 0 0 1px 1px #4a3970;
   box-shadow: 0 0 1px 1px #4a3970;
 }
+body.violet .juiportlet-widget-placeholder,
+body.violet .drop-zone {
+  border: 2px dashed #4a3970;
+}
 body.violet h1,
 body.violet h2,
 body.violet h3,
@@ -3381,12 +3484,16 @@ body.violet .juiportlet-widget-head a.edit:hover .icon:after,
 body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
 body.violet a.simple-link,
+body.violet a.simple-link .z-label,
+body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
 body.violet #clear-search-linkmodal,
 body.violet .z-action-link,
-body.violet .showAllCommentsLink {
+body.violet .showAllCommentsLink .treeview span:hover .z-action-link,
+body.violet .drop-zone,
+body.violet .missing-chart {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -3434,7 +3541,8 @@ body.violet .ui-tooltip-default .ui-tooltip-icon,
 body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
-body.violet #clear-search-link {
+body.violet #clear-search-link,
+body.violet #show-filters-structure-div-link {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -3600,7 +3708,9 @@ body.violet .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-
 body.violet .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.violet .form-toolbar a:not(.attachLoading):hover .z-label,
 body.violet .form-toolbar a:not(.z-button):hover .z-label,
-body.violet .configuration-list li a:hover .z-label {
+body.violet .configuration-list li a:hover .z-label,
+body.violet .white-button:hover .z-label,
+body.violet .white-button:hover .z-label {
   color: #91a1dc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -3861,6 +3971,10 @@ body.honey .themeColor-focus {
   -ms-box-shadow: 0 0 1px 1px #46201c;
   box-shadow: 0 0 1px 1px #46201c;
 }
+body.honey .juiportlet-widget-placeholder,
+body.honey .drop-zone {
+  border: 2px dashed #46201c;
+}
 body.honey h1,
 body.honey h2,
 body.honey h3,
@@ -3913,12 +4027,16 @@ body.honey .juiportlet-widget-head a.edit:hover .icon:after,
 body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
 body.honey a.simple-link,
+body.honey a.simple-link .z-label,
+body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
 body.honey #clear-search-linkmodal,
 body.honey .z-action-link,
-body.honey .showAllCommentsLink {
+body.honey .showAllCommentsLink .treeview span:hover .z-action-link,
+body.honey .drop-zone,
+body.honey .missing-chart {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
@@ -3966,7 +4084,8 @@ body.honey .ui-tooltip-default .ui-tooltip-icon,
 body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
-body.honey #clear-search-link {
+body.honey #clear-search-link,
+body.honey #show-filters-structure-div-link {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -4132,7 +4251,9 @@ body.honey .toolbar-mbmenu .options-menu > li > a:not(.attachLoading):hover .z-l
 body.honey .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
 body.honey .form-toolbar a:not(.attachLoading):hover .z-label,
 body.honey .form-toolbar a:not(.z-button):hover .z-label,
-body.honey .configuration-list li a:hover .z-label {
+body.honey .configuration-list li a:hover .z-label,
+body.honey .white-button:hover .z-label,
+body.honey .white-button:hover .z-label {
   color: #abbc42 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
@@ -4398,6 +4519,9 @@ body.light-toast,
 .hidden-element {
   display: none !important;
   visibility: hidden !important;
+}
+.temp-hidden {
+  display: none;
 }
 .disabled-select-element {
   pointer-events: none;
@@ -5573,6 +5697,9 @@ body > .ui-autocomplete {
 #RecentlyViewedView li.type-MissionsModule em:before {
   content: "Q";
 }
+#RecentlyViewedView li.type-ReportsModule em:before {
+  content: "V";
+}
 /*=Content*/
 .AppContent {
   -webkit-border-radius: 0 0 5px 5px;
@@ -5615,10 +5742,6 @@ body > .ui-autocomplete {
   float: left;
   position: relative;
 }
-.AppContent .single-column .panel td,
-.AppContent .single-column .panel th {
-  padding-bottom: 10px !important;
-}
 .AppContent .single-column .juiportlet-widget,
 .AppContent .single-column .details-table {
   margin-right: 0 !important;
@@ -5635,7 +5758,7 @@ body > .ui-autocomplete {
   display: table;
   clear: both;
 }
-.AppContent .single-column #right-side-edit-view-panel {
+.AppContent .single-column .right-side-edit-view-panel {
   top: 55px;
 }
 .AppContent .single-column #inline-edit-form .panel {
@@ -5679,17 +5802,21 @@ body > .ui-autocomplete {
 }
 /*=Inner toolbar*/
 .float-bar {
+  width: 100%;
+  float: left;
+  position: relative;
   height: 40px;
   display: block;
+  z-index: 0;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
   position: fixed !important;
-  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
-  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.5);
+  -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -o-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  -ms-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
+  box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.3);
   background-color: #ffffff ;
   background-repeat: no-repeat ;
   background-image: -webkit-gradient(linear, 0 0, 0 100%, from(#f5f5f5), color-stop(80%, #f5f5f5), to(#ffffff)) ;
@@ -5875,6 +6002,36 @@ form .view-toolbar-container,
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before {
   content: "(";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#ListViewDetailsActionMenu .parent > a:before,
+.icon-details:before {
+  content: 'T';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#ListViewOptionsActionMenu .parent > a:before,
+.icon-options:before {
+  content: "n";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -6112,6 +6269,39 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+.icon-notice:before {
+  content: "j";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+}
+.general-issue-notice {
+  text-align: center;
+  width: 75%;
+  margin: 10px auto 15px auto;
+  position: relative;
+}
+.general-issue-notice .icon-notice {
+  display: block;
+  line-height: 1;
+  margin-bottom: 10px;
+}
+.general-issue-notice .icon-notice:before {
+  margin: 0;
+  font-size: 100px;
+  line-height: 60px !important;
+}
+.general-issue-notice p {
+  font-size: 14px;
+  line-height: 21px;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -6236,6 +6426,18 @@ table.items > tbody tr td:first-child:not(.checkbox-column),
 table.items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.sort-link:after {
+  margin-left: 10px;
+  font-size: 12px;
+  position: relative;
+  top: -1px;
+}
+.sort-link.asc:after {
+  content: "↑";
+}
+.sort-link.desc:after {
+  content: "↓";
+}
 tr.odd {
   background: none;
   -webkit-transition: all 0.05s ease-out;
@@ -6283,7 +6485,7 @@ tr.even {
   font-size: 11px;
 }
 td.empty {
-  display: table-cell;
+  display: table-cell !important;
 }
 /*forms*/
 .form input[type="checkbox"] {
@@ -6385,9 +6587,9 @@ td.empty {
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
 .AppContent label {
-  font-size: 12px !important;
+  font-size: 12px;
   color: #666;
-  font-weight: 400 !important;
+  font-weight: 400;
 }
 /*=Form Edit Account*/
 .modal-view-toolbar,
@@ -6431,6 +6633,7 @@ td.empty {
   -o-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -ms-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
+  font-size: 11px;
 }
 .portlet-toolbar a .z-label {
   padding: 0 10px 0 10px;
@@ -6465,6 +6668,7 @@ td.empty {
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
+  font-size: 22px;
   top: -2px;
   margin: 0 5px 0 0 !important;
 }
@@ -6499,6 +6703,52 @@ td.empty {
   top: -1px;
   color: #fff;
   margin-left: 0;
+}
+body div.form-toolbar a.simple-link:not(.z-button) {
+  background: none !important;
+  background-image: none !important;
+  -webkit-box-shadow: none  !important;
+  -moz-box-shadow: none  !important;
+  -o-box-shadow: none  !important;
+  -ms-box-shadow: none  !important;
+  box-shadow: none  !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  -o-border-radius: 0 !important;
+  border-radius: 0 !important;
+  padding: 0  !important;
+  border: none !important;
+  margin: !important;
+  text-decoration: underline;
+  font-weight: normal;
+}
+body div.form-toolbar a.simple-link:not(.z-button):hover span.z-label {
+  background: none !important;
+  background-image: none !important;
+  background: transparent !important;
+}
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
+  background: none !important;
+  background-image: none !important;
+  -webkit-box-shadow: none  !important;
+  -moz-box-shadow: none  !important;
+  -o-box-shadow: none  !important;
+  -ms-box-shadow: none  !important;
+  box-shadow: none  !important;
+  -webkit-border-radius: 0 !important;
+  -moz-border-radius: 0 !important;
+  -ms-border-radius: 0 !important;
+  -o-border-radius: 0 !important;
+  border-radius: 0 !important;
+  padding: 0  !important;
+  border: none !important;
+  margin-left: 10px;
+  text-decoration: underline;
+  font-weight: normal;
+}
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
+  content: "" !important;
 }
 a.simple-link {
   background: none !important;
@@ -6685,6 +6935,9 @@ label.hasCheckBox + label {
   margin-left: 8px;
   margin-top: 6px;
 }
+div.wide.form {
+  position: relative;
+}
 div.wide.form label.hasCheckBox {
   margin-top: 0 !important;
 }
@@ -6768,16 +7021,17 @@ div.wide.form label.hasCheckBox {
   height: auto;
   display: block;
 }
-.loading .list-preloader {
+.loading > .list-preloader {
   display: block;
 }
-.cgrid-view.loading .list-preloader {
+.cgrid-view.loading > .list-preloader {
   display: block;
 }
 /*
 #NoUserEmailConfigurationYetView,
 #NoGlobalEmailConfigurationYetView,
 .ZeroModelsYetView*/
+.zero-components-view h2,
 .splash-view h2 {
   font-family: "Times New Roman", Times, serif;
   font-style: italic;
@@ -6786,6 +7040,7 @@ div.wide.form label.hasCheckBox {
   font-weight: normal;
   padding: 15px 50px 15px 30px;
 }
+.zero-components-view i,
 .splash-view i {
   font-size: 13px;
   color: #555;
@@ -6793,6 +7048,7 @@ div.wide.form label.hasCheckBox {
   display: block;
   margin-left: 30px;
 }
+.zero-components-view p,
 .splash-view p {
   font-size: 16px;
   line-height: 24px;
@@ -6802,6 +7058,7 @@ div.wide.form label.hasCheckBox {
   width: 70%;
   margin: 45px 0 0 30px;
 }
+.zero-components-view a,
 .splash-view a {
   margin-left: 30px;
   margin-top: 30px;
@@ -6816,6 +7073,7 @@ div.wide.form label.hasCheckBox {
   position: relative;
   cursor: pointer;
 }
+.zero-components-view a span:before,
 .splash-view a span:before {
   content: "Y";
   font-weight: normal;
@@ -6826,6 +7084,7 @@ div.wide.form label.hasCheckBox {
   left: -5px;
   margin-right: 3px;
 }
+.zero-components-view .large-icon,
 .splash-view .large-icon {
   width: 25%;
   text-align: center;
@@ -6833,6 +7092,7 @@ div.wide.form label.hasCheckBox {
   border-right: 1px solid #ccc;
   float: left;
 }
+.zero-components-view .Contact .large-icon:after,
 .splash-view .Contact .large-icon:after {
   content: "y";
   font-weight: normal;
@@ -6840,6 +7100,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 50%;
 }
+.zero-components-view .Account .large-icon:after,
 .splash-view .Account .large-icon:after {
   content: "P";
   font-weight: normal;
@@ -6847,6 +7108,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+.zero-components-view .Lead .large-icon:after,
 .splash-view .Lead .large-icon:after {
   content: ".";
   font-weight: normal;
@@ -6854,6 +7116,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 65%;
 }
+.zero-components-view .Opportunity .large-icon:after,
 .splash-view .Opportunity .large-icon:after {
   content: "9";
   font-weight: normal;
@@ -6861,6 +7124,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+.zero-components-view .Conversation .large-icon:after,
 .splash-view .Conversation .large-icon:after {
   content: "b";
   font-weight: normal;
@@ -6868,6 +7132,7 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 90%;
 }
+.zero-components-view .Mission .large-icon:after,
 .splash-view .Mission .large-icon:after {
   content: "Q";
   font-weight: normal;
@@ -6875,12 +7140,31 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 80%;
 }
+.zero-components-view .EmailMessage .large-icon:after,
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
   font-weight: normal;
   font-size: 325px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
+}
+.zero-components-view .missing-report:after,
+.splash-view .missing-report:after,
+.zero-components-view .Report .large-icon:after,
+.splash-view .Report .large-icon:after {
+  content: "j";
+  font-weight: normal;
+  font-size: 250px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
+}
+.zero-components-view .SavedReport .large-icon:after,
+.splash-view .SavedReport .large-icon:after {
+  content: "V";
+  font-weight: normal;
+  font-size: 320px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -7100,7 +7384,7 @@ div.wide.form label.hasCheckBox {
   z-index: 10000;
 }
 #ModalView .search-view-1 {
-  z-index: 1100;
+  z-index: 0;
   min-width: 400px;
   max-width: 75%;
   height: auto;
@@ -7235,14 +7519,13 @@ div.wide.form label.hasCheckBox {
 }
 .dynamic-search-row > div > span:first-child + div {
   margin-right: 0 !important;
-  width: 46%;
+  width: 45%;
   float: left;
 }
 .dynamic-search-row > div .criteria-value-container {
   margin-right: 30px !important;
-  width: 46%;
+  width: 45%;
   float: right;
-  position: relative;
 }
 .dynamic-search-row > div .has-model-select {
   float: left;
@@ -7390,12 +7673,12 @@ div.wide.form label.hasCheckBox {
 .double-column .panel table {
   width: 100% !important;
 }
-.double-column #right-side-edit-view-panel {
+.double-column .right-side-edit-view-panel {
   margin-bottom: 15px;
   position: relative !important;
   float: left !important;
 }
-.double-column #right-side-edit-view-panel .buffer {
+.double-column .right-side-edit-view-panel .buffer {
   padding-left: 5px;
 }
 .double-column .col-0,
@@ -7532,6 +7815,22 @@ div.wide.form label.hasCheckBox {
 .more-panels-link {
   font-size: 11px;
 }
+.ui-overlay-block {
+  z-index: 250000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(255, 255, 255, 0.8);
+  display: none;
+}
+.ui-overlay-block .big-spinner {
+  position: relative;
+  top: 30%;
+  left: 50%;
+  margin: 0 0 0 -34px;
+}
 .address-fields div:last-child {
   padding-bottom: 0;
 }
@@ -7547,65 +7846,68 @@ div.wide.form label.hasCheckBox {
 .radio-input label {
   margin-left: 10px;
 }
-#right-side-edit-view-panel {
+.right-side-edit-view-panel {
+  width: 30%;
+  float: right;
   position: absolute;
   right: 15px;
   top: 15px;
-  width: 30%;
-  float: right;
 }
-#right-side-edit-view-panel h3 {
+.right-side-edit-view-panel p {
+  line-height: 140%;
+}
+.right-side-edit-view-panel h3 {
   margin-bottom: 8px;
 }
-#right-side-edit-view-panel label {
+.right-side-edit-view-panel label {
   width: 100%;
   display: block;
   line-height: 100%;
   padding-top: 0;
   margin-bottom: 5px;
 }
-#right-side-edit-view-panel #owner-box {
+.right-side-edit-view-panel #owner-box {
   margin-bottom: 15px;
   position: relative;
 }
-#right-side-edit-view-panel #owner-box label,
-#right-side-edit-view-panel #owner-box + label {
+.right-side-edit-view-panel #owner-box label,
+.right-side-edit-view-panel #owner-box + label {
   font-size: 12px;
   font-weight: 600;
 }
-#right-side-edit-view-panel #owner-box input {
+.right-side-edit-view-panel #owner-box input {
   position: relative;
   z-index: 0;
 }
-#right-side-edit-view-panel .ui-autocomplete {
+.right-side-edit-view-panel .ui-autocomplete {
   width: auto;
 }
-#right-side-edit-view-panel input[type="text"] {
+.right-side-edit-view-panel input[type="text"] {
   margin-bottom: 4px;
 }
-#right-side-edit-view-panel #owner-box + label {
+.right-side-edit-view-panel #owner-box + label {
   margin-bottom: 15px;
 }
-#right-side-edit-view-panel .radio-input {
+.right-side-edit-view-panel .radio-input {
   margin-bottom: 10px;
   width: 100%;
   float: left;
   display: block;
 }
-#right-side-edit-view-panel .radio-input label {
+.right-side-edit-view-panel .radio-input label {
   width: auto;
   float: left;
   vertical-align: middle;
 }
-#right-side-edit-view-panel .radio-input input[type="radio"] {
+.right-side-edit-view-panel .radio-input input[type="radio"] {
   float: left;
   margin: 0 8px 0 10px;
   vertical-align: middle;
 }
-#right-side-edit-view-panel .radio-input .hasDropDown {
+.right-side-edit-view-panel .radio-input .hasDropDown {
   padding-left: 40px;
 }
-#right-side-edit-view-panel input[type="text"] {
+.right-side-edit-view-panel input[type="text"] {
   margin-top: 6px;
 }
 .has-date-select,
@@ -7856,12 +8158,13 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.TitleBarAndDetailsView > div,
-.ProgressView > div,
-#MetadataViewEditView > div,
-.TableOfContentsView > div,
-.DetailsView > div,
-.EditAndDetailsView > div {
+.wrapper,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container),
+.ProgressView > div:not(.view-toolbar-container),
+#MetadataViewEditView > div:not(.view-toolbar-container),
+.TableOfContentsView > div:not(.view-toolbar-container),
+.DetailsView > div:not(.view-toolbar-container),
+.EditAndDetailsView > div:not(.view-toolbar-container) {
   margin-bottom: 20px;
   border: 1px solid #ccc;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -7879,12 +8182,13 @@ div.wide.form label.hasCheckBox {
   background-image: linear-gradient(#ffffff, #f5f5f5 80%, #f5f5f5) ;
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#f5f5f5', GradientType=0);
 }
-.TitleBarAndDetailsView > div .form form,
-.ProgressView > div .form form,
-#MetadataViewEditView > div .form form,
-.TableOfContentsView > div .form form,
-.DetailsView > div .form form,
-.EditAndDetailsView > div .form form {
+.wrapper .form form,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) .form form,
+.ProgressView > div:not(.view-toolbar-container) .form form,
+#MetadataViewEditView > div:not(.view-toolbar-container) .form form,
+.TableOfContentsView > div:not(.view-toolbar-container) .form form,
+.DetailsView > div:not(.view-toolbar-container) .form form,
+.EditAndDetailsView > div:not(.view-toolbar-container) .form form {
   border: none;
   background: none;
   -webkit-box-shadow: none;
@@ -7893,12 +8197,13 @@ div.wide.form label.hasCheckBox {
   -ms-box-shadow: none;
   box-shadow: none;
 }
-.TitleBarAndDetailsView h1,
-.ProgressView h1,
-#MetadataViewEditView h1,
-.TableOfContentsView h1,
-.DetailsView h1,
-.EditAndDetailsView h1 {
+.wrapper h1,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) h1,
+.ProgressView > div:not(.view-toolbar-container) h1,
+#MetadataViewEditView > div:not(.view-toolbar-container) h1,
+.TableOfContentsView > div:not(.view-toolbar-container) h1,
+.DetailsView > div:not(.view-toolbar-container) h1,
+.EditAndDetailsView > div:not(.view-toolbar-container) h1 {
   text-indent: 15px;
   font-size: 15px;
   height: 40px;
@@ -7921,21 +8226,23 @@ div.wide.form label.hasCheckBox {
   border-bottom: 1px solid #ccc;
   overflow: hidden;
 }
-.TitleBarAndDetailsView input[type="checkbox"] + label,
-.ProgressView input[type="checkbox"] + label,
-#MetadataViewEditView input[type="checkbox"] + label,
-.TableOfContentsView input[type="checkbox"] + label,
-.DetailsView input[type="checkbox"] + label,
-.EditAndDetailsView input[type="checkbox"] + label {
+.wrapper input[type="checkbox"] + label,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.ProgressView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+#MetadataViewEditView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.TableOfContentsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.DetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label,
+.EditAndDetailsView > div:not(.view-toolbar-container) input[type="checkbox"] + label {
   width: 60px;
   margin-top: 0;
 }
-.TitleBarAndDetailsView td + th,
-.ProgressView td + th,
-#MetadataViewEditView td + th,
-.TableOfContentsView td + th,
-.DetailsView td + th,
-.EditAndDetailsView td + th {
+.wrapper td + th,
+.TitleBarAndDetailsView > div:not(.view-toolbar-container) td + th,
+.ProgressView > div:not(.view-toolbar-container) td + th,
+#MetadataViewEditView > div:not(.view-toolbar-container) td + th,
+.TableOfContentsView > div:not(.view-toolbar-container) td + th,
+.DetailsView > div:not(.view-toolbar-container) td + th,
+.EditAndDetailsView > div:not(.view-toolbar-container) td + th {
   padding-left: 30px;
 }
 .SecuredEditAndDetailsView,
@@ -8551,7 +8858,7 @@ div.hasHalfs .twoThirds {
   height: 50px;
   float: left;
   margin-left: 0;
-  margin-top: -4px;
+  margin-top: -6px;
   width: auto;
 }
 .juiportlet-widget td div.checkbox-column label {
@@ -9885,7 +10192,6 @@ a.remove .icon:after {
   outline: none;
 }
 .juiportlet-widget-placeholder {
-  border: 2px dashed #262877;
   margin: 0 20px 20px 2px;
 }
 .juiportlet-widget-content {
@@ -9908,7 +10214,7 @@ a.remove .icon:after {
 }
 .juiportlet-widget-content .items thead > tr th,
 .juiportlet-widget-content .items thead > tr td {
-  border-top: none !important;
+  border-top: none;
 }
 .juiportlet-widget-content table.items tbody tr:last-child td {
   border-bottom: none;
@@ -11002,7 +11308,7 @@ table.configuration-list td:last-child a .z-label:before {
 .AppContent.ImportWizardView h3 {
   margin-bottom: 15px;
 }
-.AppContent.ImportWizardView #right-side-edit-view-panel {
+.AppContent.ImportWizardView .right-side-edit-view-panel {
   width: 60% !important;
   float: none !important;
 }
@@ -11071,7 +11377,7 @@ table.configuration-list td:last-child a .z-label:before {
   margin: 5px 0 0 10px !important;
 }
 /*= Step 3*/
-#ImportWizardSetModelPermissionsView #right-side-edit-view-panel {
+#ImportWizardSetModelPermissionsView .right-side-edit-view-panel {
   position: relative !important;
   top: 0 !important;
   right: 0 !important;
@@ -11186,6 +11492,7 @@ table.configuration-list td:last-child a .z-label:before {
 #ImportSequentialProcessContainerView > div {
   float: left;
   width: 100%;
+  padding-bottom: 15px;
 }
 #ImportSequentialProcessContainerView #edit-form {
   padding: 0 0 15px 0 !important;
@@ -11457,6 +11764,24 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #MyMissionsForPortletView .mission-status {
   font-size: 11px;
+}
+/*Charts*/
+.missing-chart {
+  display: block;
+  text-align: center;
+  position: relative;
+  top: 50%;
+  margin-top: -34px;
+  font-size: 12px;
+}
+.missing-chart:before {
+  content: "j";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  margin-right: 10px;
+  position: relative;
+  top: 1px;
 }
 div.form fieldset {
   border: 1px solid #DDD;
@@ -14593,6 +14918,11 @@ a.close-ModalGameNotification.simple-link {
 #ConversationDetailsAndRelationsView .panel > table {
   border-bottom: none;
 }
+.single-coloumn-details-view .right-side-edit-view-panel,
+#ConversationDetailsView .right-side-edit-view-panel,
+#ConversationDetailsAndRelationsView .right-side-edit-view-panel {
+  top: 40px;
+}
 .single-coloumn-details-view .details-table,
 #ConversationDetailsView .details-table,
 #ConversationDetailsAndRelationsView .details-table {
@@ -14610,11 +14940,6 @@ a.close-ModalGameNotification.simple-link {
   content: "";
   display: table;
   clear: both;
-}
-.single-coloumn-details-view #right-side-edit-view-panel,
-#ConversationDetailsView #right-side-edit-view-panel,
-#ConversationDetailsAndRelationsView #right-side-edit-view-panel {
-  top: 55px;
 }
 /*Sidebar*/
 .thred-details {
@@ -15438,6 +15763,638 @@ a.user-link {
 }
 .outbound-settings label {
   margin-bottom: 5px;
+}
+#ReportsSearchView .search-view-1 table {
+  border-bottom: none;
+  margin-bottom: 15px;
+}
+#ReportsSearchView .search-view-1 td {
+  width: 34%;
+  padding-right: 1%;
+}
+#ReportsSearchView .search-view-1 th {
+  width: 15%;
+}
+#ReportsSearchView .search-view-1 td + th {
+  padding-left: 1%;
+}
+#ReportsSearchView .search-view-1 td:last-child {
+  padding-right: 0;
+}
+.ComponentForReportWizardView .view-toolbar-container {
+  margin-top: 30px;
+}
+.ComponentForReportWizardView .treeview ul {
+  background: none;
+}
+.ComponentForReportWizardView .treeview li:hover {
+  cursor: pointer;
+}
+.ComponentForReportWizardView .treeview li:active {
+  cursor: move;
+}
+.ComponentForReportWizardView .treeview .ui-draggable-dragging {
+  background: none;
+  font-weight: bold;
+  text-align: center;
+  margin: 0;
+  padding: 0;
+  text-indent: 0;
+  line-height: 30px;
+  min-width: 120px;
+  height: 30px;
+  border: 1px solid #ccc;
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+}
+.ComponentForReportWizardView .radio-input {
+  margin-bottom: 10px !important;
+}
+#ModuleForReportWizardView table span {
+  text-align: left;
+  display: block;
+  margin-bottom: 20px;
+}
+#ModuleForReportWizardView table td {
+  padding-left: 0;
+}
+#GeneralDataForReportWizardView .panel {
+  width: 70%;
+  float: left;
+}
+#GeneralDataForReportWizardView .right-side-edit-view-panel {
+  width: 30%;
+  float: right;
+  position: relative;
+  top: -2px;
+  right: 0;
+}
+.hasTree {
+  width: 25%;
+  float: left;
+  padding: 8px 0;
+  min-height: 500px;
+  max-height: 600px;
+  overflow: auto;
+  margin-top: 10px;
+  z-index: 10;
+}
+.hasTree .big-spinner {
+  position: relative;
+  left: 50%;
+  margin: 30px 0 0 -21px;
+}
+.dynamic-droppable-area {
+  width: 75%;
+  float: right;
+  padding-left: 15px;
+  margin-top: 10px;
+  position: relative;
+  z-index: 5;
+}
+.dynamic-droppable-area .ui-droppable {
+  float: left;
+  width: 100%;
+  z-index: 0;
+  min-height: 600px;
+  position: relative;
+  margin-bottom: 15px;
+}
+.dynamic-droppable-area .ui-droppable.ui-state-active .drop-zone {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
+.activate-drop-zone {
+  -webkit-transition: all 0.75s ease-out;
+  -moz-transition: all 0.75s ease-out;
+  -o-transition: all 0.75s ease-out;
+  -ms-transition: all 0.75s ease-out;
+  transition: all 0.75s ease-out;
+}
+.activate-drop-zone .drop-zone {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  z-index: 100;
+}
+.drop-zone {
+  -webkit-transition: all 0.25s ease-out;
+  -moz-transition: all 0.25s ease-out;
+  -o-transition: all 0.25s ease-out;
+  -ms-transition: all 0.25s ease-out;
+  transition: all 0.25s ease-out;
+  width: 100%;
+  height: 100%;
+  display: block;
+  padding: 5px;
+  font-size: 40px;
+  text-align: center;
+  font-weight: bold;
+  clear: left;
+  position: absolute;
+  left: 0;
+  top: 0;
+  filter: alpha(opacity=0);
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  z-index: 0;
+  background: rgba(255, 255, 255, 0.5);
+}
+.drop-zone div {
+  padding-top: 35%;
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.cloned {
+  border: 2px solid red !important;
+  z-index: 10000;
+}
+.dynamic-rows {
+  float: left;
+  width: 100%;
+  position: relative;
+  z-index: 5;
+}
+.dynamic-rows ul,
+.dynamic-rows li {
+  list-style: none;
+}
+.dynamic-row {
+  position: relative;
+  width: 100%;
+  display: block;
+  margin: 0 0 5px 0;
+  background: #f0f0f0;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  padding: 15px 30px 15px 15px;
+}
+.dynamic-row > div {
+  position: relative;
+  float: left;
+  width: 100%;
+}
+.dynamic-row > div > span:first-child + div {
+  margin-right: 0 !important;
+  width: 45%;
+  float: left;
+}
+.dynamic-row > div .criteria-value-container {
+  margin-right: 30px !important;
+  width: 45%;
+  float: right;
+}
+.dynamic-row > div .has-model-select {
+  float: left;
+}
+.dynamic-row label.hasCheckBox {
+  margin-left: 0 !important;
+}
+.dynamic-row .remove-dynamic-row-link {
+  position: absolute;
+  right: 10px;
+  top: 15px;
+  display: block;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  color: #a7a7a7 !important;
+  filter: alpha(opacity=0);
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.dynamic-row .dynamic-row-number-label {
+  position: absolute;
+  width: 25px;
+  text-align: right;
+  left: -32px;
+  top: 0;
+  float: left;
+  line-height: 26px;
+  margin-right: 15px;
+  font-weight: bold;
+  -webkit-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -moz-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -o-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  -ms-text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+  text-shadow: 0 1px 0 rgba(255, 255, 255, 0.8);
+}
+.dynamic-row .hasDropDown {
+  width: auto !important;
+}
+.dynamic-row:hover .remove-dynamic-row-link {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
+.dynamic-row.clone {
+  padding: 15px;
+  position: absolute;
+  z-index: 10000;
+}
+.glow {
+  background-color: #ffffe0;
+  border-color: #e6db55;
+}
+.Filters .dynamic-row {
+  padding: 15px 30px;
+}
+.sortable .dynamic-row:hover {
+  -webkit-border-radius: 0 3px 3px 0;
+  -moz-border-radius: 0 3px 3px 0;
+  -ms-border-radius: 0 3px 3px 0;
+  -o-border-radius: 0 3px 3px 0;
+  border-radius: 0 3px 3px 0;
+  background: #f0f0f0 url(../images/drag-handle.png) left top repeat-y;
+}
+.sortable .dynamic-row:active {
+  cursor: move;
+  background-color: #f5f5f5;
+}
+.dynamic-row-label {
+  float: left;
+  line-height: 26px;
+  width: 25%;
+}
+.dynamic-row-operator {
+  float: left;
+  width: 20%;
+  padding-left: 15px;
+}
+.dynamic-row-field {
+  float: right;
+  width: 75%;
+}
+.value-data {
+  float: right;
+  width: 80%;
+}
+.first-value-area + .second-value-area {
+  margin-top: 10px;
+}
+.report-runtime-availability {
+  min-width: 145px;
+  position: relative;
+  display: block;
+  float: right;
+  line-height: 26px;
+  font-size: 11px;
+  margin: 0 0 0 -160px;
+}
+.report-runtime-availability label {
+  float: right !important;
+  margin-right: 5px;
+}
+.report-runtime-availability .hasCheckBox {
+  float: left !important;
+  margin-left: 0;
+  margin-right: 8px !important;
+}
+.hasFilter .dynamic-row-label {
+  width: 100%;
+}
+.hasFilter .dynamic-row-operator {
+  padding-left: 0;
+}
+.hasFilter .value-data {
+  float: left;
+  width: 100%;
+  padding-right: 160px;
+}
+.hasFilter .dynamic-row-operator + .value-data {
+  padding-left: 15px;
+  width: 80%;
+}
+.hasFilter .remove-dynamic-row-link {
+  top: 42px;
+}
+.dynamic-and-for-mixed {
+  display: inline-block;
+  padding: 5px 0;
+  font-weight: bold;
+}
+#show-filters-structure-wrapper {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  float: left;
+  margin-top: 15px;
+}
+#show-filters-structure-wrapper span {
+  width: 120px;
+}
+#show-filters-structure-wrapper input {
+  text-indent: 50px;
+}
+#RuntimeFiltersForPortletView {
+  float: left;
+  width: 100%;
+}
+#RuntimeFiltersForPortletView .dynamic-row {
+  padding: 0 0 15px 0;
+}
+#RuntimeFiltersForPortletView .value-data {
+  width: 60%;
+  padding-left: 15px;
+}
+#RuntimeFiltersForPortletView .dynamic-rows {
+  float: none;
+}
+#RuntimeFiltersForPortletView .dynamic-rows ul {
+  padding: 15px 15px 5px 15px;
+}
+#RuntimeFiltersForPortletView .view-toolbar-container {
+  clear: left;
+  margin: 0 15px 15px 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: auto;
+}
+.ReportResultsComponentForPortletView {
+  position: relative;
+  min-height: 90px;
+}
+.ReportResultsComponentForPortletView .big-spinner {
+  float: left;
+  position: relative;
+  left: 50%;
+  margin: 30px 0 0 -21px;
+}
+.ReportResultsGridView #report-results-grid-view {
+  overflow-x: auto;
+}
+.ReportResultsGridView #report-results-grid-view > .items th,
+.ReportResultsGridView #report-results-grid-view > .items td {
+  border-left: 1px solid #DFDFDF !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items th {
+  border-top: 1px solid #DFDFDF !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items thead th:first-child {
+  border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items thead tr:first-child th,
+.ReportResultsGridView #report-results-grid-view > .items thead tr:first-child td {
+  border-top: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items tbody th:first-child {
+  padding-left: 5px !important;
+  border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items tbody td:first-child {
+  border-left: none !important;
+}
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row td,
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
+  background-color: #333333;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#222222), to(#333333));
+  background-image: -moz-linear-gradient(top, #222222, #333333);
+  background-image: -ms-linear-gradient(top, #222222, #333333);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222222), color-stop(100%, #333333));
+  background-image: -webkit-linear-gradient(top, #222222, #333333);
+  background-image: -o-linear-gradient(top, #222222, #333333);
+  background-image: linear-gradient(top, #222222, #333333);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#222222', endColorstr='#333333', GradientType=0);
+  color: #EFEFEF;
+  border: 1px solid #333;
+}
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row td a,
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row th a {
+  color: #EFEFEF;
+}
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row td a:hover,
+.ReportResultsGridView #report-results-grid-view > .items .expanded-row th a:hover {
+  color: #fff;
+  text-decoration: underline;
+}
+.ReportResultsGridView .items {
+  overflow-x: hidden;
+}
+#MatrixReportResultsGridView #report-results-grid-view > .items th,
+#MatrixReportResultsGridView #report-results-grid-view td {
+  text-align: center !important;
+}
+#UserCannotRenderReportProperlySplashView {
+  float: left;
+  margin-bottom: 30px;
+}
+#ChartForReportWizardView .panel > label {
+  text-align: left;
+  display: block;
+  margin-bottom: 20px;
+}
+#ChartForReportWizardView .right-side-edit-view-panel label {
+  float: none;
+}
+.hasDrillDownContent {
+  padding: 0 5px 5px 5px !important;
+  background-color: #555555;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#555555));
+  background-image: -moz-linear-gradient(top, #333333, #555555);
+  background-image: -ms-linear-gradient(top, #333333, #555555);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #555555));
+  background-image: -webkit-linear-gradient(top, #333333, #555555);
+  background-image: -o-linear-gradient(top, #333333, #555555);
+  background-image: linear-gradient(top, #333333, #555555);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#333333', endColorstr='#555555', GradientType=0);
+}
+.hasDrillDownContent .big-spinner {
+  margin-top: 10px;
+}
+.drillDownContent {
+  background: #fff;
+  min-height: 60px;
+  border-top: none;
+}
+.drillDownContent tbody td,
+.drillDownContent tbody th {
+  padding-top: 5px !important;
+  padding-bottom: 5px !important;
+}
+.hasDrillDownLink {
+  padding: 10px 0 !important;
+  width: 20px !important;
+  text-align: center !important;
+}
+.drilldown-link {
+  cursor: pointer;
+  display: block;
+  text-align: left;
+  font-weight: normal;
+  font-size: 18px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  position: relative;
+  left: 5px;
+}
+.refreshPortletLink {
+  position: absolute;
+  top: -28px;
+  right: 10px;
+}
+.first-series-and-range-area > div,
+.second-series-and-range-area > div {
+  margin-bottom: 15px;
+  width: 50%;
+  float: left;
+  padding-right: 5px;
+}
+.first-series-and-range-area > div + div,
+.second-series-and-range-area > div + div {
+  padding-left: 5px;
+  padding-right: 0;
+}
+#series-and-range-areas {
+  width: auto;
+  float: none;
+  clear: left;
+  position: relative;
+  top: 0;
+  right: 0;
+  left: 0;
+  margin-bottom: 15px;
+}
+#series-and-range-areas .buffer {
+  padding-left: 22px;
+}
+#ReportDetailsView h1 {
+  margin-bottom: 15px;
+}
+#ReportDetailsView .view-toolbar ul:first-child > li > a {
+  border-left: none;
+}
+.hasCheckboxes {
+  display: inline-block;
+  border-left: 1px solid #bababa;
+  text-indent: 0 !important;
+  vertical-align: middle;
+  padding: 0 0 0 15px;
+  line-height: 30px;
+}
+.hasCheckboxes:before {
+  content: "";
+  margin: 0;
+  display: none;
+}
+.hasCheckboxes .hasCheckBox {
+  display: inline-block;
+  width: auto;
+  padding-left: 20px;
+  margin-right: 0;
+  position: relative;
+  top: 3px;
+}
+.label-for-report-widgets {
+  padding-right: 15px;
+  margin: 0 !important;
+  font-size: 11px !important;
+  font-weight: bold !important;
+}
+#reset-runtime-filters .z-label {
+  color: #666 !important;
+  -webkit-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -moz-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -o-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
+}
+.zero-components-view {
+  float: left;
+  position: absolute;
+  left: 0;
+  top: 75px;
+  width: 100%;
+}
+.zero-components-view .large-icon {
+  border-right: none;
+  margin-right: 0;
+  width: 100%;
+  textalign: center;
+}
+.zero-components-view h2 {
+  padding-top: 10px;
+  text-align: center;
+  width: 55%;
+  margin: 0 auto;
+}
+.zero-components-view .large-icon:after {
+  margin-right: 45px;
+}
+.FilterIconOrSomethingElse .large-icon:after,
+.ZeroFilters .large-icon:after {
+  content: '\00A9';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroGroupBys .large-icon:after {
+  content: '\002A';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroDisplayAttributes .large-icon:after {
+  content: '\00AB';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroOrderBys .large-icon:after {
+  content: '\2039';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroDrillDownDisplayAttributes .large-icon:after {
+  content: '\00BB';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+#ReportResultsSQLView {
+  padding: 15px;
+  font-family: monospace, monaco, sans-serif;
+  line-height: 18px;
+  color: #333;
+}
+#ReportResultsSQLView > div + div {
+  margin-top: 15px;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {

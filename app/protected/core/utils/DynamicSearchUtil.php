@@ -29,14 +29,6 @@
      */
     class DynamicSearchUtil
     {
-        /**
-         * Use when multiple relation attribute names
-         * need to be combined together into one string that can easily
-         * be parsed later.
-         * @see FormModelUtil::DELIMITER which is only 2 __
-         */
-        const RELATION_DELIMITER = '___';
-
         public static function getSearchableAttributesAndLabels($viewClassName, $modelClassName)
         {
             assert('is_string($viewClassName)');
@@ -164,7 +156,7 @@
                                                 $modelToUse,
                                                 $attributeIndexOrDerivedLabel,
                                                 $nestedAttributeDataOrAttributeName);
-                    return $positionOrAttributeName . self::RELATION_DELIMITER . $string;
+                    return $positionOrAttributeName . FormModelUtil::RELATION_DELIMITER . $string;
                 }
                 else
                 {
@@ -190,10 +182,10 @@
             assert('is_array($searchAttributes)');
             assert('is_string($suffix) || $suffix == null');
             $content          = null;
-            if (count(explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
+            if (count(explode(FormModelUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType)) > 1)
             {
                 $model            = new $modelClassName(false);
-                $nestedAttributes = explode(DynamicSearchUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
+                $nestedAttributes = explode(FormModelUtil::RELATION_DELIMITER, $attributeIndexOrDerivedType);
                 $inputPrefix      = array($formModelClassName, DynamicSearchForm::DYNAMIC_NAME, $rowNumber);
                 $totalNestedCount = count($nestedAttributes);
                 $processCount     = 1;
@@ -213,7 +205,7 @@
                     {
                         $model           = SearchUtil::resolveModelToUseByModelAndAttributeName($model, $attribute);
                         $inputPrefix[]   = $attribute;
-                        $relatedDataName = Element::resolveInputIdPrefixIntoString($inputPrefix) . '[relatedData]';
+                        $relatedDataName = Element::resolveInputNamePrefixIntoString($inputPrefix) . '[relatedData]';
                         $content        .= ZurmoHtml::hiddenField($relatedDataName, true);
                     }
                     $processCount++;

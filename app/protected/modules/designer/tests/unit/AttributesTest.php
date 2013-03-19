@@ -40,10 +40,40 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testUsingReservedCharactersToMakeAnAttribute()
+        {
+            $attributeForm                    = new TextAreaAttributeForm();
+            $attributeForm->modelClassName    = 'Account';
+            $attributeForm->setScenario('createAttribute');
+            $attributeForm->attributeName     = 'test__wrong';
+            $attributeForm->attributeLabels   = array(
+                'de' => 'Test Text2 de',
+                'en' => 'Test Text2 en',
+                'es' => 'Test Text2 es',
+                'fr' => 'Test Text2 fr',
+                'it' => 'Test Text2 it',
+            );
+            $attributeForm->isAudited     = true;
+            $attributeForm->isRequired    = false;
+            $validated = $attributeForm->validate();
+            $this->assertFalse($validated);
+            $errors = array('attributeName' =>
+                        array('"test__wrong" field name contains reserved characters. Either __ or ___.'));
+            $this->assertEquals($errors, $attributeForm->getErrors());
+            $attributeForm->attributeName = 'test___still';
+            $validated = $attributeForm->validate();
+            $this->assertFalse($validated);
+            $errors = array('attributeName' =>
+                        array('"test___still" field name contains reserved characters. Either __ or ___.'));
+            $this->assertEquals($errors, $attributeForm->getErrors());
+            $attributeForm->attributeName = 'testRight';
+            $validated = $attributeForm->validate();
+            $this->assertTrue($validated);
+        }
         /**
          * Test if we don't receive error related to database rowsize limit
          */
-        public function testSetManyTextAreaFileds()
+        public function testSetManyTextAreaFields()
         {
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;

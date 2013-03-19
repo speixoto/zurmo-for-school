@@ -43,12 +43,13 @@
             return array('Opportunity');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                                   = LabelUtil::getTranslationParamsForAllModules();
             $labels                                   = array();
-            $labels[self::RIGHT_CREATE_OPPORTUNITIES] = 'Create OpportunitiesModulePluralLabel';
-            $labels[self::RIGHT_DELETE_OPPORTUNITIES] = 'Delete OpportunitiesModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_OPPORTUNITIES] = 'Access OpportunitiesModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_OPPORTUNITIES] = Zurmo::t('OpportunitiesModule', 'Create OpportunitiesModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_OPPORTUNITIES] = Zurmo::t('OpportunitiesModule', 'Delete OpportunitiesModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_OPPORTUNITIES] = Zurmo::t('OpportunitiesModule', 'Access OpportunitiesModulePluralLabel Tab', $params);
             return $labels;
         }
 
@@ -93,9 +94,9 @@
             return 'Opportunity';
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Opportunity';
+            return Zurmo::t('OpportunitiesModule', 'Opportunity', array(), null, $language);
         }
 
         public static function getAccessRight()
@@ -129,6 +130,11 @@
         }
 
         public static function hasPermissions()
+        {
+            return true;
+        }
+
+        public static function isReportable()
         {
             return true;
         }

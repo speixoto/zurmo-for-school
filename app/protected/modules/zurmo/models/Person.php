@@ -57,12 +57,12 @@
             return join(' ' , $fullName);
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'title'    => 'Salutation',
+                    'fullName' => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'title'    => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
                 )
             );
         }
@@ -86,9 +86,12 @@
                     'officeFax',
                 ),
                 'relations' => array(
-                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED),
-                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED),
-                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'title'),
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),

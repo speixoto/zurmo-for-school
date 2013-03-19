@@ -85,7 +85,8 @@
                     'occurredOnDateTime',
                 ),
                 'relations' => array(
-                    'files'       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'files'       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                           RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'socialItems' => array(RedBeanModel::HAS_MANY,  'SocialItem', RedBeanModel::OWNED),
                 ),
                 'rules' => array(
@@ -104,11 +105,11 @@
             return $metadata;
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'occurredOnDateTime'       => 'Occurred On',
+                    'occurredOnDateTime'       => Zurmo::t('NotesModule', 'Occurred On', array(), null, $language),
                 )
             );
         }

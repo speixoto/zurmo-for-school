@@ -32,12 +32,14 @@
         public static $mimeType = 'application/octet-stream';
 
         /**
-        * Export data array into csv format and send generated file to web browser
-        * or return csv string, depending on $download parameter.
-        * @param array $data
-        * @param boolean $download
-        */
-        public static function export(& $data, $exportFilename = 'exports.csv', $download = false)
+         * Export data array into csv format and send generated file to web browser
+         * or return csv string, depending on $download parameter.
+         * @param array $data
+         * @param array $headerData
+         * @param string $exportFileName
+         * @param boolean $download
+         */
+        public static function export($data, $headerData = array(), $exportFileName = 'exports.csv', $download = false)
         {
         }
     }

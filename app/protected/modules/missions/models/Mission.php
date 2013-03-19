@@ -95,9 +95,12 @@
                     'takenByUserHasReadLatest',
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
-                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User'),
+                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
+                                                        RedBeanModel::LINK_TYPE_SPECIFIC, 'takenByUser'),
                 ),
                 'rules' => array(
                     array('description',              'required'),
@@ -133,11 +136,11 @@
             return $metadata;
         }
 
-        protected static function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'dueDateTime'       => 'Due On',
+                    'dueDateTime'       => Zurmo::t('TasksModule', 'Due On', array(), null, $language),
                 )
             );
         }

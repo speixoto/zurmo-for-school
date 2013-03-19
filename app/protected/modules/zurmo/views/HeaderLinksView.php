@@ -50,13 +50,11 @@
         {
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix"><div id="corp-logo">';
-            if(!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
+            if($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
             {
-                $logoFileModelId     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
                 $logoFileModel       = FileModel::getById($logoFileModelId);
-                $logoFileName        = $logoFileModel->name;
                 $logoFileSrc         = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
-                                                                                      DIRECTORY_SEPARATOR . $logoFileName);
+                                                                                      DIRECTORY_SEPARATOR . $logoFileModel->name);
             }
             else
             {

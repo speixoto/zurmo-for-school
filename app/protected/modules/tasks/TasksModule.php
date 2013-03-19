@@ -42,12 +42,13 @@
             return array('Task');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                           = LabelUtil::getTranslationParamsForAllModules();
             $labels                           = array();
-            $labels[self::RIGHT_CREATE_TASKS] = 'Create TasksModulePluralLabel';
-            $labels[self::RIGHT_DELETE_TASKS] = 'Delete TasksModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_TASKS] = 'Access TasksModulePluralLabel';
+            $labels[self::RIGHT_CREATE_TASKS] = Zurmo::t('TasksModule', 'Create TasksModulePluralLabel', $params);
+            $labels[self::RIGHT_DELETE_TASKS] = Zurmo::t('TasksModule', 'Delete TasksModulePluralLabel', $params);
+            $labels[self::RIGHT_ACCESS_TASKS] = Zurmo::t('TasksModule', 'Access TasksModulePluralLabel', $params);
             return $labels;
         }
 
@@ -106,6 +107,11 @@
         }
 
         public static function modelsAreNeverGloballySearched()
+        {
+            return true;
+        }
+
+        public static function isReportable()
         {
             return true;
         }

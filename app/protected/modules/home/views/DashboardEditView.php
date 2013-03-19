@@ -32,8 +32,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelToListLink'),
                             array('type' => 'SaveButton'),
+                            array('type' => 'CancelToListLink'),
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

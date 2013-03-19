@@ -55,13 +55,13 @@
                          );
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
             $labels                                    = array();
-            $labels[self::RIGHT_ACCESS_CONFIGURATION]  = 'Access Email Configuration';
-            $labels[self::RIGHT_CREATE_EMAIL_MESSAGES] = 'Create Emails';
-            $labels[self::RIGHT_DELETE_EMAIL_MESSAGES] = 'Delete Emails';
-            $labels[self::RIGHT_ACCESS_EMAIL_MESSAGES] = 'Access Emails Tab';
+            $labels[self::RIGHT_ACCESS_CONFIGURATION]  = Zurmo::t('EmailMessagesModule', 'Access Email Configuration');
+            $labels[self::RIGHT_CREATE_EMAIL_MESSAGES] = Zurmo::t('EmailMessagesModule', 'Create Emails');
+            $labels[self::RIGHT_DELETE_EMAIL_MESSAGES] = Zurmo::t('EmailMessagesModule', 'Delete Emails');
+            $labels[self::RIGHT_ACCESS_EMAIL_MESSAGES] = Zurmo::t('EmailMessagesModule', 'Access Emails Tab');
             return $labels;
         }
 

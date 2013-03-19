@@ -32,7 +32,9 @@
     {
         public static function getApplicableRulesByModelClassNameAndAttributeName($modelClassName, $attributeName,
                                                                                   $ruleAttributeName,
-                                                                                  $requiredRuleIsApplicable = false)
+                                                                                  $requiredRuleIsApplicable = false,
+                                                                                  $treatDateTimeAsDate = false,
+                                                                                  $readOnlyRuleIsApplicable = true)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
@@ -60,6 +62,10 @@
                             case 'type':
                                 if ($rule['type'] == 'date' || $rule['type'] == 'datetime')
                                 {
+                                    if($treatDateTimeAsDate)
+                                    {
+                                        $rule['type'] = 'date';
+                                    }
                                     $rule[1] = 'TypeValidator';
                                 }
                                 $rule[0] = $ruleAttributeName;
@@ -83,9 +89,20 @@
                                    $applicableRules[] = $rule;
                                }
                                continue;
+                            case 'readOnly':
+                               if ($readOnlyRuleIsApplicable)
+                               {
+                                   $rule[0] = $ruleAttributeName;
+                                   $applicableRules[] = $rule;
+                               }
+                               continue;
                             case 'dateTimeDefault':
                                  //Ignore dateTimeDefault validator for this as it is not applicable to import
                                  //It would map to RedBeanModelDateTimeDefaultValueValidator and is unneeded
+                                continue;
+                            case 'RedBeanModelCompareDateTimeValidator':
+                                 //Ignore dateTimeDefault validator for this as it is not applicable to import
+                                 //We can't control if the user is mapping both the dates that are part of this
                                 continue;
                             default:
                                $rule[0] = $ruleAttributeName;
