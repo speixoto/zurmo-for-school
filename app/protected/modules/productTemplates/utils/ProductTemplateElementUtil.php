@@ -38,18 +38,17 @@
         {
             return "
                 var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
-                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
-                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
+                var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
+                var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
                 function showHideDiscountOrMarkupPercentageTextField(helperValue, textFieldId)
                 {
-                    if (helperValue == compareValue)
+                    if (helperValue == typeProfitMargin || helperValue == typeMarkOverCost || helperValue == typeDiscountFromList)
                     {
-                        $('#' + textFieldId).removeClass('disabled');
+                        $('#' + textFieldId).show();
                     }
                     else
                     {
-                        $('#' + textFieldId).addClass('disabled');
-                        $('#' + textFieldId).val('');
+                        $('#' + textFieldId).hide();
                     }
                 }
             ";

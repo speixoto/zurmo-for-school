@@ -104,8 +104,7 @@
                     'listPrice',
                     'sellPrice',
                     'status',
-                    'type',
-                    'sellPriceFormula'
+                    'type'
                 ),
                 'relations' => array(
                     'products'                  => array(RedBeanModel::MANY_MANY, 'Product'),

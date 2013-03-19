@@ -26,6 +26,16 @@
 
     class SellPriceFormulaInformationElement extends Element
     {
+        protected function renderControlNonEditable()
+        {
+            $sellPriceFormulaModel = $this->model->{$this->attribute};
+            $name = $sellPriceFormulaModel->name;
+            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
+            $content = $name . '&nbsp;' . $discountOrMarkupPercentage;
+
+            return $content;
+        }
+
         /**
          * Renders the editable sell price formula content.
          * It consist of 2 items
@@ -36,29 +46,40 @@
         protected function renderControlEditable()
         {
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
-            $sellPriceFormulaModel        = $this->model->{$this->attribute};
+            $this->registerScripts();
+            $sellPriceFormulaModel = $this->model->{$this->attribute};
             $content = $this->renderNameDropDown($sellPriceFormulaModel, $this->form, $this->attribute, 'name') . "\n";
-
-            return $content;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            $content = null;
+            $content .= $this->renderDiscountOrMarkupPercentageTextField($sellPriceFormulaModel, $this->form, $this->attribute, 'discountOrMarkupPercentage') . "\n";
             return $content;
         }
 
         protected function renderNameDropDown($model, $form, $inputNameIdPrefix, $attribute)
         {
             $id = $this->getEditableInputId($inputNameIdPrefix, $attribute);
+            $discountOrMarkupPercentageTextFieldId = $this->getEditableInputId($inputNameIdPrefix, 'discountOrMarkupPercentage');
             $htmlOptions = array(
-                'name' => $this->getEditableInputName($inputNameIdPrefix, $attribute),
+                'name' => $this->getEditableInputName($this->attribute, 'name'),
                 'id'   => $id,
-                'onchange' => 'showHideDiscountOrMarkupPercentageTextField($(this).val())'
+                'onchange' => 'showHideDiscountOrMarkupPercentageTextField($(this).val(), \'' . $discountOrMarkupPercentageTextFieldId . '\')'
             );
             $dropDownField = $form->dropDownList($model, $attribute, SellPriceFormula::getNameDropDownArray(), $htmlOptions);
-            $error     = $form->error    ($model, $attribute, array('inputID' => $id));
+            $error     = $form->error($model, $attribute, array('inputID' => $id));
             return $dropDownField . $error;
+        }
+
+        protected function renderDiscountOrMarkupPercentageTextField($model, $form, $inputNameIdPrefix, $attribute)
+        {
+            $id          = $this->getEditableInputId($inputNameIdPrefix, $attribute);
+            $htmlOptions = array(
+                'name'  => $this->getEditableInputName($inputNameIdPrefix, $attribute),
+                'id'    => $id,
+                'style' => $this->resolveInputDisplayStyle($model, 'name')
+            );
+            //$label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
+            $textField   = $form->textField($model, $attribute, $htmlOptions);
+            $error       = $form->error($model, $attribute, array('inputID' => $id));
+
+            return $textField . $error;
         }
 
         protected function renderError()
@@ -69,9 +90,19 @@
         {
             Yii::app()->clientScript->registerScript(
                 'ShowHideDiscountOrMarkupPercentageTextField',
-                PoliciesElementUtil::getEnableDisablePolicyTextFieldScript(),
+                ProductTemplateElementUtil::getShowHideDiscountOrMarkupPercentageTextFieldScript(),
                 CClientScript::POS_END
             );
+        }
+
+        protected function resolveInputDisplayStyle($model)
+        {
+            if($model->name == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->name == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->name == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
+            {
+                return 'display:block';
+            }
+
+            return 'display:none';
         }
     }
 ?>
