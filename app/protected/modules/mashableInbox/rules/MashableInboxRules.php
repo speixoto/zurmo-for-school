@@ -140,7 +140,6 @@
             $metadata                   = MashableUtil::mergeMetada(
                                                     $metadataByOptionAndFilter,
                                                     $this->getSearchAttributeData($searchTerm));
-
             $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $modelClassName,
