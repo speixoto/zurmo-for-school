@@ -64,7 +64,7 @@
             assert('is_string($modelClassName) || $modelClassName == null');
             $this->pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
-            $mashableInboxForm  = new MashableInboxForm();
+            $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues();
             $getData            = GetUtil::getData();
             if(Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
             {
@@ -74,6 +74,20 @@
             {
                 $this->renderMashableInboxPageView($mashableInboxForm, $modelClassName);
             }
+        }
+
+        private function getMashableInboxFormWithDefaultValues()
+        {
+            $mashableInboxForm  = new MashableInboxForm();
+            if ($mashableInboxForm->optionForModel == null)
+            {
+                $mashableInboxForm->optionForModel = 2;
+            }
+            if ($mashableInboxForm->filteredBy == null)
+            {
+                $mashableInboxForm->filteredBy = MashableInboxForm::FILTERED_BY_ALL;
+            }
+            return $mashableInboxForm;
         }
 
         public function actionGetUnreadCount()
@@ -96,16 +110,12 @@
         private function renderMashableInboxPageView($mashableInboxForm, $modelClassName)
         {
             $actionViewOptions  = array();
-            $mashableInboxForm->filteredBy = MashableInboxForm::FILTERED_BY_ALL;
             if ($modelClassName !== null) {
-                if ($mashableInboxForm->optionForModel == null)
-                {
-                    $mashableInboxForm->optionForModel = 2;
-                }
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
                 $listView           = $mashableUtilRules->getListView(
                                                 $mashableInboxForm->optionForModel,
-                                                $mashableInboxForm->filteredBy);
+                                                $mashableInboxForm->filteredBy,
+                                                $mashableInboxForm->searchTerm);
                 $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
             } else {
                 $listView           = $this->getMashableInboxListView(

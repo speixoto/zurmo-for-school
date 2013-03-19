@@ -128,7 +128,7 @@
             return $moduleClassName::getPluralCamelCasedName() . 'ZeroModelsYetView';
         }
 
-        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = '')
+        public function getListView($option, $filteredBy = MashableInboxForm::FILTERED_BY_ALL, $searchTerm = null)
         {
             $modelClassName             = $this->getModelClassName();
             $orderBy                    = $this->getMachableInboxOrderByAttributeName();

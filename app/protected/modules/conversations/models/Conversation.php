@@ -89,7 +89,7 @@
                 2 => array(
                     'attributeName'        => 'owner',
                     'operatorType'         => 'equals',
-                    'value'                => $user->getClassId('Item')
+                    'value'                => $user->id
                 ),
                 3 => array(
                     'attributeName'        => 'conversationParticipants',
