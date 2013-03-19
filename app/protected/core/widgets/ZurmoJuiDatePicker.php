@@ -39,12 +39,12 @@
 
         protected function resolveDefaultOptions()
         {
-            $this->options['showOn'] = 'both';
-            $this->options['buttonText'] = ZurmoHtml::tag('span', array(), '<!--Date-->');
+            $this->options['showOn']          = 'both';
+            $this->options['buttonText']      = ZurmoHtml::tag('span', array(), '<!--Date-->');
             $this->options['showButtonPanel'] = true;
             $this->options['buttonImageOnly'] = false;
-            $this->options['dateFormat'] = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                            DateTimeUtil::getLocaleDateFormat());
+            $this->options['dateFormat']      = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
+                                                    DateTimeUtil::getLocaleDateFormat());
         }
 
         protected function resolveDefaultLanguage()

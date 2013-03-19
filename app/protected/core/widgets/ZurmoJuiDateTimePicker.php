@@ -40,19 +40,19 @@
 
         protected function resolveDefaultOptions()
         {
-            $this->options['stepMinute'] = 5;
-            $this->options['timeText'] = Zurmo::t('Core', 'Time');
-            $this->options['hourText'] = Zurmo::t('Core', 'Hour');
-            $this->options['minuteText'] = Zurmo::t('Core', 'Minute');
-            $this->options['secondText'] = Zurmo::t('Core', 'Second');
-            $this->options['showOn'] = 'both';
-            $this->options['buttonText'] = ZurmoHtml::tag('span', array(), '<!--Date-->');
+            $this->options['stepMinute']      = 5;
+            $this->options['timeText']        = Zurmo::t('Core', 'Time');
+            $this->options['hourText']        = Zurmo::t('Core', 'Hour');
+            $this->options['minuteText']      = Zurmo::t('Core', 'Minute');
+            $this->options['secondText']      = Zurmo::t('Core', 'Second');
+            $this->options['showOn']          = 'both';
+            $this->options['buttonText']      = ZurmoHtml::tag('span', array(), '<!--Date-->');
             $this->options['buttonImageOnly'] = false;
-            $this->options['dateFormat'] = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                            DateTimeUtil::getLocaleDateFormat());
-            $this->options['timeFormat'] = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
-                                            DateTimeUtil::getLocaleTimeFormat());
-            $this->options['ampm'] = DateTimeUtil::isLocaleTimeDisplayedAs12Hours();
+            $this->options['dateFormat']      = YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
+                                                    DateTimeUtil::getLocaleDateFormat());
+            $this->options['timeFormat']      = YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
+                                                    DateTimeUtil::getLocaleTimeFormat());
+            $this->options['ampm']            = DateTimeUtil::isLocaleTimeDisplayedAs12Hours();
         }
 
         protected function resolveDefaultLanguage()
