@@ -39,15 +39,19 @@
 
         protected function renderContent()
         {
-            $content = '<h3>' . Zurmo::t('ZurmoModule', 'Recently Viewed') . '</h3>';
+            $content        = '<h3>' . Zurmo::t('ZurmoModule', 'Recently Viewed') . '</h3>';
+            $items          = $this->renderMenu();
 
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("recentlyViewed");
-            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                'items' => $this->renderMenu()
-            ));
-            $cClipWidget->endClip();
-            $content .= $cClipWidget->getController()->clips['recentlyViewed'];
+            if (count($items))
+            {
+                $cClipWidget    = new CClipWidget();
+                $cClipWidget->beginClip("recentlyViewed");
+                $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                    'items' => $items,
+                ));
+                $cClipWidget->endClip();
+                $content .= $cClipWidget->getController()->clips['recentlyViewed'];
+            }
             return $content;
         }
 
