@@ -44,6 +44,27 @@
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact3', $super, $account);
         }
 
+        public function testDaysMeetingsFromCalendarModalListAction()
+        {
+            $super           = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $superAccountId  = self::getModelIdByModelNameAndName ('Account', 'superAccount');
+            $this->setGetArray(array(   'relationModelClassName' => 'Account',
+                                        'relationModelId'        => $superAccountId,
+                                        'redirectUrl'            => 'someRedirect',
+                                        'stringTime'             => '2013-03-15'));
+            $this->runControllerWithNoExceptionsAndGetContent('meetings/default/daysMeetingsFromCalendarModalList');
+
+            //Setting ownerOnly to true
+            $this->setGetArray(array(   'ownerOnly'         => '1',
+                                        'redirectUrl'       => 'someRedirect',
+                                        'stringTime'        => '2013-03-15'));
+            $this->runControllerWithNoExceptionsAndGetContent('meetings/default/daysMeetingsFromCalendarModalList');
+
+            //Not specifying a relationModelId
+            $this->setGetArray(array('redirectUrl' => 'someRedirect', 'stringTime' => '2013-03-15'));
+            $this->runControllerWithNoExceptionsAndGetContent('meetings/default/daysMeetingsFromCalendarModalList');
+        }
+
         public function testSuperUserAllDefaultControllerActions()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
