@@ -46,7 +46,13 @@
 
         protected $marketingListMembersListView;
 
-        protected static $persistantUserPortletConfigs = array(
+        protected $dataProvider;
+
+        protected $uniquePageId;
+
+        protected $marketingListMembersConfigurationForm;
+
+        protected static $persistentUserPortletConfigs = array(
                 'filteredBySubscriptionType',
             );
 
@@ -66,6 +72,7 @@
             $this->viewData       = $viewData;
             $this->params         = $params;
             $this->uniqueLayoutId = $uniqueLayoutId;
+            $this->uniquePageId  = get_called_class();
         }
 
         public static function getDefaultMetadata()
@@ -77,15 +84,20 @@
                             array('type'  => 'SelectContactAndReportLink',
                                 'htmlOptions' => array('class' => 'icon-details'),
                                 'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
-                            // TODO: @Shoaibi: High: Change it with https://bitbucket.org/shoaibi/zurmo/src/2bb67d4e4bd2/app/protected/core/elements/actions/MassEditLinkActionElement.php?at=Mobile
-                            // TODO: @Shoaibi: High: Break this into 2 buttons
-                            array('type'  => 'MarketingListsUpdateLink',
+                            // TODO: @Shoaibi: High: Write action against this accounts/defaultController
+                            array('type'  => 'MarketingListMembersSubscribeLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
-                                'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
-                            // TODO: @Shoaibi: High: We need mass delete button here too: https://bitbucket.org/shoaibi/zurmo/src/2bb67d4e4bd2/app/protected/core/elements/actions/MassDeleteLinkActionElement.php?at=Mobile
-                            //array('type'  => 'MarketingListsDeleteMembersLink',
-                            //    'htmlOptions' => array('class' => 'icon-edit'),
-                            //    'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
+                                'pageVarName'       => 'eval:$this->getPageVarName()',
+                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
+                            array('type'  => 'MarketingListMembersUnsubscribeLink',
+                                'htmlOptions' => array('class' => 'icon-edit'),
+                                'pageVarName'       => 'eval:$this->getPageVarName()',
+                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
+                            // TODO: @Shoaibi: High: Write action against this accounts/defaultController
+                            array('type'            => 'MassDeleteLink',
+                                'htmlOptions'       => array('class' => 'icon-delete'),
+                                'pageVarName'       => 'eval:$this->getPageVarName()',
+                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
                         ),
                     ),
                 ),
@@ -163,19 +175,16 @@
 
         protected function makeMarketingListMembersListView()
         {
-            $uniquePageId  = get_called_class();
-            $marketingListMembersConfigurationForm = $this->makeMarketingListMembersConfigurationForm();
-            $this->resolveMarketingListMembersConfigFormFromRequest($marketingListMembersConfigurationForm);
             $marketingListMembersListViewClassName = $this->getMarketingListMembersListViewClassName();
-            $dataProvider = $this->getDataProvider($uniquePageId, $marketingListMembersConfigurationForm);
+            $this->getDataProvider(); // no need to save return value as we don't need it.
             return new $marketingListMembersListViewClassName(
-                                                            $dataProvider,
-                                                            $marketingListMembersConfigurationForm,
+                                                            $this->dataProvider,
+                                                            $this->marketingListMembersConfigurationForm,
                                                             $this->controllerId,
                                                             $this->moduleId,
                                                             $this->getPortletDetailsUrl(),
                                                             $this->getNonAjaxRedirectUrl(),
-                                                            $uniquePageId,
+                                                            $this->uniquePageId,
                                                             $this->params,
                                                             get_class(Yii::app()->findModule($this->moduleId))
                                                         );
@@ -190,65 +199,88 @@
             return $this->marketingListMembersListView;
         }
 
-        protected function resolveMarketingListMembersConfigFormFromRequest(&$marketingListMembersConfigurationForm)
+        protected function resolveMarketingListMembersConfigFormFromRequest()
         {
             $excludeFromRestore = array();
-            if (isset($_GET[get_class($marketingListMembersConfigurationForm)]))
+            if (isset($_GET[get_class($this->marketingListMembersConfigurationForm)]))
             {
-                $marketingListMembersConfigurationForm->setAttributes($_GET[get_class($marketingListMembersConfigurationForm)]);
-                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($marketingListMembersConfigurationForm);
+                $this->marketingListMembersConfigurationForm->setAttributes($_GET[get_class($this->marketingListMembersConfigurationForm)]);
+                $excludeFromRestore = $this->saveUserSettingsFromConfigForm();
             }
-            $this->restoreUserSettingsToConfigFrom($marketingListMembersConfigurationForm, $excludeFromRestore);
+            $this->restoreUserSettingsToConfigFrom($excludeFromRestore);
         }
 
-        protected function saveUserSettingsFromConfigForm(&$marketingListMembersConfigurationForm)
+        protected function saveUserSettingsFromConfigForm()
         {
             $savedConfigs = array();
-            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
+            foreach (static::$persistentUserPortletConfigs as $persistentUserConfigItem)
             {
-                if ($marketingListMembersConfigurationForm->$persistantUserConfigItem !==
+                if ($this->marketingListMembersConfigurationForm->$persistentUserConfigItem !==
                     MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
                                                                                             $this->params['portletId'],
-                                                                                            $persistantUserConfigItem)
+                                                                                            $persistentUserConfigItem)
                                                                                         )
                 {
                     MarketingListMembersPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey(
                                                         $this->params['portletId'],
-                                                        $persistantUserConfigItem,
-                                                        $marketingListMembersConfigurationForm->$persistantUserConfigItem
+                                                        $persistentUserConfigItem,
+                                                        $this->marketingListMembersConfigurationForm->$persistentUserConfigItem
                                                         );
-                    $savedConfigs[] = $persistantUserConfigItem;
+                    $savedConfigs[] = $persistentUserConfigItem;
                 }
             }
             return $savedConfigs;
         }
 
-        protected function restoreUserSettingsToConfigFrom(&$marketingListMembersConfigurationForm, $excludeFromRestore)
+        protected function restoreUserSettingsToConfigFrom($excludeFromRestore)
         {
-            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
+            foreach (static::$persistentUserPortletConfigs as $persistentUserConfigItem)
             {
-                if (in_array($persistantUserConfigItem, $excludeFromRestore))
+                if (in_array($persistentUserConfigItem, $excludeFromRestore))
                 {
                     continue;
                 }
                 else
                 {
-                    $persistantUserConfigItemValue = MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
+                    $persistentUserConfigItemValue = MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
                                                                                             $this->params['portletId'],
-                                                                                            $persistantUserConfigItem
+                                                                                            $persistentUserConfigItem
                                                                                             );
-                    if(isset($persistantUserConfigItemValue))
+                    if(isset($persistentUserConfigItemValue))
                     {
-                        $marketingListMembersConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
+                        $this->marketingListMembersConfigurationForm->$persistentUserConfigItem = $persistentUserConfigItemValue;
                     }
                 }
             }
-            return $marketingListMembersConfigurationForm;
         }
 
         protected function makeMarketingListMembersConfigurationForm()
         {
-            return new MarketingListMembersConfigurationForm();
+            $this->marketingListMembersConfigurationForm = new MarketingListMembersConfigurationForm();
+            $this->resolveMarketingListMembersConfigFormFromRequest();
+        }
+
+        protected function getMarketingListMembersConfigurationForm()
+        {
+            if ($this->marketingListMembersConfigurationForm === null)
+            {
+                $this->makeMarketingListMembersConfigurationForm();
+            }
+            return $this->marketingListMembersConfigurationForm;
+        }
+
+        protected function getDataProvider()
+        {
+            if ($this->dataProvider === null)
+            {
+                $this->dataProvider = $this->makeDataProvider($this->uniquePageId, $this->getMarketingListMembersConfigurationForm());
+            }
+            return $this->dataProvider;
+        }
+
+        protected function getPageVarName()
+        {
+            return $this->getDataProvider()->getPagination()->pageVar;
         }
 
         protected function getMarketingListMembersListViewClassName()
@@ -261,7 +293,7 @@
             return $this->getMarketingListMembersListView()->getGridViewId();
         }
 
-        protected function getDataProvider($uniquePageId, $form)
+        protected function makeDataProvider($uniquePageId, $form)
         {
             assert('is_string($uniquePageId)');
             assert('$form instanceOf MarketingListMembersConfigurationForm');

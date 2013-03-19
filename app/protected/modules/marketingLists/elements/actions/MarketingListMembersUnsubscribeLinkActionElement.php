@@ -24,41 +24,36 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // TODO: @Shoaibi: not used?
-    class MarketingListMembersSearchForm extends SearchForm
+    class MarketingListMembersUnsubscribeLinkActionElement extends MassEditLinkActionElement
     {
-        public $anyEmail;
-        public $fullName;
-
-        public function rules()
+        protected function getSelectedMenuNameSuffix()
         {
-            return array_merge(parent::rules(), array(
-                array('anyEmail', 'safe'),
-                array('fullName', 'safe'),
-            ));
+            return '-massUnsubscribeSelected';
         }
 
-        public function attributeLabels()
+        protected function getAllMenuNameSuffix()
         {
-            return array_merge(parent::attributeLabels(), array(
-                'anyEmail'           => Zurmo::t('Default', 'Any Email Address'),
-                'fullName'           => Zurmo::t('Default', 'Name'),
-            ));
+            return '-massUnsubscribeAll';
         }
 
-        public function getAttributesMappedToRealAttributesMetadata()
+        protected function getActionName()
         {
-            return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(
-                'anyEmail' => array(
-                    array('contact', 'primaryEmail',   'emailAddress'),
-                    array('contact', 'secondaryEmail', 'emailAddress'),
-                ),
-                'fullName' => array(
-                    array('contact', 'firstName'),
-                    array('contact', 'lastName'),
-                    array('contact', 'concatedAttributeNames' => array('firstName', 'lastName'))
-                ),
-            ));
+            return 'massUnsubscribe';
+        }
+
+        protected function getScriptNameSuffixForSelectedMenu()
+        {
+            return '-listViewMassActionUnsubscribeSelected';
+        }
+
+        protected function getScriptNameSuffixForAllMenu()
+        {
+            return '-listViewMassActionUnsubscribeAll';
+        }
+
+        protected function getDefaultLabel()
+        {
+            return Zurmo::t('Core', 'Unsubscribe');
         }
     }
 ?>
