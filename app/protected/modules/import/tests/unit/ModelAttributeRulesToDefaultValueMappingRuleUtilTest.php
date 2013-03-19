@@ -49,6 +49,24 @@
             $compareData = array(array('defaultValue',  'TypeValidator', 'type' => 'datetime'));
             $this->assertEquals($compareData, $rules);
 
+            //Test multiple variations of dateTime.  Required/Not-Required. Also when having a dependency
+            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
+                     getApplicableRulesByModelClassNameAndAttributeName('ImportModelTestItem5', 'requiredDateTime', 'defaultValue', true);
+            $compareData = array(array('defaultValue',  'TypeValidator', 'type' => 'datetime'),
+                                 array('defaultValue',  'required'));
+            $this->assertEquals($compareData, $rules);
+
+            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
+                     getApplicableRulesByModelClassNameAndAttributeName('ImportModelTestItem5', 'startDateTime', 'defaultValue', true);
+            $compareData = array(array('defaultValue',  'required'),
+                                 array('defaultValue',  'TypeValidator', 'type' => 'datetime'));
+            $this->assertEquals($compareData, $rules);
+
+            $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
+                     getApplicableRulesByModelClassNameAndAttributeName('ImportModelTestItem5', 'endDateTime', 'defaultValue');
+            $compareData = array(array('defaultValue',  'TypeValidator', 'type' => 'datetime'));
+            $this->assertEquals($compareData, $rules);
+
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('ImportModelTestItem', 'float', 'defaultValue');
             $compareData = array(array('defaultValue',  'type', 'type' => 'float'));

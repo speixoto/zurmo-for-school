@@ -100,6 +100,10 @@
                                  //Ignore dateTimeDefault validator for this as it is not applicable to import
                                  //It would map to RedBeanModelDateTimeDefaultValueValidator and is unneeded
                                 continue;
+                            case 'RedBeanModelCompareDateTimeValidator':
+                                 //Ignore dateTimeDefault validator for this as it is not applicable to import
+                                 //We can't control if the user is mapping both the dates that are part of this
+                                continue;
                             default:
                                $rule[0] = $ruleAttributeName;
                                $applicableRules[] = $rule;

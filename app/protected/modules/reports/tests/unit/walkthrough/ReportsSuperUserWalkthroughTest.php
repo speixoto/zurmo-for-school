@@ -48,20 +48,10 @@
             
             $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/list');
             $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
-            $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/selectType');                        
-            //actionList
-            //actionCreate
-            //actionSelectList
-            //actionEdit
-            //actionSave
-
-            //test creating a report via walkthrough that has all the component parts.
-            //test for all 3 report types
-
-            //test actionDelete
+            $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/selectType');
         }
         
-        public function testCreateAction()
+        public function testCreateActionForRowsAndColumns()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             
@@ -112,6 +102,30 @@
             $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/save');
             //todo: confirm validated, then continue with save
         }
+
+        public function testCreateActionForSummation()
+        {
+            //todo:
+            //go to create screen, after selecting type
+            //validate true
+            //save
+            //go to details
+            //edit, save
+            //go to details
+            //delete
+        }
+
+        public function testCreateActionForMatrix()
+        {
+            //todo:
+            //go to create screen, after selecting type
+            //validate true
+            //save
+            //go to details
+            //edit, save
+            //go to details
+            //delete
+        }
         
         /*
         * @depends on testCreateAction()
@@ -141,27 +155,37 @@
           }
         }
 
-        //actionRelationsAndAttributesTree - for different tree types and different report types
+        public function testActionRelationsAndAttributesTree()
+        {
+            //todo:
+            //actionRelationsAndAttributesTree - for different tree types and different report types
+        }
 
-        //actionAddAttributeFromTree - all various attribute types
-
-        //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
-
-        //todO: list security elevated and not, also where the user is nobody and can't see any of the modules but has access to reports
+        public function testActionAddAttributeFromTree()
+        {
+            //todo:
+            //actionAddAttributeFromTree - all various attribute types
+        }
 
         public function testChartWithTooManyGroupsToRender()
         {
             //todo: call setMaximumGroupsPerChart(2) and then run a report chart with more than 2. then it should render the chart warning
         }
-        //todo: test saving a report and changing owner so you don't have permissions anymore. it should do a flashbar and redirect you to
-        //the list view.
+
+        //todo: test saving a report and changing owner so you don't have permissions anymore. it should do a flashbar and redirect you to the list view.
         //todo: test async export
 
-        //todo: test contorller filters are working
+        //todo: test contrller filters are working
 
         //todo: that the initial query thing works for filtering out modules you don’t have access to always.
 
-        //todo: test details view comes up ok when user cant delete or edit report, make sure options button doesnt blow up since it shouldnt display
+        //todo: test details view comes up ok when user cant delete or edit report, make sure options button doesn't blow up since it shouldn't display
+
+
+        //todo: in separate test class:
+        //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
+
+        //todO: list security elevated and not, also where the user is nobody and can't see any of the modules but has access to reports
 
     }
 ?>

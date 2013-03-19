@@ -252,7 +252,7 @@
          * Returns the link type for a
          * relation name defined by the extending class's getMetadata() method.
          */
-        public function getRelationLinkType($relationName)
+        public static function getRelationLinkType($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
@@ -263,7 +263,7 @@
          * Returns the link name for a
          * relation name defined by the extending class's getMetadata() method.
          */
-        public function getRelationLinkName($relationName)
+        public static function getRelationLinkName($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             $relationAndOwns = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
@@ -288,7 +288,7 @@
          * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationType($relationName)
+        public static function getDerivedRelationType($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -299,7 +299,7 @@
          * Returns the relation model class name of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationModelClassName($relationName)
+        public static function getDerivedRelationModelClassName($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -310,7 +310,7 @@
          * Returns the opposing relation name of a derived relation
          * defined by the extending class's getMetadata() method.
          */
-        public function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
+        public static function getDerivedRelationViaCastedUpModelOpposingRelationName($relationName)
         {
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
@@ -353,54 +353,48 @@
             return ucfirst(preg_replace('/([A-Z0-9])/', ' \1', $attributeName));
         }
 
-        public static function getAbbreviatedAttributeLabel($attributeName)
-        {
-            return static::getAbbreviatedAttributeLabelByLanguage($attributeName, Yii::app()->language);
-        }
-
         /**
-         * Public for message checker only.
-         */
-        public static function getUntranslatedAbbreviatedAttributeLabels()
-        {
-            return static::untranslatedAbbreviatedAttributeLabels();
-        }
-
-        /**
-         * Array of untranslated abbreviated attribute labels.
-         */
-        protected static function untranslatedAbbreviatedAttributeLabels()
-        {
-            return array();
-        }
-
-        protected static function untranslatedAttributeLabels()
-        {
-            return array();
-        }
-
-        /**
-         * Given an attributeName and a language, retrieve the translated attribute label. Attempts to find a customized
+         * Given an attributeName, retrieve the translated attribute label. Attempts to find a customized
          * label in the metadata first, before falling back on the standard attribute label for the specified attribute.
          * @param string $attributeName
-         * @param string $language
          * @return string - translated attribute label
          */
-        protected static function getAbbreviatedAttributeLabelByLanguage($attributeName, $language)
+        public static function getAbbreviatedAttributeLabel($attributeName)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
-            $labels = static::untranslatedAbbreviatedAttributeLabels();
+            $labels = static::translatedAbbreviatedAttributeLabels(Yii::app()->language);
             if (isset($labels[$attributeName]))
             {
                 return ZurmoHtml::tag('span', array('title' => static::generateAnAttributeLabel($attributeName)),
-                    Zurmo::t('Default', $labels[$attributeName],
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                    $labels[$attributeName]);
             }
             else
             {
                 return null;
             }
+        }
+
+        /**
+         * Public for message checker only
+         * @param $language
+         * @return array;
+         */
+        public static function getTranslatedAttributeLabels($language)
+        {
+            return static::translatedAttributeLabels($language);
+        }
+
+        /**
+         * Array of untranslated abbreviated attribute labels.
+         */
+        protected static function translatedAbbreviatedAttributeLabels($language)
+        {
+            return array();
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array();
         }
 
         /**
@@ -596,20 +590,6 @@
                     {
                         $owns = false;
                     }
-/**
-                    if (count($relationTypeModelClassNameAndOwns) == 4 && $relationType != self::HAS_MANY)
-                    {
-                        throw new NotSupportedException();
-                    }
-                    if (count($relationTypeModelClassNameAndOwns) == 4)
-                    {
-                        $relationPolyOneToManyName = $relationTypeModelClassNameAndOwns[3];
-                    }
-                    else
-                    {
-                        $relationPolyOneToManyName = null;
-                    }
- * */
                     $linkType          = null;
                     $relationLinkName  = null;
                     self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,

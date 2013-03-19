@@ -684,17 +684,6 @@
                         }
                     }
                 }
-                /**
-                if (isset($metadata[$modelClassName]['derivedRelationsViaCastedUpModel']))
-                {
-                    foreach ($metadata[$modelClassName]['derivedRelationsViaCastedUpModel'] as $relationName =>
-                             $relationTypeModelClassNameAndOpposingRelation)
-                    {
-                        $this->derivedRelationNameToTypeModelClassNameAndOppposingRelation[$relationName] =
-                                $relationTypeModelClassNameAndOpposingRelation;
-                    }
-                }
-                **/
                 // Add model validators. Parent validators are already applied.
                 if (isset($metadata[$modelClassName]['rules']))
                 {
@@ -1493,31 +1482,19 @@
 
         /**
          * See the yii documentation.
-         * RedBeanModels utilize untranslatedAttributeLabels to store any attribute information, which
-         * can then be translated in this method.
+         * RedBeanModels utilize translatedAttributeLabels to store any attribute information.
          */
         public function attributeLabels()
         {
-            $attributeLabels = array();
-            foreach (static::untranslatedAttributeLabels() as $attributeName => $label)
-            {
-                $attributeLabels[$attributeName] = Zurmo::t('Core', $label);
-            }
-            return $attributeLabels;
+            return static::translatedAttributeLabels(Yii::app()->language);
         }
 
         /**
-         * RedBeanModels utilize untranslatedAbbreviatedAttributeLabels to store any abbreviated attribute information, which
-         * can then be translated in this method.
+         * Public method
          */
         public function abbreviatedAttributeLabels()
         {
-            $abbreviatedAttributeLabels = array();
-            foreach (static::untranslatedAbbreviatedAttributeLabels() as $attributeName => $label)
-            {
-                $abbreviatedAttributeLabels[$attributeName] = Zurmo::t('Core', $label);
-            }
-            return $abbreviatedAttributeLabels;
+            return static::translatedAbbreviatedAttributeLabels(Yii::app()->language);
         }
 
         /**
@@ -1750,10 +1727,10 @@
                             {
                                 $linkName = null;
                             }
-                            elseif ($this->getRelationType($relationName) == self::HAS_ONE &&
-                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                            elseif (static::getRelationType($relationName) == self::HAS_ONE &&
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                             {
-                                $linkName = strtolower($this->getRelationLinkName($relationName));
+                                $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
                             unset($this->unlinkedRelationNames[$key]);
@@ -1795,14 +1772,14 @@
                                 $relatedModelClassName = $relationAndOwns[$relationName][1];
                                 $linkName = strtolower($relationName);
                                 if (strtolower($linkName) == strtolower($relatedModelClassName) ||
-                                    $this->getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_ASSUMPTIVE)
                                 {
                                     $linkName = null;
                                 }
                                 elseif ($relationType == self::HAS_ONE &&
-                                        $this->getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
+                                    static::getRelationLinkType($relationName) == self::LINK_TYPE_SPECIFIC)
                                 {
-                                    $linkName = strtolower($this->getRelationLinkName($relationName));
+                                    $linkName = strtolower(static::getRelationLinkName($relationName));
                                 }
                                 elseif ($relationType == RedBeanModel::HAS_MANY_BELONGS_TO ||
                                         $relationType == RedBeanModel::HAS_ONE_BELONGS_TO)
@@ -2329,7 +2306,7 @@
         {
             assert('is_string($attributeName)');
             assert('is_string($language)');
-            $labels       = static::untranslatedAttributeLabels();
+            $labels       = static::translatedAttributeLabels($language);
             $customLabel  = static::getTranslatedCustomAttributeLabelByLanguage($attributeName, $language);
             if ($customLabel != null)
             {
@@ -2337,12 +2314,12 @@
             }
             elseif (isset($labels[$attributeName]))
             {
-                return Zurmo::t('Core', $labels[$attributeName],
-                              LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return $labels[$attributeName];
             }
             else
             {
-                //should do a T:: wrapper here too.
+                //This is a last resort if the translated attribute was not located.  Make sure to define all
+                //attributes in translatedAttributeLabels($language)
                 return Zurmo::t('Core', static::generateAnAttributeLabel($attributeName), array(), null, $language);
             }
         }

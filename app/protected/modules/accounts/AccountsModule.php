@@ -43,12 +43,13 @@
             return array('Account');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                              = LabelUtil::getTranslationParamsForAllModules();
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_ACCOUNTS] = 'Create AccountsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_ACCOUNTS] = 'Delete AccountsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_ACCOUNTS] = 'Access AccountsModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_ACCOUNTS] = Zurmo::t('AccountsModule', 'Create AccountsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_ACCOUNTS] = Zurmo::t('AccountsModule', 'Delete AccountsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_ACCOUNTS] = Zurmo::t('AccountsModule', 'Access AccountsModulePluralLabel Tab', $params);
             return $labels;
         }
 

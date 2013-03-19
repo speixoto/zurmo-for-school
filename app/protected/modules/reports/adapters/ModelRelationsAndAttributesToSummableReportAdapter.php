@@ -55,6 +55,25 @@
         protected $shouldIncludeIdAsGroupByAttribute = true;
 
         /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $displayCalculationAttributes;
+
+        /**
+         * Caching property to improve performance
+         * @var array | null
+         */
+        private static $groupByCalculatedModifierAttributes;
+
+        public static function forgetAll()
+        {
+            parent::forgetAll();
+            self::$displayCalculationAttributes = null;
+            self::$groupByCalculatedModifierAttributes = null;
+        }
+
+        /**
          * @param $type
          * @return string
          */
@@ -491,12 +510,17 @@
          */
         protected function getDisplayCalculationAttributes()
         {
+            if(isset(self::$displayCalculationAttributes[get_class($this->model)]))
+            {
+                return self::$displayCalculationAttributes[get_class($this->model)];
+            }
             $attributes = array(self::DISPLAY_CALCULATION_COUNT => array('label' => Zurmo::t('ReportsModule', 'Count')));
             foreach ($this->model->getAttributes() as $attribute => $notUsed)
             {
                 $this->getDisplayCalculationAttribute($attributes, $attribute);
             }
-            return $attributes;
+            self::$displayCalculationAttributes[get_class($this->model)] = $attributes;
+            return self::$displayCalculationAttributes[get_class($this->model)];
         }
 
         /**
@@ -622,12 +646,17 @@
          */
         protected function getGroupByCalculatedModifierAttributes()
         {
+            if(isset(self::$groupByCalculatedModifierAttributes[get_class($this->model)]))
+            {
+                return self::$groupByCalculatedModifierAttributes[get_class($this->model)];
+            }
             $attributes = array();
             foreach ($this->getAttributesNotIncludingDerivedAttributesData() as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
                 if($attributeType == 'Date' || $attributeType == 'DateTime')
                 {
+
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_DAY);
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_WEEK);
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_MONTH);
@@ -635,7 +664,8 @@
                     $this->resolveGroupByCalculationAttributeData($attributes, $attribute, self::GROUP_BY_CALCULATION_YEAR);
                 }
             }
-            return $attributes;
+            self::$groupByCalculatedModifierAttributes[get_class($this->model)] = $attributes;
+            return self::$groupByCalculatedModifierAttributes[get_class($this->model)];
         }
 
         /**

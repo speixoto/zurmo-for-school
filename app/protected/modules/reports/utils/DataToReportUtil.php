@@ -91,10 +91,10 @@
             if(count($filtersData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_FILTERS)) > 0)
             {
                 $sanitizedFiltersData = self::sanitizeFiltersData($moduleClassName, $report->getType(), $filtersData);
-                foreach($sanitizedFiltersData as $filterData)
+                foreach($sanitizedFiltersData as $key => $filterData)
                 {
                     $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                      $report->getType());
+                                                      $report->getType(), $key);
                     $filter->setAttributes($filterData);
                     $report->addFilter($filter);
                 }
@@ -106,6 +106,7 @@
         }
 
         /**
+         * Preserving keys since they are used as the rowKeys. @see RowKeyInterface
          * @param string $moduleClassName
          * @param string $reportType
          * @param array $filtersData
@@ -116,9 +117,9 @@
             assert('is_string($moduleClassName)');
             assert('is_string($reportType)');
             $sanitizedFiltersData = array();
-            foreach($filtersData as $filterData)
+            foreach($filtersData as $key => $filterData)
             {
-                $sanitizedFiltersData[] = static::sanitizeFilterData($moduleClassName,
+                $sanitizedFiltersData[$key] = static::sanitizeFilterData($moduleClassName,
                                                                      $moduleClassName::getPrimaryModelName(),
                                                                      $reportType,
                                                                      $filterData);
@@ -169,10 +170,10 @@
             $moduleClassName = $report->getModuleClassName();
             if(count($orderBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_ORDER_BYS)) > 0)
             {
-                foreach($orderBysData as $orderByData)
+                foreach($orderBysData as $key => $orderByData)
                 {
                     $orderBy = new OrderByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                        $report->getType());
+                                                        $report->getType(), $key);
                     $orderBy->setAttributes($orderByData);
                     $report->addOrderBy($orderBy);
                 }
@@ -195,11 +196,11 @@
             if(count($displayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)) > 0)
             {
-                foreach($displayAttributesData as $displayAttributeData)
+                foreach($displayAttributesData as $key => $displayAttributeData)
                 {
                     $displayAttribute = new DisplayAttributeForReportForm($moduleClassName,
                                                                           $moduleClassName::getPrimaryModelName(),
-                                                                          $report->getType());
+                                                                          $report->getType(), $key);
                     $displayAttribute->setAttributes($displayAttributeData);
                     $report->addDisplayAttribute($displayAttribute);
                 }
@@ -222,11 +223,11 @@
             if(count($drillDownDisplayAttributesData =
                      ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)) > 0)
             {
-                foreach($drillDownDisplayAttributesData as $drillDownDisplayAttributeData)
+                foreach($drillDownDisplayAttributesData as $key => $drillDownDisplayAttributeData)
                 {
                     $drillDownDisplayAttribute = new DrillDownDisplayAttributeForReportForm($moduleClassName,
                                                                           $moduleClassName::getPrimaryModelName(),
-                                                                          $report->getType());
+                                                                          $report->getType(), $key);
                     $drillDownDisplayAttribute->setAttributes($drillDownDisplayAttributeData);
                     $report->addDrillDownDisplayAttribute($drillDownDisplayAttribute);
                 }
@@ -247,10 +248,10 @@
             $moduleClassName = $report->getModuleClassName();
             if(count($groupBysData = ArrayUtil::getArrayValue($data, ComponentForReportForm::TYPE_GROUP_BYS)) > 0)
             {
-                foreach($groupBysData as $groupByData)
+                foreach($groupBysData as $key => $groupByData)
                 {
                     $groupBy = new GroupByForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
-                                                        $report->getType());
+                                                        $report->getType(), $key);
                     $groupBy->setAttributes($groupByData);
                     $report->addGroupBy($groupBy);
                 }

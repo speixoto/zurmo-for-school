@@ -24,37 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Module to manage exports
-     */
-    class ExportModule extends SecurableModule
+    class ImportModelTestItem5ImportRules extends DerivedAttributeSupportedImportRules
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
-
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusThreshold = 2500;
-
-        public static function getTranslatedRightsLabels()
+        public static function getModelClassName()
         {
-            $labels                                    = array();
-            $labels[self::RIGHT_ACCESS_EXPORT]  = Zurmo::t('ExportModule', 'Access Export Tool');
-            return $labels;
+            return 'ImportModelTestItem5';
         }
 
-        public function getDependencies()
+        public static function getDerivedAttributeTypes()
         {
-           return array('zurmo');
+            return array_merge(parent::getDerivedAttributeTypes(), array('ImportModelTestItem3Derived'));
         }
 
-        public function getRootModelNames()
+        /**
+         * The derived attribute ImportModelTestItem3Derived corresponds to the hasMany attribute on ImportModelTestItem
+         */
+        public static function getActualModelAttributeNameForDerivedAttribute()
         {
-            return array('ExportItem', 'ExportFileModel');
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_EXPORT;
+            return 'hasOne';
         }
     }
 ?>

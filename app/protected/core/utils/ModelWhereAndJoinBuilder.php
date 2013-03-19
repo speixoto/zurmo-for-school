@@ -48,6 +48,7 @@
          * @param $value
          * @param $clausePosition
          * @param $where
+         * @param null | string $onTableAliasName
          */
         public function resolveJoinsAndBuildWhere($operatorType, $value, & $clausePosition, & $where,
                                                   $onTableAliasName = null)
@@ -82,6 +83,7 @@
          * @param $value
          * @param $whereKey
          * @param $where
+         * @param null | string $onTableAliasName
          */
         protected function buildJoinAndWhereForRelatedAttribute($operatorType, $value, $whereKey, &$where,
                                                                 $onTableAliasName = null)
@@ -174,7 +176,7 @@
         }
 
         /**
-         * @param null $onTableAliasName
+         * @param null | string $onTableAliasName
          * @return null|string
          */
         protected function resolveJoinsForRelatedId($onTableAliasName = null)

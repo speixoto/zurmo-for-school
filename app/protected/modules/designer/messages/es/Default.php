@@ -85,8 +85,8 @@
             => 'Campo calculado',
         'Check Box'
             => 'Check box',
-        'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 x field2) / field3'
-            => 'Crear una fórmula de cálculo de los valores de otros campos. Use el nombre de la columna en los Campos de fórmula disponibles para crear la fórmula. Por ejemplo: (campo1 x campo2) / campo3',
+        'Create a math formula that is calculated from other fields. Use the Formula Name from the Available Fields grid below to create your formula. Example formula (field1 * field2) / field3'
+            => 'Crear una fórmula de cálculo de los valores de otros campos. Use el nombre de la columna en los Campos de fórmula disponibles para crear la fórmula. Por ejemplo: (campo1 * campo2) / campo3',
         'Create Field'
             => 'Crear campo',
         'Custom Fields'

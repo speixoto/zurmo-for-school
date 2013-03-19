@@ -49,7 +49,7 @@
             $attributeData  = $adapter->getAttributes();
             $title          = Zurmo::t('DesignerModule', 'Create a math formula that is calculated from other fields.' .
                                    ' Use the Formula Name from the Available Fields grid below to create your formula.' .
-                                   ' Example formula (field1 x field2) / field3');
+                                   ' Example formula (field1 * field2) / field3');
             $spanContent    = '<span id="formula-tooltip" class="tooltip" title="' . $title . '">?</span>';
             if (count($attributeData) > 0)
             {

@@ -249,7 +249,6 @@
             $this->assertEquals(OperatorRules::TYPE_ONE_OF,         $filters[2]->operator);
             $this->assertEquals($stateAdapter->getStateIds(),       $filters[2]->value);
             $this->assertEquals('1 and (2 and 3)', $filtersStructure);
-
         }
     }
 ?>

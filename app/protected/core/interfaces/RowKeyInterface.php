@@ -25,36 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Module to manage exports
+     * Implemented by wizard component forms for example, that then allow the validation to understand the real
+     * row key whether from a saved model or from a posted array.
      */
-    class ExportModule extends SecurableModule
+    interface RowKeyInterface
     {
-        const RIGHT_ACCESS_EXPORT = 'Access Export Tool';
-
-        // Used to determine if data will be exported directly in browser
-        // or to be exported via asynchronous via background job.
-        public static $asynchronusThreshold = 2500;
-
-        public static function getTranslatedRightsLabels()
-        {
-            $labels                                    = array();
-            $labels[self::RIGHT_ACCESS_EXPORT]  = Zurmo::t('ExportModule', 'Access Export Tool');
-            return $labels;
-        }
-
-        public function getDependencies()
-        {
-           return array('zurmo');
-        }
-
-        public function getRootModelNames()
-        {
-            return array('ExportItem', 'ExportFileModel');
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_EXPORT;
-        }
+        public function getRowKey();
     }
 ?>

@@ -42,9 +42,9 @@
             return array();
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Activity';
+            return Zurmo::t('ActivitiesModule', 'Activity', array(), null, $language);
         }
     }
 ?>
