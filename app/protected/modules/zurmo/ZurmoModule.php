@@ -146,7 +146,7 @@
                     'opportunities',
                     'conversations',
                     'products',
-                    'producttemplates',
+                    'productTemplates',
                 )
             );
             return $metadata;

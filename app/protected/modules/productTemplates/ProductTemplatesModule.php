@@ -68,14 +68,14 @@
                 'tabMenuItems' => array(
                     array(
                         'label' => 'ProductTemplatesModulePluralLabel',
-                        'url'   => array('/producttemplates/default'),
+                        'url'   => array('/productTemplates/default'),
                         'right' => self::RIGHT_ACCESS_PRODUCT_TEMPLATES,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
                         'label' => 'ProductTemplatesModuleSingularLabel',
-                        'url'   => array('/producttemplates/default/create'),
+                        'url'   => array('/productTemplates/default/create'),
                         'right' => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
                     ),
                 )

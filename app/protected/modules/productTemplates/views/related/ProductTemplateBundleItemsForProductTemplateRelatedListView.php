@@ -48,9 +48,24 @@
              return $metadata;
          }
 
+         protected function makeSearchAttributeData()
+         {
+             //todo: this needs to be distinct
+             $searchAttributeData = array();
+             $searchAttributeData['clauses'] = array(
+                 1 => array(
+                     'attributeName'        => 'productTemplateBundleItems',
+                     'relatedAttributeName' => 'productTemplate',
+                     'operatorType'         => 'equals',
+                     'value'                => (int)$this->params['relationModel']->id,
+                 ));
+             $searchAttributeData['structure'] = '1';
+             return $searchAttributeData;
+         }
+
          protected function getRelationAttributeName()
          {
-             return 'productTemplate';
+             return 'productTemplate'; //todo: remove this method? but this is abstract and must be defined? - jason. need to figure out
          }
 
          public static function getDisplayDescription()

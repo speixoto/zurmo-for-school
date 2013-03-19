@@ -72,6 +72,11 @@
              return $metadata;
          }
 
+         public function getModelClassName()
+         {
+             return 'ProductTemplateBundle';
+         }
+
          public static function getModuleClassName()
          {
              return 'ProductTemplatesModule';

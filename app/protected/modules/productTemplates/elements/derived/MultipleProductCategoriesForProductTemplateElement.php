@@ -55,7 +55,7 @@
                 'name'        => $this->getNameForIdField(),
                 'id'          => $this->getIdForIdField(),
                 'jsonEncodedIdsAndLabels'   => CJSON::encode($this->getExistingProductCategoriesRelationsIdsAndLabels()),
-                'sourceUrl'   => Yii::app()->createUrl('producttemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
+                'sourceUrl'   => Yii::app()->createUrl('productTemplates/default/autoCompleteAllProductCategoriesForMultiSelectAutoComplete'),
                 'htmlOptions' => array(
                     'disabled' => $this->getDisabledValue(),
                     ),
