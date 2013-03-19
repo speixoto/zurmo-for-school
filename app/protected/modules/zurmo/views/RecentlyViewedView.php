@@ -41,16 +41,28 @@
         {
             $content = '<h3>' . Zurmo::t('ZurmoModule', 'Recently Viewed') . '</h3>';
 
-            $content .= '<ul>';
+            $cClipWidget = new CClipWidget();
+            $cClipWidget->beginClip("recentlyViewed");
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                'items' => $this->renderMenu()
+            ));
+            $cClipWidget->endClip();
+            $content .= $cClipWidget->getController()->clips['recentlyViewed'];
+            return $content;
+        }
 
+        public function renderMenu()
+        {
+            $items = array();
             foreach ($this->recentlyViewedItems as $recentlyViewedItem)
             {
-                $content .= '<li class="type-' . $recentlyViewedItem['moduleClassName'] . '">' . $recentlyViewedItem['link'] . '</li>';
+                $items[] =  array(
+                    'label'                 => '',
+                    'dynamicLabelContent'   =>  $recentlyViewedItem['link'],
+                    'itemOptions'           =>  array('class' => 'type-' . $recentlyViewedItem['moduleClassName']),
+                    );
             }
-
-            $content .= '</ul>';
-
-            return $content;
+            return $items;
         }
     }
 ?>
