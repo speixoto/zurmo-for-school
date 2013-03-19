@@ -33,7 +33,7 @@
 
         public function attach($owner)
         {
-            if (Yii::app()->apiRequest->isApiRequest())
+            if (ApiRequest::isApiRequest())
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
@@ -43,6 +43,7 @@
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
@@ -325,6 +326,21 @@
                     }
                 }
             }
+        }
+
+        public function handleInitApiRequest($event)
+        {
+            $apiRequest = Yii::createComponent(
+                array('class' => 'application.modules.api.components.ApiRequest'));
+            $apiRequest->init();
+            Yii::app()->setComponent('apiRequest', $apiRequest);
+            Yii::app()->apiRequest->init();
+
+            $apiHelper = Yii::createComponent(
+                array('class' => 'application.modules.api.components.ZurmoApiHelper'));
+            //Have to invoke component init(), because it is not called automatically
+            $apiHelper->init();
+            Yii::app()->setComponent('apiHelper', $apiHelper);
         }
 
         public function handleBeginApiRequest($event)
