@@ -49,7 +49,8 @@
             }
             catch (Exception $e)
             {
-                $result = new ApiResult(ApiResponse::STATUS_FAILURE, null, $e->getMessage(), null);
+                $resultClassName = Yii::app()->apiRequest->getResultClassName();
+                $result = new $resultClassName(ApiResponse::STATUS_FAILURE, null, $e->getMessage(), null);
                 Yii::app()->apiHelper->sendResponse($result);
             }
         }
@@ -60,7 +61,7 @@
          */
         public function actionRead()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ZurmoModule', 'The ID specified was invalid.');
@@ -75,7 +76,7 @@
          */
         public function actionList()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             $result    =  $this->processList($params);
             Yii::app()->apiHelper->sendResponse($result);
         }
@@ -86,7 +87,7 @@
          */
         public function actionCreate()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['data']))
             {
                 $message = Zurmo::t('ZurmoModule', 'Please provide data.');
@@ -102,7 +103,7 @@
          */
         public function actionUpdate()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ZurmoModule', 'The ID specified was invalid.');
@@ -118,7 +119,7 @@
          */
         public function actionDelete()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ZurmoModule', 'The ID specified was invalid.');
@@ -133,7 +134,7 @@
          */
         public function actionAddRelation()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             $result    =  $this->processAddRelation($params);
             Yii::app()->apiHelper->sendResponse($result);
         }
@@ -143,7 +144,7 @@
          */
         public function actionRemoveRelation()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             $result    =  $this->processRemoveRelation($params);
             Yii::app()->apiHelper->sendResponse($result);
         }
@@ -191,7 +192,8 @@
             {
                 $redBeanModelToApiDataUtil = new RedBeanModelToApiDataUtil($model);
                 $data                      = $redBeanModelToApiDataUtil->getData();
-                $result                    = new ApiResult(ApiResponse::STATUS_SUCCESS, $data, null, null);
+                $resultClassName = Yii::app()->apiRequest->getResultClassName();
+                $result                    = new $resultClassName(ApiResponse::STATUS_SUCCESS, $data, null, null);
             }
             catch (Exception $e)
             {

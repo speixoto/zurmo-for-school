@@ -24,19 +24,31 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Api helper class
-     */
-    class ZurmoApiHelper extends CApplicationComponent
+    class ApiRulesFactory
     {
-        /**
-         * Generate response
-         * @param ApiResult $result
-         */
-        public function sendResponse($result)
+        public static function getRulesClassNameByModuleId($moduleId)
         {
-            $responseClassName = Yii::app()->apiRequest->getResponseClassName();
-            $responseClassName::generateOutput($result);
+            $module = Yii::app()->findModule($moduleId);
+
+            if ($module != null)
+            {
+                $moduleClassName = Yii::app()->findModule($moduleId)->getSingularCamelCasedName();
+
+                if ($moduleClassName == 'Api')
+                {
+                    $rulesClassName  = 'ApiRules';
+                }
+                else
+                {
+                    $rulesClassName  = $moduleClassName . 'ApiRules';
+                }
+
+                if (class_exists($rulesClassName))
+                {
+                    return $rulesClassName;
+                }
+            }
+            return false;
         }
     }
 ?>

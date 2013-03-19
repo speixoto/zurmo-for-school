@@ -29,9 +29,5 @@
      */
     class ApiTestModelItemSearchForm extends DynamicSearchForm
     {
-        protected static function getRedBeanModelClassName()
-        {
-            return 'ApiTestModelItem';
-        }
     }
 ?>
