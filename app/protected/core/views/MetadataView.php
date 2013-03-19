@@ -145,7 +145,15 @@
             }
             if (!empty($dropDownItems))
             {
-                $content .= ZurmoHtml::dropDownList(MassActionLinkActionElement::getDropdownId(), '', $dropDownItems, $dropDownItemHtmlOptions);
+                $content .= ZurmoHtml::link('', '#', array('class' => 'mobile-actions'));
+                $content .= ZurmoHtml::tag('div', array( 'class' => 'mobile-view-toolbar-container'),
+                                ZurmoHtml::dropDownList(
+                                        MassActionLinkActionElement::getDropdownId(),
+                                        '',
+                                        $dropDownItems,
+                                        $dropDownItemHtmlOptions
+                                    )
+                                );
             }
             return $content;
         }
