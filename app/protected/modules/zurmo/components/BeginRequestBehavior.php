@@ -437,7 +437,7 @@
 
         public function handleLoadLanguage($event)
         {
-            if (!Yii::app()->apiRequest->isApiRequest())
+            if (!ApiRequest::isApiRequest())
             {
                 if (isset($_GET['lang']) && $_GET['lang'] != null)
                 {
@@ -494,7 +494,7 @@
         {
             Yii::app()->gamificationObserver->enabled = false;
         }
-        
+
         public function handlePublishLogoAssets($event)
         {
             if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
