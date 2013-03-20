@@ -223,10 +223,10 @@
                                  $("input:radio[name=\"ByTimeWorkflowWizardForm[moduleClassName]\"]:checked").val()',
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
-                        $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
+                        //$("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         }',
-                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
+                'success' => 'js:function(data){ $("#' . $inputDivId . ' ul").html(data); }',
             ));
             $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {

@@ -53,6 +53,12 @@ $(window).ready(function(){
             }
         }
     });
+    
+    $('.toggle-row').live('click', function(){
+       $(this).parentsUntil('.dynamic-row').parent().find('.toggle-me').toggle();
+       var parentLi = $(this).parentsUntil('li').parent();
+       parentLi.toggleClass('expanded-row');
+    });
 });
 
 function rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput(divId){

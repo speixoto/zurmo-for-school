@@ -92,6 +92,7 @@
                     'class' => 'sortable',
                 ),
                 'options' => array(
+                    'cancel' => 'expanded-row',
                     'placeholder' => 'ui-state-highlight',
                 ),
                 'showEmptyList' => false
