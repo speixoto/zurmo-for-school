@@ -42,7 +42,7 @@
         {
             $supportedLanguages = $this->getSupportedLanguagesData();
 
-            foreach ($languageCodeArrayForTesting as $languageCode)
+            foreach ($this->languageCodeArrayForTesting as $languageCode)
             {
                 // Check if the language is supported
                 if (!array_key_exists($languageCode, $supportedLanguages))
@@ -81,7 +81,7 @@
         public function deactivateLanguagesForTesting()
         {
             $sourceLanguageModel = ActiveLanguage::getSourceLanguageModel();
-            foreach ($languageCodeArrayForTesting as $languageCode)
+            foreach ($this->languageCodeArrayForTesting as $languageCode)
             {
                 if ($languageCode == $sourceLanguageModel->code) continue;
                 $this->deactivateLanguage($languageCode);
