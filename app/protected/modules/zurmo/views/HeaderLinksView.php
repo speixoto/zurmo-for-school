@@ -48,17 +48,15 @@
         {
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix"><div id="corp-logo">';
-            if(!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
+            if($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
             {
-                $logoFileModelId     = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
-                $logoFileModel       = FileModel::getById($logoFileModelId);
-                $logoFileName        = $logoFileModel->name;
-                $logoFileSrc         = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
-                                                                                      DIRECTORY_SEPARATOR . $logoFileName);
+                $logoFileModel = FileModel::getById($logoFileModelId);
+                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                DIRECTORY_SEPARATOR . $logoFileModel->name);
             }
             else
             {
-                $logoFileSrc = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
+                $logoFileSrc   = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
             }
             $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
             $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
