@@ -24,27 +24,29 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class BeanModelTest extends BaseTest
+    /**
+     * Test for throwing an exception if trying to make a relation with the relation name the same as the relation
+     * model class name, not-owned, and a specific link
+     */
+    class TestInvalidSpecificLinkType extends RedBeanModel
     {
-        public function testIssetAndEmptyOnPrivateStaticProperty()
+        public static function getDefaultMetadata()
         {
-            $this->assertFalse(A::isPrivateStaticIsset());
-            A::setIssetAndEmptyAsEmpty();
-            $this->assertTrue(A::isPrivateStaticIsset());
-            A::setIssetAndEmptyWithString();
-            $this->assertTrue(A::isPrivateStaticIsset());
-            A::setIssetAndEmptyWithNull();
-            $this->assertFalse(A::isPrivateStaticIsset());
-        }
-
-        /**
-         * Test when using an incompatible relation definition. @see TestInvalidSpecificLinkType model  for more info
-         * @expectedException NotSupportedException
-         */
-        public function testInvalidSpecificLinkType()
-        {
-            $model = new TestInvalidSpecificLinkType();
-            $model->save();
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
+                ),
+                'relations' => array(
+                    'a' => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::NOT_OWNED,
+                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'aSomething'),
+                ),
+                'rules' => array(
+                    array('name', 'type',   'type' => 'string'),
+                    array('name', 'length', 'max'  => 15),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>
