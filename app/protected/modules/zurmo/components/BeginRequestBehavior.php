@@ -124,8 +124,9 @@
                 if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
                 {
                     $cacheComponent = Yii::createComponent(array(
-                        'class' => 'CMemCache',
-                        'servers' => Yii::app()->params['memcacheServers']));
+                        'class'     => 'CMemCache',
+                        'keyPrefix' => ZURMO_TOKEN,
+                        'servers'   => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
                 }
                 // todo: Find better way to append this prefix for tests.
