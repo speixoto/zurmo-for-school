@@ -33,9 +33,7 @@
         private $messagesForTesting = array(
             'de' => array(
                 'Default' => array(
-                    array(
-                        'Message' => 'Translation'
-                    )
+                    'Message' => 'Translation'
                 )
             ),
         );
