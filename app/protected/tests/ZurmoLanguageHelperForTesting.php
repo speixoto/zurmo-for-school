@@ -56,10 +56,7 @@
                 $language->nativeName = $supportedLanguages[$languageCode]['nativeName'];
                 $language->activationDatetime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
                 $language->lastUpdateDatetime = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
-                if ($language->save())
-                {
-                    return true;
-                }
+                $language->save();
             }
         }
 
@@ -86,6 +83,26 @@
                 if ($languageCode == $sourceLanguageModel->code) continue;
                 $this->deactivateLanguage($languageCode);
             }
+        }
+
+        public function getActiveLanguagesDataForTesting()
+        {
+            $activeLanguagesData = $this->getActiveLanguagesData();
+
+            foreach ($activeLanguagesData as $languageCode=>$languageData)
+            {
+                if (array_key_exists('activationDatetime', $languageData))
+                {
+                    unset($activeLanguagesData[$languageCode]['activationDatetime']);
+                }
+
+                if (array_key_exists('lastUpdateDatetime', $languageData))
+                {
+                    unset($activeLanguagesData[$languageCode]['lastUpdateDatetime']);
+                }
+            }
+
+            return $activeLanguagesData;
         }
     }
 ?>

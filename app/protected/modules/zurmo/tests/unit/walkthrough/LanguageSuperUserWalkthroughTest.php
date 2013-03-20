@@ -55,7 +55,7 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             // Confirm only english is the active language.
-            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $this->assertArrayHasKey('en', $data);
             $compareData = array(
                 'en' => array(
@@ -80,7 +80,7 @@
             $this->assertTrue(strpos($content, 'activated successfully') !== false);
 
             // Confirm the new languages are active
-            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
@@ -112,7 +112,7 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             // Confirm German is active
-            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $this->assertArrayHasKey('de', $data);
             $compareData = array(
                 'canDeactivate' => true,
@@ -137,7 +137,7 @@
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
 
             // Confirm German and Italian are active
-            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
@@ -167,7 +167,7 @@
             $this->assertTrue(strpos($content, 'deactivated successfully') !== false);
 
             // Confirm the correct languages are active.
-            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTest();
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
