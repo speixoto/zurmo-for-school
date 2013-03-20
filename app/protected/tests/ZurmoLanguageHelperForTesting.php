@@ -43,14 +43,15 @@
         public function activateLanguagesForTesting()
         {
             $supportedLanguages = $this->getSupportedLanguagesData();
-            // Check if the language is supported
-            if (!array_key_exists($languageCode, $supportedLanguages))
-            {
-                throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not supported.'));
-            }
 
             foreach ($languageCodeArray as $languageCode)
             {
+                // Check if the language is supported
+                if (!array_key_exists($languageCode, $supportedLanguages))
+                {
+                    throw new NotFoundException(Zurmo::t('ZurmoModule', 'Language not supported.'));
+                }
+
                 $language = new ActiveLanguage;
                 $language->code = $supportedLanguages[$languageCode]['code'];
                 $language->name = $supportedLanguages[$languageCode]['name'];
@@ -68,7 +69,7 @@
         {
             foreach ($this->messagesForTesting as $languageCode => $categories)
             {
-                foreach ($categories as $category=>$messages)
+                foreach ($categories as $category => $messages)
                 {
                     ZurmoMessageSourceUtil::importMessagesArray(
                         $languageCode,
