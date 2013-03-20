@@ -42,6 +42,7 @@
             $currencyValueModel        = $this->model->{$this->attribute};
             $params                    = array();
             $params['inputPrefix']     = $this->resolveInputPrefix();
+            $params['disabled']        = $this->getDisabledValue();
             $this->resolveParamsForCurrencyId($params);
             //need to somehow override to pass not to default to currency
             $activeCurrenciesElement   = new CurrencyIdForAModelsRelatedCurrencyValueDropDownElement(
@@ -63,6 +64,7 @@
                 'name' =>  $this->getEditableInputName($inputNameIdPrefix, $attribute),
                 'id'   =>  $this->getEditableInputId($inputNameIdPrefix, $attribute),
                 'value' => $this->resolveAndGetEditableValue($model, $attribute),
+                'disabled' => $this->getDisabledValue()
             );
             $textField = $form->textField($model, $attribute, $htmlOptions);
             $error     = $form->error    ($model, $attribute);

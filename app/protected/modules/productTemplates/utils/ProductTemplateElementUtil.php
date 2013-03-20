@@ -53,5 +53,25 @@
                 }
             ";
         }
+
+        public static function getEnableDisableSellPriceElementBySellPriceFormulaScript()
+        {
+            return "
+                var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
+                function enableDisableSellPriceElementBySellPriceFormula(helperValue, elementId, attribute)
+                {
+                    if (helperValue != typeEditable)
+                    {
+                        $('#' + elementId).attr('disabled', true);
+                        $('#ProductTemplate_' + attribute + '_currency_id').attr('disabled', 'true');
+                    }
+                    else
+                    {
+                        $('#' + elementId).removeAttr('disabled');
+                        $('#ProductTemplate_' + attribute + '_currency_id').removeAttr('disabled');
+                    }
+                }
+            ";
+        }
     }
 ?>

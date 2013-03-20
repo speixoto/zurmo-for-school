@@ -57,10 +57,12 @@
         {
             $id = $this->getEditableInputId($inputNameIdPrefix, $attribute);
             $discountOrMarkupPercentageTextFieldId = $this->getEditableInputId($inputNameIdPrefix, 'discountOrMarkupPercentage');
+            $sellPriceValueId   =  $this->getEditableInputId('sellPrice', 'value');
             $htmlOptions = array(
                 'name' => $this->getEditableInputName($this->attribute, 'name'),
                 'id'   => $id,
-                'onchange' => 'showHideDiscountOrMarkupPercentageTextField($(this).val(), \'' . $discountOrMarkupPercentageTextFieldId . '\')'
+                'onchange' => 'showHideDiscountOrMarkupPercentageTextField($(this).val(), \'' . $discountOrMarkupPercentageTextFieldId . '\');
+                              enableDisableSellPriceElementBySellPriceFormula($(this).val(), \'' . $sellPriceValueId . '\', "sellPrice")'
             );
             $dropDownField = $form->dropDownList($model, $attribute, SellPriceFormula::getNameDropDownArray(), $htmlOptions);
             $error     = $form->error($model, $attribute, array('inputID' => $id));
@@ -91,6 +93,11 @@
             Yii::app()->clientScript->registerScript(
                 'ShowHideDiscountOrMarkupPercentageTextField',
                 ProductTemplateElementUtil::getShowHideDiscountOrMarkupPercentageTextFieldScript(),
+                CClientScript::POS_END
+            );
+            Yii::app()->clientScript->registerScript(
+                'EnableDisableSellPriceElementBySellPriceFormula',
+                ProductTemplateElementUtil::getEnableDisableSellPriceElementBySellPriceFormulaScript(),
                 CClientScript::POS_END
             );
         }
