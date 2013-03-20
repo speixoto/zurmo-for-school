@@ -130,27 +130,6 @@
             }
         }
 
-        protected static function renderOnClickScript($url, $updateDivId, $newStatus)
-        {
-            $onClickScript   = "{";
-            $onClickScript  .= ZurmoHtml::ajax(
-                                            array(
-                                                "update"    => "#" . $updateDivId,
-                                                "data"      => "js:jQuery(this).parents('form').serialize()",
-                                                "type"      => "GET",
-                                                "url"       => $url,
-                                                "beforeSend" => "js:
-                                                                    function(){
-                                                                        $('#{$newStatus}-{$updateDivId}').addClass('loading').addClass('loading-ajax-submit');
-                                                                        makeOrRemoveLoadingSpinner(true, $('#{$newStatus}-{$updateDivId}').attr('id'));
-                                                                    }
-                                                                ",
-                                            )
-                                        );
-            $onClickScript  .= "return false;}";
-            return $onClickScript;
-        }
-
         protected static function renderAjaxStatusActionChangeLink($newStatus, $missionId, $label, $updateDivId)
         {
             assert('is_int($newStatus)');
@@ -160,15 +139,16 @@
             $url     =   Yii::app()->createUrl('missions/default/ajaxChangeStatus',
                                                array('status' => $newStatus, 'id' => $missionId));
             $aContent                = ZurmoHtml::wrapLink($label);
-            return       ZurmoHtml::link($aContent,
-                                         null,
-                                         array(
-                                             "id"        => $newStatus . "-" . $updateDivId,
-                                             "class"     => "mission-change-status-link attachLoading z-button " .
-                                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
-                                             "namespace" => "update",
-                                             "onClick"   => self::renderOnClickScript($url, $updateDivId, $newStatus),
-                                         ));
+            return       ZurmoHtml::ajaxLink($aContent, $url,
+                         array('type'       => 'GET',
+                               'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'
+                             ),
+                         array('id'         => $newStatus . '-' . $updateDivId,
+                               'class'      => 'mission-change-status-link attachLoading z-button ' .
+                                               self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
+                               'namespace'  => 'update',
+                               'onclick'    => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)
