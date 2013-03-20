@@ -71,6 +71,7 @@
             {
                 Yii::app()->languageHelper->load();
                 Yii::app()->languageHelper->activateLanguagesForTest();
+                Yii::app()->languageHelper->importMessagesForTesting();
             }
         }
 
