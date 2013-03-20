@@ -200,7 +200,8 @@
             $params                = array();
             $params['label']       = Zurmo::t('Core', 'Save');
             $params['htmlOptions'] = array('id' => 'saveAction'. $this->rowNumber,
-                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget").parent().toggle().parentsUntil("li").parent().toggleClass("closed-row");');
+                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget").parent().toggle()' .
+                                                        '.parentsUntil("li").parent().toggleClass("expanded-row");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }
