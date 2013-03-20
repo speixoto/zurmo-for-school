@@ -334,36 +334,6 @@
             return $activeLanguagesData;
         }
 
-        public function activateLanguagesForTest($languageCodeArray=array())
-        {
-            assert('is_array($languageCodeArray)');
-            if (empty($languageCodeArray))
-            {
-                $languageCodeArray = array('de', 'es', 'fr', 'it');
-            }
-
-            foreach ($languageCodeArray as $languageCode)
-            {
-                $this->activateLanguage($languageCode);
-            }
-        }
-
-        public function deactivateLanguagesForTest($languageCodeArray=array())
-        {
-            assert('is_array($languageCodeArray)');
-            if (empty($languageCodeArray))
-            {
-                $languageCodeArray = array_keys($this->getActiveLanguagesData());
-            }
-
-            $sourceLanguageModel = ActiveLanguage::getSourceLanguageModel();
-            foreach ($languageCodeArray as $languageCode)
-            {
-                if ($languageCode == $sourceLanguageModel->code) continue;
-                $this->deactivateLanguage($languageCode);
-            }
-        }
-
         /**
          * Given a language, is it in use as a default language by any of the users.
          * @param string $language
