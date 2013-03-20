@@ -70,7 +70,7 @@
             if (static::$activateDefaultLanguages)
             {
                 Yii::app()->languageHelper->load();
-                Yii::app()->languageHelper->activateLanguagesForTest();
+                Yii::app()->languageHelper->activateLanguagesForTesting();
                 Yii::app()->languageHelper->importMessagesForTesting();
             }
         }
@@ -79,7 +79,7 @@
         {
             if (static::$activateDefaultLanguages)
             {
-                Yii::app()->languageHelper->deactivateLanguagesForTest();
+                Yii::app()->languageHelper->deactivateLanguagesForTesting();
             }
 
             if (RedBeanDatabase::isFrozen())
