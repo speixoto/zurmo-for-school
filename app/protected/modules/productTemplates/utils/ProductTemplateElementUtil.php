@@ -73,5 +73,76 @@
                 }
             ";
         }
+
+        public static function getCalculatedSellPriceBySellPriceFormulaScript()
+        {
+            return "
+                var typeEditable = " . SellPriceFormula::TYPE_EDITABLE . ";
+                var typeProfitMargin = " . SellPriceFormula::TYPE_PROFIT_MARGIN . ";
+                var typeMarkOverCost = " . SellPriceFormula::TYPE_MARKUP_OVER_COST . ";
+                var typeDiscountFromList = " . SellPriceFormula::TYPE_DISCOUNT_FROM_LIST . ";
+                var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
+                function calculateSellPriceBySellPriceFormula()
+                {
+                    var helperValue = $('#ProductTemplate_sellPriceFormula_name').val();
+                    var calculatedSellPrice = 0;
+                    var discountOrMarkupPercentage = $('#ProductTemplate_sellPriceFormula_discountOrMarkupPercentage').val();
+                    if(discountOrMarkupPercentage == '')
+                    {
+                        discountOrMarkupPercentage = 0;
+                    }
+                    else
+                    {
+                        discountOrMarkupPercentage = parseFloat(discountOrMarkupPercentage)/100;
+                    }
+                    if (helperValue == typeProfitMargin)
+                    {
+                        var cost = parseFloat($('#ProductTemplate_cost_value').val());
+                        calculatedSellPrice = parseFloat(cost/(100-discountOrMarkupPercentage));
+                        modCalculatesSellPrice = (Math.round(calculatedSellPrice * 100)/100).toFixed(2);
+                        $('#ProductTemplate_sellPrice_value').val(modCalculatesSellPrice);
+                    }
+
+                    if (helperValue == typeMarkOverCost)
+                    {
+                        var cost = parseFloat($('#ProductTemplate_cost_value').val());
+                        calculatedSellPrice = (discountOrMarkupPercentage*cost)+cost;
+                        $('#ProductTemplate_sellPrice_value').val(calculatedSellPrice);
+                    }
+
+                    if (helperValue == typeDiscountFromList)
+                    {
+                        var listPrice = parseFloat($('#ProductTemplate_listPrice_value').val());
+                        calculatedSellPrice = listPrice - (listPrice * discountOrMarkupPercentage);
+                        $('#ProductTemplate_sellPrice_value').val(calculatedSellPrice);
+                    }
+
+                    if (helperValue == typeSameAsList)
+                    {
+                        var listPrice = parseFloat($('#ProductTemplate_listPrice_value').val());
+                        $('#ProductTemplate_sellPrice_value').val(listPrice);
+                    }
+                }
+            ";
+        }
+
+        public static function bindActionsWithFormFieldsForSellPrice()
+        {
+            return "
+                $(document).ready(function()
+                {
+                   $('#ProductTemplate_cost_value').bind('keyup',function()
+                       {
+                            calculateSellPriceBySellPriceFormula();
+                       }
+                   );
+                   $('#ProductTemplate_listPrice_value').bind('keyup',function()
+                       {
+                            calculateSellPriceBySellPriceFormula();
+                       }
+                   );
+                });
+            ";
+        }
     }
 ?>

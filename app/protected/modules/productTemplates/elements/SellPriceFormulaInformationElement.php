@@ -62,7 +62,8 @@
                 'name' => $this->getEditableInputName($this->attribute, 'name'),
                 'id'   => $id,
                 'onchange' => 'showHideDiscountOrMarkupPercentageTextField($(this).val(), \'' . $discountOrMarkupPercentageTextFieldId . '\');
-                              enableDisableSellPriceElementBySellPriceFormula($(this).val(), \'' . $sellPriceValueId . '\', "sellPrice")'
+                              enableDisableSellPriceElementBySellPriceFormula($(this).val(), \'' . $sellPriceValueId . '\', "sellPrice");
+                              calculateSellPriceBySellPriceFormula()'
             );
             $dropDownField = $form->dropDownList($model, $attribute, SellPriceFormula::getNameDropDownArray(), $htmlOptions);
             $error     = $form->error($model, $attribute, array('inputID' => $id));
@@ -75,7 +76,8 @@
             $htmlOptions = array(
                 'name'  => $this->getEditableInputName($inputNameIdPrefix, $attribute),
                 'id'    => $id,
-                'style' => $this->resolveInputDisplayStyle($model, 'name')
+                'style' => $this->resolveInputDisplayStyle($model, 'name'),
+                'onkeyup' => 'calculateSellPriceBySellPriceFormula()'
             );
             //$label       = $form->labelEx  ($model, $attribute, array('for'   => $id));
             $textField   = $form->textField($model, $attribute, $htmlOptions);
@@ -98,6 +100,16 @@
             Yii::app()->clientScript->registerScript(
                 'EnableDisableSellPriceElementBySellPriceFormula',
                 ProductTemplateElementUtil::getEnableDisableSellPriceElementBySellPriceFormulaScript(),
+                CClientScript::POS_END
+            );
+            Yii::app()->clientScript->registerScript(
+                'CalculateSellPriceBySellPriceFormula',
+                ProductTemplateElementUtil::getCalculatedSellPriceBySellPriceFormulaScript(),
+                CClientScript::POS_END
+            );
+            Yii::app()->clientScript->registerScript(
+                'BindActionsWithFormFieldsForSellPrice',
+                ProductTemplateElementUtil::bindActionsWithFormFieldsForSellPrice(),
                 CClientScript::POS_END
             );
         }
