@@ -29,9 +29,10 @@
         protected function renderControlNonEditable()
         {
             $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $name = $sellPriceFormulaModel->name;
+            $type = $sellPriceFormulaModel->type;
             $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
-            $content = $name . '&nbsp;' . $discountOrMarkupPercentage;
+            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray($discountOrMarkupPercentage);
+            $content = $displayedSellPriceFormulaList[$type];
 
             return $content;
         }
@@ -48,7 +49,7 @@
             assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
             $this->registerScripts();
             $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $content = $this->renderNameDropDown($sellPriceFormulaModel, $this->form, $this->attribute, 'name') . "\n";
+            $content = $this->renderNameDropDown($sellPriceFormulaModel, $this->form, $this->attribute, 'type') . "\n";
             $content .= $this->renderDiscountOrMarkupPercentageTextField($sellPriceFormulaModel, $this->form, $this->attribute, 'discountOrMarkupPercentage') . "\n";
             return $content;
         }
@@ -59,13 +60,13 @@
             $discountOrMarkupPercentageTextFieldId = $this->getEditableInputId($inputNameIdPrefix, 'discountOrMarkupPercentage');
             $sellPriceValueId   =  $this->getEditableInputId('sellPrice', 'value');
             $htmlOptions = array(
-                'name' => $this->getEditableInputName($this->attribute, 'name'),
+                'name' => $this->getEditableInputName($this->attribute, 'type'),
                 'id'   => $id,
                 'onchange' => 'showHideDiscountOrMarkupPercentageTextField($(this).val(), \'' . $discountOrMarkupPercentageTextFieldId . '\');
                               enableDisableSellPriceElementBySellPriceFormula($(this).val(), \'' . $sellPriceValueId . '\', "sellPrice");
                               calculateSellPriceBySellPriceFormula()'
             );
-            $dropDownField = $form->dropDownList($model, $attribute, SellPriceFormula::getNameDropDownArray(), $htmlOptions);
+            $dropDownField = $form->dropDownList($model, $attribute, SellPriceFormula::getTypeDropDownArray(), $htmlOptions);
             $error     = $form->error($model, $attribute, array('inputID' => $id));
             return $dropDownField . $error;
         }
@@ -116,7 +117,7 @@
 
         protected function resolveInputDisplayStyle($model)
         {
-            if($model->name == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->name == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->name == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
+            if($model->type == SellPriceFormula::TYPE_PROFIT_MARGIN || $model->type == SellPriceFormula::TYPE_MARKUP_OVER_COST || $model->type == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
             {
                 return 'display:block';
             }

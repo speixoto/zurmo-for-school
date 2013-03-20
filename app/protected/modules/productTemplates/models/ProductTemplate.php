@@ -166,52 +166,5 @@
         {
             //return 'ProductTemplateGamification';
         }
-
-        protected function beforeValidate()
-        {
-            if(is_object($this->sellPriceFormula))
-            {
-                $sellPriceFormulaName = $this->sellPriceFormula->name;
-                if($sellPriceFormulaName != SellPriceFormula::TYPE_EDITABLE)
-                {
-                    $this->getCalculatedSellPriceBySellPriceFormula();
-                }
-            }
-            parent::beforeValidate();
-        }
-
-        protected function getCalculatedSellPriceBySellPriceFormula()
-        {
-            $name = $this->sellPriceFormula->name;
-
-            $calculatedSellPrice = 0;
-            $discountOrMarkupPercentage = 0;
-            if(!empty($this->sellPriceFormula->discountOrMarkupPercentage))
-            {
-                $discountOrMarkupPercentage = $this->sellPriceFormula->discountOrMarkupPercentage/100;
-            }
-
-            if($name == SellPriceFormula::TYPE_PROFIT_MARGIN)
-            {
-                $calculatedSellPrice = round(floatval($this->cost/(100-$discountOrMarkupPercentage)), 2);
-            }
-
-            if($name == SellPriceFormula::TYPE_MARKUP_OVER_COST)
-            {
-                $calculatedSellPrice = round(floatval(($this->cost*$discountOrMarkupPercentage) + $this->cost), 2);
-            }
-
-            if($name == SellPriceFormula::TYPE_DISCOUNT_FROM_LIST)
-            {
-                $calculatedSellPrice = round(floatval($this->listPrice - ($this->listPrice * $discountOrMarkupPercentage)), 2);
-            }
-
-            if($name == SellPriceFormula::TYPE_SAME_AS_LIST)
-            {
-                $calculatedSellPrice = $this->listPrice;
-            }
-
-            $this->sellPrice = $calculatedSellPrice;
-        }
     }
 ?>

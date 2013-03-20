@@ -46,7 +46,6 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
                     'type',
                     'discountOrMarkupPercentage',
                 ),
@@ -54,15 +53,14 @@
                     'productTemplate' => array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
                 ),
                 'rules' => array(
-                    array('name',                        'required'),
-                    array('name',                        'type',    'type' => 'string'),
-                    //array('name',                        'length',  'min'  => 3,  'max' => 64),
+                    array('type',                        'required'),
+                    array('type',                        'type',    'type' => 'integer'),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
                 ),
 //                'elements' => array(
 //                    'type'                => 'SellPriceFormulaTypeDropDown',
 //                ),
-                'defaultSortAttribute' => 'name',
+                'defaultSortAttribute' => 'type',
                 'customFields' => array(
                 ),
             );
@@ -82,15 +80,25 @@
         /**
          * @return array of sellpriceformula values and labels
          */
-        public static function getNameDropDownArray()
+        public static function getTypeDropDownArray()
         {
             return array(
-                null                                       => Yii::t('Default', '--'),
                 SellPriceFormula::TYPE_EDITABLE            => Yii::t('Default', 'Editable'),
                 SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'Discount From List'),
                 SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', 'Markup Over Cost'),
                 SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Profit Margin'),
                 SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List'),
+            );
+        }
+
+        public static function getDisplayedSellPriceFormulaArray($discount)
+        {
+            $discount = $discount / 100;
+            return array(
+                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'List Price - (' . $discount . ' * List Price)'),
+                SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', '(' . $discount . ' * Cost) + Cost'),
+                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'cost / (100 - ' . $discount . ')'),
+                SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List Price'),
             );
         }
     }

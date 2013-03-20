@@ -62,13 +62,13 @@
                 {
                     if (helperValue != typeEditable)
                     {
-                        $('#' + elementId).attr('disabled', true);
-                        $('#ProductTemplate_' + attribute + '_currency_id').attr('disabled', 'true');
+                        $('#' + elementId).attr('readonly', true);
+                        $('#ProductTemplate_' + attribute + '_currency_id').attr('readonly', 'true');
                     }
                     else
                     {
-                        $('#' + elementId).removeAttr('disabled');
-                        $('#ProductTemplate_' + attribute + '_currency_id').removeAttr('disabled');
+                        $('#' + elementId).removeAttr('readonly');
+                        $('#ProductTemplate_' + attribute + '_currency_id').removeAttr('readonly');
                     }
                 }
             ";
@@ -84,7 +84,7 @@
                 var typeSameAsList = " . SellPriceFormula::TYPE_SAME_AS_LIST . ";
                 function calculateSellPriceBySellPriceFormula()
                 {
-                    var helperValue = $('#ProductTemplate_sellPriceFormula_name').val();
+                    var helperValue = $('#ProductTemplate_sellPriceFormula_type').val();
                     var calculatedSellPrice = 0;
                     var discountOrMarkupPercentage = $('#ProductTemplate_sellPriceFormula_discountOrMarkupPercentage').val();
                     if(discountOrMarkupPercentage == '')
