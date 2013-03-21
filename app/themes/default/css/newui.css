@@ -5796,7 +5796,6 @@ body > .ui-autocomplete {
 /*=Inner toolbar*/
 .float-bar {
   width: 100%;
-  float: left;
   position: relative;
   height: 40px;
   display: block;
@@ -11007,7 +11006,7 @@ table.configuration-list td:last-child a .z-label:before {
 }
 /*Currency*/
 #currency-collection-form {
-  padding-bottom: 10px !important;
+  padding-bottom: 5px !important;
 }
 #currency-collection-form .portlet-toolbar {
   position: relative;
