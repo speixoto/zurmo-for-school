@@ -33,6 +33,10 @@
         const STATUS_INACTIVE   = 4;
         const STATUS_ACTIVE     = 5;
 
+        const PRICE_FREQUENCY_ONE_TIME = 6;
+        const PRICE_FREQUENCY_MONTHLY = 7;
+        const PRICE_FREQUENCY_ANNUALLY = 8;
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
