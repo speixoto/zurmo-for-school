@@ -24,25 +24,55 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class WorkflowTriggersUtilTest extends ZurmoBaseTest
+    class WorkflowTriggersUtilTest extends WorkflowTriggersUtilBaseTest
     {
-        public static function setUpBeforeClass()
+        public function testResolveStructureToPHPString()
         {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
+            $this->assertEquals('1', WorkflowTriggersUtil::resolveStructureToPHPString('1'));
+            $this->assertEquals('1 && 2', WorkflowTriggersUtil::resolveStructureToPHPString('1 AND 2'));
+            $this->assertEquals('1 || 2', WorkflowTriggersUtil::resolveStructureToPHPString('1 OR 2'));
+            $this->assertEquals('(1 || 2) && 3', WorkflowTriggersUtil::resolveStructureToPHPString('(1 OR 2) AND 3'));
+            $this->assertEquals('1 && 2 && 3', WorkflowTriggersUtil::resolveStructureToPHPString('1 AND 2 AND 3'));
         }
 
-        public function setup()
+        public function testResolveBooleansDataToPHPString()
         {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
+            $data = array(1 => true);
+            $this->assertEquals('true', WorkflowTriggersUtil::resolveBooleansDataToPHPString('1', $data));
+
+            $data = array(1 => true, 2 => false);
+            $this->assertEquals('true && false', WorkflowTriggersUtil::resolveBooleansDataToPHPString('1 && false', $data));
         }
 
-        public function testAreTriggersTrueBeforeSave()
+        /**
+         * @expectedException NotSupportedException()
+         */
+        public function testResolveBooleansDataToPHPStringWithInvalidDataKey()
         {
-            //todO:
-            //areTriggersTrueBeforeSave($workflow, $model)
-            $this->fail();
+            $data = array(0 => true);
+            $this->assertEquals('true', WorkflowTriggersUtil::resolveBooleansDataToPHPString('1', $data));
+        }
+
+        /**
+         * @expectedException NotSupportedException()
+         */
+        public function testResolveBooleansDataToPHPStringWithInvalidDataValue()
+        {
+            $data = array(1 => null);
+            $this->assertEquals('true', WorkflowTriggersUtil::resolveBooleansDataToPHPString('1', $data));
+        }
+
+        public function testEvaluatePHPString()
+        {
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true'));
+            $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('false'));
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true && true'));
+            $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('true && false'));
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true || false'));
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true || false || true'));
+            $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('false || false || false'));
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true && (true || false)'));
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('false || (true && true)'));
         }
     }
 ?>
