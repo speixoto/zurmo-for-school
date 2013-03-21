@@ -40,5 +40,10 @@
         {
             return SellPriceFormula::TYPE_SAME_AS_LIST;
         }
+
+	public static function getDisplaySellPriceFormula()
+        {
+            Zurmo::t('ProductTemplateModule', 'Same As List');
+        }
     }
 ?>

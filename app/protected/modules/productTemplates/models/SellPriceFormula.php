@@ -83,22 +83,22 @@
         public static function getTypeDropDownArray()
         {
             return array(
-                SellPriceFormula::TYPE_EDITABLE            => Yii::t('Default', 'Editable'),
-                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'Discount From List'),
-                SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', 'Markup Over Cost'),
-                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Profit Margin'),
-                SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List'),
+                SellPriceFormula::TYPE_EDITABLE            => EditableSellPriceFormulaRules::getDisplayLabel(),
+                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => DiscountFromListSellPriceFormulaRules::getDisplayLabel(),
+                SellPriceFormula::TYPE_MARKUP_OVER_COST    => MarkupOverCostSellPriceFormulaRules::getDisplayLabel(),
+                SellPriceFormula::TYPE_PROFIT_MARGIN       => ProfitMarginSellPriceFormulaRules::getDisplayLabel(),
+                SellPriceFormula::TYPE_SAME_AS_LIST        => SameAsListSellPriceFormulaRules::getDisplayLabel(),
             );
         }
 
-        public static function getDisplayedSellPriceFormulaArray($discount)
+        public static function getDisplayedSellPriceFormulaArray()
         {
-            $discount = $discount / 100;
             return array(
-                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'List Price - (' . $discount . ' * List Price)'),
-                SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', '(' . $discount . ' * Cost) + Cost'),
-                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Cost / (100 - ' . $discount . ')'),
-                SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List Price'),
+                SellPriceFormula::TYPE_EDITABLE            => EditableSellPriceFormulaRules::getDisplaySellPriceFormula(),
+                SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => DiscountFromListSellPriceFormulaRules::getDisplaySellPriceFormula(),
+                SellPriceFormula::TYPE_MARKUP_OVER_COST    => MarkupOverCostSellPriceFormulaRules::getDisplaySellPriceFormula(),
+                SellPriceFormula::TYPE_PROFIT_MARGIN       => ProfitMarginSellPriceFormulaRules::getDisplaySellPriceFormula(),
+                SellPriceFormula::TYPE_SAME_AS_LIST        => SameAsListSellPriceFormulaRules::getDisplaySellPriceFormula(),
             );
         }
     }
