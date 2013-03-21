@@ -15811,7 +15811,6 @@ a.user-link {
   max-height: 600px;
   overflow: auto;
   margin-top: 10px;
-  z-index: 10;
 }
 .hasTree .big-spinner {
   position: relative;
@@ -15824,7 +15823,6 @@ a.user-link {
   padding-left: 15px;
   margin-top: 10px;
   position: relative;
-  z-index: 5;
 }
 .dynamic-droppable-area .ui-droppable {
   float: left;
