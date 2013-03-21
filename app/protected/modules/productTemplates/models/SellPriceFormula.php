@@ -97,7 +97,7 @@
             return array(
                 SellPriceFormula::TYPE_DISCOUNT_FROM_LIST  => Yii::t('Default', 'List Price - (' . $discount . ' * List Price)'),
                 SellPriceFormula::TYPE_MARKUP_OVER_COST    => Yii::t('Default', '(' . $discount . ' * Cost) + Cost'),
-                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'cost / (100 - ' . $discount . ')'),
+                SellPriceFormula::TYPE_PROFIT_MARGIN       => Yii::t('Default', 'Cost / (100 - ' . $discount . ')'),
                 SellPriceFormula::TYPE_SAME_AS_LIST        => Yii::t('Default', 'Same As List Price'),
             );
         }
