@@ -41,7 +41,7 @@
             return SellPriceFormula::TYPE_DISCOUNT_FROM_LIST;
         }
 
-	public static function getDisplaySellPriceFormula()
+        public static function getDisplaySellPriceFormula()
         {
             return Zurmo::t('ProductTemplateModule', ' List Price - ({discount} * List Price)');
         }

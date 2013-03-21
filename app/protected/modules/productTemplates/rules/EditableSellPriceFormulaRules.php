@@ -41,7 +41,7 @@
             return SellPriceFormula::TYPE_EDITABLE;
         }
 
-	public static function getDisplaySellPriceFormula()
+        public static function getDisplaySellPriceFormula()
         {
             return Zurmo::t('ProductTemplateModule', 'NA');
         }

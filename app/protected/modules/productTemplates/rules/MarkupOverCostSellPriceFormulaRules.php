@@ -41,7 +41,7 @@
             return SellPriceFormula::TYPE_MARKUP_OVER_COST;
         }
 
-	public static function getDisplaySellPriceFormula()
+        public static function getDisplaySellPriceFormula()
         {
             return Zurmo::t('ProductTemplateModule', '({discount} * Cost) + Cost');
         }

@@ -41,7 +41,7 @@
             throw new NotImplementedException();
         }
 
-	public static function getDisplaySellPriceFormula()
+        public static function getDisplaySellPriceFormula()
         {
             throw new NotImplementedException();
         }

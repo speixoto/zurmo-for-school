@@ -41,7 +41,7 @@
             return SellPriceFormula::TYPE_PROFIT_MARGIN;
         }
 
-	public static function getDisplaySellPriceFormula()
+        public static function getDisplaySellPriceFormula()
         {
             return Zurmo::t('ProductTemplateModule', 'Cost / (100 - {discount})');
         }
