@@ -138,11 +138,12 @@
                 $view                = new AttributeRowForWorkflowComponentView($adapter,
                                        1, $inputPrefixData, $this->model->timeTriggerAttribute,
                                        false, true, $componentType);
-                $timeTriggerContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), '<ul>'.$view->render().'</ul>');
+                $timeTriggerContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'),
+                                       ZurmoHtml::tag('ul', array(), $view->render()));
             }
             else
             {
-                $timeTriggerContent = null;
+                $timeTriggerContent = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), ZurmoHtml::tag('ul', array(), ''));
             }
             return ZurmoHtml::tag('div', array('id' => 'time-trigger-container'), $timeTriggerContent);
         }

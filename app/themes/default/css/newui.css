@@ -15858,7 +15858,7 @@ a.user-link {
   position: relative;
   z-index: 5;
 }
-.dynamic-droppable-area .ui-droppable {
+.droppable-dynamic-rows-container.ui-droppable {
   float: left;
   width: 100%;
   z-index: 0;
@@ -15866,11 +15866,15 @@ a.user-link {
   position: relative;
   margin-bottom: 15px;
 }
-.dynamic-droppable-area .ui-droppable.ui-state-active .drop-zone {
+.droppable-dynamic-rows-container.ui-droppable.ui-state-active .drop-zone {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
+}
+.droppable-dynamic-rows-container.EmailAlerts,
+.droppable-dynamic-rows-container.Actions {
+  min-height: 0;
 }
 .activate-drop-zone {
   -webkit-transition: all 0.75s ease-out;
@@ -15941,7 +15945,7 @@ a.user-link {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 15px 30px 15px 15px;
+  padding: 10px 30px 10px 10px;
 }
 .dynamic-row > div {
   position: relative;
@@ -15964,10 +15968,14 @@ a.user-link {
 .dynamic-row label.hasCheckBox {
   margin-left: 0 !important;
 }
+.dynamic-row .edit-dynamic-row-link {
+  margin-left: 0;
+  cursor: pointer;
+}
 .dynamic-row .remove-dynamic-row-link {
   position: absolute;
   right: 10px;
-  top: 15px;
+  top: 10px;
   display: block;
   font-weight: normal;
   font-size: 24px;
@@ -16051,7 +16059,7 @@ a.user-link {
 .Triggers .dynamic-row,
 .Actions .dynamic-row,
 .EmailAlerts .dynamic-row {
-  padding: 15px 30px;
+  padding: 10px 30px;
 }
 .sortable .dynamic-row:hover {
   -webkit-border-radius: 0 3px 3px 0;
@@ -16064,6 +16072,9 @@ a.user-link {
 .sortable .dynamic-row:active {
   cursor: move;
   background-color: #f5f5f5;
+}
+.sortable .expanded-row .dynamic-row:hover {
+  background-image: none !important;
 }
 .dynamic-row-label {
   float: left;
@@ -16398,18 +16409,18 @@ a.user-link {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 15px 15px 15px 15px;
-  margin: 30px 0 15px 0;
+  margin: 0 0 15px 0;
   float: left;
   width: 100%;
 }
 .action-type-selector-container > .hasDropDown {
   float: left;
-  width: 80%;
+  width: 75%;
 }
 .related-model-selector {
   float: left;
-  width: 80%;
-  margin: 10px 0 0 20%;
+  width: 75%;
+  margin: 10px 0 0 25%;
 }
 .FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {
@@ -16448,14 +16459,14 @@ a.user-link {
   line-height: 30%;
 }
 .ZeroTriggers .large-icon:after {
-  content: '\20AC';
+  content: '\007E';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
 .ZeroActions .large-icon:after {
-  content: '\20AC';
+  content: '\00A3';
   font-weight: normal;
   font-size: 300px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -16580,6 +16591,22 @@ a.user-link {
 .static-address-field .value-data > input {
   float: left;
   width: 75%;
+}
+#time-trigger-container {
+  float: left;
+  width: 100%;
+}
+#time-trigger-container .value-data {
+  float: left;
+  width: 55%;
+}
+#time-trigger-container .first-value-area {
+  margin-left: 15px;
+}
+.time-trigger-attribute-selector-container {
+  margin: 15px 0;
+  float: left;
+  width: 100%;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {

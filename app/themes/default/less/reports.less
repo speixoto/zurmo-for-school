@@ -107,7 +107,10 @@
     &.error{
         
     }
-    .ui-droppable{
+}
+
+.droppable-dynamic-rows-container{
+    &.ui-droppable{
         float: left;
         width: 100%;
         z-index: 0;
@@ -120,6 +123,10 @@
             }
         }
     }
+	&.EmailAlerts,
+	&.Actions{
+		min-height: 0;
+	}
 }
 
 .activate-drop-zone{
@@ -184,7 +191,7 @@
     margin:0 0 5px 0;
     background: #f0f0f0;
     .radius(3px);
-    padding:15px 30px 15px 15px;
+    padding:10px 30px 10px 10px;
     ++.border-box;
     > div{
         position: relative;
@@ -208,10 +215,14 @@
     label.hasCheckBox{
         margin-left:0 !important;
     }
+    .edit-dynamic-row-link{
+        margin-left: 0;
+        cursor: pointer;
+    }
     .remove-dynamic-row-link{
         position: absolute;
         right: 10px;
-        top: 15px;
+        top: 10px;
         display: block;
         .symbly(24px);
         color:#a7a7a7 !important;
@@ -289,7 +300,7 @@
 .Actions,
 .EmailAlerts{
     .dynamic-row{
-        padding:15px 30px;
+        padding:10px 30px;
     }
 }
 
@@ -301,6 +312,11 @@
     .dynamic-row:active{
         cursor: move;
         background-color: #f5f5f5;
+    }
+    .expanded-row{
+        .dynamic-row:hover{
+            background-image: none !important;
+        }
     }
 }
 
@@ -666,35 +682,30 @@
 }
 
 .action-type-selector-container{
-    //margin-bottom: 15px;
-    //.dynamic-row();
-    //float: left;
-    //line-height: 26px;
-    //width: 20%;
     ++.cf;
     ++.border-box;
     background: #f0f0f0;
     .radius(3px);
     padding:15px 15px 15px 15px;
-    margin: 30px 0 15px 0;
+    margin: 0 0 15px 0;
     float: left;
     width: 100%;
     > .hasDropDown{
         float: left;
-        width:80%;
+        width:75%;
     }
 }
 .related-model-selector{
     float: left;
-    width: 80%;
-    margin:10px 0 0 20%;
+    width: 75%;
+    margin:10px 0 0 25%;
 }
 
 
 .FilterIconOrSomethingElse,
 .ZeroFilters{
     .large-icon:after{
-        content:'\00A9';//"©";
+        content:'\00A9';//"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -710,7 +721,7 @@
 
 .ZeroDisplayAttributes{
     .large-icon:after{
-        content:'\00AB';//"Ç";
+        content:'\00AB';//"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -718,7 +729,7 @@
 
 .ZeroOrderBys{
     .large-icon:after{
-        content:'\2039';//"Ü";
+        content:'\2039';//"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -726,7 +737,7 @@
 
 .ZeroDrillDownDisplayAttributes{
     .large-icon:after{
-        content:'\00BB'; //"È";
+        content:'\00BB'; //"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -734,7 +745,7 @@
 
 .ZeroTriggers{
     .large-icon:after{
-        content:'\20AC'; 
+        content:'\007E';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -742,7 +753,7 @@
 
 .ZeroActions{
     .large-icon:after{
-        content:'\20AC'; 
+        content:'\00A3';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -876,4 +887,21 @@
             width: 75%;
         }
     }
+}
+
+#time-trigger-container{
+	float: left;
+	width: 100%;
+	.value-data {
+		float: left;
+		width: 55%;
+	}
+	.first-value-area{
+		margin-left: 15px;
+	}
+}
+.time-trigger-attribute-selector-container{
+	margin: 15px 0;
+	float: left;
+	width: 100%;
 }

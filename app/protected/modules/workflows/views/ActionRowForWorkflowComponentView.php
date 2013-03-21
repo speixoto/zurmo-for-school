@@ -68,22 +68,20 @@
         {
             $content  = '<div>';
             $content .= $this->renderActionRowNumberLabel();
-            $toggleLink = ZurmoHtml::tag('span', array('class' => 'toggle-row'), '            _expand/collpase row link (todo)_'); //todo: make it work
-            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . $toggleLink); //todo: convert to label
+            $toggleLink = ZurmoHtml::tag('a', array('class' => 'edit-dynamic-row-link simple-link toggle-row'), 'Edit'); //todo: make it work
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . ' &mdash; ' . $toggleLink); //todo: convert to label
             $content .= $this->renderTypeHiddenInputContent();
             $content .= $this->renderRelationHiddenInputContent();
             $content .= $this->renderRelatedModelRelationHiddenInputContent();
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
-            $content .= '<div>';
+            $content .= '<div class="toggle-me">';
             $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
-            $content .= '</div>';
-            $content .= '<div>';
             $content .= $this->renderSaveActionElementsContent();
             $content .= '</div>';
             //todo: call correctly as action, fix theme? need to maybe refcator
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
-            return ZurmoHtml::tag('li', array(), $content);
+            return ZurmoHtml::tag('li', array('class' => 'expanded-row'), $content);
         }
 
         /**
@@ -202,7 +200,8 @@
             $params                = array();
             $params['label']       = Zurmo::t('Core', 'Save');
             $params['htmlOptions'] = array('id' => 'saveAction'. $this->rowNumber,
-                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
+                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget").parent().toggle()' .
+                                                        '.parentsUntil("li").parent().toggleClass("expanded-row");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }
