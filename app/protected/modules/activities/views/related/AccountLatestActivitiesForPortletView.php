@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an opportunity's latest activities feed.
+     * Wrapper view for displaying an account's latest activities feed.
      */
-    class OpportunityLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class AccountLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
         public static function getDefaultMetadata()
         {
@@ -36,12 +36,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'                   => 'CreateConversationFromRelatedListLink',
+                            array('type'                    => 'CreateConversationFromRelatedListLink',
+                                  'modelClassName'          => 'Conversation',
                                   'routeParameters'         =>
                                     array('relationAttributeName'    => 'notUsed',
-                                            'relationModelClassName' => 'Opportunity',
+                                            'relationModelClassName' => 'Account',
                                             'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                            'relationModuleId'       => 'opportunities',
+                                            'relationModuleId'       => 'accounts',
                                             'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
                         ),
                     ),
@@ -51,7 +52,7 @@
 
         public function getLatestActivitiesViewClassName()
         {
-            return 'LatestActivitiesForOpportunityListView';
+            return 'LatestActivitiesForAccountListView';
         }
 
         public static function hasRollupSwitch()

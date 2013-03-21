@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an contact's latest activities feed.
+     * Wrapper view for displaying an opportunity's latest activities feed.
      */
-    class ContactLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class OpportunityLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
         public static function getDefaultMetadata()
         {
@@ -36,14 +36,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'                    => 'CreateEmailMessageFromRelatedListLink',
-                                  'modelClassName'          => 'EmailMessage',
+                            array('type'                   => 'CreateConversationFromRelatedListLink',
                                   'routeParameters'         =>
-                                    array(  'relatedModelClassName'  => 'Contact',
-                                            'relatedId'        =>
-                                                'eval:$this->params["relationModel"]->id',
-                                            'toAddress'        =>
-                                                'eval:$this->params["relationModel"]->primaryEmail->emailAddress')
+                                    array('relationAttributeName'    => 'notUsed',
+                                            'relationModelClassName' => 'Opportunity',
+                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
+                                            'relationModuleId'       => 'opportunities',
+                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
                         ),
                     ),
                 ),
@@ -52,7 +51,7 @@
 
         public function getLatestActivitiesViewClassName()
         {
-            return 'LatestActivitiesForContactListView';
+            return 'LatestActivitiesForOpportunityListView';
         }
 
         public static function hasRollupSwitch()
