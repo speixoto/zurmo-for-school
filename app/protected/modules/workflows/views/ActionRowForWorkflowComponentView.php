@@ -66,10 +66,11 @@
          */
         protected function renderContent()
         {
+            $rowId = Element::resolveInputIdPrefixIntoString($this->inputPrefixData);
             $content  = '<div>';
             $content .= $this->renderActionRowNumberLabel();
-            $toggleLink = ZurmoHtml::tag('a', array('class' => 'edit-dynamic-row-link simple-link toggle-row'), 'Edit'); //todo: make it work
-            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . ' &mdash; ' . $toggleLink); //todo: convert to label
+            $toggleLink = ZurmoHtml::tag('a', array('data-row' => $rowId,'class' => 'edit-dynamic-row-link simple-link toggle-row'), 'Edit'); //todo: make it work
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . '&nbsp;&nbsp;' . $toggleLink); //todo: convert to label
             $content .= $this->renderTypeHiddenInputContent();
             $content .= $this->renderRelationHiddenInputContent();
             $content .= $this->renderRelatedModelRelationHiddenInputContent();
@@ -77,11 +78,11 @@
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div class="toggle-me">';
             $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
-            $content .= $this->renderSaveActionElementsContent();
+            $content .= $this->renderSaveActionElementsContent($rowId);
             $content .= '</div>';
             //todo: call correctly as action, fix theme? need to maybe refcator
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
-            return ZurmoHtml::tag('li', array('class' => 'expanded-row'), $content);
+            return ZurmoHtml::tag('li', array('id' => $rowId, 'class' => 'expanded-row'), $content);
         }
 
         /**
@@ -195,13 +196,15 @@
             return $content;
         }
 
-        protected function renderSaveActionElementsContent()
+        protected function renderSaveActionElementsContent($rowId)
         {
+            assert('is_string($rowId)');
             $params                = array();
             $params['label']       = Zurmo::t('Core', 'Save');
-            $params['htmlOptions'] = array('id' => 'saveAction'. $this->rowNumber,
-                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget").parent().toggle()' .
-                                                        '.parentsUntil("li").parent().toggleClass("expanded-row");');
+            $params['htmlOptions'] = array('id' => 'saveAction' . $this->rowNumber,
+                                     'data-purpose' => 'validate-action',
+                                     'data-row' => $rowId,
+                                     'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }

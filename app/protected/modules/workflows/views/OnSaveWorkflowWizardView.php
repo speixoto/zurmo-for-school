@@ -89,6 +89,13 @@
                             $('#EmailAlertsForWorkflowWizardView').hide();
                             $('#GeneralDataForWorkflowWizardView').show();
                         }
+                        var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
+                        if (rowData.purpose === 'validate-action'){
+                            $('#' + rowData.row.toString()).toggleClass('expanded-row');
+                            $('#' + rowData.row.toString() + ' .toggle-me').toggle();
+                            $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();
+                            $('#' + rowData.row.toString()).siblings().show();
+                        }
                         if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
