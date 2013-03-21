@@ -6334,7 +6334,7 @@ td {
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
   background-size: 40px 100%,
-        40px 100%, 
+        40px 100%,
         20px 100%,
         20px 100%;
   /* Opera doesn't support this in the shorthand */
@@ -8384,7 +8384,7 @@ div.wide.form label.hasCheckBox {
 #UserDetailsAndRelationsView .GridView + .GridView {
   width: 35%;
 }
-#UserDetailsAndRelationsView .UserLatestActivtiesForPortletView {
+#UserDetailsAndRelationsView .UserLatestActivitiesForPortletView {
   margin-right: 20px !important;
 }
 #NoteInlineEditView .col-0 {
@@ -9415,19 +9415,19 @@ div.hasHalfs .twoThirds {
   margin-bottom: 3px;
   display: block;
 }
-.LatestActivtiesForPortletView {
+.LatestActivitiesForPortletView {
   position: relative;
 }
-.LatestActivtiesForPortletView .toolbar-mbmenu {
+.LatestActivitiesForPortletView .toolbar-mbmenu {
   z-index: 999999;
   top: -34px;
   right: 10px;
 }
-.LatestActivtiesForPortletView .toolbar-mbmenu .view-toolbar {
+.LatestActivitiesForPortletView .toolbar-mbmenu .view-toolbar {
   background: none;
   margin: 0;
 }
-.LatestActivtiesForPortletView .toolbar-mbmenu li {
+.LatestActivitiesForPortletView .toolbar-mbmenu li {
   padding: 0;
 }
 /*=Search User Modal*/
