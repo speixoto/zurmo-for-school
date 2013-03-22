@@ -111,10 +111,10 @@
 
             $stickyData['anyMixedAttributesScope']            = $dataCollection->getAnyMixedAttributesScopeFromModel();
             $stickyData[SearchForm::SELECTED_LIST_ATTRIBUTES] = $dataCollection->getSelectedListAttributesFromModel();
-//            if ($dataCollection instanceof SavedSearchAttributesDataCollection)
-//            {
-//                $stickyData['savedSearchId'] = $dataCollection->getSavedSearchId();
-//            }
+            if ($dataCollection instanceof SavedSearchAttributesDataCollection)
+            {
+                $stickyData['savedSearchId'] = $dataCollection->getSavedSearchId();
+            }
 
             // Resolve the sort and desc attribute from source data and set it in sticky array
             $listSortModel = get_class($dataCollection->getModel()->getModel());
@@ -140,18 +140,18 @@
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)
         {
             assert('$stickyData != null && is_array($stickyData)');
-//            if (isset($stickyData['savedSearchId']) && $stickyData['savedSearchId'] != '')
-//            {
-//                try
-//                {
-//                    $savedSearch            = SavedSearch::getById((int)$stickyData['savedSearchId']);
-//                    $model->savedSearchName = $savedSearch->name;
-//                    $model->savedSearchId   = $savedSearch->id;
-//                }
-//                catch (NotFoundException $e)
-//                {
-//                }
-//            }
+            if (isset($stickyData['savedSearchId']) && $stickyData['savedSearchId'] != '')
+            {
+                try
+                {
+                    $savedSearch            = SavedSearch::getById((int)$stickyData['savedSearchId']);
+                    $model->savedSearchName = $savedSearch->name;
+                    $model->savedSearchId   = $savedSearch->id;
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
             if (isset($stickyData['anyMixedAttributes']))
             {
                 $model->anyMixedAttributes = $stickyData['anyMixedAttributes'];
@@ -181,7 +181,6 @@
                 if ($stickyData['sortAttribute'] != '')
                 {
                     $model->sortAttribute = $stickyData['sortAttribute'];
-                    //$_GET[$listModelClassName . '_sort'] = $stickyData['sortAttribute'];
                 }
 
                 if (isset($stickyData['sortDescending']))
@@ -189,7 +188,6 @@
                     if ($stickyData['sortDescending'] == true)
                     {
                         $model->sortDescending = ".desc";
-                        //$_GET[$listModelClassName . '_sort'] .= ".desc";
                     }
                 }
             }

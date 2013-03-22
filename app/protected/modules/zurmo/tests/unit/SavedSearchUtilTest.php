@@ -120,15 +120,15 @@
                                     'dynamicStructure'        => '1 and 5',
                                     'anyMixedAttributes'      => 'abcdef',
                                     'anyMixedAttributesScope' => 'xyz',
-                                    //'savedSearchId'           => $savedSearch->id,
+                                    'savedSearchId'           => $savedSearch->id,
                                     SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'));
             $this->assertEquals($compareData, $stickyData);
             $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
             $listAttributesSelector          = new ListAttributesSelector('AListView', 'TestModule');
             $searchModel->setListAttributesSelector($listAttributesSelector);
             SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickyData, $searchModel);
-            //$this->assertEquals('something',        $searchModel->savedSearchName);
-            //$this->assertEquals($savedSearch->id,   $searchModel->savedSearchId);
+            $this->assertEquals('something',        $searchModel->savedSearchName);
+            $this->assertEquals($savedSearch->id,   $searchModel->savedSearchId);
             $this->assertEquals('abcdef',           $searchModel->anyMixedAttributes);
             $this->assertEquals('xyz',              $searchModel->getAnyMixedAttributesScope());
             $this->assertEquals('1 and 5',          $searchModel->dynamicStructure);
@@ -149,7 +149,7 @@
                                         'dynamicStructure'        => '1 and 5',
                                         'anyMixedAttributes'      => 'abcdef',
                                         'anyMixedAttributesScope' => 'xyz',
-                                        //'savedSearchId'           => $savedSearch->id,
+                                        'savedSearchId'           => $savedSearch->id,
                                         SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'),
                                         'sortAttribute' => 'aaaMember',
                                         'sortDescending' => false);
