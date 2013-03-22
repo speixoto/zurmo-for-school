@@ -135,5 +135,84 @@
             $this->assertEquals(array('a', 'b'),    $searchModel->dynamicClauses);
             $this->assertEquals(array('aaaMember', 'aaaMember2'), $searchModel->getListAttributesSelector()->getSelected());
         }
+
+        public function testStickySearchByKeyWithSortAsc()
+        {
+            $dataArray = $this->getSearchDataForSort();
+            $dataCollection = $dataArray[ 'dataCollection' ];
+            $savedSearch = $dataArray[ 'savedSearch' ];
+            //Set the sort in $_GET to set the sticky key for it.
+            $_GET['AAA_sort'] = 'aaaMember';
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
+            $stickyData = StickySearchUtil::getDataByKey('abc');
+            $compareData = array(   'dynamicClauses'          => array('a', 'b'),
+                                        'dynamicStructure'        => '1 and 5',
+                                        'anyMixedAttributes'      => 'abcdef',
+                                        'anyMixedAttributesScope' => 'xyz',
+                                        'savedSearchId'           => $savedSearch->id,
+                                        SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'),
+                                        'sortAttribute' => 'aaaMember',
+                                        'sortDescending' => false);
+            $this->assertEquals($compareData, $stickyData);
+
+            $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
+            $listAttributesSelector          = new ListAttributesSelector('AListView', 'TestModule');
+            $searchModel->setListAttributesSelector($listAttributesSelector);
+            unset($_GET['AAA_sort']);
+            SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickyData, $searchModel);
+            $this->assertEquals('aaaMember', $searchModel->sortAttribute);
+            $this->assertNull($searchModel->sortDescending);
+        }
+
+        public function testStickySearchByKeyWithSortDesc()
+        {
+            $dataArray = $this->getSearchDataForSort();
+            $dataCollection = $dataArray[ 'dataCollection' ];
+            $savedSearch = $dataArray[ 'savedSearch' ];
+
+            //Set the sort in $_GET to set the sticky key for it.
+            $_GET['AAA_sort'] = 'aaaMember2.desc';
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
+            $stickyData = StickySearchUtil::getDataByKey('abc');
+            $compareData = array(   'dynamicClauses'          => array('a', 'b'),
+                                    'dynamicStructure'        => '1 and 5',
+                                    'anyMixedAttributes'      => 'abcdef',
+                                    'anyMixedAttributesScope' => 'xyz',
+                                    'savedSearchId'           => $savedSearch->id,
+                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'),
+                                    'sortAttribute' => 'aaaMember2',
+                                    'sortDescending' => true);
+            $this->assertEquals($compareData, $stickyData);
+
+            $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
+            $listAttributesSelector          = new ListAttributesSelector('AListView', 'TestModule');
+            $searchModel->setListAttributesSelector($listAttributesSelector);
+            unset($_GET['AAA_sort']);
+            SavedSearchUtil::resolveSearchFormByStickyDataAndModel($stickyData, $searchModel);
+            $this->assertEquals('aaaMember2', $searchModel->sortAttribute);
+            $this->assertNotNull($searchModel->sortDescending);
+        }
+
+        private function getSearchDataForSort()
+        {
+            $savedSearch                     = new SavedSearch();
+            $savedSearch->name               = 'something';
+            $savedSearch->viewClassName      = 'view';
+            $savedSearch->serializedData     = 'someString';
+            $saved                           = $savedSearch->save();
+
+            $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
+            $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
+            $searchModel->setListAttributesSelector($listAttributesSelector);
+            $searchModel->dynamicStructure   = '1 and 5';
+            $searchModel->dynamicClauses     = array('a', 'b');
+            $searchModel->anyMixedAttributes = 'abcdef';
+            $searchModel->savedSearchId      = $savedSearch->id;
+            $searchModel->setAnyMixedAttributesScope('xyz');
+
+            $searchModel->getListAttributesSelector()->setSelected(array('aaaMember', 'aaaMember2'));
+            $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
+            return array('dataCollection' => $dataCollection, 'savedSearch' => $savedSearch);
+        }
     }
 ?>

@@ -35,6 +35,10 @@
 
         public $loadSavedSearchUrl;
 
+        public $sortAttribute;
+
+        public $sortDescending;
+
         public static function getNonSearchableAttributes()
         {
             return array_merge(parent::getNonSearchableAttributes(), array('savedSearchId', 'savedSearchName', 'loadSavedSearchUrl'));

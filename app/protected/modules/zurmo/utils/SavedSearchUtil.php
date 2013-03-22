@@ -91,7 +91,7 @@
             }
         }
 
-        public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection)
+        public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection, $stickyData = array())
         {
             assert('is_string($key)');
             $stickyData['dynamicClauses']          = $dataCollection->getSanitizedDynamicSearchAttributes();
@@ -109,9 +109,28 @@
             $stickyData[SearchForm::SELECTED_LIST_ATTRIBUTES] = $dataCollection->getSelectedListAttributesFromModel();
             if ($dataCollection instanceof SavedSearchAttributesDataCollection)
             {
-                $stickyData['savedSearchId']           = $dataCollection->getSavedSearchId();
+                $stickyData['savedSearchId'] = $dataCollection->getSavedSearchId();
             }
-            StickySearchUtil::setDataByKeyAndData($key, $stickyData);
+
+            // Resolve the sort and desc attribute from source data and set it in sticky array
+            $listSortModel = get_class($dataCollection->getModel()->getModel());
+
+            $sortAttribute = $dataCollection->resolveSortAttributeFromSourceData($listSortModel);
+
+            if (!empty($sortAttribute))
+            {
+                $stickyData['sortAttribute'] = $sortAttribute;
+                if ($dataCollection->resolveSortDescendingFromSourceData($listSortModel))
+                {
+                    $stickyData['sortDescending'] = true;
+                }
+                else
+                {
+                    $stickyData['sortDescending'] = false;
+                }
+            }
+
+            Yii::app()->user->setState($key, serialize($stickyData));
         }
 
         public static function resolveSearchFormByStickyDataAndModel($stickyData, SavedDynamicSearchForm $model)
@@ -149,6 +168,26 @@
                $model->getListAttributesSelector() != null)
             {
                 $model->getListAttributesSelector()->setSelected($stickyData[SearchForm::SELECTED_LIST_ATTRIBUTES]);
+            }
+
+            // If the sort attribute is not in get request but in sticky data, set it into get array
+            $listModelClassName = get_class($model->getModel());
+            if (!isset($_GET[$listModelClassName . '_sort']) && isset($stickyData['sortAttribute']))
+            {
+                if ($stickyData['sortAttribute'] != '')
+                {
+                    $model->sortAttribute = $stickyData['sortAttribute'];
+                    //$_GET[$listModelClassName . '_sort'] = $stickyData['sortAttribute'];
+                }
+
+                if (isset($stickyData['sortDescending']))
+                {
+                    if ($stickyData['sortDescending'] == true)
+                    {
+                        $model->sortDescending = ".desc";
+                        //$_GET[$listModelClassName . '_sort'] .= ".desc";
+                    }
+                }
             }
         }
     }
