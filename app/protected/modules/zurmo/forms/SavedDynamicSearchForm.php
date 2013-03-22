@@ -50,6 +50,8 @@
                                array('savedSearchId',      'safe'),
                                array('savedSearchName',    'safe'),
                                array('loadSavedSearchUrl', 'safe'),
+                               array('sortAttribute',      'safe'),
+                               array('sortDescending',     'safe'),
                                array('savedSearchName',    'type',   'type' => 'string'),
                                array('savedSearchName',    'length', 'max'  => 64),
                                array('savedSearchName',    'validateSaveSearch', 'on' => 'validateSaveSearch'),
