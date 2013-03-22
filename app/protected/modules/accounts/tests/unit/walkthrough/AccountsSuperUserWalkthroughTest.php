@@ -368,12 +368,12 @@
             StickySearchUtil::clearDataByKey('AccountsSearchView');
             $value = StickySearchUtil::getDataByKey('AccountsSearchView');
             $this->assertNull($value);
+
             //Sort order desc
-            $this->setGetArray(array('AccountsSearchForm'   => array(
-                                                                        'anyMixedAttributes'                 => 'xyz',
-                                                                        SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')
-                                                                    ),
-                                                               'Account_sort' => 'officePhone.desc'));
+            $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
+                                                                   SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
+                                     'Account_sort'       => 'officePhone.desc')
+                              );
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/');
             $data = StickySearchUtil::getDataByKey('AccountsSearchView');
 
@@ -388,11 +388,10 @@
             $this->assertEquals($compareData, $data);
 
             //Sort order asc
-            $this->setGetArray(array('AccountsSearchForm'   => array(
-                                                                        'anyMixedAttributes'                 => 'xyz',
-                                                                        SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')
-                                                                    ),
-                                                               'Account_sort' => 'officePhone'));
+            $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
+                                                                   SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
+                                     'Account_sort'       => 'officePhone')
+                              );
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/');
             $data = StickySearchUtil::getDataByKey('AccountsSearchView');
 
