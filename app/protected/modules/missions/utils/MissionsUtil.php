@@ -237,15 +237,26 @@
          */
         public static function resolvePeopleToSendNotificationToOnNewComment(Mission $mission, User $user)
         {
-            assert('$mission->id > 0');
+            $usersToSendNotification = User::getAll();
             $peopleToSendNotification = array();
-            if ($user->getClassId('Item') != $mission->owner->getClassId('Item'))
+            foreach ($usersToSendNotification as $userToSendNotification)
             {
-                $peopleToSendNotification[] = $mission->owner;
-            }
-            if ($user->getClassId('Item') != $mission->takenByUser->getClassId('Item'))
-            {
-                $peopleToSendNotification[] = $mission->takenByUser;
+
+                if($userToSendNotification->getClassId('Item') != $user->getClassId('Item'))
+                {
+                    if($mission->takenByUser->id > 0)
+                    {
+                        if($userToSendNotification->getClassId('Item') == $mission->owner->getClassId('Item') ||
+                           $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
+                        {
+                            $peopleToSendNotification[] = $userToSendNotification;
+                        }
+                    }
+                    else
+                    {
+                        $peopleToSendNotification[] = $userToSendNotification;
+                    }
+                }
             }
             return $peopleToSendNotification;
         }

@@ -43,7 +43,7 @@
         private $sendOwnerUnreadCommentNotification = false;
 
         private $sendTakenByUserUnreadCommentNotification = false;
-
+        
         public static function getMashableActivityRulesType()
         {
             return 'Mission';
@@ -94,10 +94,8 @@
                     'description',
                     'dueDateTime',
                     'latestDateTime',
-                    'ownerHasReadLatest',
                     'reward',
                     'status',
-                    'takenByUserHasReadLatest',
                 ),
                 'relations' => array(
                     'comments'                    => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
@@ -118,9 +116,7 @@
                     array('latestDateTime',           'type', 'type' => 'datetime'),
                     array('status',                   'required'),
                     array('status',                   'type',    'type' => 'integer'),
-                    array('ownerHasReadLatest',       'boolean'),
                     array('reward',                   'type', 'type' => 'string'),
-                    array('takenByUserHasReadLatest', 'boolean'),
 
                 ),
                 'elements' => array(
@@ -135,9 +131,7 @@
                     'description',
                     'dueDateTime',
                     'latestDateTime',
-                    'ownerHasReadLatest',
                     'reward',
-                    'takenByUserHasReadLatest'
                 ),
             );
             return $metadata;
@@ -174,14 +168,17 @@
          */
         protected function beforeSave()
         {
+            $missionRules = new MissionMashableInboxRules();
             if (parent::beforeSave())
             {
                 if ($this->comments->isModified() || $this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-                    if ($this->getIsNewModel())
+                    $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
+                    foreach ($people as $person)
                     {
-                        $this->ownerHasReadLatest = true;
+                        $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHaveNotReadLatest($person);
+                        $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
                     }
                 }
                 if ($this->comments->isModified())
@@ -192,14 +189,21 @@
                         {
                             if (Yii::app()->user->userModel != $this->owner)
                             {
-                                $this->ownerHasReadLatest                 = false;
                                 $this->sendOwnerUnreadCommentNotification = true;
                             }
                             if (Yii::app()->user->userModel != $this->takenByUser && $this->takenByUser->id > 0)
                             {
-                                $this->takenByUserHasReadLatest                 = false;
                                 $this->sendTakenByUserUnreadCommentNotification = true;
                             }
+                        }
+                    }
+                    $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this, Yii::app()->user->userModel);
+                    foreach ($people as $person)
+                    {
+                        if ($missionRules->haveUserReadLatest($this, $person))
+                        {
+                            $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHaveNotReadLatest($person);
+                            $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
                         }
                     }
                 }

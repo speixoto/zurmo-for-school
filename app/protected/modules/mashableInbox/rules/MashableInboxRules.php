@@ -226,9 +226,9 @@
             //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
             if ($model->personsWhoHaveNotReadLatest->count() > 0)
             {
-                foreach ($model->personsWhoHaveNotReadLatest as $participant)
+                foreach ($model->personsWhoHaveNotReadLatest as $personWhoHaveNoteReadLatest)
                 {
-                    if ($participant->person->getClassId('Item') == $user->getClassId('Item'))
+                    if ($personWhoHaveNoteReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
                     {
                         return false;
                     }
@@ -242,7 +242,7 @@
             //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
             if ($this->haveUserReadLatest($model, $user))
             {
-                $model->personsWhoHaveNotReadLatest->add($this->makeLatestReaderByPerson($user));
+                $model->personsWhoHaveNotReadLatest->add($this->makePersonWhoHaveNotReadLatest($user));
                 $model->save();
             }
         }
@@ -265,7 +265,7 @@
          * @param $personOrUserModel
          * @return \PersonWhoHaveNotReadLatest
          */
-        public function makeLatestReaderByPerson($personOrUserModel)
+        public function makePersonWhoHaveNotReadLatest($personOrUserModel)
         {
             assert('$personOrUserModel instanceof User || $personOrUserModel instanceof Person');
             $personWhoHaveNotReadLatest          = new PersonWhoHaveNotReadLatest();
