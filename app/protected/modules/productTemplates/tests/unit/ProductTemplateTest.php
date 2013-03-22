@@ -46,7 +46,7 @@
                                             'ProductTemplatesModule', 'ProductTemplate');
             $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
             $productTemplate->name                   = $name;
-            $productTemplate->priceFrequency         = 2;
+            $productTemplate->priceFrequency         = ProductTemplate::PRICE_FREQUENCY_ONE_TIME;
             $productTemplate->cost->value            = 200;
             $productTemplate->listPrice->value       = 200;
             $productTemplate->sellPrice->value       = 200;
@@ -83,7 +83,7 @@
             $productTemplate->status                    = ProductTemplate::STATUS_ACTIVE;
             $productTemplate->products->add($product);
             $sellPriceFormula                           = new SellPriceFormula();
-            $sellPriceFormula->name                     = 'Sell Price Formula';
+            $sellPriceFormula->type                     = 1;
             $productTemplate->sellPriceFormula          = $sellPriceFormula;
             $this->assertTrue($productTemplate->save());
             $id                                         = $productTemplate->id;
