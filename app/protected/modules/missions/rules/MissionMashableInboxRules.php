@@ -37,8 +37,23 @@
                     'operatorType'         => 'equals',
                     'value'                => Yii::app()->user->userModel->getClassId('Item'),
                 ),
+                2 => array(
+                    'attributeName'        => 'takenByUser',
+                    'operatorType'         => 'isNull',
+                    'value'                => null,
+                ),
+                3 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id
+                ),
+                4 => array(
+                    'attributeName'        => 'takenByUser',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id,
+                ),
             );
-            $searchAttributeData['structure'] = '1';
+            $searchAttributeData['structure'] = '1 and (2 or 3 or 4)';
             return $searchAttributeData;
         }
 
@@ -115,13 +130,22 @@
         {
             if ($filteredBy == MashableInboxForm::FILTERED_BY_UNREAD)
             {
-                $metadata = $this->getMetadataForUnreadForCurrentUser();
+                $searchAttributeData['clauses'] = array(
+                    1 => array(
+                        'attributeName'        => 'personsWhoHaveNotReadLatest',
+                        'relatedAttributeName' => 'person',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->getClassId('Item'),
+                    ),
+                );
+                $searchAttributeData['structure'] = '1';
+                return $searchAttributeData;
             }
             else
             {
-                $metadata = null;
+                $searchAttributeData = null;
             }
-            return $metadata;
+            return $searchAttributeData;
         }
 
         public function getSearchAttributeData($searchTerm = null)
