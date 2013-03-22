@@ -272,9 +272,8 @@
         }
 
         /**
-         * An example where the attribute is not the real attribute would be for a summation workflow with 'Count' defined
-         * as the attribute which corresponds to ModelRelationsAndAttributesToSummableWorkflowAdapter::DISPLAY_CALCULATION_COUNT
-         * In this case the real attribute returned would be 'id'
+         * An example where the attribute is not the real attribute would be a filter owner__User
+         * In this case the real attribute returned would be 'owner'
          * @return string
          */
         public function getResolvedAttributeRealAttributeName()
@@ -284,6 +283,25 @@
             $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                     make($moduleClassName, $modelClassName, $this->workflowType);
             return $modelToWorkflowAdapter->resolveRealAttributeName($this->getResolvedAttribute());
+        }
+
+        /**
+         * @return string real attribute name. For example owner__User would resolve as owner
+         */
+        public function getResolvedRealAttributeNameForFirstRelation()
+        {
+            $modelClassName         = $this->modelClassName;
+            $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
+                                      make($modelClassName::getModuleClassName(), $modelClassName, $this->workflowType);
+            return $modelToWorkflowAdapter->resolveRealAttributeName($this->attributeAndRelationData[0]);
+        }
+
+        /**
+         * @return string real attribute name. For example owner__User would resolve as owner
+         */
+        public function getResolvedRealAttributeNameForPenultimateRelation()
+        {
+            return $this->resolveRealAttributeNameForPenultimateRelation($this->attributeAndRelationData);
         }
 
         /**
@@ -466,7 +484,7 @@
         protected function resolveAttributeModelClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
                                                                   $modelClassName)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert('count($attributeAndRelationData) > 0');
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
@@ -487,7 +505,7 @@
          */
         protected function resolvePenultimateModelClassNameFromData(Array $attributeAndRelationData, $modelClassName)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert('count($attributeAndRelationData) > 0');
             array_pop($attributeAndRelationData);
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
@@ -508,9 +526,26 @@
          */
         protected function resolvePenultimateRelationFromData(Array $attributeAndRelationData)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert('count($attributeAndRelationData) > 0');
             array_pop($attributeAndRelationData);
             return array_pop($attributeAndRelationData);
+        }
+
+        protected function resolveRealAttributeNameForPenultimateRelation(Array $attributeAndRelationData)
+        {
+            assert('count($this->attributeAndRelationData) > 0');
+            array_pop($attributeAndRelationData);
+            $modelClassName = $this->modelClassName;
+            foreach($attributeAndRelationData as $relationOrAttribute)
+            {
+                $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
+                    make($modelClassName::getModuleClassName(), $modelClassName, $this->workflowType);
+                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
+                {
+                    $modelClassName     = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
+                }
+            }
+            return $modelToWorkflowAdapter->resolveRealAttributeName($relationOrAttribute);
         }
 
         /**

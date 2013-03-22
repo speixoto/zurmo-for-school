@@ -33,10 +33,11 @@
      */
     class WorkflowTriggersUtilForTextTest extends WorkflowTriggersUtilBaseTest
     {
-        public function testTextTriggerBeforeSaveEquals()
+        public function testTriggerBeforeSaveEquals()
         {
-            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'equals', 'aValue');
-            $model         = new WorkflowModelTestItem();
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'equals', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
             $model->string = 'aValue';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'bValue';
@@ -45,15 +46,19 @@
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'aValue';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //should be case-insensitive
+            $model->string = 'aVAlUe';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
         /**
-         * @depends testTextTriggerBeforeSaveEquals
+         * @depends testTriggerBeforeSaveEquals
          */
-        public function testTextTriggerBeforeSaveDoesNotEqual()
+        public function testTriggerBeforeSaveDoesNotEqual()
         {
-            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'doesNotEqual', 'aValue');
-            $model         = new WorkflowModelTestItem();
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'doesNotEqual', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
             $model->string = 'aValue';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'bValue';
@@ -62,15 +67,19 @@
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'aValue';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //should be case-insensitive
+            $model->string = 'aVAlUe';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
         /**
-         * @depends testTextTriggerBeforeSaveDoesNotEqual
+         * @depends testTriggerBeforeSaveDoesNotEqual
          */
-        public function testTextTriggerBeforeSaveIsNull()
+        public function testTriggerBeforeSaveIsNull()
         {
-            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'isNull', 'aValue');
-            $model         = new WorkflowModelTestItem();
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'isNull', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'bValue';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
@@ -83,12 +92,13 @@
         }
 
         /**
-         * @depends testTextTriggerBeforeSaveDoesIsNull
+         * @depends testTriggerBeforeSaveIsNull
          */
-        public function testTextTriggerBeforeSaveDoesIsNotNull()
+        public function testTriggerBeforeSaveDoesIsNotNull()
         {
-            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'isNotNull', 'aValue');
-            $model         = new WorkflowModelTestItem();
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'isNotNull', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'bValue';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
@@ -101,32 +111,84 @@
         }
 
         /**
-         * @depends testTextTriggerBeforeSaveDoesIsNotNull
+         * @depends testTriggerBeforeSaveDoesIsNotNull
          */
-        public function testTextTriggerBeforeSaveStartsWith()
+        public function testTriggerBeforeSaveStartsWith()
         {
-            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'equals', 'aValue');
-            $model         = new WorkflowModelTestItem();
-            $model->string = 'aValue';
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'startsWith', 'abc');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string = 'abc123';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model->string = 'bValue';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model         = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->string = 'aValue';
+            $model->string = 'abc';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'ABC';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'ab';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
-        public function testTextTriggerBeforeSaveBecomes()
+        /**
+         * @depends testTriggerBeforeSaveStartsWith
+         */
+        public function testTriggerBeforeSaveEndsWith()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'endsWith', 'def');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string = 'abcdef';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'def123';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'def';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'redDEF';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'de';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveEndsWith
+         */
+        public function testTriggerBeforeSaveContains()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'contains', 'chocolate');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string = 'AchocolateB';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'def123';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'chocolate';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'chocolateCookie';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'chocol';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveContains
+         */
+        public function testTriggerBeforeSaveBecomes()
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'becomes', 'aValue');
-            $model = new WorkflowModelTestItem();
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
             $model->string = 'aValue';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
 
             $model->string = 'bValue';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->lastName = 'lastName';
             $model = self::saveAndReloadModel($model);
 
             //check existing model
@@ -139,6 +201,265 @@
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
-        //todO: finish #1,#2, and #3 from documentation above
+        /**
+         * @depends testTriggerBeforeSaveBecomes
+         */
+        public function testTriggerBeforeSaveWas()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'was', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->string = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->string = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'was' aValue and is now bValue
+            $model->string = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveWas
+         */
+        public function testTriggerBeforeSaveChanges()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'changes', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->string = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'changes'
+            $model->string = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveChanges
+         */
+        public function testTriggerBeforeSaveDoesNotChange()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'doesNotChange', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->string = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'changes'
+            $model->string = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveDoesNotChange
+         */
+        public function testTriggerBeforeSaveIsEmpty()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'isEmpty', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = null;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = '';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveIsEmpty
+         */
+        public function testTriggerBeforeSaveIsNotEmpty()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('string', 'isNotEmpty', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = null;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->string = '';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveIsNotEmpty
+         */
+        public function testTriggerBeforeSaveHasOneOwnedEquals()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('primaryAddress___street1', 'equals', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $address                        = new Address();
+            $model->primaryAddress          = $address;
+            $model->primaryAddress->street1 = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->primaryAddress->street1 = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->primaryAddress->street1 = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //should be case-insensitive
+            $model->primaryAddress->street1 = 'aVAlUe';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveHasOneOwnedEquals
+         */
+        public function testTriggerBeforeSaveHasOneOwnedBecomes()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('primaryAddress___street1', 'becomes', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $address                        = new Address();
+            $model->primaryAddress          = $address;
+            $model->primaryAddress->street1 = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->primaryAddress->street1 = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->primaryAddress->street1 = 'cValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'becomes' aValue
+            $model->primaryAddress->street1 = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveHasOneOwnedBecomes
+         */
+        public function testTriggerBeforeSaveHasOneOwnedWas()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('primaryAddress___street1', 'was', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $address                        = new Address();
+            $model->primaryAddress          = $address;
+            $model->primaryAddress->street1 = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->primaryAddress->street1 = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->primaryAddress->street1 = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'was' aValue and now is bValue
+            $model->primaryAddress->street1 = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveHasOneOwnedWas
+         */
+        public function testTriggerBeforeSaveHasOneNotOwnedEquals()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('hasOne___name', 'equals', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $relatedModel    = new WorkflowModelTestItem2();
+            $model->hasOne   = $relatedModel;
+            $model->hasOne->name = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->hasOne->name = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->hasOne->name = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //should be case-insensitive
+            $model->hasOne->name = 'aVAlUe';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveHasOneNotOwnedEquals
+         */
+        public function testTriggerBeforeSaveHasManyNotOwnedEquals()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('hasMany___name', 'equals', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $relatedModel    = new WorkflowModelTestItem3();
+            $relatedModel->name = 'aValue';
+            $model->hasMany->add($relatedModel);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->hasMany[0]->name = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->hasMany[0]->name = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //should be case-insensitive
+            $model->hasMany[0]->name = 'aVAlUe';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveHasManyNotOwnedEquals
+         */
+        public function testTriggerBeforeSaveManyManyNotOwnedEquals()
+        {
+            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType('hasMany3___name', 'equals', 'aValue',
+                            'WorkflowsTestModule', 'WorkflowModelTestItem2');
+            $model         = new WorkflowModelTestItem2();
+            $relatedModel  = new WorkflowModelTestItem3();
+            $this->assertTrue($relatedModel->save());
+            $model->hasMany3->add($relatedModel);
+            $model->hasMany3[0]->name = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->hasMany3[0]->name = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->hasMany3[0]->name = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //should be case-insensitive
+            $model->hasMany3[0]->name = 'aVAlUe';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
     }
 ?>

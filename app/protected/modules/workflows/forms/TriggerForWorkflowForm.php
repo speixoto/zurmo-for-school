@@ -29,6 +29,12 @@
      */
     class TriggerForWorkflowForm extends ComponentForWorkflowForm
     {
+        /**
+         * When performing actions on related models, if there are MANY related models RELATION_FILTER_ALL means the
+         * action will be performed on all related models
+         */
+        const RELATION_FILTER_ANY   = 'RelationFilterAny';
+
         //todo: this class shares a lot with FilterForReportForm, i dont know how we could refactor
         //but if we could it would be nice. maybe a util that we move a lot of the logic into?
         /**
@@ -61,6 +67,14 @@
          * @var string
          */
         public $valueType;
+
+        /**
+         * self::RELATION_FILTER_ANY is the only supported value.  Eventually additional support will be added to filter
+         * related models.  An example is if you are creating a workflow on Account.
+         * And you want to check a trigger on related opportunities.  Currently the trigger has to match just one related opportunities
+         * @var relationFilter
+         */
+        public $relationFilter = self::RELATION_FILTER_ANY;
 
         /**
          * @var string
@@ -133,6 +147,8 @@
                 array('operator',  	 				 'validateOperator'),
                 array('value',  	 				 'safe'),
                 array('value',  	 				 'validateValue'),
+                array('relationFilter',  	 	     'type', 'type' => 'string'),
+                array('relationFilter',              'validateRelationFilter'),
                 array('secondValue', 				 'safe'),
                 array('secondValue',                 'validateSecondValue'),
                 array('currencyIdForValue',  	     'safe'),
@@ -152,6 +168,20 @@
                 $this->addError('operator', Zurmo::t('WorkflowsModule', 'Operator cannot be blank.'));
                 return  false;
             }
+        }
+
+        /**
+         * @return bool
+         */
+        public function validateRelationFilter()
+        {
+            if($this->relationFilter == self::RELATION_FILTER_ANY)
+            {
+                return true;
+            }
+            $this->addError('relationFilter', Zurmo::t('WorkflowsModule', 'Invalid Relation Filter'));
+            return false;
+            return true;
         }
 
         /**
@@ -293,6 +323,23 @@
         }
 
         /**
+         * Utilized during evaluating a trigger against a model value whether it is true or false
+         * @return null|string
+         * @throws NotSupportedException if the attributeIndexOrDerivedType has not been populated yet
+         */
+        public function getValueEvaluationType()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
+            //todo: probably should make a wrapper to call same thing as displayElementType but not use displayElementType since
+            //that could change and affect this in ways it shouldnt.
+            return $modelToWorkflowAdapter->getDisplayElementType($this->getResolvedAttribute());
+        }
+
+        /**
          * @return array
          * @throws NotSupportedException if the resolved attribute is invalid and not on the resolved model
          */
@@ -311,6 +358,16 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        /**
+         * Given a model, does the trigger evaluate true or false for the value against the trigger's attribute
+         * @param RedBeanModel $model
+         * @return boolean
+         */
+        public function isTrueByModel(RedBeanModel $model)
+        {
+            return true;
         }
 
         /**

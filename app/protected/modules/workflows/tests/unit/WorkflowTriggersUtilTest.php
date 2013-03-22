@@ -49,12 +49,12 @@
          */
         public function testResolveBooleansDataToPHPStringWithInvalidDataKey()
         {
-            $data = array(0 => true);
+            $data = array(1 => true);
             $this->assertEquals('true', WorkflowTriggersUtil::resolveBooleansDataToPHPString('1', $data));
         }
 
         /**
-         * @expectedException NotSupportedException()
+         * @expectedException NotSupportedException
          */
         public function testResolveBooleansDataToPHPStringWithInvalidDataValue()
         {
@@ -73,6 +73,38 @@
             $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('false || false || false'));
             $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true && (true || false)'));
             $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('false || (true && true)'));
+        }
+
+        /**
+         * Example of too much nesting, that would result in an exception
+         * @expectedException NotSupportedException
+         */
+        public function testAreTriggersTrueBeforeSaveWithInvalidAttributeData()
+        {
+            $attributeIndexOrDerivedType = 'hasOne___hasMany2___primaryAddress___street1';
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, 'equals', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * Testing that when you have a relation with another owned relation before the attribute, that it works correctly.
+         */
+        public function testAreTriggersTrueBeforeSaveWithRelationAndAnotherRelationBeforeAttribute()
+        {
+            $attributeIndexOrDerivedType = 'hasMany2___primaryAddress___street1';
+            $workflow      = self::makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, 'equals', 'cValue',
+                             'WorkflowsTestModule', 'WorkflowModelTestItem2');
+            $model           = new WorkflowModelTestItem2();
+            $relatedModel    = new WorkflowModelTestItem();
+            $address                        = new Address();
+            $relatedModel->primaryAddress          = $address;
+            $relatedModel->primaryAddress->street1 = 'cValue';
+            $model->hasMany2->add($relatedModel);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->hasMany2[0]->primaryAddress->street1 = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
     }
 ?>

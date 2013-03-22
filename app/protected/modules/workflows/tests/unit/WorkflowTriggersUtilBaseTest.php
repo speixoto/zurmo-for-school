@@ -32,12 +32,18 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public static function makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, $operator, $value)
+        public static function makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, $operator,
+                                                                            $value,
+                                                                            $moduleClassName = 'WorkflowsTestModule',
+                                                                            $modelClassName = 'WorkflowModelTestItem')
         {
             assert('is_string($attributeIndexOrDerivedType)');
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
             $workflow = new Workflow();
             $workflow->setType(Workflow::TYPE_ON_SAVE);
-            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $workflow->setTriggersStructure('1');
+            $trigger = new TriggerForWorkflowForm($moduleClassName, $modelClassName, $workflow->getType());
             $trigger->attributeIndexOrDerivedType = $attributeIndexOrDerivedType;
             $trigger->value                       = $value;
             $trigger->operator                    = $operator;
