@@ -145,14 +145,14 @@
             $_GET['AAA_sort'] = 'aaaMember';
             SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
             $stickyData = StickySearchUtil::getDataByKey('abc');
-            $compareData = array(   'dynamicClauses'          => array('a', 'b'),
-                                        'dynamicStructure'        => '1 and 5',
-                                        'anyMixedAttributes'      => 'abcdef',
-                                        'anyMixedAttributesScope' => 'xyz',
-                                        'savedSearchId'           => $savedSearch->id,
-                                        SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'),
-                                        'sortAttribute' => 'aaaMember',
-                                        'sortDescending' => false);
+            $compareData = array(   'dynamicClauses'                     => array('a', 'b'),
+                                    'dynamicStructure'                   => '1 and 5',
+                                    'anyMixedAttributes'                 => 'abcdef',
+                                    'anyMixedAttributesScope'            => 'xyz',
+                                    'savedSearchId'                      => $savedSearch->id,
+                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'),
+                                    'sortAttribute'                      => 'aaaMember',
+                                    'sortDescending'                     => false);
             $this->assertEquals($compareData, $stickyData);
 
             $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
@@ -174,14 +174,14 @@
             $_GET['AAA_sort'] = 'aaaMember2.desc';
             SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
             $stickyData = StickySearchUtil::getDataByKey('abc');
-            $compareData = array(   'dynamicClauses'          => array('a', 'b'),
-                                    'dynamicStructure'        => '1 and 5',
-                                    'anyMixedAttributes'      => 'abcdef',
-                                    'anyMixedAttributesScope' => 'xyz',
-                                    'savedSearchId'           => $savedSearch->id,
+            $compareData = array(   'dynamicClauses'                     => array('a', 'b'),
+                                    'dynamicStructure'                   => '1 and 5',
+                                    'anyMixedAttributes'                 => 'abcdef',
+                                    'anyMixedAttributesScope'            => 'xyz',
+                                    'savedSearchId'                      => $savedSearch->id,
                                     SearchForm::SELECTED_LIST_ATTRIBUTES => array('aaaMember', 'aaaMember2'),
-                                    'sortAttribute' => 'aaaMember2',
-                                    'sortDescending' => true);
+                                    'sortAttribute'                      => 'aaaMember2',
+                                    'sortDescending'                     => true);
             $this->assertEquals($compareData, $stickyData);
 
             $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
@@ -202,7 +202,7 @@
             $saved                           = $savedSearch->save();
 
             $searchModel                     = new AAASavedDynamicSearchFormTestModel(new AAA(false));
-            $listAttributesSelector         = new ListAttributesSelector('AListView', 'TestModule');
+            $listAttributesSelector          = new ListAttributesSelector('AListView', 'TestModule');
             $searchModel->setListAttributesSelector($listAttributesSelector);
             $searchModel->dynamicStructure   = '1 and 5';
             $searchModel->dynamicClauses     = array('a', 'b');
