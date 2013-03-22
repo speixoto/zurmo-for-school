@@ -32,27 +32,13 @@
         {
             $searchAttributeData['clauses'] = array(
                 1 => array(
-                    'attributeName'        => 'ownerHasReadLatest',
-                    'operatorType'         => 'doesNotEqual',
-                    'value'                => (bool)1
-                ),
-                2 => array(
-                    'attributeName'        => 'owner',
+                    'attributeName'        => 'personsWhoHaveNotReadLatest',
+                    'relatedAttributeName' => 'person',
                     'operatorType'         => 'equals',
-                    'value'                => Yii::app()->user->userModel->id
-                ),
-                3 => array(
-                    'attributeName'        => 'takenByUser',
-                    'operatorType'         => 'equals',
-                    'value'                => Yii::app()->user->userModel->id,
-                ),
-                4 => array(
-                    'attributeName'        => 'takenByUserHasReadLatest',
-                    'operatorType'         => 'doesNotEqual',
-                    'value'                => (bool)1
+                    'value'                => Yii::app()->user->userModel->getClassId('Item'),
                 ),
             );
-            $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
+            $searchAttributeData['structure'] = '1';
             return $searchAttributeData;
         }
 
@@ -154,7 +140,7 @@
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
-            MissionsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, true);
+            $this->markUserAsHaveReadLatestModel($model, Yii::app()->user->userModel);
         }
 
         public function resolveMarkUnread($modelId)
@@ -162,7 +148,7 @@
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
-            MissionsUtil::markUserHasReadLatest($model, Yii::app()->user->userModel, false);
+            $this->markUserAsHaveUnreadLatestModel($model, Yii::app()->user->userModel);
         }
 
         public function hasUserReadLatest($modelId)
@@ -170,7 +156,7 @@
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
-            return MissionsUtil::hasUserReadMissionLatest($model, Yii::app()->user->userModel);
+            return $this->haveUserReadLatest($model, Yii::app()->user->userModel);
         }
     }
 ?>

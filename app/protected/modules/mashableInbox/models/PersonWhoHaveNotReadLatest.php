@@ -24,36 +24,51 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MashableInboxModule extends Module
+    /**
+     * Model for storing who are the person whe read lastest changes on the owner model
+     */
+    class PersonWhoHaveNotReadLatest extends OwnedModel
     {
-        public function getDependencies()
+        public function __toString()
         {
-            return array();
+            try
+            {
+                if ($this->person->id > 0)
+                {
+                    return strval($this->person);
+                }
+            }
+            catch (NotFoundException $e)
+            {
+            }
+            return Zurmo::t('MashableInboxModule', '(Unnamed)');
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'MashableInboxModule';
+        }
+
+        public static function canSaveMetadata()
+        {
+            return false;
         }
 
         public static function getDefaultMetadata()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
-                    array(
-                        'label'               => Zurmo::t('MashableInboxModule', 'Inbox'),
-                        'url'                 => array('/mashableInbox/default'),
-                        'dynamicLabelContent' => 'eval:MashableUtil::getUnreadCountMashableInboxForCurrentUser()'
-                    ),
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'relations' => array(
+                    'person'      => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
                 ),
             );
             return $metadata;
         }
-        protected static function getSingularModuleLabel($language)
-        {
-            return Zurmo::t('MashableInboxModule', 'Inbox', array(), null, $language);
-        }
 
-        public function getRootModelNames()
+        public static function isTypeDeletable()
         {
-            return array('PersonWhoHaveNotReadLatest');
+            return true;
         }
-
     }
 ?>

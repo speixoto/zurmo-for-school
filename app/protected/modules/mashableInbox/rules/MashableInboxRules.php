@@ -215,5 +215,62 @@
         {
             return array();
         }
+
+        /**
+         * Given the model, check if the user has read latest changes
+         * @param $model
+         * @param User $user
+         */
+        public function haveUserReadLatest($model, User $user)
+        {
+            //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
+            if ($model->personsWhoHaveNotReadLatest->count() > 0)
+            {
+                foreach ($model->personsWhoHaveNotReadLatest as $participant)
+                {
+                    if ($participant->person->getClassId('Item') == $user->getClassId('Item'))
+                    {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+        public function markUserAsHaveUnreadLatestModel($model, User $user)
+        {
+            //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
+            if ($this->haveUserReadLatest($model, $user))
+            {
+                $model->personsWhoHaveNotReadLatest->add($this->makeLatestReaderByPerson($user));
+                $model->save();
+            }
+        }
+
+        public function markUserAsHaveReadLatestModel($model, User $user)
+        {
+            //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
+            foreach ($model->personsWhoHaveNotReadLatest as $existingPersonWhoHaveNotReadLatest)
+            {
+                if($existingPersonWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
+                {
+                    $model->personsWhoHaveNotReadLatest->remove($existingPersonWhoHaveNotReadLatest);
+                }
+            }
+            $model->save();
+        }
+
+        /**
+         * Makes an return a LatestReader based on the person or user
+         * @param $personOrUserModel
+         * @return \PersonWhoHaveNotReadLatest
+         */
+        public function makeLatestReaderByPerson($personOrUserModel)
+        {
+            assert('$personOrUserModel instanceof User || $personOrUserModel instanceof Person');
+            $personWhoHaveNotReadLatest          = new PersonWhoHaveNotReadLatest();
+            $personWhoHaveNotReadLatest->person = $personOrUserModel;
+            return $personWhoHaveNotReadLatest;
+        }
     }
 ?>

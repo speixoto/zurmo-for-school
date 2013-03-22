@@ -100,12 +100,14 @@
                     'takenByUserHasReadLatest',
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
+                    'comments'                    => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                    'files'                       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
+                    'takenByUser'                 => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
                                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'takenByUser'),
+                    'personsWhoHaveNotReadLatest' => array(RedBeanModel::HAS_MANY,  'PersonWhoHaveNotReadLatest',
+                                                        RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('description',              'required'),

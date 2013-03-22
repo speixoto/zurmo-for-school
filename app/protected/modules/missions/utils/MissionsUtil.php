@@ -46,53 +46,34 @@
             return $link . $details;
         }
 
-        /**
-         * Given a mission and a user, mark ownerHasReadLatest as $hasReadLatest if the user is the owner, if the user is the takenByUser
-         * then mark the takenByUserHasReadLatest as $hasReadLatest, otherwise do nothing.
-         * @param Mission $mission
-         * @param User $user
-         * @param Boolean $hasReadLatest
-         */
-        public static function markUserHasReadLatest(Mission $mission, User $user, $hasReadLatest = true)
+        public static function markUserHasReadLatest(Mission $mission, User $user)
         {
-            assert('$mission->id > 0');
-            assert('$user->id > 0');
-            $save = false;
-            if ($user == $mission->owner)
-            {
-                if ($mission->ownerHasReadLatest != $hasReadLatest)
-                {
-                    $mission->ownerHasReadLatest = $hasReadLatest;
-                    $save                        = true;
-                }
-            }
-            elseif ($user == $mission->takenByUser)
-            {
-                if ($mission->takenByUserHasReadLatest != $hasReadLatest)
-                {
-                    $mission->takenByUserHasReadLatest = $hasReadLatest;
-                    $save                              = true;
-                }
-            }
-            if ($save)
-            {
-                $mission->save();
-            }
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $hasReadLatest      = $mashableUtilRules->markUserAsHaveReadLatestModel($mission, $user);
+            return $hasReadLatest;
+        }
+
+        public static function markUserHasUnreadLatest(Mission $mission, User $user)
+        {
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $hasReadLatest      = $mashableUtilRules->markUserAsHaveUnreadLatestModel($mission, $user);
+            return $hasReadLatest;
         }
 
         public static function hasUserReadMissionLatest(Mission $mission, User $user)
         {
-            assert('$mission->id > 0');
-            assert('$user->id > 0');
-            if ($user->isSame($mission->owner))
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $hasReadLatest      = $mashableUtilRules->haveUserReadLatest($mission, $user);
+            return $hasReadLatest;
+        }
+
+        public static function markAllUserHasUnreadLatest(Mission $mission)
+        {
+            $users = static::resolvePeopleToSendNotificationToOnNewMission($mission);
+            foreach ($users as $user)
             {
-                return $mission->ownerHasReadLatest;
+                static::markUserHasUnreadLatest($mission, $user);
             }
-            elseif ($user == $mission->takenByUser)
-            {
-                return $mission->takenByUserHasReadLatest;
-            }
-            return false;
         }
 
         public static function makeActiveActionElementType($type)
