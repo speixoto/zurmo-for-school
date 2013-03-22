@@ -40,7 +40,7 @@
 
         protected function getDefaultRoute()
         {
-          // TODO: @Shoaibi: Medium+: have to add the action for this
+          // TODO: @Shoaibi: Medium: have to add the action for this
         }
 
         public function render()
@@ -71,7 +71,7 @@
 
         protected function registerScripts()
         {
-            // TODO: @Shoaibi: Medium+: Write JS code to handle events from here and use variableStateController
+            // TODO: @Shoaibi: Medium: Write JS code to handle events from here and use variableStateController
             Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-listViewContactAndLead', "
                 $('#" . $this->getSelectContactAndLeadId() . "').unbind('click.action').bind('click.action', function()
                     {

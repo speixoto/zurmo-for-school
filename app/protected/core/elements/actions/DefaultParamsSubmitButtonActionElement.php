@@ -24,28 +24,18 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DeleteButtonActionElement extends DefaultParamsSubmitButtonActionElement
+    abstract class DefaultParamsSubmitButtonActionElement extends SubmitButtonActionElement
     {
-        public function getActionType()
-        {
-            return 'Delete';
-        }
+        abstract protected function getDefaultParams();
 
-        protected function getDefaultLabel()
+        public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
-            return Zurmo::t('Core', 'Delete');
-        }
-
-        protected function getDefaultRoute()
-        {
-        }
-
-        protected function getDefaultParams()
-        {
-            return array(   'id'     => 'delete' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
-                            'name'   => 'delete', //bad for validation.. not sure its needed..
-                            'class'  => 'attachLoading',
-                            'params' => array('delete' => 'delete'));
+            if (!isset($params['htmlOptions']))
+            {
+                $params['htmlOptions'] = array();
+            }
+            $params['htmlOptions'] = array_merge($this->getDefaultParams(), $params['htmlOptions']);
+            parent::__construct($controllerId, $moduleId, $modelId, $params);
         }
     }
 ?>

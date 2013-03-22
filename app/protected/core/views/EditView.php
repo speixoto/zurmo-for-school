@@ -42,6 +42,10 @@
          */
         protected $wrapContentInWrapperDiv = true;
 
+        protected function renderOperationDescriptionContent()
+        {
+        }
+
         /**
          * Override of parent function. Makes use of the ZurmoActiveForm
          * widget to provide an editable form.
@@ -89,13 +93,6 @@
                 return ZurmoHtml::tag('div', array('class' => 'wrapper'), $content);
             }
             return $content;
-        }
-
-        /**
-         * Override as needed
-         */
-        protected function renderOperationDescriptionContent()
-        {
         }
 
         protected function renderRightSideContent($form = null)

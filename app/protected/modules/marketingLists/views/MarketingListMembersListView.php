@@ -252,8 +252,7 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySubscriptionType', "
-                    createButtonSetIfNotAlreadyExist('MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
-                    //$('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').buttonset();
+                    createButtonSetIfNotAlreadyExist('MarketingListMembersConfigurationForm_filteredBySubscriptionType_area'); // TODO: @Shoaibi/@Jason: Medium: causes Uncaught Error: cannot call methods on button prior to initialization; attempted to call method 'widget'
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "
@@ -264,7 +263,7 @@
             if ($this->showFilteredBySearchTerm)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySearchTerm', "
-                // TODO: @Shoaibi/@Jason Low: We support both, clicking outside and enter
+                // TODO: @Shoaibi/@Jason: Low: We support both, clicking outside and enter
                 $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').unbind('change.action').bind('change.action', function(event)
                     {
                         " . $ajaxSubmitScript . "

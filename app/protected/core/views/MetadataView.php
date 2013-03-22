@@ -114,9 +114,9 @@
                 {
                     $renderedContent = null;
                     $this->resolveActionElementInformationDuringRender($elementInformation);
-                    $elementClassName = $elementInformation['type'] . 'ActionElement';
+                    array_walk($elementInformation, array($this, 'resolveEvaluateSubString'));
                     $params = array_slice($elementInformation, 1);
-                    array_walk($params, array($this, 'resolveEvaluateSubString'));
+                    $elementClassName = $elementInformation['type'] . 'ActionElement';
                     $element  = new $elementClassName($this->controllerId, $this->moduleId, $this->modelId, $params);
                     if (!$this->shouldRenderToolBarElement($element, $elementInformation))
                     {

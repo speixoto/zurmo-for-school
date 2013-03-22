@@ -24,28 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DeleteButtonActionElement extends DefaultParamsSubmitButtonActionElement
+    class MarketingListMembersUnsubscribeButtonActionElement extends MarketingListMembersSubscribeButtonActionElement
     {
-        public function getActionType()
-        {
-            return 'Delete';
-        }
-
         protected function getDefaultLabel()
         {
-            return Zurmo::t('Core', 'Delete');
-        }
-
-        protected function getDefaultRoute()
-        {
+            return Zurmo::t('MarketingListsModule', 'Unsubscribe');
         }
 
         protected function getDefaultParams()
         {
-            return array(   'id'     => 'delete' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
-                            'name'   => 'delete', //bad for validation.. not sure its needed..
+            return array(   'id'     => 'unsubscribe' . ZurmoHtml::ID_PREFIX . ZurmoHtml::$count++,
+                            'name'   => 'unsubscribe', //bad for validation.. not sure its needed..
                             'class'  => 'attachLoading',
-                            'params' => array('delete' => 'delete'));
+                            'params' => array('unsubscribe' => 'unsubscribe'));
         }
     }
 ?>

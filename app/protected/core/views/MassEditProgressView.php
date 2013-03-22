@@ -27,85 +27,26 @@
     /**
      * Mass edit progress view.
      */
-    class MassEditProgressView extends ProgressView
+    class MassEditProgressView extends MassProgressView
     {
-        /**
-         * Integer of how many records were skipped
-         * during the mass edit process.
-         */
-        protected $skipCount;
-
-        /**
-         * Constructs a mass edit progress view specifying the controller as
-         * well as the model that will have its mass edit displayed.
-         */
-        public function __construct(
-        $controllerId,
-        $moduleId,
-        $model,
-        $totalRecordCount,
-        $start,
-        $pageSize,
-        $page,
-        $refreshActionId,
-        $title,
-        $skipCount)
+        protected function getMessagePrefix()
         {
-            assert('$skipCount == null || is_int($skipCount)');
-            $this->skipCount = $skipCount;
-            parent::__construct(
-                        $controllerId,
-                        $moduleId,
-                        $model,
-                        $totalRecordCount,
-                        $start,
-                        $pageSize,
-                        $page,
-                        $refreshActionId,
-                        $title);
+            return Zurmo::t('Core', 'Updating');
         }
 
-        protected function getMessage()
+        protected function getCompleteMessageSuffix()
         {
-            return Zurmo::t('Core', 'Updating') . "&#160;" . $this->start . "-" . $this->getEndSize() . "&#160;" . Zurmo::t('Core', 'of') . "&#160;" .
-            $this->totalRecordCount . "&#160;" . Zurmo::t('Core', 'total') . "&#160;" .
-            Zurmo::t('Core', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
-        }
-
-        protected function getCompleteMessage()
-        {
-            $successfulCount = MassEditInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
-                            $this->totalRecordCount, $this->skipCount);
-            $content =  $successfulCount . "&#160;" .
-            LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
-            . "&#160;" . Zurmo::t('Core', 'updated successfully.');
-            if ($this->skipCount > 0)
-            {
-                $content .= '<br/>' .
-                            MassEditInsufficientPermissionSkipSavingUtil::getSkipCountMessageContentByModelClassName(
-                                            $this->skipCount, get_class($this->model));
-            }
-            return $content;
-        }
-
-        protected function renderFormLinks()
-        {
-            $listButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Return to List')),
-                                        Yii::app()->createUrl($this->moduleId));
-            $content = '<div id="' . $this->progressBarId . '-links" style="display:none;">';
-            $content .= $listButton;
-            $content .= '</div>';
-            return $content;
-        }
-
-        protected function onProgressComplete()
-        {
-            MassEditInsufficientPermissionSkipSavingUtil::clear(get_class($this->model));
+            return Zurmo::t('Core', 'updated successfully');
         }
 
         protected function headerLabelPrefixContent()
         {
             return Zurmo::t('Core', 'Mass Update');
+        }
+
+        protected function getInsufficientPermissionSkipSavingUtil()
+        {
+            return 'MassEditInsufficientPermissionSkipSavingUtil';
         }
     }
 ?>

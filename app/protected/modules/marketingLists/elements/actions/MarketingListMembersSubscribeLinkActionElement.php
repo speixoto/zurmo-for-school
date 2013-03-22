@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListMembersSubscribeLinkActionElement extends MassEditLinkActionElement
+    class MarketingListMembersSubscribeLinkActionElement extends MarketingListMembersActionLinkActionElement
     {
         protected function getSelectedMenuNameSuffix()
         {

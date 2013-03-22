@@ -188,9 +188,122 @@
             echo ModalSearchListControllerUtil::setAjaxModeAndRenderModalSearchList($this, $modalListLinkProvider,
                                                 'ContactsStateMetadataAdapter');
         }
+
+        public function actionMassDelete()
+        {
+            static::triggerMarketingListMemberMassAction();
+        }
+
+        public function actionMassDeleteProgress()
+        {
+            static::triggerMarketingListMemberMassAction();
+        }
+
+        public function actionMassSubscribe()
+        {
+            static::triggerMarketingListMemberMassAction();
+        }
+
+        public function actionMassSubscribeProgress()
+        {
+            static::triggerMarketingListMemberMassAction();
+        }
+
+        public function actionMassUnsubscribe()
+        {
+            static::triggerMarketingListMemberMassAction();
+        }
+
+        public function actionMassUnsubscribeProgress()
+        {
+            static::triggerMarketingListMemberMassAction();
+        }
+
         protected static function getSearchFormClassName()
         {
             return 'MarketingListsSearchForm';
+        }
+
+
+        protected static function triggerMarketingListMemberMassAction()
+        {
+            // TODO: @Shoaibi/@Jason: Medium: Wrong labels shown
+            static::triggerMassAction(   'MarketingListMember',
+                                        'MarketingListMembersSearchForm',
+                                        'MarketingListMembersPageView',
+                                        MarketingListMember::getModelLabelByTypeAndLanguage('Plural'),
+                                        'MarketingListMembersSearchView',
+                                        null);
+        }
+
+        protected static function processModelForMassSubscribe(& $model)
+        {
+            static::processModelForMassSubscribeOrUnsubscribe($model, false);
+        }
+
+        protected static function processModelForMassUnsubscribe(& $model)
+        {
+            static::processModelForMassSubscribeOrUnsubscribe($model, true);
+        }
+
+        protected static function processModelForMassSubscribeOrUnsubscribe(& $model, $unsubscribed)
+        {
+            $model->unsubscribed = $unsubscribed;
+            if (!$model->unrestrictedSave())
+            {
+                throw new FailedToSaveModelException();
+            }
+        }
+
+        protected static function resolveTitleByMassActionId($actionId)
+        {
+            if (strpos($actionId, 'massSubscribe') === 0)
+            {
+                return Zurmo::t('MarketingListsModule', 'Mass Subscribe');
+            }
+            else if (strpos($actionId, 'massUnsubscribe') === 0)
+            {
+                return Zurmo::t('MarketingListsModule', 'Mass Unsubscribe');
+            }
+            else
+            {
+                return parent::resolveTitleByMassActionId($actionId);
+            }
+        }
+
+        protected static function resolveReturnUrlForMassAction()
+        {
+            return Yii::app()->createUrl('/' . Yii::app()->getController()->getModule()->getId() . '/' .
+                                                            Yii::app()->getController()->getId() . '/details',
+                                                            array('id' => intval(Yii::app()->request->getQuery('id'))));
+        }
+
+        protected static function resolvePageValueForMassAction($modelClassName)
+        {
+            $pageValue = parent::resolvePageValueForMassAction($modelClassName);
+            if ($pageValue)
+            {
+                return $pageValue;
+            }
+            else
+            {
+                return intval(Yii::app()->request->getQuery('MarketingListMembersForPortletView_page'));
+            }
+        }
+
+        protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName)
+        {
+            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
+            {
+                $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
+                $viewNamePrefix    = ucfirst(str_replace('Progress', '', $actionId));
+                $viewNamePrefix    = 'MarketingListMembers' . $viewNamePrefix;
+                return $viewNamePrefix . $viewNameSuffix;
+            }
+            else
+            {
+                return parent::resolveViewIdByMassActionId($actionId, $returnProgressViewName);
+            }
         }
     }
 ?>

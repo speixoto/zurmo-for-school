@@ -83,7 +83,7 @@ $(window).ready(function(){
     $(window).resize(function(){
       resizeWhiteArea();
     });
-    
+
     resizeWhiteArea();
 
     /*Autogrow text areas*/
@@ -227,11 +227,11 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId){
 */
 
 function resolveSpinner(state, domObject, styleObject, spinnerClassName){
-    
+
     if(spinnerClassName === undefined){
         spinnerClassName = '.z-spinner';
     }
-    
+
     if(state === true){
         $( spinnerClassName, domObject).spin({
             lines     : styleObject.lines  || 9,      // The number of lines to draw
@@ -736,7 +736,7 @@ $.extend({
     }
 });
 
-// TODO: @Shoaibi: Critical: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
+// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
 function createButtonSetIfNotAlreadyExist(id, classFlag) {
     classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
     id        = (id.indexOf('#') === -1) ? '#' + id : id;

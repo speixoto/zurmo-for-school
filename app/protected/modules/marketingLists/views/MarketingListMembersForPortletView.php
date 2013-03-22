@@ -72,7 +72,7 @@
             $this->viewData       = $viewData;
             $this->params         = $params;
             $this->uniqueLayoutId = $uniqueLayoutId;
-            $this->uniquePageId  = get_called_class();
+            $this->uniquePageId   = get_called_class();
         }
 
         public static function getDefaultMetadata()
@@ -84,7 +84,6 @@
                             array('type'  => 'SelectContactAndReportLink',
                                 'htmlOptions' => array('class' => 'icon-details'),
                                 'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
-                            // TODO: @Shoaibi: High: Write action against this accounts/defaultController
                             array('type'  => 'MarketingListMembersSubscribeLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
@@ -93,7 +92,6 @@
                                 'htmlOptions' => array('class' => 'icon-edit'),
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
-                            // TODO: @Shoaibi: High: Write action against this accounts/defaultController
                             array('type'            => 'MassDeleteLink',
                                 'htmlOptions'       => array('class' => 'icon-delete'),
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
@@ -158,13 +156,15 @@
          */
         protected function getNonAjaxRedirectUrl()
         {
+            if ($this->params['redirectUrl'])
+            {
+                return $this->params['redirectUrl'];
+            }
+            else
+            {
             return Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/details',
                                                                                     array( 'id' => $this->model->id));
-        }
-
-        protected function getMembersSearchUrl()
-        {
-            return Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/membersSearchList');
+            }
         }
 
         protected function renderMembersSearchFormAndListContent()

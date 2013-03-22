@@ -173,7 +173,7 @@
             {
                 $idsToExport = array_filter(explode(",", trim($_GET['selectedIds'], " ,"))); // Not Coding Standard
             }
-            $totalItems = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
+            $totalItems = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, false);
             $headerData = array();
             $data       = array();
             if ($totalItems > 0)

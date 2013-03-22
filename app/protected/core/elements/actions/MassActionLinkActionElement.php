@@ -128,6 +128,7 @@
                             }
                             var data = '' + actionId + '=' + '&selectAll=' + selectAll + '&ajax=&' + pageVarName + '=1';
                             url = $.param.querystring(options.url, data);
+                            url += '" . $this->resolveAdditionalQueryStringData() ."';
                             window.location.href = url;
                             return false;
                         }
@@ -188,6 +189,11 @@
                         );
                     ");
             }
+        }
+
+        protected function resolveAdditionalQueryStringData()
+        {
+            return null;
         }
 
         protected function registerMenuScripts()

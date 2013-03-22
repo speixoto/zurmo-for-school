@@ -42,6 +42,7 @@
          */
         protected static function getPluralLabel()
         {
+            // TODO: @Shoaibi/@Jason: High: Shouldn't this be for MarketingListMember?
             return 'MarketingListsModulePluralLabel';
         }
 

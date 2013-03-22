@@ -152,7 +152,7 @@
                             Yii::app()->user->userModel->id,
                             'ContactsStateMetadataAdapter',
                             'ContactsSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
@@ -226,7 +226,7 @@
                             Yii::app()->user->userModel->id,
                             'ContactsStateMetadataAdapter',
                             'ContactsSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $contact = $this->processMassDelete(
                 $pageSize,
                 $activeAttributes,

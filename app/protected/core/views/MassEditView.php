@@ -27,69 +27,24 @@
     /**
      * The base View for a module's mass edit view.
      */
-    abstract class MassEditView extends EditView
+    abstract class MassEditView extends MassActionView
     {
-        /**
-         * Array of booleans indicating
-         * which attributes are currently trying to
-         * be mass updated
-         */
-        protected $activeAttributes;
-
-        protected $alertMessage;
-
-        protected $selectedRecordCount;
-
-        protected $title;
-
-        /**
-         * Constructs a detail view specifying the controller as
-         * well as the model that will have its mass edit displayed.
-         */
-        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes, $selectedRecordCount, $title, $alertMessage = null)
+        protected static function getFormId()
         {
-            assert('is_array($activeAttributes)');
-            assert('is_string($title)');
-            $this->controllerId        = $controllerId;
-            $this->moduleId            = $moduleId;
-            $this->model               = $model;
-            $this->modelClassName      = get_class($model);
-            $this->modelId             = $model->id;
-            $this->activeAttributes    = $activeAttributes;
-            $this->selectedRecordCount = $selectedRecordCount;
-            $this->title               = $title;
-            $this->alertMessage        = $alertMessage;
+            return 'edit-form';
         }
 
-        protected function renderContent()
+        protected function renderAlertMessage()
         {
-            $content  = '<div class="wrapper">';
-            $content .= $this->renderTitleContent();
-            $content .= '<div class="wide form">';
-            $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                                                                'ZurmoActiveForm',
-                                                                array('id' => 'edit-form', 'enableAjaxValidation' => false)
-                                                            );
-            $content .= $formStart;
             if (!empty($this->alertMessage))
             {
                 JNotify::addMessage('FlashMessageBar', $this->alertMessage, 'MassEditAlertMessage');
             }
-            $content .= $this->renderOperationDescriptionContent();
-            $content .= $this->renderFormLayout($form);
-            $content .= $this->renderAfterFormLayout($form);
-            $actionElementContent = $this->renderActionElementBar(true);
-            if ($actionElementContent != null)
-            {
-                $content .= '<div class="view-toolbar-container clearfix"><div class="form-toolbar">';
-                $content .= $actionElementContent;
-                $content .= '</div></div>';
-            }
-            $formEnd = $clipWidget->renderEndWidget();
-            $content .= $formEnd;
-            $content .= '</div></div>';
-            return $content;
+        }
+
+        protected function renderPreActionElementBar($form)
+        {
+            return  $this->renderFormLayout($form) .$this->renderAfterFormLayout($form);
         }
 
         protected function renderOperationDescriptionContent()
