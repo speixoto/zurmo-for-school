@@ -146,7 +146,7 @@
             foreach($this->model->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
-                                   $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
+                                   $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
                 $attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
             return $attributeRows;
