@@ -96,6 +96,7 @@
             $this->registerAddActionScript();
             $this->registerRemoveActionScript();
             $this->registerTypeChangeScript();
+            $this->registerRowEditScript();
         }
 
         /**
@@ -112,9 +113,9 @@
         protected function renderFormContent()
         {
             $content  = '<div>'; //todo: is this div necessary?
+            $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderActionsContentAndWrapper();
-            $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -329,9 +330,14 @@
                     //attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                 }',
                 'success' => 'js:function(data){
+                    $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
+                    . '").find(".dynamic-rows").find("ul:first").children().hide();
+
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
                     . '").find(".dynamic-rows").find("ul:first").append(data);
+
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
                     $(".' . static::getZeroComponentsClassName() . '").hide();
                     $("#' . self::ACTION_TYPE_NAME . '").val("");
@@ -402,6 +408,19 @@
                     }
                 );
             ");
+        }
+
+        protected function registerRowEditScript()
+        {
+            $script = "$('.edit-dynamic-row-link').live('click', function(){
+                $('#' + $(this).data().row.toString()).toggleClass('expanded-row');
+                $('#' + $(this).data().row.toString() + ' .toggle-me').toggle();
+                $('#' + $(this).data().row.toString() + ' .edit-dynamic-row-link').toggle();
+                if ($('#' + $(this).data().row.toString()).hasClass('expanded-row')) {
+                    $('#' + $(this).data().row.toString()).siblings().hide();
+                }
+            });";
+            Yii::app()->clientScript->registerScript('registerRowEditScript', $script);
         }
     }
 ?>
