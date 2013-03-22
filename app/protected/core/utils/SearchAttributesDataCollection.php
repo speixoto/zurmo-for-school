@@ -104,9 +104,13 @@
             if($sortAttribute == null)
             {
                 if(!empty($this->model->sortAttribute))
+                {
                     $sortAttribute = $this->model->sortAttribute;
+                }
                 else
+                {
                     $sortAttribute = null;
+                }
             }
 
             return $sortAttribute;
@@ -120,9 +124,13 @@
             if($sortDescending === false)
             {
                 if(!empty($this->model->sortDescending))
+                {
                     $sortDescending = true;
+                }
                 else
+                {
                     $sortDescending = false;
+                }
             }
 
             return $sortDescending;

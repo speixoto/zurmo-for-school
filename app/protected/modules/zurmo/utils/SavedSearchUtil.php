@@ -91,13 +91,10 @@
             }
         }
 
-        public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection, $stickyData = array())
+        public static function setDataByKeyAndDataCollection($key, SearchAttributesDataCollection $dataCollection, $stickyData)
         {
             assert('is_string($key)');
-            if(empty($stickyData))
-            {
-                $stickyData = array();
-            }
+            assert('is_array($stickyData)');
             $stickyData['dynamicClauses']          = $dataCollection->getSanitizedDynamicSearchAttributes();
             $stickyData['dynamicStructure']        = $dataCollection->getDynamicStructure();
             $anyMixedAttributes                    = $dataCollection->resolveSearchAttributesFromSourceData();
