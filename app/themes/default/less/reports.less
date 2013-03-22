@@ -283,13 +283,13 @@
     }
 }
 .dynamic-action-attribute-type{
-    width: 45%;
+    width: 35%;
     float: left;
     > span{
         line-height: 26px;
     }
     + .value-data{
-        width: 55%;
+        width: 65%;
         padding-left: 15px;
     }
 }
@@ -681,20 +681,7 @@
     }
 }
 
-.action-type-selector-container{
-    ++.cf;
-    ++.border-box;
-    background: #f0f0f0;
-    .radius(3px);
-    padding:15px 15px 15px 15px;
-    margin: 0 0 15px 0;
-    float: left;
-    width: 100%;
-    > .hasDropDown{
-        float: left;
-        width:75%;
-    }
-}
+
 .related-model-selector{
     float: left;
     width: 75%;
@@ -908,19 +895,42 @@
 /*for actions in WORKFLOWS hide/show sequence*/
 #OnSaveWorkflowWizardView{
 	.action-type-selector-container{
-		width: 28%;
+		width: 30%;
 		float: left !important;
 	}
 	.droppable-dynamic-rows-container,
 	.zero-components-view{
 		float: left !important;
-		width: 68% !important;
-		margin-left: 4%;
+		width: 70% !important;
+		padding-left: 15px;
+		++.border-box;
 	}
 	.edit-dynamic-row-link{
 		display:none;
 	}
 	.ui-sortable{
 		min-height: 300px;
+		position:relative;
+	}
+}
+
+.action-type-selector-container{
+	++.cf;
+	++.border-box;
+//background: #f0f0f0;
+	.radius(3px);
+//padding:15px 15px 15px 15px;
+//margin: 0 0 15px 0;
+	float: left;
+	width: 100%;
+	> .hasDropDown{
+		float: none;
+		width:100%;
+	}
+	.related-model-selector{
+		margin-left: 0;
+		margin-top:15px;
+		width: 100%;
+		float: none;
 	}
 }
