@@ -38,8 +38,6 @@
         public $gamificationModalNotificationsEnabled;
         public $realtimeUpdatesEnabled;
         public $logoFileData;
-        public $logoHeight;
-        public $logoWidth;
 
         const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
         const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
@@ -67,8 +65,6 @@
                 array('dashboardListPageSize',                  'numerical', 'min' => 1),
                 array('gamificationModalNotificationsEnabled',  'boolean'),
                 array('realtimeUpdatesEnabled',                 'boolean'),
-                array('logoHeight',                             'type',      'type' => 'integer'),
-                array('logoWidth',                              'type',      'type' => 'integer'),
                 array('subListPageSize',                        'type',      'type' => 'integer'),
                 array('logoFileData',                           'type',      'type' => 'array'),
             );
@@ -85,8 +81,6 @@
                 'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'logoHeight'                            => Zurmo::t('ZurmoModule', 'Logo Height'),
-                'logoWidth'                             => Zurmo::t('ZurmoModule', 'Logo Width'),
             );
         }
     }

@@ -27,7 +27,7 @@
     /**
      * Base class used for wrapping a latest activity view.
      */
-    abstract class LatestActivtiesForPortletView extends ConfigurableMetadataView
+    abstract class LatestActivitiesForPortletView extends ConfigurableMetadataView
                                                                   implements PortletViewInterface,
                                                                         UserPersistentSettingsCleanupForPortletInterface
     {

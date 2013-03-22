@@ -24,30 +24,40 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /*
-        These tests test when there is a class that does not utilize a bean in the hierarchy.
-    */
-
-    class RedBeanClassesWithoutBeansTest extends BaseTest
+    /**
+     * Wrapper view for displaying an contact's latest activities feed.
+     */
+    class ContactLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
-        public function testGetCanHaveBean()
+        public static function getDefaultMetadata()
         {
-            $this->assertTrue(A::getCanHaveBean());
-            $this->assertFalse(NoBean::getCanHaveBean());
-            $this->assertTrue(ExtendsNoBean::getCanHaveBean());
+            $metadata = parent::getDefaultMetadata();
+            return array_merge($metadata, array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'                    => 'CreateEmailMessageFromRelatedListLink',
+                                  'modelClassName'          => 'EmailMessage',
+                                  'routeParameters'         =>
+                                    array(  'relatedModelClassName'  => 'Contact',
+                                            'relatedId'        =>
+                                                'eval:$this->params["relationModel"]->id',
+                                            'toAddress'        =>
+                                                'eval:$this->params["relationModel"]->primaryEmail->emailAddress')
+                        ),
+                    ),
+                ),
+            )));
         }
 
-        public function testGetColumnNameByAttribute()
+        public function getLatestActivitiesViewClassName()
         {
-            $a              = new A();
-            $columnName     = A::getColumnNameByAttribute('name');
-            $this->assertEquals('name', $columnName);
-            $extendedNoBean = new ExtendsNoBean();
-            $columnName     = ExtendsNoBean::getColumnNameByAttribute('name');
-            $this->assertEquals('name', $columnName);
-            $aaa            = new AAA();
-            $columnName     = AAA::getColumnNameByAttribute('noBean');
-            $this->assertEquals('redbeanmodel_id', $columnName);
+            return 'LatestActivitiesForContactListView';
+        }
+
+        public static function hasRollupSwitch()
+        {
+            return true;
         }
     }
 ?>

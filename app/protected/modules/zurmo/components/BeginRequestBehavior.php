@@ -124,8 +124,9 @@
                 if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
                 {
                     $cacheComponent = Yii::createComponent(array(
-                        'class' => 'CMemCache',
-                        'servers' => Yii::app()->params['memcacheServers']));
+                        'class'     => 'CMemCache',
+                        'keyPrefix' => ZURMO_TOKEN,
+                        'servers'   => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
                 }
                 // todo: Find better way to append this prefix for tests.
@@ -508,7 +509,8 @@
                 {
                     //Logo file is not published in assets
                     //Check if it exists in runtime/uploads
-                    if(file_exists(Yii::getPathOfAlias('application.runtime.uploads')) === false)
+                    if(file_exists(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                        DIRECTORY_SEPARATOR . $logoFileModel->name) === false)
                     {
                         $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileModel->name;
                         file_put_contents($logoFilePath, $logoFileModel->fileContent->content, LOCK_EX);

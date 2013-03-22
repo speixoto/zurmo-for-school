@@ -25,38 +25,28 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an opportunity's latest activities feed.
+     * Test for throwing an exception if trying to make a relation with the relation name the same as the relation
+     * model class name, not-owned, and a specific link
      */
-    class OpportunityLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class TestInvalidSpecificLinkType extends RedBeanModel
     {
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
-            return array_merge($metadata, array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'                   => 'CreateConversationFromRelatedListLink',
-                                  'routeParameters'         =>
-                                    array('relationAttributeName'    => 'notUsed',
-                                            'relationModelClassName' => 'Opportunity',
-                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                            'relationModuleId'       => 'opportunities',
-                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
-                        ),
-                    ),
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name',
                 ),
-            )));
-        }
-
-        public function getLatestActivitiesViewClassName()
-        {
-            return 'LatestActivitiesForOpportunityListView';
-        }
-
-        public static function hasRollupSwitch()
-        {
-            return true;
+                'relations' => array(
+                    'a' => array(RedBeanModel::HAS_ONE, 'A', RedBeanModel::NOT_OWNED,
+                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'aSomething'),
+                ),
+                'rules' => array(
+                    array('name', 'type',   'type' => 'string'),
+                    array('name', 'length', 'max'  => 15),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

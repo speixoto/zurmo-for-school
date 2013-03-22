@@ -102,14 +102,10 @@
                                           'thumbnail_url'     => $logoThumbFileSrc);
            }
            $form->logoFileData  = $logoFileData;
-           $form->logoHeight    = self::resolveLogoHeight();
-           $form->logoWidth     = self::resolveLogoWidth();
         }
 
         public static function setLogoAttributes($form)
         {
-           ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', $form->logoHeight);
-           ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoWidth', $form->logoWidth);
            if (Yii::app()->user->getState('deleteCustomLogo') === true)
            {
                if (ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId') !== null)
@@ -117,13 +113,15 @@
                    self::deleteCurrentCustomLogo();
                    ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', null);
                    ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', null);
+                   ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoWidth', null);
+                   ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', null);
                    Yii::app()->user->setState('deleteCustomLogo', null);
                }
            }
            if (!is_null(Yii::app()->user->getState('logoFileName')))
            {
                $logoFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . Yii::app()->user->getState('logoFileName');
-               self::resizeLogoImageFile($logoFilePath, $logoFilePath, $form->logoWidth, $form->logoHeight);
+               self::resizeLogoImageFile($logoFilePath, $logoFilePath, null, ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT);
                $logoFileName = Yii::app()->user->getState('logoFileName');
                $logoFileId   = self::saveLogoFile($logoFileName, $logoFilePath, 'logoFileModelId');
                self::publishLogo($logoFileName, $logoFilePath);
@@ -214,6 +212,9 @@
         public static function resizeLogoImageFile($sourcePath, $destinationPath, $newWidth, $newHeight)
         {
             WideImage::load($sourcePath)->resize($newWidth, $newHeight)->saveToFile($destinationPath);
+            list($logoWidth, $logoHeight) = getimagesize($destinationPath);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoWidth', $logoWidth);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', $logoHeight);
         }
     }
 ?>

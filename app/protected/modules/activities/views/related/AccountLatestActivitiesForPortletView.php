@@ -27,7 +27,7 @@
     /**
      * Wrapper view for displaying an account's latest activities feed.
      */
-    class AccountLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class AccountLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
         public static function getDefaultMetadata()
         {

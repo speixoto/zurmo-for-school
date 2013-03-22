@@ -107,7 +107,7 @@ footer, header, hgroup, menu, nav, section {
     .remember-me{
         label{
             margin:0 !important;
-        }   
+        }
         .hasCheckBox + label{
             display:inline-block;
             position:relative;
@@ -278,7 +278,7 @@ footer, header, hgroup, menu, nav, section {
     min-width:110px;
     display:none;
     position:absolute;
-    top:37px;    
+    top:37px;
     border:1px solid #444;
     background: #252525;
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
@@ -388,7 +388,7 @@ footer, header, hgroup, menu, nav, section {
     z-index:1;
     min-width:110px;
     display:none;
-    top:38px;    
+    top:38px;
     border:1px solid #444;
     background: #252525;
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
@@ -430,7 +430,7 @@ footer, header, hgroup, menu, nav, section {
             &:hover{
                 .icon:after{
                     color: #fff !important;
-                }                
+                }
             }
         }
     }
@@ -514,7 +514,7 @@ footer, header, hgroup, menu, nav, section {
     > li > a:after{
         content: "÷";
         .symbly(12px) !important;
-        
+
         color:#ddd;
         position: relative;
         top: 0;
@@ -1073,7 +1073,7 @@ body > .ui-autocomplete{
         em:before{
             content: "V";
         }
-    }       
+    }
 }
 
 /*=Content*/
@@ -1119,22 +1119,22 @@ body > .ui-autocomplete{
         position: relative;
     }
     > div:nth-child(1) {
-        z-index:10; 
+        z-index:10;
     }
-    > div:nth-child(2) {   
-        z-index:9;  
+    > div:nth-child(2) {
+        z-index:9;
     }
     > div:nth-child(3) {
-        z-index:8;  
+        z-index:8;
     }
-    > div:nth-child(4) {   
-        z-index:7;  
+    > div:nth-child(4) {
+        z-index:7;
     }
     > div:nth-child(5) {
-        z-index:6;  
+        z-index:6;
     }
-    > div:nth-child(6) {   
-        z-index:5;  
+    > div:nth-child(6) {
+        z-index:5;
     }
 }
 
@@ -1155,7 +1155,7 @@ body > .ui-autocomplete{
 /*=Inner toolbar*/
 .float-bar{
     width: 100%;
-    float: left;
+    //float: left;
     position: relative;
     height: 40px;
     display: block;
@@ -1499,17 +1499,17 @@ caption, th, td {
 
 #list-view{
     overflow-x:auto;
-    position:relative;    
+    position:relative;
     background:
         -webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
-        -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,        
+        -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,
         -webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
         -webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
     background-repeat: no-repeat;
     //background-color: white;
     background-size:
         40px 100%,
-        40px 100%, 
+        40px 100%,
         20px 100%,
         20px 100%;
     /* Opera doesn't support this in the shorthand */
@@ -1537,7 +1537,7 @@ table.items{
             padding:10px 5px;
             word-wrap: break-word;
             //word-break: break-all;
-        }   
+        }
     }
     > tbody,
     > thead{
@@ -1548,9 +1548,9 @@ table.items{
             background: url(../images/table-items-header.png) left top repeat-x;
             padding:0 5px;
             white-space: nowrap;
-        }  
+        }
     }
-    
+
     tr:hover{
         #gradient > .vertical(#efefef, #eeeeee);
         .pencil{
@@ -1573,7 +1573,7 @@ table.items{
             th:first-child:not(.checkbox-column){
                     padding-left:10px;
             }
-        }   
+        }
     }
 }
 
@@ -2447,7 +2447,7 @@ div.wide.form{
 }
 
 .mp-divider{
-    padding:0 2px;    
+    padding:0 2px;
 }
 
 #show-dynamic-search-structure-div-search-form{
@@ -2606,7 +2606,7 @@ div.wide.form{
 .buffer{
 	.clearfix();
     padding-left:30px;
-    
+
     > div{
     	float:left;
         padding:8px 10px;
@@ -2733,7 +2733,7 @@ div.wide.form{
 
 .address-fields{
     div:last-child{
-        padding-bottom:0; 
+        padding-bottom:0;
     }
 }
 
@@ -2977,7 +2977,7 @@ div.wide.form{
     td, th{
         font-weight: bold;
         .box-sizing();
-        padding:5px 5px 5px 5px; 
+        padding:5px 5px 5px 5px;
     }
     th{
         vertical-align:top;
@@ -3214,7 +3214,7 @@ div.wide.form{
     .GridView + .GridView{
         width:35%;
     }
-    .UserLatestActivtiesForPortletView{
+    .UserLatestActivitiesForPortletView{
         margin-right:20px !important;
     }
 }
@@ -3476,7 +3476,7 @@ div.radio-input{
             .radius(3px);
             #gradient > .vertical(#e8e8e8, #f5f5f5);
             .symbly(14px);
-        } 
+        }
         ul{
             ++.flyout;
             display: none;
@@ -3749,16 +3749,16 @@ div.hasHalfs{
         width: 20%;
     }
     .first a:after, .hidden.first:after{
-        content:"«"; 
+        content:"«";
     }
     .next a:after, .hidden.next:after{
-        content:"›"; 
+        content:"›";
     }
     .previous a:after, .hidden.previous:after{
-        content:"‹"; 
+        content:"‹";
     }
     .last a:after, .hidden.last:after{
-        content:"»"; 
+        content:"»";
     }
     .next, .previous, .first, .last{
         font-size:14px;
@@ -4002,7 +4002,7 @@ div.hasHalfs{
     display: block;
 }
 
-.LatestActivtiesForPortletView{
+.LatestActivitiesForPortletView{
 	position:relative;
 	.toolbar-mbmenu{
 		z-index:999999;
@@ -4504,7 +4504,7 @@ div.hasHalfs{
         border: 1px solid #DFDFDF;
         border-top: none;
         ul{
-            
+
         }
     }
 }
@@ -4537,7 +4537,7 @@ div.hasHalfs{
         margin-right:15px;
         position: relative;
         top:1px;
-    } 
+    }
 }
 
 @import 'widget-juiportlets.less';

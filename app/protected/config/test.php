@@ -66,7 +66,6 @@
     $common_config['components']['languageHelper']['class']               = 'application.tests.ZurmoLanguageHelperForTesting';
     unset($common_config['components']['apiRequest']);
     unset($common_config['components']['apiHelper']);
-
     //Set the GeoCodeApiKey to null which will work for localhost requests. If this is not running on
     //localhost, then modify perInstanceConfig.php with an updated key.
     if (!isset($common_config['params']['testGoogleGeoCodeApiKey']))
@@ -87,6 +86,10 @@
     if (isset($testApiUrl))
     {
         $common_config['params']['testApiUrl'] = $testApiUrl;
+    }
+    if (isset($testGoogleGeoCodeApiKey))
+    {
+        $common_config['params']['testGoogleGeoCodeApiKey'] = $testGoogleGeoCodeApiKey;
     }
     return $common_config;
 ?>

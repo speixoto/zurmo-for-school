@@ -93,7 +93,7 @@
             $portlet->position  = 1;
             $portlet->layoutId = 'xyz';
             $portlet->collapsed = false;
-            $portlet->viewType = 'UserLatestActivtiesForPortlet';
+            $portlet->viewType = 'UserLatestActivitiesForPortlet';
             $portlet->user = $bUser;
             $portlet->save();
             $this->setGetArray(array('id' => $aUser->id, 'portletId' => $portlet->id)); //Using dummy portlet id

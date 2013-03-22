@@ -241,7 +241,7 @@
                     $(".' . static::getZeroComponentsClassName() . '").fadeOut(150);
                     makeLargeLoadingSpinner(false, ".ui-overlay-block");
                     $(".ui-overlay-block").fadeOut(50);
-                    window.scrollTo(0, document.body.scrollHeight);
+                    window.scrollTo(0, ul.find("li:last-child > div").offset().top);
                     ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
                 }'
             ));
@@ -270,7 +270,7 @@
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                         makeLargeLoadingSpinner(false, ".ui-overlay-block");
                         $(".ui-overlay-block").fadeOut(50);
-                        window.scrollTo(0, document.body.scrollHeight);
+                        window.scrollTo(0, ul.find("li:last-child > div").offset().top);
                         ul.find("li:last-child > div").addClass("glow").animate({backgroundColor:"#f0f0f0"}, 2000);
                 }'
             ));
