@@ -70,12 +70,12 @@
             $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 0);
             $this->rules->resolveMarkUnread($createdMission->id);
             $savedMission               = Mission::getById($createdMission->id);
-            $this->assertFalse((bool)$savedMission->ownerHasReadLatest);
-            $this->assertFalse((bool)$this->rules->hasUserReadLatest($createdMission->id));
+            $this->assertFalse($this->rules->hasUserReadLatest($createdMission->id));
+            $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 1);
             $this->rules->resolveMarkRead($createdMission->id);
             $savedMission               = Mission::getById($createdMission->id);
-            $this->assertTrue((bool)$savedMission->ownerHasReadLatest);
-            $this->assertTrue((bool)$this->rules->hasUserReadLatest($createdMission->id));
+            $this->assertTrue($this->rules->hasUserReadLatest($createdMission->id));
+            $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 0);
         }
 
         protected function deleteAllMissions()

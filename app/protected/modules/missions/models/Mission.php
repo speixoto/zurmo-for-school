@@ -43,7 +43,7 @@
         private $sendOwnerUnreadCommentNotification = false;
 
         private $sendTakenByUserUnreadCommentNotification = false;
-        
+
         public static function getMashableActivityRulesType()
         {
             return 'Mission';
@@ -169,6 +169,7 @@
         protected function beforeSave()
         {
             $missionRules = new MissionMashableInboxRules();
+            $personsToAddAsHaveNotReadLatest = array();
             if (parent::beforeSave())
             {
                 if ($this->comments->isModified() || $this->getIsNewModel())
@@ -177,8 +178,10 @@
                     $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
                     foreach ($people as $person)
                     {
-                        $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHaveNotReadLatest($person);
-                        $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
+                        if(!in_array($person, $personsToAddAsHaveNotReadLatest))
+                        {
+                            $personsToAddAsHaveNotReadLatest[] = $person;
+                        }
                     }
                 }
                 if ($this->comments->isModified())
@@ -202,10 +205,18 @@
                     {
                         if ($missionRules->haveUserReadLatest($this, $person))
                         {
-                            $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHaveNotReadLatest($person);
-                            $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
+                            if(!in_array($person, $personsToAddAsHaveNotReadLatest))
+                            {
+                                $personsToAddAsHaveNotReadLatest[] = $person;
+                            }
                         }
                     }
+                }
+                foreach ($personsToAddAsHaveNotReadLatest as $person)
+                {
+                    $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHaveNotReadLatest($person);
+                    $personsToAddAsHaveNotReadLatest[] = $personWhoHaveNotReadLatest;
+                    $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
                 }
                 return true;
             }
@@ -251,15 +262,6 @@
                     $messageContent = Zurmo::t('MissionsModule', 'A mission you completed has been accepted');
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
                 }
-            }
-            if ($this->getScenario() != 'importModel' && $this->sendOwnerUnreadCommentNotification)
-            {
-                MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->owner);
-            }
-            elseif ($this->getScenario() != 'importModel' &&
-                   $this->sendTakenByUserUnreadCommentNotification && $this->takenByUser->id > 0)
-            {
-                MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->takenByUser);
             }
             parent::afterSave();
         }

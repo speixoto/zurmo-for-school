@@ -243,8 +243,8 @@
             if ($this->haveUserReadLatest($model, $user))
             {
                 $model->personsWhoHaveNotReadLatest->add($this->makePersonWhoHaveNotReadLatest($user));
-                $model->save();
             }
+            $model->save();
         }
 
         public function markUserAsHaveReadLatestModel($model, User $user)

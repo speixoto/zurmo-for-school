@@ -215,7 +215,6 @@
 
         public static function resolvePeopleToSendNotificationToOnNewMission(Mission $mission)
         {
-            assert('$mission->id > 0');
             $users = User::getAll();
             $people = array();
             foreach ($users as $user)
