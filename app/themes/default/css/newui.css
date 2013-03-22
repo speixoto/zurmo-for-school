@@ -776,9 +776,11 @@ body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
 body.blue #clear-search-linkmodal,
 body.blue .z-action-link,
-body.blue .showAllCommentsLink .treeview span:hover .z-action-link,
+body.blue .showAllCommentsLink,
+body.blue .treeview span:hover .z-action-link,
 body.blue .drop-zone,
-body.blue .missing-chart {
+body.blue .missing-chart,
+body.blue a.active-tab {
   color: #282a76;
 }
 body.blue #notifications-flyout .single-notification h4,
@@ -1318,9 +1320,11 @@ body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
 body.brown #clear-search-linkmodal,
 body.brown .z-action-link,
-body.brown .showAllCommentsLink .treeview span:hover .z-action-link,
+body.brown .showAllCommentsLink,
+body.brown .treeview span:hover .z-action-link,
 body.brown .drop-zone,
-body.brown .missing-chart {
+body.brown .missing-chart,
+body.brown a.active-tab {
   color: #547980;
 }
 body.brown #notifications-flyout .single-notification h4,
@@ -1860,9 +1864,11 @@ body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
 body.lime #clear-search-linkmodal,
 body.lime .z-action-link,
-body.lime .showAllCommentsLink .treeview span:hover .z-action-link,
+body.lime .showAllCommentsLink,
+body.lime .treeview span:hover .z-action-link,
 body.lime .drop-zone,
-body.lime .missing-chart {
+body.lime .missing-chart,
+body.lime a.active-tab {
   color: #2b434f;
 }
 body.lime #notifications-flyout .single-notification h4,
@@ -2402,9 +2408,11 @@ body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
 body.cherry #clear-search-linkmodal,
 body.cherry .z-action-link,
-body.cherry .showAllCommentsLink .treeview span:hover .z-action-link,
+body.cherry .showAllCommentsLink,
+body.cherry .treeview span:hover .z-action-link,
 body.cherry .drop-zone,
-body.cherry .missing-chart {
+body.cherry .missing-chart,
+body.cherry a.active-tab {
   color: #6c8092;
 }
 body.cherry #notifications-flyout .single-notification h4,
@@ -2944,9 +2952,11 @@ body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
 body.turquoise #clear-search-linkmodal,
 body.turquoise .z-action-link,
-body.turquoise .showAllCommentsLink .treeview span:hover .z-action-link,
+body.turquoise .showAllCommentsLink,
+body.turquoise .treeview span:hover .z-action-link,
 body.turquoise .drop-zone,
-body.turquoise .missing-chart {
+body.turquoise .missing-chart,
+body.turquoise a.active-tab {
   color: #447799;
 }
 body.turquoise #notifications-flyout .single-notification h4,
@@ -3486,9 +3496,11 @@ body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
 body.violet #clear-search-linkmodal,
 body.violet .z-action-link,
-body.violet .showAllCommentsLink .treeview span:hover .z-action-link,
+body.violet .showAllCommentsLink,
+body.violet .treeview span:hover .z-action-link,
 body.violet .drop-zone,
-body.violet .missing-chart {
+body.violet .missing-chart,
+body.violet a.active-tab {
   color: #4a3970;
 }
 body.violet #notifications-flyout .single-notification h4,
@@ -4028,9 +4040,11 @@ body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
 body.honey #clear-search-linkmodal,
 body.honey .z-action-link,
-body.honey .showAllCommentsLink .treeview span:hover .z-action-link,
+body.honey .showAllCommentsLink,
+body.honey .treeview span:hover .z-action-link,
 body.honey .drop-zone,
-body.honey .missing-chart {
+body.honey .missing-chart,
+body.honey a.active-tab {
   color: #46201c;
 }
 body.honey #notifications-flyout .single-notification h4,
