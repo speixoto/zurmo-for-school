@@ -372,11 +372,10 @@
             //Sort order desc
             $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
                                                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
-                                     'Account_sort'       => 'officePhone.desc')
-                              );
+                                     'Account_sort'       => 'officePhone.desc'));
+
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/');
             $data = StickySearchUtil::getDataByKey('AccountsSearchView');
-
             $compareData = array('dynamicClauses'                     => array(),
                                  'dynamicStructure'                   => null,
                                  'anyMixedAttributes'                 => 'xyz',
@@ -390,19 +389,18 @@
             //Sort order asc
             $this->setGetArray(array('AccountsSearchForm' => array('anyMixedAttributes'                 => 'xyz',
                                                                    SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name')),
-                                     'Account_sort'       => 'officePhone')
-                              );
+                                     'Account_sort'       => 'officePhone'));
+
             $this->runControllerWithNoExceptionsAndGetContent('accounts/default/');
             $data = StickySearchUtil::getDataByKey('AccountsSearchView');
-
             $compareData = array('dynamicClauses'                     => array(),
                                  'dynamicStructure'                   => null,
                                  'anyMixedAttributes'                 => 'xyz',
                                  'anyMixedAttributesScope'            => null,
                                  SearchForm::SELECTED_LIST_ATTRIBUTES => array('officePhone', 'name'),
-                                'sortAttribute'                       => 'officePhone',
-                                'sortDescending'                      => '',
-                                'savedSearchId'                       => ''
+                                 'sortAttribute'                       => 'officePhone',
+                                 'sortDescending'                      => '',
+                                 'savedSearchId'                       => ''
             );
             $this->assertEquals($compareData, $data);
 

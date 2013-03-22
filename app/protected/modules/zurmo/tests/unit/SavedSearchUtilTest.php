@@ -114,7 +114,7 @@
             $searchModel->setAnyMixedAttributesScope('xyz');
             $searchModel->getListAttributesSelector()->setSelected(array('aaaMember', 'aaaMember2'));
             $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
-            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection);
+            SavedSearchUtil::setDataByKeyAndDataCollection('abc', $dataCollection, array());
             $stickyData = StickySearchUtil::getDataByKey('abc');
             $compareData = array(   'dynamicClauses'          => array('a', 'b'),
                                     'dynamicStructure'        => '1 and 5',
