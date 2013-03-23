@@ -33,22 +33,35 @@
         private $messagesForTesting = array(
             'de' => array(
                 'Default' => array(
-                    'Name' => 'Name'
+                    'Name' => 'Name',
+                    'Office Phone' => 'Bürotelefon',
+                    'Billing Address' => 'Rechnungsadresse'
                 ),
             ),
             'es' => array(
                 'Default' => array(
-                    'Name' => 'Nombre'
+                    'Name' => 'Nombre',
+                    'Office Phone' => 'Teléfono de la Oficina',
+                    'Billing Address' => 'Dirección de facturación'
                 ),
             ),
             'fr' => array(
                 'Default' => array(
-                    'Name' => 'Nom'
+                    'Name' => 'Nom',
+                    'Customer' => 'Client',
+                    'New' => 'Nouveau',
+                    'In Progress' => 'En cours',
+                    'Recycled' => 'Réactivé',
+                    'Dead' => 'Mort',
+                    'Office Phone' => 'Téléphone de bureau',
+                    'Billing Address' => 'Adresse de facturation'
                 ),
             ),
             'it' => array(
                 'Default' => array(
-                    'Name' => 'Nome'
+                    'Name' => 'Nome',
+                    'Office Phone' => 'Telefono Ufficio',
+                    'Billing Address' => 'Indirizzo di Fatturazione'
                 ),
             ),
         );
