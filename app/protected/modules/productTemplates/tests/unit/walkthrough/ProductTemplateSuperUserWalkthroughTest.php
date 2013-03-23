@@ -43,51 +43,62 @@
             //AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
         }
 
-        public function testSaveAction()
+        public function testCreateAction()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             //Create a new account.
             $this->resetGetArray();
 
-            $currencies                                 = Currency::getAll();
-            $currencyValue1                             = new CurrencyValue();
-            $currencyValue1->value                      = 500.54;
-            $currencyValue1->currency                   = $currencies[0];
-            $currencyValue1Array                        = CPropertyValue::ensureArray($currencyValue1);
-            $currencyValue2                             = new CurrencyValue();
-            $currencyValue2->value                      = 400.54;
-            $currencyValue2->currency                   = $currencies[0];
-            $currencyValue2Array                        = CPropertyValue::ensureArray($currencyValue2);
-            $currencyValue3                             = new CurrencyValue();
-            $currencyValue3->value                      = 300.54;
-            $currencyValue3->currency                   = $currencies[0];
-            $currencyValue3Array                        = CPropertyValue::ensureArray($currencyValue3);
+            $currency = new Currency();
+            $currency->code       = 'USD';
+            $currency->rateToBase = 1;
+            $currency->save();
+
+            $currencyRec = Currency::getByCode('USD');
+
+            $currencyValue1Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 500.54);
+            $currencyValue2Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 400.54);
+            $currencyValue3Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 300.54);
 
             $productTemplate                            = array();
             $productTemplate['name']                      = 'Red Widget';
             $productTemplate['description']               = 'Description';
             $productTemplate['priceFrequency']            = 2;
-            $productTemplate['cost']                      = array('currency' => $currencyValue1Array);
-            $productTemplate['listPrice']                 = array('currency' => $currencyValue2Array);
-            $productTemplate['sellPrice']                 = array('currency' => $currencyValue3Array);
+            $productTemplate['cost']                      = $currencyValue1Array;
+            $productTemplate['listPrice']                 = $currencyValue2Array;
+            $productTemplate['sellPrice']                 = $currencyValue3Array;
+
+
             $productTemplate['type']                      = ProductTemplate::TYPE_PRODUCT;
             $productTemplate['status']                    = ProductTemplate::STATUS_ACTIVE;
-            $sellPriceFormula                             = new SellPriceFormula();
-            $sellPriceFormula->type                       = 1;
-            $sellPriceFormula->discountOrMarkupPercentage = 10;
-            $sellPriceFormulaArray                        = CPropertyValue::ensureArray($sellPriceFormula);
+            $sellPriceFormulaArray                             = array('type' => 1, 'discountOrMarkupPercentage' => 10 );
+
             $productTemplate['sellPriceFormula'] = $sellPriceFormulaArray;
-            $this->setPostArray($productTemplate);
+            $this->setPostArray(array('ProductTemplate' => $productTemplate));
             $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('productTemplates/default/create');
 
             $productTemplates = ProductTemplate::getByName('Red Widget');
             $this->assertEquals(1, count($productTemplates));
             $this->assertTrue  ($productTemplates[0]->id > 0);
-            //$compareRedirectUrl = Yii::app()->createUrl('productTemplates/default/details', array('id' => $productTemplates[0]->id));
-            //$this->assertEquals($compareRedirectUrl, $redirectUrl);
             $this->assertEquals(400.54, $productTemplates[0]->listPrice->value);
             $this->assertEquals(500.54, $productTemplates[0]->cost->value);
             $this->assertEquals(300.54, $productTemplates[0]->sellPrice->value);
+
+            $currencyValue1Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 400.54);
+            $currencyValue2Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 400.54);
+            $currencyValue3Array                        = array('currency' => array('id' => $currencyRec->id), 'value' => 200.54);
+
+            $productTemplate['cost']                      = $currencyValue1Array;
+            $productTemplate['listPrice']                 = $currencyValue2Array;
+            $productTemplate['sellPrice']                 = $currencyValue3Array;
+
+
+            $this->setPostArray(array('ProductTemplate' => $productTemplate));
+            $this->setGetArray(array('id' => $productTemplates[0]->id));
+            $redirectUrl = $this->runControllerWithRedirectExceptionAndGetUrl('productTemplates/default/edit');
+            $this->assertEquals(400.54, $productTemplates[0]->listPrice->value);
+            $this->assertEquals(400.54, $productTemplates[0]->cost->value);
+            $this->assertEquals(200.54, $productTemplates[0]->sellPrice->value);
         }
     }
 ?>

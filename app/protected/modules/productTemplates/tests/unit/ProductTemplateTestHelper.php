@@ -45,5 +45,11 @@
             assert('$saved');
             return $productTemplate;
         }
+
+        public static function getCurrencyArray($value)
+        {
+            $currencyValue  = array('id' => 3);
+            return $currencyValue;
+        }
     }
 ?>

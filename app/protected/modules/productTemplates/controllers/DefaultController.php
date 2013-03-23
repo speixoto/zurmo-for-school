@@ -103,9 +103,10 @@
         {
             $productTemplate = ProductTemplate::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productTemplate);
-            $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($productTemplate, $redirectUrl), 'Edit');
             $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
+                                         makeStandardViewForCurrentUser($this,
+                                             $this->makeEditAndDetailsView(
+                                                 $this->attemptToSaveModelFromPost($productTemplate, $redirectUrl), 'Edit')));
             echo $view->render();
         }
 

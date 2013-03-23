@@ -79,6 +79,7 @@
             $productTemplate->cost                      = $currencyValue1;
             $productTemplate->listPrice                 = $currencyValue2;
             $productTemplate->sellPrice                 = $currencyValue3;
+            print_r($productTemplate->cost);
             $productTemplate->type                      = ProductTemplate::TYPE_PRODUCT;
             $productTemplate->status                    = ProductTemplate::STATUS_ACTIVE;
             $productTemplate->products->add($product);
