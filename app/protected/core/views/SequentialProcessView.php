@@ -80,7 +80,7 @@
         {
             $content  = '<div class="process-container-view">' . "\n";
             $content .= '<h3>' . $this->message . '</h3>';
-            $content .= "<span id='" . $this->getProgressBarId() . "-msg'></span>";
+            $content .= '<span id="' . $this->getProgressBarId() . '-msg"></span>';
             $content .= '</div>';
             $this->registerAjaxScript();
             return $content;

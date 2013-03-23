@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an account's latest activities feed.
+     * Wrapper view for displaying an contact's latest activities feed.
      */
-    class AccountLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class ContactLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
         public static function getDefaultMetadata()
         {
@@ -36,14 +36,14 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'                    => 'CreateConversationFromRelatedListLink',
-                                  'modelClassName'          => 'Conversation',
+                            array('type'                    => 'CreateEmailMessageFromRelatedListLink',
+                                  'modelClassName'          => 'EmailMessage',
                                   'routeParameters'         =>
-                                    array('relationAttributeName'    => 'notUsed',
-                                            'relationModelClassName' => 'Account',
-                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                            'relationModuleId'       => 'accounts',
-                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
+                                    array(  'relatedModelClassName'  => 'Contact',
+                                            'relatedId'        =>
+                                                'eval:$this->params["relationModel"]->id',
+                                            'toAddress'        =>
+                                                'eval:$this->params["relationModel"]->primaryEmail->emailAddress')
                         ),
                     ),
                 ),
@@ -52,7 +52,7 @@
 
         public function getLatestActivitiesViewClassName()
         {
-            return 'LatestActivitiesForAccountListView';
+            return 'LatestActivitiesForContactListView';
         }
 
         public static function hasRollupSwitch()
