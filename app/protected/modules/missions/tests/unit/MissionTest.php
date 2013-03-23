@@ -149,10 +149,12 @@
          */
         public function testDeleteMission()
         {
-            $missions = Mission::getAll();
+            $missions                    = Mission::getAll();
+            $comments                    = Comment::getAll();
+            $personsWhoHaveNotReadLatest = PersonWhoHaveNotReadLatest::getAll();
             $this->assertGreaterThan(0, count($missions));
-            $comments = Comment::getAll();
             $this->assertGreaterThan(0, count($comments));
+            $this->assertGreaterThan(0, count($personsWhoHaveNotReadLatest));
 
             foreach ($missions as $mission)
             {

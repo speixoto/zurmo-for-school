@@ -223,10 +223,10 @@
          */
         public function hasUserReadLatest($model, User $user)
         {
-            //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
-            if ($model->personsWhoHaveNotReadLatest->count() > 0)
+            $haveNotReadRelationName = $this->getHaveNotReadRelationName();
+            if ($model->$haveNotReadRelationName->count() > 0)
             {
-                foreach ($model->personsWhoHaveNotReadLatest as $personWhoHaveNotReadLatest)
+                foreach ($model->$haveNotReadRelationName as $personWhoHaveNotReadLatest)
                 {
                     if ($personWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
                     {
@@ -239,7 +239,6 @@
 
         public function markUserAsHavingUnreadLatestModel($model, User $user)
         {
-            //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
             if ($this->hasUserReadLatest($model, $user))
             {
                 $this->addPersonWhoHasNotReadLatestToModel(
@@ -251,8 +250,8 @@
 
         public function markUserAsHavingReadLatestModel($model, User $user)
         {
-            //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
-            foreach ($model->personsWhoHaveNotReadLatest as $existingPersonWhoHaveNotReadLatest)
+            $haveNotReadRelationName = $this->getHaveNotReadRelationName();
+            foreach ($model->$haveNotReadRelationName as $existingPersonWhoHaveNotReadLatest)
             {
                 if($existingPersonWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
                 {
@@ -273,7 +272,7 @@
             assert('$personOrUserModel instanceof User || $personOrUserModel instanceof Person');
             $personWhoHaveNotReadLatestModelName = $this->getPersonWhoHasNotReadLatestModelName();
             $personWhoHaveNotReadLatest          = new $personWhoHaveNotReadLatestModelName();
-            $personWhoHaveNotReadLatest->person = $personOrUserModel;
+            $personWhoHaveNotReadLatest->person  = $personOrUserModel;
             return $personWhoHaveNotReadLatest;
         }
 
