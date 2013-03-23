@@ -219,7 +219,7 @@
             }
         }
 
-        public function hasUserReadLatest($modelId)
+        public function hasCurrentUserReadLatest($modelId)
         {
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);

@@ -71,13 +71,13 @@
             $this->rules->resolveMarkUnread($createdConversation->id);
             $savedConversation          = Conversation::getById($createdConversation->id);
             $this->assertFalse((bool)$savedConversation->ownerHasReadLatest);
-            $this->assertFalse((bool)$this->rules->hasUserReadLatest($createdConversation->id));
+            $this->assertFalse((bool)$this->rules->hasCurrentUserReadLatest($createdConversation->id));
             //TODO: Check why this not works
             //$this->assertEquals(1, $this->rules->getUnreadCountForCurrentUser());
             $this->rules->resolveMarkRead($createdConversation->id);
             $savedConversation          = Conversation::getById($createdConversation->id);
             $this->assertTrue((bool)$savedConversation->ownerHasReadLatest);
-            $this->assertTrue((bool)$this->rules->hasUserReadLatest($createdConversation->id));
+            $this->assertTrue((bool)$this->rules->hasCurrentUserReadLatest($createdConversation->id));
         }
 
         public function testResolveCloseSelected()

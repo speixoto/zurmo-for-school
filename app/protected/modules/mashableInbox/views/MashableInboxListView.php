@@ -85,7 +85,7 @@
         public static function resolveRowHtmlOptionsExpression($grid, $row, $data)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel(get_class($data));
-            $hasReadLatest      = $mashableUtilRules->hasUserReadLatest($data->id);
+            $hasReadLatest      = $mashableUtilRules->hasCurrentUserReadLatest($data->id);
             $unread             = null;
             if (!$hasReadLatest)
             {

@@ -203,7 +203,7 @@
                     $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this, Yii::app()->user->userModel);
                     foreach ($people as $person)
                     {
-                        if ($missionRules->haveUserReadLatest($this, $person))
+                        if ($missionRules->hasUserReadLatest($this, $person))
                         {
                             if(!in_array($person, $personsToAddAsHaveNotReadLatest))
                             {
@@ -214,7 +214,7 @@
                 }
                 foreach ($personsToAddAsHaveNotReadLatest as $person)
                 {
-                    $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHaveNotReadLatest($person);
+                    $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHasNotReadLatest($person);
                     $personsToAddAsHaveNotReadLatest[] = $personWhoHaveNotReadLatest;
                     $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
                 }

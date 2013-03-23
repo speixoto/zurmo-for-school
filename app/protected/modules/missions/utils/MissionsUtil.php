@@ -49,21 +49,21 @@
         public static function markUserHasReadLatest(Mission $mission, User $user)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
-            $hasReadLatest      = $mashableUtilRules->markUserAsHaveReadLatestModel($mission, $user);
+            $hasReadLatest      = $mashableUtilRules->markUserAsHavingReadLatestModel($mission, $user);
             return $hasReadLatest;
         }
 
         public static function markUserHasUnreadLatest(Mission $mission, User $user)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
-            $hasReadLatest      = $mashableUtilRules->markUserAsHaveUnreadLatestModel($mission, $user);
+            $hasReadLatest      = $mashableUtilRules->markUserAsHavingUnreadLatestModel($mission, $user);
             return $hasReadLatest;
         }
 
         public static function hasUserReadMissionLatest(Mission $mission, User $user)
         {
             $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
-            $hasReadLatest      = $mashableUtilRules->haveUserReadLatest($mission, $user);
+            $hasReadLatest      = $mashableUtilRules->hasUserReadLatest($mission, $user);
             return $hasReadLatest;
         }
 

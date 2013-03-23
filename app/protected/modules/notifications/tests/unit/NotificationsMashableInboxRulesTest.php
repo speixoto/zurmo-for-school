@@ -65,11 +65,11 @@
             $this->rules->resolveMarkRead($createdNotification->id);
             $savedNotification          = Notification::getById($createdNotification->id);
             $this->assertTrue((bool)$savedNotification->ownerHasReadLatest);
-            $this->assertTrue((bool)$this->rules->hasUserReadLatest($createdNotification->id));
+            $this->assertTrue((bool)$this->rules->hasCurrentUserReadLatest($createdNotification->id));
             $this->rules->resolveMarkUnread($createdNotification->id);
             $savedNotification          = Notification::getById($createdNotification->id);
             $this->assertFalse((bool)$savedNotification->ownerHasReadLatest);
-            $this->assertFalse((bool)$this->rules->hasUserReadLatest($createdNotification->id));
+            $this->assertFalse((bool)$this->rules->hasCurrentUserReadLatest($createdNotification->id));
         }
 
         public function testDeleteSelected()

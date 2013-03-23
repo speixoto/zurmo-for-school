@@ -70,11 +70,11 @@
             $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 0);
             $this->rules->resolveMarkUnread($createdMission->id);
             $savedMission               = Mission::getById($createdMission->id);
-            $this->assertFalse($this->rules->hasUserReadLatest($createdMission->id));
+            $this->assertFalse($this->rules->hasCurrentUserReadLatest($createdMission->id));
             $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 1);
             $this->rules->resolveMarkRead($createdMission->id);
             $savedMission               = Mission::getById($createdMission->id);
-            $this->assertTrue($this->rules->hasUserReadLatest($createdMission->id));
+            $this->assertTrue($this->rules->hasCurrentUserReadLatest($createdMission->id));
             $this->assertEquals(0, $this->rules->getUnreadCountForCurrentUser(), 0);
         }
 

@@ -49,7 +49,7 @@
          * @param integer $modelId
          * @return boolean
          */
-        abstract public function hasUserReadLatest($modelId);
+        abstract public function hasCurrentUserReadLatest($modelId);
 
         /**
          * Returns the metada for the FilteredBy
@@ -77,13 +77,13 @@
         abstract public function getMachableInboxOrderByAttributeName();
 
         /**
-         * Marks the model as read latest changes by current user
+         * Marks the model as read latest changes by current user by modelId
          * @param integer $modelId
          */
         abstract public function resolveMarkRead($modelId);
 
         /**
-         * Marks the model as read latest changes by current user
+         * Marks the model as read latest changes by current user by modelId
          * @param integer $modelId
          */
         abstract public function resolveMarkUnread($modelId);
@@ -217,18 +217,18 @@
         }
 
         /**
-         * Given the model, check if the user has read latest changes
+         * Given the model, check if the a user has read latest changes
          * @param $model
          * @param User $user
          */
-        public function haveUserReadLatest($model, User $user)
+        public function hasUserReadLatest($model, User $user)
         {
             //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
             if ($model->personsWhoHaveNotReadLatest->count() > 0)
             {
-                foreach ($model->personsWhoHaveNotReadLatest as $personWhoHaveNoteReadLatest)
+                foreach ($model->personsWhoHaveNotReadLatest as $personWhoHaveNotReadLatest)
                 {
-                    if ($personWhoHaveNoteReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
+                    if ($personWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
                     {
                         return false;
                     }
@@ -237,40 +237,86 @@
             return true;
         }
 
-        public function markUserAsHaveUnreadLatestModel($model, User $user)
+        public function markUserAsHavingUnreadLatestModel($model, User $user)
         {
             //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
-            if ($this->haveUserReadLatest($model, $user))
+            if ($this->hasUserReadLatest($model, $user))
             {
-                $model->personsWhoHaveNotReadLatest->add($this->makePersonWhoHaveNotReadLatest($user));
+                $this->addPersonWhoHasNotReadLatestToModel(
+                                                    $model,
+                                                    $this->makePersonWhoHasNotReadLatest($user));
             }
             $model->save();
         }
 
-        public function markUserAsHaveReadLatestModel($model, User $user)
+        public function markUserAsHavingReadLatestModel($model, User $user)
         {
             //TODO: change personsWhoHaveNotReadLatest with the model specific relation name
             foreach ($model->personsWhoHaveNotReadLatest as $existingPersonWhoHaveNotReadLatest)
             {
                 if($existingPersonWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
                 {
-                    $model->personsWhoHaveNotReadLatest->remove($existingPersonWhoHaveNotReadLatest);
+                    $this->removePersonWhoHasNotReadLatestToModel(
+                                                    $model,
+                                                    $existingPersonWhoHaveNotReadLatest);
                 }
             }
             $model->save();
         }
 
         /**
-         * Makes an return a LatestReader based on the person or user
+         * Makes an return a PersonWhoHasNotReadLatest based on the person or user
          * @param $personOrUserModel
-         * @return \PersonWhoHaveNotReadLatest
          */
-        public function makePersonWhoHaveNotReadLatest($personOrUserModel)
+        public function makePersonWhoHasNotReadLatest($personOrUserModel)
         {
             assert('$personOrUserModel instanceof User || $personOrUserModel instanceof Person');
-            $personWhoHaveNotReadLatest          = new PersonWhoHaveNotReadLatest();
+            $personWhoHaveNotReadLatestModelName = $this->getPersonWhoHasNotReadLatestModelName();
+            $personWhoHaveNotReadLatest          = new $personWhoHaveNotReadLatestModelName();
             $personWhoHaveNotReadLatest->person = $personOrUserModel;
             return $personWhoHaveNotReadLatest;
+        }
+
+        /**
+         * This method should return the name of the model relation that contains
+         * the persons who have not read the latest changes
+         * @return string
+         */
+        protected function getHaveNotReadRelationName()
+        {
+            return 'personsWhoHaveNotReadLatest';
+        }
+
+        /**
+         * Retunr the model name where is stored the users or persons who have not
+         * read the latest changes of the model
+         * @return string
+         */
+        protected function getPersonWhoHasNotReadLatestModelName()
+        {
+            return 'PersonWhoHaveNotReadLatest';
+        }
+
+        /**
+         * Add a person who has not read the model latest changes
+         * @param $model
+         * @param $personWhoHasNotReadLatest
+         */
+        protected function addPersonWhoHasNotReadLatestToModel($model, $personWhoHasNotReadLatest)
+        {
+            $relationName = $this->getHaveNotReadRelationName();
+            $model->$relationName->add($personWhoHasNotReadLatest);
+        }
+
+        /**
+         * Removes a person from the one that has not read the model latest changes
+         * @param $model
+         * @param $personWhoHasNotReadLatest
+         */
+        protected function removePersonWhoHasNotReadLatestToModel($model, $personWhoHasNotReadLatest)
+        {
+            $relationName = $this->getHaveNotReadRelationName();
+            $model->$relationName->remove($personWhoHasNotReadLatest);
         }
     }
 ?>

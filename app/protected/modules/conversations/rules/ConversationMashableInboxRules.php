@@ -55,6 +55,24 @@
             );
         }
 
+        public function getMetadataForMashableInbox() {
+           $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'conversationParticipants',
+                    'relatedAttributeName' => 'person',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->getClassId('Item')
+                ),
+                2 => array(
+                    'attributeName'        => 'owner',
+                    'operatorType'         => 'equals',
+                    'value'                => Yii::app()->user->userModel->id
+                ),
+            );
+            $searchAttributeData['structure'] = '1 or 2';
+            return $searchAttributeData;
+        }
+
         public function getMetadataFilteredByOption($option)
         {
             if ($option == null)
@@ -81,23 +99,12 @@
                             'value'                => (bool)1
                         );
                 $metadata['clauses'][2] = array(
-                        'attributeName'        => 'owner',
-                        'operatorType'         => 'equals',
-                        'value'                => Yii::app()->user->userModel->id
-                    );
-                $metadata['clauses'][3] = array(
-                        'attributeName'        => 'conversationParticipants',
-                        'relatedAttributeName' => 'person',
-                        'operatorType'         => 'equals',
-                        'value'                => Yii::app()->user->userModel->getClassId('Item'),
-                    );
-                $metadata['clauses'][4] = array(
                         'attributeName'        => 'conversationParticipants',
                         'relatedAttributeName' => 'hasReadLatest',
                         'operatorType'         => 'doesNotEqual',
                         'value'                => (bool)1
                     );
-                $metadata['structure'] = "((1 and 2) or (3 and 4))";
+                $metadata['structure'] = "(1 or 2)";
             }
             else
             {
@@ -157,7 +164,7 @@
             }
         }
 
-        public function hasUserReadLatest($modelId)
+        public function hasCurrentUserReadLatest($modelId)
         {
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();

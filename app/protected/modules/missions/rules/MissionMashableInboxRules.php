@@ -164,7 +164,7 @@
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
-            $this->markUserAsHaveReadLatestModel($model, Yii::app()->user->userModel);
+            $this->markUserAsHavingReadLatestModel($model, Yii::app()->user->userModel);
         }
 
         public function resolveMarkUnread($modelId)
@@ -172,15 +172,15 @@
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
-            $this->markUserAsHaveUnreadLatestModel($model, Yii::app()->user->userModel);
+            $this->markUserAsHavingUnreadLatestModel($model, Yii::app()->user->userModel);
         }
 
-        public function hasUserReadLatest($modelId)
+        public function hasCurrentUserReadLatest($modelId)
         {
             assert('$modelId > 0');
             $modelClassName = $this->getModelClassName();
             $model          = $modelClassName::getById($modelId);
-            return $this->haveUserReadLatest($model, Yii::app()->user->userModel);
+            return $this->hasUserReadLatest($model, Yii::app()->user->userModel);
         }
     }
 ?>
