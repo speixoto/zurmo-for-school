@@ -61,6 +61,9 @@
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
+            ModelRelationsAndAttributesToSummableReportAdapter::forgetAll();
+            ModelRelationsAndAttributesToRowsAndColumnsReportAdapter::forgetAll();
+            ModelRelationsAndAttributesToMatrixReportAdapter::forgetAll();
         }
 
         public function testGetDisplayLabelForCalculations()

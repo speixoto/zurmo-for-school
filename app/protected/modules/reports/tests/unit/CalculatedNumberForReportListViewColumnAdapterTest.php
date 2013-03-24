@@ -54,6 +54,9 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
             DisplayAttributeForReportForm::resetCount();
+            ModelRelationsAndAttributesToSummableReportAdapter::forgetAll();
+            ModelRelationsAndAttributesToRowsAndColumnsReportAdapter::forgetAll();
+            ModelRelationsAndAttributesToMatrixReportAdapter::forgetAll();
         }
 
         public function testResolveValueOnBaseModelAndRelatedModel()
