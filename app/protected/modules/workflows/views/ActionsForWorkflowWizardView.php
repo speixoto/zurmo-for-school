@@ -126,7 +126,7 @@
          */
         protected function getZeroComponentsMessageContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select an action below') . '</h2>';
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select an action') . '</h2>';
         }
 
         protected function renderZeroComponentsContentAndWrapper()
@@ -139,7 +139,7 @@
         {
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
                                              static::resolveTypeDataAndLabels());
-            $content  = ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), Zurmo::t('WorkflowsModule', 'Add action'));
+            $content  = '';//ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), Zurmo::t('WorkflowsModule', 'Add action'));
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
                                                     'class' => 'related-model-selector',
@@ -328,16 +328,24 @@
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
                     //attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
+                    //check if any li is open and if yes validate the form again
+                    var actionsList = $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
+                        '").find(".dynamic-rows").find("ul:first").children();
+                    $.each(actionsList, function(){
+                        if ( $(this).hasClass("expanded-row") ){
+                            alert("please save and validate the open action panel");
+                            getDropdownAjaxCall.abort();
+                            return false;
+                        }
+                    });
                 }',
                 'success' => 'js:function(data){
-                    $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
-                    . '").find(".dynamic-rows").find("ul:first").children().hide();
-
+                    //when ajax comes back after choosing something in thedropdown
+                    $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
+                        '").find(".dynamic-rows").find("ul:first").children().hide();
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-
-                    $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS
-                    . '").find(".dynamic-rows").find("ul:first").append(data);
-
+                    $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
+                        '").find(".dynamic-rows").find("ul:first").append(data);
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
                     $(".' . static::getZeroComponentsClassName() . '").hide();
                     $("#' . self::ACTION_TYPE_NAME . '").val("");
@@ -345,13 +353,11 @@
                     $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").hide();
                     $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").html("");
                     $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").hide();
-
                 }',
             ));
             $script = "function loadWorkflowAction()
                 {
-
-                     $ajaxSubmitScript
+                    var getDropdownAjaxCall = $ajaxSubmitScript
                 }
             ";
             // End Not Coding Standard
@@ -412,6 +418,7 @@
 
         protected function registerRowEditScript()
         {
+            //when clicking the EDIT button on each row
             $script = "$('.edit-dynamic-row-link').live('click', function(){
                 $('#' + $(this).data().row.toString()).toggleClass('expanded-row');
                 $('#' + $(this).data().row.toString() + ' .toggle-me').toggle();

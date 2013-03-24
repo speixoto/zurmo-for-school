@@ -67,7 +67,7 @@
         protected function renderContent()
         {
             $rowId = Element::resolveInputIdPrefixIntoString($this->inputPrefixData);
-            $content  = '<div>';
+            $content  = '<div class="row-utils">';
             $content .= $this->renderActionRowNumberLabel();
             $toggleLink = ZurmoHtml::tag('a', array('data-row' => $rowId,'class' => 'edit-dynamic-row-link simple-link toggle-row'), 'Edit'); //todo: make it work
             $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . '&nbsp;&nbsp;' . $toggleLink); //todo: convert to label

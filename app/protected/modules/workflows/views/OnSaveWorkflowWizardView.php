@@ -77,6 +77,13 @@
                         }
                         if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
+                           var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
+                            $.each(actionsList, function(){
+                                if ( $(this).hasClass('expanded-row') ){
+                                    alert('please save and validate the open action panel');
+                                    return false;
+                                }
+                            });
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::EMAIL_ALERTS_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
