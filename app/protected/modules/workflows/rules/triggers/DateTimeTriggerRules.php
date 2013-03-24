@@ -25,34 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Helper class to make TriggerRules objects
+     * Class to help evaluate dateTime triggers against model values.
      */
-    class TriggerRulesFactory
+    class DateTimeTriggerRules extends DateTriggerRules
     {
-        public static function createTriggerRulesByTrigger(TriggerForWorkflowForm $trigger)
-        {
-            $type = $trigger->getValueEvaluationType();
-            $rulesClassName = $type . 'TriggerRules';
-            if(in_array($type, array('Email', 'Phone', 'Text', 'TextArea','Url')))
-            {
-                return new TextTriggerRules($trigger);
-            }
-            elseif($type == 'DropDown' || $type == 'RadioDropDown')
-            {
-                return new DropDownTriggerRules($trigger);
-            }
-            elseif($type == 'MultiSelectDropDown' || $type == 'TagCloud')
-            {
-                return new MultiSelectDropDownTriggerRules($trigger);
-            }
-            elseif(@class_exists($rulesClassName))
-            {
-                return new $rulesClassName($trigger);
-            }
-            else
-            {
-                throw new NotSupportedException($type);
-            }
-        }
     }
 ?>

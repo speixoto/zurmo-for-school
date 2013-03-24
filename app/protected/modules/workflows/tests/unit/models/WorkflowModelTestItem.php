@@ -119,10 +119,8 @@
                     'cannotTrigger2'      => array(RedBeanModel::MANY_MANY, 'WorkflowModelTestItem5'),
                     'usedAsAttribute' => array(RedBeanModel::HAS_ONE, 'WorkflowModelTestItem6', RedBeanModel::NOT_OWNED),
                     'likeContactState'    => array(RedBeanModel::HAS_ONE, 'ContactState', RedBeanModel::NOT_OWNED),
-                    'user'                => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'user'),
-                    'user2'               => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
-                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'user2'),
+                    'user'                => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED),
+                    'user2'               => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED),
                 ),
                 'derivedRelationsViaCastedUpModel' => array(
                     'model5ViaItem' => array(RedBeanModel::MANY_MANY, 'WorkflowModelTestItem5', 'workflowItems')
