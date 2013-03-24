@@ -215,6 +215,7 @@
                 $sourceUrl                      = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
                 $globalSearchView               = new GlobalSearchView($moduleNamesAndLabels, $sourceUrl);
                 $recentlyViewed                 = static::makeRecentlyViewedView();
+                $recentlyViewedMenu             = $recentlyViewed->renderMenu();
                 $searchAndShortcutsItems        = array(
                                                     array(
                                                         'label'                 => '',
@@ -230,7 +231,7 @@
                                                     array(
                                                         'label'                 => '',
                                                         'itemOptions'           => array('id' => 'recently-viewed'),
-                                                        'items'                 => $recentlyViewed->renderMenu(),
+                                                        'items'                 => ($recentlyViewedMenu)? $recentlyViewedMenu : null,
                                                     ));
                 $items                          = CMap::mergeArray($searchAndShortcutsItems, $items, $recentlyViewedItems);
             }
