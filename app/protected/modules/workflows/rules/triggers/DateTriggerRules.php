@@ -90,7 +90,7 @@
                         return true;
                     }
                     break;
-                case MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS:
+                case MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON:
                     if(array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->originalAttributeValues[$attribute]) ===
                             static::sanitizeTriggerValue($this->trigger->value))

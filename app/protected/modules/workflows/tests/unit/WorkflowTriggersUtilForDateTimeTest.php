@@ -25,25 +25,25 @@
  ********************************************************************************/
 
     /**
-     * Test date attribute types for all various operatorTypes and important scenarios
+     * Test dateTime attribute types for all various operatorTypes and important scenarios
      *
      * #1 - Test each operator type against attribute on model
      */
-    class WorkflowTriggersUtilForDateTest extends WorkflowTriggersUtilBaseTest
+    class WorkflowTriggersUtilForDateTimeTest extends WorkflowTriggersUtilBaseTest
     {
         public function testTriggerBeforeSaveOn()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'On', '2007-07-01');
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'On', '2007-07-01 00:02:00');
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-07-02';
+            $model->dateTime = '2007-07-02 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model         = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -52,18 +52,18 @@
          */
         public function testTriggerBeforeSaveBetween()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Between', '2007-07-01',
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Between', '2007-07-01 00:02:00',
                         'WorkflowsTestModule', 'WorkflowModelTestItem', '2007-07-06');
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
-            $model->date = '2007-07-02';
+            $model->dateTime = '2007-07-02 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-07-10';
+            $model->dateTime = '2007-07-10 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model         = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-07-03';
+            $model->dateTime = '2007-07-03 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -72,17 +72,17 @@
          */
         public function testTriggerBeforeSaveAfter()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'After', '2007-07-01');
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'After', '2007-07-01 00:02:00');
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
-            $model->date     = '2007-07-22';
+            $model->dateTime     = '2007-07-22 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date     = '2007-06-28';
+            $model->dateTime     = '2007-06-28 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model           = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date     = '2007-09-24';
+            $model->dateTime     = '2007-09-24 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -91,17 +91,17 @@
          */
         public function testTriggerBeforeSaveBefore()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Before', '2007-07-01');
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Before', '2007-07-01 00:02:00');
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
-            $model->date = '2007-06-03';
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-07-05';
+            $model->dateTime = '2007-07-05 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model         = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-06-01';
+            $model->dateTime = '2007-06-01 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -110,24 +110,24 @@
          */
         public function testTriggerBeforeSaveBecomesOn()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Becomes On', '2007-07-01');
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Becomes On', '2007-07-01 00:02:00');
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
 
-            $model->date = '2007-07-05';
+            $model->dateTime = '2007-07-05 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model = self::saveAndReloadModel($model);
 
             //check existing model
-            $model->date = '2007-07-03';
+            $model->dateTime = '2007-07-03 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model = self::saveAndReloadModel($model);
 
-            //Now it should be true because it 'becomes' '2007-07-01'
-            $model->date = '2007-07-01';
+            //Now it should be true because it 'becomes' '2007-07-01 00:02:00'
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -136,24 +136,24 @@
          */
         public function testTriggerBeforeSaveWasOn()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Was On', '2007-07-01');
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Was On', '2007-07-01 00:02:00');
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
 
-            $model->date = '2007-06-03';
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model = self::saveAndReloadModel($model);
 
             //check existing model
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model = self::saveAndReloadModel($model);
 
-            //Now it should be true because it 'was' '2007-07-01' and is now '2007-06-03'
-            $model->date = '2007-06-03';
+            //Now it should be true because it 'was' '2007-07-01 00:02:00' and is now '2007-06-03 00:02:00'
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -162,13 +162,13 @@
          */
         public function testTriggerBeforeSaveChanges()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Changes', null);
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Changes', null);
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
 
-            $model->date = '2007-06-03';
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model = self::saveAndReloadModel($model);
 
@@ -177,7 +177,7 @@
             $model = self::saveAndReloadModel($model);
 
             //Now it should be true because it 'changes'
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -186,13 +186,13 @@
          */
         public function testTriggerBeforeSaveDoesNotChange()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Does Not Change', null);
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Does Not Change', null);
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
 
-            $model->date = '2007-06-03';
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model = self::saveAndReloadModel($model);
 
@@ -201,7 +201,7 @@
             $model = self::saveAndReloadModel($model);
 
             //Now it should be true because it 'changes'
-            $model->date = '2007-07-01';
+            $model->dateTime = '2007-07-01 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -210,18 +210,18 @@
          */
         public function testTriggerBeforeSaveIsEmpty()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Is Empty', null);
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Is Empty', null);
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-06-03';
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model         = self::saveAndReloadModel($model);
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = null;
+            $model->dateTime = null;
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '';
+            $model->dateTime = '';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
@@ -230,18 +230,18 @@
          */
         public function testTriggerBeforeSaveIsNotEmpty()
         {
-            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('date', 'Is Not Empty', null);
+            $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'Is Not Empty', null);
             $model           = new WorkflowModelTestItem();
             $model->lastName = 'someLastName';
             $model->string   = 'someString';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '2007-06-03';
+            $model->dateTime = '2007-06-03 00:02:00';
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
             $model         = self::saveAndReloadModel($model);
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = null;
+            $model->dateTime = null;
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
-            $model->date = '';
+            $model->dateTime = '';
             $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
     }
