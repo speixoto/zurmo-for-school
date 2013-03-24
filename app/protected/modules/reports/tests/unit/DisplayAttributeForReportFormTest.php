@@ -114,7 +114,15 @@
             $this->assertEquals($compareErrors, $errors);
         }
 
-        public function testGetDisplayElementType()
+        public function testGetDisplayElementTypeForRowsAndColumnsReport()
+        {
+            $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
+                                Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType = 'calculated';
+            $this->assertEquals('CalculatedNumber',          $displayAttribute->getDisplayElementType());
+        }
+
+        public function testGetDisplayElementTypeForSummationReport()
         {
             $displayAttribute = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
                                 Report::TYPE_SUMMATION);

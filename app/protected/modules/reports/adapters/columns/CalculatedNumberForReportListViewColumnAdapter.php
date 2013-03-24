@@ -24,43 +24,29 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Used in conjunction with ReportModelTestItem11 to test reporting with owned model attributes
-     */
-    class ReportModelTestItem10 extends OwnedSecurableItem
+    class CalculatedNumberForReportListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function getDefaultMetadata()
+        public static function resolveValue($attribute, ReportResultsRowData $data)
         {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'date',
-                    'integer',
-                ),
-                'relations' => array(
-                    'currencyValue'         => array(RedBeanModel::HAS_ONE,  'CurrencyValue',    RedBeanModel::OWNED),
-                    'reportModelTestItem11' => array(RedBeanModel::HAS_MANY, 'ReportModelTestItem11', RedBeanModel::OWNED),
-                ),
-                'rules' => array(
-                    array('date',      'type', 'type' => 'date'),
-                    array('integer',   'type',    'type' => 'integer'),
-                ),
-                'elements' => array(
-                    'currencyValue'   => 'CurrencyValue',
-                    'date'            => 'Date',
-                ),
+            list($notUsed, $displayAttributeKey) = explode(ReportResultsRowData::ATTRIBUTE_NAME_PREFIX, $attribute);
+            $displayAttributes = $data->getDisplayAttributes();
+            $metadata          = CalculatedDerivedAttributeMetadata::
+                                 getByNameAndModelClassName($displayAttributes[$displayAttributeKey]->getResolvedAttribute(),
+                                 $displayAttributes[$displayAttributeKey]->getResolvedAttributeModelClassName());
+            return CalculatedNumberUtil::calculateByFormulaAndModel($metadata->getFormula(), $data->getModel($attribute));
+        }
+
+        /**
+         * @return array
+         */
+        public function renderGridViewData()
+        {
+            return array(
+                'name'     => $this->attribute,
+                'value'    => 'CalculatedNumberForReportListViewColumnAdapter::resolveValue("' . $this->attribute . '", $data)',
+                'type'     => 'raw',
+                'sortable' => false,
             );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'ReportsTestModule';
         }
     }
 ?>

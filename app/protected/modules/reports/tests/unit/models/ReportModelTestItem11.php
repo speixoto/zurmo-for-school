@@ -45,14 +45,15 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'date',
+                    'integer',
                 ),
                 'relations' => array(
                     'amount'         => array(RedBeanModel::HAS_ONE, 'CurrencyValue',    RedBeanModel::OWNED,
                                               RedBeanModel::LINK_TYPE_SPECIFIC, 'amount')
                 ),
                 'rules' => array(
-                    array('date',     'required'),
-                    array('date',     'type', 'type' => 'date'),
+                    array('date',     'type',    'type' => 'date'),
+                    array('integer',  'type',    'type' => 'integer'),
                 ),
                 'elements' => array(
                     'date'   => 'Date',
