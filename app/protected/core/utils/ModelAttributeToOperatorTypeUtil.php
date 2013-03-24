@@ -35,6 +35,8 @@
 
         const AVAILABLE_OPERATORS_TYPE_DROPDOWN = 'DropDown';
 
+        const AVAILABLE_OPERATORS_TYPE_HAS_ONE  = 'HasOne';
+
         public static function resolveOperatorsToIncludeByType(& $data, $type)
         {
             $data[OperatorRules::TYPE_EQUALS] =

@@ -43,7 +43,7 @@
             else
             {
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
-                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add File'));
             }
             $this->registerScriptForLogoFileElement($id, $sendAction, $jsonEncodedExistingFiles);
 
