@@ -25,26 +25,17 @@
      ********************************************************************************/
 
     /**
-     * Class to help the workflow engine understand how to evaluate various triggers
+     * Class to help evaluate decimal (float) triggers against model values.
      */
-    abstract class TriggerRules
+    class DecimalTriggerRules extends NumberTriggerRules
     {
-        protected $trigger;
-
-        public function __construct(TriggerForWorkflowForm $trigger)
-        {
-            $this->trigger = $trigger;
-        }
-        abstract public function evaluateBeforeSave(RedBeanModel $model, $attribute);
-
         /**
-         * Override as needed to add specific sanitization routines.  Text for example, has to use strtolower
          * @param $value
          * @return mixed
          */
         protected function sanitize($value)
         {
-            return $value;
+            return floatval($value);
         }
     }
 ?>

@@ -177,5 +177,28 @@
             assert('is_bool($isRequired)');
             return $this->makeTypeValuesAndLabels($isCreatingNewModel, $isRequired);
         }
+
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(RedBeanModel $model, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->actionAttribute->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            {
+                $model->{$attribute} = $this->value;
+            }
+            elseif($this->actionAttribute->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
+            {
+                $model->{$attribute} = null;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

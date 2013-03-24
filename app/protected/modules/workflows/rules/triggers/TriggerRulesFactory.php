@@ -32,17 +32,26 @@
         public static function createTriggerRulesByTrigger(TriggerForWorkflowForm $trigger)
         {
             $type = $trigger->getValueEvaluationType();
-            if(in_array($type, array('Text','Phone', 'TextArea',' Url')))
+            $rulesClassName = $type . 'TriggerRules';
+            if(in_array($type, array('Email', 'Phone', 'Text', 'TextArea',' Url')))
             {
-                return new TextTriggerRules($trigger);
+                return new StringTriggerRules($trigger);
             }
-            elseif($type == 'CheckBox')
+            elseif($type == 'DropDown' || $type == 'RadioDropDown')
             {
-                return new CheckBoxTriggerRules($trigger);
+                return new DropDownTriggerRules($trigger);
+            }
+            elseif($type == 'MultiSelectDropDown' || $type == 'TagCloud')
+            {
+                return new MultiSelectDropDownTriggerRules($trigger);
+            }
+            elseif(@class_exists($rulesClassName))
+            {
+                return new $rulesClassName($trigger);
             }
             else
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException($type);
             }
         }
     }

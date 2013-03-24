@@ -294,13 +294,14 @@
                 $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
             }
             if($this->resolveShouldAddSpecialOnSaveNonRelatedOperators() &&
-               $type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
+               $type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN &&
+               $this->getValueElementType() != 'StaticMultiSelectDropDownForWorkflow')
             {
                 $data[OperatorRules::TYPE_BECOMES_ONE_OF]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES_ONE_OF);
                 $data[OperatorRules::TYPE_WAS_ONE_OF]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS_ONE_OF);
             }
             if($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
-               $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+               $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE)
             {
                 $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
                 $data[OperatorRules::TYPE_IS_NOT_EMPTY]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_EMPTY);

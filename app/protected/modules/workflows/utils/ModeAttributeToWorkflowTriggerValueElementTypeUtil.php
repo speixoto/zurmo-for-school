@@ -43,9 +43,13 @@
             {
                 return 'Text';
             }
-            if ($model->$attributeName instanceof MultipleValuesCustomField || $model->$attributeName instanceof CustomField)
+            if ($model->$attributeName instanceof CustomField)
             {
                 return 'StaticDropDownForWorkflow';
+            }
+            if ($model->$attributeName instanceof MultipleValuesCustomField)
+            {
+                return 'StaticMultiSelectDropDownForWorkflow';
             }
             $metadata = $model->getMetadata();
             foreach ($metadata as $className => $perClassMetadata)

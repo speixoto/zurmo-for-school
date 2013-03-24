@@ -30,7 +30,9 @@
      */
     class ModelAttributeToWorkflowOperatorTypeUtil extends ModelAttributeToOperatorTypeUtil
     {
-        const AVAILABLE_OPERATORS_TYPE_BOOLEAN  = 'Boolean';
+        const AVAILABLE_OPERATORS_TYPE_BOOLEAN        = 'Boolean';
+
+        const AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE = 'CurrencyValue';
 
         public static function resolveOperatorsToIncludeByType(& $data, $type)
         {
@@ -40,7 +42,45 @@
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
                 return;
             }
+            if($type == self::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE)
+            {
+                $data[OperatorRules::TYPE_EQUALS] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
+                $data[OperatorRules::TYPE_DOES_NOT_EQUAL] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_EQUAL);
+                $data[OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO);
+                $data[OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO);
+                $data[OperatorRules::TYPE_GREATER_THAN] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN);
+                $data[OperatorRules::TYPE_LESS_THAN] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN);
+                $data[OperatorRules::TYPE_BETWEEN] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BETWEEN);
+                return;
+            }
             parent::resolveOperatorsToIncludeByType($data, $type);
+        }
+
+        protected static function resolveIsNullAndIsNotNullOperatorsToInclude(& $data, $type)
+        {
+            if($type != self::AVAILABLE_OPERATORS_TYPE_DROPDOWN && $type != self::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            {
+                $data[OperatorRules::TYPE_IS_NULL] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);
+                $data[OperatorRules::TYPE_IS_NOT_NULL] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_NULL);
+            }
+        }
+
+        public static function getAvailableOperatorsType($model, $attributeName)
+        {
+            if ($model->$attributeName instanceof CurrencyValue)
+            {
+                return self::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE;
+            }
+            return parent::getAvailableOperatorsType($model, $attributeName);
         }
 
         protected static function getAvailableOperatorsTypeForBoolean()

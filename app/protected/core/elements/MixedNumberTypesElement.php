@@ -26,7 +26,7 @@
 
     /**
      * Displays a number filtering input.  Allows for picking a type of filter and sometimes depending on
-     * the filter, entering a specific date value.
+     * the filter, entering a second value
      */
     class MixedNumberTypesElement extends Element
     {

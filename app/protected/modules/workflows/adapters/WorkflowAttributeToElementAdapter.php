@@ -92,9 +92,10 @@
         protected function getContentForTimeTriggerOrTrigger()
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
+            $valueElementType                       = $this->model->getValueElementType();
             if($this->model->hasAvailableOperatorsType())
             {
-                $operatorElement                    = new OperatorStaticDropDownElement($this->model, 'operator', $this->form, $params);
+                $operatorElement = $this->resolveOperatorElementForMultiSelectDropDown($valueElementType, $params);
                 $operatorElement->editableTemplate  = '{content}{error}';
                 $operatorContent                    = $operatorElement->render();
             }
@@ -102,7 +103,7 @@
             {
                 $operatorContent                    = null;
             }
-            $valueElementType                       = $this->model->getValueElementType();
+
             if($valueElementType != null)
             {
                 $valueElementClassName              = $valueElementType . 'Element';
@@ -144,6 +145,19 @@
             self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-row-operator');
             $content                               .= $valueContent;
             return $content;
+        }
+
+        protected function resolveOperatorElementForMultiSelectDropDown($valueElementType, Array $params)
+        {
+            assert('is_string($valueElementType)');
+            if($valueElementType == 'StaticMultiSelectDropDownForWorkflow')
+            {
+                return new OperatorStaticMultiSelectDropDownForWorkflowElement($this->model, 'operator', $this->form, $params);
+            }
+            else
+            {
+                return new OperatorStaticDropDownElement($this->model, 'operator', $this->form, $params);
+            }
         }
 
         /**

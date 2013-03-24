@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class to help evaluate text/string triggers against model values. This includes text, textArea, phone, url, and email
+     * Class to help evaluate CustomField triggers against model values.
      */
-    class TextTriggerRules extends TriggerRules
+    class DropDownTriggerRules extends TriggerRules
     {
         public function evaluateBeforeSave(RedBeanModel $model, $attribute)
         {
@@ -35,85 +35,85 @@
             {
 
                 case OperatorRules::TYPE_EQUALS:
-                    if(static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
+                    if(static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if(static::sanitize($model->$attribute) !== static::sanitize($this->trigger->value))
+                    if(static::sanitize($model->{$attribute}->value) !== static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
-                case OperatorRules::TYPE_IS_NULL:
-                    if($model->$attribute === null)
+                case OperatorRules::TYPE_ONE_OF:
+                    if(!is_array(static::sanitize($this->trigger->value)))
                     {
-                        return true;
+                        return false;
                     }
-                    break;
-                case OperatorRules::TYPE_IS_NOT_NULL:
-                    if($model->$attribute !== null)
-                    {
-                        return true;
-                    }
-                    break;
-                case OperatorRules::TYPE_IS_EMPTY:
-                    if(empty($model->$attribute))
-                    {
-                        return true;
-                    }
-                    break;
-                case OperatorRules::TYPE_IS_NOT_EMPTY:
-                    if(!empty($model->$attribute))
-                    {
-                        return true;
-                    }
-                    break;
-                case OperatorRules::TYPE_STARTS_WITH:
-                    if(!strncmp(static::sanitize($model->$attribute),
-                        static::sanitize($this->trigger->value),
-                        strlen(static::sanitize($this->trigger->value))))
-                    {
-                        return true;
-                    }
-                    break;
-                case OperatorRules::TYPE_ENDS_WITH:
-                    if(substr(static::sanitize($model->$attribute), - strlen(static::sanitize($this->trigger->value))) ===
-                        static::sanitize($this->trigger->value))
-                    {
-                        return true;
-                    }
-                    break;
-                case OperatorRules::TYPE_CONTAINS:
-                    if((stripos($model->$attribute, $this->trigger->value)) !== false)
+                    if(in_array(static::sanitize($model->{$attribute}->value), static::sanitize($this->trigger->value)))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if(!array_key_exists('value', $model->{$attribute}->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
-                        static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
+                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                        static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
-                        static::sanitize($model->originalAttributeValues[$attribute]) ===
-                            static::sanitize($this->trigger->value))
+                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                        static::sanitize($model->{$attribute}->originalAttributeValues['value']) ===
+                        static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_BECOMES_ONE_OF:
+                    if(!is_array(static::sanitize($this->trigger->value)))
+                    {
+                        return false;
+                    }
+                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                        in_array(static::sanitize($model->{$attribute}->value), static::sanitize($this->trigger->value)))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_WAS_ONE_OF:
+                    if(!is_array(static::sanitize($this->trigger->value)))
+                    {
+                        return false;
+                    }
+                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                        in_array(static::sanitize($model->{$attribute}->originalAttributeValues['value']),
+                            static::sanitize($this->trigger->value)))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_IS_EMPTY:
+                    if(empty($model->{$attribute}->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_IS_NOT_EMPTY:
+                    if(!empty($model->{$attribute}->value))
                     {
                         return true;
                     }
@@ -122,15 +122,6 @@
                     throw new NotSupportedException();
             }
             return false;
-        }
-
-        /**
-         * @param $value
-         * @return mixed
-         */
-        protected function sanitize($value)
-        {
-            return strtolower($value);
         }
     }
 ?>

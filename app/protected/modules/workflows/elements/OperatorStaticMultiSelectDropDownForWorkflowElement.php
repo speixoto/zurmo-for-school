@@ -25,26 +25,22 @@
      ********************************************************************************/
 
     /**
-     * Class to help the workflow engine understand how to evaluate various triggers
+     * Class used by workflow to show available operator types for MultiSelectDropDowns
      */
-    abstract class TriggerRules
+    class OperatorStaticMultiSelectDropDownForWorkflowElement extends OperatorStaticDropDownElement
     {
-        protected $trigger;
-
-        public function __construct(TriggerForWorkflowForm $trigger)
+        protected function getEditableHtmlOptions()
         {
-            $this->trigger = $trigger;
-        }
-        abstract public function evaluateBeforeSave(RedBeanModel $model, $attribute);
-
-        /**
-         * Override as needed to add specific sanitization routines.  Text for example, has to use strtolower
-         * @param $value
-         * @return mixed
-         */
-        protected function sanitize($value)
-        {
-            return $value;
+            $htmlOptions = parent::getEditableHtmlOptions();
+            if(isset($htmlOptions['class']))
+            {
+                $htmlOptions['class'] .= ' alwaysMultiple';
+            }
+            else
+            {
+                $htmlOptions['class']  = 'alwaysMultiple';
+            }
+            return $htmlOptions;
         }
     }
 ?>

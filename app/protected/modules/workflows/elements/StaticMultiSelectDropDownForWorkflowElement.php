@@ -25,26 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Class to help the workflow engine understand how to evaluate various triggers
+     * Element used by filters that can morph between a single select and a multi-select.
      */
-    abstract class TriggerRules
+    class StaticMultiSelectDropDownForWorkflowElement extends StaticDropDownForWorkflowElement
     {
-        protected $trigger;
-
-        public function __construct(TriggerForWorkflowForm $trigger)
-        {
-            $this->trigger = $trigger;
-        }
-        abstract public function evaluateBeforeSave(RedBeanModel $model, $attribute);
-
-        /**
-         * Override as needed to add specific sanitization routines.  Text for example, has to use strtolower
-         * @param $value
-         * @return mixed
-         */
-        protected function sanitize($value)
-        {
-            return $value;
-        }
+        protected $alwaysMultiple = true;
     }
 ?>

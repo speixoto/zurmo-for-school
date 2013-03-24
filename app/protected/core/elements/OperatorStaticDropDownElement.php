@@ -108,24 +108,27 @@
                             secondValueArea.hide();
                             secondValueArea.find(':input, select').prop('disabled', true);
                         }
-                        arr  = " . CJSON::encode(self::getValuesRequiringMultiSelect()) . ";
-                        if($.inArray($(this).val(), arr) != -1)
+                        arr  = " . CJSON::encode(static::getValuesRequiringMultiSelect()) . ";
+                        if(!$(this).hasClass('alwaysMultiple'))
                         {
-                            var newName = $(this).parent().parent().parent().find('.value-data')
-                                          .find('.flexible-drop-down').attr('name') + '[]';
-                            $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
-                            .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
-                            .attr('name', newName);
-                        }
-                        else
-                        {
-                            var newName = $(this).parent().parent().parent().find('.value-data')
-                                          .find('.flexible-drop-down').attr('name');
-                            if(newName != undefined)
+                            if($.inArray($(this).val(), arr) != -1)
                             {
+                                var newName = $(this).parent().parent().parent().find('.value-data')
+                                              .find('.flexible-drop-down').attr('name') + '[]';
                                 $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
-                                .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
-                                .attr('name', newName.replace('[]',''));
+                                .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
+                                .attr('name', newName);
+                            }
+                            else
+                            {
+                                var newName = $(this).parent().parent().parent().find('.value-data')
+                                              .find('.flexible-drop-down').attr('name');
+                                if(newName != undefined)
+                                {
+                                    $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
+                                    .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
+                                    .attr('name', newName.replace('[]',''));
+                                }
                             }
                         }
                     }

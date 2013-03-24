@@ -1,0 +1,280 @@
+<?php
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
+ * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+ ********************************************************************************/
+
+    /**
+     * Test dropDown attribute types for all various operatorTypes and important scenarios
+     *
+     * #1 - Test each operator type against attribute on model
+     */
+    class WorkflowTriggersUtilForDropDownTest extends WorkflowTriggersUtilBaseTest
+    {
+        public function testTriggerBeforeSaveEquals()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'equals', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value   = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveEquals
+         */
+        public function testTriggerBeforeSaveOneOf()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'oneOf', array('b', 'c', 'd'));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value   = 'b';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'dd';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'c';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveOneOf
+         */
+        public function testTriggerBeforeSaveDoesNotEqual()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'doesNotEqual', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value   = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveDoesNotEqual
+         */
+        public function testTriggerBeforeSaveBecomes()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'becomes', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value   = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->dropDown->value = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->dropDown->value = 'cValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'becomes' aValue
+            $model->dropDown->value = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveBecomes
+         */
+        public function testTriggerBeforeSaveBecomesOneOf()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'becomesOneOf', array('a', 'b' , 'c'));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value   = 'a';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->dropDown->value = 'd';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->dropDown->value = 'k';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'becomes' aValue
+            $model->dropDown->value = 'c';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveBecomesOneOf
+         */
+        public function testTriggerBeforeSaveWas()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'was', 'aValue');
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->dropDown->value = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->dropDown->value = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'was' aValue and is now bValue
+            $model->dropDown->value = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveWas
+         */
+        public function testTriggerBeforeSaveWasOneOf()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'wasOneOf', array('a', 'b' , 'c'));
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $model->dropDown->value = 'd';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->dropDown->value = 'k';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $model->dropDown->value = 'b';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'was' b and is now something else
+            $model->dropDown->value = 'c';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveWasOneOf
+         */
+        public function testTriggerBeforeSaveChanges()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'changes', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->dropDown->value = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'changes'
+            $model->dropDown->value = 'aValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveChanges
+         */
+        public function testTriggerBeforeSaveDoesNotChange()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'doesNotChange', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+
+            $model->dropDown->value = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //check existing model
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model = self::saveAndReloadModel($model);
+
+            //Now it should be true because it 'changes'
+            $model->dropDown->value = 'aValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveDoesNotChange
+         */
+        public function testTriggerBeforeSaveIsEmpty()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'isEmpty', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'bValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = null;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = '';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTriggerBeforeSaveIsEmpty
+         */
+        public function testTriggerBeforeSaveIsNotEmpty()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('dropDown', 'isNotEmpty', null);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'someValue';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = 'bValue';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = null;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dropDown->value = '';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+    }
+?>

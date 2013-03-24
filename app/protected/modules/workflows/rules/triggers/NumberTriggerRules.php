@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class to help evaluate checkBox  (boolean) triggers against model values
+     * Base class to help evaluate numierc triggers against model values.
      */
-    class CheckBoxTriggerRules extends TriggerRules
+    abstract class NumberTriggerRules extends TriggerRules
     {
         public function evaluateBeforeSave(RedBeanModel $model, $attribute)
         {
@@ -36,6 +36,36 @@
 
                 case OperatorRules::TYPE_EQUALS:
                     if(static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_DOES_NOT_EQUAL:
+                    if(static::sanitize($model->$attribute) !== static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_IS_NULL:
+                    if($model->$attribute === null)
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_IS_NOT_NULL:
+                    if($model->$attribute !== null)
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_IS_EMPTY:
+                    if(empty($model->$attribute))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_IS_NOT_EMPTY:
+                    if(!empty($model->$attribute))
                     {
                         return true;
                     }
@@ -62,7 +92,38 @@
                 case OperatorRules::TYPE_WAS:
                     if(array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->originalAttributeValues[$attribute]) ===
-                        static::sanitize($this->trigger->value))
+                            static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_GREATER_THAN:
+                    if(static::sanitize($model->$attribute) > static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_LESS_THAN:
+                    if(static::sanitize($model->$attribute) < static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO:
+                    if(static::sanitize($model->$attribute) >= static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO:
+                    if(static::sanitize($model->$attribute) <= static::sanitize($this->trigger->value))
+                    {
+                        return true;
+                    }
+                    break;
+                case OperatorRules::TYPE_BETWEEN:
+                    if(static::sanitize($model->$attribute) > static::sanitize($this->trigger->value) &&
+                       static::sanitize($model->$attribute) < static::sanitize($this->trigger->secondValue))
                     {
                         return true;
                     }
@@ -71,15 +132,6 @@
                     throw new NotSupportedException();
             }
             return false;
-        }
-
-        /**
-         * @param $value
-         * @return mixed
-         */
-        protected function sanitize($value)
-        {
-            return (bool)$value;
         }
     }
 ?>
