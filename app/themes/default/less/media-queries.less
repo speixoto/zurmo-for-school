@@ -161,6 +161,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
+	/*
 	.view-toolbar{
 		display: -ms-flex;
 		display: -moz-flex;
@@ -181,8 +182,8 @@ orientation : portrait // orientation: landscape    Target orientation
 		-moz-flex: 1 auto;
 		-webkit-flex: 1 auto;
 		flex: 1 auto;
-		
 	}
+
 	
 	.view-toolbar .parent > a,
 	.view-toolbar > a {
@@ -202,6 +203,55 @@ orientation : portrait // orientation: landscape    Target orientation
 	.view-toolbar .parent a:after{
 		margin-left:5px;
 		margin-right:5px;
+	}
+	*/
+
+	.view-toolbar{
+		border: none;
+		.radius(none);
+		background-image: none;
+		.b-shadow(none);
+		width: 100%;
+		.icon-create{
+			float: left;
+			border:1px solid #b7b7b7;
+			border-top-color: #e7e7e7;
+			border-left:1px solid #d7d7d7 !important;
+			border-right-color:#d7d7d7;
+			border-radius:4px;
+			.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
+			background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+		}
+		.mobile-view-toolbar-container{
+			float: left;
+			margin: 1px 0 0 10px;
+		}
+		select{
+			width: 25px;
+			height:25px;
+			border: none;
+			margin: 3px 0 0 3px;
+			padding: 0;
+			.b-shadow(none);
+		}
+		.select-arrow{
+			top: 0;
+			left: 0;
+			height: 30px;
+			border:1px solid #b7b7b7;
+			border-top-color: #e7e7e7;
+			border-left-color:#d7d7d7;
+			border-right-color:#d7d7d7;
+			border-radius:4px;
+			.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
+			background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+			&:after{
+				content: "n";
+				.symbly(30px);
+				line-height: 28px;
+				margin-left: -1px;
+			}
+		}
 	}
 
 	.AppContainer{
@@ -230,16 +280,12 @@ orientation : portrait // orientation: landscape    Target orientation
 		padding-right: 10px;
 	}
 	
-	.nav-open{
+	.AppContent.nav-open{
 		transform: translate3d(45px, 0, 0);
 		-webkit-transform: translate3d(45px, 0, 0);
 		//.b-shadow(-1px 0 15px 0 #ccc);
 	}
 
-	.AppContent{ //temp
-		transform: translate3d(45px, 0, 0);
-		-webkit-transform: translate3d(45px, 0, 0);
-	}
 	#settings-header-menu{
 		display: none;
 	}
@@ -250,9 +296,13 @@ orientation : portrait // orientation: landscape    Target orientation
 		border:none;
 		position:fixed;
 		padding-top:35px;
+		z-index: 0;
+	}
+
+	.high-z-index{
 		z-index: 10;
 	}
-	
+
 	#MenuView{
 		#gradient > .vertical(#f6f6f6, #f4f4f4);
 		border-right:1px solid #eee;
