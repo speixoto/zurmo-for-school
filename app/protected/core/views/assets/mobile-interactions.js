@@ -8,4 +8,12 @@ $(window).ready( function(){
 		}
 	);
 
+
+    $('.mobile-flyout-trigger').click(
+        function(e){
+            $(this).next().fadeToggle();
+            return false;
+        }
+    );
+
 });
