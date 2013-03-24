@@ -40,6 +40,29 @@
             DisplayAttributeForReportForm::resetCount();
         }
 
+        public function testGetCurrencyValueAndDateAttributesOnOwnedModel()
+        {
+            $reportModelTestItem11            = new ReportModelTestItem11();
+            $reportModelTestItem11->date      = '2002-12-12';
+            $reportModelTestItem11b           = new ReportModelTestItem11();
+            $reportModelTestItem11b->date     = '2002-12-13';
+            $reportModelTestItem10            = new ReportModelTestItem10();
+            $reportModelTestItem10->reportModelTestItem11->add($reportModelTestItem11);
+            $reportModelTestItem10->reportModelTestItem11->add($reportModelTestItem11b);
+            $this->assertTrue($reportModelTestItem10->save());
+            $displayAttributeX    = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem10',
+                                    Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttributeX->setModelAliasUsingTableAliasName('abc');
+            $displayAttributeX->attributeIndexOrDerivedType = 'reportModelTestItem11___date';
+            $this->assertEquals('col0', $displayAttributeX->columnAliasName);
+
+            $reportResultsRowData = new ReportResultsRowData(array($displayAttributeX), 4);
+            $reportResultsRowData->addModelAndAlias($reportModelTestItem11b, 'abc');
+
+            $model = $reportResultsRowData->getModel('attribute0');
+            $this->assertEquals('2002-12-13', $model->date);
+        }
+
         public function testGetModel()
         {
             $reportModelTestItemX = new ReportModelTestItem();

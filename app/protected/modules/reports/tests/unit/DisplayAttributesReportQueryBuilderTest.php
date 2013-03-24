@@ -47,6 +47,42 @@
             DisplayAttributeForReportForm::resetCount();
         }
 
+        public function testAttributeOnHasManyOwnedModelWithNoBeanSkips()
+        {
+            $q                                     = DatabaseCompatibilityUtil::getQuote();
+
+            //A single display attribute that is on an owned model
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem10');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem10',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType  = 'reportModelTestItem11___date';
+            $content                               = $builder->makeQueryContent(array($displayAttribute));
+            $compareContent = "select {$q}reportmodeltestitem11{$q}.{$q}id{$q} reportmodeltestitem11id ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+
+
+            //A display attribute that is on an owned model and one on the base model
+            $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem10');
+            $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
+            $builder                               = new DisplayAttributesReportQueryBuilder($joinTablesAdapter, $selectQueryAdapter);
+            $displayAttribute                      = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem10',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute->attributeIndexOrDerivedType  = 'reportModelTestItem11___date';
+            $displayAttribute2                     = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem10',
+                                                     Report::TYPE_ROWS_AND_COLUMNS);
+            $displayAttribute2->attributeIndexOrDerivedType  = 'date';
+            $content                               = $builder->makeQueryContent(array($displayAttribute2, $displayAttribute));
+            $compareContent = "select {$q}reportmodeltestitem10{$q}.{$q}id{$q} reportmodeltestitem10id, " .
+                              "{$q}reportmodeltestitem11{$q}.{$q}id{$q} reportmodeltestitem11id ";
+            $this->assertEquals($compareContent, $content);
+            $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
+            $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
+        }
+
         public function testAConcatedDerivedAttribute()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
