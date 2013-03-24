@@ -25,47 +25,46 @@
      ********************************************************************************/
 
     /**
-     * Element used to allow user to delete a notification.  Utilized from the list view only.
+     * Form to help manage the mashable inbox
      */
-    class DeleteNotificationElement extends Element implements DerivedElementInterface
+    class MashableInboxForm extends CFormModel
     {
-        protected function renderEditable()
-        {
-            throw NotSupportedException();
-        }
+        /**
+         * Value to be used to signal that the filtering is for all models and not a specific one.
+         * @var string
+         */
+        const  FILTERED_BY_ALL = 'all';
 
-        protected function renderControlEditable()
-        {
-            throw NotSupportedException();
-        }
+        const  FILTERED_BY_UNREAD = 'unread';
+
+        public $searchTerm;
+
+        public $filteredBy = self::FILTERED_BY_ALL;
+
+        public $optionForModel;
+
+        public $selectedIds;
+
+        public $massAction;
 
         /**
-         * Todo: implement.
-         * @return The element's content.
+         * Models that implement the CombinedInboxInterface and the current user has
+         * rights to see, this array contains the model class names as the indexes and the translated model labels
+         * as the values.
+         * @var array
          */
-        protected function renderControlNonEditable()
-        {
-            throw NotImplementedException();
-        }
+        public $mashableModelClassNamesAndDisplayLabels;
 
-        protected function renderLabel()
-        {
-            return Zurmo::t('NotificationsModule', 'Delete Notification');
-        }
 
-        public static function getDisplayName()
+        public function rules()
         {
-            return Zurmo::t('NotificationsModule', 'Delete Notification');
-        }
-
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element.
-         * @return array of model attributeNames used.
-         */
-        public static function getModelAttributeNames()
-        {
-            return array();
+            return array(
+                array('searchTerm',          'type',    'type' => 'string'),
+                array('filteredBy',          'type',    'type' => 'string'),
+                array('optionForModel',      'type',    'type' => 'string'),
+                array('selectedIds',         'type',    'type' => 'string'),
+                array('massAction',          'type',    'type' => 'string'),
+            );
         }
     }
 ?>

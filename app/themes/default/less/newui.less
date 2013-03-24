@@ -107,7 +107,7 @@ footer, header, hgroup, menu, nav, section {
     .remember-me{
         label{
             margin:0 !important;
-        }
+        }   
         .hasCheckBox + label{
             display:inline-block;
             position:relative;
@@ -253,7 +253,7 @@ footer, header, hgroup, menu, nav, section {
     display:none;
     position:absolute;
     left:0;
-    top:33px;
+    top:32px;
     padding-top:3px;
     padding-bottom:3px;
     li{
@@ -278,7 +278,7 @@ footer, header, hgroup, menu, nav, section {
     min-width:110px;
     display:none;
     position:absolute;
-    top:37px;
+    top:37px;    
     border:1px solid #444;
     background: #252525;
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
@@ -388,7 +388,7 @@ footer, header, hgroup, menu, nav, section {
     z-index:1;
     min-width:110px;
     display:none;
-    top:38px;
+    top:38px;    
     border:1px solid #444;
     background: #252525;
     .b-shadow(~"0 0 10px 2px rgba(53, 53, 53, 0.5)");
@@ -430,7 +430,7 @@ footer, header, hgroup, menu, nav, section {
             &:hover{
                 .icon:after{
                     color: #fff !important;
-                }
+                }                
             }
         }
     }
@@ -514,7 +514,7 @@ footer, header, hgroup, menu, nav, section {
     > li > a:after{
         content: "÷";
         .symbly(12px) !important;
-
+        
         color:#ddd;
         position: relative;
         top: 0;
@@ -1073,7 +1073,7 @@ body > .ui-autocomplete{
         em:before{
             content: "V";
         }
-    }
+    }       
 }
 
 /*=Content*/
@@ -1111,30 +1111,32 @@ body > .ui-autocomplete{
 
 .DynamicSearchView{
     position: relative;
-    z-index: 9999;
+    //z-index: 9999;
+    float: left;
 }
 
+#MashableInboxActionBarForViews,
 #ActionBarSearchAndListView{
     > div{
         position: relative;
     }
-    > div:nth-child(1) {
-        z-index:10;
+    > :nth-child(1) {
+        z-index:10; 
     }
-    > div:nth-child(2) {
-        z-index:9;
+    > :nth-child(2) {   
+        z-index:9;  
     }
-    > div:nth-child(3) {
-        z-index:8;
+    > :nth-child(3) {
+        z-index:8;  
     }
-    > div:nth-child(4) {
-        z-index:7;
+    > :nth-child(4) {   
+        z-index:7;  
     }
-    > div:nth-child(5) {
-        z-index:6;
+    > :nth-child(5) {
+        z-index:6;  
     }
-    > div:nth-child(6) {
-        z-index:5;
+    > :nth-child(6) {   
+        z-index:5;  
     }
 }
 
@@ -1155,7 +1157,7 @@ body > .ui-autocomplete{
 /*=Inner toolbar*/
 .float-bar{
     width: 100%;
-    //float: left;
+    float: left;
     position: relative;
     height: 40px;
     display: block;
@@ -1188,6 +1190,22 @@ body > .ui-autocomplete{
     display:inline-block;
     width: 100%;
     position: relative;
+}
+
+.unread-count{
+    display: inline-block;
+    margin-left: 8px;
+    .radius(50%);
+    width:16px;
+    height:16px;
+    line-height: 15px;
+    text-align: center;
+    color: #545454;
+    .t-shadow(none);
+    font-size:9px;
+    font-weight: bold !important;
+    #gradient > .vertical( #fff, #dfdfdf );
+    border:1px solid #dfdfdf;
 }
 
 form,
@@ -1297,6 +1315,7 @@ form,
     top:-2px;
 }
 
+#MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before{
     content: "Y";
     .view-toolbar-icons();
@@ -1330,6 +1349,7 @@ form,
     top:-2px;
 }
 
+#MashableInboxMassActionMenu .parent > a:before,
 #ListViewOptionsActionMenu .parent > a:before,
 .icon-options:before{
     content: "n";
@@ -1435,30 +1455,54 @@ form,
     top:-2px;
 }
 
-.icon-notice:before{
-    content: "j";
+.icon-missions-created:before,
+.icon-conversations-created:before{
+    content:"w";
     .view-toolbar-icons();
+    top:-2px;
 }
 
-.general-issue-notice{
-    text-align: center;
-    width:75%;
-    margin:10px auto 15px auto;
-    position: relative;
-    .icon-notice{
-        display: block;
-        line-height: 1;
-        margin-bottom: 10px;
-    }
-    .icon-notice:before{
-        margin: 0;
-        font-size:100px;
-        line-height: 60px !important;
-    }
-    p{
-        font-size: 14px;
-        line-height: 21px;
-    }
+.icon-conversations-participant:before{
+    content:"b";
+    .view-toolbar-icons();
+    top:0;
+}
+
+.icon-conversation:before{
+    content:"O";
+    .view-toolbar-icons();
+    top:-1px;
+}
+
+.icon-conversations-closed:before{
+    content:"l";
+    .view-toolbar-icons();
+    top:-1px;
+}
+
+.icon-mission:before,
+.icon-missions-available:before{
+    content:"Q";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+.icon-missions-taken-but-not-accepted:before{
+    content:"e";
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+.icon-notification:before{
+    content:'\00A5';
+    .view-toolbar-icons();
+    top:-2px;
+}
+
+.icon-combined:before{
+    content:'\00AE';
+    .view-toolbar-icons(26px);
+    top:-2px;
 }
 
 /*=Footer*/
@@ -1499,17 +1543,17 @@ caption, th, td {
 
 #list-view{
     overflow-x:auto;
-    position:relative;
+    position:relative;    
     background:
         -webkit-linear-gradient( left, #fff 30%, rgba(255,255,255,0) ),
-        -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,
+        -webkit-linear-gradient( left, rgba(255,255,255,0), #fff 70% ) 100%,        
         -webkit-radial-gradient( 0    50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ),
         -webkit-radial-gradient( 100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0) ) 100% 0;
     background-repeat: no-repeat;
     //background-color: white;
     background-size:
         40px 100%,
-        40px 100%,
+        40px 100%, 
         20px 100%,
         20px 100%;
     /* Opera doesn't support this in the shorthand */
@@ -1520,12 +1564,12 @@ caption, th, td {
         scroll;
 }
 
-table.items{
+.items{
     width:100%;
-    border: 1px solid #DFDFDF;
+    border: 1px solid #dfdfdf;
     border-collapse: collapse;
     border-spacing: 1px;
-    margin: 0;
+    margin: 0 -100% 0 0;
     .box-sizing();
     > tbody,
     > thead{
@@ -1537,7 +1581,7 @@ table.items{
             padding:10px 5px;
             word-wrap: break-word;
             //word-break: break-all;
-        }
+        }   
     }
     > tbody,
     > thead{
@@ -1548,9 +1592,9 @@ table.items{
             background: url(../images/table-items-header.png) left top repeat-x;
             padding:0 5px;
             white-space: nowrap;
-        }
+        }  
     }
-
+    
     tr:hover{
         #gradient > .vertical(#efefef, #eeeeee);
         .pencil{
@@ -1561,6 +1605,9 @@ table.items{
         #gradient > .vertical(#f9f9f9, #f4f4f4);
         tr:hover{
             #gradient > .vertical(#f9f9f9, #f4f4f4);
+        }
+        th:first-child{
+            //border-left:1px solid #DFDFDF;
         }
     }
     > tbody{
@@ -1573,7 +1620,7 @@ table.items{
             th:first-child:not(.checkbox-column){
                     padding-left:10px;
             }
-        }
+        }   
     }
 }
 
@@ -2003,11 +2050,43 @@ div.wide.form{
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-item-details{
-    display: block;
+    display: inline-block;
+    float: right;
     font-weight: normal;
     color:#999;
-    margin-top: 5px;
-    font-size:11px;
+    margin-right: 5px;
+    .smaller();
+}
+
+.model-tag{
+    display: inline-block;
+    font-weight:400;
+    .smaller();
+    float: left;
+    margin-right: 5px;
+    margin-top: 1px;
+    span{
+        .radius(3px);
+        color:#fff;
+        padding:2px 4px;
+        line-height: 1;
+    }
+    &.mission span{
+        #gradient > .vertical(#1ABC9C, #16A085 ); //green
+    }
+    &.conversation span{
+        #gradient > .vertical(#34495E, #2C3E50 ); //dark
+    }
+    &.notification span{
+        #gradient > .vertical(#9B59B6, #8E44AD ); //purple
+    }
+}
+
+.last-comment{
+    font-weight: 400;
+    color:#666;
+    margin-left: 5px;
+    font-style:italic;
 }
 
 .summary{
@@ -2189,18 +2268,18 @@ div.wide.form{
     .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );
     float:left;
     width:100%;
-    #search-form{
-        position: relative;
-        padding:10px 0 10px 0;
-        border: 1px solid #DFDFDF;
+}
+#search-form{
+    position: relative;
+    //padding:10px 0 10px 0;
+    border: 1px solid #DFDFDF;
+    border-bottom:none;
+    #gradient > .vertical(#f6f6f6, #ededed);
+    .b-shadow(none);
+    box-shadow:inset 0 1px 0 0 #ffffff;
+    .clearfix();
+    table{
         border-bottom:none;
-        #gradient > .vertical(#f6f6f6, #ededed);
-        .b-shadow(none);
-        box-shadow:inset 0 1px 0 0 #ffffff;
-        .clearfix();
-        table{
-            border-bottom:none;
-        }
     }
 }
 
@@ -2209,6 +2288,40 @@ div.wide.form{
    width:100%;
    margin-bottom:20px;
    position: relative;
+}
+
+#MashableInboxListView,
+#NotificationsForUserListView{
+    .SecuredListView();
+}
+
+#MashableInboxActionBarForViews{
+    .view-toolbar ul:first-child > li > a {
+        border-left: none;
+    }
+    .search-view-0{
+        padding:0 15px 15px 15px;
+        .box-sizing();
+    }
+    .list-view-items-summary-clone{
+        margin-top:5px;
+    }
+}
+.filters-bar{
+    .filter-portlet-model-bar();
+    border: none;
+    float: left;
+    position: absolute;
+    z-index: 51;
+    left: 250px;
+    top:7px;
+    background: none !important;
+    .b-shadow(none);
+    .border-box();
+    > div{
+        display: inline-block;
+        margin-right: 15px;
+    }
 }
 
 .cgrid-view{
@@ -2247,6 +2360,7 @@ div.wide.form{
         float:left;
     }
     input[type="text"]{
+        .border-box();
         position:relative;
         left:-1px;
         width:179px;
@@ -2443,7 +2557,7 @@ div.wide.form{
 }
 
 .mp-divider{
-    padding:0 2px;
+    padding:0 2px;    
 }
 
 #show-dynamic-search-structure-div-search-form{
@@ -2602,7 +2716,7 @@ div.wide.form{
 .buffer{
 	.clearfix();
     padding-left:30px;
-
+    
     > div{
     	float:left;
         padding:8px 10px;
@@ -2729,7 +2843,7 @@ div.wide.form{
 
 .address-fields{
     div:last-child{
-        padding-bottom:0;
+        padding-bottom:0; 
     }
 }
 
@@ -2973,7 +3087,7 @@ div.wide.form{
     td, th{
         font-weight: bold;
         .box-sizing();
-        padding:5px 5px 5px 5px;
+        padding:5px 5px 5px 5px; 
     }
     th{
         vertical-align:top;
@@ -3210,7 +3324,7 @@ div.wide.form{
     .GridView + .GridView{
         width:35%;
     }
-    .UserLatestActivitiesForPortletView{
+    .UserLatestActivtiesForPortletView{
         margin-right:20px !important;
     }
 }
@@ -3472,7 +3586,7 @@ div.radio-input{
             .radius(3px);
             #gradient > .vertical(#e8e8e8, #f5f5f5);
             .symbly(14px);
-        }
+        } 
         ul{
             ++.flyout;
             display: none;
@@ -3502,6 +3616,16 @@ div.radio-input{
         }
     }
 }
+
+/*
+.back-to-inbox-link{
+    .smaller();
+    .opacity(50);
+    &:hover{
+        .opacity(100);
+    }
+}
+*/
 
 /*=Madlib*/
 .mad-lib{
@@ -3745,16 +3869,16 @@ div.hasHalfs{
         width: 20%;
     }
     .first a:after, .hidden.first:after{
-        content:"«";
+        content:"«"; 
     }
     .next a:after, .hidden.next:after{
-        content:"›";
+        content:"›"; 
     }
     .previous a:after, .hidden.previous:after{
-        content:"‹";
+        content:"‹"; 
     }
     .last a:after, .hidden.last:after{
-        content:"»";
+        content:"»"; 
     }
     .next, .previous, .first, .last{
         font-size:14px;
@@ -3781,6 +3905,7 @@ div.hasHalfs{
 
 #list-view .pager{
     .b-shadow(none);
+    clear: both;
 }
 
 #ModalView #list-view .pager{
@@ -3865,7 +3990,6 @@ div.hasHalfs{
             display:inline-block;
         }
         #filter-latest-activities-link{
-            ++.themeColor-important;
             margin-left:20px;
             text-decoration: none;
             .t-shadow( rgba( 255, 255, 255, 0.8 ) 0 1px 0 );
@@ -3877,49 +4001,6 @@ div.hasHalfs{
                 margin-left:5px;
             }
         }
-    }
-    .latest-activity-toolbar,
-    .filter-portlet-model-bar{
-        .smaller();
-        padding-left:8px;
-        label{
-            cursor:pointer;
-            border:none;
-            background:none;
-            font-size:11px !important;
-            padding:3px;
-            margin:0 3px;
-            ++.themeColor;
-        }
-        label:hover{
-            ++.themeBackgroundColor;
-            color:#FFF;
-            .radius(3px) !important;
-            border:none;
-        }
-        input[type="radio"], input[type="checkbox"]{
-            visibility:hidden;
-            display:none;
-        }
-        .ui-state-active{
-            ++.themeBackgroundColor;
-            color:#FFF;
-            .radius(3px) !important;
-            border:none;
-        }
-        .ui-button-text{
-            padding:0;
-            margin:0;
-        }
-    }
-    .filter-portlet-model-bar{
-        border-bottom:1px solid #DFDFDF;
-        overflow: hidden;
-        height: 40px;
-        line-height: 40px;
-        #gradient > .vertical(#f6f6f6, #ededed);
-        .b-shadow(inset 0 1px 0 0 #ffffff);
-        position:relative;
     }
     .items{
         border-top:none !important;
@@ -3992,13 +4073,60 @@ div.hasHalfs{
     }
 }
 
+#MashableInboxForm_filteredBy_area,
+#MashableInboxForm_optionForModel_area,
+.latest-activity-toolbar,
+.filter-portlet-model-bar{
+    .smaller();
+    padding-left:8px;
+    label{
+        cursor:pointer;
+        border:none;
+        background:none;
+        font-size:11px !important;
+        padding:3px;
+        margin:0 3px;
+        ++.themeColor;
+    }
+    label:hover{
+        ++.themeBackgroundColor;
+        color:#FFF;
+        .radius(3px) !important;
+        border:none;
+    }
+    input[type="radio"], input[type="checkbox"]{
+        visibility:hidden;
+        display:none;
+    }
+    .ui-state-active{
+        ++.themeBackgroundColor;
+        color:#FFF;
+        .radius(3px) !important;
+        border:none;
+    }
+    .ui-button-text{
+        padding:0;
+        margin:0;
+    }
+}
+
+.filter-portlet-model-bar{
+    border-bottom:1px solid #DFDFDF;
+    overflow: hidden;
+    height: 40px;
+    line-height: 40px;
+    #gradient > .vertical(#f6f6f6, #ededed);
+    .b-shadow(inset 0 1px 0 0 #ffffff);
+    position:relative;
+}
+
 .activity-date{
     font-size:11px;
     margin-bottom:3px;
     display: block;
 }
 
-.LatestActivitiesForPortletView{
+.LatestActivtiesForPortletView{
 	position:relative;
 	.toolbar-mbmenu{
 		z-index:999999;
@@ -4500,7 +4628,7 @@ div.hasHalfs{
         border: 1px solid #DFDFDF;
         border-top: none;
         ul{
-
+            
         }
     }
 }
@@ -4533,7 +4661,7 @@ div.hasHalfs{
         margin-right:15px;
         position: relative;
         top:1px;
-    }
+    } 
 }
 
 @import 'widget-juiportlets.less';

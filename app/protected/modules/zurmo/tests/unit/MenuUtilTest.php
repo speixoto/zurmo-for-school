@@ -81,7 +81,7 @@
             Yii::app()->user->userModel = User::getByUsername('billy');
             $this->assertEquals(Right::NONE,  Yii::app()->user->userModel->getExplicitActualRight ('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS));
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(2, count($menu));
+            $this->assertEquals(3, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(0, count($menu));
             $bill = User::getByUsername('billy');
@@ -94,7 +94,7 @@
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', $bill);
             $this->assertEquals(1, count($menu));
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(4, count($menu));
+            $this->assertEquals(5, count($menu));
         }
 
         public function testGetAccessibleHeaderMenuByModuleClassNameForCurrentUser()
@@ -117,7 +117,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getAccessibleOrderedUserHeaderMenuForCurrentUser();
-            $this->assertEquals(4, count($menu));
+            $this->assertEquals(3, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getAccessibleOrderedUserHeaderMenuForCurrentUser();
             $this->assertEquals(3, count($menu));
