@@ -111,7 +111,7 @@
          */
         public function isMobile()
         {
-            return true;//$this->selectedUserInterfaceType == self::MOBILE;
+            return $this->selectedUserInterfaceType == self::MOBILE;
         }
 
         /**
@@ -120,7 +120,7 @@
          */
         public function isTablet()
         {
-            return true;//$this->selectedUserInterfaceType == self::TABLET;
+            return $this->selectedUserInterfaceType == self::TABLET;
         }
 
         /**
@@ -129,7 +129,7 @@
          */
         public function isDesktop()
         {
-            return false;// ($this->selectedUserInterfaceType != self::MOBILE && $this->selectedUserInterfaceType != self::TABLET);
+            return ($this->selectedUserInterfaceType != self::MOBILE && $this->selectedUserInterfaceType != self::TABLET);
         }
 
         /**
