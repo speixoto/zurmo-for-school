@@ -68,8 +68,18 @@
                     'operatorType'         => 'equals',
                     'value'                => Yii::app()->user->userModel->id
                 ),
+                3 => array(
+                    'attributeName'        => 'isClosed',
+                    'operatorType'         => 'isNull',
+                    'value'                => null
+                ),
+                4 => array(
+                    'attributeName'        => 'isClosed',
+                    'operatorType'         => 'equals',
+                    'value'                => 0
+                ),
             );
-            $searchAttributeData['structure'] = '1 or 2';
+            $searchAttributeData['structure'] = '(1 or 2) and (3 or 4)';
             return $searchAttributeData;
         }
 
