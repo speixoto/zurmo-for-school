@@ -235,7 +235,7 @@
         {
             return parent::getExtraRenderForClearSearchLinkScript() .
                     "$('#" . static::getSavedSearchListDropDown() . "').val();
-                     $('#AccountsSearchForm_savedSearchId').val('');
+                     $('#" . get_class($this->model) . "_savedSearchId').val('');
                      $('#save-search-area').hide();
                      jQuery.yii.submitForm(this, '', {}); return false;
             ";
