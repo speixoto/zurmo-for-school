@@ -31,6 +31,46 @@
      */
     class WorkflowTriggersUtilForDateTimeTest extends WorkflowTriggersUtilBaseTest
     {
+
+        public function testTimeTriggerBeforeSaveEquals()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 500);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the model has not changed, so it should not fire
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->dateTime   = '2007-07-01 00:02:00';
+            //At this point the model has changed so it should fire
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTimeTriggerBeforeSaveEquals
+         */
+        public function testTimeTriggerBeforeSaveEqualsWithANonTimeTrigger()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 500);
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'lastName';
+            $trigger->value                       = 'Green';
+            $trigger->operator                    = 'equals';
+            $workflow->addTrigger($trigger);
+
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the value has changed, but the normal trigger is not satisfied
+            $model->dateTime   = '2007-07-01 00:02:00';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //Now the normal trigger is satisfied
+            $model->lastName = 'Green';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTimeTriggerBeforeSaveEqualsWithANonTimeTrigger
+         */
         public function testTriggerBeforeSaveOn()
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerForDateOrDateTime('dateTime', 'On', '2007-07-01 00:02:00');

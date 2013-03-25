@@ -29,9 +29,25 @@
      */
     class WorkflowActionsUtil
     {
-        public static function processBeforeSave($workflow, $model)
+
+        /**
+         * Process any workflow actions that are updates to the passed in model.
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         */
+        public static function processBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
-            
+            //only do self-udpates, maybe do everything else post save?
+        }
+
+        /**
+         * Process any workflow actions that are updating related models, or creating new models.
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         */
+        public static function processAfterSave(Workflow $workflow, RedBeanModel $model)
+        {
+            //do actions that are not self-upates
         }
     }
 ?>

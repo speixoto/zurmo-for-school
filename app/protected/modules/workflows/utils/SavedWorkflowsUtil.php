@@ -118,8 +118,8 @@
                 {
                     if($workflow->getType() == Workflow::TYPE_BY_TIME)
                     {
-                       // $byTimeWorkflowInQueue = new ByTimeWorkflowInQueue();
-                       // $byTimeWorkflowInQueue->processDateTime = 'xxx';
+                        $model->addWorkflowToProcessAfterSave($workflow);
+
                     }
                     elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
                     {
@@ -135,14 +135,46 @@
         }
 
         /**
-         * Given a RedBeanModel, process afterSave email messages.
+         * Given a RedBeanModel, process afterSave actions such as update related, create, and create related.
+         * Also process any email messages.  If the workflow is by-time, then we should process the ByTimeWorkflowInQueue
+         * model.
          * @param Item $model
+         * @throws NotSupportedException
          */
         public static function resolveAfterSaveByModel(Item $model)
         {
             foreach($model->getWorkflowsToProcessAfterSave() as $workflow)
             {
-                WorkflowEmailMessagesUtil::processAfterSave($workflow, $model);
+                if($workflow->getType() == Workflow::TYPE_BY_TIME)
+                {
+                    static::processToByTimeWorkflowInQueue($workflow, $model);
+                }
+                elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+                {
+                    WorkflowActionsUtil::processAfterSave($workflow, $model);
+                    WorkflowEmailMessagesUtil::processAfterSave($workflow, $model);
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
+        }
+
+        /**
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @throws FailedToSaveModelException
+         */
+        protected static function processToByTimeWorkflowInQueue(Workflow $workflow, RedBeanModel $model)
+        {
+            assert('$workflow->getId() > 0');
+            $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($workflow->id, $model);
+            $byTimeWorkflowInQueue->processDateTime = 'xxx'; //todo: get timeTrigger, and determine processDateTime
+            $saved = $byTimeWorkflowInQueue->save();
+            if(!$saved)
+            {
+                throw new FailedToSaveModelException();
             }
         }
     }

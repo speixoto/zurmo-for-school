@@ -104,6 +104,22 @@
             return false;
         }
 
+        /**
+         * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return bool
+         * @throws NotSupportedException
+         */
+        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
+        {
+            if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
+            {
+                throw new NotSupportedException();
+            }
+            return array_key_exists($attribute, $model->originalAttributeValues);
+        }
+
         protected function sanitize($value)
         {
             return strtotime($value);

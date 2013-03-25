@@ -38,6 +38,27 @@
         abstract public function evaluateBeforeSave(RedBeanModel $model, $attribute);
 
         /**
+         * For a time trigger, the value must first 'change'.  If the operator is TYPE_DOES_NOT_CHANGE, then we can
+         * assume true since any 'change' pushes out the time expiration.  If the value does 'change', then the
+         * operator can be evaluated normally.
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return bool
+         */
+        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
+        {
+            if(array_key_exists($attribute, $model->originalAttributeValues))
+            {
+                if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
+                {
+                    return true;
+                }
+                return $this->evaluateBeforeSave($model, $attribute);
+            }
+            return false;
+        }
+
+        /**
          * Override as needed to add specific sanitization routines.  Text for example, has to use strtolower
          * @param $value
          * @return mixed

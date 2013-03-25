@@ -63,6 +63,74 @@
 
         }
 
+        public function testTimeTriggerBeforeSaveEquals()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTimeTriggerWithoutValueType('likeContactState', 'equals', self::$newState->id, 500);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the model has not changed, so it should not fire
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$inProgressState;
+            //At this point the model has changed, but has not changed into the correct value
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //Now the model has changed into the correct value, so it should return true.
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //The model has not changed, so it should not fire.
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //The model has changed but to the wrong value, so it should fire.
+            $model->likeContactState = self::$inProgressState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //the model has changed, and to the correct value
+            $model->likeContactState = self::$newState;
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTimeTriggerBeforeSaveEquals
+         */
+        public function testTimeTriggerBeforeSaveEqualsWithANonTimeTrigger()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTimeTriggerWithoutValueType('likeContactState', 'equals', self::$newState->id, 500);
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'lastName';
+            $trigger->value                       = 'Green';
+            $trigger->operator                    = 'equals';
+            $workflow->addTrigger($trigger);
+
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the value has changed, but the normal trigger is not satisfied
+            $model->likeContactState = self::$newState;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            //Now the normal trigger is satisfied
+            $model->lastName = 'Green';
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTimeTriggerBeforeSaveEqualsWithANonTimeTrigger
+         */
+        public function testTimeTriggerBeforeSaveDoesNotChange()
+        {
+            $workflow = self::makeOnSaveWorkflowAndTimeTriggerWithoutValueType('likeContactState', 'doesNotChange', null, 500);
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'someLastName';
+            $model->string   = 'something';
+            //At this point the model has not changed, so it actually shouldn't fire, since it needs a change event
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model->likeContactState = self::$inProgressState;
+            //At this point the model has changed, so it should fire as true, so it can create or update the queue model
+            $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+        }
+
+        /**
+         * @depends testTimeTriggerBeforeSaveDoesNotChange
+         */
         public function testTriggerBeforeSaveEquals()
         {
             $workflow = self::makeOnSaveWorkflowAndTriggerWithoutValueType('likeContactState', 'equals', self::$newState->id);

@@ -39,7 +39,7 @@
         {
             if($workflow->getType() == Workflow::TYPE_BY_TIME)
             {
-                return self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model);
+                return self::resolveByTimeTriggersAreTrueBeforeSave($workflow, $model);
             }
             elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
             {
@@ -99,12 +99,9 @@
             {
                 throw new NotSupportedException();
             }
-            $structureAsPHPString = WorkflowTriggersUtil::resolveStructureToPHPString('1');
-            $dataToEvaluate       = array();
-            $dataToEvaluate[1]    = $workflow->getTimeTrigger()->isTriggerTrueByModel($model);
-            $phpStringReadyToEvaluate = WorkflowTriggersUtil::resolveBooleansDataToPHPString(
-                                        $structureAsPHPString, $dataToEvaluate);
-            return WorkflowTriggersUtil::evaluatePHPString($phpStringReadyToEvaluate);
+            $structureAsPHPString     = WorkflowTriggersUtil::resolveStructureToPHPString('1');
+            $dataToEvaluate           = array();
+            return self::isTriggerTrueByModel($workflow, $workflow->getTimeTrigger(), $model);
         }
 
         /**
@@ -123,7 +120,7 @@
             $count                = 0;
             foreach($workflow->getTriggers() as $trigger)
             {
-                $dataToEvaluate[$count + 1] = self::isTriggerTrueByModel($trigger, $model);
+                $dataToEvaluate[$count + 1] = self::isTriggerTrueByModel($workflow, $trigger, $model);
                 $count ++;
             }
             $phpStringReadyToEvaluate = WorkflowTriggersUtil::resolveBooleansDataToPHPString(
@@ -131,7 +128,25 @@
             return WorkflowTriggersUtil::evaluatePHPString($phpStringReadyToEvaluate);
         }
 
-        protected static function isTriggerTrueByModel(TriggerForWorkflowForm $trigger, RedBeanModel $model)
+        /**
+         * First check the time trigger specifically. In the case of date/dateTime, it should just check if the
+         * value has 'changed'.  For other attributes, it should check if the value has 'changed' and mactches
+         * the condition of the time trigger.  If the time trigger is true, then it will evaluate the rest of the
+         * triggers.
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @return bool|void
+         */
+        protected static function resolveByTimeTriggersAreTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
+        {
+            if(self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
+            {
+                return self::resolveTriggersAreTrueBeforeSave($workflow, $model);
+            }
+            return false;
+        }
+
+        protected static function isTriggerTrueByModel(Workflow $workflow, TriggerForWorkflowForm $trigger, RedBeanModel $model)
         {
             if($trigger->getAttribute() == null)
             {
@@ -145,7 +160,7 @@
                         //ManyMany or HasMany
                         foreach($model->{$penultimateRelation} as $resolvedModel)
                         {
-                            if(self::resolveIsTrueByEvaluationRules($trigger, $resolvedModel, $resolvedAttribute) &&
+                            if(self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute) &&
                                $trigger->relationFilter == TriggerForWorkflowForm::RELATION_FILTER_ANY)
                             {
                                 return true;
@@ -156,7 +171,7 @@
                     else
                     {
                         $resolvedModel       = $model->{$penultimateRelation};
-                        return self::resolveIsTrueByEvaluationRules($trigger, $resolvedModel, $resolvedAttribute);
+                        return self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute);
                     }
                 }
                 elseif(count($attributeAndRelationData) == 3)
@@ -170,7 +185,7 @@
                         foreach($model->{$firstRelation} as $relatedModel)
                         {
                             $resolvedModel  = $relatedModel->{$penultimateRelation};
-                            if(self::resolveIsTrueByEvaluationRules($trigger,
+                            if(self::resolveIsTrueByEvaluationRules($workflow, $trigger,
                                                                     $resolvedModel,
                                                                     $resolvedAttribute) &&
                                 $trigger->relationFilter == TriggerForWorkflowForm::RELATION_FILTER_ANY)
@@ -184,7 +199,7 @@
                     {
                         $relatedModel        = $model->{$firstRelation};
                         $resolvedModel       = $relatedModel->{$penultimateRelation};
-                        return self::resolveIsTrueByEvaluationRules($trigger, $resolvedModel, $resolvedAttribute);
+                        return self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute);
                     }
                 }
                 else
@@ -196,15 +211,27 @@
             {
                 $attribute     = $trigger->getResolvedAttributeRealAttributeName();
                 $resolvedModel = $model;
-                return self::resolveIsTrueByEvaluationRules($trigger, $resolvedModel, $attribute);
+                return self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $attribute);
             }
         }
 
-        protected static function resolveIsTrueByEvaluationRules(TriggerForWorkflowForm $trigger, RedBeanModel $model, $attribute)
+        protected static function resolveIsTrueByEvaluationRules(Workflow $workflow, TriggerForWorkflowForm $trigger,
+                                                                 RedBeanModel $model, $attribute)
         {
             assert('is_string($attribute)');
             $triggerRules = TriggerRulesFactory::createTriggerRulesByTrigger($trigger);
-            return $triggerRules->evaluateBeforeSave($model, $attribute);
+            if($workflow->getType() == Workflow::TYPE_BY_TIME)
+            {
+                return $triggerRules->evaluateTimeTriggerBeforeSave($model, $attribute);
+            }
+            elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+            {
+                return $triggerRules->evaluateBeforeSave($model, $attribute);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

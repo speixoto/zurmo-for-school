@@ -88,6 +88,25 @@
             return false;
         }
 
+        /**
+         * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return bool
+         */
+        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
+        {
+            if($model->{$attribute}->resolveOriginalCustomFieldValuesDataForNewData() !== null)
+            {
+                if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
+                {
+                    return true;
+                }
+                return $this->evaluateBeforeSave($model, $attribute);
+            }
+            return false;
+        }
+
         protected function isDataIdenticalToTriggerValues(Array $values)
         {
             if(count($values) != count($this->trigger->value))

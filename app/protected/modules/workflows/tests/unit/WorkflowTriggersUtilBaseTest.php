@@ -54,11 +54,36 @@
             return $workflow;
         }
 
+        public static function makeOnSaveWorkflowAndTimeTriggerWithoutValueType($attributeIndexOrDerivedType, $operator,
+                                                                                $value,
+                                                                                $durationSeconds = 0,
+                                                                                $moduleClassName   = 'WorkflowsTestModule',
+                                                                                $modelClassName    = 'WorkflowModelTestItem',
+                                                                                $secondValue       = null)
+        {
+            assert('is_string($attributeIndexOrDerivedType)');
+            assert('is_string($operator)');
+            assert('is_int($durationSeconds)');
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            $workflow = new Workflow();
+            $workflow->setType(Workflow::TYPE_BY_TIME);
+            $workflow->setTriggersStructure('1');
+            $trigger = new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = $attributeIndexOrDerivedType;
+            $trigger->value                       = $value;
+            $trigger->secondValue                 = $secondValue;
+            $trigger->operator                    = $operator;
+            $trigger->durationSeconds             = $durationSeconds;
+            $workflow->setTimeTrigger($trigger);
+            return $workflow;
+        }
+
         public static function makeOnSaveWorkflowAndTriggerForDateOrDateTime($attributeIndexOrDerivedType, $valueType,
-                                                                            $value,
-                                                                            $moduleClassName = 'WorkflowsTestModule',
-                                                                            $modelClassName  = 'WorkflowModelTestItem',
-                                                                            $secondValue     = null)
+                                                                                 $value,
+                                                                                 $moduleClassName = 'WorkflowsTestModule',
+                                                                                 $modelClassName  = 'WorkflowModelTestItem',
+                                                                                 $secondValue     = null)
         {
             assert('is_string($attributeIndexOrDerivedType)');
             assert('is_string($valueType)');
@@ -73,6 +98,31 @@
             $trigger->value                       = $value;
             $trigger->secondValue                 = $secondValue;
             $workflow->addTrigger($trigger);
+            return $workflow;
+        }
+
+         public static function makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime($attributeIndexOrDerivedType, $valueType,
+                                                                                 $value,
+                                                                                 $durationSeconds = 0,
+                                                                                 $moduleClassName = 'WorkflowsTestModule',
+                                                                                 $modelClassName  = 'WorkflowModelTestItem',
+                                                                                 $secondValue     = null)
+        {
+            assert('is_string($attributeIndexOrDerivedType)');
+            assert('is_string($valueType)');
+            assert('is_int($durationSeconds)');
+            assert('is_string($moduleClassName)');
+            assert('is_string($modelClassName)');
+            $workflow = new Workflow();
+            $workflow->setType(Workflow::TYPE_BY_TIME);
+            $workflow->setTriggersStructure('1');
+            $trigger = new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = $attributeIndexOrDerivedType;
+            $trigger->valueType                   = $valueType;
+            $trigger->value                       = $value;
+            $trigger->secondValue                 = $secondValue;
+            $trigger->durationSeconds             = $durationSeconds;
+            $workflow->setTimeTrigger($trigger);
             return $workflow;
         }
 
