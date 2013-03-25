@@ -42,8 +42,7 @@
                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
                     'multipleIndustries' => array(RedBeanModel::HAS_ONE, 'MultipleValuesCustomField', RedBeanModel::NOT_OWNED,
                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'multipleIndustries'),
-                    'noBean'             => array(RedBeanModel::HAS_ONE, 'NoBean', RedBeanModel::NOT_OWNED,
-                                                  RedBeanModel::LINK_TYPE_SPECIFIC, 'noBean'),
+                    'noBean'             => array(RedBeanModel::HAS_ONE, 'NoBean', RedBeanModel::NOT_OWNED),
                 ),
                 'rules' => array(
                     array('aaaMember',  'type', 'type' => 'string'),

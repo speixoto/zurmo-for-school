@@ -43,10 +43,9 @@
             Yii::app()->pagination->setGlobalValueByType('modalListPageSize',     52);
             Yii::app()->pagination->setGlobalValueByType('dashboardListPageSize', 53);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'applicationName', 'demoCompany');
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoWidth', 120);
-            ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoHeight', 40);
             $logoFileName = 'testImage.png';
             $logoFilePath = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName;
+            ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $logoFilePath, null, ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT);
             $logoFileId   = ZurmoConfigurationFormAdapter::saveLogoFile($logoFileName, $logoFilePath, 'logoFileModelId');
             ZurmoConfigurationFormAdapter::publishLogo($logoFileName, $logoFilePath);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
@@ -58,8 +57,6 @@
             $this->assertEquals(52,                 $form->modalListPageSize);
             $this->assertEquals(53,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany',      $form->applicationName);
-            $this->assertEquals(120,                $form->logoWidth);
-            $this->assertEquals(40,                 $form->logoHeight);
             $this->assertEquals($logoFileName,      $form->logoFileData['name']);
             $form->timeZone              = 'America/Chicago';
             $form->listPageSize          = 60;
@@ -67,14 +64,10 @@
             $form->modalListPageSize     = 62;
             $form->dashboardListPageSize = 63;
             $form->applicationName       = 'demoCompany2';
-            $form->logoWidth             = 107;
-            $form->logoHeight            = 32;
             $logoFileName2               = 'testLogo.png';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
-            copy($logoFilePath2,
-                 sys_get_temp_dir().DIRECTORY_SEPARATOR.ZurmoConfigurationForm::LOGO_FILE_NAME_PREFIX.$logoFileName2);
-            copy($logoFilePath2,
-                 sys_get_temp_dir().DIRECTORY_SEPARATOR.ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX.$logoFileName2);
+            copy($logoFilePath2, sys_get_temp_dir().DIRECTORY_SEPARATOR . $logoFileName2);
+            copy($logoFilePath2, sys_get_temp_dir().DIRECTORY_SEPARATOR . ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX.$logoFileName2);
             Yii::app()->user->setState('logoFileName', $logoFileName2);
             ZurmoConfigurationFormAdapter::setConfigurationFromForm($form);
             $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
@@ -84,8 +77,6 @@
             $this->assertEquals(62,                 $form->modalListPageSize);
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
-            $this->assertEquals(107,                $form->logoWidth);
-            $this->assertEquals(32,                 $form->logoHeight);
             $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }

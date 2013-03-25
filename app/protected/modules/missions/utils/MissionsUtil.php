@@ -46,52 +46,34 @@
             return $link . $details;
         }
 
-        /**
-         * Given a mission and a user, mark ownerHasReadLatest true if the user is the owner, if the user is the takenByUser
-         * then mark the takenByUserHasReadLatest as true, otherwise do nothing.
-         * @param Mission $mission
-         * @param User $user
-         */
         public static function markUserHasReadLatest(Mission $mission, User $user)
         {
-            assert('$mission->id > 0');
-            assert('$user->id > 0');
-            $save = false;
-            if ($user == $mission->owner)
-            {
-                if (!$mission->ownerHasReadLatest)
-                {
-                    $mission->ownerHasReadLatest = true;
-                    $save                        = true;
-                }
-            }
-            elseif ($user == $mission->takenByUser)
-            {
-                if (!$mission->takenByUserHasReadLatest)
-                {
-                    $mission->takenByUserHasReadLatest = true;
-                    $save                               = true;
-                }
-            }
-            if ($save)
-            {
-                $mission->save();
-            }
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $hasReadLatest      = $mashableUtilRules->markUserAsHavingReadLatestModel($mission, $user);
+            return $hasReadLatest;
+        }
+
+        public static function markUserHasUnreadLatest(Mission $mission, User $user)
+        {
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $hasReadLatest      = $mashableUtilRules->markUserAsHavingUnreadLatestModel($mission, $user);
+            return $hasReadLatest;
         }
 
         public static function hasUserReadMissionLatest(Mission $mission, User $user)
         {
-            assert('$mission->id > 0');
-            assert('$user->id > 0');
-            if ($user->isSame($mission->owner))
+            $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel('Mission');
+            $hasReadLatest      = $mashableUtilRules->hasUserReadLatest($mission, $user);
+            return $hasReadLatest;
+        }
+
+        public static function markAllUserHasUnreadLatest(Mission $mission)
+        {
+            $users = static::resolvePeopleToSendNotificationToOnNewMission($mission);
+            foreach ($users as $user)
             {
-                return $mission->ownerHasReadLatest;
+                static::markUserHasUnreadLatest($mission, $user);
             }
-            elseif ($user == $mission->takenByUser)
-            {
-                return $mission->takenByUserHasReadLatest;
-            }
-            return false;
         }
 
         public static function makeActiveActionElementType($type)
@@ -233,7 +215,6 @@
 
         public static function resolvePeopleToSendNotificationToOnNewMission(Mission $mission)
         {
-            assert('$mission->id > 0');
             $users = User::getAll();
             $people = array();
             foreach ($users as $user)
@@ -255,15 +236,26 @@
          */
         public static function resolvePeopleToSendNotificationToOnNewComment(Mission $mission, User $user)
         {
-            assert('$mission->id > 0');
+            $usersToSendNotification = User::getAll();
             $peopleToSendNotification = array();
-            if ($user->getClassId('Item') != $mission->owner->getClassId('Item'))
+            foreach ($usersToSendNotification as $userToSendNotification)
             {
-                $peopleToSendNotification[] = $mission->owner;
-            }
-            if ($user->getClassId('Item') != $mission->takenByUser->getClassId('Item'))
-            {
-                $peopleToSendNotification[] = $mission->takenByUser;
+
+                if($userToSendNotification->getClassId('Item') != $user->getClassId('Item'))
+                {
+                    if($mission->takenByUser->id > 0)
+                    {
+                        if($userToSendNotification->getClassId('Item') == $mission->owner->getClassId('Item') ||
+                           $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
+                        {
+                            $peopleToSendNotification[] = $userToSendNotification;
+                        }
+                    }
+                    else
+                    {
+                        $peopleToSendNotification[] = $userToSendNotification;
+                    }
+                }
             }
             return $peopleToSendNotification;
         }

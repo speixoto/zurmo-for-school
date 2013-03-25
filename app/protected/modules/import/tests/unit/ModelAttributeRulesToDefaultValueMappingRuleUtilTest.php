@@ -186,7 +186,7 @@
             $rules = ModelAttributeRulesToDefaultValueMappingRuleUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('Account', 'urlCstm', 'defaultValue');
             $compareData = array(array('defaultValue',  'length',  'max' => 50),
-                                array('defaultValue',  'url'));
+                                 array('defaultValue',  'url',     'defaultScheme' => 'http'));
             $this->assertEquals($compareData, $rules);
             //todo: add the rest of the custom field types that are importable
         }

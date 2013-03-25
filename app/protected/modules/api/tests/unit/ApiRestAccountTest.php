@@ -228,7 +228,6 @@
 
             $data['name']                = "My Company 2";
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/accounts/account/api/update/' . $compareData['id'], 'PUT', $headers, array('data' => $data));
-
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_SUCCESS, $response['status']);
 

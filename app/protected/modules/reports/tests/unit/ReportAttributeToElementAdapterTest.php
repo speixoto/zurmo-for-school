@@ -275,7 +275,7 @@
                                                                                       $form, $treeType);
             $content                            = $adapter->getContent();
             $this->assertNotNull($content);
-            $this->assertTrue (strpos($content, '"some[prefix][operator]"')           === false);
+            $this->assertFalse(strpos($content, '"some[prefix][operator]"')           === false);
             $this->assertFalse(strpos($content, '"some[prefix][value]"')              === false);
             $this->assertFalse(strpos($content, '"some[prefix][availableAtRunTime]"') === false);
             $this->assertFalse(strpos($content, '"some[prefix][stringifiedModelForValue]"') === false);

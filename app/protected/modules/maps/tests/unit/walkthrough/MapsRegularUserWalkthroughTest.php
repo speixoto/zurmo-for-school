@@ -43,10 +43,6 @@
 
         public function testRegularUserAllControllerActionsNoElevation()
         {
-            if (Yii::app()->params['testGoogleGeoCodeApiKey'] == null)
-            {
-              $this->markTestSkipped(Zurmo::t('Default', 'Test GoogleGeoCodeApiKey is not set in perInstanceTest.php file.'));
-            }
             $super        = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $superAccount = AccountTestHelper::createAccountByNameForOwner('accountOwnedBySuper', $super);
 

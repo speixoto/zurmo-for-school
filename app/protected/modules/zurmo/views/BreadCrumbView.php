@@ -47,11 +47,10 @@
 
         protected function renderContent()
         {
-            $homeUrl = Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/index');
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Breadcrumbs");
             $cClipWidget->widget('zii.widgets.CBreadcrumbs', array(
-                'homeLink'  => ZurmoHtml::link($this->getHomeLinkLabel(), $homeUrl),
+                'homeLink'  => ZurmoHtml::link($this->getHomeLinkLabel(), $this->getHomeUrl()),
                 'links'     => $this->breadcrumbLinks,
                 'separator' => ' &#47; ',
             ));
@@ -63,6 +62,11 @@
         protected function getHomeLinkLabel()
         {
             throw new NotImplementedException();
+        }
+
+        protected function getHomeUrl()
+        {
+            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/index');
         }
     }
 ?>

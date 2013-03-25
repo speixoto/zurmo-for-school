@@ -36,10 +36,10 @@
         public static function generateOutput($result)
         {
             assert('$result instanceof ApiResult');
-            throw new NotSupportedException();
+            $data = $result->convertToArray();
+            $xml = Array2XML::createXML('zurmoMessage', $data);
+            echo $xml->saveXML();
             return;
-            //$data = $result->convertToArray();
-            //$xml = ApiXmlParser::arrayToXml($data);
         }
     }
 ?>

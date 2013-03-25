@@ -1921,8 +1921,8 @@
             $account->testText3Cstm                         = 'some test stuff 3';
             $account->testTextArea2Cstm                     = 'some test text area stuff';
             $account->testTextArea3Cstm                     = 'some test text area stuff 3';
-            $account->testUrl2Cstm                          = 'http://www.zurmo.com';
-            $account->testUrl3Cstm                          = 'http://www.zurmo.org';
+            $account->testUrl2Cstm                          = 'https://www.zurmo.com';
+            $account->testUrl3Cstm                          = 'www.zurmo.org';
             $account->playMyFavoriteSongCstm->value         = 'song2'; // song 3
             $account->testCountryCstm->value                = 'bbbb';
             $account->testStateCstm->value                  = 'bbb2';
@@ -1969,7 +1969,8 @@
             $this->assertEquals('Seat',                      $account->testAirPlanePartsCstm->value);
             $this->assertEquals('some test stuff',           $account->testText2Cstm);
             $this->assertEquals('some test text area stuff', $account->testTextArea2Cstm);
-            $this->assertEquals('http://www.zurmo.com',      $account->testUrl2Cstm);
+            $this->assertEquals('https://www.zurmo.com',     $account->testUrl2Cstm);
+            $this->assertEquals('http://www.zurmo.org',      $account->testUrl3Cstm);
             $this->assertEquals('song2',                     $account->playMyFavoriteSongCstm->value);
             $this->assertContains('Writing',                 $account->testHobbies1Cstm->values);
             $this->assertContains('Reading',                 $account->testHobbies1Cstm->values);
