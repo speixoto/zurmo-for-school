@@ -101,7 +101,8 @@
                                                  $this->attemptToSaveModelFromPost($conversation),
                                                  strval($conversation));
             $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                                  makeStandardViewForCurrentUser($this, $editView));
+                                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
+                                                                                        'ConversationBreadCrumbView'));
             echo $view->render();
         }
 
