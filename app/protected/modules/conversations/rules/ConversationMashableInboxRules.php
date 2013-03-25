@@ -104,9 +104,9 @@
             if ($filteredBy == MashableInboxForm::FILTERED_BY_UNREAD)
             {
                 $metadata['clauses'][1] = array(
-                            'attributeName'        => 'ownerHasReadLatest',
-                            'operatorType'         => 'doesNotEqual',
-                            'value'                => (bool)1
+                            'attributeName'    => 'ownerHasReadLatest',
+                            'operatorType'     => 'doesNotEqual',
+                            'value'            => (bool)1
                         );
                 $metadata['clauses'][2] = array(
                         'attributeName'        => 'conversationParticipants',

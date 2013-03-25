@@ -39,13 +39,13 @@
                     array(
                         'label'               => Zurmo::t('MashableInboxModule', 'Inbox'),
                         'url'                 => array('/mashableInbox/default'),
-                        'dynamicLabelContent' => 'eval:MashableUtil::getUnreadCountMashableInboxForCurrentUser()'
+                        'dynamicLabelContent' => 'eval:MashableUtil::renderUnreadCountForDynamicLabelContent()'
                     ),
                 ),
             );
             return $metadata;
         }
-        
+
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('MashableInboxModule', 'Inbox', array(), null, $language);

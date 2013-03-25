@@ -176,6 +176,7 @@
                                                                 total += data[key];
                                                             }
                                                             $('a.icon-combined').find('span.unread-count').html(total);
+                                                            $('span.unread-inbox-count').html(total);
                                                         }",
                 ));
             return $script;

@@ -93,6 +93,12 @@
             return $unreadCount;
         }
 
+        public static function renderUnreadCountForDynamicLabelContent()
+        {
+            $unreadCount = self::getUnreadCountMashableInboxForCurrentUser();
+            return ZurmoHtml::wrapLabel($unreadCount, 'unread-inbox-count');
+        }
+
         public static function getSearchAttributeMetadataForMashableInboxByModelClassName($modelClassNames, $filteredBy, $searchTerm = '')
         {
             $modelClassNamesAndSearchAttributeData = array();
