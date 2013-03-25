@@ -1,5 +1,4 @@
 $(window).ready(function(){
-
     //main menu flyouts or mbmenu releacment
     $('.nav:not(.user-menu-item) > .parent').live({
         mouseenter: function() {
@@ -143,6 +142,9 @@ $(window).ready(function(){
         left : 0
     };
     resolveSpinner(true, '#stickyListLoadingArea', style, '.loading');
+
+
+
 
 });
 

@@ -51,7 +51,8 @@
 
         protected function renderContent()
         {
-            $content  = '<div id="app-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
+            $content  = '<a href="#" class="mobile-flyout-trigger"><span></span><em></em><span>Search</span></a>';
+            $content .= '<div id="app-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
             return $content;
         }
 

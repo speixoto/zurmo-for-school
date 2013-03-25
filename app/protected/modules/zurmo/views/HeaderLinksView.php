@@ -74,7 +74,7 @@
             }
             $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
             $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
-            $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc.'" alt="Zurmo Logo" width="'.$logoWidth.'" height="'.$logoHeight.'" /></a>';
+            $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc.'" alt="Zurmo Logo" /></a>';
             if ($this->applicationName != null)
             {
                 $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);

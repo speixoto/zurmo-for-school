@@ -54,6 +54,7 @@
 
         protected function renderContent()
         {
+            $content  = '<a href="#" class="mobile-flyout-trigger"><span></span><em></em><span>Shortcuts</span></a>';
             if (empty($this->menuItems))
             {
                 return;
@@ -61,11 +62,11 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Shortcuts");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ShortcutsMenu'),
+                'htmlOptions' => array('id' => 'MobileShortcutsMenu'),
                 'items'                   => array($this->menuItems),
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['Shortcuts'];
+            return $content . $cClipWidget->getController()->clips['Shortcuts'];
         }
     }
 ?>
