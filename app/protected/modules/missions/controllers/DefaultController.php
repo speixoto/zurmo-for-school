@@ -45,24 +45,9 @@
 
         public function actionList($type = null)
         {
-            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                'listPageSize', get_class($this->getModule()));
-            $mission          = new Mission(false);
-            $activeActionElementType = MissionsUtil::makeActiveActionElementType((int)$type);
-            $dataProvider            = MissionsUtil::makeDataProviderByType($mission, $type, $pageSize);
-            $actionBarAndListView = new ActionBarAndListView(
-                $this->getId(),
-                $this->getModule()->getId(),
-                $mission,
-                'Missions',
-                $dataProvider,
-                array(),
-                'MissionsActionBarForListView',
-                $activeActionElementType
-            );
-            $view = new MissionsPageView(ZurmoDefaultViewUtil::
-                                              makeStandardViewForCurrentUser($this, $actionBarAndListView));
-            echo $view->render();
+            $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
+                                             array('modelClassName' => 'Mission'));
+            $this->redirect($missionsMashableInboxUrl);
         }
 
         public function actionDetails($id)

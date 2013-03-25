@@ -45,57 +45,9 @@
 
         public function actionList($type = null)
         {
-            $pageSize         = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                'listPageSize', get_class($this->getModule()));
-            $conversation     = new Conversation(false);
-            if ($type == null)
-            {
-                $type = ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED;
-            }
-            if ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CREATED)
-            {
-                $activeActionElementType = 'ConversationsCreatedLink';
-            }
-            elseif ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_PARTICIPANT)
-            {
-                $activeActionElementType = 'ConversationsParticipantLink';
-            }
-            elseif ($type == ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED)
-            {
-                $activeActionElementType = 'ConversationsClosedLink';
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
-            $searchAttributes = array();
-            $metadataAdapter  = new ConversationsSearchDataProviderMetadataAdapter(
-                $conversation,
-                Yii::app()->user->userModel->id,
-                $searchAttributes,
-                $type
-            );
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter->getAdaptedMetadata(),
-                'Conversation',
-                'RedBeanModelDataProvider',
-                'latestDateTime',
-                true,
-                $pageSize
-            );
-            $actionBarAndListView = new ActionBarAndListView(
-                $this->getId(),
-                $this->getModule()->getId(),
-                $conversation,
-                'Conversations',
-                $dataProvider,
-                array(),
-                'ConversationsActionBarForListView',
-                $activeActionElementType
-            );
-            $view = new ConversationsPageView(ZurmoDefaultViewUtil::
-                                              makeStandardViewForCurrentUser($this, $actionBarAndListView));
-            echo $view->render();
+            $conversationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
+                                                                    array('modelClassName' => 'Conversation'));
+            $this->redirect($conversationsMashableInboxUrl);
         }
 
         public function actionDetails($id)
@@ -107,7 +59,7 @@
             ConversationsUtil::markUserHasReadLatest($conversation, Yii::app()->user->userModel);
             $detailsView                    = new ConversationDetailsView($this->getId(), $this->getModule()->getId(), $conversation);
             $conversationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
-                                                    array('modelClassName' => 'Conversation'));
+                                                                    array('modelClassName' => 'Conversation'));
             $breadcrumbLinks          = array(Zurmo::t('ConversationsModule', 'Conversations') => $conversationsMashableInboxUrl,
                                               StringUtil::getChoppedStringContent(strval($conversation), 25));
             $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
