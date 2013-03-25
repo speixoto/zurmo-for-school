@@ -184,7 +184,7 @@
                 $('#more-search-link" . $this->gridIdSuffix . "').unbind('click.more');
                 $('#more-search-link" . $this->gridIdSuffix . "').bind('click.more',  function(event){
                         $('.select-list-attributes-view').hide();
-                        $(this).closest('form').find('.search-view-1').toggle();                        
+                        $(this).closest('form').find('.search-view-1').toggle();
                         return false;
                     }
                 );

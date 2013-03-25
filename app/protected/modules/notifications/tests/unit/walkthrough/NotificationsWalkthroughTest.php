@@ -46,10 +46,11 @@
             $this->assertEquals(1, count($notifications));
 
             //Test all default controller actions that do not require any POST/GET variables to be passed.
+            //This actions are being redirected to the mashableInbox module.
             //This does not include portlet controller actions.
-            $this->runControllerWithNoExceptionsAndGetContent('notifications/default');
-            $this->runControllerWithNoExceptionsAndGetContent('notifications/default/index');
-            $this->runControllerWithNoExceptionsAndGetContent('notifications/default/userList');
+            $this->runControllerWithRedirectExceptionAndGetContent('notifications/default');
+            $this->runControllerWithRedirectExceptionAndGetContent('notifications/default/index');
+            $this->runControllerWithRedirectExceptionAndGetContent('notifications/default/userList');
         }
     }
 ?>
