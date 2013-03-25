@@ -104,7 +104,18 @@
                         'operatorType'         => 'doesNotEqual',
                         'value'                => (bool)1
                     );
-                $metadata['structure'] = "(1 or 2)";
+                $metadata['clauses'][3] = array(
+                        'attributeName'        => 'conversationParticipants',
+                        'relatedAttributeName' => 'person',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->getClassId('Item')
+                );
+                $metadata['clauses'][4] = array(
+                        'attributeName'        => 'owner',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->id
+                );
+                $metadata['structure'] = "(1 and 4) or(2 and 3)";
             }
             else
             {
