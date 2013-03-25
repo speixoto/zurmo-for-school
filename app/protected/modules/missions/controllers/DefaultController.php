@@ -60,9 +60,9 @@
             $detailsView              = new MissionDetailsView($this->getId(), $this->getModule()->getId(), $mission);
             $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
                                              array('modelClassName' => 'Mission'));
-            $breadcrumbLinks = array(
-                                    Zurmo::t('MissionsModule', 'Missions') => $missionsMashableInboxUrl,
-                                    StringUtil::getChoppedStringContent(strval($mission), 25));
+            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
+                                            $missionsMashableInboxUrl,
+                                     StringUtil::getChoppedStringContent(strval($mission), 25));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
                                              makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
                                                                                     'MissionBreadCrumbView'));
@@ -81,7 +81,11 @@
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),
                                                  Zurmo::t('MissionsModule', 'Create Mission'));
-            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Create'));
+            $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
+                                             array('modelClassName' => 'Mission'));
+            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
+                                            $missionsMashableInboxUrl,
+                                     Zurmo::t('MissionsModule', 'Create'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
                                              makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
                                                                                     'MissionBreadCrumbView'));
@@ -96,8 +100,12 @@
             $editView = new MissionEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($mission),
                                                  strval($mission));
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($mission), 25) =>
-                                     array('default/details',  'id' => $id), Zurmo::t('MissionsModule', 'Edit'));
+            $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
+                                             array('modelClassName' => 'Mission'));
+            $breadcrumbLinks = array(Zurmo::t('MissionsModule', 'Missions') =>
+                                        $missionsMashableInboxUrl,
+                                     StringUtil::getChoppedStringContent(strval($mission), 25) =>
+                                        array('default/details',  'id' => $id), Zurmo::t('MissionsModule', 'Edit'));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
                                              makeViewWithBreadcrumbsForCurrentUser($this, $editView, $breadcrumbLinks,
                                                                                     'MissionBreadCrumbView'));
