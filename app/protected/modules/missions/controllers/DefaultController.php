@@ -73,7 +73,11 @@
                                       array(strval($mission), 'MissionsModule'), $mission);
             MissionsUtil::markUserHasReadLatest($mission, Yii::app()->user->userModel);
             $detailsView              = new MissionDetailsView($this->getId(), $this->getModule()->getId(), $mission);
-            $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($mission), 25));
+            $missionsMashableInboxUrl = Yii::app()->createUrl('mashableInbox/default/list',
+                                             array('modelClassName' => 'Mission'));
+            $breadcrumbLinks = array(
+                                    Zurmo::t('MissionsModule', 'Missions') => $missionsMashableInboxUrl,
+                                    StringUtil::getChoppedStringContent(strval($mission), 25));
             $view     = new MissionsPageView(ZurmoDefaultViewUtil::
                                              makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
                                                                                     'MissionBreadCrumbView'));

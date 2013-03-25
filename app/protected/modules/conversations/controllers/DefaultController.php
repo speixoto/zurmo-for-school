@@ -105,8 +105,11 @@
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                       array(strval($conversation), 'ConversationsModule'), $conversation);
             ConversationsUtil::markUserHasReadLatest($conversation, Yii::app()->user->userModel);
-            $detailsView              = new ConversationDetailsView($this->getId(), $this->getModule()->getId(), $conversation);
-            $breadcrumbLinks          = array(StringUtil::getChoppedStringContent(strval($conversation), 25));
+            $detailsView                    = new ConversationDetailsView($this->getId(), $this->getModule()->getId(), $conversation);
+            $conversationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
+                                                    array('modelClassName' => 'Conversation'));
+            $breadcrumbLinks          = array(Zurmo::t('ConversationsModule', 'Conversations') => $conversationsMashableInboxUrl,
+                                              StringUtil::getChoppedStringContent(strval($conversation), 25));
             $view     = new ConversationsPageView(ZurmoDefaultViewUtil::
                                                   makeViewWithBreadcrumbsForCurrentUser($this, $detailsView, $breadcrumbLinks,
                                                                                         'ConversationBreadCrumbView'));
