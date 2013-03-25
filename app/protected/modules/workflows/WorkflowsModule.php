@@ -50,11 +50,20 @@
                 'globalSearchAttributeNames' => array(
                     'name',
                 ),
-                'tabMenuItems' => array(
+                'adminTabMenuItems' => array(
+                        array(
+                            'label' => 'Workflows',
+                            'url'   => array('/workflows/default'),
+                            'right' => self::RIGHT_ACCESS_WORKFLOWS,
+                        ),
+                ),
+                'configureMenuItems' => array(
                     array(
-                        'label' => 'Workflows',
-                        'url'   => array('/workflows/default'),
-                        'right' => self::RIGHT_ACCESS_WORKFLOWS,
+                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
+                        'titleLabel'       => "eval:Zurmo::t('UsersModule', 'Workflows')",
+                        'descriptionLabel' => "eval:Zurmo::t('UsersModule', 'Manage Workflows')",
+                        'route'            => '/workflows/default',
+                        'right'            => self::RIGHT_CREATE_WORKFLOWS,
                     ),
                 ),
                 'headerMenuItems' => array(

@@ -85,9 +85,9 @@
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForWorkflowsSearchAndListView');
-                $view = new WorkflowsPageView(ZurmoDefaultViewUtil::
-                                            makeViewWithBreadcrumbsForCurrentUser(
-                                            $this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                $view = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                                              makeViewWithBreadcrumbsForCurrentUser(
+                                              $this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
             echo $view->render();
         }
@@ -110,12 +110,12 @@
         public function actionSelectType()
         {
             $breadcrumbLinks  = array(Zurmo::t('WorkflowsModule', 'Select Workflow Type'));
-            $view             = new WorkflowsPageView(ZurmoDefaultViewUtil::
-                                                    makeViewWithBreadcrumbsForCurrentUser(
-                                                    $this,
-                                                    new WorkflowWizardTypesGridView(),
-                                                    $breadcrumbLinks,
-                                                    'WorkflowBreadCrumbView'));
+            $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
+                                                        makeViewWithBreadcrumbsForCurrentUser(
+                                                        $this,
+                                                        new WorkflowWizardTypesGridView(),
+                                                        $breadcrumbLinks,
+                                                        'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
@@ -132,12 +132,12 @@
             $workflow->setType($type);
             $workflow->setIsActive(true);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
-            $view             = new WorkflowsPageView(ZurmoDefaultViewUtil::
-                                                    makeViewWithBreadcrumbsForCurrentUser(
-                                                    $this,
-                                                    $wizardWizardView,
-                                                    $breadcrumbLinks,
-                                                    'WorkflowBreadCrumbView'));
+            $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
+                                                        makeViewWithBreadcrumbsForCurrentUser(
+                                                        $this,
+                                                        $wizardWizardView,
+                                                        $breadcrumbLinks,
+                                                        'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
@@ -148,12 +148,12 @@
             $breadcrumbLinks    = array(strval($savedWorkflow));
             $workflow           = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             $wizardWizardView = WorkflowWizardViewFactory::makeViewFromWorkflow($workflow);
-            $view             = new WorkflowsPageView(ZurmoDefaultViewUtil::
-                                                    makeViewWithBreadcrumbsForCurrentUser(
-                                                    $this,
-                                                    $wizardWizardView,
-                                                    $breadcrumbLinks,
-                                                    'WorkflowBreadCrumbView'));
+            $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
+                                                        makeViewWithBreadcrumbsForCurrentUser(
+                                                        $this,
+                                                        $wizardWizardView,
+                                                        $breadcrumbLinks,
+                                                        'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
