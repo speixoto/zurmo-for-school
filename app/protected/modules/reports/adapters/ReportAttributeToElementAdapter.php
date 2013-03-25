@@ -77,7 +77,7 @@
         protected function getContentForFilter()
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
-            if($this->model->hasAvailableOperatorsType())
+            if($this->model->hasAvailableOperatorsType() && count($this->model->getOperatorValuesAndLabels()) > 1)
             {
                 $operatorElement                    = new OperatorStaticDropDownElement($this->model, 'operator', $this->form, $params);
                 $operatorElement->editableTemplate  = '{content}{error}';
@@ -125,6 +125,7 @@
                 throw new NotSupportedException();
             }
             $content                                = $this->renderAttributeIndexOrDerivedType();
+            $content                               .= $this->renderHiddenOperator();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
             self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-row-operator');
             $content                               .= $valueContent;
@@ -137,6 +138,25 @@
                 self::resolveDivWrapperForContent($runTimeContent, $content, 'report-runtime-availability');
             }
             return $content;
+        }
+
+        /**
+         * Builds hidden operator input. Used in the event there is only one operator available. No reason to show
+         * that in the user interface
+         * @return string
+         */
+        protected function renderHiddenOperator()
+        {
+            if($this->model->hasAvailableOperatorsType() && count($this->model->getOperatorValuesAndLabels()) == 1)
+            {
+                $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
+                    array_merge($this->inputPrefixData, array('operator')));
+                $hiddenInputId       = Element::resolveInputIdPrefixIntoString(
+                    array_merge($this->inputPrefixData, array('operator')));
+                $idInputHtmlOptions  = array('id' => $hiddenInputId);
+                $valuesAndLabels     = $this->model->getOperatorValuesAndLabels();
+                return ZurmoHtml::hiddenField($hiddenInputName, key($valuesAndLabels), $idInputHtmlOptions);
+            }
         }
 
         /**

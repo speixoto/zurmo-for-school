@@ -40,7 +40,7 @@
 
         public function testSetAndGetChart()
         {
-            $chart                              = new ChartForReportForm();
+            $chart               = new ChartForReportForm();
             $chart->type         = 'Bar2D';
             $chart->firstSeries  = 'dropDown';
             $chart->firstRange   = 'float__Summation';

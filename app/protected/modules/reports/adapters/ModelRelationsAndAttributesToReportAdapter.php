@@ -363,7 +363,7 @@
             assert('is_string($attribute)');
             if($this->isDynamicallyDerivedAttribute($attribute))
             {
-                return null;
+                return ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE;
             }
             if($this->isDerivedAttribute($attribute))
             {
@@ -375,7 +375,7 @@
             {
                 return $availableOperatorsTypeFromRule;
             }
-            return ModelAttributeToOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
+            return ModelAttributeToReportOperatorTypeUtil::getAvailableOperatorsType($this->model, $resolvedAttribute);
         }
 
         /**

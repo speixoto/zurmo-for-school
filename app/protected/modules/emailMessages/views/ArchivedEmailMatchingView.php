@@ -329,9 +329,10 @@
 
         protected function getHtmlOptionsForDelete()
         {
-            $htmlOptions['id']      = 'delete-link-' . $this->uniqueId;
-            $htmlOptions['class']   = 'z-action-link';
-            $htmlOptions['confirm'] = Zurmo::t('EmailMessagesModule', 'Are you sure you want to delete?');
+            $htmlOptions['id']          = 'delete-link-' . $this->uniqueId;
+            $htmlOptions['class']       = 'z-action-link';
+            $htmlOptions['confirm']     = Zurmo::t('EmailMessagesModule', 'Are you sure you want to delete?');
+            $htmlOptions['namespace']   = "emailMatchingView";
             return $htmlOptions;
         }
 

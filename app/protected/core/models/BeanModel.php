@@ -594,6 +594,14 @@
                     $relationLinkName  = null;
                     self::resolveLinkTypeAndRelationLinkName($relationTypeModelClassNameAndOwns, $linkType,
                           $relationLinkName);
+                    if ($linkType == self::LINK_TYPE_SPECIFIC &&
+                        $relationTypeModelClassNameAndOwns[2] == self::NOT_OWNED &&
+                        strtolower($relationTypeModelClassNameAndOwns[1]) == strtolower($relationName))
+                    {
+                        //When a relation is the same as the relatedModelClassName and it is a specific link, this is not
+                        //supportive. Either use assumptive or change the relation name.
+                        throw new NotSupportedException();
+                    }
                     assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                         'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                     self::$attributeNamesToClassNames[get_called_class()][$relationName] = $modelClassName;

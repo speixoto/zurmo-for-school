@@ -69,9 +69,9 @@
             $this->assertEquals($steven,                          $mission->takenByUser);
             $this->assertEquals(1,                                $mission->files->count());
             $this->assertEquals($fileModel,                       $mission->files->offsetGet(0));
-            $this->assertEquals(1,                                $mission->ownerHasReadLatest);
-            $this->assertEquals(0,                                $mission->takenByUserHasReadLatest);
             $this->assertEquals($dueStamp,                        $mission->dueDateTime);
+            $this->assertTrue(MissionsUtil::hasUserReadMissionLatest($mission,  $super));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $steven));
         }
 
         /**
@@ -83,44 +83,35 @@
             $this->assertEquals(1, count($missions));
             $mission  = $missions[0];
             $steven        = User::getByUserName('steven');
+            $super         = User::getByUsername('super');
             $latestStamp   = $mission->latestDateTime;
 
             //latestDateTime should not change when just saving the mission
-            $mission->takenByUserHasReadLatest = true;
-            $mission->ownerHasReadLatest       = true;
             $this->assertTrue($mission->save());
             $this->assertEquals($latestStamp, $mission->latestDateTime);
-            $this->assertEquals(1, $mission->ownerHasReadLatest);
-            $this->assertEquals(1, $mission->takenByUserHasReadLatest);
 
             sleep(2); // Sleeps are bad in tests, but I need some time to pass
 
             //Add comment, this should update the latestDateTime,
-            //and also it should reset takenByUserHasReadLatest on mission participants
+            //and also it should mark takenByUser as not read latest
             $comment              = new Comment();
             $comment->description = 'This is my first comment';
             $mission->comments->add($comment);
             $this->assertTrue($mission->save());
             $this->assertNotEquals($latestStamp, $mission->latestDateTime);
-            $this->assertEquals(0, $mission->takenByUserHasReadLatest);
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $steven));
             //super made the comment, so this should remain the same.
-            $this->assertEquals(1, $mission->ownerHasReadLatest);
+            $this->assertTrue(MissionsUtil::hasUserReadMissionLatest($mission, $super));
 
-            //set it to read latest
-            $mission->takenByUserHasReadLatest = true;
-            $this->assertTrue($mission->save());
-
-            //have steven make the comment. Now the ownerHasReadLatest should set to false,
-            //and takenByUserHasReadLatest should remain true
+            //have steven make the comment. Now the owner HasReadLatest,
+            //and takenByUser HasNotReadLatest
             Yii::app()->user->userModel = $steven;
             $mission                    = Mission::getById($mission->id);
             $comment                    = new Comment();
             $comment->description       = 'This is steven`\s first comment';
             $mission->comments->add($comment);
             $this->assertTrue($mission->save());
-            $this->assertEquals(1, $mission->takenByUserHasReadLatest);
-            $this->assertEquals(0, $mission->ownerHasReadLatest);
-            //todo: test also takenByUserHasReadLatest
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $super));
         }
 
         /**
@@ -131,26 +122,26 @@
         {
             $super      = User::getByUsername('super');
             $steven     = User::getByUsername('steven');
-            $this->assertEquals(1, Notification::getCountByUser($super));
-            $this->assertEquals(1, Notification::getCountByUser($steven));
+            $this->assertEquals(0, Notification::getCountByUser($super));
+            $this->assertEquals(0, Notification::getCountByUser($steven));
             $missions   = Mission::getAll();
             $mission = $missions[0];
             $mission->status = Mission::STATUS_TAKEN;
             $this->assertTrue($mission->save());
-            $this->assertEquals(2, Notification::getCountByUser($super));
-            $this->assertEquals(1, Notification::getCountByUser($steven));
+            $this->assertEquals(1, Notification::getCountByUser($super));
+            $this->assertEquals(0, Notification::getCountByUser($steven));
             $mission->status = Mission::STATUS_COMPLETED;
             $this->assertTrue($mission->save());
-            $this->assertEquals(3, Notification::getCountByUser($super));
-            $this->assertEquals(1, Notification::getCountByUser($steven));
+            $this->assertEquals(2, Notification::getCountByUser($super));
+            $this->assertEquals(0, Notification::getCountByUser($steven));
             $mission->status = Mission::STATUS_REJECTED;
             $this->assertTrue($mission->save());
-            $this->assertEquals(3, Notification::getCountByUser($super));
-            $this->assertEquals(2, Notification::getCountByUser($steven));
+            $this->assertEquals(2, Notification::getCountByUser($super));
+            $this->assertEquals(1, Notification::getCountByUser($steven));
             $mission->status = Mission::STATUS_ACCEPTED;
             $this->assertTrue($mission->save());
-            $this->assertEquals(3, Notification::getCountByUser($super));
-            $this->assertEquals(3, Notification::getCountByUser($steven));
+            $this->assertEquals(2, Notification::getCountByUser($super));
+            $this->assertEquals(2, Notification::getCountByUser($steven));
         }
 
         /**
@@ -158,10 +149,12 @@
          */
         public function testDeleteMission()
         {
-            $missions = Mission::getAll();
-            $this->assertEquals(1, count($missions));
-            $comments = Comment::getAll();
-            $this->assertEquals(2, count($comments));
+            $missions                    = Mission::getAll();
+            $comments                    = Comment::getAll();
+            $personsWhoHaveNotReadLatest = PersonWhoHaveNotReadLatest::getAll();
+            $this->assertGreaterThan(0, count($missions));
+            $this->assertGreaterThan(0, count($comments));
+            $this->assertGreaterThan(0, count($personsWhoHaveNotReadLatest));
 
             foreach ($missions as $mission)
             {
@@ -172,11 +165,13 @@
                 $this->assertTrue($deleted);
             }
 
-            //check that all comments are removed, since they are owned.
+            //check that all comments and personsWhoHaveNotReadLatest are removed, since they are owned.
             $comments = Comment::getAll();
             $this->assertEquals(0, count($comments));
             $missions = Mission::getAll();
             $this->assertEquals(0, count($missions));
+            $personsWhoHaveNotReadLatest = PersonWhoHaveNotReadLatest::getAll();
+            $this->assertEquals(0, count($personsWhoHaveNotReadLatest));
         }
     }
 ?>

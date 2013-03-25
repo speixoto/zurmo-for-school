@@ -30,8 +30,8 @@
         {
             return array(
                 'name'        => 'subject',
-                'header'      => false,
-                'htmlOptions' => array('style' => 'width:80%;'),
+                'header'      => Zurmo::t('Core', 'Subject'),
+                'htmlOptions' => array(),
                 'sortable'    => false,
                 'type'        => 'raw',
                 'value'       => 'ConversationsUtil::renderSubjectAndLatestForDisplayView($data)',

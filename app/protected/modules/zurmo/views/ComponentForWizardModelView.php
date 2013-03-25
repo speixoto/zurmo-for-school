@@ -214,7 +214,8 @@
          */
         protected function renderAttributesAndRelationsTreeContent()
         {
-            $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), '');
+            $spinner  = ZurmoHtml::tag('span', array('class' => 'big-spinner'), '');
+            $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), $spinner);
             return $content;
         }
 

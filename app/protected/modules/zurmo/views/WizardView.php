@@ -150,8 +150,8 @@
         
         protected function renderUIOverLayBlock()
         {
-            //$spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
-            return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), '');
+            $spinner = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+            return ZurmoHtml::tag('div', array('class' => 'ui-overlay-block'), $spinner);
         }
 
         /**

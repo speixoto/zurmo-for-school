@@ -97,16 +97,43 @@
             return SearchUtil::resolveSelectedListAttributesForSearchModelFromGetArray($this->model, get_class($this->model));
         }
 
-        public static function resolveSortAttributeFromSourceData($name)
+        public function resolveSortAttributeFromSourceData($name)
         {
             assert('is_string($name)');
-            return SearchUtil::resolveSortAttributeFromGetArray($name);
+            $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray($name);
+            if($sortAttribute == null)
+            {
+                if(!empty($this->model->sortAttribute))
+                {
+                    $sortAttribute = $this->model->sortAttribute;
+                }
+                else
+                {
+                    $sortAttribute = null;
+                }
+            }
+
+            return $sortAttribute;
         }
 
-        public static function resolveSortDescendingFromSourceData($name)
+        public function resolveSortDescendingFromSourceData($name)
         {
             assert('is_string($name)');
-            return SearchUtil::resolveSortDescendingFromGetArray($$name);
+            $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($name);
+
+            if($sortDescending === false)
+            {
+                if(!empty($this->model->sortDescending))
+                {
+                    $sortDescending = true;
+                }
+                else
+                {
+                    $sortDescending = false;
+                }
+            }
+
+            return $sortDescending;
         }
     }
 ?>

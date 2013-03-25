@@ -26,6 +26,10 @@
 
     class RedBeanSort extends CSort
     {
+        private $sortAttribute;
+
+        private $sortDescending;
+
         /**
          * Override so that the model can be retrieved using
          * redBean model and not CActiveRecord. Also
@@ -113,6 +117,64 @@
             {
                 return $attribute;
             }
+        }
+
+        /**
+         * Override the default method to read from model in case attribute is not present in request
+         * @return array sort directions indexed by attribute names.
+         * Sort direction can be either CSort::SORT_ASC for ascending order or
+         * CSort::SORT_DESC for descending order.
+         */
+        public function getDirections()
+        {
+            $directions = parent::getDirections();
+            if(empty($directions))
+            {
+                $attributes=explode($this->separators[0],$this->sortAttribute . $this->sortDescending);
+                foreach($attributes as $attribute)
+                {
+                    if(($pos=strrpos($attribute,$this->separators[1]))!==false)
+                    {
+                        $descending=substr($attribute,$pos+1)===$this->descTag;
+                        if($descending)
+                            $attribute=substr($attribute,0,$pos);
+                    }
+                    else
+                        $descending=false;
+
+                    if(($this->resolveAttribute($attribute))!==false)
+                    {
+                        $directions[$attribute]=$descending;
+                        if(!$this->multiSort)
+                            return $directions;
+                    }
+                }
+                if($directions===array() && is_array($this->defaultOrder))
+                        $directions=$this->defaultOrder;
+            }
+
+            return $directions;
+        }
+
+        public function getSortAttribute()
+        {
+            return $this->sortAttribute;
+        }
+
+        public function setSortAttribute($sortAttribute)
+        {
+            $this->sortAttribute = $sortAttribute;
+        }
+
+        public function getSortDescending()
+        {
+            return $this->sortDescending;
+        }
+
+        public function setSortDescending($sortDescending)
+        {
+            if($sortDescending === true)
+                $this->sortDescending = ".desc";
         }
     }
 ?>

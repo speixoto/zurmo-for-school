@@ -43,7 +43,7 @@
             else
             {
                 $sendAction = "\$('#{$this->formName}').find('.files > tbody').children().remove();";
-                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add Files'));
+                $addLabel   = ZurmoHtml::tag('strong', array('class' => 'add-label'), Zurmo::t('Core', 'Add File'));
             }
             $this->registerScriptForLogoFileElement($id, $sendAction, $jsonEncodedExistingFiles);
 
@@ -144,7 +144,7 @@ EOD;
             <td class="name">
                 \${name} <span class="file-size">(\${sizef})</span><span><img src="\${thumbnail_url}"/></span>
                 <span class="upload-actions delete">
-                    <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}?id=\${id}"><span><!--{$deleteLabel}--><span></button>
+                    <button class="icon-delete" title="{$removeLabel}" data-url="{$this->deleteUrl}"><span><!--{$deleteLabel}--><span></button>
                 </span>
                 <input name="{$this->hiddenInputName}[]" type="hidden" value="\${id}"/>
             </td>

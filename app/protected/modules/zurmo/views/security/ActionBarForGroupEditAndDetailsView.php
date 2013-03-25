@@ -93,11 +93,6 @@
                                 'resolveToDisplay' => 'canModifyPolicies',
                                 'htmlOptions' => array('class' => 'icon-policies')
                                 ),
-                            array(
-                                'type'             => 'GroupDeleteLink',
-                                'resolveToDisplay' => 'isDeletable',
-                                'htmlOptions' => array('class' => 'icon-delete')
-                            ),
                         ),
                     ),
                 ),

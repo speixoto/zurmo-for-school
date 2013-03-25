@@ -134,7 +134,7 @@
                     array('officePhone',   'length',  'min'  => 1, 'max' => 24),
                     array('officeFax',     'type',    'type' => 'string'),
                     array('officeFax',     'length',  'min'  => 1, 'max' => 24),
-                    array('website',       'url'),
+                    array('website',       'url',     'defaultScheme' => 'http'),
                 ),
                 'elements' => array(
                     'account'         => 'Account',

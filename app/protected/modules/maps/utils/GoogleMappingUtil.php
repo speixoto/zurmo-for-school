@@ -40,8 +40,9 @@
             assert('$apiKey == null || is_string($apiKey)');
             assert('is_array($geoCodeQueryData)');
             assert('is_string($containerId)');
-            $geoCodeResult = self::getGeoCodeResultByData($apiKey, $geoCodeQueryData);
-            static::renderMapAndPoint($containerId, $apiKey, $geoCodeResult->latitude, $geoCodeResult->longitude);
+            $geoCodeResult = self::getGeoCodeResultByData($apiKey, $geoCodeQueryData);            
+            static::renderMapAndPoint($containerId, $apiKey, $geoCodeResult->query, 
+                    $geoCodeResult->latitude, $geoCodeResult->longitude);
         }
 
         /**
@@ -73,12 +74,15 @@
             }
         }
 
-        protected static function renderMapAndPoint($containerId, $apiKey, $latitude, $longitude)
-        {
+        protected static function renderMapAndPoint($containerId, $apiKey, $address, $latitude, $longitude)
+        {            
             assert('is_string($containerId)');
             assert('is_string($apiKey) || $apiKey == null');
+            assert('is_string($address) || $address == null');
             assert('is_numeric($latitude) || $latitude == null');
             assert('is_numeric($longitude) || $longitude == null');
+           
+            $marker_text = "<strong>Location:</strong> <br />$address";
             $mapScript = "
             function plotMap()
             {
@@ -96,13 +100,29 @@
                   position: latlng,
                   map: map
                 });
+                var infowindow = new google.maps.InfoWindow({
+                 content:  '$marker_text' 
+                });
+
+                google.maps.event.addListener(marker, 'click', function() {
+                    infowindow.open(map, marker);
+                    });
+                
             }
             function loadGoogleMap()
             {
-              var script = document.createElement('script');
-              script.type = 'text/javascript';
+              var script  = document.createElement('script');
+              script.type = 'text/javascript';              
+              if('$apiKey' !== null)
+              {              
               script.src = 'http://maps.googleapis.com/maps/api/js?key=" . $apiKey . "&sensor=false&callback=plotMap';". // Not Coding Standard
               "document.body.appendChild(script);
+              }
+              else
+              {
+              script.src = 'http://maps.googleapis.com/maps/api/js?sensor=false&callback=plotMap';". // Not Coding Standard
+              "document.body.appendChild(script);
+              }
             }
             $(document).ready(loadGoogleMap);
             ";

@@ -39,6 +39,9 @@
             return Zurmo::t('ImportModule', 'Full Name');
         }
 
+        /**
+         * @return array
+         */
         public function getRealModelAttributeNames()
         {
             return array('firstName', 'lastName');

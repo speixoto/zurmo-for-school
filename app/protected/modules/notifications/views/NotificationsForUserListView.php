@@ -26,21 +26,6 @@
 
     class NotificationsForUserListView extends ListView
     {
-       /**
-        * Override to set rows as not being selectable.
-        */
-       public function __construct(
-            $controllerId,
-            $moduleId,
-            $modelClassName,
-            $dataProvider,
-            $selectedIds,
-            $gridIdSuffix = null
-        )
-        {
-            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, $selectedIds, $gridIdSuffix);
-            $this->rowsAreSelectable = false;
-        }
 
         public static function getDefaultMetadata()
         {
@@ -57,16 +42,6 @@
                                             ),
                                         ),
                                     )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'DeleteNotification'),
-                                            ),
-                                        ),
-                                    )
-
                                 ),
                             ),
                         ),
@@ -97,6 +72,26 @@
             $params             = parent::getCGridViewPagerParams();
             $params['route']    = $this->getGridViewActionRoute('userList', $this->moduleId);
             return $params;
+        }
+
+        protected function getCGridViewParams()
+        {
+            $gridViewParams = parent::getCGridViewParams();
+            $gridViewParams['rowHtmlOptionsExpression']
+                            = 'NotificationsForUserListView::resolveRowHtmlOptionsExpression($this, $row, $data)';
+            return $gridViewParams;
+        }
+
+        public static function resolveRowHtmlOptionsExpression($grid, $row, $data)
+        {
+            $notification = Notification::getById($data->id);
+            if (!$notification->ownerHasReadLatest)
+            {
+                $params = array(
+                            "class" => 'unread'
+                    );
+                return $params;
+            }
         }
     }
 ?>

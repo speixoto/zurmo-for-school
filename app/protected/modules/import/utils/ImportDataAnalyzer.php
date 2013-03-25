@@ -114,6 +114,7 @@
                     $attributeValueSanitizerUtilClassName = $attributeValueSanitizerUtilType . 'SanitizerUtil';
                     if ($attributeValueSanitizerUtilClassName::supportsSqlAttributeValuesDataAnalysis())
                     {
+                        $sanitizerUtilType              = $attributeValueSanitizerUtilClassName::getType();
                         $sqlAttributeValuesDataAnalyzer = $attributeValueSanitizerUtilClassName::
                                                           makeSqlAttributeValueDataAnalyzer($modelClassName,
                                                                                             $dataAnalyzerAttributeName);
@@ -127,18 +128,18 @@
                             foreach ($messages as $message)
                             {
                                 $moreAvailable     = $sqlAttributeValuesDataAnalyzer::supportsAdditionalResultInformation();
-                                $sanitizerUtilType = $attributeValueSanitizerUtilClassName::getType();
                                 $this->addMessageDataByColumnName($columnName, $message, $sanitizerUtilType, $moreAvailable);
                             }
                         }
                         $instructionsData = $sqlAttributeValuesDataAnalyzer->getInstructionsData();
-                        if ($instructionsData != null)
+                        if (!empty($instructionsData))
                         {
                             $this->addInstructionDataByColumnName($columnName, $instructionsData, $sanitizerUtilType);
                         }
                     }
                     elseif ($attributeValueSanitizerUtilClassName::supportsBatchAttributeValuesDataAnalysis())
                     {
+                        $sanitizerUtilType = $attributeValueSanitizerUtilClassName::getType();
                         $batchAttributeValuesDataAnalyzer = $attributeValueSanitizerUtilClassName::
                                                             makeBatchAttributeValueDataAnalyzer($modelClassName,
                                                                                                 $dataAnalyzerAttributeName);
@@ -153,12 +154,11 @@
                             {
                                 $moreAvailable     = $batchAttributeValuesDataAnalyzer::
                                                      supportsAdditionalResultInformation();
-                                $sanitizerUtilType = $attributeValueSanitizerUtilClassName::getType();
                                 $this->addMessageDataByColumnName($columnName, $message, $sanitizerUtilType, $moreAvailable);
                             }
                         }
                         $instructionsData = $batchAttributeValuesDataAnalyzer->getInstructionsData();
-                        if ($instructionsData != null)
+                        if (!empty($instructionsData))
                         {
                             $this->addInstructionDataByColumnName($columnName, $instructionsData, $sanitizerUtilType);
                         }
@@ -183,7 +183,7 @@
                 $mappingRuleFormClassName = $mappingRuleType .'MappingRuleForm';
                 if (!isset($columnMappingData['mappingRulesData'][$mappingRuleFormClassName]))
                 {
-                    throw new NotSupportedException();
+                    //do nothing. Either the data from the UI was improper or there is for some reason no mappingRulesFormData
                 }
                 else
                 {
