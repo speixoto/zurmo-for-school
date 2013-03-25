@@ -32,6 +32,7 @@
             $savedWorkflow->name            = 'some workflow';
             $savedWorkflow->description     = 'description';
             $savedWorkflow->moduleClassName = 'moduleClassName';
+            $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = 'some type';
             $savedWorkflow->serializedData  = serialize(array('something'));
             $saved                        = $savedWorkflow->save();
@@ -43,6 +44,7 @@
             $this->assertEquals('some workflow',               $savedWorkflow->name);
             $this->assertEquals('description',                 $savedWorkflow->description);
             $this->assertEquals('moduleClassName',             $savedWorkflow->moduleClassName);
+            $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedWorkflow->triggerOn);
             $this->assertEquals('some type',                   $savedWorkflow->type);
             $this->assertEquals(serialize(array('something')), $savedWorkflow->serializedData);
         }

@@ -162,6 +162,91 @@
         }
 
         /**
+         * Public for testing purposes only
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         */
+        public static function resolveProcessDateTimeByWorkflowAndModel(Workflow $workflow, RedBeanModel $model)
+        {
+            $workflow->getTimeTrigger()->durationSeconds;
+            $valueEvaluationType = $workflow->getTimeTrigger()->getValueEvaluationType();
+            if($valueEvaluationType == 'Date')
+            {
+                $timeStamp = static::resolveTimeStampForDateAttributeForProcessDateTime($workflow->getTimeTrigger(), $model);
+            }
+            elseif($valueEvaluationType == 'DateTime')
+            {
+                $timeStamp = static::resolveTimeStampForDateTimeAttributeForProcessDateTime($workflow->getTimeTrigger(), $model);
+            }
+            else
+            {
+                $timeStamp = time() + $workflow->getTimeTrigger()->durationSeconds;
+            }
+            return DateTimeUtil::convertTimestampToDbFormatDateTime($timeStamp);
+        }
+
+        protected static function resolveTimeStampForDateAttributeForProcessDateTime(TimeTriggerForWorkflowForm $trigger,
+                                                                                     RedBeanModel $model)
+        {
+            $date = static::resolveModelValueByTimeTrigger($trigger, $model);
+            if($date == null || $date == '0000-00-00')
+            {
+                throw new ValueForProcessDateTimeIsNullException();
+            }
+            else
+            {
+                return DateTimeUtil::convertDbFormatDateTimeToTimestamp($date . ' 00:00:00') + $trigger->durationSeconds;
+            }
+        }
+
+        protected static function resolveTimeStampForDateTimeAttributeForProcessDateTime(TimeTriggerForWorkflowForm $trigger,
+                                                                                         RedBeanModel $model)
+        {
+            $dateTime = static::resolveModelValueByTimeTrigger($trigger, $model);
+            if($dateTime == null || $dateTime == '0000-00-00 00:00:00')
+            {
+                throw new ValueForProcessDateTimeIsNullException();
+            }
+            else
+            {
+                return DateTimeUtil::convertDbFormatDateTimeToTimestamp($dateTime) + $trigger->durationSeconds;
+            }
+        }
+
+
+        protected static function resolveModelValueByTimeTrigger(TimeTriggerForWorkflowForm $trigger, RedBeanModel $model)
+        {
+            if($trigger->getAttribute() == null)
+            {
+                $attributeAndRelationData = $trigger->getAttributeAndRelationData();
+                if(count($attributeAndRelationData) == 2)
+                {
+                    $penultimateRelation = $trigger->getPenultimateRelation();
+                    $resolvedAttribute   = $trigger->getResolvedAttributeRealAttributeName();
+                    if($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
+                    {
+                        throw new NotSupportedException();
+                    }
+                    else
+                    {
+                        $resolvedModel       = $model->{$penultimateRelation};
+                        return $resolvedModel->{$resolvedAttribute};
+                    }
+                }
+                else
+                {
+                    throw new NotSupportedException();
+                }
+            }
+            else
+            {
+                $attribute     = $trigger->getResolvedAttributeRealAttributeName();
+                return $model->{$attribute};
+            }
+        }
+
+
+        /**
          * @param Workflow $workflow
          * @param RedBeanModel $model
          * @throws FailedToSaveModelException
@@ -169,12 +254,22 @@
         protected static function processToByTimeWorkflowInQueue(Workflow $workflow, RedBeanModel $model)
         {
             assert('$workflow->getId() > 0');
-            $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($workflow->id, $model);
-            $byTimeWorkflowInQueue->processDateTime = 'xxx'; //todo: get timeTrigger, and determine processDateTime
-            $saved = $byTimeWorkflowInQueue->save();
-            if(!$saved)
+            try
             {
-                throw new FailedToSaveModelException();
+                //todo: are we sure want to then retrieve the savedWorkflow again? i guess it would be cached...
+                $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::
+                    resolveByWorkflowIdAndModel(SavedWorkflow::getById((int)$workflow->getId()), $model);
+                $byTimeWorkflowInQueue->processDateTime = static::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+                $saved                 = $byTimeWorkflowInQueue->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
+            catch(ValueForProcessDateTimeIsNullException $e)
+            {
+                //todo: for now do nothing, but this means a date or dateTime somehow was set to empty, so we can't
+                //properly process this. so we just don't create or update it.
             }
         }
     }

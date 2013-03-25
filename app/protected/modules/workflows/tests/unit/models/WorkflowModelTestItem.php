@@ -26,6 +26,11 @@
 
     class WorkflowModelTestItem extends OwnedSecurableItem
     {
+        public static function getByLastName($lastName)
+        {
+            return self::getByNameOrEquivalent('lastName', $lastName);
+        }
+
         public function __toString()
         {
             try

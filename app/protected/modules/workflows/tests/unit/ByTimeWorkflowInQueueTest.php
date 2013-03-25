@@ -38,10 +38,79 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
-        public function testMethods()
+        public function testSetAndGet()
         {
-            //todO:
-            $this->fail();
+            $model = new WorkflowModelTestItem();
+            $model->lastName = 'Green';
+            $model->string   = 'string';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+
+            $savedWorkflow                  = new SavedWorkflow();
+            $savedWorkflow->name            = 'some workflow';
+            $savedWorkflow->description     = 'description';
+            $savedWorkflow->moduleClassName = 'moduleClassName';
+            $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
+            $savedWorkflow->type            = 'some type';
+            $savedWorkflow->serializedData  = serialize(array('something'));
+            $saved                          = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+
+            $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueue();
+            $byTimeWorkflowInQueue->modelClassName  = get_class($model);
+            $byTimeWorkflowInQueue->modelItem       = $model;
+            $byTimeWorkflowInQueue->processDateTime = '2007-02-02 00:00:00';
+            $byTimeWorkflowInQueue->savedWorkflow   = $savedWorkflow;
+            $saved = $byTimeWorkflowInQueue->save();
+            $this->assertTrue($saved);
+            $id = $byTimeWorkflowInQueue->id;
+            $byTimeWorkflowInQueue->forget();
+
+            //Retrieve and compare
+            $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::getById($id);
+            $this->assertEquals('WorkflowModelTestItem',    $byTimeWorkflowInQueue->modelClassName);
+            $this->assertTrue  ($byTimeWorkflowInQueue->modelItem->isSame($model));
+            $this->assertEquals('2007-02-02 00:00:00',      $byTimeWorkflowInQueue->processDateTime);
+            $this->assertTrue  ($byTimeWorkflowInQueue->savedWorkflow->isSame($savedWorkflow));
+        }
+
+        /**
+         * @depends testSetAndGet
+         */
+        public function testResolveByWorkflowIdAndModel()
+        {
+            $model2 = new WorkflowModelTestItem();
+            $model2->lastName = 'Engel';
+            $model2->string   = 'string';
+            $saved = $model2->save();
+            $this->assertTrue($saved);
+
+            $savedWorkflows = SavedWorkflow::getByName('some workflow');
+            $models          = WorkflowModelTestItem::getByLastName('Green');
+            //Test when there should be an existing model.
+            $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($savedWorkflows[0], $models[0]);
+            $this->assertTrue($byTimeWorkflowInQueue->id > 0);
+
+
+            $savedWorkflow2                  = new SavedWorkflow();
+            $savedWorkflow2->name            = 'some workflow2';
+            $savedWorkflow2->description     = 'description';
+            $savedWorkflow2->moduleClassName = 'moduleClassName';
+            $savedWorkflow2->triggerOn       = Workflow::TRIGGER_ON_NEW;
+            $savedWorkflow2->type            = 'some type';
+            $savedWorkflow2->serializedData  = serialize(array('something'));
+            $saved                          = $savedWorkflow2->save();
+            $this->assertTrue($saved);
+
+            //Test when there should not be an existing ByTimeWorkflowInQueue because there is no existing
+            //workflow attached to the model
+            $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($savedWorkflow2, $models[0]);
+            $this->assertFalse($byTimeWorkflowInQueue->id > 0);
+
+            //Test where we use an existing savedWorkflow but the model is not on it.
+            $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($savedWorkflows[0], $model2);
+            $this->assertFalse($byTimeWorkflowInQueue->id > 0);
         }
     }
 ?>

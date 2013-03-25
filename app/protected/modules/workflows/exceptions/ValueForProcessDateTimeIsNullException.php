@@ -25,25 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Class to help evaluate dateTime triggers against model values.
+     * Exception thrown when attempting to create or update a ByTimeWorkflowInQueue model and the related model's value
+     * is empty when it is a date or dateTime attribute.
      */
-    class DateTimeTriggerRules extends DateTriggerRules
+    class ValueForProcessDateTimeIsNullException extends CException
     {
-        /**
-         * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
-         * @param RedBeanModel $model
-         * @param $attribute
-         * @return bool
-         * @throws NotSupportedException
-         */
-        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
-        {
-            if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
-            {
-                throw new NotSupportedException();
-            }
-            return array_key_exists($attribute, $model->originalAttributeValues) &&
-                (DateTimeUtil::isDateTimeValueNull($model, $attribute) === false);
-        }
     }
 ?>

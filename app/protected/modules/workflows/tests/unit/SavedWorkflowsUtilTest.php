@@ -38,6 +38,94 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testResolveProcessDateTimeByWorkflowAndModel()
+        {
+            //Test Date
+            $model    = new WorkflowModelTestItem();
+            $model->date = '2007-02-02';
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 86400);
+            $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+            $this->assertEquals('2007-02-03 00:00:00', $processDateTime);
+
+            //Test Date with negative duration
+            $model    = new WorkflowModelTestItem();
+            $model->date = '2007-02-02';
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, -86400);
+            $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+            $this->assertEquals('2007-02-01 00:00:00', $processDateTime);
+
+            //Test DateTime
+            $model           = new WorkflowModelTestItem();
+            $model->dateTime = '2007-05-02 04:00:02';
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 86400);
+            $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+            $this->assertEquals('2007-05-03 04:00:02', $processDateTime);
+
+            //Test DateTime with negative duration
+            $model           = new WorkflowModelTestItem();
+            $model->dateTime = '2007-05-02 04:00:02';
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, -86400);
+            $processDateTime = SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+            $this->assertEquals('2007-05-01 04:00:02', $processDateTime);
+        }
+
+        /**
+         * @depends testResolveProcessDateTimeByWorkflowAndModel
+         * @expectedException ValueForProcessDateTimeIsNullException
+         */
+        public function testResolveProcessDateTimeByWorkflowAndModelWithNullDate()
+        {
+            $model    = new WorkflowModelTestItem();
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 86400);
+            SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+        }
+
+        /**
+         * @depends testResolveProcessDateTimeByWorkflowAndModelWithNullDate
+         * @expectedException ValueForProcessDateTimeIsNullException
+         */
+        public function testResolveProcessDateTimeByWorkflowAndModelWithPseudoNullDate()
+        {
+            $model           = new WorkflowModelTestItem();
+            $model->dateTime = '0000-00-00';
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('date', 'Is Time For', null, 86400);
+            SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+        }
+
+        /**
+         * @depends testResolveProcessDateTimeByWorkflowAndModelWithPseudoNullDate
+         * @expectedException ValueForProcessDateTimeIsNullException
+         */
+        public function testResolveProcessDateTimeByWorkflowAndModelWithNullDateTime()
+        {
+            $model    = new WorkflowModelTestItem();
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 86400);
+            SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+        }
+
+        /**
+         * @depends testResolveProcessDateTimeByWorkflowAndModelWithNullDateTime
+         * @expectedException ValueForProcessDateTimeIsNullException
+         */
+        public function testResolveProcessDateTimeByWorkflowAndModelWithPseudoNullDateTime()
+        {
+            $model    = new WorkflowModelTestItem();
+            $model->dateTime = '0000-00-00 00:00:00';
+            $workflow = WorkflowTriggersUtilBaseTest::
+                        makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 86400);
+            SavedWorkflowsUtil::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
+        }
+
+        /**
+         * @depends testResolveProcessDateTimeByWorkflowAndModelWithPseudoNullDateTime
+         */
         public function testResolveOrder()
         {
             $this->assertCount(0, SavedWorkflow::getAll());
@@ -53,7 +141,6 @@
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
             $savedWorkflowId1 = $savedWorkflow->id;
-
 
             $savedWorkflow = new SavedWorkflow();
             $savedWorkflow->name            = 'the name 2';
@@ -122,12 +209,18 @@
             $this->assertTrue($saved);
         }
 
+        /**
+         * @depends testResolveOrder
+         */
         public function testResolveBeforeSaveByModel()
         {
             $this->fail();
             //resolveBeforeSaveByRedBeanModel($model)
         }
 
+        /**
+         * @depends testResolveBeforeSaveByModel
+         */
         public function testResolveAfterSaveByModel()
         {
             $this->fail();

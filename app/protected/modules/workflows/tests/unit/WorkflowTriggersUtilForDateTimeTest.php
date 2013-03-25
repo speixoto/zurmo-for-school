@@ -43,6 +43,14 @@
             $model->dateTime   = '2007-07-01 00:02:00';
             //At this point the model has changed so it should fire
             $this->assertTrue(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            //Even though it changed, it changed to null, so it should not fire
+            $model->date   = null;
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
+            $model         = self::saveAndReloadModel($model);
+            $model->dateTime   = '2007-07-03 00:02:00';
+            $model->dateTime   = '0000-00-00 00:00:00';
+            $this->assertFalse(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model));
         }
 
         /**

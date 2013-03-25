@@ -117,7 +117,8 @@
             {
                 throw new NotSupportedException();
             }
-            return array_key_exists($attribute, $model->originalAttributeValues);
+            return array_key_exists($attribute, $model->originalAttributeValues) &&
+                   (DateTimeUtil::isDateValueNull($model, $attribute) === false);
         }
 
         protected function sanitize($value)
