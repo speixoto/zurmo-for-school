@@ -428,5 +428,45 @@
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
         }
+
+        public function testSuperUserChangeOtherUserEmailSignature()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $aUser = User::getByUsername('auser');
+            $this->assertEquals(0, $aUser->emailSignatures->count());
+            $this->assertEquals($aUser, $aUser->getEmailSignature()->user);
+
+            //Change email settings
+            $this->setPostArray(array('EmailSmtpConfigurationForm' => array(
+                                    'host'                              => 'abc',
+                                    'port'                              => '565',
+                                    'username'                          => 'myuser',
+                                    'password'                          => 'apassword',
+                                    'security'                          => 'ssl',
+                                    'userIdOfUserToSendNotificationsAs' => $super->id)));
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
+            $this->assertEquals('Email configuration saved successfully.',
+                                Yii::app()->user->getFlash('notification'));
+
+            //Change aUser email signature
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/emailConfiguration');
+            $this->assertNotContains('abc email signature', $content);
+            $this->setPostArray(array('UserEmailConfigurationForm' => array(
+                                    'fromName'                          => 'abc',
+                                    'fromAddress'                       => 'abc@zurmo.org',
+                                    'useCustomOutboundSettings'         => 0,
+                                    'emailSignatureHtmlContent'         => 'abc email signature')));
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/emailConfiguration');
+            $this->assertEquals('User email configuration saved successfully.',
+                                Yii::app()->user->getFlash('notification'));
+            $aUser = User::getByUsername('auser');
+            $this->assertEquals(1, $aUser->emailSignatures->count());
+            $this->assertEquals('abc email signature', $aUser->emailSignatures[0]->htmlContent);
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/emailConfiguration');
+            $this->assertContains('abc email signature', $content);
+        }
     }
 ?>
