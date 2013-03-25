@@ -30,7 +30,8 @@
         {
             return array(
                 'name'  => $this->attribute,
-                'value' => 'MeetingsUtil::renderDaySumaryContent($data, ' . $this->view->getLinkString(Zurmo::t('MeetingsModule', 'Edit')) .')',
+                'value' => 'MeetingsUtil::renderDaySummaryContent($data, ' .
+                            $this->view->getLinkString(Zurmo::t('MeetingsModule', 'Edit'), $this->attribute) . ')',
                 'type'  => 'raw',
             );
         }

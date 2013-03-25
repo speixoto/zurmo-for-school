@@ -37,6 +37,7 @@
                         'elements' => array(
                             array('type'           => 'CancelLink', 'renderType' => 'Edit'),
                             array('type'           => 'SaveButton', 'renderType' => 'Edit'),
+                            array('type'           => 'GroupDeleteLink')
                         ),
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,

@@ -65,11 +65,8 @@
             $account = Account::getById($id);
             $this->assertEquals('Test Account', $account->name);
             $this->assertEquals('1234567890',   $account->officePhone);
-            $this->assertSame($user, $account->owner);
-            $id = $account->id;
-            $account->forget();
-            $account = Account::getById($id);
-            $this->assertSame($user, $account->owner);
+
+
         }
 
         /**
@@ -82,6 +79,7 @@
             $accounts = Account::getByName('Test Account');
             $this->assertEquals(1, count($accounts));
             $account = $accounts[0];
+
             $email = new Email();
             $email->optOut = 1;
             $email->emailAddress = 'a@a.com';
@@ -607,6 +605,7 @@
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new Account());
             $adapter->setAttributeMetadataFromForm($attributeForm);
+
             $compareData = array(
                 '747',
                 'A380',
@@ -620,6 +619,27 @@
             //Now retrieve account again and make sure you can access the values in the dropdown.
             $account     = Account::getById($accountId);
             $this->assertEquals($compareData, unserialize($account->testAirPlaneCstm->data->serializedData));
+        }
+
+        public function testWebsiteCanBeSavedWithoutUrlScheme()
+        {
+            $user                 = User::getByUsername('steven');
+            $account              = new Account();
+            $account->owner       = $user;
+            $account->name        = 'AccountForURLSchemeTest';
+            $account->website     = 'www.zurmo.com';
+            $this->assertTrue($account->save());
+            $id = $account->id;
+            unset($account);
+            $account = Account::getById($id);
+            $this->assertEquals('AccountForURLSchemeTest', $account->name);
+            $this->assertEquals('http://www.zurmo.com',    $account->website);
+
+            $account->setAttributes(array('website' => 'https://www.zurmo.com'));
+            $this->assertTrue($account->save());
+            $account->forget();
+            $account = Account::getById($id);
+            $this->assertEquals('https://www.zurmo.com',  $account->website);
         }
     }
 ?>

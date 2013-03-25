@@ -47,7 +47,7 @@
             $this->assertEquals('name', $columnName);
             $aaa            = new AAA();
             $columnName     = AAA::getColumnNameByAttribute('noBean');
-            $this->assertEquals('nobean_redbeanmodel_id', $columnName);
+            $this->assertEquals('redbeanmodel_id', $columnName);
         }
     }
 ?>

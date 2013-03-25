@@ -65,16 +65,6 @@
                         'right' => self::RIGHT_CREATE_MISSIONS,
                     ),
                 ),
-                'userHeaderMenuItems' => array(
-                        array(
-                            'label' => "eval:Zurmo::t('MissionsModule', 'My Missions')",
-                            'url'   => array('/missions/default/list' ,
-                                                'type' => MissionsListConfigurationForm::
-                                                                LIST_TYPE_MINE_TAKEN_BUT_NOT_ACCEPTED),
-                            'order' => 2,
-                            'right' => self::RIGHT_ACCESS_MISSIONS,
-                        ),
-                ),
             );
             return $metadata;
         }

@@ -38,6 +38,7 @@
          * Override  when there are real model attributes that the
          * derived attribute correspond to.
          * @see AttributeImportRules::getRealModelAttributeNames()
+         * @return array
          */
         public function getRealModelAttributeNames()
         {

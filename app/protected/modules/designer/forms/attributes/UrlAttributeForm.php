@@ -43,7 +43,7 @@
 
         public function getModelAttributePartialRule()
         {
-            return array('url');
+            return array('url', 'defaultScheme' => 'http');
         }
     }
 ?>

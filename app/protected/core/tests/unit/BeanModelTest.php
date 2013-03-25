@@ -36,5 +36,15 @@
             A::setIssetAndEmptyWithNull();
             $this->assertFalse(A::isPrivateStaticIsset());
         }
+
+        /**
+         * Test when using an incompatible relation definition. @see TestInvalidSpecificLinkType model  for more info
+         * @expectedException NotSupportedException
+         */
+        public function testInvalidSpecificLinkType()
+        {
+            $model = new TestInvalidSpecificLinkType();
+            $model->save();
+        }
     }
 ?>

@@ -374,21 +374,13 @@
                 $uploadedFile = CUploadedFile::getInstanceByName($filesVariableName);
                 assert('$uploadedFile instanceof CUploadedFile');
 
-                $logoFilePath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
-                                                      ZurmoConfigurationForm::LOGO_FILE_NAME_PREFIX . $uploadedFile->getName();
-                $thumbFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
+                $logoFilePath   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $uploadedFile->getName();
+                $thumbFilePath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
                                                       ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
                 $uploadedFile->saveAs($logoFilePath);
-                $logo  = Yii::app()->phpThumbnail->create($logoFilePath);
-                $thumb = Yii::app()->phpThumbnail->create($logoFilePath);
-
-                $logo->resize(ZurmoConfigurationFormAdapter::resolveLogoWidth(),
-                              ZurmoConfigurationFormAdapter::resolveLogoHeight());
-                $thumb->resize(ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
-                               ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
-                $logo->save($logoFilePath);
-                $thumb->save($thumbFilePath);
-
+                ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $thumbFilePath,
+                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
+                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
                 Yii::app()->user->setState('logoFileName', $uploadedFile->getName());
                 $logoFileData = array('name'            => $uploadedFile->getName(),
                                       'type'            => $uploadedFile->getType(),
@@ -407,6 +399,7 @@
         public function actionDeleteLogo()
         {
             Yii::app()->user->setState('logoFileName', null);
+            Yii::app()->user->setState('deleteCustomLogo', true);
             Yii::app()->end(0, false);
         }
 

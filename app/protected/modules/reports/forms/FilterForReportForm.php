@@ -256,7 +256,7 @@
             }
             $type = $this->getAvailableOperatorsType();
             $data = array();
-            ModelAttributeToOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
+            ModelAttributeToReportOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
             return $data;
         }
 

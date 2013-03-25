@@ -86,16 +86,17 @@
     width:25%;
     float: left;
     ++.border-box;
-    //padding: 8px 10px;
     padding: 8px 0;
-    //background: #f0f0f0;
     min-height: 500px;
     max-height:600px;
     overflow: auto;
     margin-top:10px;
-    z-index: 10;
-    .animateAll(0.5s);
-    //.radius(3px);
+    //z-index: 10;
+	.big-spinner{
+		position: relative;
+		left: 50%;
+		margin:30px 0 0 -21px;
+	}
 }
 
 .dynamic-droppable-area{
@@ -105,7 +106,7 @@
     padding-left: 15px;
     margin-top:10px;
     position: relative;
-    z-index: 5;
+    //z-index: 5;
     &.error{
         
     }
@@ -246,6 +247,11 @@
     padding: 15px;
     position: absolute;
     z-index: 10000;
+}
+
+.glow{
+    background-color: #ffffe0;
+    border-color: #e6db55;
 }
 
 .Filters{
@@ -617,7 +623,7 @@
 .FilterIconOrSomethingElse,
 .ZeroFilters{
     .large-icon:after{
-        content:'\00A9';//"©";
+        content:'\00A9';//"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -633,7 +639,7 @@
 
 .ZeroDisplayAttributes{
     .large-icon:after{
-        content:'\00AB';//"Ç";
+        content:'\00AB';//"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -641,7 +647,7 @@
 
 .ZeroOrderBys{
     .large-icon:after{
-        content:'\2039';//"Ü";
+        content:'\2039';//"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }
@@ -649,7 +655,7 @@
 
 .ZeroDrillDownDisplayAttributes{
     .large-icon:after{
-        content:'\00BB'; //"È";
+        content:'\00BB'; //"ï¿½";
         .symbly(300px);
         line-height: 30%;   
     }

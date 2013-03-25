@@ -31,7 +31,19 @@
     {
         protected function getHomeLinkLabel()
         {
+            if (strpos(Yii::app()->request->urlReferrer, 'mashableInbox') > 0)
+            {
+                return Zurmo::t('ConversationsModule', 'Inbox');
+            }
             return Zurmo::t('MissionsModule', 'Missions');
+        }
+
+        protected function getHomeUrl() {
+            if (strpos(Yii::app()->request->urlReferrer,'mashableInbox') > 0)
+            {
+                return Yii::app()->request->urlReferrer;
+            }
+            return parent::getHomeUrl();
         }
     }
 ?>
