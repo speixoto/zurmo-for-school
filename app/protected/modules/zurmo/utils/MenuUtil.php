@@ -29,6 +29,8 @@
      */
     class MenuUtil
     {
+        const MENU_VIEW_ITEMS = 'MenuViewItems';
+
         public static function resolveByCacheAndGetVisibleAndOrderedTabMenuByCurrentUser()
         {
             try
@@ -64,7 +66,12 @@
          */
         protected static function getMenuViewItemsCacheIdentifier()
         {
-            return 'MenuViewItems' . Yii::app()->user->userModel->id . Yii::app()->language;
+            return self::getMenuViewItemsCacheIdentifierByUser(Yii::app()->user->userModel);
+        }
+
+        public static function getMenuViewItemsCacheIdentifierByUser($user)
+        {
+            return self::MENU_VIEW_ITEMS .$user->id . Yii::app()->language;
         }
 
         /**
@@ -76,6 +83,12 @@
             return 'AdminMenuViewItems' . Yii::app()->user->userModel->id . Yii::app()->language;
         }
 
+        public static function forgetCacheEntryForTabMenuByUser($user)
+        {
+            $identifier = self::getMenuViewItemsCacheIdentifierByUser($user);
+            GeneralCache::forgetEntry($identifier);
+        }
+
         /**
          * Get the tab menu items ordered and only
          * the visible tabs based on the effective user setting for tab
@@ -85,9 +98,14 @@
          */
         public static function getVisibleAndOrderedTabMenuByCurrentUser()
         {
+            return self::getVisibleAndOrderedTabMenuByUser(Yii::app()->user->userModel);
+        }
+
+        public static function getVisibleAndOrderedTabMenuByUser($user)
+        {
+            assert('$user instanceof User && $user != null');
             $moduleMenuItemsInOrder = array();
-            $tabMenuItems           = array();
-            $user                   = Yii::app()->user->userModel;
+            $tabMenuItems           = self::getCustomVisibleAndOrderedTabMenuItemsByUser($user);
             $orderedModules         = self::getModuleOrderingForTabMenuByUser($user);
             $modules                = Module::getModuleObjects();
             foreach ($modules as $moduleId => $module)
@@ -97,8 +115,8 @@
                 {
                     if (($order = array_search($module->getName(), $orderedModules)) !== false)
                     {
-                        $moduleMenuItemsInOrder[$order]             = self::resolveMenuItemsForLanguageLocalization(
-                                                                      $moduleMenuItems, get_class($module));
+                        $moduleMenuItemsInOrder[$order] = self::resolveMenuItemsForLanguageLocalization(
+                                                          $moduleMenuItems, get_class($module));
                         $moduleMenuItemsInOrder[$order][0]['moduleId'] = $moduleId;
                     }
                 }
@@ -108,7 +126,22 @@
             {
                 foreach ($menuItems as $itemKey => $item)
                 {
-                    $tabMenuItems[] = $item;
+                    $tabMenuItems[$item['moduleId']] = $item;
+                }
+            }
+            return $tabMenuItems;
+        }
+
+        public static function getCustomVisibleAndOrderedTabMenuItemsByUser($user)
+        {
+            $tabMenuItems = array();
+            if (!null == ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'VisibleAndOrderedTabMenuItems'))
+            {
+                $customOrderedTabMenuItems = unserialize(ZurmoConfigurationUtil::getByUserAndModuleName(
+                                             $user, 'ZurmoModule', 'VisibleAndOrderedTabMenuItems'));
+                foreach ($customOrderedTabMenuItems as $moduleId)
+                {
+                    $tabMenuItems[$moduleId] = "";
                 }
             }
             return $tabMenuItems;
@@ -310,7 +343,10 @@
         {
             assert('$user instanceof User && $user != null');
             assert('is_string($moduleClassName)');
-            $user = Yii::app()->user->userModel;
+            if (null == $user)
+            {
+                $user = Yii::app()->user->userModel;
+            }
             if (RightsUtil::canUserAccessModule($moduleClassName, $user))
             {
                 $metadata = $moduleClassName::getTabMenuItems($user);
