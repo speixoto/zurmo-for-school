@@ -228,6 +228,10 @@
          */
         private function resolveControllerId()
         {
+            if(isset($this->params['controllerId']))
+            {
+                return $this->params['controllerId'];
+            }
             return 'default';
         }
 

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplatesDefaultController extends ZurmoModuleController
+    class ProductTemplatesBundleController extends ZurmoModuleController
     {
         public function filters()
         {
@@ -49,15 +49,15 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $productTemplate                = new ProductTemplate(false);
-            $searchForm                     = new ProductTemplatesSearchForm($productTemplate);
-            $listAttributesSelector         = new ListAttributesSelector('ProductTemplatesListView', get_class($this->getModule()));
+            $productTemplateBundle          = new ProductTemplateBundle(false);
+            $searchForm                     = new ProductTemplateBundlesSearchForm($productTemplateBundle);
+            $listAttributesSelector         = new ListAttributesSelector('ProductTemplateBundlesListView', get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,
-                'ProductTemplatesSearchView'
+                'ProductTemplateBundlesSearchView'
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
@@ -65,12 +65,12 @@
                     $searchForm,
                     $dataProvider
                 );
-                $view = new ProductTemplatesPageView($mixedView);
+                $view = new ProductTemplateBundlesPageView($mixedView);
             }
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider);
-                $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+                $view = new ProductTemplateBundlesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();
@@ -78,14 +78,14 @@
 
         public function actionDetails($id)
         {
-            $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ProductTemplatesSearchView', $productTemplate);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplate, 'ProductTemplatesModule',
-                                                                          'ProductTemplateDetailsAndRelationsView',
+            $productTemplateBundle = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplateBundle', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplateBundle);
+            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ProductTemplateBundlesSearchView', $productTemplateBundle);
+            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplateBundle, 'ProductTemplatesModule',
+                                                                          'ProductTemplateBundleDetailsAndRelationsView',
                                                                           Yii::app()->request->getRequestUri(),
                                                                           $breadCrumbView);
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+            $view = new ProductTemplateBundlesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
         }
@@ -93,27 +93,21 @@
         public function actionCreate()
         {
             $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new ProductTemplate()), 'Edit');
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+                                            $this->attemptToSaveModelFromPost(new ProductTemplateBundle()), 'Edit');
+            $view = new ProductTemplateBundlesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $productTemplate = ProductTemplate::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productTemplate);
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+            $productTemplateBundle = ProductTemplateBundle::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productTemplateBundle);
+            $view = new ProductTemplateBundlesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this,
                                              $this->makeEditAndDetailsView(
-                                                 $this->attemptToSaveModelFromPost($productTemplate, $redirectUrl), 'Edit')));
+                                                 $this->attemptToSaveModelFromPost($productTemplateBundle, $redirectUrl), 'Edit')));
             echo $view->render();
-        }
-
-        protected static function getZurmoControllerUtil()
-        {
-            return new ProductTemplateZurmoControllerUtil('productTemplateItems', 'ProductTemplateItemForm',
-                                                            'ProductTemplateCategoriesForm');
         }
 
         /**
