@@ -76,7 +76,7 @@
                     $(this).closest('form').find('.search-view-1').hide();
                     $('.select-list-attributes-view').hide();
                     resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
-                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "')
+                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "');
             ";
         }
 
