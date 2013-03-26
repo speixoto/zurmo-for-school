@@ -64,10 +64,11 @@
             assert('is_string($modelClassName) || $modelClassName == null');
             $this->pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
-            $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues($modelClassName);
+            $getData = GetUtil::getData();
+            $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues($modelClassName, $getData);
             if(Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
             {
-                $this->renderListViewForAjax($mashableInboxForm, $modelClassName, $getData);
+                $this->renderListViewForAjax($mashableInboxForm, $modelClassName);
             }
             else
             {
@@ -75,7 +76,7 @@
             }
         }
 
-        private function getMashableInboxFormWithDefaultValues($modelClassName)
+        private function getMashableInboxFormWithDefaultValues($modelClassName, $getData)
         {
             $mashableInboxForm = MashableUtil::restoreSelectedOptionsAsStickyData($modelClassName);
             if ($mashableInboxForm->optionForModel == null)
@@ -86,7 +87,6 @@
             {
                 $mashableInboxForm->filteredBy = MashableInboxForm::FILTERED_BY_ALL;
             }
-            $getData = GetUtil::getData();
             if (isset($getData["MashableInboxForm"]))
             {
                 $mashableInboxForm->attributes = $getData["MashableInboxForm"];
