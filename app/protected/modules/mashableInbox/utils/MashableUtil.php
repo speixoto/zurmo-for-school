@@ -93,6 +93,12 @@
             return $unreadCount;
         }
 
+        public static function renderUnreadCountForDynamicLabelContent()
+        {
+            $unreadCount = self::getUnreadCountMashableInboxForCurrentUser();
+            return ZurmoHtml::wrapLabel($unreadCount, 'unread-inbox-count');
+        }
+
         public static function getSearchAttributeMetadataForMashableInboxByModelClassName($modelClassNames, $filteredBy, $searchTerm = '')
         {
             $modelClassNamesAndSearchAttributeData = array();
@@ -234,6 +240,34 @@
             $firstMetadata['structure'] = '(' . $firstMetadata['structure'] . ')' . $operator .
                                           '(' . preg_replace("/([0-9])/e", "$1 + " . $firstMetadataClausesCount, $secondMetadata['structure']) . ')';
             return $firstMetadata;
+        }
+
+        public static function saveSelectedOptionsAsStickyData(MashableInboxForm $mashableInboxForm, $modelClassName)
+        {
+            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            $key = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
+            StickyUtil::setDataByKeyAndData($key, $mashableInboxForm->getAttributes(
+                                                        array('optionForModel', 'filteredBy', 'searchTerm')));
+        }
+
+        public static function restoreSelectedOptionsAsStickyData($modelClassName)
+        {
+            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            $key  = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
+            $data = StickyUtil::getDataByKey($key);
+            $mashableInboxForm = new MashableInboxForm();
+            $mashableInboxForm->attributes = $data;
+            return $mashableInboxForm;
+        }
+
+        public static function resolveKeyByModuleAndModel($moduleClassName, $modelClassName)
+        {
+            assert('strlen($moduleClassName) > 0');
+            if ($modelClassName == null)
+            {
+                $modelClassName = 'default';
+            }
+            return $moduleClassName . '_' . $modelClassName;
         }
     }
 ?>

@@ -213,12 +213,15 @@
             {
                 if ($notification->notificationMessage->htmlContent != null)
                 {
-                    $content .= '<div>' . Yii::app()->format->raw($notification->notificationMessage->htmlContent). '</div>';
+                    $content .= ZurmoHtml::wrapLabel(Yii::app()->format->
+                                                        raw($notification->notificationMessage->htmlContent),
+                                                    "last-comment");
                 }
                 elseif ($notification->notificationMessage->textContent != null)
                 {
-                    $content .= '<div>' . Yii::app()->format->text($notification->notificationMessage->textContent) .
-                                '</div>';
+                    $content .= ZurmoHtml::wrapLabel(Yii::app()->format->
+                                                        text($notification->notificationMessage->textContent),
+                                                    "last-comment");                    
                 }
             }
             return $content;
