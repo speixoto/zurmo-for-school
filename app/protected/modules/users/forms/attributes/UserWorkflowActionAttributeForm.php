@@ -75,24 +75,70 @@
             return 'does this work?'; //todo: replace with logic if we can.
         }
 
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            {
+                $adapter->getModel()->{$attribute} = User::getById((int)$this->value);
+            }
+            elseif($this->type == self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL)
+            {
+                if($adapter->getTriggeredModel() instanceof OwnedSecurableItem)
+                {
+                    $adapter->getModel()->{$attribute} = $adapter->getTriggeredModel()->owner;
+                }
+            }
+            elseif($this->type == self::TYPE_DYNAMIC_CREATED_BY_USER)
+            {
+                $adapter->getModel()->{$attribute} = $adapter->getTriggeredModel()->createdByUser;
+            }
+            elseif($this->type == self::TYPE_DYNAMIC_MODIFIED_BY_USER)
+            {
+                $adapter->getModel()->{$attribute} = $adapter->getTriggeredModel()->modifiedByUser;
+            }
+            elseif($this->type == self::TYPE_DYNAMIC_TRIGGERED_BY_USER)
+            {
+                $adapter->getModel()->{$attribute} = $adapter->getTriggeredByUser();
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                      = array();
             $data[static::TYPE_STATIC] = Zurmo::t('WorkflowModule', 'As');
+            $modelClassName            = $this->modelClassName;
+            $modelLabel = $modelClassName::getModelLabelByTypeAndLanguage('SingularLowerCase');
             if($isCreatingNewModel)
             {
-                $modelClassName            = $this->modelClassName;
-                $model                     = new $modelClassName(false);//todo: performance3 once done fix to static
-                if($model instanceof OwnedSecurableItem)
+                if(is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                 {
-                    $data[self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] = Zurmo::t('WorkflowModule', 'As user who owned triggered record');
+                    $data[self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] =
+                        Zurmo::t('WorkflowModule', 'As user who owns triggered {modelLabel}',
+                                                   array('{modelLabel}' => $modelLabel));
                 }
             }
             else
             {
-                $data[self::TYPE_DYNAMIC_CREATED_BY_USER]   = Zurmo::t('WorkflowModule', 'As user who created record');
-                $data[self::TYPE_DYNAMIC_MODIFIED_BY_USER]  = Zurmo::t('WorkflowModule', 'As user who last modified record');
-                $data[self::TYPE_DYNAMIC_TRIGGERED_BY_USER] = Zurmo::t('WorkflowModule', 'As user who triggered action');
+                $data[self::TYPE_DYNAMIC_CREATED_BY_USER]   =
+                    Zurmo::t('WorkflowModule', 'As user who created triggered {modelLabel}',
+                                               array('{modelLabel}' => $modelLabel));
+                $data[self::TYPE_DYNAMIC_MODIFIED_BY_USER]  =
+                    Zurmo::t('WorkflowModule', 'As user who last modified triggered {modelLabel}',
+                                               array('{modelLabel}' => $modelLabel));
+                $data[self::TYPE_DYNAMIC_TRIGGERED_BY_USER] =
+                    Zurmo::t('WorkflowModule', 'As user who triggered action',
+                                               array('{modelLabel}' => $modelLabel));
             }
             return $data;
         }

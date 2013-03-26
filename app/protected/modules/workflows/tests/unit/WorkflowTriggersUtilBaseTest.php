@@ -24,14 +24,8 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class WorkflowTriggersUtilBaseTest extends ZurmoBaseTest
+    class WorkflowTriggersUtilBaseTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
         public static function makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, $operator,
                                                                             $value,
                                                                             $moduleClassName = 'WorkflowsTestModule',

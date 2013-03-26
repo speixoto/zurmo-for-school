@@ -72,6 +72,38 @@
             return false;
         }
 
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->type == static::TYPE_STATIC)
+            {
+                $adapter->getModel()->{$attribute} = $this->value;
+            }
+            elseif($this->type == self::TYPE_DYNAMIC_FROM_TRIGGERED_DATETIME)
+            {
+                $adapter->getModel()->{$attribute} = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + $this->value);
+            }
+            elseif($this->type == self::TYPE_DYNAMIC_FROM_EXISTING_DATETIME)
+            {
+                if(!DateTimeUtil::isDateTimeStringNull($adapter->getModel()->{$attribute}))
+                {
+                    $existingTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($adapter->getModel()->{$attribute});
+                    $newDateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime($existingTimeStamp + $this->value);
+                    $adapter->getModel()->{$attribute} = $newDateTime;
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                                                = array();

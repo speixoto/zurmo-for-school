@@ -180,20 +180,20 @@
 
         /**
          * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
-         * @param RedBeanModel $model
+         * @param WorkflowActionProcessingModelAdapter $adapter
          * @param $attribute
          * @throws NotSupportedException
          */
-        public function resolveValueAndSetToModel(RedBeanModel $model, $attribute)
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->actionAttribute->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
-                $model->{$attribute} = $this->value;
+                $adapter->getModel()->{$attribute} = $this->value;
             }
-            elseif($this->actionAttribute->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
+            elseif($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
             {
-                $model->{$attribute} = null;
+                $adapter->getModel()->{$attribute} = null;
             }
             else
             {

@@ -76,6 +76,26 @@
             return true;
         }
 
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->type == static::TYPE_STATIC)
+            {
+                $adapter->getModel()->{$attribute}->value    = $this->value;
+                $adapter->getModel()->{$attribute}->currency = Currency::getById((int)$this->currencyId);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                           = array();

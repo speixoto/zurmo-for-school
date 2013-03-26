@@ -24,7 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowActionAttributeFormTest extends WorkflowBaseTest
+    /**
+     * Base test class to use for workflow tests
+     */
+    class WorkflowBaseTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -32,42 +35,10 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-        public function setup()
+        public function setUp()
         {
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
-        public function test()
-        {
-            //todo: each subForm return value of getTypeValuesAndLabels to get complete coverage
-            //getTypeValuesAndLabels($isCreatingNewModel, $isRequired)
-            $this->fail();
-        }
-
-        public function testValidateDynamicDateIntegerValuePossibilities()
-        {
-            $form                 = new DateWorkflowActionAttributeForm('WorkflowModelTestItem', 'date');
-            $form->type           = DateWorkflowActionAttributeForm::TYPE_DYNAMIC_FROM_TRIGGERED_DATE;
-            $form->shouldSetValue = true;
-            $validated            = $form->validate();
-            $this->assertFalse($validated);
-            $compareErrors = array('alternateValue' => array('Value must be integer.'));
-            $this->assertEquals($compareErrors, $form->getErrors());
-
-            $form->value          = '';
-            $validated            = $form->validate();
-            $this->assertFalse($validated);
-            $compareErrors = array('alternateValue' => array('Value must be integer.'));
-            $this->assertEquals($compareErrors, $form->getErrors());
-
-            $form->value          = 0;
-            $validated            = $form->validate();
-            $this->assertTrue($validated);
-
-            $form->value          = '0';
-            $validated            = $form->validate();
-            $this->assertTrue($validated);
         }
     }
 ?>

@@ -42,6 +42,25 @@
             return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'integer')));
         }
 
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            {
+                $adapter->getModel()->{$attribute} = ContactState::getById((int)$this->value); //todo: what if it doesn't exist anymore?
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                           = array();

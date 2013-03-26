@@ -189,13 +189,14 @@
                                                                                      RedBeanModel $model)
         {
             $date = static::resolveModelValueByTimeTrigger($trigger, $model);
-            if($date == null || $date == '0000-00-00')
+            if(DateTimeUtil::isDateStringNull($date))
             {
                 throw new ValueForProcessDateTimeIsNullException();
             }
             else
             {
-                return DateTimeUtil::convertDbFormatDateTimeToTimestamp($date . ' 00:00:00') + $trigger->durationSeconds;
+                return DateTimeUtil::convertDbFormatDateTimeToTimestamp(DateTimeUtil::resolveDateAsDateTime($date)) +
+                        $trigger->durationSeconds;
             }
         }
 
@@ -203,7 +204,7 @@
                                                                                          RedBeanModel $model)
         {
             $dateTime = static::resolveModelValueByTimeTrigger($trigger, $model);
-            if($dateTime == null || $dateTime == '0000-00-00 00:00:00')
+            if(DateTimeUtil::isDateTimeStringNull($dateTime))
             {
                 throw new ValueForProcessDateTimeIsNullException();
             }

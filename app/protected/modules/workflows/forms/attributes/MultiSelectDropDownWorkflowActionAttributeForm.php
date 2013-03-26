@@ -48,5 +48,27 @@
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
             return $data;
         }
+
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->type == static::TYPE_STATIC)
+            {
+                $adapter->getModel()->{$attribute}->values->removeAll();
+                $value        = new CustomFieldValue();
+                $value->value = $this->value;
+                $adapter->getModel()->{$attribute}->values->add($value);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
     }
 ?>

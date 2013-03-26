@@ -65,6 +65,42 @@
             return false;
         }
 
+        /**
+         * Utilized to create or update model attribute values after a workflow's triggers are fired as true.
+         * If the current value is null and the type is TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS then something is wrong
+         * so this should not be processed. the step forward/backwards should only be processed on existing models
+         * @param WorkflowActionProcessingModelAdapter $adapter
+         * @param $attribute
+         * @throws NotSupportedException
+         */
+        public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
+        {
+            assert('is_string($attribute)');
+            if($this->type == static::TYPE_STATIC)
+            {
+                $adapter->getModel()->{$attribute}->value = $this->value;
+            }
+            elseif($this->type == static::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS)
+            {
+                if($adapter->getModel()->{$attribute}->value != null)
+                {
+                    $data = unserialize($adapter->getModel()->{$attribute}->data->serializedData);
+                    if(false !== $key = array_search($adapter->getModel()->{$attribute}->value, $data))
+                    {
+                        $newKey = $key + $this->value;
+                        if(isset($data[$newKey]))
+                        {
+                            $adapter->getModel()->{$attribute}->value = $data[$newKey];
+                        }
+                    }
+                }
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                           = array();
