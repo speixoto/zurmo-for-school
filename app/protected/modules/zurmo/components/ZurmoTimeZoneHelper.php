@@ -73,7 +73,7 @@
             {
                 return Yii::app()->user->userModel->timeZone;
             }
-            return $this->_timeZone;
+            return $this->getGlobalValue();
         }
 
         /**
