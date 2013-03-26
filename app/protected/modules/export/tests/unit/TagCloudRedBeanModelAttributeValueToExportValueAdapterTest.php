@@ -84,7 +84,7 @@
 
             $adapter = new TagCloudRedBeanModelAttributeValueToExportValueAdapter($model, 'tagCloud');
             $adapter->resolveData($data);
-            $compareData = array('Tag 2, Tag 3');
+            $compareData = array('Tag 2,Tag 3');
             $this->assertEquals($compareData, $data);
             $data = array();
             $adapter->resolveHeaderData($data);
