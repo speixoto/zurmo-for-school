@@ -247,5 +247,26 @@
             }
         }
 
+        public function testSaveStickyOption()
+        {
+            $super                     = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+            $this->assertContains('value="all" checked="checked"', $content);
+            $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
+            $this->setGetArray(
+                        array(
+                            'ajax'              => 'list-view',
+                            'MashableInboxForm' => array(
+                                    'filteredBy'     => 'unread',
+                                )
+                        )
+                    );
+            $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+            $this->assertContains('value="unread" checked="checked"', $content);
+            $this->resetGetArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
+            $this->assertContains('value="unread" checked="checked"', $content);
+        }
+
     }
 ?>
