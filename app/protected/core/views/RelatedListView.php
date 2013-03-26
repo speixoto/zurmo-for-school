@@ -226,12 +226,8 @@
         /**
          * Controller Id for the link to models from rows in the grid view.
          */
-        private function resolveControllerId()
+        protected function resolveControllerId()
         {
-            if(isset($this->params['controllerId']))
-            {
-                return $this->params['controllerId'];
-            }
             return 'default';
         }
 

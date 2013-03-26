@@ -39,6 +39,7 @@
                                      'relationModelId'        => 'eval:$this->params["relationModel"]->id',
                                      'relationModuleId'       => 'eval:$this->params["relationModuleId"]',
                                      'uniqueLayoutId'         => 'eval:$this->uniqueLayoutId',
+                                     'relationModelClassName' => 'ProductTemplateBundle',
                                  //TODO: fix this 'eval' of $this->uniqueLayoutId above so that it can properly work being set/get from DB then getting evaluated
                                  //currently it will not work correctly since in the db it would store a static value instead of it still being dynamic
                                      'ajaxOptions' => 'eval:static::resolveAjaxOptionsForSelectList()',
@@ -50,7 +51,7 @@
 
          protected function getRelationAttributeName()
          {
-             return 'productTemplate'; //todo: remove this method? but this is abstract and must be defined? - jason. need to figure out
+             return 'productTemplateBundle'; //todo: remove this method? but this is abstract and must be defined? - jason. need to figure out
          }
 
          public static function getDisplayDescription()
@@ -64,6 +65,11 @@
              $title = Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel Search',
                              LabelUtil::getTranslationParamsForAllModules());
              return ModalView::getAjaxOptionsForModalLink($title);
+         }
+
+         protected function resolveControllerId()
+         {
+             return 'bundle';
          }
      }
 ?>
