@@ -80,6 +80,8 @@
         {
             $user = Yii::app()->user->userModel;
             static::setConfigurationFromForm($form, $user);
+            Yii::app()->user->setState('listPageSize', (int)$form->listPageSize);
+            Yii::app()->user->setState('subListPageSize', (int)$form->subListPageSize);
         }
 
         public static function resolveAndGetValue(User $user, $key, $returnBoolean = true)
