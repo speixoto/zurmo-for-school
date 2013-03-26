@@ -63,6 +63,7 @@
     $common_config['components']['request']['enableCsrfValidation']    = false; //todo: get this working, since for production this is true.
     $common_config['components']['request']['enableCookieValidation']  = false;
     $common_config['components']['emailHelper']['class']               = 'application.tests.EmailHelperForTesting';
+    $common_config['components']['timeZoneHelper']['timeZone']         = 'UTC';
     unset($common_config['components']['apiRequest']);
     unset($common_config['components']['apiHelper']);
     //Set the GeoCodeApiKey to null which will work for localhost requests. If this is not running on
