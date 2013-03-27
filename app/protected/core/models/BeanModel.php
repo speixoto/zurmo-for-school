@@ -271,8 +271,8 @@
         }
 
         /**
-         * Returns the opposing relation name of a derived relation
-         * defined by the extending class's getMetadata() method.
+         * @param string $relationName
+         * @return boolean true if the relation is a derived relation
          */
         public static function isADerivedRelationViaCastedUpModel($relationName)
         {

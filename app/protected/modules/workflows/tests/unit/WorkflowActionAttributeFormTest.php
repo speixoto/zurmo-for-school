@@ -26,18 +26,6 @@
 
     class WorkflowActionAttributeFormTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function setup()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
         public function test()
         {
             //todo: each subForm return value of getTypeValuesAndLabels to get complete coverage

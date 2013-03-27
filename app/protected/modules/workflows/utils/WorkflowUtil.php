@@ -200,5 +200,23 @@
             $data[15552000] = Zurmo::t('WorkflowsModule', '{n} day after workflow runs|{n} days after workflow runs', array(180));
             $data[31104000] = Zurmo::t('WorkflowsModule', '{n} year after workflow runs|{n} years after workflow runs', array(1));
         }
+
+        public static function getModelsFilteredByInferredModel($modelClassName, $inferredRelationName, $inferredModelItemId)
+        {
+            assert('is_string($type)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => $inferredRelationName,
+                    'relatedAttributeName' => 'id',
+                    'operatorType'         => 'equals',
+                    'value'                => $inferredModelItemId,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
+            $where = RedBeanModelDataProvider::makeWhere($modelClassName, $searchAttributeData, $joinTablesAdapter);
+            return $modelClassName::getSubset($joinTablesAdapter, null, null, $where, null);
+        }
     }
 ?>

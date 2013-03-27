@@ -36,6 +36,7 @@
                 ),
                 'relations' => array(
                     'workflowItems' => array(RedBeanModel::MANY_MANY, 'Item'),
+                    'hasOne'        => array(RedBeanModel::HAS_ONE,   'WorkflowModelTestItem9'),
                 ),
                 'rules' => array(
                     array('name',    'type',   'type' => 'string'),

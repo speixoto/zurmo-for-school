@@ -95,16 +95,30 @@
 
         protected function processUpdateRelatedAction()
         {
-            if($this->action->relationFilter != self::RELATION_FILTER_ALL)
+            if($this->action->relationFilter != ActionForWorkflowForm::RELATION_FILTER_ALL)
             {
                 throw new NotSupportedException();
             }
-            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->model), $this->action->relation);
-            if($this->model->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->triggeredModel), $this->action->relation);
+
+            if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->action->relation) &&
+               $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
-                foreach($this->model->{$this->action->relation} as $relatedModel)
+                foreach($this->resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
                 {
-                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->model);
+                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->triggeredModel);
+                    $saved = $relatedModel->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                }
+            }
+            elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
+            {
+                foreach($this->triggeredModel->{$this->action->relation} as $relatedModel)
+                {
+                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->triggeredModel);
                     $saved = $relatedModel->save();
                     if(!$saved)
                     {
@@ -114,8 +128,8 @@
             }
             elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
             {
-                $relatedModel = $this->model->{$this->action->relation};
-                self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->model);
+                $relatedModel = $this->triggeredModel->{$this->action->relation};
+                self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->triggeredModel);
                 $saved = $relatedModel->save();
                 if(!$saved)
                 {
@@ -130,32 +144,57 @@
 
         protected function processCreateAction()
         {
-            $this->resolveCreateModel($this->model, $this->action->relation);
-            //todo: when calling save, we need to not trigger workflows on this model since we already are running them..
-            $saved = $this->model->save();
-            if(!$saved)
+            if($this->resolveCreateModel($this->triggeredModel, $this->action->relation))
             {
-                throw new FailedToSaveModelException();
+                //todo: when calling save, we need to not trigger workflows on this model since we already are running them..
+                //todo: and test this
+                $saved = $this->triggeredModel->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
             }
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param $relation
+         * @return bool true if the $model passed in needs to be saved again. Otherwise false if not.
+         * @throws NotSupportedException
+         * @throws FailedToSaveModelException
+         */
         protected function resolveCreateModel(RedBeanModel $model, $relation)
 
         {
             assert('is_string($relation)');
             $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($model), $relation);
-            if($model->$relation instanceof RedBeanMutableRelatedModels)
+            if($model->isADerivedRelationViaCastedUpModel($relation) &&
+                $model->getDerivedRelationType($relation) == RedBeanModel::MANY_MANY)
+            {
+                $relationModelClassName = $model->getDerivedRelationModelClassName($relation);
+                $inferredRelationName   = $model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation);
+                $newModel               = new $relationModelClassName();
+                self::processActionAttributesForAction($this->action, $newModel, $this->triggeredUser, $this->triggeredModel);
+                $newModel->{$inferredRelationName}->add($model);
+                $saved = $newModel->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                return false;
+            }
+            elseif($model->$relation instanceof RedBeanMutableRelatedModels)
             {
                 $relationModelClassName = $model->getRelationModelClassName($relation);
-                $newModel               = $relationModelClassName();
+                $newModel               = new $relationModelClassName();
                 self::processActionAttributesForAction($this->action, $newModel, $this->triggeredUser, $this->triggeredModel);
                 $saved = $newModel->save();
                 if(!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
-                $model->{$this->action->relation}->add($newModel);
-
+                $model->{$relation}->add($newModel);
+                return true;
             }
             elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
             {
@@ -169,6 +208,7 @@
                 {
                     throw new FailedToSaveModelException();
                 }
+                return true;
             }
             else
             {
@@ -178,16 +218,45 @@
 
         protected function processCreateRelatedAction()
         {
-            if($this->action->relationFilter != self::RELATION_FILTER_ALL)
+            if($this->action->relationFilter != ActionForWorkflowForm::RELATION_FILTER_ALL)
             {
                 throw new NotSupportedException();
             }
-            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->model), $this->action->relation);
-            if($this->model->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->triggeredModel), $this->action->relation);
+            if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->action->relation) &&
+                $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
-                foreach($this->model->{$this->action->relation} as $relatedModel)
+                foreach($this->resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
                 {
-                    $this->resolveCreateModel($relatedModel, $this->action->relatedModelAction);
+                    if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))
+                    {
+                        $saved = $relatedModel->save();
+                        if(!$saved)
+                        {
+                            throw new FailedToSaveModelException();
+                        }
+                    }
+                }
+            }
+            elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
+            {
+                foreach($this->triggeredModel->{$this->action->relation} as $relatedModel)
+                {
+                    if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))
+                    {
+                        $saved = $relatedModel->save();
+                        if(!$saved)
+                        {
+                            throw new FailedToSaveModelException();
+                        }
+                    }
+                }
+            }
+            elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
+            {
+                $relatedModel = $this->triggeredModel->{$this->action->relation};
+                if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))
+                {
                     $saved = $relatedModel->save();
                     if(!$saved)
                     {
@@ -195,20 +264,19 @@
                     }
                 }
             }
-            elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
-            {
-                $relatedModel = $this->model->{$this->action->relation};
-                $this->resolveCreateModel($relatedModel, $this->action->relatedModelAction);
-                $saved = $relatedModel->save();
-                if(!$saved)
-                {
-                    throw new FailedToSaveModelException();
-                }
-            }
             else
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function resolveDerivedModels(RedBeanModel $model, $relation)
+        {
+            assert('is_string($relation)');
+            $modelClassName       = $model->getDerivedRelationModelClassName($relation);
+            $inferredRelationName = $model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation);
+            return                  WorkflowUtil::getModelsFilteredByInferredModel($modelClassName, $inferredRelationName,
+                                    $model->getClassId('Item'));
         }
     }
 ?>
