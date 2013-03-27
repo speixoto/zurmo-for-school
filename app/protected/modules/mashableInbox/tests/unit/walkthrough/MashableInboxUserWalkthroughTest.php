@@ -262,7 +262,6 @@
                         )
                     );
             $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
-            $this->assertContains('value="unread" checked="checked"', $content);
             $this->resetGetArray();
             $content = $this->runControllerWithNoExceptionsAndGetContent('mashableInbox/default/list');
             $this->assertContains('value="unread" checked="checked"', $content);
