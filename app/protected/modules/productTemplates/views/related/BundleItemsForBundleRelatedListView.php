@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-     class ProductTemplateBundleItemsForProductTemplateBundleRelatedListView extends ProductTemplateBundleItemsRelatedListView
+     class BundleItemsForBundleRelatedListView extends ProductTemplateBundleItemsRelatedListView
      {
         /**
           * Override the toolbar metadata.
@@ -43,7 +43,7 @@
                                  //TODO: fix this 'eval' of $this->uniqueLayoutId above so that it can properly work being set/get from DB then getting evaluated
                                  //currently it will not work correctly since in the db it would store a static value instead of it still being dynamic
                                      'ajaxOptions' => 'eval:static::resolveAjaxOptionsForSelectList()',
-                                     'htmlOptions' => array( 'id'   => 'SelectProductTemplateBundleItemsForProductTemplateFromRelatedListLink',
+                                     'htmlOptions' => array( 'id'   => 'SelectBundleItemsForBundleFromRelatedListLink',
                                                              'live' => false) //This is there are no double bindings
              );
              return $metadata;
@@ -51,7 +51,7 @@
 
          protected function getRelationAttributeName()
          {
-             return 'productTemplateBundle'; //todo: remove this method? but this is abstract and must be defined? - jason. need to figure out
+             return 'productTemplateBundleItems'; //todo: remove this method? but this is abstract and must be defined? - jason. need to figure out
          }
 
          public static function getDisplayDescription()

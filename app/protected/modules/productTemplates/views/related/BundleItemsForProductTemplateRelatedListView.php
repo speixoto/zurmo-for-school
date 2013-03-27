@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-     class ProductTemplateBundleItemsForProductTemplateRelatedListView extends ProductTemplateBundleItemsRelatedListView
+     class BundleItemsForProductTemplateRelatedListView extends ProductTemplateBundleItemsRelatedListView
      {
         /**
           * Override the toolbar metadata.

@@ -71,7 +71,7 @@
              );
              return $metadata;
          }
-
+           //TODO This is put for a reason as the model which is finally checked for attributes is ProductTemplate and not ProductTemplateBundle(Need to clarify) The method is there in RedBeanModelAttributeToDataProviderAdapter
          public function getModelClassName()
          {
              return 'ProductTemplateBundle';
