@@ -33,5 +33,20 @@
         {
             return Zurmo::t('WorkflowModule', 'User who triggered process');
         }
+
+        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        {
+            $recipients = array();
+            if ($triggeredUser->primaryEmail->emailAddress !== null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $triggeredUser->primaryEmail->emailAddress;
+                $recipient->toName          = strval($triggeredUser);
+                $recipient->type            = $this->recipientType;
+                $recipient->personOrAccount = $triggeredUser;
+                $recipients[]               = $recipient;
+            }
+            return $recipients;
+        }
     }
 ?>

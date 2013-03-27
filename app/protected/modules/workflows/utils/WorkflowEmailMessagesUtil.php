@@ -29,9 +29,49 @@
      */
     class WorkflowEmailMessagesUtil
     {
-        public static function processAfterSave($workflow, $model)
+        public static function processAfterSave(Workflow $workflow, RedBeanModel $model, User $triggeredUser)
         {
-            
+            foreach($workflow->getEmailAlerts() as $emailMessage)
+            {
+                try
+                {
+                    self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredUser);
+                }
+                catch(Exception $e)
+                {
+                    //todo: what to do?
+                }
+            }
+        }
+
+        protected static function processEmailMessageAfterSave(Workflow $workflow,
+                                                               EmailAlertForWorkflowForm $emailMessage,
+                                                               RedBeanModel $model,
+                                                               User $triggeredUser)
+        {
+            if($emailMessage->sendAfterDurationSeconds == 0)
+            {
+                $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredUser);
+                $helper->process();
+            }
+            else
+            {
+                $emailMessageData                        = SavedWorkflowToWorkflowAdapter::
+                                                           makeArrayFromEmailAlertForWorkflowFormAttributesData(array($emailMessage));
+                $workflowMessageInQueue                  = new WorkflowMessageInQueue();
+                $workflowMessageInQueue->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() +
+                                                           $emailMessage->sendAfterDurationSeconds);
+                $workflowMessageInQueue->savedWorkflow   = SavedWorkflow::getById((int)$workflow->getId());
+                $workflowMessageInQueue->modelClassName  = get_class($model);
+                $workflowMessageInQueue->modelItem       = $model;
+                $workflowMessageInQueue->serializedData  = serialize($emailMessageData);
+                $workflowMessageInQueue->triggeredUser   = $triggeredUser;
+                $saved                                   = $workflowMessageInQueue->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+            }
         }
     }
 ?>

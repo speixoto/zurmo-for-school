@@ -54,6 +54,43 @@
         }
 
         /**
+         * Public for testing only
+         * @param array $existingRecipients
+         * @param array $newRecipients
+         * @return array
+         * @throws NotSupportedException if the $existingRecipients contains non-unique people
+         */
+        public static function resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients)
+        {
+            $existingItemIds = array();
+            $resolvedRecipients = array();
+            foreach($existingRecipients as $recipient)
+            {
+                if($recipient->personOrAccount->id > 0)
+                {
+                    if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                    {
+                        $existingItemIds[] = $recipient->personOrAccount->getClassId('Item');
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
+                }
+                $resolvedRecipients[] = $recipient;
+            }
+            foreach($newRecipients as $recipient)
+            {
+                if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                {
+                    $existingItemIds[] = $recipient->personOrAccount->getClassId('Item');
+                }
+                $resolvedRecipients[] = $recipient;
+            }
+            return $resolvedRecipients;
+        }
+
+        /**
          * Override to add relation attribute
          */
         public function rules()
@@ -90,6 +127,75 @@
                 $valueAndLabels[$relation] = $data['label'];
             }
             return $valueAndLabels;
+        }
+
+        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        {
+            $modelClassName = $this->modelClassName;
+            $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
+            $recipients     = array();
+            if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->relation) &&
+                $this->triggeredModel->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
+            {
+                foreach(WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
+                {
+                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredUser));
+                }
+            }
+            elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
+                ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
+            {
+                foreach(WorkflowUtil::
+                        getInferredModelsByAtrributeAndModel($this->relation, $model) as $resolvedModel)
+                {
+                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredUser));
+                }
+            }
+            elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
+            {
+                if(!$this->relationFilter == self::RELATION_FILTER_ALL)
+                {
+                    throw new NotSupportedException();
+                }
+                foreach($this->triggeredModel->{$this->action->relation} as $resolvedModel)
+                {
+                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredUser));
+                }
+            }
+            elseif($adapter->isRelationTypeAHasOneVariant())
+            {
+                $recipients =parent::makeRecipients($model->{$this->relation}, $triggeredUser);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            return $recipients;
+        }
+
+        protected function resolveModelClassName()
+        {
+            $modelClassName = $this->modelClassName;
+            $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
+            if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->relation) &&
+                $this->triggeredModel->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
+            {
+                return $modelClassName::getDerivedRelationModelClassName($this->relation);
+            }
+            elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
+                   ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
+            {
+                return ModelRelationsAndAttributesToWorkflowAdapter::getInferredRelationModelClassName($this->relation);
+            }
+            elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels ||
+                   $adapter->isRelationTypeAHasOneVariant())
+            {
+                return $modelClassName::getRelationModelClassName($this->relation);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

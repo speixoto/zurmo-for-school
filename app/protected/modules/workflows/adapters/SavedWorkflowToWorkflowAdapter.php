@@ -92,6 +92,28 @@
             $savedWorkflow->serializedData   = serialize($data);
         }
 
+        public static function makeArrayFromEmailAlertForWorkflowFormAttributesData(Array $componentFormsData)
+        {
+            $data = array();
+            foreach($componentFormsData as $key => $emailAlertForWorkflowForm)
+            {
+                foreach($emailAlertForWorkflowForm->getAttributes() as $attribute => $value)
+                {
+                    $data[$key][$attribute] = $value;
+                }
+                foreach($emailAlertForWorkflowForm->getEmailAlertRecipients() as
+                        $emailAlertRecipientKey => $workflowEmailAlertRecipientForm)
+                {
+                    foreach($workflowEmailAlertRecipientForm->getAttributes() as $attribute => $value)
+                    {
+                        $data[$key][EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS]
+                             [$emailAlertRecipientKey][$attribute] = $value;
+                    }
+                }
+            }
+            return $data;
+        }
+
         protected static function makeArrayFromTimeTriggerForWorkflowFormAttributesData(
                                   TimeTriggerForWorkflowForm $timeTriggerForWorkflowForm)
         {
@@ -131,28 +153,6 @@
                     foreach($workflowActionAttributeForm->getAttributes() as $attribute => $value)
                     {
                         $data[$key][ActionForWorkflowForm::ACTION_ATTRIBUTES][$actionAttribute][$attribute] = $value;
-                    }
-                }
-            }
-            return $data;
-        }
-
-        protected static function makeArrayFromEmailAlertForWorkflowFormAttributesData(Array $componentFormsData)
-        {
-            $data = array();
-            foreach($componentFormsData as $key => $emailAlertForWorkflowForm)
-            {
-                foreach($emailAlertForWorkflowForm->getAttributes() as $attribute => $value)
-                {
-                    $data[$key][$attribute] = $value;
-                }
-                foreach($emailAlertForWorkflowForm->getEmailAlertRecipients() as
-                        $emailAlertRecipientKey => $workflowEmailAlertRecipientForm)
-                {
-                    foreach($workflowEmailAlertRecipientForm->getAttributes() as $attribute => $value)
-                    {
-                        $data[$key][EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS]
-                             [$emailAlertRecipientKey][$attribute] = $value;
                     }
                 }
             }

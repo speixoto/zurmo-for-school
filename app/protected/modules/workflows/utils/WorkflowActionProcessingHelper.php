@@ -100,11 +100,10 @@
                 throw new NotSupportedException();
             }
             $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->triggeredModel), $this->action->relation);
-
             if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->action->relation) &&
                $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
-                foreach($this->resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
+                foreach(WorkflowUtil::resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
                 {
                     self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->triggeredModel);
                     $saved = $relatedModel->save();
@@ -254,7 +253,7 @@
             if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->action->relation) &&
                 $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
-                foreach($this->resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
+                foreach(WorkflowUtil::resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
                 {
                     if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))
                     {
@@ -311,15 +310,6 @@
             {
                 throw new NotSupportedException();
             }
-        }
-
-        protected function resolveDerivedModels(RedBeanModel $model, $relation)
-        {
-            assert('is_string($relation)');
-            $modelClassName       = $model->getDerivedRelationModelClassName($relation);
-            $inferredRelationName = $model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation);
-            return                  WorkflowUtil::getModelsFilteredByInferredModel($modelClassName, $inferredRelationName,
-                                    $model->getClassId('Item'));
         }
     }
 ?>

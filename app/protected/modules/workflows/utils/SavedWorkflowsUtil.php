@@ -152,7 +152,7 @@
                 elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
                 {
                     WorkflowActionsUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel); //todo: change to triggered
-                    WorkflowEmailMessagesUtil::processAfterSave($workflow, $model);
+                    WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
                 }
                 else
                 {

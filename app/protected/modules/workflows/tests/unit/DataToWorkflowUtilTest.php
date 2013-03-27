@@ -894,7 +894,6 @@
             $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['sendFromType']             =
                                                                     EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['sendAfterDurationSeconds'] = '0';
-            $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0]['logEmail']                 = '1';
             $data[ComponentForWorkflowForm::TYPE_EMAIL_ALERTS][0][EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS] =
             array(
                 array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
@@ -941,7 +940,6 @@
             $this->assertEquals('5', $emailAlerts[0]->emailTemplateId);
             $this->assertEquals(EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT, $emailAlerts[0]->sendFromType);
             $this->assertEquals(0,   $emailAlerts[0]->sendAfterDurationSeconds);
-            $this->assertEquals('1', $emailAlerts[0]->logEmail);
             $this->assertEquals(12,  $emailAlerts[0]->getEmailAlertRecipientFormsCount());
 
             $emailAlertRecipients = $emailAlerts[0]->getEmailAlertRecipients();

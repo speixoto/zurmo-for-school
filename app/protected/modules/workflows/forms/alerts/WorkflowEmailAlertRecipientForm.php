@@ -44,6 +44,14 @@
         const TYPE_STATIC_GROUP                             = 'StaticGroup';
 
         /**
+         *
+         * @param RedBeanModel $model
+         * @param User $triggeredUser
+         * @return array of EmailMessageRecipients
+         */
+        abstract public function makeRecipients(RedBeanModel $model, User $triggeredUser);
+
+        /**
          * @var string Type of recipient
          */
         public $type;

@@ -45,5 +45,24 @@
                       array('groupId',  'type', 'type' =>  'integer'),
                       array('groupId',  'required')));
         }
+
+        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        {
+            $group       = Group::getById((int)$this->groupId); //todo: exception if role no longer exists?
+            $recipients = array();
+            foreach($group->users as $user)
+            {
+                if ($user->primaryEmail->emailAddress !== null)
+                {
+                    $recipient                  = new EmailMessageRecipient();
+                    $recipient->toAddress       = $user->primaryEmail->emailAddress;
+                    $recipient->toName          = strval($user);
+                    $recipient->type            = $this->recipientType;
+                    $recipient->personOrAccount = $user;
+                    $recipients[]               = $recipient;
+                }
+            }
+            return $recipients;
+        }
     }
 ?>

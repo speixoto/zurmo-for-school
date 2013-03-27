@@ -69,11 +69,78 @@
                 Zurmo::t('WorkflowsModule', 'User who last modified record');
             $data[self::DYNAMIC_USER_TYPE_MANAGER_OF_MODIFIED_BY_USER] =
                 Zurmo::t('WorkflowsModule', 'User\'s manager who last modified record');
-            $data[self::DYNAMIC_USER_TYPE_OWNER]                       =
-                Zurmo::t('WorkflowsModule', 'User who owns the record');
-            $data[self::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER]            =
-                Zurmo::t('WorkflowsModule', 'User\'s manager who owns the record');
+            if(is_subclass_of($this->resolveModelClassName(), 'OwnedSecurableItem'))
+            {
+                $data[self::DYNAMIC_USER_TYPE_OWNER]                       =
+                    Zurmo::t('WorkflowsModule', 'User who owns the record');
+                $data[self::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER]            =
+                    Zurmo::t('WorkflowsModule', 'User\'s manager who owns the record');
+            }
             return $data;
+        }
+
+        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        {
+            if($this->dynamicUserType == self::DYNAMIC_USER_TYPE_CREATED_BY_USER)
+            {
+                $user = $model->createdByUser;
+            }
+            elseif($this->dynamicUserType == self::DYNAMIC_USER_TYPE_MANAGER_OF_CREATED_BY_USER)
+            {
+                if($model->createdByUser->manager->id < 0)
+                {
+                    return array();
+                }
+                $user = $model->createdByUser->manager;
+            }
+            elseif($this->dynamicUserType == self::DYNAMIC_USER_TYPE_MODIFIED_BY_USER)
+            {
+                $user = $model->modifiedByUser;
+            }
+            elseif($this->dynamicUserType == self::DYNAMIC_USER_TYPE_MANAGER_OF_MODIFIED_BY_USER)
+            {
+                if($model->modifiedByUser->manager->id < 0)
+                {
+                    return array();
+                }
+                $user = $model->modifiedByUser->manager;
+            }
+            elseif($this->dynamicUserType == self::DYNAMIC_USER_TYPE_OWNER)
+            {
+                if(!is_subclass_of(get_class($model), 'OwnedSecurableItem'))
+                {
+                    return array();
+                }
+                $user = $model->owner;
+            }
+            elseif($this->dynamicUserType == self::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER)
+            {
+                if(!is_subclass_of(get_class($model), 'OwnedSecurableItem') || $model->owner->manager->id < 0)
+                {
+                    return array();
+                }
+                $user = $model->owner->manager;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+            $recipients = array();
+            if ($user->primaryEmail->emailAddress !== null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $user->primaryEmail->emailAddress;
+                $recipient->toName          = strval($user);
+                $recipient->type            = $this->recipientType;
+                $recipient->personOrAccount = $user;
+                $recipients[]               = $recipient;
+            }
+            return $recipients;
+        }
+
+        protected function resolveModelClassName()
+        {
+            return $this->modelClassName;
         }
     }
 ?>

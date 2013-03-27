@@ -53,8 +53,6 @@
 
         public $sendFromAddress;
 
-        public $logEmail;
-
         /**
          * @var string
          */
@@ -144,7 +142,6 @@
                 array('sendFromType',             'validateSendFromType'),
                 array('sendFromName',             'type',  'type' => 'string'),
                 array('sendFromAddress',          'type',  'type' => 'string'),
-                array('logEmail',                 'boolean'),
             ));
         }
 
@@ -158,7 +155,6 @@
                          'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
                          'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),
                          'sendFromAddress'          => Zurmo::t('WorkflowsModule', 'From Address'),
-                         'logEmail'                 => Zurmo::t('WorkflowsModule', 'Log Email'),
             );
         }
 

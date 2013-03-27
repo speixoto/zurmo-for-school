@@ -178,7 +178,7 @@
          */
         public static function resolveSendAfterDurationData(& $data)
         {
-            $data[300]      = Zurmo::t('WorkflowsModule', 'Immediately after workflow runs', array(5));
+            $data[0]        = Zurmo::t('WorkflowsModule', 'Immediately after workflow runs', array(5));
             $data[300]      = Zurmo::t('WorkflowsModule', '{n} minute after workflow runs|{n} minutes after workflow runs', array(5));
             $data[14400]    = Zurmo::t('WorkflowsModule', '{n} hour after workflow runs|{n} hours after workflow runs', array(4));
             $data[28800]    = Zurmo::t('WorkflowsModule', '{n} hour after workflow runs|{n} hours after workflow runs', array(8));
@@ -240,6 +240,15 @@
                 }
             }
             return $relatedModels;
+        }
+
+        public static function resolveDerivedModels(RedBeanModel $model, $relation)
+        {
+            assert('is_string($relation)');
+            $modelClassName       = $model->getDerivedRelationModelClassName($relation);
+            $inferredRelationName = $model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation);
+            return                  WorkflowUtil::getModelsFilteredByInferredModel($modelClassName, $inferredRelationName,
+                $model->getClassId('Item'));
         }
     }
 ?>

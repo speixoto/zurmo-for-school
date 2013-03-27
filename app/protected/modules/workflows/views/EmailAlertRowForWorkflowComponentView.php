@@ -132,8 +132,6 @@
             $element           = new TextElement(
                                  $this->model, 'sendFromAddress', $this->form, $params);
             $innerContent     .= '<tr>' . $element->render() . '</tr>';
-            $element           = new CheckBoxElement($this->model, 'logEmail', $this->form, $params);  //todo: needs the ? mark for help
-            $innerContent     .= '<tr>' . $element->render() . '</tr>';
             $innerContent     .= '</table>';
             $content          .= ZurmoHtml::tag('div', array('class' => 'panel'), $innerContent);
             $content          .= '</div>';

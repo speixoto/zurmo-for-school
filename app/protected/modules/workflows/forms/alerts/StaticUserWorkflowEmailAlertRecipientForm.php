@@ -71,5 +71,21 @@
                       array('userId',  'type', 'type' =>  'integer'),
                       array('userId',  'required')));
         }
+
+        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        {
+            $user = User::getById((int)$this->userId);
+            $recipients = array();
+            if ($user->primaryEmail->emailAddress !== null)
+            {
+                $recipient                  = new EmailMessageRecipient();
+                $recipient->toAddress       = $user->primaryEmail->emailAddress;
+                $recipient->toName          = strval($user);
+                $recipient->type            = $this->recipientType;
+                $recipient->personOrAccount = $user;
+                $recipients[]               = $recipient;
+            }
+            return $recipients;
+        }
     }
 ?>

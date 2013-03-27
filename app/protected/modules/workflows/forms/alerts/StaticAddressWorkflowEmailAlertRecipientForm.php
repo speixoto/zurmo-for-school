@@ -53,5 +53,14 @@
                       array('toAddress', 'email'),
                       array('toAddress', 'required')));
         }
+
+        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        {
+            $recipient                  = new EmailMessageRecipient();
+            $recipient->toAddress       = $this->toAddress;
+            $recipient->toName          = $this->toName;
+            $recipient->type            = $this->recipientType;
+            return array($recipient);
+        }
     }
 ?>
