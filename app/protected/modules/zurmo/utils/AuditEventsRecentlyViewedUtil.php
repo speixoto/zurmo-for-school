@@ -171,6 +171,10 @@
             $newItem        = array($moduleName, $model->id, strval($model));
             $recentlyViewed = unserialize(ZurmoConfigurationUtil::
                                     getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            if (!is_array($recentlyViewed))
+            {
+                return;
+            }
             if (in_array($newItem, $recentlyViewed))
             {
                 $key = array_search($newItem, $recentlyViewed);
