@@ -125,5 +125,38 @@
             $this->assertTrue(strpos($content, 'Dooble2') !== false);
             $this->assertTrue(strpos($content, 'Dooble1') !== false);
         }
+
+        public function testDeleteModelFromRecentlyViewed()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', null);
+            $account1 = new Account();
+            $account1->name = 'Dooble1';
+            $this->assertTrue($account1->save());
+
+            $account2 = new Account();
+            $account2->name = 'Dooble2';
+            $this->assertTrue($account2->save());
+
+            $account3 = new Account();
+            $account3->name  = 'Dooble3';
+            $account3->owner = User::getByUsername('jimmy');
+            $this->assertTrue($account3->save());
+
+            //Now create some audit entries for the Item Viewed event.
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account1), 'AccountsModule'), $account1);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account2), 'AccountsModule'), $account2);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account1), 'AccountsModule'), $account3);
+            $content = AuditEventsRecentlyViewedUtil::getRecentlyViewedAjaxContentByUser(Yii::app()->user->userModel, 5);
+            $this->assertContains('Dooble1', $content);
+            $this->assertContains('Dooble2', $content);
+            $this->assertContains('Dooble3', $content);
+
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_DELETED, strval($account1), $account1);
+            $content = AuditEventsRecentlyViewedUtil::getRecentlyViewedAjaxContentByUser(Yii::app()->user->userModel, 5);
+            $this->assertNotContains('Dooble1', $content);
+            $this->assertContains('Dooble2', $content);
+            $this->assertContains('Dooble3', $content);
+        }
     }
 ?>

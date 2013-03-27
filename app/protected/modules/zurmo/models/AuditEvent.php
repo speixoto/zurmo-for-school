@@ -91,7 +91,14 @@
                 AuditEventsRecentlyViewedUtil::
                         resolveNewRecentlyViewedModel($data[1],
                                                       $model,
-                                                      AuditEventsRecentlyViewedUtil::RECENTLY_VIEWED_COUNT);
+                                                      AuditEventsRecentlyViewedUtil::RECENTLY_VIEWED_COUNT + 1);
+            }
+            if($eventName == "Item Deleted")
+            {
+                $modelClassName = get_class($model);
+                AuditEventsRecentlyViewedUtil::
+                        deleteModelFromRecentlyViewed($modelClassName::getModuleClassName(),
+                                                      $model);
             }
             if (!AuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
             {

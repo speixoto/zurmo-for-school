@@ -164,5 +164,21 @@
             ZurmoConfigurationUtil::
                     setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
         }
+
+        public static function deleteModelFromRecentlyViewed($moduleName, RedBeanModel $model)
+        {
+            assert('strlen($moduleName) > 0 && is_int($model->id)');
+            $newItem        = array($moduleName, $model->id, strval($model));
+            $recentlyViewed = unserialize(ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            if (in_array($newItem, $recentlyViewed))
+            {
+                $key = array_search($newItem, $recentlyViewed);
+                unset($recentlyViewed[$key]);
+                array_keys($recentlyViewed);
+            }
+            ZurmoConfigurationUtil::
+                    setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
+        }
     }
 ?>
