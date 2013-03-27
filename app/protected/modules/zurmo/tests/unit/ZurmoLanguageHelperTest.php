@@ -38,15 +38,14 @@
         public function testGetAndSetForCurrentUser()
         {
             Yii::app()->user->userModel =  User::getByUsername('super');
-            $languageHelper = new ZurmoLanguageHelper();
-            $languageHelper->load();
-            $this->assertEquals('en', $languageHelper->getForCurrentUser());
+            Yii::app()->languageHelper->load();
+            $this->assertEquals('en', Yii::app()->languageHelper->getForCurrentUser());
             Yii::app()->user->userModel->language = 'fr';
             $this->assertTrue(Yii::app()->user->userModel->save());
-            $languageHelper->setActive('fr');
+            Yii::app()->languageHelper->setActive('fr');
             $this->assertEquals('fr', Yii::app()->user->getState('language'));
             Yii::app()->user->clearStates();
-            $this->assertEquals('fr', $languageHelper->getForCurrentUser());
+            $this->assertEquals('fr', Yii::app()->languageHelper->getForCurrentUser());
             $this->assertEquals(null, Yii::app()->user->getState('language'));
             $this->assertEquals('en', Yii::app()->language);
         }
@@ -58,7 +57,6 @@
         {
             $metaData = ZurmoModule::getMetaData();
             Yii::app()->user->userModel =  User::getByUsername('super');
-            $languageHelper = new ZurmoLanguageHelper();
             $this->assertEquals(null, Yii::app()->user->getState('language'));
             $this->assertEquals('en', Yii::app()->language);
             $billy =  User::getByUsername('billy');
@@ -74,16 +72,14 @@
 
         public function testActivateLanguage()
         {
-            $languageHelper = new ZurmoLanguageHelper();
-
-            $status = $languageHelper->activateLanguage('de');
+            $status = Yii::app()->languageHelper->activateLanguage('de');
             $this->assertEquals(true, $status);
 
             // Trying with an unsupported language
             $exceptionRaised = false;
             try
             {
-                $languageHelper->activateLanguage('aaaa');
+                Yii::app()->languageHelper->activateLanguage('aaaa');
             }
             catch (NotFoundException $e)
             {
@@ -101,16 +97,14 @@
          */
         public function testUpdateLanguage()
         {
-            $languageHelper = new ZurmoLanguageHelper();
-
-            $status = $languageHelper->updateLanguage('de');
+            $status = Yii::app()->languageHelper->updateLanguage('de');
             $this->assertEquals(true, $status);
 
             // Trying with an unsupported language
             $exceptionRaised = false;
             try
             {
-                $languageHelper->updateLanguage('aaaa');
+                Yii::app()->languageHelper->updateLanguage('aaaa');
             }
             catch (NotFoundException $e)
             {
@@ -128,16 +122,14 @@
          */
         public function testDeactivateLanguage()
         {
-            $languageHelper = new ZurmoLanguageHelper();
-
-            $status = $languageHelper->deactivateLanguage('de');
+            $status = Yii::app()->languageHelper->deactivateLanguage('de');
             $this->assertEquals(true, $status);
 
             // Trying with an unsupported language
             $exceptionRaised = false;
             try
             {
-                $languageHelper->updateLanguage('aaaa');
+                Yii::app()->languageHelper->updateLanguage('aaaa');
             }
             catch (NotFoundException $e)
             {
@@ -152,8 +144,7 @@
 
         public function testGetSupportedLanguagesData()
         {
-            $languageHelper = new ZurmoLanguageHelper();
-            $data = $languageHelper->getSupportedLanguagesData();
+            $data = Yii::app()->languageHelper->getSupportedLanguagesData();
             $compareData = array(
                 'code' => 'de',
                 'name' => 'German',
@@ -166,9 +157,8 @@
         public function testGetActiveLanguagesData()
         {
             Yii::app()->language = 'en'; //Set the base language back to english.
-            $languageHelper = new ZurmoLanguageHelper();
-            $languageHelper->load();
-            $data = $languageHelper->getActiveLanguagesDataForTesting();
+            Yii::app()->languageHelper->load();
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
@@ -180,8 +170,8 @@
             $this->assertEquals($compareData, $data);
 
             //Now activate de.
-            $languageHelper->activateLanguage('de');
-            $data = $languageHelper->getActiveLanguagesDataForTesting();
+            Yii::app()->languageHelper->activateLanguage('de');
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
@@ -199,8 +189,8 @@
             $this->assertEquals($compareData, $data);
 
             //Now activate es.
-            $languageHelper->activateLanguage('it');
-            $data = $languageHelper->getActiveLanguagesDataForTesting();
+            Yii::app()->languageHelper->activateLanguage('it');
+            $data = Yii::app()->languageHelper->getActiveLanguagesDataForTesting();
             $compareData = array(
                 'en' => array(
                     'canDeactivate' => false,
@@ -231,21 +221,20 @@
         {
             $this->assertEquals('en', Yii::app()->language);
             Yii::app()->user->userModel =  User::getByUsername('super');
-            $languageHelper = new ZurmoLanguageHelper();
-            $languageHelper->load();
+            Yii::app()->languageHelper->load();
             //Cannot inactivate the base language.
-            $this->assertFalse($languageHelper->canDeactivateLanguage('en'));
+            $this->assertFalse(Yii::app()->languageHelper->canDeactivateLanguage('en'));
             //De and Fr are in use by users.
-            $this->assertFalse($languageHelper->canDeactivateLanguage('de'));
-            $this->assertFalse($languageHelper->canDeactivateLanguage('fr'));
-            $this->assertTrue($languageHelper->canDeactivateLanguage('it'));
+            $this->assertFalse(Yii::app()->languageHelper->canDeactivateLanguage('de'));
+            $this->assertFalse(Yii::app()->languageHelper->canDeactivateLanguage('fr'));
+            $this->assertTrue(Yii::app()->languageHelper->canDeactivateLanguage('it'));
 
             $billy =  User::getByUsername('billy');
             $billy->language = 'en';
             $this->assertTrue($billy->save());
 
             //Now de should be able to be inactivated
-            $this->assertTrue($languageHelper->canDeactivateLanguage('de'));
+            $this->assertTrue(Yii::app()->languageHelper->canDeactivateLanguage('de'));
         }
 
         /**
@@ -258,9 +247,8 @@
             $this->assertEquals('Opportunité', ZurmoHtml::encode('Opportunité'));
 
             //First we need to activate French, to import the message
-            $languageHelper = new ZurmoLanguageHelper();
-            $languageHelper->load();
-            $languageHelper->activateLanguage('fr');
+            Yii::app()->languageHelper->load();
+            Yii::app()->languageHelper->activateLanguage('fr');
 
             $label = OpportunitiesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase', 'fr');
             $this->assertEquals('opportunité', $label);
