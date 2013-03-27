@@ -35,7 +35,7 @@
 
         const TYPE_STATIC_ROLE                              = 'StaticRole';
 
-        const TYPE_DYNAMIC_TRIGGERED_USER                   = 'DynamicTriggeredUser';
+        const TYPE_DYNAMIC_TRIGGERED_USER                   = 'DynamictriggeredByUser';
 
         const TYPE_STATIC_USER                              = 'StaticUser';
 
@@ -46,10 +46,10 @@
         /**
          *
          * @param RedBeanModel $model
-         * @param User $triggeredUser
+         * @param User $triggeredByUser
          * @return array of EmailMessageRecipients
          */
-        abstract public function makeRecipients(RedBeanModel $model, User $triggeredUser);
+        abstract public function makeRecipients(RedBeanModel $model, User $triggeredByUser);
 
         /**
          * @var string Type of recipient
@@ -132,7 +132,7 @@
             $data[static::TYPE_STATIC_ROLE]                              =
                 StaticRoleWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_DYNAMIC_TRIGGERED_USER]                   =
-                DynamicTriggeredUserWorkflowEmailAlertRecipientForm::getTypeLabel();
+                DynamictriggeredByUserWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_USER]                              =
                 StaticUserWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_ADDRESS]                            =

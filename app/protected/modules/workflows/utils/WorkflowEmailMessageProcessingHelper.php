@@ -30,20 +30,20 @@
 
         protected $triggeredModel;
 
-        protected $triggeredUser;
+        protected $triggeredByUser;
 
-        public function __construct(EmailAlertForWorkflowForm $emailMessageForm, RedBeanModel $triggeredModel, User $triggeredUser)
+        public function __construct(EmailAlertForWorkflowForm $emailMessageForm, RedBeanModel $triggeredModel, User $triggeredByUser)
         {
             $this->emailMessageForm  = $emailMessageForm;
             $this->triggeredModel    = $triggeredModel;
-            $this->triggeredUser     = $triggeredUser;
+            $this->triggeredByUser     = $triggeredByUser;
         }
 
         public function process()
         {
             $emailTemplate              = EmailTemplate::getById((int)$this->emailMessageForm->emailTemplateId);
             $emailMessage               = new EmailMessage();
-            $emailMessage->owner        = $this->triggeredUser;
+            $emailMessage->owner        = $this->triggeredByUser;
             $emailMessage->subject      = $emailTemplate->subject;
             $emailContent               = new EmailMessageContent();
             $emailContent->textContent  = $this->resolveEmailTemplateTextContentForModelData($emailTemplate);

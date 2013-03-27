@@ -118,7 +118,7 @@
                 
                 $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
-            elseif($formType == 'DynamicTriggeredUser')
+            elseif($formType == 'DynamictriggeredByUser')
             {
                 //nothing to render
             }

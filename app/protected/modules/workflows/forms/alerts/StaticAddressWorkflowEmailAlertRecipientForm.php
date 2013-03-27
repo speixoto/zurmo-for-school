@@ -54,7 +54,7 @@
                       array('toAddress', 'required')));
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = $this->toAddress;

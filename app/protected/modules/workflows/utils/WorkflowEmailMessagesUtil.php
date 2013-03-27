@@ -29,13 +29,13 @@
      */
     class WorkflowEmailMessagesUtil
     {
-        public static function processAfterSave(Workflow $workflow, RedBeanModel $model, User $triggeredUser)
+        public static function processAfterSave(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
             foreach($workflow->getEmailAlerts() as $emailMessage)
             {
                 try
                 {
-                    self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredUser);
+                    self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredByUser);
                 }
                 catch(Exception $e)
                 {
@@ -47,11 +47,11 @@
         protected static function processEmailMessageAfterSave(Workflow $workflow,
                                                                EmailAlertForWorkflowForm $emailMessage,
                                                                RedBeanModel $model,
-                                                               User $triggeredUser)
+                                                               User $triggeredByUser)
         {
             if($emailMessage->sendAfterDurationSeconds == 0)
             {
-                $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredUser);
+                $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredByUser);
                 $helper->process();
             }
             else
@@ -65,7 +65,7 @@
                 $workflowMessageInQueue->modelClassName  = get_class($model);
                 $workflowMessageInQueue->modelItem       = $model;
                 $workflowMessageInQueue->serializedData  = serialize($emailMessageData);
-                $workflowMessageInQueue->triggeredUser   = $triggeredUser;
+                $workflowMessageInQueue->triggeredByUser = $triggeredByUser;
                 $saved                                   = $workflowMessageInQueue->save();
                 if(!$saved)
                 {

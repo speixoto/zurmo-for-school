@@ -35,14 +35,14 @@
     {
         protected $model;
 
-        protected $triggeredUser;
+        protected $triggeredByUser;
 
         protected $triggeredModel;
 
-        public function __construct(RedBeanModel $model, User $triggeredUser, RedBeanModel $triggeredModel = null)
+        public function __construct(RedBeanModel $model, User $triggeredByUser, RedBeanModel $triggeredModel = null)
         {
             $this->model = $model;
-            $this->triggeredUser = $triggeredUser;
+            $this->triggeredByUser = $triggeredByUser;
             if($triggeredModel == null)
             {
                 $this->triggeredModel = $model;
@@ -65,7 +65,7 @@
 
         public function getTriggeredByUser()
         {
-            return $this->triggeredUser;
+            return $this->triggeredByUser;
         }
     }
 ?>

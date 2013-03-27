@@ -46,7 +46,7 @@
                       array('groupId',  'required')));
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $group       = Group::getById((int)$this->groupId); //todo: exception if role no longer exists?
             $recipients = array();

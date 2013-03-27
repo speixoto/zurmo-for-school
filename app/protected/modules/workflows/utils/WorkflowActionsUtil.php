@@ -34,17 +34,17 @@
          * Process any workflow actions that are updates to the passed in model.
          * @param Workflow $workflow
          * @param RedBeanModel $model
-         * @param User $triggeredUser
+         * @param User $triggeredByUser
          */
         public static function processBeforeSave(Workflow $workflow,
                                                  RedBeanModel $model,
-                                                 User $triggeredUser)
+                                                 User $triggeredByUser)
         {
             foreach($workflow->getActions() as $action)
             {
                 try
                 {
-                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredUser);
+                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser);
                     $helper->processUpdateSelectAction();
                 }
                 catch(Exception $e)
@@ -58,18 +58,18 @@
          * Process any workflow actions that are updating related models, or creating new models.
          * @param Workflow $workflow
          * @param RedBeanModel $model
-         * @param User $triggeredUser
+         * @param User $triggeredByUser
          * @throws NotSupportedException
          */
         public static function processAfterSave(Workflow $workflow,
                                                 RedBeanModel $model,
-                                                User $triggeredUser)
+                                                User $triggeredByUser)
         {
             foreach($workflow->getActions() as $action)
             {
                 try
                 {
-                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredUser);
+                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser);
                     $helper->processNonUpdateSelfAction();
                 }
                 catch(Exception $e)

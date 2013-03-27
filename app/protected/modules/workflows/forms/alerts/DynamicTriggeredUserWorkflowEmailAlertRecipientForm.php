@@ -27,23 +27,23 @@
     /**
      * Form to work with a triggered users for an email alert recipient
      */
-    class DynamicTriggeredUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class DynamictriggeredByUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
     {
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowModule', 'User who triggered process');
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $recipients = array();
-            if ($triggeredUser->primaryEmail->emailAddress !== null)
+            if ($triggeredByUser->primaryEmail->emailAddress !== null)
             {
                 $recipient                  = new EmailMessageRecipient();
-                $recipient->toAddress       = $triggeredUser->primaryEmail->emailAddress;
-                $recipient->toName          = strval($triggeredUser);
+                $recipient->toAddress       = $triggeredByUser->primaryEmail->emailAddress;
+                $recipient->toName          = strval($triggeredByUser);
                 $recipient->type            = $this->recipientType;
-                $recipient->personOrAccount = $triggeredUser;
+                $recipient->personOrAccount = $triggeredByUser;
                 $recipients[]               = $recipient;
             }
             return $recipients;

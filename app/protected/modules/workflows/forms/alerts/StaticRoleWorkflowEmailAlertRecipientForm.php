@@ -46,7 +46,7 @@
                       array('roleId',  'required')));
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $role       = Role::getById((int)$this->roleId); //todo: exception if role no longer exists?
             $recipients = array();

@@ -129,7 +129,7 @@
             return $valueAndLabels;
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $modelClassName = $this->modelClassName;
             $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
@@ -139,7 +139,7 @@
             {
                 foreach(WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
                 {
-                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredUser));
+                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
             elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
@@ -148,7 +148,7 @@
                 foreach(WorkflowUtil::
                         getInferredModelsByAtrributeAndModel($this->relation, $model) as $resolvedModel)
                 {
-                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredUser));
+                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
             elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
@@ -159,12 +159,12 @@
                 }
                 foreach($this->triggeredModel->{$this->action->relation} as $resolvedModel)
                 {
-                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredUser));
+                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
             elseif($adapter->isRelationTypeAHasOneVariant())
             {
-                $recipients =parent::makeRecipients($model->{$this->relation}, $triggeredUser);
+                $recipients =parent::makeRecipients($model->{$this->relation}, $triggeredByUser);
             }
             else
             {

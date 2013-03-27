@@ -72,7 +72,7 @@
                       array('userId',  'required')));
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $user = User::getById((int)$this->userId);
             $recipients = array();

@@ -40,7 +40,7 @@
 
         public function getRootModelNames()
         {
-            return array('SavedWorkflow', 'ByTimeWorkflowInQueue');
+            return array('SavedWorkflow', 'ByTimeWorkflowInQueue', 'WorkflowMessageInQueue');
         }
 
         public static function getDefaultMetadata()

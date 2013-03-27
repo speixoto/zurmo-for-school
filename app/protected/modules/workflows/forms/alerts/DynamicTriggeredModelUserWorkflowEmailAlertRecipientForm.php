@@ -79,7 +79,7 @@
             return $data;
         }
 
-        public function makeRecipients(RedBeanModel $model, User $triggeredUser)
+        public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             if($this->dynamicUserType == self::DYNAMIC_USER_TYPE_CREATED_BY_USER)
             {
