@@ -573,7 +573,7 @@
             if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0)
             {
                 $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
-                $viewNamePrefix    = ucfirst(str_replace(array('Progress', 'Save'), '', $actionId));
+                $viewNamePrefix    = static::resolveMassActionId($actionId, true);
                 if (strpos($actionId, 'massEdit') === 0)
                 {
                     $viewNamePrefix = $moduleName . $viewNamePrefix;
