@@ -235,6 +235,8 @@
             $selectedRecordCount,
             $title)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             $alertMessage          = static::getMassEditAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
@@ -252,6 +254,8 @@
             $selectedRecordCount,
             $title)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
@@ -385,6 +389,13 @@
         }
 
         protected static function getMassEditAlertMessage($postVariableName)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated: Recommended to use resolveMassEditAlertMessage.');
+            return static::resolveMassEditAlertMessage($postVariableName);
+        }
+
+        protected static function resolveMassEditAlertMessage($postVariableName)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $form = Yii::app()->request->getPost($postVariableName);

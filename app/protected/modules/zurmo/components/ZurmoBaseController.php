@@ -225,6 +225,8 @@
             $dataProvider = null
             )
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName = get_class($listModel);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -311,6 +313,8 @@
             $title,
             $dataProvider = null)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $listModel = new $modelClassName(false);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -347,6 +351,8 @@
             $title,
             $skipCount)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             assert('$skipCount == null || is_int($skipCount)');
             return new MassEditProgressView(
                 $this->getId(),
@@ -367,6 +373,8 @@
          */
         protected function saveMassEdit($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             Yii::app()->gameHelper->muteScoringModelsOnSave();
             $modelsToSave = $this->getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToSave as $modelToSave)
@@ -407,6 +415,8 @@
             $dataProvider = null
             )
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName = get_class($listModel);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -467,6 +477,8 @@
             $title,
             $dataProvider = null)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $listModel = new $modelClassName(false);
 
@@ -505,6 +517,8 @@
             $title,
             $skipCount)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             assert('$skipCount == null || is_int($skipCount)');
             return new MassDeleteProgressView(
                 $this->getId(),
@@ -522,6 +536,8 @@
 
         protected function doMassDelete($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             Yii::app()->gameHelper->muteScoringModelsOnDelete();
             $modelsToDelete = $this->getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToDelete as $modelToDelete)
@@ -552,12 +568,16 @@
                                                                             Yii::app()->getController()->getId() . '/');
         }
 
-        protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName)
+        protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
             if (strpos($actionId, 'massEdit') === 0 || strpos($actionId, 'massDelete') === 0)
             {
                 $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
-                $viewNamePrefix    = ucfirst(str_replace('Progress', '', $actionId));
+                $viewNamePrefix    = ucfirst(str_replace(array('Progress', 'Save'), '', $actionId));
+                if (strpos($actionId, 'massEdit') === 0)
+                {
+                    $viewNamePrefix = $moduleName . $viewNamePrefix;
+                }
                 return $viewNamePrefix . $viewNameSuffix;
             }
             else
@@ -697,7 +717,7 @@
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $activeAttributes       = static::resolveActiveAttributesFromPostForMassAction($actionId);
-            $selectedRecordCount    = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount    = static::resolveSelectedRecordCountByMassActionId($actionId, $dataProvider, array());
             $model                  = static::processMassAction(
                                                                 $pageSize,
                                                                 $selectedRecordCount,
@@ -719,80 +739,140 @@
             echo $view->render();
         }
 
-
-
         protected static function processMassAction($pageSize, $selectedRecordCount, $pageViewClassName, $listModel, $title,
                                                     $actionId, $dataProvider = null)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $postSelectedRecordCount                    = Yii::app()->request->getPost('selectedRecordCount');
-            if (isset($postSelectedRecordCount))
+            $modelClassName                             = get_class($listModel);
+            $postModelClassName                         = Yii::app()->request->getPost($modelClassName);
+            if (isset($postSelectedRecordCount) || isset($postModelClassName))
             {
-                $modelClassName                         = get_class($listModel);
+
+                $page                                   = static::resolvePageValueForMassAction($modelClassName);
                 $insufficientPermissionSkipSavingUtil   = static::resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId);
                 $start                                  = ($selectedRecordCount > $pageSize)? 1: $selectedRecordCount;
                 $skipCount                              = ($selectedRecordCount > $pageSize)? null: 0;
-                static::doMassAction(
-                                        $modelClassName,
-                                        $selectedRecordCount,
-                                        $dataProvider,
-                                        static::resolvePageValueForMassAction($modelClassName),
-                                        $pageSize,
-                                        $insufficientPermissionSkipSavingUtil,
-                                        $actionId
-                                    );
-                $progressView                           = static::makeMassActionProgressView(
-                                                                                            $listModel,
-                                                                                            1,
-                                                                                            $selectedRecordCount,
-                                                                                            $start,
-                                                                                            $pageSize,
-                                                                                            $title,
-                                                                                            $skipCount,
-                                                                                            $actionId);
-                if ($selectedRecordCount > $pageSize)
+                $massActionSuccessful                   = static::processModelsForMassAction($listModel,
+                                                                                    $modelClassName,
+                                                                                    $selectedRecordCount,
+                                                                                    $dataProvider,
+                                                                                    $page,
+                                                                                    $pageSize,
+                                                                                    $insufficientPermissionSkipSavingUtil,
+                                                                                    $postModelClassName,
+                                                                                    $actionId);
+                if ($massActionSuccessful)
                 {
-                    $view                               = new $pageViewClassName(
-                                                                ZurmoDefaultViewUtil::makeStandardViewForCurrentUser(
-                                                                            Yii::app()->getController(),$progressView));
-                    echo $view->render();
+                    $progressView                           = static::makeMassActionProgressView(
+                                                                                                $listModel,
+                                                                                                1,
+                                                                                                $selectedRecordCount,
+                                                                                                $start,
+                                                                                                $pageSize,
+                                                                                                $title,
+                                                                                                $skipCount,
+                                                                                                $actionId);
+                    if ($selectedRecordCount > $pageSize)
+                    {
+                        $view                               = new $pageViewClassName(
+                                                                    ZurmoDefaultViewUtil::makeStandardViewForCurrentUser(
+                                                                                Yii::app()->getController(),$progressView));
+                        echo $view->render();
+                    }
+                    else
+                    {
+                        $refreshScript = $progressView->renderRefreshScript();
+                        Yii::app()->user->setFlash('notification', $refreshScript['message']);
+                        Yii::app()->getController()->redirect(static::resolveReturnUrlForMassAction());
+                    }
+                    Yii::app()->end(0, false);
                 }
-                else
-                {
-                    $refreshScript = $progressView->renderRefreshScript();
-                    Yii::app()->user->setFlash('notification', $refreshScript['message']);
-                    Yii::app()->getController()->redirect(static::resolveReturnUrlForMassAction());
-                }
-                Yii::app()->end(0, false);
             }
             return $listModel;
         }
 
-        protected static function doMassAction($modelClassName, $selectedRecordCount, $dataProvider, $page, $pageSize, $insufficientPermissionSkipSavingUtil, $actionId)
+        protected static function processModelsForMassAction($model, $modelClassName, $selectedRecordCount, $dataProvider,
+                                                             $page, $pageSize, $insufficientPermissionSkipSavingUtil,
+                                                             $postModelClassName, $actionId)
+        {
+            $doMassActionFunctionName               = 'processModelsForMassActionWithoutScoring';
+            $doMassActionFunctionArguments          = array(
+                                                            $modelClassName,
+                                                            $selectedRecordCount,
+                                                            $dataProvider,
+                                                            $page,
+                                                            $pageSize,
+                                                            $insufficientPermissionSkipSavingUtil,
+                                                            $actionId
+                                                        );
+            if (strpos($actionId, 'massEdit') === 0 && strpos($actionId, 'Progress') === false)
+            {
+                $doMassActionFunctionName           = 'processModelsForMassEditAction';
+                array_unshift($doMassActionFunctionArguments, $postModelClassName, $model);
+
+            }
+            $doMassActionFunctionName               = 'static::' . $doMassActionFunctionName;
+            return call_user_func_array($doMassActionFunctionName, $doMassActionFunctionArguments);
+        }
+
+        protected static function processModelsForMassActionWithoutScoring($modelClassName, $selectedRecordCount, $dataProvider,
+                                                                            $page, $pageSize, $insufficientPermissionSkipSavingUtil, $actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $returnValue        = false;
             static::toggleMuteScoringModelValueByMassActionId($actionId, true);
-            $modelsToUpdate = static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
-            foreach ($modelsToUpdate as $modelToUpdate)
+            $modelsToProcess    = static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
+            $modelPermission    = static::resolvePermissionOnSecurableItemByMassActionId($actionId);
+            foreach ($modelsToProcess as $modelToProcess)
             {
-                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($modelToUpdate,
-                                                        static::getPermissionOnSecurableItemByMassActionId($actionId)))
+                if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($modelToProcess, $modelPermission))
                 {
-                    $function = 'processModelFor' . ucfirst(str_replace('Progress', '', $actionId));
-                    static::$function($modelToUpdate);
+                    $function = 'processModelFor' . static::resolveMassActionId($actionId, true);
+                    $returnValue = static::$function($modelToProcess);
                 }
                 else
                 {
                     $insufficientPermissionSkipSavingUtil::setByModelIdAndName($modelClassName,
-                                                                                $modelToUpdate->id,
-                                                                                $modelToUpdate->name);
+                        $modelToProcess->id,
+                        $modelToProcess->name);
                 }
             }
             static::toggleMuteScoringModelValueByMassActionId($actionId, false);
+            return $returnValue;
         }
 
-
+        protected static function processModelsForMassEditAction($postModelClassName, $model, $modelClassName, $selectedRecordCount, $dataProvider,
+                                                                $page, $pageSize, $insufficientPermissionSkipSavingUtil, $actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            PostUtil::sanitizePostForSavingMassEdit($modelClassName);
+            //Generically test that the changes are valid before attempting to save on each model.
+            $sanitizedPostData              = PostUtil::sanitizePostByDesignerTypeForSavingModel(new $modelClassName(false), $postModelClassName);
+            $sanitizedOwnerPostData         = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
+            $sanitizedPostDataWithoutOwner  = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
+            $postMassEdit                   = Yii::app()->request->getPost('MassEdit');
+            $massEditPostDataWithoutOwner   = PostUtil::removeElementFromPostDataForSavingModel($postMassEdit, 'owner');
+            $model->setAttributes($sanitizedPostDataWithoutOwner);
+            if ($model->validate(array_keys($massEditPostDataWithoutOwner)))
+            {
+                $passedOwnerValidation      = true;
+                if ($sanitizedOwnerPostData != null)
+                {
+                    $model->setAttributes($sanitizedOwnerPostData);
+                    $passedOwnerValidation  = $model->validate(array('owner'));
+                }
+                if ($passedOwnerValidation)
+                {
+                    MassEditInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                    Yii::app()->gameHelper->triggerMassEditEvent($modelClassName);
+                    return static::processModelsForMassActionWithoutScoring($modelClassName, $selectedRecordCount, $dataProvider,
+                                                $page, $pageSize, $insufficientPermissionSkipSavingUtil, $actionId);
+                }
+            }
+            return false;
+        }
 
         protected static function makeMassActionView(
                                                     $model,
@@ -804,13 +884,13 @@
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $moduleName                 = Yii::app()->getController()->getModule()->getPluralCamelCasedName();
             $moduleClassName            = $moduleName . 'Module';
+            $alertMessage               = static::resolveMassActionAlertMessage(get_class($model), $actionId);
             $title                      = static::resolveTitleByMassActionId($actionId) . ': ' . $title;
-            $massActionViewClassName    = static::resolveViewIdByMassActionId($actionId, false);
-            $selectedIds                = GetUtil::getData();
+            $massActionViewClassName    = static::resolveViewIdByMassActionId($actionId, false, $moduleName);
             $view                       = new $massActionViewClassName(Yii::app()->getController()->getId(),
                                                             Yii::app()->getController()->getModule()->getId(),
-                                                            $model, $activeAttributes, $selectedRecordCount, $title, null,
-                                                            $moduleClassName, $selectedIds);
+                                                            $model, $activeAttributes, $selectedRecordCount, $title,
+                                                            $alertMessage, $moduleClassName);
             return $view;
         }
 
@@ -844,8 +924,6 @@
                                             );
         }
 
-
-
         protected static function processMassActionProgress(
                                                             $listModel,
                                                             $pageSize,
@@ -856,20 +934,21 @@
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName                         = get_class($listModel);
-            $postData                               = PostUtil::getData();
-            $pageVariableName                       = $modelClassName . '_page';
             $startPage                              = static::resolvePageValueForMassAction($modelClassName);
-            $selectedRecordCount                    = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
+            $postData                               = static::resolvePostDataByMassActionId($actionId, $modelClassName);
+            $postModelClassName                     = Yii::app()->request->getPost($modelClassName);
+            $pageVariableName                       = $modelClassName . '_page';
+            $selectedRecordCount                    = static::resolveSelectedRecordCountByMassActionId($actionId, $dataProvider, $postData);
             $insufficientPermissionSkipSavingUtil   = static::resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId);
-            static::doMassAction(
-                                    $modelClassName,
-                                    $selectedRecordCount,
-                                    $dataProvider,
-                                    $startPage,
-                                    $pageSize,
-                                    $insufficientPermissionSkipSavingUtil,
-                                    $actionId
-                                );
+            static::processModelsForMassAction($listModel,
+                                                $modelClassName,
+                                                $selectedRecordCount,
+                                                $dataProvider,
+                                                $startPage,
+                                                $pageSize,
+                                                $insufficientPermissionSkipSavingUtil,
+                                                $postModelClassName,
+                                                $actionId);
             $view                                   = static::makeMassActionProgressView(
                                                         $listModel,
                                                         $startPage,
@@ -879,8 +958,37 @@
                                                         $title,
                                                         $insufficientPermissionSkipSavingUtil::getCount($modelClassName),
                                                         $actionId);
-            $output = $view->renderRefreshJSONScript();
-            echo $output;
+            echo $view->renderRefreshJSONScript();
+        }
+
+        protected static function resolvePostDataByMassActionId($actionId, $modelClassName = null)
+        {
+            if (strpos($actionId, 'massEdit') === 0)
+            {
+                PostUtil::sanitizePostForSavingMassEdit($modelClassName);
+            }
+            return PostUtil::getData();
+        }
+
+        protected static function resolveSelectedRecordCountByMassActionId($actionId, $dataProvider = null, $postData = array())
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            if (strpos($actionId, 'Progress') !== false && strpos($actionId, 'massEdit') === false)
+            {
+                $selectedRecordCount = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
+            }
+            return $selectedRecordCount;
+
+        }
+
+        protected static function resolveMassActionAlertMessage($postVariableName, $actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $actionId               = static::resolveMassActionId($actionId, true);
+            $alertMessageHandler    = 'resolve' . $actionId . 'AlertMessage';
+            return (method_exists(get_called_class(), $alertMessageHandler))?
+                static::$alertMessageHandler($postVariableName) : null;
         }
 
 
@@ -904,7 +1012,7 @@
             Yii::app()->gameHelper->$function();
         }
 
-        protected static function getPermissionOnSecurableItemByMassActionId($actionId)
+        protected static function resolvePermissionOnSecurableItemByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             return (strpos($actionId, 'massDelete') === 0) ? Permission::DELETE : Permission::WRITE;
@@ -913,7 +1021,35 @@
         protected static function processModelForMassDelete(& $model)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            $model->delete(false);
+            if(!$model->delete(false))
+            {
+                throw new FailedToDeleteModelException();
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        protected static function processModelForMassEdit(& $model)
+        {
+            $postModelClassName             = Yii::app()->request->getPost(get_class($model));
+            $sanitizedPostData              = PostUtil::sanitizePostByDesignerTypeForSavingModel($model, $postModelClassName);
+            $sanitizedOwnerPostData         = PostUtil::sanitizePostDataToJustHavingElementForSavingModel($sanitizedPostData, 'owner');
+            $sanitizedPostDataWithoutOwner  = PostUtil::removeElementFromPostDataForSavingModel($sanitizedPostData, 'owner');
+            $model->setAttributes($sanitizedPostDataWithoutOwner);
+            if ($sanitizedOwnerPostData != null)
+            {
+                $model->setAttributes($sanitizedOwnerPostData);
+            }
+            if(!$model->save(false))
+            {
+                throw new FailedToSaveModelException();
+            }
+            else
+            {
+                return true;
+            }
         }
 
         protected static function resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId)
@@ -930,7 +1066,10 @@
         protected static function resolveProgressActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            return (strpos($actionId, 'Progress') !== false)? $actionId : $actionId . 'Progress';
+            $actionId = static::resolveMassActionId($actionId, false);
+            $actionId .= 'Progress';
+            $actionId = (strpos($actionId, 'massEdit') === 0)? $actionId . 'Save' : $actionId;
+            return $actionId;
         }
 
         protected static function resolveParamsForMassProgressView()
@@ -941,6 +1080,13 @@
                 'returnUrl'                             => static::resolveReturnUrlForMassAction(),
                 'returnMessage'                         => null,
             );
+        }
+
+        protected static function resolveMassActionId($actionId, $capitalizeFirst = true)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $actionId = str_replace(array('Progress', 'Save'), '', $actionId);
+            return ($capitalizeFirst)? ucfirst($actionId) : $actionId;
         }
     }
 ?>

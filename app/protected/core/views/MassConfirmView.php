@@ -30,8 +30,6 @@
     abstract class MassConfirmView extends MassActionView
     {
         // TODO: @Shoaibi/@Jason: Low: This class should be named to a verbose one
-        abstract protected function renderItemOperationType();
-
         abstract protected function renderSubmitButtonName();
 
         public static function getDefaultMetadata()
@@ -58,11 +56,6 @@
             return $metadata;
         }
 
-        protected function getSelectedRecordCount()
-        {
-            return $this->selectedRecordCount;
-        }
-
         protected function renderTitleContent()
         {
             return '<h1>' . $this->title . '</h1>';
@@ -81,14 +74,6 @@
             return null;
         }
 
-        protected function renderOperationDescriptionContent()
-        {
-            $highlight      = $this->renderOperationHighlight();
-            $message        = $this->renderOperationMessage();
-            $description    = $highlight . $message;
-            return ZurmoHtml::wrapLabel($description, 'operation-description');
-        }
-
         protected function renderOperationHighlight()
         {
             $highlightOperation = substr($this->title, 0, strpos($this->title, ':'));
@@ -100,26 +85,6 @@
                                                     Zurmo::t('Core', $highlightMessage)
                                                 )
                                 ) . ZurmoHtml::tag('br');
-        }
-
-        protected function renderOperationMessage()
-        {
-            $message  = $this->renderItemCount() .
-                        $this->renderItemLabel() .
-                        ' ' .
-                        $this->renderOperationConfirmationMessage();
-            return $message;
-        }
-
-        protected function renderOperationConfirmationMessage()
-        {
-            $confirmationMessage = 'selected for ' . $this->renderItemOperationType() . '.';
-            return Zurmo::t('Core', $confirmationMessage);
-        }
-
-        protected function renderItemCount()
-        {
-            return ZurmoHtml::tag('strong', array(), $this->selectedRecordCount) . '&#160;';
         }
 
         protected function renderItemLabel()

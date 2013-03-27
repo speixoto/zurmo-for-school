@@ -45,5 +45,10 @@
         {
             return 'subscription';
         }
+
+        protected function renderItemOperationMessageCategory()
+        {
+            return 'MarketingListsModule';
+        }
     }
 ?>

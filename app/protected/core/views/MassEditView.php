@@ -47,12 +47,19 @@
             return  $this->renderFormLayout($form) .$this->renderAfterFormLayout($form);
         }
 
-        protected function renderOperationDescriptionContent()
+        protected function renderOperationHighlight()
         {
-            $message = '<strong>' . $this->selectedRecordCount . '</strong>&#160;' .
-                    LabelUtil::getUncapitalizedRecordLabelByCount($this->selectedRecordCount) . ' ' .
-                    Zurmo::t('Core', 'selected for updating.');
-            return ZurmoHtml::wrapLabel($message, 'operation-description');
+            return null;
+        }
+
+        protected function renderItemOperationType()
+        {
+            return 'updating';
+        }
+
+        protected function renderItemLabel()
+        {
+            return LabelUtil::getUncapitalizedRecordLabelByCount($this->selectedRecordCount);
         }
 
         /**

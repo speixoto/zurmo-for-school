@@ -238,12 +238,12 @@
 
         protected static function processModelForMassSubscribe(& $model)
         {
-            static::processModelForMassSubscribeOrUnsubscribe($model, false);
+            return static::processModelForMassSubscribeOrUnsubscribe($model, false);
         }
 
         protected static function processModelForMassUnsubscribe(& $model)
         {
-            static::processModelForMassSubscribeOrUnsubscribe($model, true);
+            return static::processModelForMassSubscribeOrUnsubscribe($model, true);
         }
 
         protected static function processModelForMassSubscribeOrUnsubscribe(& $model, $unsubscribed)
@@ -252,6 +252,10 @@
             if (!$model->unrestrictedSave())
             {
                 throw new FailedToSaveModelException();
+            }
+            else
+            {
+                return true;
             }
         }
 
@@ -291,7 +295,7 @@
             }
         }
 
-        protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName)
+        protected static function resolveViewIdByMassActionId($actionId, $returnProgressViewName, $moduleName = null)
         {
             if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
             {

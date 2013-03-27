@@ -48,6 +48,12 @@
 
         abstract protected function renderPreActionElementBar($form);
 
+        abstract protected function renderItemLabel();
+
+        abstract protected function renderItemOperationType();
+
+        abstract protected function renderOperationHighlight();
+
         /**
          * Constructs a detail view specifying the controller as
          * well as the model that will have its mass delete displayed.
@@ -94,6 +100,45 @@
             $content .= $formEnd;
             $content .= '</div></div>';
             return $content;
+        }
+
+        protected function renderItemCount()
+        {
+            return ZurmoHtml::tag('strong', array(), $this->selectedRecordCount) . '&#160;';
+        }
+
+        protected function renderItemOperationMessage()
+        {
+            $message    = 'selected for ' . $this->renderItemOperationType() . '.';
+            $category   = $this->renderItemOperationMessageCategory();
+            return Zurmo::t($category, $message);
+        }
+
+        protected function renderItemOperationMessageCategory()
+        {
+            return 'Core';
+        }
+
+        protected function renderOperationMessage()
+        {
+            $message  = $this->renderItemCount() .
+                        $this->renderItemLabel() .
+                        ' ' .
+                        $this->renderItemOperationMessage();
+            return $message;
+        }
+
+        protected function renderOperationDescriptionContent()
+        {
+            $highlight      = $this->renderOperationHighlight();
+            $message        = $this->renderOperationMessage();
+            $description    = $highlight . $message;
+            return ZurmoHtml::wrapLabel($description, 'operation-description');
+        }
+
+        protected function getSelectedRecordCount()
+        {
+            return $this->selectedRecordCount;
         }
     }
 ?>
