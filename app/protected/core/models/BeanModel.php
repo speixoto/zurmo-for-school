@@ -318,6 +318,23 @@
         }
 
         /**
+         * @param $relation
+         * @return null|string
+         */
+        public static function getInferredRelationModelClassNamesForRelation($relation)
+        {
+            assert('is_string($relation)');
+            $metadata   = static::getMetadata();
+            foreach ($metadata as $modelClassName => $modelClassMetadata)
+            {
+                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
+                {
+                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
+                }
+            }
+        }
+
+        /**
          * Given an attribute return the column name.
          * @param string $attributeName
          * @return string

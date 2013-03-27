@@ -245,29 +245,14 @@
         public function getRelationModelClassName($relation)
         {
             assert('is_string($relation)');
+            if(null !== $relationModelClassName = self::getInferredRelationModelClassName($relation))
+            {
+                return $relationModelClassName;
+            }
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
-            /**
-            if(count($relationAndInferredOrViaData) == 4)
-            {
-                list($modelClassName, $notUsed, $notUsed2, $notUsed3) = $relationAndInferredOrViaData;
-                return $modelClassName;
-            }
-             * **/
-            if(count($relationAndInferredData) == 3)
-            {
-                list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
-                return $modelClassName;
-            }
-            /**
-            elseif(count($relationAndInferredOrViaData) == 2)
-            {
-                list($relation, $notUsed) = $relationAndInferredOrViaData;
-                return $this->model->getRelationModelClassName($relation);
-            }
-             * **/
-            elseif(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
+            if(count($relationAndInferredData) == 1 && isset($derivedRelations[$relation]))
             {
                 return $this->model->getDerivedRelationModelClassName($relation);
             }
@@ -278,6 +263,18 @@
             else
             {
                 throw new NotSupportedException();
+            }
+        }
+
+        public static function getInferredRelationModelClassName($relation)
+        {
+            assert('is_string($relation)');
+            $delimiter                       = FormModelUtil::DELIMITER;
+            $relationAndInferredData         = explode($delimiter, $relation);
+            if(count($relationAndInferredData) == 3)
+            {
+                list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
+                return $modelClassName;
             }
         }
 
@@ -726,7 +723,7 @@
          * @param string attribute
          * @return real model attribute name.  Parses for Inferred
          */
-        public function resolveRealAttributeName($attribute)
+        public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             $delimiter                       = FormModelUtil::DELIMITER;
@@ -1098,15 +1095,7 @@
         protected function getInferredRelationModelClassNamesForRelation($relation)
         {
             assert('is_string($relation)');
-            $attributes = array();
-            $metadata   = $this->model->getMetadata();
-            foreach ($metadata as $modelClassName => $modelClassMetadata)
-            {
-                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
-                {
-                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
-                }
-            }
+            return $this->model->getInferredRelationModelClassNamesForRelation($relation);
         }
 
         /**

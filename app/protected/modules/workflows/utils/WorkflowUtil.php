@@ -218,5 +218,28 @@
             $where = RedBeanModelDataProvider::makeWhere($modelClassName, $searchAttributeData, $joinTablesAdapter);
             return $modelClassName::getSubset($joinTablesAdapter, null, null, $where, null);
         }
+
+        public static function getInferredModelsByAtrributeAndModel($relation, $model)
+        {
+            assert('is_string($relation)');
+            $realAttributeName      = ModelRelationsAndAttributesToWorkflowAdapter::
+                                      resolveRealAttributeName($relation);
+            $relationModelClassName = ModelRelationsAndAttributesToWorkflowAdapter::
+                                      getInferredRelationModelClassName($relation);
+            $relatedModels          = array();
+            foreach($model->{$realAttributeName} as $item)
+            {
+                try
+                {
+                    $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($relationModelClassName);
+                    $relatedModels[]           = $item->castDown(array($modelDerivationPathToItem));
+                    break;
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
+            return $relatedModels;
+        }
     }
 ?>

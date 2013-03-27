@@ -114,6 +114,19 @@
                     }
                 }
             }
+            elseif($this->triggeredModel->getInferredRelationModelClassNamesForRelation(
+                        ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->action->relation)) !=  null)
+            {
+                foreach(WorkflowUtil::getInferredModelsByAtrributeAndModel($this->action->relation, $this->triggeredModel) as $relatedModel)
+                {
+                    self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredUser, $this->triggeredModel);
+                    $saved = $relatedModel->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                }
+            }
             elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
             {
                 foreach($this->triggeredModel->{$this->action->relation} as $relatedModel)
@@ -183,6 +196,21 @@
                 }
                 return false;
             }
+            elseif($model->getInferredRelationModelClassNamesForRelation(
+                ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($relation)) !=  null)
+            {
+                $relationModelClassName = ModelRelationsAndAttributesToWorkflowAdapter::
+                                          getInferredRelationModelClassName($relation);
+                $newModel               = new $relationModelClassName();
+                self::processActionAttributesForAction($this->action, $newModel, $this->triggeredUser, $this->triggeredModel);
+                $saved = $newModel->save();
+                if(!$saved)
+                {
+                    throw new FailedToSaveModelException();
+                }
+                $model->{ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($relation)}->add($newModel);
+                return true;
+            }
             elseif($model->$relation instanceof RedBeanMutableRelatedModels)
             {
                 $relationModelClassName = $model->getRelationModelClassName($relation);
@@ -227,6 +255,21 @@
                 $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
                 foreach($this->resolveDerivedModels($this->triggeredModel, $this->action->relation) as $relatedModel)
+                {
+                    if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))
+                    {
+                        $saved = $relatedModel->save();
+                        if(!$saved)
+                        {
+                            throw new FailedToSaveModelException();
+                        }
+                    }
+                }
+            }
+            elseif($this->triggeredModel->getInferredRelationModelClassNamesForRelation(
+                ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->action->relation)) !=  null)
+            {
+                foreach(WorkflowUtil::getInferredModelsByAtrributeAndModel($this->action->relation, $this->triggeredModel) as $relatedModel)
                 {
                     if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))
                     {

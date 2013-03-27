@@ -47,6 +47,7 @@
                     'workflowModelTestItem9'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'WorkflowModelTestItem9'),
                     'workflowModelTestItem9s'         => array(RedBeanModel::HAS_MANY,             'WorkflowModelTestItem9'),
                     'hasOne'                          => array(RedBeanModel::HAS_ONE,             'WorkflowModelTestItem'),
+                    'hasOne2'                         => array(RedBeanModel::HAS_ONE,             'WorkflowModelTestItem5'),
                 ),
                 'rules' => array(
                     array('name',  'type',   'type' => 'string'),

@@ -1036,15 +1036,7 @@
         protected function getInferredRelationModelClassNamesForRelation($relation)
         {
             assert('is_string($relation)');
-            $attributes = array();
-            $metadata   = $this->model->getMetadata();
-            foreach ($metadata as $modelClassName => $modelClassMetadata)
-            {
-                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
-                {
-                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
-                }
-            }
+            return $this->model->getInferredRelationModelClassNamesForRelation($relation);
         }
 
         /**

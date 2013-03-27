@@ -45,7 +45,6 @@
 
         public function testUpdateSelf()
         {
-            $this->fail();
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;
             $attributes                   = array('string' => array('shouldSetValue'    => '1',
@@ -412,6 +411,127 @@
             $this->assertEquals('some new model 2', $derivedModels[0]->hasOne->name);
             $deleted = $derivedModels[0]->delete();
             $this->assertTrue($deleted);
+        }
+
+        /**
+         * @depends testCreateRelatedDerivedsHasOneNonOwned
+         * Similar to a meeting updating its related contacts
+         */
+        public function testUpdateRelatedInferred()
+        {
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $action->relation             = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $attributes                   = array('string'   => array('shouldSetValue'    => '1',
+                                                  'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                  'value'    => 'a new derived name'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $inferredModel           = new WorkflowModelTestItem();
+            $inferredModel->lastName = 'lastName';
+            $inferredModel->string   = 'string';
+            $saved           = $inferredModel->save();
+            $this->assertTrue($saved);
+            $inferredModelId = $inferredModel->id;
+            $model = new WorkflowModelTestItem5();
+            $model->workflowItems->add($inferredModel);
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $this->assertEquals(1, $model->workflowItems->count());
+            $inferredModel->forget();
+            $inferredModel = WorkflowModelTestItem::getById($inferredModelId);
+            $this->assertEquals('a new derived name', $inferredModel->string);
+            $this->assertTrue($model->delete());
+        }
+
+        /**
+         * @depends testCreateRelatedDerivedsHasOneNonOwned
+         * Similar to a meeting updating its related contacts
+         */
+        public function testCreateInferred()
+        {
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
+            $action->relation             = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $attributes                   = array(  'string'   => array('shouldSetValue'    => '1',
+                                                        'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'    => 'a new derived name'),
+                                                    'lastName'   => array('shouldSetValue'    => '1',
+                                                        'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'    => 'a new last name'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $model = new WorkflowModelTestItem5();
+            $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $this->assertEquals(1, $model->workflowItems->count());
+            $this->assertEquals('a new derived name', $model->workflowItems[0]->string);
+            $this->assertTrue($model->id > 0);
+            $this->assertTrue($model->delete());
+        }
+
+        /**
+         * @depends testCreateInferred
+         * Similar to a meeting updating its related contacts
+         */
+        public function testCreateRelatedHasOnesInferredNonOwned()
+        {
+            $this->assertEquals(0, count(WorkflowModelTestItem5::getAll()));
+            $action                         = new ActionForWorkflowForm('WorkflowModelTestItem9', Workflow::TYPE_ON_SAVE);
+            $action->type                   = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $action->relation               = 'hasOne2';
+            $action->relatedModelRelation   = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $attributes                   = array(  'string'   => array('shouldSetValue'    => '1',
+                                                    'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                    'value'    => 'a new derived name'),
+                                                    'lastName'   => array('shouldSetValue'    => '1',
+                                                        'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                        'value'    => 'a new last name'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $model = new WorkflowModelTestItem9();
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $relatedModel = new WorkflowModelTestItem5();
+            $saved = $relatedModel->save();
+            $this->assertTrue($saved);
+            $model->hasOne2 = $relatedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(0, $model->hasOne2->workflowItems->count());
+            $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $this->assertEquals(1, $model->hasOne2->workflowItems->count());
+            $this->assertEquals('a new derived name', $model->hasOne2->workflowItems[0]->string);
+        }
+
+        /**
+         * @depends testCreateRelatedHasOnesInferredNonOwned
+         * Similar to a meeting updating its related contacts
+         */
+        public function testCreateRelatedInferredsHasOneNonOwned()
+        {
+            $action                         = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
+            $action->type                   = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $action->relation               = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $action->relatedModelRelation   = 'hasOne';
+            $attributes                     = array('name'   => array('shouldSetValue'    => '1',
+                                                    'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                    'value'  => 'some new model 2'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $model                  = new WorkflowModelTestItem5();
+            $relatedModel           = new WorkflowModelTestItem();
+            $relatedModel->lastName = 'lastName';
+            $relatedModel->string   = 'string';
+            $saved                  = $relatedModel->save();
+            $this->assertTrue($saved);
+            $model->workflowItems->add($relatedModel);
+            $saved                  = $model->save();
+            $this->assertTrue($saved);
+            $this->assertTrue($model->workflowItems[0]->hasOne->id < 0);
+            $helper = new WorkflowActionProcessingHelper($action, $model, Yii::app()->user->userModel);
+            $helper->processNonUpdateSelfAction();
+            $this->assertTrue($model->workflowItems[0]->hasOne->id > 0);
+            $this->assertEquals('some new model 2', $model->workflowItems[0]->hasOne->name);
         }
     }
 ?>
