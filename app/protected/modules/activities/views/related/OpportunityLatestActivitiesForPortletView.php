@@ -25,47 +25,38 @@
      ********************************************************************************/
 
     /**
-     * Element used to allow user to delete a notification.  Utilized from the list view only.
+     * Wrapper view for displaying an opportunity's latest activities feed.
      */
-    class DeleteNotificationElement extends Element implements DerivedElementInterface
+    class OpportunityLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
-        protected function renderEditable()
+        public static function getDefaultMetadata()
         {
-            throw NotSupportedException();
+            $metadata = parent::getDefaultMetadata();
+            return array_merge($metadata, array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'                   => 'CreateConversationFromRelatedListLink',
+                                  'routeParameters'         =>
+                                    array('relationAttributeName'    => 'notUsed',
+                                            'relationModelClassName' => 'Opportunity',
+                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
+                                            'relationModuleId'       => 'opportunities',
+                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
+                        ),
+                    ),
+                ),
+            )));
         }
 
-        protected function renderControlEditable()
+        public function getLatestActivitiesViewClassName()
         {
-            throw NotSupportedException();
+            return 'LatestActivitiesForOpportunityListView';
         }
 
-        /**
-         * Todo: implement.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
+        public static function hasRollupSwitch()
         {
-            throw NotImplementedException();
-        }
-
-        protected function renderLabel()
-        {
-            return Zurmo::t('NotificationsModule', 'Delete Notification');
-        }
-
-        public static function getDisplayName()
-        {
-            return Zurmo::t('NotificationsModule', 'Delete Notification');
-        }
-
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element.
-         * @return array of model attributeNames used.
-         */
-        public static function getModelAttributeNames()
-        {
-            return array();
+            return true;
         }
     }
 ?>

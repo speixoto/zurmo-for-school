@@ -86,6 +86,13 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
+            if($eventName == "Item Viewed")
+            {
+                AuditEventsRecentlyViewedUtil::
+                        resolveNewRecentlyViewedModel($data[1],
+                                                      $model,
+                                                      AuditEventsRecentlyViewedUtil::RECENTLY_VIEWED_COUNT);
+            }
             if (!AuditEvent::$isTableOptimized && (!AUDITING_OPTIMIZED || !RedBeanDatabase::isFrozen()))
             {
                 $tableName  = self::getTableName('AuditEvent');

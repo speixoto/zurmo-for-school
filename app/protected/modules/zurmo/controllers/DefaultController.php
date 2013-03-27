@@ -349,7 +349,7 @@
                 echo CJSON::encode(null);
             }
         }
-        
+
         public function actionUploadLogo($filesVariableName)
         {
             assert('is_string($filesVariableName)');

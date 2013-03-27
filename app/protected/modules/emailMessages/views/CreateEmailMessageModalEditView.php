@@ -162,7 +162,7 @@
                     'url'  => Yii::app()->createUrl($moduleId . '/' . $controllerId . '/' . $actionSave, GetUtil::getData()),
                     'complete' => "function(XMLHttpRequest, textStatus){\$('#modalContainer').dialog('close');
                         //find if there is a latest activities portlet
-                        $('.LatestActivtiesForPortletView').each(function()
+                        $('.LatestActivitiesForPortletView').each(function()
                         {
                             $(this).find('.pager').find('.refresh').find('a').click();
                         });}"

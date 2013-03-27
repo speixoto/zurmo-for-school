@@ -24,40 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Wrapper view for displaying an account's latest activities feed.
-     */
-    class AccountLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class MashableInboxSummaryListViewColumnAdapter extends ListViewColumnAdapter
     {
-        public static function getDefaultMetadata()
+        public function renderGridViewData()
         {
-            $metadata = parent::getDefaultMetadata();
-            return array_merge($metadata, array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'                    => 'CreateConversationFromRelatedListLink',
-                                  'modelClassName'          => 'Conversation',
-                                  'routeParameters'         =>
-                                    array('relationAttributeName'    => 'notUsed',
-                                            'relationModelClassName' => 'Account',
-                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                            'relationModuleId'       => 'accounts',
-                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
-                        ),
-                    ),
-                ),
-            )));
-        }
-
-        public function getLatestActivitiesViewClassName()
-        {
-            return 'LatestActivitiesForAccountListView';
-        }
-
-        public static function hasRollupSwitch()
-        {
-            return true;
+            return array(
+                    'name' => 'summary',
+                    'header' => Zurmo::t('MashableInboxModule', 'Summary'),
+                    'type'  => 'raw',
+                    'value'  => 'MashableUtil::renderSummaryContent($data)',
+            );
         }
     }
 ?>

@@ -120,5 +120,48 @@
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $this->assertEquals(array('name', 'a'), $model->getListAttributesSelector()->getSelected());
         }
+
+        public function testResolveSortAttributeFromSourceData()
+        {
+            $dataCollection = $this->getCollectionData();
+            //Set the sort in $_GET to set the sticky key for it.
+            $_GET['AAA_sort'] = 'aaaMember';
+            $sortAttribute = $dataCollection->resolveSortAttributeFromSourceData('AAA');
+            $this->assertEquals('aaaMember', $sortAttribute);
+
+            unset($_GET['AAA_sort']);
+            $dataCollection->getModel()->sortAttribute = 'aaaMember2';
+            $sortAttribute = $dataCollection->resolveSortAttributeFromSourceData('AAA');
+            $this->assertEquals('aaaMember2', $sortAttribute);
+        }
+
+        public function testResolveSortDescendingFromSourceData()
+        {
+            $dataCollection = $this->getCollectionData();
+            //Set the sort in $_GET to set the sticky key for it.
+            $_GET['AAA_sort'] = 'aaaMember';
+            $sortDesc = $dataCollection->resolveSortDescendingFromSourceData('AAA');
+            $this->assertFalse($sortDesc);
+
+            $_GET['AAA_sort'] = 'aaaMember.desc';
+            $sortDesc = $dataCollection->resolveSortDescendingFromSourceData('AAA');
+            $this->assertTrue($sortDesc);
+
+            unset($_GET['AAA_sort']);
+            $dataCollection->getModel()->sortDescending = false;
+            $sortDesc = $dataCollection->resolveSortDescendingFromSourceData('AAA');
+            $this->assertFalse($sortDesc);
+
+            $dataCollection->getModel()->sortDescending = true;
+            $sortDesc = $dataCollection->resolveSortDescendingFromSourceData('AAA');
+            $this->assertTrue($sortDesc);
+        }
+
+        private function getCollectionData()
+        {
+            $searchModel    = new AAASavedDynamicSearchFormTestModel(new AAA(false));
+            $dataCollection	= new SavedSearchAttributesDataCollection($searchModel);
+            return $dataCollection;
+        }
     }
 ?>

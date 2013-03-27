@@ -25,39 +25,46 @@
      ********************************************************************************/
 
     /**
-     * Wrapper view for displaying an contact's latest activities feed.
+     * Form to help manage the mashable inbox
      */
-    class ContactLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class MashableInboxForm extends CFormModel
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            return array_merge($metadata, array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'                    => 'CreateEmailMessageFromRelatedListLink',
-                                  'modelClassName'          => 'EmailMessage',
-                                  'routeParameters'         =>
-                                    array(  'relatedModelClassName'  => 'Contact',
-                                            'relatedId'        =>
-                                                'eval:$this->params["relationModel"]->id',
-                                            'toAddress'        =>
-                                                'eval:$this->params["relationModel"]->primaryEmail->emailAddress')
-                        ),
-                    ),
-                ),
-            )));
-        }
+        /**
+         * Value to be used to signal that the filtering is for all models and not a specific one.
+         * @var string
+         */
+        const  FILTERED_BY_ALL = 'all';
 
-        public function getLatestActivitiesViewClassName()
-        {
-            return 'LatestActivitiesForContactListView';
-        }
+        const  FILTERED_BY_UNREAD = 'unread';
 
-        public static function hasRollupSwitch()
+        public $searchTerm;
+
+        public $filteredBy = self::FILTERED_BY_ALL;
+
+        public $optionForModel;
+
+        public $selectedIds;
+
+        public $massAction;
+
+        /**
+         * Models that implement the CombinedInboxInterface and the current user has
+         * rights to see, this array contains the model class names as the indexes and the translated model labels
+         * as the values.
+         * @var array
+         */
+        public $mashableModelClassNamesAndDisplayLabels;
+
+
+        public function rules()
         {
-            return true;
+            return array(
+                array('searchTerm',          'type',    'type' => 'string'),
+                array('filteredBy',          'type',    'type' => 'string'),
+                array('optionForModel',      'type',    'type' => 'string'),
+                array('selectedIds',         'type',    'type' => 'string'),
+                array('massAction',          'type',    'type' => 'string'),
+            );
         }
     }
 ?>

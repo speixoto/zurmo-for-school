@@ -157,7 +157,7 @@
                     'update' => '#' . $this->uniquePageId,
                     'complete' => "function(XMLHttpRequest, textStatus){
                         //find if there is a latest activities portlet
-                        $('.LatestActivtiesForPortletView').each(function(){
+                        $('.LatestActivitiesForPortletView').each(function(){
                             $(this).find('.pager').find('.refresh').find('a').click();
                         });}"
                 ));

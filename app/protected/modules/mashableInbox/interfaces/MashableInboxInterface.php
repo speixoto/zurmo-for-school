@@ -24,39 +24,8 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Wrapper view for displaying an opportunity's latest activities feed.
-     */
-    class OpportunityLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    interface MashableInboxInterface
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            return array_merge($metadata, array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'                   => 'CreateConversationFromRelatedListLink',
-                                  'routeParameters'         =>
-                                    array('relationAttributeName'    => 'notUsed',
-                                            'relationModelClassName' => 'Opportunity',
-                                            'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                            'relationModuleId'       => 'opportunities',
-                                            'redirectUrl'            => 'eval:Yii::app()->request->getRequestUri()')
-                        ),
-                    ),
-                ),
-            )));
-        }
-
-        public function getLatestActivitiesViewClassName()
-        {
-            return 'LatestActivitiesForOpportunityListView';
-        }
-
-        public static function hasRollupSwitch()
-        {
-            return true;
-        }
+        public static function getMashableInboxRulesType();
     }
 ?>

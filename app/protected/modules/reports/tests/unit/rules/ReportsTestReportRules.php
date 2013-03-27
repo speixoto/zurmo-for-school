@@ -49,7 +49,7 @@
                     'derivedAttributeTypes' =>
                         array('FullName'),
                     'availableOperatorsTypes' =>
-                        array('likeContactState' => ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
+                        array('likeContactState' => ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN),
                     'filterValueElementTypes' =>
                         array('likeContactState' => 'AllContactStatesStaticDropDownForWizardModel'),
                 )

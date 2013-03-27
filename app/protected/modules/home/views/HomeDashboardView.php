@@ -59,7 +59,7 @@
                                     'type' => 'MyUpcomingMeetingsCalendar',
                                 ),
                                 array(
-                                    'type' => 'AllLatestActivtiesForPortlet',
+                                    'type' => 'AllLatestActivitiesForPortlet',
                                 ),
                                 array(
                                     'type' => 'TasksMyList',

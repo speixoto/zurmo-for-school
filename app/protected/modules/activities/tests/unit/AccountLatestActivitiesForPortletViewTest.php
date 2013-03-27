@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-    * Test AccountLatestActivtiesForPortletView functions.
+    * Test AccountLatestActivitiesForPortletView functions.
     */
-    class AccountLatestActivtiesForPortletViewTest extends ZurmoBaseTest
+    class AccountLatestActivitiesForPortletViewTest extends ZurmoBaseTest
     {
         const CONFIG_KEY = 'rollup';
         protected static $accountLatestActivitiesPortletId = null;
@@ -42,7 +42,7 @@
             $portlet->position  = 5;
             $portlet->layoutId  = 'Test';
             $portlet->collapsed = true;
-            $portlet->viewType  = 'AccountLatestActivtiesForPortlet';
+            $portlet->viewType  = 'AccountLatestActivitiesForPortlet';
             $portlet->user      = $super;
             $portlet->save();
             static::$accountLatestActivitiesPortletId = $portlet->id;

@@ -33,38 +33,9 @@
 
         public function actionUserList()
         {
-            $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'listPageSize', get_class($this->getModule()));
-            $notification = new Notification(false);
-            $searchAttributes = array(
-                'owner'    => array('id' => Yii::app()->user->userModel->id)
-            );
-            $metadataAdapter = new SearchDataProviderMetadataAdapter(
-                $notification,
-                Yii::app()->user->userModel->id,
-                $searchAttributes
-            );
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter->getAdaptedMetadata(),
-                'Notification',
-                'RedBeanModelDataProvider',
-                'createdDateTime',
-                true,
-                $pageSize
-            );
-            $titleBarAndListView = new TitleBarAndListView(
-                                        $this->getId(),
-                                        $this->getModule()->getId(),
-                                        $notification,
-                                        'Notifications',
-                                        $dataProvider,
-                                        'NotificationsForUserListView',
-                                        NotificationsModule::getModuleLabelByTypeAndLanguage('Plural'),
-                                        array(),
-                                        false);
-            $view = new NotificationsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $titleBarAndListView));
-            echo $view->render();
+            $notificationsMashableInboxUrl  = Yii::app()->createUrl('mashableInbox/default/list',
+                                                                    array('modelClassName' => 'Notification'));
+            $this->redirect($notificationsMashableInboxUrl);
         }
 
         protected function resolveCanCurrentUserAccessDetailsAction($userId)

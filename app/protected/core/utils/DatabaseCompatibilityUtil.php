@@ -261,7 +261,7 @@
             assert('is_string($operatorType)');
             if (!SQLOperatorUtil::isValidOperatorTypeByValue($operatorType, $value))
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException('value: ' . $value . ' operator type: ' . $operatorType);
             }
             if (is_string($value))
             {

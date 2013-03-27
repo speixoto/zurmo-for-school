@@ -27,7 +27,7 @@
     /**
      * Wrapper view for displaying a user's latest activities feed.
      */
-    class UserLatestActivtiesForPortletView extends LatestActivtiesForPortletView
+    class UserLatestActivitiesForPortletView extends LatestActivitiesForPortletView
     {
        /**
          * Some extra assertions are made to ensure this view is used in a way that it supports.
@@ -48,7 +48,7 @@
         /**
          * Override to default to 'mine' instead of 'all' activities.
          * (non-PHPdoc)
-         * @see LatestActivtiesForPortletView::makeLatestActivitiesConfigurationForm()
+         * @see LatestActivitiesForPortletView::makeLatestActivitiesConfigurationForm()
          */
         protected function makeLatestActivitiesConfigurationForm()
         {
@@ -60,7 +60,7 @@
         /**
          * Override to ensure the user id is properly set in the Id parameter.
          * (non-PHPdoc)
-         * @see LatestActivtiesForPortletView::getPortletDetailsUrl()
+         * @see LatestActivitiesForPortletView::getPortletDetailsUrl()
          */
         protected function getPortletDetailsUrl()
         {

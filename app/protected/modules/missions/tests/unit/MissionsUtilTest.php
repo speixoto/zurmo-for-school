@@ -59,27 +59,27 @@
             $this->assertNotNull($content);
         }
 
-        public function testMarkUserHasReadLatestAndHasUserReadLatest()
+        public function testMarkUserHasReadLatestAndMarkHasUserUnreadLatest()
         {
             $super                              = User::getByUsername('super');
             Yii::app()->user->userModel         = $super;
             $steven                             = User::getByUsername('steven');
             $missions                           = Mission::getAll();
             $mission                            = $missions[0];
-            $mission->ownerHasReadLatest        = false;
-            $mission->takenByUserHasReadLatest  = false;
             $this->assertTrue($mission->save());
 
-            $this->assertEquals(0, $mission->ownerHasReadLatest);
-            $this->assertEquals(0, $mission->takenByUserHasReadLatest);
+            $this->assertEquals(1, MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertEquals(0, MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+
+            MissionsUtil::markUserHasUnreadLatest($mission, Yii::app()->user->userModel);
+            $missions = Mission::getAll();
+            $mission  = $missions[0];
             $this->assertEquals(0, MissionsUtil::hasUserReadMissionLatest($mission, $super));
             $this->assertEquals(0, MissionsUtil::hasUserReadMissionLatest($mission, $steven));
 
             MissionsUtil::markUserHasReadLatest($mission, Yii::app()->user->userModel);
             $missions = Mission::getAll();
             $mission  = $missions[0];
-            $this->assertEquals(1, $mission->ownerHasReadLatest);
-            $this->assertEquals(0, $mission->takenByUserHasReadLatest);
             $this->assertEquals(1, MissionsUtil::hasUserReadMissionLatest($mission, $super));
             $this->assertEquals(0, MissionsUtil::hasUserReadMissionLatest($mission, $steven));
 
@@ -87,10 +87,14 @@
             MissionsUtil::markUserHasReadLatest($mission, Yii::app()->user->userModel);
             $missions = Mission::getAll();
             $mission  = $missions[0];
-            $this->assertEquals(1, $mission->ownerHasReadLatest);
-            $this->assertEquals(1, $mission->takenByUserHasReadLatest);
             $this->assertEquals(1, MissionsUtil::hasUserReadMissionLatest($mission, $super));
             $this->assertEquals(1, MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+
+            MissionsUtil::markUserHasUnreadLatest($mission, Yii::app()->user->userModel);
+            $missions = Mission::getAll();
+            $mission  = $missions[0];
+            $this->assertEquals(1, MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertEquals(0, MissionsUtil::hasUserReadMissionLatest($mission, $steven));
         }
 
         public function testMakeActiveActionElementType()

@@ -766,7 +766,7 @@
             if ($this->emailSignatures->count() == 0)
             {
                 $emailSignature       = new EmailSignature();
-                $emailSignature->user = Yii::app()->user->userModel;
+                $emailSignature->user = $this;
                 $this->emailSignatures->add($emailSignature);
                 $this->save();
             }

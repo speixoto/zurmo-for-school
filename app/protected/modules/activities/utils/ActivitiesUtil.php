@@ -111,14 +111,7 @@
 
         protected static function resolveContentTemplate($template, $data)
         {
-            assert('is_string($template)');
-            assert('is_array($data)');
-            $preparedContent = array();
-            foreach ($data as $templateVar => $content)
-            {
-                $preparedContent["{" . $templateVar . "}"] = $content;
-            }
-            return strtr($template, $preparedContent);
+            return MashableUtil::resolveContentTemplate($template, $data);
         }
 
         public static function getActivityItemsModelClassNamesDataExcludingContacts()
