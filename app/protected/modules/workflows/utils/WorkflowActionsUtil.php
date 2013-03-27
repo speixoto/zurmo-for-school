@@ -34,20 +34,49 @@
          * Process any workflow actions that are updates to the passed in model.
          * @param Workflow $workflow
          * @param RedBeanModel $model
+         * @param User $triggeredUser
          */
-        public static function processBeforeSave(Workflow $workflow, RedBeanModel $model)
+        public static function processBeforeSave(Workflow $workflow,
+                                                 RedBeanModel $model,
+                                                 User $triggeredUser)
         {
-            //only do self-udpates, maybe do everything else post save?
+            foreach($workflow->getActions() as $action)
+            {
+                try
+                {
+                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredUser);
+                    $helper->processUpdateSelectAction();
+                }
+                catch(Exception $e)
+                {
+                    //todo: what to do?
+                }
+            }
         }
 
         /**
          * Process any workflow actions that are updating related models, or creating new models.
          * @param Workflow $workflow
          * @param RedBeanModel $model
+         * @param User $triggeredUser
+         * @throws NotSupportedException
          */
-        public static function processAfterSave(Workflow $workflow, RedBeanModel $model)
+        public static function processAfterSave(Workflow $workflow,
+                                                RedBeanModel $model,
+                                                User $triggeredUser)
         {
-            //do actions that are not self-upates
+            foreach($workflow->getActions() as $action)
+            {
+                try
+                {
+                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredUser);
+                    $helper->processNonUpdateSelfAction();
+                }
+                catch(Exception $e)
+                {
+                    //todo: what to do?
+                }
+            }
         }
     }
 ?>

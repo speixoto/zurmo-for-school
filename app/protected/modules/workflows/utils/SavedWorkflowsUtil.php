@@ -123,7 +123,7 @@
                     }
                     elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
                     {
-                        WorkflowActionsUtil::processBeforeSave($workflow, $model);
+                        WorkflowActionsUtil::processBeforeSave($workflow, $model, Yii::app()->user->userModel); //todo: change to triggered
                         $model->addWorkflowToProcessAfterSave($workflow);
                     }
                     else
@@ -151,7 +151,7 @@
                 }
                 elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
                 {
-                    WorkflowActionsUtil::processAfterSave($workflow, $model);
+                    WorkflowActionsUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel); //todo: change to triggered
                     WorkflowEmailMessagesUtil::processAfterSave($workflow, $model);
                 }
                 else

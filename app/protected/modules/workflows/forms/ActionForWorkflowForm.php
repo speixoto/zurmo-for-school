@@ -422,23 +422,31 @@
             return $passedValidation;
         }
 
-        protected function makeActionAttributeFormByAttribute($attribute)
+        /**
+         * Resolves the first relation if it exists for attributes such as primaryAddress___street2.  If the attribute
+         * is in fact a real non-related attribute, then it will return null.
+         * @param string attribute
+         * @return real model attribute name.  Parses for primaryAddress___street1 for example
+         * @throws NotSupportedException() if invalid $attribute string
+         */
+        public static function resolveFirstRelationName($attribute)
         {
             assert('is_string($attribute)');
-            $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
-            $resolvedModelClassName = static::resolveRealModelClassName($attribute, $this->_modelClassName,
-                                      $this->type, $this->relation, $this->relatedModelRelation);
-            return WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
-        }
-
-        /**
-         * @param $attributeName string
-         * @return string
-         */
-        protected static function resolveErrorAttributePrefix($attributeName)
-        {
-            assert('is_string($attributeName)');
-            return self::ACTION_ATTRIBUTES . '_' .  $attributeName . '_';
+            $delimiter                  = FormModelUtil::RELATION_DELIMITER;
+            $attributeAndRelationData   = explode($delimiter, $attribute);
+            if(count($attributeAndRelationData) == 2)
+            {
+                list($relation, $notUsed) =  $attributeAndRelationData;
+                return $relation;
+            }
+            elseif(count( $attributeAndRelationData) == 1)
+            {
+                return null;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
 
         /**
@@ -447,7 +455,7 @@
          * @return real model attribute name.  Parses for primaryAddress___street1 for example
          * @throws NotSupportedException() if invalid $attribute string
          */
-        protected static function resolveRealAttributeName($attribute)
+        public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             $delimiter                  = FormModelUtil::RELATION_DELIMITER;
@@ -476,6 +484,25 @@
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected function makeActionAttributeFormByAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            $resolvedAttributeName  = static::resolveRealAttributeName($attribute);
+            $resolvedModelClassName = static::resolveRealModelClassName($attribute, $this->_modelClassName,
+                                      $this->type, $this->relation, $this->relatedModelRelation);
+            return WorkflowActionAttributeFormFactory::make($resolvedModelClassName, $resolvedAttributeName);
+        }
+
+        /**
+         * @param $attributeName string
+         * @return string
+         */
+        protected static function resolveErrorAttributePrefix($attributeName)
+        {
+            assert('is_string($attributeName)');
+            return self::ACTION_ATTRIBUTES . '_' .  $attributeName . '_';
         }
 
         /**
