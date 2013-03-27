@@ -71,5 +71,21 @@
          {
              return 'bundle';
          }
+
+         //todo: not sure this is working correctly
+         protected function makeSearchAttributeData()
+         {
+             $searchAttributeData = array();
+             $searchAttributeData['clauses'] = array(
+                 1 => array(
+                     'attributeName'        => 'productTemplateBundleItems',
+                     'relatedAttributeName' => 'productTemplate',
+                     'operatorType'         => 'equals',
+                     'value'                => (int)$this->params['relationModel']->id,
+                 )
+             );
+             $searchAttributeData['structure'] = '1';
+             return $searchAttributeData;
+         }
      }
 ?>
