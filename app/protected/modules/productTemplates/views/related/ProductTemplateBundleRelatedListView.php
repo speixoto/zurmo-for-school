@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-     abstract class ProductTemplateBundleItemsRelatedListView extends SecuredRelatedListView
+     abstract class ProductTemplateBundleRelatedListView extends SecuredRelatedListView
      {
          public static function getDefaultMetadata()
          {
@@ -47,7 +47,7 @@
                              array('type'                      => 'RelatedUnlink',
                                    'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',
                                    'relationModelId'           => 'eval:$this->params["relationModel"]->id',
-                                   'relationModelRelationName' => 'productTemplates',
+                                   'relationModelRelationName' => 'productTemplateBundle',
                                    'userHasRelatedModelAccess' => 'eval:ActionSecurityUtil::canCurrentUserPerformAction( "Edit", $this->params["relationModel"])'),
                          ),
                      ),

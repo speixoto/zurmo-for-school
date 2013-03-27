@@ -246,6 +246,7 @@
             }
 
             $metadata = $this->getResolvedMetadata();
+           
             foreach ($metadata['global']['panels'] as $panel)
             {
                 foreach ($panel['rows'] as $row)
