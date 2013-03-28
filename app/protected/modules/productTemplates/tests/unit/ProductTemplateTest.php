@@ -148,6 +148,91 @@
             $this->assertEquals(400.54, $productTemplates[1]->listPrice->value);
         }
 
+        /**
+         * @depends testCreateAndGetProductTemplateById
+         */
+        public function testUpdateProductTemplateFromForm()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $user = User::getByUsername('Steven');
+            $currencies = Currency::getAll();
+            $currency   = $currencies[0];
+            $currency->save();
+            $postData = array(
+                'name'        => 'Editable Sell Price',
+                'description' => 'Template Description',
+                'status'      => ProductTemplate::STATUS_ACTIVE,
+                'type'        => ProductTemplate::TYPE_PRODUCT,
+                'sellPriceFormula' => array(
+                                                'type' => 1,
+                                                'discountOrMarkupPercentage' => 0
+                                            ),
+                'priceFrequency'   => ProductTemplate::PRICE_FREQUENCY_ANNUALLY,
+                'cost'             => array(
+                                                'currency' => array(
+                                                                       'id' => $currency->id
+                                                                    ),
+                                                  'value' => 240
+                                            ),
+                'listPrice'        => array(
+                                                'currency' => array(
+                                                                        'id' => $currency->id
+                                                                   ),
+                                                    'value' => 200
+                                            ),
+                'sellPrice'        => array(
+                                                'currency' => array(
+                                                                        'id' => $currency->id
+                                                                   ),
+                                                    'value' => 170
+                                            )
+            );
+
+            $controllerUtil   = new ZurmoControllerUtil();
+            $productTemplate = new ProductTemplate();
+            $savedSucessfully = false;
+            $modelToStringValue = null;
+            $productTemplate    = $controllerUtil->saveModelFromPost($postData, $productTemplate, $savedSucessfully,
+                                                                       $modelToStringValue);
+            $this->assertTrue($savedSucessfully);
+
+            $id = $productTemplate->id;
+            unset($productTemplate);
+            $productTemplate = ProductTemplate::getById($id);
+            $this->assertEquals('Editable Sell Price', $productTemplate->name);
+            $this->assertEquals(170, $productTemplate->sellPrice->value);
+            $this->assertEquals(240, $productTemplate->cost->value);
+            $this->assertEquals(200, $productTemplate->listPrice->value);
+        }
+
+        public function testDeleteProductTemplate()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(4, count($productTemplates));
+            $productTemplates[0]->delete();
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(3, count($productTemplates));
+            $productTemplates[0]->delete();
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(2, count($productTemplates));
+
+            $productTemplates[0]->delete();
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(1, count($productTemplates));
+
+            $productTemplates[0]->delete();
+        }
+
+        public function testGetAllWhenThereAreNone()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $productTemplates = ProductTemplate::getAll();
+            $this->assertEquals(0, count($productTemplates));
+        }
+
         protected function getCurrencyData()
         {
             $currencies                                 = Currency::getAll();
