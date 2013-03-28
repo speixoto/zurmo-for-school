@@ -172,20 +172,20 @@
             $personsToAddAsHaveNotReadLatest = array();
             if (parent::beforeSave())
             {
-                if ($this->comments->isModified() || $this->getIsNewModel())
+                if ($this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-                    $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
-                    foreach ($people as $person)
-                    {
-                        if(!in_array($person, $personsToAddAsHaveNotReadLatest))
-                        {
-                            $personsToAddAsHaveNotReadLatest[] = $person;
-                        }
-                    }
+                    $personsToAddAsHaveNotReadLatest = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
+                }
+                if (isset($this->originalAttributeValues['status']) &&
+                    $this->originalAttributeValues['status'] != $this->status &&
+                    $this->status == self::STATUS_TAKEN)
+                {
+                    MissionsUtil::markAllUserHasReadLatestExceptOwnerAndTakenBy($this);
                 }
                 if ($this->comments->isModified())
                 {
+                    $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                     foreach ($this->comments as $comment)
                     {
                         if ($comment->id < 0)
