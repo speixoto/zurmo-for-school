@@ -35,7 +35,7 @@
 
         const TYPE_STATIC_ROLE                              = 'StaticRole';
 
-        const TYPE_DYNAMIC_TRIGGERED_USER                   = 'DynamictriggeredByUser';
+        const TYPE_DYNAMIC_TRIGGERED_BY_USER                = 'DynamicTriggeredByUser';
 
         const TYPE_STATIC_USER                              = 'StaticUser';
 
@@ -131,7 +131,7 @@
                 DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_ROLE]                              =
                 StaticRoleWorkflowEmailAlertRecipientForm::getTypeLabel();
-            $data[static::TYPE_DYNAMIC_TRIGGERED_USER]                   =
+            $data[static::TYPE_DYNAMIC_TRIGGERED_BY_USER]                   =
                 DynamictriggeredByUserWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_USER]                              =
                 StaticUserWorkflowEmailAlertRecipientForm::getTypeLabel();

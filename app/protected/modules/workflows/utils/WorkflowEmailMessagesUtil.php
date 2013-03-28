@@ -35,7 +35,10 @@
             {
                 try
                 {
-                    self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredByUser);
+                    if($emailMessage->getEmailAlertRecipientFormsCount() > 0)
+                    {
+                        self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredByUser);
+                    }
                 }
                 catch(Exception $e)
                 {

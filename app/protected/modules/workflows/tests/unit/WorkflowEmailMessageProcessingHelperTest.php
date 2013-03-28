@@ -24,48 +24,28 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserTestHelper
+    class WorkflowEmailMessageProcessingHelperTest extends WorkflowBaseTest
     {
-        public static function createBasicUser($name)
+        protected static $superUserId;
+
+        protected static $bobbyUserId;
+
+        protected static $sarahUserId;
+
+        public static function setUpBeforeClass()
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            parent::setUpBeforeClass();
+            $super = User::getByUsername('super');
+            $bobby = UserTestHelper::createBasicUser('bobby');
+            $sarah = UserTestHelper::createBasicUser('sarah');
+            self::$superUserId = $super->id;
+            self::$bobbyUserId = $bobby->id;
+            self::$sarahUserId = $sarah->id;
         }
 
-        public static function createBasicUserWithManager($name, $manager)
+        public function testMethods()
         {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->manager = $manager;
-            $user->setPassword(strtolower($name));
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
-        }
-
-        public static function createBasicUserWithEmailAddress($name)
-        {
-            $user = new User();
-            $user->username     = strtolower($name);
-            $user->title->value = 'Mr.';
-            $user->firstName    = $name;
-            $user->lastName     = $name . 'son';
-            $user->setPassword(strtolower($name));
-            $user->primaryEmail = new Email();
-            $user->primaryEmail->emailAddress = $user->firstName . '@zurmo.com';
-            $saved = $user->save();
-            assert('$saved');
-            return $user;
+            //todo: not heavy testing, just coverage for lines since we have other tests to test logic and integration
         }
     }
 ?>

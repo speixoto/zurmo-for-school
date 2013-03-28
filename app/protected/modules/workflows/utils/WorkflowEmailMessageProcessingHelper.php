@@ -90,13 +90,14 @@
             {
                 throw new NotSupportedException();
             }
+            return $sender;
         }
 
         protected function resolveRecipients(EmailMessage $emailMessage)
         {
             foreach($this->emailMessageForm->getEmailAlertRecipients() as $emailAlertRecipient)
             {
-                foreach($emailAlertRecipient->makeRecipients($this->triggeredModel) as $recipient)
+                foreach($emailAlertRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
                 {
                     $emailMessage->recipients->add($recipient);
                 }

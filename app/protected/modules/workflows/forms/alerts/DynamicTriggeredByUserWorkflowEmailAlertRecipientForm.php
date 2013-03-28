@@ -27,7 +27,7 @@
     /**
      * Form to work with a triggered users for an email alert recipient
      */
-    class DynamictriggeredByUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class DynamicTriggeredByUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
     {
         public static function getTypeLabel()
         {

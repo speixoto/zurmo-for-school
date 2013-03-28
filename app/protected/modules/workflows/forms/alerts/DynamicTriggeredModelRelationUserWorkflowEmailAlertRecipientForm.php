@@ -70,22 +70,23 @@
                 {
                     if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
                     {
-                        $existingItemIds[] = $recipient->personOrAccount->getClassId('Item');
+                        $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
+                        $resolvedRecipients[] = $recipient;
                     }
                     else
                     {
                         throw new NotSupportedException();
                     }
                 }
-                $resolvedRecipients[] = $recipient;
             }
             foreach($newRecipients as $recipient)
             {
                 if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
                 {
-                    $existingItemIds[] = $recipient->personOrAccount->getClassId('Item');
+                    $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
+                    $resolvedRecipients[] = $recipient;
                 }
-                $resolvedRecipients[] = $recipient;
+
             }
             return $resolvedRecipients;
         }
@@ -134,12 +135,12 @@
             $modelClassName = $this->modelClassName;
             $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
             $recipients     = array();
-            if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->relation) &&
-                $this->triggeredModel->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
+            if($model->isADerivedRelationViaCastedUpModel($this->relation) &&
+                $model->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
                 foreach(WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
                 {
-                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
+                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
             elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
@@ -148,23 +149,26 @@
                 foreach(WorkflowUtil::
                         getInferredModelsByAtrributeAndModel($this->relation, $model) as $resolvedModel)
                 {
-                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
+                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels)
+            elseif($model->{$this->relation} instanceof RedBeanMutableRelatedModels)
             {
                 if(!$this->relationFilter == self::RELATION_FILTER_ALL)
                 {
                     throw new NotSupportedException();
                 }
-                foreach($this->triggeredModel->{$this->action->relation} as $resolvedModel)
+                foreach($model->{$this->relation} as $resolvedModel)
                 {
-                    $recipients = resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
+                    $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
             elseif($adapter->isRelationTypeAHasOneVariant())
             {
-                $recipients =parent::makeRecipients($model->{$this->relation}, $triggeredByUser);
+                if($model->{$this->relation}->id > 0)
+                {
+                    $recipients = parent::makeRecipients($model->{$this->relation}, $triggeredByUser);
+                }
             }
             else
             {
@@ -177,8 +181,8 @@
         {
             $modelClassName = $this->modelClassName;
             $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
-            if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->relation) &&
-                $this->triggeredModel->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
+            if($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
+               $modelClassName::getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
                 return $modelClassName::getDerivedRelationModelClassName($this->relation);
             }
@@ -187,7 +191,7 @@
             {
                 return ModelRelationsAndAttributesToWorkflowAdapter::getInferredRelationModelClassName($this->relation);
             }
-            elseif($this->triggeredModel->{$this->action->relation} instanceof RedBeanMutableRelatedModels ||
+            elseif($adapter->isRelationTypeAHasManyVariant() ||
                    $adapter->isRelationTypeAHasOneVariant())
             {
                 return $modelClassName::getRelationModelClassName($this->relation);

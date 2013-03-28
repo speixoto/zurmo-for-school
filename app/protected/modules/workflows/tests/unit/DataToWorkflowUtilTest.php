@@ -865,7 +865,7 @@
          *      to,cc,bcc
          *      roleId
          *
-         *  User who triggered process    TYPE_DYNAMIC_TRIGGERED_USER
+         *  User who triggered process    TYPE_DYNAMIC_TRIGGERED_BY_USER
          *      to,cc,bcc
          *
          *  A specific user               TYPE_STATIC_USER
@@ -921,7 +921,7 @@
                 array('type'              => WorkflowEmailAlertRecipientForm::TYPE_STATIC_ROLE,
                       'recipientType'     => EmailMessageRecipient::TYPE_CC,
                       'roleId'            => '5'),
-                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_USER,
+                array('type'              => WorkflowEmailAlertRecipientForm::TYPE_DYNAMIC_TRIGGERED_BY_USER,
                       'recipientType'     => EmailMessageRecipient::TYPE_BCC),
                 array('type'              => WorkflowEmailAlertRecipientForm::TYPE_STATIC_USER,
                       'recipientType'     => EmailMessageRecipient::TYPE_TO,
