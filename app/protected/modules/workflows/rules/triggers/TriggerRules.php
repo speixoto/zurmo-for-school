@@ -43,11 +43,13 @@
          * operator can be evaluated normally.
          * @param RedBeanModel $model
          * @param $attribute
+         * @param $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
          * @return bool
          */
-        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
+        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
-            if(array_key_exists($attribute, $model->originalAttributeValues))
+            assert('is_bool($changeRequiredToProcess)');
+            if(array_key_exists($attribute, $model->originalAttributeValues) || !$changeRequiredToProcess)
             {
                 if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
                 {

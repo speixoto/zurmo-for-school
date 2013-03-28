@@ -233,7 +233,6 @@
                 {
                     $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($relationModelClassName);
                     $relatedModels[]           = $item->castDown(array($modelDerivationPathToItem));
-                    break;
                 }
                 catch (NotFoundException $e)
                 {

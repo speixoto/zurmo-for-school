@@ -114,7 +114,7 @@
             foreach($savedWorkflows as $savedWorkflow)
             {
                 $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
-                if(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
+                if($workflow->getIsActive() && WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
                 {
                     if($workflow->getType() == Workflow::TYPE_BY_TIME)
                     {

@@ -32,11 +32,25 @@
 
         protected $triggeredByUser;
 
-        public function __construct(ActionForWorkflowForm $action, RedBeanModel $triggeredModel, User $triggeredByUser)
+        protected $canSaveTriggeredModel;
+
+        /**
+         * @param ActionForWorkflowForm $action
+         * @param RedBeanModel $triggeredModel
+         * @param User $triggeredByUser
+         * @param bool $canSaveTriggeredModel - when processing a @see ByTimeWorkflowInQueueJob the job will handle
+         * saving the model, so when creating new models as a result of an action, there is no need here to save the
+         * triggered model.  This parameter then would be set to false in that scenario.  Otherwise the triggered model
+         * will be saved when necessary since it is assumed it will not be saved after this execution.
+         */
+        public function __construct(ActionForWorkflowForm $action, RedBeanModel $triggeredModel, User $triggeredByUser,
+                                    $canSaveTriggeredModel = true)
         {
-            $this->action         = $action;
-            $this->triggeredModel = $triggeredModel;
-            $this->triggeredByUser  = $triggeredByUser;
+            assert('is_bool($canSaveTriggeredModel)');
+            $this->action                = $action;
+            $this->triggeredModel        = $triggeredModel;
+            $this->triggeredByUser       = $triggeredByUser;
+            $this->canSaveTriggeredModel = $canSaveTriggeredModel;
         }
 
         public function processUpdateSelectAction()
@@ -156,7 +170,7 @@
 
         protected function processCreateAction()
         {
-            if($this->resolveCreateModel($this->triggeredModel, $this->action->relation))
+            if($this->resolveCreateModel($this->triggeredModel, $this->action->relation) && $this->canSaveTriggeredModel)
             {
                 //todo: when calling save, we need to not trigger workflows on this model since we already are running them..
                 //todo: and test this

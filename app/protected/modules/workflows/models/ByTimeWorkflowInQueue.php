@@ -112,5 +112,23 @@
                 return $byTimeWorkflowInQueue;
             }
         }
+
+        public static function getModelsToProcess($pageSize)
+        {
+            assert('is_int($pageSize)');
+            $timeStamp = DateTimeUtil::convertTimestampToDbFormatDateTime(time());
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'processDateTime',
+                    'operatorType'         => 'lessThan',
+                    'value'                => $timeStamp,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('ByTimeWorkflowInQueue');
+            $where = RedBeanModelDataProvider::makeWhere('ByTimeWorkflowInQueue', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, $pageSize, $where, null);
+        }
     }
 ?>

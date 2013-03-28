@@ -29,6 +29,8 @@
      */
     class JobLogCleanupJob extends BaseJob
     {
+        protected static $pageSize = 1000;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -70,7 +72,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('JobLog');
             $where = RedBeanModelDataProvider::makeWhere('JobLog', $searchAttributeData, $joinTablesAdapter);
-            $jobLogModels = JobLog::getSubset($joinTablesAdapter, null, 1000, $where, null);
+            $jobLogModels = JobLog::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
             foreach ($jobLogModels as $jobLog)
             {
                 $jobLog->delete();

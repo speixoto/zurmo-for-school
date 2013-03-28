@@ -60,13 +60,15 @@
 
         private $timeTriggerAttribute;
 
-        private $timeTrigger                = array();
+        private $timeTrigger                       = array();
 
-        private $triggers                   = array();
+        private $triggers                          = array();
 
-        private $actions                    = array();
+        private $actions                           = array();
 
-        private $emailAlerts                = array();
+        private $emailAlerts                       = array();
+
+        private $timeTriggerRequireChangeToProcess = true;
 
         public static function getTypeDropDownArray()
         {
@@ -292,7 +294,7 @@
 
         public function getEmailAlerts()
         {
-        return $this->emailAlerts;
+            return $this->emailAlerts;
         }
 
         public function addEmailAlert(EmailAlertForWorkflowForm $emailAlert)
@@ -303,6 +305,20 @@
         public function removeAllEmailAlerts()
         {
             $this->emailAlerts   = array();
+        }
+
+        public function doesTimeTriggerRequireChangeToProcess()
+        {
+            return $this->timeTriggerRequireChangeToProcess;
+        }
+
+        /**
+         * When processing ByTime workflow in @see ByTimeWorkflowInQueueJob this should be changed to true
+         * so the time trigger can be evaluated correctly.
+         */
+        public function setTimeTriggerRequireChangeToProcessToTrue()
+        {
+            $this->timeTriggerRequireChangeToProcess = true;
         }
     }
 ?>

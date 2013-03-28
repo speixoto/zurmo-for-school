@@ -24,27 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class to help evaluate dateTime triggers against model values.
-     */
-    class DateTimeTriggerRules extends DateTriggerRules
+    class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
     {
-        /**
-         * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
-         * @param RedBeanModel $model
-         * @param $attribute
-         * @param $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
-         * @return bool
-         * @throws NotSupportedException
-         */
-        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
-        {
-            if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
-            {
-                throw new NotSupportedException();
-            }
-            return (array_key_exists($attribute, $model->originalAttributeValues)  || !$changeRequiredToProcess) &&
-                   (DateTimeUtil::isDateTimeValueNull($model, $attribute) === false);
-        }
+        //todo: test job. test use of chagneRequiredToProcess, make sure that carries through
+        //todo: test that time triggers do evaluate and work ok and actions/alerts are processed properly.
+        //focus on coverage not integration testing.
     }
 ?>

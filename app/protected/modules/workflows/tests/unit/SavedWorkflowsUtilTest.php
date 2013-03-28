@@ -216,6 +216,7 @@
         {
             $this->fail();
             //resolveBeforeSaveByRedBeanModel($model)
+            //todo: test isActive or not when processing.
         }
 
         /**

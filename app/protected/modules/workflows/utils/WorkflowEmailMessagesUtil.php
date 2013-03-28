@@ -47,6 +47,25 @@
             }
         }
 
+        public static function processOnWorkflowMessageInQueueJob(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
+        {
+            foreach($workflow->getEmailAlerts() as $emailMessage)
+            {
+                try
+                {
+                    if($emailMessage->getEmailAlertRecipientFormsCount() > 0)
+                    {
+                        $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredByUser);
+                        $helper->process();
+                    }
+                }
+                catch(Exception $e)
+                {
+                    //todo: what to do?
+                }
+            }
+        }
+
         protected static function processEmailMessageAfterSave(Workflow $workflow,
                                                                EmailAlertForWorkflowForm $emailMessage,
                                                                RedBeanModel $model,

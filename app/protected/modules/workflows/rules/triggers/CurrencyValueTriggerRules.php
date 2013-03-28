@@ -122,11 +122,12 @@
          * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
          * @param RedBeanModel $model
          * @param $attribute
+         * @param $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
          * @return bool
          */
-        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
+        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
-            if(array_key_exists('value', $model->{$attribute}->originalAttributeValues))
+            if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) || !$changeRequiredToProcess)
             {
                 if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
                 {

@@ -78,5 +78,32 @@
                 }
             }
         }
+
+        /**
+         * Process any workflow actions that are updates to the passed in model during the processing of any
+         * ByTimeWorkflowQueue models. @see ByTimeWorkflowInQueueJob.
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @throws FailedToSaveModelException
+         */
+        public static function processOnByTimeWorkflowInQueueJob(  Workflow $workflow,
+                                                                 RedBeanModel $model,
+                                                                 User $triggeredByUser)
+        {
+            foreach($workflow->getActions() as $action)
+            {
+                try
+                {
+                    $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser, false);
+                    $helper->processUpdateSelectAction();
+                    $helper->processNonUpdateSelfAction();
+                }
+                catch(Exception $e)
+                {
+                    //todo: what to do?
+                }
+            }
+        }
     }
 ?>

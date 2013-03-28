@@ -39,11 +39,34 @@
         {
             if($workflow->getType() == Workflow::TYPE_BY_TIME)
             {
-                return self::resolveByTimeTriggersAreTrueBeforeSave($workflow, $model);
+                return self::resolveByTimeTriggerIsTrueBeforeSave($workflow, $model);
             }
             elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
             {
                 return self::resolveTriggersAreTrueBeforeSave($workflow, $model);
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        /**
+         * Utilized during @see ByTimeWorkflowQueueJob to process workflows that are by-time
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @return bool|void
+         * @throws NotSupportedException
+         */
+        public static function areTriggersTrueOnByTimeWorkflowQueueJob(Workflow $workflow, RedBeanModel $model)
+        {
+            if($workflow->getType() == Workflow::TYPE_BY_TIME)
+            {
+                if(self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
+                {
+                    return self::resolveTriggersAreTrueBeforeSave($workflow, $model);
+                }
+                return false;
             }
             else
             {
@@ -99,8 +122,6 @@
             {
                 throw new NotSupportedException();
             }
-            $structureAsPHPString     = WorkflowTriggersUtil::resolveStructureToPHPString('1');
-            $dataToEvaluate           = array();
             return self::isTriggerTrueByModel($workflow, $workflow->getTimeTrigger(), $model);
         }
 
@@ -137,7 +158,7 @@
          * @param RedBeanModel $model
          * @return bool|void
          */
-        protected static function resolveByTimeTriggersAreTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
+        protected static function resolveByTimeTriggerIsTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
             if(self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
             {
@@ -222,7 +243,8 @@
             $triggerRules = TriggerRulesFactory::createTriggerRulesByTrigger($trigger);
             if($workflow->getType() == Workflow::TYPE_BY_TIME)
             {
-                return $triggerRules->evaluateTimeTriggerBeforeSave($model, $attribute);
+                return $triggerRules->evaluateTimeTriggerBeforeSave($model, $attribute,
+                       $workflow->doesTimeTriggerRequireChangeToProcess());
             }
             elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
             {

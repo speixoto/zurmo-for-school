@@ -108,16 +108,17 @@
          * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
          * @param RedBeanModel $model
          * @param $attribute
+         * @param $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
          * @return bool
          * @throws NotSupportedException
          */
-        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute)
+        public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
             if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
             {
                 throw new NotSupportedException();
             }
-            return array_key_exists($attribute, $model->originalAttributeValues) &&
+            return (array_key_exists($attribute, $model->originalAttributeValues)  || !$changeRequiredToProcess) &&
                    (DateTimeUtil::isDateValueNull($model, $attribute) === false);
         }
 
