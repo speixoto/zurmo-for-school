@@ -68,8 +68,18 @@
                     'operatorType'         => 'equals',
                     'value'                => Yii::app()->user->userModel->id
                 ),
+                3 => array(
+                    'attributeName'        => 'isClosed',
+                    'operatorType'         => 'isNull',
+                    'value'                => null
+                ),
+                4 => array(
+                    'attributeName'        => 'isClosed',
+                    'operatorType'         => 'equals',
+                    'value'                => 0
+                ),
             );
-            $searchAttributeData['structure'] = '1 or 2';
+            $searchAttributeData['structure'] = '(1 or 2) and (3 or 4)';
             return $searchAttributeData;
         }
 
@@ -94,9 +104,9 @@
             if ($filteredBy == MashableInboxForm::FILTERED_BY_UNREAD)
             {
                 $metadata['clauses'][1] = array(
-                            'attributeName'        => 'ownerHasReadLatest',
-                            'operatorType'         => 'doesNotEqual',
-                            'value'                => (bool)1
+                            'attributeName'    => 'ownerHasReadLatest',
+                            'operatorType'     => 'doesNotEqual',
+                            'value'            => (bool)1
                         );
                 $metadata['clauses'][2] = array(
                         'attributeName'        => 'conversationParticipants',
@@ -104,7 +114,18 @@
                         'operatorType'         => 'doesNotEqual',
                         'value'                => (bool)1
                     );
-                $metadata['structure'] = "(1 or 2)";
+                $metadata['clauses'][3] = array(
+                        'attributeName'        => 'conversationParticipants',
+                        'relatedAttributeName' => 'person',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->getClassId('Item')
+                );
+                $metadata['clauses'][4] = array(
+                        'attributeName'        => 'owner',
+                        'operatorType'         => 'equals',
+                        'value'                => Yii::app()->user->userModel->id
+                );
+                $metadata['structure'] = "(1 and 4) or(2 and 3)";
             }
             else
             {

@@ -491,7 +491,6 @@
             $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $conversation               = new Conversation();
             $conversation->owner        = $super;
-            $conversation->isClosed     = true;
             $conversation->subject      = "Test closed";
             $conversation->description  = "This is just to make the isClosed column in conversations table";
             $conversation->save();
@@ -499,30 +498,15 @@
             $this->assertEquals(2, count($conversations));
             $this->assertEquals($super->id, $conversations[0]->owner->id);
             //Conversation is opened
-            $this->setGetArray(array('type' => 1));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
-            $this->setGetArray(array('type' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->assertEquals(0, $conversations[0]->resolveIsClosedForNull());
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
             //Conversation is closed
-            $this->setGetArray(array('type' => 1));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
-            $this->setGetArray(array('type' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->assertEquals(1, $conversations[0]->resolveIsClosedForNull());
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
             //Conversation is Re-opened
-            $this->setGetArray(array('type' => 1));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
-            $this->setGetArray(array('type' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->assertEquals(0, $conversations[0]->resolveIsClosedForNull());
         }
 
         /**

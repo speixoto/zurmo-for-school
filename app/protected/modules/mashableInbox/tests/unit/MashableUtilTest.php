@@ -353,5 +353,59 @@
             $this->assertEquals('(1) and (((2 and 3) or (4 and 5)))', $mergedMetadata['structure']);
         }
 
+        public function testSaveSelectedOptionsAsStickyData()
+        {
+            $testData = array(
+                'optionForModel'    => 'aaaaa',
+                'filteredBy'        => 'bbbbb',
+                'searchTerm'        => 'ccccc');
+            $mashableInboxForm = new MashableInboxForm();
+            $mashableInboxForm->setAttributes($testData);
+            $key = MashableUtil::resolveKeyByModuleAndModel('MashableInboxModule', 'testClassName');
+            MashableUtil::saveSelectedOptionsAsStickyData($mashableInboxForm, 'testClassName');
+            $this->assertEquals($testData, StickyUtil::getDataByKey($key));
+
+            $testData2 = array(
+                'optionForModel'    => 'aaaaa',
+                'filteredBy'        => 'bbbbb',
+                'searchTerm'        => 'ccccc',
+                'selectedIds'       => 'ddddd',
+                'massAction'        => 'eeeee');
+            $mashableInboxForm = new MashableInboxForm();
+            $mashableInboxForm->setAttributes($testData);
+            StickyUtil::clearDataByKey($key);
+            MashableUtil::saveSelectedOptionsAsStickyData($mashableInboxForm, 'testClassName');
+            $this->assertEquals($testData, StickyUtil::getDataByKey($key));
+        }
+
+        public function testRestoreSelectedOptionsAsStickyData()
+        {
+            $key = MashableUtil::
+                        resolveKeyByModuleAndModel('MashableInboxModule', 'testClassName');
+            StickyUtil::clearDataByKey($key);
+            $mashableInboxForm = MashableUtil::
+                                    restoreSelectedOptionsAsStickyData('testClassName');
+            $mashableInboxFormForCompare = new MashableInboxForm();
+            $this->assertEquals($mashableInboxFormForCompare->attributes,
+                                $mashableInboxForm->attributes);
+            $testData = array(
+                'optionForModel'    => 'aaaaa',
+                'filteredBy'        => 'bbbbb',
+                'searchTerm'        => 'ccccc');
+            $key = MashableUtil::
+                        resolveKeyByModuleAndModel('MashableInboxModule', 'testClassName');
+            StickyUtil::clearDataByKey($key);
+            StickyUtil::setDataByKeyAndData($key, $testData);
+            $mashableInboxForm = MashableUtil::
+                                    restoreSelectedOptionsAsStickyData('testClassName');
+            $this->assertEquals($testData, array_intersect($testData, StickyUtil::getDataByKey($key)));
+        }
+
+        public function testResolveKeyByModuleAndModel()
+        {
+            $key = MashableUtil::resolveKeyByModuleAndModel('testModule', 'testClassName');
+            $this->assertEquals('testModule_testClassName', $key);
+        }
+
     }
 ?>
