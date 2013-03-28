@@ -27,5 +27,6 @@
     class WorkflowMessageInQueueJobTest extends WorkflowBaseTest
     {
         //todo:
+        //todo: test if a queue item relates to a workflow that was deleted. make sure exception handling is ok
     }
 ?>

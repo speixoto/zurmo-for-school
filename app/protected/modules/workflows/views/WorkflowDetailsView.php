@@ -30,6 +30,12 @@
         {
             $metadata = array(
                 'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'EditLink'),
+                            array('type' => 'WorkflowDeleteLink'),
+                        ),
+                    ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(

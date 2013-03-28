@@ -24,11 +24,12 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
+    class WorkflowDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        //todo: test job. test use of chagneRequiredToProcess, make sure that carries through
-        //todo: test that time triggers do evaluate and work ok and actions/alerts are processed properly.
-        //focus on coverage not integration testing.
-        //todo: test if a queue item relates to a workflow that was deleted. make sure exception handling is ok
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
+        {
+            $htmlOptions['confirm'] = Zurmo::t('WorkflowsModule', 'Are you sure you want to delete this workflow?');
+            return $htmlOptions;
+        }
     }
 ?>
