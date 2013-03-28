@@ -135,31 +135,31 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massEditProgressPageSize');
-            $productTemplate = new ProductTemplate(false);
+            $productCategory = new ProductCategory(false);
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductTemplatesSearchForm($productTemplate),
+                new ProductCategoriesSearchForm($productCategory),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductTemplatesSearchView');
+                'ProductCategoriesSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $productTemplate = $this->processMassEdit(
+            $productCategory = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
                 $selectedRecordCount,
-                'ProductTemplatesPageView',
-                $productTemplate,
+                'ProductCategoriesPageView',
+                $productCategory,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
             );
             $massEditView = $this->makeMassEditView(
-                $productTemplate,
+                $productCategory,
                 $activeAttributes,
                 $selectedRecordCount,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
             );
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $massEditView));
             echo $view->render();
         }
@@ -175,16 +175,16 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massEditProgressPageSize');
-            $productTemplate = new ProductTemplate(false);
+            $productCategory = new ProductCategory(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductTemplatesSearchForm($productTemplate),
+                new ProductCategoriesSearchForm($productCategory),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductTemplatesSearchView'
+                'ProductCategoriesSearchView'
             );
             $this->processMassEditProgressSave(
-                'ProductTemplate',
+                'ProductCategory',
                 $pageSize,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
@@ -209,32 +209,32 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massDeleteProgressPageSize');
-            $productTemplate = new ProductTemplate(false);
+            $productCategory = new ProductCategory(false);
 
             $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductTemplatesSearchForm($productTemplate),
+                new ProductCategoriesSearchForm($productCategory),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductTemplatesSearchView');
+                'ProductCategoriesSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $productTemplate = $this->processMassDelete(
+            $productCategory = $this->processMassDelete(
                 $pageSize,
                 $activeAttributes,
                 $selectedRecordCount,
-                'ProductTemplatesPageView',
-                $productTemplate,
+                'ProductCategoriesPageView',
+                $productCategory,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
             );
             $massDeleteView = $this->makeMassDeleteView(
-                $productTemplate,
+                $productCategory,
                 $activeAttributes,
                 $selectedRecordCount,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
             );
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
@@ -250,16 +250,16 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massDeleteProgressPageSize');
-            $productTemplate = new ProductTemplate(false);
+            $productCategory = new ProductCategory(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductTemplatesSearchForm($productTemplate),
+                new ProductCategoriesSearchForm($productCategory),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductTemplatesSearchView'
+                'ProductCategoriesSearchView'
             );
             $this->processMassDeleteProgress(
-                'ProductTemplate',
+                'ProductCategory',
                 $pageSize,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
@@ -278,118 +278,20 @@
 
         public function actionDelete($id)
         {
-            $productTemplate = ProductTemplate::GetById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productTemplate);
-            $productTemplate->delete();
+            $productCategory = ProductCatgeory::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productCategory);
+            $productCategory->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
 
         protected static function getSearchFormClassName()
         {
-            return 'ProductTemplatesSearchForm';
+            return 'ProductCategoriesSearchForm';
         }
 
         public function actionExport()
         {
-            $this->export('ProductTemplatesSearchView');
-        }
-
-        public function actionAutoCompleteAllProductCategoriesForMultiSelectAutoComplete($term)
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                            'autoCompleteListPageSize', get_class($this->getModule()));
-            $adapterName  = self::resolveProductCategoryStateAdapterByModulesUserHasAccessTo('ProductTemplatesModule',
-                                                                                        'ProductTemplatesModule',
-                                                                                         Yii::app()->user->userModel);
-            if ($adapterName === false)
-            {
-                $messageView = new AccessFailureView();
-                $view        = new AccessFailurePageView($messageView);
-                echo $view->render();
-                Yii::app()->end(0, false);
-            }
-            $productCategories = self::getProductCategoriesByPartialName($term, $pageSize, $adapterName);
-            $autoCompleteResults  = array();
-            foreach ($productCategories as $productCategory)
-            {
-                $autoCompleteResults[] = array(
-                    'id'   => $productCategory->id,
-                    'name' => self::renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $term)
-                );
-            }
-            echo CJSON::encode($autoCompleteResults);
-        }
-
-        public static function getProductCategoriesByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
-        {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('ProductCategory');
-            $metadata = array('clauses' => array(), 'structure' => '');
-            if ($stateMetadataAdapterClassName != null)
-            {
-                $stateMetadataAdapter = new $stateMetadataAdapterClassName($metadata);
-                $metadata = $stateMetadataAdapter->getAdaptedDataProviderMetadata();
-                $metadata['structure'] = '(' . $metadata['structure'] . ')';
-            }
-            $where  = RedBeanModelDataProvider::makeWhere('ProductCategory', $metadata, $joinTablesAdapter);
-            if ($where != null)
-            {
-                $where .= 'and';
-            }
-            $where .= self::getWherePartForPartialNameSearchByPartialName($partialName);
-            return ProductCategory::getSubset($joinTablesAdapter, null, $pageSize, $where, "productcategory.name");
-        }
-
-        protected static function getWherePartForPartialNameSearchByPartialName($partialName)
-        {
-            assert('is_string($partialName)');
-            return "      (productcategory.name      like '$partialName%') ";
-        }
-
-        public static function renderHtmlContentLabelFromProductCategoryAndKeyword($productCategory, $keyword)
-        {
-            assert('$productCategory instanceof ProductCategory && $productCategory->id > 0');
-            assert('$keyword == null || is_string($keyword)');
-
-            if ($productCategory->name != null)
-            {
-                return strval($productCategory) . '&#160&#160<b>'. '</b>';
-            }
-            else
-            {
-                return strval($productCategory);
-            }
-        }
-
-        public static function resolveProductCategoryStateAdapterByModulesUserHasAccessTo( $moduleClassNameFirstStates,
-                                                                                    $moduleClassNameLaterStates,
-                                                                                    $user)
-        {
-            assert('is_string($moduleClassNameFirstStates)');
-            assert('is_string($moduleClassNameLaterStates)');
-            assert('$user instanceof User && $user->id > 0');
-            $canAccessFirstStatesModule  = RightsUtil::canUserAccessModule($moduleClassNameFirstStates, $user);
-            $canAccessLaterStatesModule = RightsUtil::canUserAccessModule($moduleClassNameLaterStates, $user);
-            if ($canAccessFirstStatesModule && $canAccessLaterStatesModule)
-            {
-                return null;
-            }
-            elseif (!$canAccessFirstStatesModule && $canAccessLaterStatesModule)
-            {
-                $prefix = substr($moduleClassNameLaterStates, 0, strlen($moduleClassNameLaterStates) - strlen('Module'));
-                return $prefix . 'StateMetadataAdapter';
-            }
-            elseif ($canAccessFirstStatesModule && !$canAccessLaterStatesModule)
-            {
-                $prefix = substr($moduleClassNameFirstStates, 0, strlen($moduleClassNameFirstStates) - strlen('Module'));
-                return $prefix . 'StateMetadataAdapter';
-            }
-            else
-            {
-                return false;
-            }
+            $this->export('ProductCategoriesSearchView');
         }
     }
 ?>
