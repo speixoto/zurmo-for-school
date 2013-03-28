@@ -69,6 +69,11 @@
                     array('triggerOn',       	 'required'),
                     array('triggerOn',       	 'type',   'type' => 'string'),
                     array('triggerOn',       	 'length', 'max'  => 15),
+                ),
+                'elements' => array(
+                    'triggerOn'       => 'TriggerOnStaticDropDown',
+                    'type'            => 'WorkflowTypeStaticDropDown',
+                    'moduleClassName' => 'ModuleForWorkflowStaticDropDown',
                 )
             );
             return $metadata;

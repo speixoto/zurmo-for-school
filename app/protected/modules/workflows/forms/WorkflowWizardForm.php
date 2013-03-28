@@ -204,7 +204,7 @@
         /**
          * @return array
          */
-        public function getTriggerOnDataAndLabels()
+        public static function getTriggerOnDataAndLabels()
         {
             $baseCurrencyCode = Yii::app()->currencyHelper->getBaseCode();
             return array(

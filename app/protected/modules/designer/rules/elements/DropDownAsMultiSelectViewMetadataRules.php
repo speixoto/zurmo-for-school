@@ -29,6 +29,8 @@
         /**
          * Renders dropdowns as multi-select except for contact/lead state.  Temporary until attributes that
          * rely on 'states' such as LeadState or ContactState can allow for multi-select search.
+         * Also exlcludes elements that extend StaticDropDownFormElement since they do not carry the
+         * same characteristics to allow the attribute to be converted into a multiSelect
          */
         public static function resolveElementMetadata($elementInformation, & $elementMetadata)
         {
@@ -40,7 +42,8 @@
                 )
             {
                 if (!is_subclass_of($elementclassname, 'ContactStateDropDownElement') &&
-                    $elementclassname != 'ContactStateDropDownElement')
+                    $elementclassname != 'ContactStateDropDownElement' &&
+                    !is_subclass_of($elementclassname, 'StaticDropDownFormElement'))
                 {
                     $elementMetadata['type']     = 'DropDownAsMultiSelect';
                     $elementMetadata['addBlank'] = true;

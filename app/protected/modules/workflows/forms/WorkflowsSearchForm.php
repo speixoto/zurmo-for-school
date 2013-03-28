@@ -31,5 +31,12 @@
             return 'SavedWorkflow';
         }
 
+        /**
+         * @return array
+         */
+        public function getTriggerOnDataAndLabels()
+        {
+            return WorkflowWizardForm::getTriggerOnDataAndLabels();
+        }
     }
 ?>
