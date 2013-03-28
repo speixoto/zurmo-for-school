@@ -266,6 +266,12 @@
             ),
             'widgetFactory' => array(
                 'widgets' => array(
+                    'ZurmoJuiDateTimePicker' => array(
+                        'cssFile' => false,
+                    ),
+                    'ZurmoJuiDatePicker' => array(
+                        'cssFile' => false,
+                    ),
                     'EJuiDateTimePicker' => array(
                         'cssFile' => false,
                     ),
