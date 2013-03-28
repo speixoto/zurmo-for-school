@@ -48,7 +48,7 @@
 
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowModule', 'A person associated with the triggered record');
+            return Zurmo::t('WorkflowsModule', 'A person associated with the triggered record');
         }
 
         public function rules()

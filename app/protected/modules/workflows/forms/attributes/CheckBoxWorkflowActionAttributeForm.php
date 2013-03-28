@@ -45,7 +45,7 @@
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                           = array();
-            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowModule', 'As');
+            $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
             return $data;
         }
     }

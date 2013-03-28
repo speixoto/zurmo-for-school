@@ -91,22 +91,28 @@
             }
             echo $view->render();
         }
-/**
+
         public function actionDetails($id)
         {
-            $savedReport = static::getModelAndCatchNotFoundAndDisplayError('SavedReport', intval($id));
-            ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($savedReport), 'ReportsModule'), $savedReport);
-            $breadcrumbLinks         = array(strval($savedReport));
-            $breadCrumbView          = new ReportBreadCrumbView($this->getId(), $this->getModule()->getId(), $breadcrumbLinks);
-            $detailsAndRelationsView = $this->makeReportDetailsAndRelationsView($savedReport, Yii::app()->request->getRequestUri(),
-                                                                                $breadCrumbView);
-            $view = new ReportsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+            $savedWorkflow = static::getModelAndCatchNotFoundAndDisplayError('SavedWorkflow', intval($id));
+            ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedWorkflow);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
+                                      array(strval($savedWorkflow), 'WorkflowsModule'), $savedWorkflow);
+            $breadcrumbLinks         = array(strval($savedWorkflow));
+            $workflow                = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+            $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
+            $form = $workflowToWizardFormAdapter->makeFormByType();
+            $detailsView             = new WorkflowDetailsView($this->getId(), $this->getModule()->getId(), $form);
+            $view                    = new  WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
+                                            makeViewWithBreadcrumbsForCurrentUser(
+                                            $this,
+                                            $detailsView,
+                                            $breadcrumbLinks,
+                                            'WorkflowBreadCrumbView'));
             echo $view->render();
         }
-**/
+
         public function actionSelectType()
         {
             $breadcrumbLinks  = array(Zurmo::t('WorkflowsModule', 'Select Workflow Type'));

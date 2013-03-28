@@ -977,7 +977,7 @@
             $this->assertEquals('StaticRole',                $emailAlertRecipients[7]->type);
             $this->assertEquals(2,                           $emailAlertRecipients[7]->recipientType);
             $this->assertEquals(5,                           $emailAlertRecipients[7]->roleId);
-            $this->assertTrue($emailAlertRecipients[8] instanceof DynamictriggeredByUserWorkflowEmailAlertRecipientForm);
+            $this->assertTrue($emailAlertRecipients[8] instanceof DynamicTriggeredByUserWorkflowEmailAlertRecipientForm);
             $this->assertEquals('DynamictriggeredByUser',      $emailAlertRecipients[8]->type);
             $this->assertEquals(3,                           $emailAlertRecipients[8]->recipientType);
             $this->assertTrue($emailAlertRecipients[9] instanceof StaticUserWorkflowEmailAlertRecipientForm);

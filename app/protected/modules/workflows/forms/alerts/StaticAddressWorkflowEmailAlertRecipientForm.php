@@ -41,7 +41,7 @@
 
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowModule', 'A specific e-mail address');
+            return Zurmo::t('WorkflowsModule', 'A specific e-mail address');
         }
 
         public function rules()

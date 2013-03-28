@@ -178,7 +178,7 @@
             $content = null;
             if(count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0)
             {
-                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Required Fields'));
+                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Required Fields'));
             }
             foreach($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
@@ -187,7 +187,7 @@
             if(count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0 &&
                count($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX]) > 0)
             {
-                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowModule', 'Other Fields'));
+                $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Other Fields'));
             }
             foreach($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {

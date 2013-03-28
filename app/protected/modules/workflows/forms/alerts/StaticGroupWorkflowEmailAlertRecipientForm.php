@@ -36,7 +36,7 @@
 
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowModule', 'All users in a specific group');
+            return Zurmo::t('WorkflowsModule', 'All users in a specific group');
         }
 
         public function rules()

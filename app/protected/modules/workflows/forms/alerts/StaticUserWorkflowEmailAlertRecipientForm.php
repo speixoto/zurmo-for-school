@@ -37,7 +37,7 @@
 
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowModule', 'A specific user');
+            return Zurmo::t('WorkflowsModule', 'A specific user');
         }
 
         public function setUserId($value)

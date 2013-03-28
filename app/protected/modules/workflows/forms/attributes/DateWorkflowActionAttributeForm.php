@@ -108,11 +108,11 @@
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                                            = array();
-            $data[static::TYPE_STATIC]                       = Zurmo::t('WorkflowModule', 'Specifically on');
-            $data[self::TYPE_DYNAMIC_FROM_TRIGGERED_DATE]    = Zurmo::t('WorkflowModule', 'Dynamically From Triggered Date');
+            $data[static::TYPE_STATIC]                       = Zurmo::t('WorkflowsModule', 'Specifically on');
+            $data[self::TYPE_DYNAMIC_FROM_TRIGGERED_DATE]    = Zurmo::t('WorkflowsModule', 'Dynamically From Triggered Date');
             if(!$isCreatingNewModel)
             {
-                $data[self::TYPE_DYNAMIC_FROM_EXISTING_DATE] = Zurmo::t('WorkflowModule', 'Dynamically From Existing Date');
+                $data[self::TYPE_DYNAMIC_FROM_EXISTING_DATE] = Zurmo::t('WorkflowsModule', 'Dynamically From Existing Date');
             }
             return $data;
         }

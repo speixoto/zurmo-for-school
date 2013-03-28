@@ -36,7 +36,7 @@ class EmailTemplate extends OwnedSecurableItem
 
     public static function getModuleClassName()
     {
-        return 'WorkflowModule';
+        return 'WorkflowsModule';
     }
 
     public function __toString()

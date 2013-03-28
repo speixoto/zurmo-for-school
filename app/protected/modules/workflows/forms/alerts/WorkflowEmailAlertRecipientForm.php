@@ -132,7 +132,7 @@
             $data[static::TYPE_STATIC_ROLE]                              =
                 StaticRoleWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_DYNAMIC_TRIGGERED_BY_USER]                   =
-                DynamictriggeredByUserWorkflowEmailAlertRecipientForm::getTypeLabel();
+                DynamicTriggeredByUserWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_USER]                              =
                 StaticUserWorkflowEmailAlertRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_ADDRESS]                            =

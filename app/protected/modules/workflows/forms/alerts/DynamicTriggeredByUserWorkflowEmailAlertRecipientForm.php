@@ -31,7 +31,7 @@
     {
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowModule', 'User who triggered process');
+            return Zurmo::t('WorkflowsModule', 'User who triggered process');
         }
 
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)

@@ -168,7 +168,7 @@
 
         protected function renderRecipientSelectorContentAndWrapper()
         {
-            $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowModule', 'Recipients'));
+            $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
             $content     = ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
                            self::resolveRecipientTypeDataAndLabels(), $htmlOptions);

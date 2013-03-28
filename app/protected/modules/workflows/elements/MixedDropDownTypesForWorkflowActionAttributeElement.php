@@ -48,7 +48,7 @@
             $error        = $this->form->error($this->model, 'value',
                             array('inputID' => $this->getSecondValueEditableInputId()), true, true,
                             $this->getSecondValueEditableInputId());
-            return $inputContent . $error . ZurmoHtml::tag('span', array(), ' ' . Zurmo::t('WorkflowModule', 'value(s)'));
+            return $inputContent . $error . ZurmoHtml::tag('span', array(), ' ' . Zurmo::t('WorkflowsModule', 'value(s)'));
         }
     }
 ?>

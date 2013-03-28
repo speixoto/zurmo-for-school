@@ -104,10 +104,10 @@
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
             $data                           = array();
-            $data[static::TYPE_STATIC]                         = Zurmo::t('WorkflowModule', 'As');
+            $data[static::TYPE_STATIC]                         = Zurmo::t('WorkflowsModule', 'As');
             if(!$isCreatingNewModel)
             {
-                $data[self::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS] = Zurmo::t('WorkflowModule', 'Step Forward or Backward');
+                $data[self::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS] = Zurmo::t('WorkflowsModule', 'Step Forward or Backward');
             }
             return $data;
         }
