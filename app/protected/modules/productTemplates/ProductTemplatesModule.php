@@ -40,7 +40,7 @@
 
         public function getRootModelNames()
         {
-            return array('ProductTemplate');
+            return array('ProductTemplate', 'ProductCategory', 'ProductCatalog');
         }
 
         public static function getUntranslatedRightsLabels()

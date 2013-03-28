@@ -24,22 +24,44 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplateBundlesSearchForm extends OwnedSearchForm
+    class ProductCategoryDetailsView extends DetailsView
     {
-        public function rules()
+        public static function getDefaultMetadata()
         {
-            return array_merge(parent::rules(), array(
-            ));
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type'  => 'EditLink',      'renderType' => 'Details'),
+                        ),
+                    ),
+                    'nonPlaceableAttributeNames' => array(
+                        'owner',
+                    ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
+                    'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                    ),
+                ),
+            );
+            return $metadata;
         }
 
-        public function attributeLabels()
+        public function getTitle()
         {
-            return array_merge(parent::attributeLabels(), array(
-            ));
-        }
-
-        public function getAttributesMappedToRealAttributesMetadata()
-        {
+            return $this->model->name;
         }
     }
 ?>
