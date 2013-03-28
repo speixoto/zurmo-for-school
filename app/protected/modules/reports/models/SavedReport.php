@@ -75,6 +75,10 @@
                     array('type',       		 'required'),
                     array('type',       		 'type',   'type' => 'string'),
                     array('type',       		 'length', 'max'  => 15),
+                ),
+                'elements' => array(
+                    'type'            => 'ReportTypeStaticDropDown',
+                    'moduleClassName' => 'ModuleForReportStaticDropDown',
                 )
             );
             return $metadata;
