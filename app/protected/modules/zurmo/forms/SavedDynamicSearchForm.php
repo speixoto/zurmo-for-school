@@ -41,7 +41,9 @@
 
         public static function getNonSearchableAttributes()
         {
-            return array_merge(parent::getNonSearchableAttributes(), array('savedSearchId', 'savedSearchName', 'loadSavedSearchUrl'));
+            return array_merge(parent::getNonSearchableAttributes(), array('loadSavedSearchUrl', 'savedSearchId',
+                                                                           'savedSearchName', 'sortAttribute',
+                                                                           'sortDescending'));
         }
 
         public function rules()
