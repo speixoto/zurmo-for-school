@@ -167,7 +167,10 @@
 
         public static function deleteModelFromRecentlyViewed($moduleName, RedBeanModel $model)
         {
-            assert('strlen($moduleName) > 0 && is_int($model->id)');
+            if (!isset($model) || !isset($moduleName))
+            {
+                return;
+            }
             $newItem        = array($moduleName, $model->id, strval($model));
             $recentlyViewed = unserialize(ZurmoConfigurationUtil::
                                     getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
