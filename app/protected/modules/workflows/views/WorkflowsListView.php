@@ -30,6 +30,26 @@
     class WorkflowsListView extends SecuredListView
     {
         /**
+         * Override to set rowsAreSelectable to false
+         * @see ListView::__construct
+         */
+        public function __construct(
+            $controllerId,
+            $moduleId,
+            $modelClassName,
+            $dataProvider,
+            $selectedIds,
+            $gridIdSuffix = null,
+            $gridViewPagerParams = array(),
+            $listAttributesSelector = null
+        )
+        {
+            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, $selectedIds, $gridIdSuffix,
+                                $gridViewPagerParams, $listAttributesSelector);
+            $this->rowsAreSelectable = false;
+        }
+
+        /**
          * @return array
          */
         public static function getDefaultMetadata()
@@ -45,6 +65,15 @@
                     'panels' => array(
                         array(
                             'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'isActive', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                                 array('cells' =>
                                     array(
                                         array(

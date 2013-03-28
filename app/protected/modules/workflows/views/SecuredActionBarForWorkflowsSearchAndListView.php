@@ -41,6 +41,18 @@
                             array('type'  => 'CreateLink',
                                 'htmlOptions' => array('class' => 'icon-create'),
                             ),
+                            array(
+                                'type'            => 'ConversationsCreatedLink',
+                                'htmlOptions'     => array( 'class' => 'icon-conversations-created' )
+                            ),
+                            array(
+                                'type'            => 'ConversationsParticipantLink',
+                                'htmlOptions'     => array( 'class' => 'icon-conversations-participant' )
+                            ),
+                            array(
+                                'type'            => 'ConversationsClosedLink',
+                                'htmlOptions'     => array( 'class' => 'icon-conversations-closed' )
+                            ),
                         ),
                     ),
                 ),

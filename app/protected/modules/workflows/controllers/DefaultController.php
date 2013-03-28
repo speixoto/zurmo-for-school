@@ -63,12 +63,8 @@
                                               'listPageSize', get_class($this->getModule()));
             $savedWorkflow                    = new SavedWorkflow(false);
             $searchForm                     = new WorkflowsSearchForm($savedWorkflow);
-            $dataProvider                   = $this->resolveSearchDataProvider(
-                $searchForm,
-                $pageSize,
-                null,
-                'WorkflowsSearchView'
-            );
+            $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
+                                              'WorkflowsSearchView');
             $title           = Zurmo::t('WorkflowsModule', 'Workflows');
             $breadcrumbLinks = array(
                  $title,
