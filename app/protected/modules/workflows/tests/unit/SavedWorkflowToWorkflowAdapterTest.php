@@ -45,7 +45,7 @@
             $workflow->setIsActive       (true);
             $workflow->setOrder          (5);
             $workflow->setModuleClassName('WorkflowsTestModule');
-            $workflow->setName           ('myFirstReport');
+            $workflow->setName           ('myFirstWorkflow');
             $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW);
             $workflow->setType           (Workflow::TYPE_ON_SAVE);
             $workflow->setTriggersStructure('1 and 2 or 3');
@@ -83,18 +83,18 @@
             //todo: add Action, test that stringifiedModelValue does not get saved to SavedWorkflow
             //todo: add emailAlert
 
-            $savedReport = new SavedWorkflow();
-            $this->assertNull($savedReport->serializedData);
+            $savedWorkflow = new SavedWorkflow();
+            $this->assertNull($savedWorkflow->serializedData);
 
-            SavedWorkflowToWorkflowAdapter::resolveReportToSavedReport($workflow, $savedReport);
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
 
-            $this->assertEquals('WorkflowsTestModule',         $savedReport->moduleClassName);
-            $this->assertTrue($savedReport->isActive);
-            $this->assertEquals('myFirstReport',               $savedReport->name);
-            $this->assertEquals('aDescription',                $savedReport->description);
-            $this->assertEquals(5,                             $savedReport->order);
-            $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedReport->triggerOn);
-            $this->assertEquals(Workflow::TYPE_ON_SAVE,        $savedReport->type);
+            $this->assertEquals('WorkflowsTestModule',         $savedWorkflow->moduleClassName);
+            $this->assertTrue($savedWorkflow->isActive);
+            $this->assertEquals('myFirstWorkflow',               $savedWorkflow->name);
+            $this->assertEquals('aDescription',                $savedWorkflow->description);
+            $this->assertEquals(5,                             $savedWorkflow->order);
+            $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedWorkflow->triggerOn);
+            $this->assertEquals(Workflow::TYPE_ON_SAVE,        $savedWorkflow->type);
             $this->assertEquals('1 and 2 or 3',                $workflow->getTriggersStructure());
             $compareData = array('Triggers' => array(
                 array(
@@ -134,36 +134,36 @@
                     'currencyIdForValue'           => null,
                 ),
             ));
-            $unserializedData = unserialize($savedReport->serializedData);
+            $unserializedData = unserialize($savedWorkflow->serializedData);
             $this->assertEquals($compareData['Triggers'],                     $unserializedData['Triggers']);
             $this->assertEquals('1 and 2 or 3',                              $unserializedData['filtersStructure']);
-            $this->assertEquals(Report::CURRENCY_CONVERSION_TYPE_SPOT,       $unserializedData['currencyConversionType']);
+            $this->assertEquals(Workflow::CURRENCY_CONVERSION_TYPE_SPOT,       $unserializedData['currencyConversionType']);
             $this->assertEquals('CAD',                                       $unserializedData['spotConversionCurrencyCode']);
-            $saved = $savedReport->save();
+            $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
         }
 
         /**
-         * @depends testResolveReportToSavedReport
+         * @depends testResolveWorkflowToSavedWorkflow
          */
-        public function testMakeReportBySavedWorkflow()
+        public function testMakeWorkflowBySavedWorkflow()
         {
             //todo: add TimeTrigger and test timeTriggerAttribute gets populated correctly.
             //todo: add Action
             //todo: add emailAlert
 
-            $savedReports               = SavedReport::getAll();
-            $this->assertEquals           (1, count($savedReports));
-            $savedReport                = $savedReports[0];
-            $workflow                     = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
+            $savedWorkflows               = SavedWorkflow::getAll();
+            $this->assertEquals           (1, count($savedWorkflows));
+            $savedWorkflow                = $savedWorkflows[0];
+            $workflow                     = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
             $triggers                    = $workflow->getTriggers();
             $this->assertEquals    	      ('WorkflowsTestModule',         $workflow->getModuleClassName());
-            $this->assertEquals           ('myFirstReport',               $workflow->getName());
+            $this->assertEquals           ('myFirstWorkflow',               $workflow->getName());
             $this->assertEquals           ('aDescription',                $workflow->getDescription());
             $this->assertTrue             ($workflow->getIsActive());
             $this->assertEquals           (5,                             $workflow->getOrder());
             $this->assertEquals           (Workflow::TRIGGER_ON_NEW,      $workflow->getTriggerOn());
-            $this->assertEquals           (Report::TYPE_ROWS_AND_COLUMNS, $workflow->getType());
+            $this->assertEquals           (Workflow::TYPE_ROWS_AND_COLUMNS, $workflow->getType());
             $this->assertEquals           ('1 and 2 or 3',                $workflow->getTriggersStructure());
             $this->assertCount            (4, $triggers);
 
