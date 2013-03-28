@@ -14,3 +14,15 @@
         right:0 !important;
     }
 }
+
+@media screen and (max-width: 999px) {
+	.view-toolbar{
+		> a,
+		.parent > a {
+			padding-left: 10px;
+			&:before{
+				display: none;
+			}
+		}
+	}
+}
