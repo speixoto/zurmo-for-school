@@ -230,7 +230,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		padding-right: 10px;
 	}
 	
-	.nav-open{
+	.AppContainer .nav-open{
 		transform: translate3d(45px, 0, 0);
 		-webkit-transform: translate3d(45px, 0, 0);
 		//.b-shadow(-1px 0 15px 0 #ccc);
@@ -309,6 +309,7 @@ orientation : portrait // orientation: landscape    Target orientation
     }
 	
 	#RecentlyViewedView{
+		display: none;
 		h3, ul{
 			//display:none;
 		}
@@ -392,7 +393,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		width: 100%;
 	}
 
-	#right-side-edit-view-panel{
+	.right-side-edit-view-panel{
 		float:none;
 		width:100%;
 		position:relative;
@@ -416,7 +417,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		padding:0 10px;
 	}
 	#ConversationDetailsView{
-		#right-side-edit-view-panel{
+		.right-side-edit-view-panel{
 			display:none;
 		}
 	}
@@ -497,6 +498,15 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
+    /*dialog*/
+	.ui-dialog .ui-dialog-titlebar-close {
+		right: 5px;
+		top: 5px;
+	}
+
+	.ui-dialog{
+		width: 98%;
+	}
    
 
    /*closing media query bracket*/ 

@@ -677,15 +677,14 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
             var $this = $(this),
                 minHeight = $this.height(),
                 shadow = $('<div></div>').css({
-                    position:   'absolute',
-                    top: -10000,
-                    left: -10000,
-                    width: $(this).width(),
-                    fontSize: $this.css('fontSize'),
-                    fontFamily: $this.css('fontFamily'),
-                    lineHeight: $this.css('lineHeight'),
-                    resize: 'none'
-                }).addClass('shadow').appendTo(document.body),
+                    position   :   'absolute',
+                    visibility : 'hidden',
+                    width      : $(this).width(),
+                    fontSize   : $this.css('fontSize'),
+                    fontFamily : $this.css('fontFamily'),
+                    lineHeight : $this.css('lineHeight'),
+                    resize     : 'none'
+                }).addClass('shadow').appendTo($(this).parent()),
                 update = function () {
                     var t = this;
                     setTimeout(function () {
@@ -693,21 +692,16 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
                                 .replace(/>/g, '&gt;')
                                 .replace(/&/g, '&amp;')
                                 .replace(/\n/g, '<br/>&nbsp;');
-
                         if ($.trim(val) === '') {
                             val = 'a';
                         }
-
                         shadow.html(val);
-                        $(t).css('height', Math.max(shadow[0].offsetHeight + 15, minHeight));
+                        $(t).height(Math.max(shadow[0].offsetHeight + 15, minHeight));
                     }, 0);
                 };
-
             $this.change(update).keyup(update).keydown(update).focus(update);
             update.apply(this);
         });
-
         return this;
     };
-
 }(jQuery));
