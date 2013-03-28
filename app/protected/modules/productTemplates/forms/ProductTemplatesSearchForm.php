@@ -26,20 +26,6 @@
 
     class ProductTemplatesSearchForm extends OwnedSearchForm
     {
-        public function rules()
-        {
-            return array_merge(parent::rules(), array(
-            ));
-        }
 
-        public function attributeLabels()
-        {
-            return array_merge(parent::attributeLabels(), array(
-            ));
-        }
-
-        public function getAttributesMappedToRealAttributesMetadata()
-        {
-        }
     }
 ?>

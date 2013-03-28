@@ -80,13 +80,14 @@
         {
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ProductTemplatesSearchView', $productTemplate);
-            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplate, 'ProductTemplatesModule',
-                                                                          'ProductTemplateDetailsAndRelationsView',
-                                                                          Yii::app()->request->getRequestUri(),
-                                                                          $breadCrumbView);
+//            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ProductTemplatesSearchView', $productTemplate);
+            $detailsView           = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
+//            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplate, 'ProductTemplatesModule',
+//                                                                          'ProductTemplateDetailsAndRelationsView',
+//                                                                          Yii::app()->request->getRequestUri(),
+//                                                                          $breadCrumbView);
             $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
+                                         makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
         }
 

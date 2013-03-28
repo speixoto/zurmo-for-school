@@ -44,7 +44,8 @@
                             array(
                                 'rows' => array(
                                     array(
-                                        'type' => 'ProductTemplateBundleItemsForProductTemplateRelatedList'
+                                        //TODO Need to ask Jason for it
+                                        'type' => 'NoteInlineEditForPortlet'
                                     )
                                 )
                             )

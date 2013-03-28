@@ -32,12 +32,17 @@
             $type = $sellPriceFormulaModel->type;
             $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
             $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $content = $displayedSellPriceFormulaList[$type];
-
-            if($type != SellPriceFormula::TYPE_EDITABLE)
+            $content = '';
+            if($type != null)
             {
-                $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
+                $content = $displayedSellPriceFormulaList[$type];
+
+                if($type != SellPriceFormula::TYPE_EDITABLE)
+                {
+                    $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
+                }
             }
+            
             return $content;
         }
 

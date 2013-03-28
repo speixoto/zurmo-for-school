@@ -112,7 +112,6 @@
                 ),
                 'relations' => array(
                     'products'                  => array(RedBeanModel::MANY_MANY, 'Product'),
-                    'productTemplateBundleItem' => array(RedBeanModel::HAS_ONE,   'ProductTemplateBundleItem'),
                     'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
                     'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
                     'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
