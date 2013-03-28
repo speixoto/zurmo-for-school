@@ -9412,6 +9412,18 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
 }
+.LatestActivitiesForPortletView {
+  position: relative;
+}
+.LatestActivitiesForPortletView > div {
+  position: relative;
+  z-index: 1;
+}
+.LatestActivitiesForPortletView .toolbar-mbmenu {
+  position: absolute;
+  top: -35px;
+  z-index: 10;
+}
 .LatestActivitiesListView form,
 .LatestActivitiesView form {
   position: relative;
