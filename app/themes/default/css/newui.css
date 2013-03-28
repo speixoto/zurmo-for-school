@@ -6689,6 +6689,7 @@ td.empty {
   line-height: 135%;
   text-indent: 0;
   padding: 4px;
+  word-break: normal;
 }
 .form select.multiple {
   padding: 4px 4px 4px 6px;
@@ -9410,6 +9411,18 @@ div.hasHalfs .twoThirds {
   font-size: 42px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
+}
+.LatestActivitiesForPortletView {
+  position: relative;
+}
+.LatestActivitiesForPortletView > div {
+  position: relative;
+  z-index: 1;
+}
+.LatestActivitiesForPortletView .toolbar-mbmenu {
+  position: absolute;
+  top: -35px;
+  z-index: 10;
 }
 .LatestActivitiesListView form,
 .LatestActivitiesView form {
