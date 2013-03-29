@@ -25,39 +25,38 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the workflow search and list user interface. Provides buttons like export and update
+     * Display the details of a WorkflowMessageInQueue model
      */
-    class SecuredActionBarForWorkflowsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class WorkflowMessageInQueueSummaryElement extends Element implements DerivedElementInterface
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        protected function renderEditable()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'WorkflowsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
-                            ),
-                            array(
-                                'type'            => 'ByTimeWorkflowInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
-                            ),
-                            array(
-                                'type'            => 'WorkflowMessageInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            throw NotSupportedException();
+        }
+
+        protected function renderControlEditable()
+        {
+            throw NotSupportedException();
+        }
+
+        protected function renderControlNonEditable()
+        {
+            throw NotSupportedException();
+        }
+
+        protected function renderLabel()
+        {
+            return Zurmo::t('WorkflowsModule', 'Details');
+        }
+
+        public static function getDisplayName()
+        {
+            return Zurmo::t('WorkflowsModule', 'Message Queue Item Summary');
+        }
+
+        public static function getModelAttributeNames()
+        {
+            return array();
         }
     }
 ?>

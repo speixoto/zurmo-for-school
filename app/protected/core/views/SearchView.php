@@ -33,6 +33,8 @@
 
         protected $hideAllSearchPanelsToStart;
 
+        protected $showAdvancedSearch = true;
+
         /**
          * Constructs a detail view specifying the controller as
          * well as the model that will have its details displayed.
@@ -110,7 +112,7 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink        = ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = $this->resolveMoreSearchOptionsLinkContent();
             $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
@@ -132,6 +134,15 @@
             $content .= '</div>';
             return $content;
         }
+
+        protected function resolveMoreSearchOptionsLinkContent()
+        {
+            if($this->showAdvancedSearch)
+            {
+                return ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            }
+        }
+
 
         protected function getClearSearchLabelPrefixContent()
         {
@@ -253,7 +264,7 @@
             $maxCellsPerRow  = $this->getMaxCellsPerRow();
             $content         = "";
             $content        .= $this->renderSummaryCloneContent();
-            assert('count($metadata["global"]["panels"]) == 2');
+            assert('count($metadata["global"]["panels"]) == 2 || count($metadata["global"]["panels"]) == 1');
             foreach ($metadata['global']['panels'] as $key => $panel)
             {
                 $startingDivStyle = "";

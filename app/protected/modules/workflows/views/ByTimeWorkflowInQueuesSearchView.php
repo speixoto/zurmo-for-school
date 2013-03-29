@@ -25,10 +25,12 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the workflow search and list user interface. Provides buttons like export and update
+     * View for showing a search panel to create a filtered list of ByTimeWorkflowInQueue models
      */
-    class SecuredActionBarForWorkflowsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ByTimeWorkflowInQueuesSearchView extends SearchView
     {
+        protected $showAdvancedSearch = false;
+
         /**
          * @return array
          */
@@ -36,28 +38,38 @@
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'WorkflowsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
-                            ),
-                            array(
-                                'type'            => 'ByTimeWorkflowInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
-                            ),
-                            array(
-                                'type'            => 'WorkflowMessageInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
+                    'nonPlaceableAttributeNames' => array(
+                        'serializedData',
+                    ),
+                    'panels' => array(
+                        array(
+                            'locked' => true,
+                            'title'  => 'Basic Search',
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'anyMixedAttributes',
+                                                      'type' => 'AnyMixedAttributesSearch', 'wide' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
                             ),
                         ),
                     ),
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * @return string
+         */
+        public static function getModelForMetadataClassName()
+        {
+            return 'ByTimeWorkflowInQueuesSearchForm';
         }
     }
 ?>

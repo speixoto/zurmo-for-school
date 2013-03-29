@@ -98,9 +98,51 @@
             return $this->name;
         }
 
-        public function getActiveByModuleClassNameAndIsNewModel($moduleClassName, $isNewModel)
+        public static function getActiveByModuleClassNameAndIsNewModel($moduleClassName, $isNewModel)
         {
-            return array();
+            assert('is_string($moduleClassName)');
+            assert('is_bool($isNewModel)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'moduleClassName',
+                    'operatorType'         => 'equals',
+                    'value'                => $moduleClassName,
+                ),
+                2 => array(
+                    'attributeName'        => 'isActive',
+                    'operatorType'         => 'equals',
+                    'value'                => true,
+                ),
+                3 => array(
+                    'attributeName'        => 'triggerOn',
+                    'operatorType'         => 'equals',
+                    'value'                => Workflow::TRIGGER_ON_NEW_AND_EXISTING
+                ),
+                4 => array(
+                    'attributeName'        => 'triggerOn',
+                    'operatorType'         => 'equals',
+                    'value'                => self::resolveExtraTriggerOnValueByIsNewModel($isNewModel)
+                ),
+                //todo: triggerOn by isNewModel
+            );
+            $searchAttributeData['structure'] = '1 AND 2 AND (3 OR 4)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedWorkflow');
+            $where = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where, null);
+        }
+
+        protected static function resolveExtraTriggerOnValueByIsNewModel($isNewModel)
+        {
+            assert('is_bool($isNewModel)');
+            if($isNewModel)
+            {
+                return Workflow::TRIGGER_ON_NEW;
+            }
+            else
+            {
+                return Workflow::TRIGGER_ON_EXISTING;
+            }
         }
     }
 ?>

@@ -24,40 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Action bar view for the workflow search and list user interface. Provides buttons like export and update
-     */
-    class SecuredActionBarForWorkflowsSearchAndListView extends SecuredActionBarForSearchAndListView
+    class ByTimeWorkflowInQueueSummaryListViewColumnAdapter extends ListViewColumnAdapter
     {
-        /**
-         * @return array
-         */
-        public static function getDefaultMetadata()
+        public function renderGridViewData()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array(
-                                'type'            => 'WorkflowsLink',
-                                'htmlOptions'     => array( 'class' => 'icon-workflows' )
-                            ),
-                            array(
-                                'type'            => 'ByTimeWorkflowInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-time-workflow-in-queues' )
-                            ),
-                            array(
-                                'type'            => 'WorkflowMessageInQueuesLink',
-                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
-                            ),
-                        ),
-                    ),
-                ),
+            return array(
+                    'name' => 'summary',
+                    'header' => Zurmo::t('WorkflowsModule', 'Details'),
+                    'type'  => 'raw',
+                    'value'  => 'ByTimeWorkflowInQueueUtil::renderSummaryContent($data)',
             );
-            return $metadata;
         }
     }
 ?>
