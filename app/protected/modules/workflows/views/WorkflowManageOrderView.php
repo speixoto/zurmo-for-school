@@ -53,7 +53,7 @@
         protected function renderForm()
         {
             $content  = '<div class="wrapper">';
-            $content .= $this->renderTitleContent();
+            $content .= ZurmoHtml::tag('h1', array(), $this->renderTitleContent() . 'Workflow Rules Order'); //@TODO get a name for it
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
@@ -92,7 +92,7 @@
 
         protected function renderNoModuleSelectedContentAndWrapper()
         {
-            return ZurmoHtml::tag('div', array('class' => 'select-module-view'), $this->getNoModuleSelectedContent());
+            return ZurmoHtml::tag('div', array('class' => 'select-module-view zero-components-view WorkflowRulesOrder'), $this->getNoModuleSelectedContent());
         }
 
         protected function getNoWorkflowsToOrderContent()

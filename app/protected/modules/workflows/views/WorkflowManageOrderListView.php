@@ -50,7 +50,7 @@
             $inputName = Element::resolveInputNamePrefixIntoString(array('SavedWorkflow', 'savedWorkflowIds'));
             foreach($this->savedWorkflows as $workflow)
             {
-                $content   = '<div>';
+                $content   = '<div class="dynamic-row">';
                 $content  .= ZurmoHtml::hiddenField($inputName . '[]', $workflow->id);
                 $content  .= strval($workflow);
                 $content  .= '</div>';

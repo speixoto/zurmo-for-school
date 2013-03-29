@@ -186,7 +186,10 @@ a.ModalGameNotification a,
 #OnSaveWorkflowWizardView .add-email-alert-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container,
 #OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .zero-components-view {
+#OnSaveWorkflowWizardView .zero-components-view,
+.workflow-order-module-selector-container,
+#workflow-order-container,
+.WorkflowRulesOrder {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -206,7 +209,9 @@ a.ModalGameNotification a,
 #OnSaveWorkflowWizardView .add-email-alert-button-container:before,
 #OnSaveWorkflowWizardView .action-type-selector-container:before,
 #OnSaveWorkflowWizardView .add-email-alert-button-container:after,
-#OnSaveWorkflowWizardView .action-type-selector-container:after {
+#OnSaveWorkflowWizardView .action-type-selector-container:after,
+.workflow-order-module-selector-container:before,
+.workflow-order-module-selector-container:after {
   content: "";
   display: table;
 }
@@ -217,7 +222,8 @@ a.ModalGameNotification a,
 .dynamic-row > div:after,
 .dynamic-sub-row:after,
 #OnSaveWorkflowWizardView .add-email-alert-button-container:after,
-#OnSaveWorkflowWizardView .action-type-selector-container:after {
+#OnSaveWorkflowWizardView .action-type-selector-container:after,
+.workflow-order-module-selector-container:after {
   clear: both;
 }
 .cf,
@@ -227,7 +233,8 @@ a.ModalGameNotification a,
 .dynamic-row > div,
 .dynamic-sub-row,
 #OnSaveWorkflowWizardView .add-email-alert-button-container,
-#OnSaveWorkflowWizardView .action-type-selector-container {
+#OnSaveWorkflowWizardView .action-type-selector-container,
+.workflow-order-module-selector-container {
   zoom: 1;
 }
 .clearfix {
@@ -6466,6 +6473,62 @@ form .view-toolbar-container,
   content: '\00AE';
   font-weight: normal;
   font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-workflows:before {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-by-time-workflow-in-queues:before {
+  content: '\0071';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-by-workflow-message-in-queues:before {
+  content: '\00A5';
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-by-workflow-manage-order:before {
+  content: '\2039';
+  font-weight: normal;
+  font-size: 25px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
@@ -16629,7 +16692,8 @@ a.user-link {
 }
 .zero-components-view.Actions,
 .zero-components-view.EmailAlerts,
-.zero-components-view.TimeTrigger {
+.zero-components-view.TimeTrigger,
+.zero-components-view.WorkflowRulesOrder {
   position: relative;
   top: 0;
   left: 0;
@@ -16732,25 +16796,7 @@ a.user-link {
 }
 .email-alert-recipient-rows .dynamic-row-label {
   width: 100%;
-#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
-  border-left: none;
 }
-#MashableInboxActionBarForViews .search-view-0 {
-  padding: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#MashableInboxActionBarForViews .list-view-items-summary-clone {
-  margin-top: 5px;
-}
-#MashableInboxActionBarForViews .global-search-loopa {
-  width: 24px;
-}
-#MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
-  width: 204px;
-}
-<<<<<<< .mine}
 .email-alert-recipient-rows .value-data {
   padding-left: 15px;
 }
@@ -16789,8 +16835,8 @@ a.user-link {
   transition: all 0.2s ease-out;
 }
 .email-alert-recipient-type-selector-container {
-  width: 20%;
-  margin-top: 30px;
+  width: 22%;
+  margin-top: 20px;
 }
 .all-related-field {
   float: left;
@@ -16849,6 +16895,11 @@ a.user-link {
 #OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
 #OnSaveWorkflowWizardView .zero-components-view {
   float: left !important;
+}
+#OnSaveWorkflowWizardView .Actions.droppable-dynamic-rows-container,
+#OnSaveWorkflowWizardView .EmailAlerts.droppable-dynamic-rows-container,
+#OnSaveWorkflowWizardView .Actions.zero-components-view,
+#OnSaveWorkflowWizardView .EmailAlerts.zero-components-view {
   width: 70% !important;
   padding-left: 15px;
 }
@@ -16872,7 +16923,39 @@ a.user-link {
 #AddEmailAlertLink {
   margin-left: 0;
 }
-=======>>>>>>> .theirs.inbox-item {
+/*WorkFlow Rules Order*/
+.workflow-order-module-selector-container {
+  width: 30%;
+  float: left !important;
+}
+#workflow-order-container,
+.WorkflowRulesOrder {
+  float: right !important;
+  width: 70% !important;
+  padding-left: 15px;
+}
+#save-order {
+  margin: 15px 0 0 0;
+}
+#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
+  border-left: none;
+}
+#MashableInboxActionBarForViews .search-view-0 {
+  padding: 0 15px 15px 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#MashableInboxActionBarForViews .list-view-items-summary-clone {
+  margin-top: 5px;
+}
+#MashableInboxActionBarForViews .global-search-loopa {
+  width: 24px;
+}
+#MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
+  width: 204px;
+}
+.inbox-item {
   position: relative;
 }
 .inbox-item div + span {

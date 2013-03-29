@@ -58,7 +58,7 @@ $(window).ready(function(){
 function rebuildWorkflowTriggersAttributeRowNumbersAndStructureInput(divId){
     rowCount = 1;
     structure = '';
-    $('#' + divId).find('.dynamic-row-numner-label').each(function(){
+    $('#' + divId).find('.dynamic-row-number-label').each(function(){
         $(this).html(rowCount + '.');
         if(structure != ''){
             structure += ' AND ';

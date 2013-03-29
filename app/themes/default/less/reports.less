@@ -673,7 +673,7 @@
 }
 
 .zero-components-view{
-    &.Actions, &.EmailAlerts, &.TimeTrigger{
+    &.Actions, &.EmailAlerts, &.TimeTrigger, &.WorkflowRulesOrder{
         position: relative;
         top:0;
         left: 0;
@@ -832,8 +832,8 @@
 }
 
 .email-alert-recipient-type-selector-container{
-    width: 20%;
-    margin-top: 30px;
+    width: 22%;
+    margin-top: 20px;
 }
 
 .all-related-field{
@@ -883,11 +883,13 @@
 		margin-left: 15px;
 	}
 }
+
 .time-trigger-attribute-selector-container{
 	margin: 15px 0;
 	float: left;
 	width: 100%;
 }
+
 /*for actions in WORKFLOWS hide/show sequence*/
 #OnSaveWorkflowWizardView{
 	.add-email-alert-button-container,
@@ -900,9 +902,15 @@
 	.droppable-dynamic-rows-container,
 	.zero-components-view{
 		float: left !important;
-		width: 70% !important;
-		padding-left: 15px;
 		++.border-box;
+	}
+	.Actions,
+	.EmailAlerts{
+		&.droppable-dynamic-rows-container,
+		&.zero-components-view{
+			width: 70% !important;
+			padding-left: 15px;
+		}
 	}
 	.edit-dynamic-row-link{
 		display:none;
@@ -928,4 +936,24 @@
 
 #AddEmailAlertLink{
 	margin-left: 0;
+}
+
+/*WorkFlow Rules Order*/
+.workflow-order-module-selector-container{
+	width: 30%;
+	float: left !important;
+	++.cf;
+	++.border-box;
+}
+
+#workflow-order-container,
+.WorkflowRulesOrder{
+	float: right !important;
+	++.border-box;
+	width: 70% !important;
+	padding-left: 15px;
+}
+
+#save-order{
+	margin: 15px 0 0 0;
 }
