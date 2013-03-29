@@ -48,13 +48,18 @@
 
         public $enableDesktopNotifications = true;
 
-        const DEFAULT_PERMISSIONS_SETTING_OWNER = 1;
-        const DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP = 2;
-        const DEFAULT_PERMISSIONS_SETTING_EVERYONE = 3;
-
         public $defaultPermissionSetting;
 
         public $defaultPermissionGroupSetting;
+
+        public $visibleAndOrderedTabMenuItems;
+
+        public $selectedVisibleAndOrderedTabMenuItems;
+
+        const DEFAULT_PERMISSIONS_SETTING_OWNER                     = 1;
+        const DEFAULT_PERMISSIONS_SETTING_OWNER_AND_USERS_IN_GROUP  = 2;
+        const DEFAULT_PERMISSIONS_SETTING_EVERYONE                  = 3;
+        const VISIBLE_AND_ORDERED_TAB_MENU_ITEMS                    = 'selectedVisibleAndOrderedTabMenuItems';
 
         public function __construct($user)
         {
@@ -80,21 +85,22 @@
         public function rules()
         {
             return array(
-                array('listPageSize',              'required'),
-                array('listPageSize',              'type',      'type' => 'integer'),
-                array('listPageSize',              'numerical', 'min' => 1),
-                array('subListPageSize',           'required'),
-                array('subListPageSize',           'type',      'type' => 'integer'),
-                array('subListPageSize',           'numerical', 'min' => 1),
-                array('themeColor',                'required'),
-                array('themeColor',                'type',      'type' => 'string'),
-                array('backgroundTexture',         'type',      'type' => 'string'),
-                array('hideWelcomeView',           'boolean'),
-                array('turnOffEmailNotifications', 'boolean'),
-                array('enableDesktopNotifications', 'boolean'),
-                array('defaultPermissionSetting',   'numerical', 'min' => self::DEFAULT_PERMISSIONS_SETTING_OWNER,
-                    'max' => self::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
-                array('defaultPermissionGroupSetting', 'numerical', 'min' => 1)
+                array('listPageSize',                   'required'),
+                array('listPageSize',                   'type',      'type' => 'integer'),
+                array('listPageSize',                   'numerical', 'min' => 1),
+                array('subListPageSize',                'required'),
+                array('subListPageSize',                'type',      'type' => 'integer'),
+                array('subListPageSize',                'numerical', 'min' => 1),
+                array('themeColor',                     'required'),
+                array('themeColor',                     'type',      'type' => 'string'),
+                array('backgroundTexture',              'type',      'type' => 'string'),
+                array('hideWelcomeView',                'boolean'),
+                array('turnOffEmailNotifications',      'boolean'),
+                array('enableDesktopNotifications',     'boolean'),
+                array('defaultPermissionSetting',       'numerical', 'min' => self::DEFAULT_PERMISSIONS_SETTING_OWNER,
+                                                        'max' => self::DEFAULT_PERMISSIONS_SETTING_EVERYONE),
+                array('defaultPermissionGroupSetting',  'numerical', 'min' => 1),
+                array('selectedVisibleAndOrderedTabMenuItems',  'type', 'type'=>'array'),
             );
         }
 
