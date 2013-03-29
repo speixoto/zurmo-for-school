@@ -12,11 +12,6 @@
 <tr><td rowspan="1" colspan="3">Sort My Accounts</td></tr>
 </thead><tbody>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
 	<td>setTimeout</td>
 	<td>45000</td>
 	<td></td>
@@ -57,6 +52,11 @@
 	<td></td>
 </tr>
 <tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
 	<td>click</td>
 	<td>css=#saveyt1</td>
 	<td></td>
@@ -65,6 +65,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>//li[@class='juiportlet-widget TasksMyListView']/div[2]/div/div/table/thead/tr/th[2]/a</td>
+	<td></td>
 </tr>
 <tr>
 	<td>click</td>
