@@ -79,5 +79,58 @@
             $this->assertEquals('jmember',  $adapter-> getRelatedAttributeColumnName());
             $this->assertFalse(             $adapter->isRelatedAttributeRelation());
         }
+
+        public function testRelatedAttributesSortUsesTwoAttributes()
+        {
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter('A', 'a');
+            $this->assertFalse(         $adapter->sortUsesTwoAttributes());
+            $this->assertEquals('a',    $adapter->getColumnNameByPosition(0));
+            try
+            {
+                $adapter->getColumnNameByPosition(1);
+            }
+            catch (InvalidArgumentException $exception)
+            {
+                $this->assertEquals('Attribute position is not valid', $exception->getMessage());
+            }
+
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter('Q', 'a');
+            $this->assertTrue(                         $adapter->sortUsesTwoAttributes());
+            $this->assertEquals('a',                   $adapter->getColumnNameByPosition(0));
+            $this->assertEquals('junk',                $adapter->getColumnNameByPosition(1));
+            $this->assertEquals('uniquerequiredemail', $adapter->getColumnNameByPosition(2));
+            try
+            {
+                $adapter->getColumnNameByPosition(3);
+            }
+            catch (InvalidArgumentException $exception)
+            {
+                $this->assertEquals('Attribute position is not valid', $exception->getMessage());
+            }
+
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter('QQ', 'q');
+            $this->assertTrue(                         $adapter->relatedAttributesSortUsesTwoAttributes());
+            $this->assertEquals('q_id',                $adapter->getColumnNameByPosition(0));
+            $this->assertEquals('junk',                $adapter->getColumnNameByPosition(1));
+            $this->assertEquals('uniquerequiredemail', $adapter->getColumnNameByPosition(2));
+
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter('QQ', 'qRequired');
+            $this->assertTrue(                         $adapter->relatedAttributesSortUsesTwoAttributes());
+            $this->assertEquals('erequired_q_id',      $adapter->getColumnNameByPosition(0));
+            $this->assertEquals('junk',                $adapter->getColumnNameByPosition(1));
+            $this->assertEquals('uniquerequiredemail', $adapter->getColumnNameByPosition(2));
+
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter('QQ', 'qUnique');
+            $this->assertTrue(                         $adapter->relatedAttributesSortUsesTwoAttributes());
+            $this->assertEquals('eunique_q_id',        $adapter->getColumnNameByPosition(0));
+            $this->assertEquals('junk',                $adapter->getColumnNameByPosition(1));
+            $this->assertEquals('uniquerequiredemail', $adapter->getColumnNameByPosition(2));
+
+            $adapter = new RedBeanModelAttributeToDataProviderAdapter('QQ', 'qMany');
+            $this->assertTrue(                         $adapter->relatedAttributesSortUsesTwoAttributes());
+            $this->assertEquals('q_id',                $adapter->getColumnNameByPosition(0));
+            $this->assertEquals('junk',                $adapter->getColumnNameByPosition(1));
+            $this->assertEquals('uniquerequiredemail', $adapter->getColumnNameByPosition(2));
+        }
     }
 ?>

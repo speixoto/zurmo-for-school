@@ -143,7 +143,8 @@
             $quote = DatabaseCompatibilityUtil::getQuote();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Account');
             $orderByColumnName = RedBeanModelDataProvider::resolveSortAttributeColumnName('Account', $joinTablesAdapter, 'owner');
-            $this->assertEquals("{$quote}person{$quote}.{$quote}lastname{$quote}", $orderByColumnName);
+            $this->assertEquals("CONCAT({$quote}person{$quote}.{$quote}firstname{$quote}, {$quote}person{$quote}.{$quote}lastname{$quote})",
+                                $orderByColumnName);
             $leftTablesAndAliases = $joinTablesAdapter->getLeftTablesAndAliases();
             $this->assertEquals('person',    $leftTablesAndAliases[1]['tableName']);
             $this->assertEquals('person',    $leftTablesAndAliases[1]['tableAliasName']);
@@ -160,7 +161,8 @@
             $compareSubsetSql .= "{$quote}person$quote.{$quote}id{$quote} = {$quote}_user$quote.{$quote}person_id{$quote} ";
             $compareSubsetSql .= " where {$quote}ownedsecurableitem{$quote}.{$quote}id{$quote} = ";
             $compareSubsetSql .= "{$quote}account{$quote}.{$quote}ownedsecurableitem_id{$quote} ";
-            $compareSubsetSql .= "order by {$quote}person{$quote}.{$quote}lastname{$quote} limit 5 offset 1";
+            $compareSubsetSql .= "order by CONCAT({$quote}person{$quote}.{$quote}firstname{$quote}, ";
+            $compareSubsetSql .= "{$quote}person{$quote}.{$quote}lastname{$quote}) limit 5 offset 1";
             $this->assertEquals($compareSubsetSql, $subsetSql);
         }
 

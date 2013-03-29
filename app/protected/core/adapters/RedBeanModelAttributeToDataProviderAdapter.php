@@ -192,8 +192,9 @@
         }
 
         /**
-         * @return string The column name for the second attribute to be used in the
-         * sort by the attribute specified in this adapater
+         * @return string The column name for the attribute to be used in the
+         * sort by the attribute specified in this adapater based on the position
+         * in the array returned by getSortAttributesByAttribute
          */
         public function getColumnNameByPosition($attributePosition)
         {
@@ -201,10 +202,10 @@
             $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->attribute);
             if ($attributePosition >= count($sortAttributes))
             {
-                throw new DomainException('Attribute position is not valid');
+                throw new InvalidArgumentException('Attribute position is not valid');
             }
             $sortAtribute = $sortAttributes[$attributePosition];
-            return $sortAtribute;
+            return $modelClassName::getColumnNameByAttribute($sortAtribute);
         }
 
         /**
@@ -388,7 +389,8 @@
 
         /**
          * If the attribute is a relation and the attribute has more sort attributes on the relation
-         * retunrs the second column name to make the sort.
+         * retunrs the column name to make the sort by the position in the array return from
+         * getSortAttributesByAttribute
          * @return string
          */
         public function getRelatedAttributeColumnNameByPosition($attributePosition)
@@ -397,10 +399,10 @@
             $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->relatedAttribute);
             if ($attributePosition >= count($sortAttributes))
             {
-                throw new DomainException('Attribute position is not valid');
+                throw new InvalidArgumentException('Attribute position is not valid');
             }
             $sortAttribute = $sortAttributes[$attributePosition];
-            return $sortAttributes[$attributePosition];
+            return $modelClassName::getColumnNameByAttribute($sortAttribute);
         }
 
         /**
