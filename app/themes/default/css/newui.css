@@ -183,9 +183,10 @@ a.ModalGameNotification a,
 .email-alert-recipient-rows,
 .all-related-field,
 .static-address-field,
+#OnSaveWorkflowWizardView .add-email-alert-button-container,
+#OnSaveWorkflowWizardView .action-type-selector-container,
 #OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .zero-components-view,
-.action-type-selector-container {
+#OnSaveWorkflowWizardView .zero-components-view {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -202,8 +203,10 @@ a.ModalGameNotification a,
 .dynamic-row > div:after,
 .dynamic-sub-row:before,
 .dynamic-sub-row:after,
-.action-type-selector-container:before,
-.action-type-selector-container:after {
+#OnSaveWorkflowWizardView .add-email-alert-button-container:before,
+#OnSaveWorkflowWizardView .action-type-selector-container:before,
+#OnSaveWorkflowWizardView .add-email-alert-button-container:after,
+#OnSaveWorkflowWizardView .action-type-selector-container:after {
   content: "";
   display: table;
 }
@@ -213,7 +216,8 @@ a.ModalGameNotification a,
 .dynamic-row:after,
 .dynamic-row > div:after,
 .dynamic-sub-row:after,
-.action-type-selector-container:after {
+#OnSaveWorkflowWizardView .add-email-alert-button-container:after,
+#OnSaveWorkflowWizardView .action-type-selector-container:after {
   clear: both;
 }
 .cf,
@@ -222,7 +226,8 @@ a.ModalGameNotification a,
 .dynamic-row,
 .dynamic-row > div,
 .dynamic-sub-row,
-.action-type-selector-container {
+#OnSaveWorkflowWizardView .add-email-alert-button-container,
+#OnSaveWorkflowWizardView .action-type-selector-container {
   zoom: 1;
 }
 .clearfix {
@@ -5861,7 +5866,7 @@ body > .ui-autocomplete {
   position: relative;
   height: 40px;
   display: block;
-  z-index: 0;
+  z-index: 10;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
@@ -16695,10 +16700,6 @@ a.user-link {
 .EmailAlerts .panel {
   width: 100% !important;
 }
-.add-email-alert-button-container {
-  float: left;
-  margin: 30px 0 15px 0;
-}
 .email-alert-recipient-rows .hasDropDown {
   float: left;
   min-width: 20%;
@@ -16773,11 +16774,11 @@ a.user-link {
 .static-address-field .value-data > span {
   float: left;
   line-height: 26px;
-  width: 25%;
+  width: 30%;
 }
 .static-address-field .value-data > input {
   float: left;
-  width: 75%;
+  width: 70%;
 }
 #time-trigger-container {
   float: left;
@@ -16796,9 +16797,16 @@ a.user-link {
   width: 100%;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
+#OnSaveWorkflowWizardView .add-email-alert-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container {
   width: 30%;
   float: left !important;
+}
+#OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
+#OnSaveWorkflowWizardView .zero-components-view {
+  float: left !important;
+  width: 70% !important;
+  padding-left: 15px;
 }
 #OnSaveWorkflowWizardView .edit-dynamic-row-link {
   display: none;
@@ -16806,15 +16814,6 @@ a.user-link {
 #OnSaveWorkflowWizardView .ui-sortable {
   min-height: 300px;
   position: relative;
-}
-.action-type-selector-container {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  float: left;
-  width: 100%;
 }
 .action-type-selector-container > .hasDropDown {
   float: none;
@@ -16825,6 +16824,9 @@ a.user-link {
   margin-top: 15px;
   width: 100%;
   float: none;
+}
+#AddEmailAlertLink {
+  margin-left: 0;
 }
 .inbox-item {
   position: relative;

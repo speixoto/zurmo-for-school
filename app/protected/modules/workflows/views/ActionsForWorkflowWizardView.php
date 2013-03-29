@@ -139,7 +139,7 @@
         {
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
                                              static::resolveTypeDataAndLabels());
-            $content  = '';//ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), Zurmo::t('WorkflowsModule', 'Add action'));
+            $content  = '';
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
                                                     'class' => 'related-model-selector',
@@ -326,7 +326,7 @@
                                  $moduleClassNameId . '\"]:checked").val() + ' .
                                  '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                 'url'     =>  $url,
-                'beforeSend' => 'js:function(){
+                'beforeSend' => 'js:function(xhr, options){
                     //attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     //check if any li is open and if yes validate the form again
                     var actionsList = $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
@@ -334,7 +334,16 @@
                     $.each(actionsList, function(){
                         if ( $(this).hasClass("expanded-row") ){
                             alert("please save and validate the open action panel");
-                            getDropdownAjaxCall.abort();
+                            try{
+                                xhr.abort();
+                            } catch(error){
+                                console.log(error);
+                            }
+                            $("#' . self::ACTION_TYPE_NAME . '").val("");
+                            $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").html("");
+                            $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").hide();
+                            $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").html("");
+                            $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").hide();
                             return false;
                         }
                     });
