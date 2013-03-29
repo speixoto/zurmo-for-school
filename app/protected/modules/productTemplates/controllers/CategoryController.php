@@ -293,7 +293,7 @@
 
         public function actionExport()
         {
-            $this->export('ProductCategoriesSearchView');
+            $this->export('ProductCategoriesSearchView', 'ProductCategory', 'productCategories');
         }
     }
 ?>

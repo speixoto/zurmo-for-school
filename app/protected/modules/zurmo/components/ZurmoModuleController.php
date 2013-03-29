@@ -150,10 +150,13 @@
             return null;
         }
 
-        protected function export($stickySearchKey = null)
+        protected function export($stickySearchKey = null, $modelClassName = null, $exportFileName = null)
         {
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
-            $modelClassName        = $this->getModelName();
+            if($modelClassName == null)
+            {
+                $modelClassName        = $this->getModelName();
+            }
             $searchFormClassName   = static::getSearchFormClassName();
             $pageSize              = null;
             $model                 = new $modelClassName(false);
@@ -215,7 +218,14 @@
                     // Output data
                     if (count($data))
                     {
-                        $fileName = $this->getModule()->getName() . ".csv";
+                        if($exportFileName == null)
+                        {
+                            $fileName = $this->getModule()->getName() . ".csv";
+                        }
+                        else
+                        {
+                            $fileName = $exportFileName . ".csv";
+                        }
                         $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
                     }
                     else
