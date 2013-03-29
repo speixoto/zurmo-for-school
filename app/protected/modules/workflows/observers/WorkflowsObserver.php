@@ -66,7 +66,10 @@
             $model                   = $event->sender;
             if($model->getScenario() != 'autoBuildDatabase')
             {
+                $originalUser               = Yii::app()->user->userModel;
+                Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
                 SavedWorkflowsUtil::resolveBeforeSaveByModel($model);
+                Yii::app()->user->userModel = $originalUser;
             }
         }
 
@@ -79,7 +82,10 @@
             $model                   = $event->sender;
             if($model->getScenario() != 'autoBuildDatabase')
             {
+                $originalUser               = Yii::app()->user->userModel;
+                Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
                 SavedWorkflowsUtil::resolveAfterSaveByModel($model);
+                Yii::app()->user->userModel = $originalUser;
             }
         }
     }

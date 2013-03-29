@@ -72,6 +72,16 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
+                                                    'type'          => 'UserToRunWorkflowsAs'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'subListPageSize', 'type' => 'Integer'),
                                             ),
                                         ),

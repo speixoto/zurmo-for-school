@@ -57,6 +57,8 @@
          */
         public function run()
         {
+            $originalUser               = Yii::app()->user->userModel;
+            Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
             foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
             {
                 try
@@ -70,6 +72,7 @@
                 }
                 $workflowMessageInQueue->delete();
             }
+            Yii::app()->user->userModel = $originalUser;
             return true;
         }
 

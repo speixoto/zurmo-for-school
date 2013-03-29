@@ -31,12 +31,17 @@
             parent::setUpBeforeClass();
             ZurmoDatabaseCompatibilityUtil::dropStoredFunctionsAndProcedures();
             SecurityTestHelper::createSuperAdmin();
-            UserTestHelper::createBasicUser('billy');
+            $billy = UserTestHelper::createBasicUser('billy');
+            $group = Group::getByName('Super Administrators');
+            $group->users->add($billy);
+            $saved = $group->save();
+            assert($saved); //Not Coding Standard
             UserTestHelper::createBasicUser('sally');
         }
 
         public function testMakeFormAndSetConfigurationFromForm()
         {
+            $billy = User::getByUsername('billy');
             Yii::app()->timeZoneHelper->setTimeZone           ('America/New_York');
             Yii::app()->pagination->setGlobalValueByType('listPageSize',          50);
             Yii::app()->pagination->setGlobalValueByType('subListPageSize',       51);
@@ -51,19 +56,21 @@
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoFileModelId', $logoFileId);
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule', 'logoThumbFileModelId', $logoFileId);
             $form = ZurmoConfigurationFormAdapter::makeFormFromGlobalConfiguration();
-            $this->assertEquals('America/New_York', $form->timeZone);
-            $this->assertEquals(50,                 $form->listPageSize);
-            $this->assertEquals(51,                 $form->subListPageSize);
-            $this->assertEquals(52,                 $form->modalListPageSize);
-            $this->assertEquals(53,                 $form->dashboardListPageSize);
-            $this->assertEquals('demoCompany',      $form->applicationName);
-            $this->assertEquals($logoFileName,      $form->logoFileData['name']);
+            $this->assertEquals('America/New_York',              $form->timeZone);
+            $this->assertEquals(50,                              $form->listPageSize);
+            $this->assertEquals(51,                              $form->subListPageSize);
+            $this->assertEquals(52,                              $form->modalListPageSize);
+            $this->assertEquals(53,                              $form->dashboardListPageSize);
+            $this->assertEquals('demoCompany',                   $form->applicationName);
+            $this->assertEquals(Yii::app()->user->userModel->id, $form->userIdOfUserToRunWorkflowsAs);
+            $this->assertEquals($logoFileName,                   $form->logoFileData['name']);
             $form->timeZone              = 'America/Chicago';
             $form->listPageSize          = 60;
             $form->subListPageSize       = 61;
             $form->modalListPageSize     = 62;
             $form->dashboardListPageSize = 63;
             $form->applicationName       = 'demoCompany2';
+            $form->userIdOfUserToRunWorkflowsAs = $billy->id;
             $logoFileName2               = 'testLogo.png';
             $logoFilePath2               = Yii::getPathOfAlias('application.modules.zurmo.tests.unit.files') . DIRECTORY_SEPARATOR . $logoFileName2;
             copy($logoFilePath2, sys_get_temp_dir().DIRECTORY_SEPARATOR . $logoFileName2);
@@ -77,6 +84,7 @@
             $this->assertEquals(62,                 $form->modalListPageSize);
             $this->assertEquals(63,                 $form->dashboardListPageSize);
             $this->assertEquals('demoCompany2',     $form->applicationName);
+            $this->assertEquals($billy->id,         $form->userIdOfUserToRunWorkflowsAs);
             $this->assertEquals($logoFileName2,     $form->logoFileData['name']);
         }
     }

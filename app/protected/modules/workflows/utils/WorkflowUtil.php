@@ -30,6 +30,56 @@
     class WorkflowUtil
     {
         /**
+         * When running workflow rules either during beforeSave, afterSave, byTime, or Message Queue processing
+         * an elevated user must be used in order to ensure the workflows can be processed properly.  if there is not
+         * a user specified, then a fall back of the first user that is a super administrator will be returned
+         * @return User $user
+         * @throws NotSupportedException if there is no user specified and there are no users in the super admin group
+         */
+        public static function getUserToRunWorkflowsAs()
+        {
+            $keyName      = 'UserIdOfUserToRunWorkflowsAs';
+            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if (null != $userId = ZurmoConfigurationUtil::getByModuleName('WorkflowsModule', $keyName))
+            {
+                try
+                {
+                    $user  = User::getById($userId);
+
+                    if ($user->groups->contains($superGroup))
+                    {
+                        return $user;
+                    }
+                }
+                catch (NotFoundException $e)
+                {
+                }
+            }
+            if ($superGroup->users->count() == 0)
+            {
+                throw new NotSupportedException();
+            }
+            return $superGroup->users->offsetGet(0);
+        }
+
+        /**
+         * @see getUserToRunWorkflowsAs
+         * @param User $user
+         * @throws NotSupportedException
+         */
+        public static function setUserToRunWorkflowsAs(User $user)
+        {
+            assert('$user->id > 0');
+            $superGroup   = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if (!$user->groups->contains($superGroup))
+            {
+                throw new NotSupportedException();
+            }
+            $keyName      = 'UserIdOfUserToRunWorkflowsAs';
+            ZurmoConfigurationUtil::setByModuleName('WorkflowsModule', $keyName, $user->id);
+        }
+
+        /**
          * @param $type
          * @return null | string
          */

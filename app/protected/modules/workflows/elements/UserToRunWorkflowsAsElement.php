@@ -25,18 +25,19 @@
      ********************************************************************************/
 
     /**
-     * When sending notifications from the system, the from 'user' must be a super administrator
+     * When processing workflows, the user that processes them must be a super administrator to ensure the workflows can
+     * be properly processed.
      */
-    class UserToSendNotificationFromElement extends SuperAdministratorToUseElement
+    class UserToRunWorkflowsAsElement extends SuperAdministratorToUseElement
     {
         protected static function renderTooltipContent()
         {
-            $title       = Zurmo::t('EmailMessagesModule', 'Zurmo sends out system notifications.  The notifications must appear ' .
-                                             'as coming from a super administrative user.');
-            $content     = '<span id="send-notifications-from-user-tooltip" class="tooltip"  title="' . $title . '">';
+            $title       = Zurmo::t('WorkflowsModule', 'Zurmo processes workflow rules.  The workflows must be ' .
+                                             'processed from a super administrative user.');
+            $content     = '<span id="run-workflows-from-user-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip("#send-notifications-from-user-tooltip");
+            $qtip->addQTip("#run-workflows-from-user-tooltip");
             return $content;
         }
     }
