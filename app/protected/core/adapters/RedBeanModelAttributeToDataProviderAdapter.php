@@ -191,11 +191,15 @@
             return $modelClassName::getColumnNameByAttribute($this->attribute);
         }
 
+        /**
+         * @return string The column name for the second attribute to be used in the
+         * sort by the attribute specified in this adapater
+         */
         public function getSecondColumnName()
         {
             $modelClassName = $this->modelClassName;
-            $sortAttribures = $modelClassName::getSortAttributesByAttribute($this->attribute);
-            return $sortAttribures[1];
+            $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->attribute);
+            return $sortAttributes[1];
         }
 
         /**
@@ -375,6 +379,18 @@
         {
             $modelClassName = $this->getRelationModelClassName();
             return $modelClassName::getColumnNameByAttribute($this->relatedAttribute);
+        }
+
+        /**
+         * If the attribute is a relation and the attribute has more sort attributes on the relation
+         * retunrs the second column name to make the sort.
+         * @return string
+         */
+        public function getRelatedAttributeSecondColumnName()
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->relatedAttribute);
+            return $sortAttributes[1];
         }
 
         /**
@@ -558,10 +574,24 @@
             return false;
         }
 
+        /**
+         * Returns true if the attribute uses another attribute in the sort
+         * @return boolean
+         */
         public function sortUsesTwoAttributes()
         {
             $modelClassName = $this->modelClassName;
             if (count($modelClassName::getSortAttributesByAttribute($this->attribute)) > 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function relatedAttributesSortUsesTwoAttributes()
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            if (count($modelClassName::getSortAttributesByAttribute($this->relatedAttribute)) > 1)
             {
                 return true;
             }
