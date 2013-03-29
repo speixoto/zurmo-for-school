@@ -67,6 +67,19 @@
             return $hasReadLatest;
         }
 
+        public static function markAllUserHasReadLatestExceptOwnerAndTakenBy(Mission $mission)
+        {
+            $users = User::getAll();
+            foreach ($users as $user)
+            {
+                if($user->getClassId('Item') !== $mission->owner->getClassId('Item') &&
+                           $user->getClassId('Item') !== $mission->takenByUser->getClassId('Item') )
+                {
+                    static::markUserHasReadLatest($mission, $user);
+                }
+            }
+        }
+
         public static function markAllUserHasUnreadLatest(Mission $mission)
         {
             $users = static::resolvePeopleToSendNotificationToOnNewMission($mission);

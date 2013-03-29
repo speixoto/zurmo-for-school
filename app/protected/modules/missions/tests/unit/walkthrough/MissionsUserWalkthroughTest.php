@@ -398,5 +398,76 @@
             $this->assertContains(strval($mission->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($mission->comments[0]), $emailMessage->content->textContent);
         }
+
+        public function testMissionReadUnreadStatus()
+        {
+            $steven         = User::getByUsername('steven');
+            $sally          = User::getByUsername('sally');
+            $mary           = User::getByUsername('mary');
+            $super          = $this->
+                                 logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
+            $mission              = new Mission();
+            $mission->owner       = $steven;
+            $mission->description = 'My test mission description';
+            $mission->status      = Mission::STATUS_AVAILABLE;
+            $this->assertTrue($mission->save());
+            $missionId = $mission->id;
+            $explicitReadWriteModelPermissions = new ExplicitReadWriteModelPermissions();
+            $explicitReadWriteModelPermissions->addReadWritePermitable(Group::getByName(Group::EVERYONE_GROUP_NAME));
+            ExplicitReadWriteModelPermissionsUtil::
+                        resolveExplicitReadWriteModelPermissions($mission, $explicitReadWriteModelPermissions);
+            $mission = Mission::getById($missionId);
+            //Confirm users have mission marked as unread but not owner
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $sally));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $mary));
+
+            //Super reads the mission
+            $this->setGetArray(array('id' => $missionId));
+            $this->runControllerWithNoExceptionsAndGetContent('missions/default/details');
+            $mission = Mission::getById($missionId);
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $sally));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $mary));
+
+            //Mary marks mission as read and post a comment
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('mary');
+            MissionsUtil::markUserHasReadLatest($mission, $mary);
+            $this->setGetArray(array('relatedModelId'             => $missionId,
+                                     'relatedModelClassName'      => 'Mission',
+                                     'relatedModelRelationName'   => 'comments',
+                                     'redirectUrl'                => 'someRedirect'));
+            $this->setPostArray(array('Comment'          => array('description' => 'Mary\'s new comment')));
+            $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
+            $mission = Mission::getById($missionId);
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $sally));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $mary));
+
+            //Sally reads and takes the mission
+            $this->logoutCurrentUserLoginNewUserAndGetByUsername('sally');
+            $this->setGetArray(array('id' => $missionId));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('missions/default/details');
+            $mission = Mission::getById($missionId);
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $sally));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $mary));
+            $this->setGetArray(array('status'         => Mission::STATUS_TAKEN,
+                                     'id'             => $missionId));
+            $this->runControllerWithNoExceptionsAndGetContent('missions/default/ajaxChangeStatus');
+
+            //Every user other than owner and takenby are marked as read latest
+            $mission = Mission::getById($missionId);
+            $this->assertFalse(MissionsUtil::hasUserReadMissionLatest($mission, $steven));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $super));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $sally));
+            $this->assertTrue (MissionsUtil::hasUserReadMissionLatest($mission, $mary));
+        }
     }
 ?>

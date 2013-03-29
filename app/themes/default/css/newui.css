@@ -6713,6 +6713,7 @@ td.empty {
   line-height: 135%;
   text-indent: 0;
   padding: 4px;
+  word-break: normal;
 }
 .form select.multiple {
   padding: 4px 4px 4px 6px;
@@ -7415,18 +7416,6 @@ div.wide.form label.hasCheckBox {
   width: 100%;
   margin-bottom: 20px;
   position: relative;
-}
-#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
-  border-left: none;
-}
-#MashableInboxActionBarForViews .search-view-0 {
-  padding: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#MashableInboxActionBarForViews .list-view-items-summary-clone {
-  margin-top: 5px;
 }
 .filters-bar {
   font-size: 11px;
@@ -9446,6 +9435,18 @@ div.hasHalfs .twoThirds {
   font-size: 42px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
+}
+.LatestActivitiesForPortletView {
+  position: relative;
+}
+.LatestActivitiesForPortletView > div {
+  position: relative;
+  z-index: 1;
+}
+.LatestActivitiesForPortletView .toolbar-mbmenu {
+  position: absolute;
+  top: -35px;
+  z-index: 10;
 }
 .LatestActivitiesListView form,
 .LatestActivitiesView form {
@@ -11879,6 +11880,31 @@ table.configuration-list td:last-child a .z-label:before {
 }
 .texture-swatch label {
   top: -6px;
+}
+/*Menu Prefernces*/
+.user-menu-preferences td {
+  padding-left: 0 !important;
+}
+.user-menu-preferences .multiselect-holder {
+  max-width: 100%;
+  margin: 0;
+}
+.user-menu-preferences .multiselect-right {
+  float: none;
+}
+/*Logo Uplaod*/
+.uploaded-logo-template td.name {
+  padding-top: 10px !important;
+}
+.uploaded-logo {
+  display: inline-block;
+  padding: 5px;
+  margin-right: 5px;
+  line-height: 1;
+  background: url(../images/transparency-grid.gif) left top repeat;
+}
+.uploaded-logo ~ .file-size {
+  vertical-align: top;
 }
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
@@ -16706,7 +16732,25 @@ a.user-link {
 }
 .email-alert-recipient-rows .dynamic-row-label {
   width: 100%;
+#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
+  border-left: none;
 }
+#MashableInboxActionBarForViews .search-view-0 {
+  padding: 0 15px 15px 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#MashableInboxActionBarForViews .list-view-items-summary-clone {
+  margin-top: 5px;
+}
+#MashableInboxActionBarForViews .global-search-loopa {
+  width: 24px;
+}
+#MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
+  width: 204px;
+}
+<<<<<<< .mine}
 .email-alert-recipient-rows .value-data {
   padding-left: 15px;
 }
@@ -16828,7 +16872,7 @@ a.user-link {
 #AddEmailAlertLink {
   margin-left: 0;
 }
-.inbox-item {
+=======>>>>>>> .theirs.inbox-item {
   position: relative;
 }
 .inbox-item div + span {

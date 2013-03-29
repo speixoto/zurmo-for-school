@@ -1724,6 +1724,7 @@ td.empty{
         line-height: 135%;
         text-indent: 0;
         padding: 4px;
+	    word-break: normal;
     }
     select.multiple {
         padding: 4px 4px 4px 6px;
@@ -2283,18 +2284,6 @@ div.wide.form{
     .SecuredListView();
 }
 
-#MashableInboxActionBarForViews{
-    .view-toolbar ul:first-child > li > a {
-        border-left: none;
-    }
-    .search-view-0{
-        padding:0 15px 15px 15px;
-        .box-sizing();
-    }
-    .list-view-items-summary-clone{
-        margin-top:5px;
-    }
-}
 .filters-bar{
     .filter-portlet-model-bar();
     border: none;
@@ -3954,6 +3943,19 @@ div.hasHalfs{
     color:#666 !important;
     .symbly(42px);
     line-height:28px;
+}
+
+.LatestActivitiesForPortletView{
+	position: relative;
+	> div{
+		position: relative;
+		z-index: 1;
+	}
+	.toolbar-mbmenu {
+		position: absolute;
+		top: -35px;
+		z-index: 10;
+	}
 }
 
 .LatestActivitiesListView,
