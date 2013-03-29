@@ -80,7 +80,7 @@
                             array('type' => 'DeleteButton',
                                   'htmlOptions' => array(
                                                          'params' => array(
-                                                            'selectedRecordCount' => 'eval:$this->getselectedRecordCount()'),
+                                                            'selectedRecordCount' => 'eval:$this->getSelectedRecordCount()'),
 
                                    ),
                             ),

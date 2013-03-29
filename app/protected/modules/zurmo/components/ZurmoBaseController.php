@@ -454,6 +454,8 @@
                                         $skipCount, $modelClassName);
                             }
                             Yii::app()->user->setFlash('notification', $notificationContent);
+                            //TODO This has the issue in case of product category where i select only 1 for delete, it redirects to default
+                            //view and not category list view
                             $this->redirect(array('default/'));
                             Yii::app()->end(0, false);
                         }

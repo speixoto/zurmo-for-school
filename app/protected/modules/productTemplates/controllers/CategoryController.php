@@ -225,14 +225,16 @@
                 $selectedRecordCount,
                 'ProductCategoriesPageView',
                 $productCategory,
-                ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
+                //ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
+                'Product Categories',
                 $dataProvider
             );
             $massDeleteView = $this->makeMassDeleteView(
                 $productCategory,
                 $activeAttributes,
                 $selectedRecordCount,
-                ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
+                //ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
+                'Product Categories'
             );
             $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
