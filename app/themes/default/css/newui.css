@@ -11856,6 +11856,20 @@ table.configuration-list td:last-child a .z-label:before {
 .user-menu-preferences .multiselect-right {
   float: none;
 }
+/*Logo Uplaod*/
+.uploaded-logo-template td.name {
+  padding-top: 10px !important;
+}
+.uploaded-logo {
+  display: inline-block;
+  padding: 5px;
+  margin-right: 5px;
+  line-height: 1;
+  background: url(../images/transparency-grid.gif) left top repeat;
+}
+.uploaded-logo ~ .file-size {
+  vertical-align: top;
+}
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
   padding: 20px;
