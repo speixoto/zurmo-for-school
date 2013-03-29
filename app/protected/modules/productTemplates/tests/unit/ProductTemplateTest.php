@@ -41,8 +41,8 @@
 
         public function testDemoDataMaker()
         {
-            $productTemplate = new ProductTemplate();
-            $productTemplateRandomData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
+            $productTemplate                         = new ProductTemplate();
+            $productTemplateRandomData               = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
                                             'ProductTemplatesModule', 'ProductTemplate');
             $name    = RandomDataUtil::getRandomValueFromArray($productTemplateRandomData['names']);
             $productTemplate->name                   = $name;
@@ -53,20 +53,20 @@
             $productTemplate->type                   = ProductTemplate::TYPE_PRODUCT;
             $productTemplate->status                 = ProductTemplate::STATUS_ACTIVE;
             $this->assertTrue($productTemplate->save());
-            $productTemplates[] = $productTemplate->id;
+            $productTemplates[]                      = $productTemplate->id;
         }
 
         public function testCreateAndGetProductTemplateById()
         {
-            $user        = UserTestHelper::createBasicUser('Steven');
-            $product     = ProductTestHelper::createProductByNameForOwner('Product 1', $user);
+            $user            = UserTestHelper::createBasicUser('Steven');
+            $product         = ProductTestHelper::createProductByNameForOwner('Product 1', $user);
 
             $productTemplate = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
             $this->assertTrue($productTemplate->save());
-            $id                                         = $productTemplate->id;
+            $id              = $productTemplate->id;
             $productTemplate->forget();
             unset($productTemplate);
-            $productTemplate                            = ProductTemplate::getById($id);
+            $productTemplate = ProductTemplate::getById($id);
             $this->assertEquals('Red Widget', $productTemplate->name);
             $this->assertEquals('Description', $productTemplate->description);
             $this->assertEquals(ProductTemplate::PRICE_FREQUENCY_ONE_TIME, intval($productTemplate->priceFrequency));
@@ -82,23 +82,23 @@
 
         public function testCreateAndGetProductTemplateByIdWithDifferentPriceFrequency()
         {
-            $user        = UserTestHelper::createBasicUser('Steven1');
-            $product     = ProductTestHelper::createProductByNameForOwner('Product 2', $user);
+            $user                                        = UserTestHelper::createBasicUser('Steven1');
+            $product                                     = ProductTestHelper::createProductByNameForOwner('Product 2', $user);
 
-            $productTemplate = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productTemplate                             = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
             $this->assertTrue($productTemplate->save());
-            $id                                         = $productTemplate->id;
+            $id                                          = $productTemplate->id;
             $productTemplate->forget();
             unset($productTemplate);
-            $productTemplate                            = ProductTemplate::getById($id);
+            $productTemplate                             = ProductTemplate::getById($id);
             $this->assertEquals(ProductTemplate::PRICE_FREQUENCY_ONE_TIME, intval($productTemplate->priceFrequency));
 
             $productTemplate->priceFrequency             = ProductTemplate::PRICE_FREQUENCY_MONTHLY;
             $productTemplate->save();
-            $id                                         = $productTemplate->id;
+            $id                                          = $productTemplate->id;
             $productTemplate->forget();
             unset($productTemplate);
-            $productTemplate                            = ProductTemplate::getById($id);
+            $productTemplate                             = ProductTemplate::getById($id);
             $this->assertEquals(ProductTemplate::PRICE_FREQUENCY_MONTHLY, intval($productTemplate->priceFrequency));
 
         }
@@ -109,8 +109,7 @@
         public function testGetProductTemplatesByName()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-
-            $productTemplates = ProductTemplate::getByName('Red Widget');
+            $productTemplates           = ProductTemplate::getByName('Red Widget');
             $this->assertEquals(2, count($productTemplates));
             $this->assertEquals('Red Widget', $productTemplates[0]->name);
         }
@@ -121,7 +120,7 @@
         public function testGetLabel()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $productTemplates = ProductTemplate::getByName('Red Widget');
+            $productTemplates           = ProductTemplate::getByName('Red Widget');
             $this->assertEquals(2, count($productTemplates));
             $this->assertEquals('Product Template',   $productTemplates[0]::getModelLabelByTypeAndLanguage('Singular'));
             $this->assertEquals('Product Templates', $productTemplates[0]::getModelLabelByTypeAndLanguage('Plural'));
@@ -133,7 +132,7 @@
         public function testGetProductTemplatesByNameForNonExistentName()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $productTemplates = ProductTemplate::getByName('Red Widget 1');
+            $productTemplates           = ProductTemplate::getByName('Red Widget 1');
             $this->assertEquals(0, count($productTemplates));
         }
 
@@ -143,7 +142,7 @@
         public function testGetAll()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $productTemplates = ProductTemplate::getAll();
+            $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(3, count($productTemplates));
             $this->assertEquals(400.54, $productTemplates[1]->listPrice->value);
         }
@@ -155,15 +154,15 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
 
-            $user = User::getByUsername('Steven');
-            $currencies = Currency::getAll();
-            $currency   = $currencies[0];
+            $user                       = User::getByUsername('Steven');
+            $currencies                 = Currency::getAll();
+            $currency                   = $currencies[0];
             $currency->save();
             $postData = array(
-                'name'        => 'Editable Sell Price',
-                'description' => 'Template Description',
-                'status'      => ProductTemplate::STATUS_ACTIVE,
-                'type'        => ProductTemplate::TYPE_PRODUCT,
+                'name'             => 'Editable Sell Price',
+                'description'      => 'Template Description',
+                'status'           => ProductTemplate::STATUS_ACTIVE,
+                'type'             => ProductTemplate::TYPE_PRODUCT,
                 'sellPriceFormula' => array(
                                                 'type' => 1,
                                                 'discountOrMarkupPercentage' => 0
@@ -189,17 +188,17 @@
                                             )
             );
 
-            $controllerUtil   = new ZurmoControllerUtil();
-            $productTemplate = new ProductTemplate();
-            $savedSucessfully = false;
-            $modelToStringValue = null;
-            $productTemplate    = $controllerUtil->saveModelFromPost($postData, $productTemplate, $savedSucessfully,
+            $controllerUtil             = new ZurmoControllerUtil();
+            $productTemplate            = new ProductTemplate();
+            $savedSucessfully           = false;
+            $modelToStringValue         = null;
+            $productTemplate            = $controllerUtil->saveModelFromPost($postData, $productTemplate, $savedSucessfully,
                                                                        $modelToStringValue);
             $this->assertTrue($savedSucessfully);
 
-            $id = $productTemplate->id;
+            $id                         = $productTemplate->id;
             unset($productTemplate);
-            $productTemplate = ProductTemplate::getById($id);
+            $productTemplate            = ProductTemplate::getById($id);
             $this->assertEquals('Editable Sell Price', $productTemplate->name);
             $this->assertEquals(170, $productTemplate->sellPrice->value);
             $this->assertEquals(240, $productTemplate->cost->value);
@@ -210,17 +209,19 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
 
-            $productTemplates = ProductTemplate::getAll();
+            $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(4, count($productTemplates));
             $productTemplates[0]->delete();
-            $productTemplates = ProductTemplate::getAll();
+
+            $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(3, count($productTemplates));
             $productTemplates[0]->delete();
-            $productTemplates = ProductTemplate::getAll();
+
+            $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(2, count($productTemplates));
 
             $productTemplates[0]->delete();
-            $productTemplates = ProductTemplate::getAll();
+            $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(1, count($productTemplates));
 
             $productTemplates[0]->delete();
@@ -229,7 +230,7 @@
         public function testGetAllWhenThereAreNone()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $productTemplates = ProductTemplate::getAll();
+            $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(0, count($productTemplates));
         }
 
@@ -246,10 +247,10 @@
             $currencyValue3->value                      = 300.54;
             $currencyValue3->currency                   = $currencies[0];
 
-            $currencyArray = array();
-            $currencyArray[] = $currencyValue1;
-            $currencyArray[] = $currencyValue2;
-            $currencyArray[] = $currencyValue3;
+            $currencyArray                              = array();
+            $currencyArray[]                            = $currencyValue1;
+            $currencyArray[]                            = $currencyValue2;
+            $currencyArray[]                            = $currencyValue3;
 
             return $currencyArray;
         }
