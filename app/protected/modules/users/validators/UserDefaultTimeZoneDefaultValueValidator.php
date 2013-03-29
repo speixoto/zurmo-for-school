@@ -24,17 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class UserDefaultTimeZone extends CDefaultValueValidator
+    class UserDefaultTimeZoneDefaultValueValidator extends CDefaultValueValidator
     {
         protected function validateAttribute($model, $attributeName)
         {
             if (!$this->setOnEmpty)
+            {
                 $model->$attributeName = Yii::app()->timeZoneHelper->getGlobalValue();
+            }
             else
             {
                 $value = $model->$attributeName;
                 if($value === null || $value === '')
+                {
                     $model->$attributeName = Yii::app()->timeZoneHelper->getGlobalValue();
+                }
             }
         }
     }
