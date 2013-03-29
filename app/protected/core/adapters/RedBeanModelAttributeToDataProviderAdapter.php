@@ -191,6 +191,13 @@
             return $modelClassName::getColumnNameByAttribute($this->attribute);
         }
 
+        public function getSecondColumnName()
+        {
+            $modelClassName = $this->modelClassName;
+            $sortAttribures = $modelClassName::getSortAttributesByAttribute($this->attribute);
+            return $sortAttribures[1];
+        }
+
         /**
          * @return true/false - Is the attribute a relation on the model class name.
          */
@@ -548,6 +555,16 @@
          */
         public function isInferredRelation()
         {
+            return false;
+        }
+
+        public function sortUsesTwoAttributes()
+        {
+            $modelClassName = $this->modelClassName;
+            if (count($modelClassName::getSortAttributesByAttribute($this->attribute)) > 1)
+            {
+                return true;
+            }
             return false;
         }
     }

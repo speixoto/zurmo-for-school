@@ -776,7 +776,7 @@
             }
             return $emailSignature;
         }
-        
+
         public function isDeletable()
         {
             $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
@@ -786,7 +786,7 @@
             }
             return parent::isDeletable();
         }
-        
+
         /**
         * to change isActive attribute  properly during save
         */
@@ -806,6 +806,14 @@
             {
                $this->unrestrictedSet('isActive', $isActive);
                $this->save();
+            }
+        }
+
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array($attribute, 'firstName');
             }
         }
     }

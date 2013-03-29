@@ -58,6 +58,11 @@
             else
             {
                 $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getColumnName();
+                if ($modelAttributeToDataProviderAdapter->sortUsesTwoAttributes())
+                {
+                    self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
+                    $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getSecondColumnName();
+                }
             }
             return self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
         }

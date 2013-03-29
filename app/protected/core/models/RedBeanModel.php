@@ -2934,5 +2934,10 @@
         {
             return static::$lastClassInBeanHeirarchy;
         }
+
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            return array($attribute);
+        }
     }
 ?>
