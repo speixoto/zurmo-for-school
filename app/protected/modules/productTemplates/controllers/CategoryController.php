@@ -51,7 +51,7 @@
                                               'listPageSize', get_class($this->getModule()));
             $productTemplate                = new ProductCategory(false);
             $searchForm                     = new ProductCategoriesSearchForm($productTemplate);
-            $listAttributesSelector         = new ListAttributesSelector('ProductCategoriesListView', get_class($this->getModule()));
+            $listAttributesSelector         = new ListAttributesSelector('ProductCategoriesListView', get_class($this->getModule()), 'ProductCategory');
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
