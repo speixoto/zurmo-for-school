@@ -72,7 +72,7 @@
             ));
             $cClipWidget->endClip();
             $cellsContent  = $cClipWidget->getController()->clips['TabMenuItemsList'];
-            $content       = '<table>';
+            $content       = '<table class="user-menu-preferences">';
             $content      .= '<tbody>';
             $content      .= '<tr>';
             $content      .= $cellsContent;

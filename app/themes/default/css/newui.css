@@ -11845,6 +11845,17 @@ table.configuration-list td:last-child a .z-label:before {
 .texture-swatch label {
   top: -6px;
 }
+/*Menu Prefernces*/
+.user-menu-preferences td {
+  padding-left: 0 !important;
+}
+.user-menu-preferences .multiselect-holder {
+  max-width: 100%;
+  margin: 0;
+}
+.user-menu-preferences .multiselect-right {
+  float: none;
+}
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
   padding: 20px;
