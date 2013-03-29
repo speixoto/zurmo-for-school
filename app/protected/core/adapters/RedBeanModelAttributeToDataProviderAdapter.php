@@ -195,11 +195,16 @@
          * @return string The column name for the second attribute to be used in the
          * sort by the attribute specified in this adapater
          */
-        public function getSecondColumnName()
+        public function getNthColumnName($attributePosition)
         {
             $modelClassName = $this->modelClassName;
             $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->attribute);
-            return $sortAttributes[1];
+            if ($attributePosition >= count($sortAttributes))
+            {
+                throw new DomainException('Attribute position is not valid');
+            }
+            $sortAtribute = $sortAttributes[$attributePosition];
+            return $sortAtribute;
         }
 
         /**
@@ -386,11 +391,16 @@
          * retunrs the second column name to make the sort.
          * @return string
          */
-        public function getRelatedAttributeSecondColumnName()
+        public function getRelatedAttributeNthColumnName($attributePosition)
         {
             $modelClassName = $this->getRelationModelClassName();
             $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->relatedAttribute);
-            return $sortAttributes[1];
+            if ($attributePosition >= count($sortAttributes))
+            {
+                throw new DomainException('Attribute position is not valid');
+            }
+            $sortAttribute = $sortAttributes[$attributePosition];
+            return $sortAttributes[$attributePosition];
         }
 
         /**

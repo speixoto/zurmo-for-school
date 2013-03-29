@@ -816,7 +816,7 @@
         {
             if ($attribute == 'lastName')
             {
-                return array($attribute, 'firstName');
+                return array('firstName', $attribute);
             }
             return parent::getSortAttributesByAttribute($attribute);
         }
