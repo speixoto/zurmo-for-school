@@ -124,9 +124,25 @@
                     'operatorType'         => 'equals',
                     'value'                => self::resolveExtraTriggerOnValueByIsNewModel($isNewModel)
                 ),
-                //todo: triggerOn by isNewModel
             );
             $searchAttributeData['structure'] = '1 AND 2 AND (3 OR 4)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedWorkflow');
+            $where = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where, null);
+        }
+
+        public static function getAllByModuleClassName($moduleClassName)
+        {
+            assert('is_string($moduleClassName)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'moduleClassName',
+                    'operatorType'         => 'equals',
+                    'value'                => $moduleClassName,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedWorkflow');
             $where = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
             return self::getSubset($joinTablesAdapter, null, null, $where, null);

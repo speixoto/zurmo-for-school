@@ -53,6 +53,10 @@
                                 'type'            => 'WorkflowMessageInQueuesLink',
                                 'htmlOptions'     => array( 'class' => 'icon-by-workflow-message-in-queues' )
                             ),
+                            array(
+                                'type'            => 'WorkflowManageOrderLink',
+                                'htmlOptions'     => array( 'class' => 'icon-by-workflow-manage-order' )
+                            ),
                         ),
                     ),
                 ),

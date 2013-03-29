@@ -376,7 +376,70 @@
             echo $content;
         }
 
+        public function actionManageOrder()
+        {
+            $actionBarView       = new SecuredActionBarForWorkflowsSearchAndListView(
+                                       $this->getId(),
+                                       $this->getModule()->getId(), new SavedWorkflow(),
+                                       'list-view',
+                                       'sequence',
+                                       false);
+            $gridView = new GridView(2, 1);
+            $gridView->setView($actionBarView, 0, 0);
+            $gridView->setView(new WorkflowManageOrderView(), 1, 0);
+            $breadcrumbLinks  = array(Zurmo::t('WorkflowsModule', 'Ordering'));
+            $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
+                                    makeViewWithBreadcrumbsForCurrentUser(
+                                    $this,
+                                    $gridView,
+                                    $breadcrumbLinks,
+                                    'WorkflowBreadCrumbView'));
+            echo $view->render();
+        }
 
+        public function actionLoadOrderByModule($moduleClassName)
+        {
+            $savedWorkflows = SavedWorkflow::getAllByModuleClassName($moduleClassName);
+            if(count($savedWorkflows) == 0)
+            {
+                echo CJSON::encode(array('dataToOrder' => 'false'));
+                Yii::app()->end(0, false);
+            }
+            $view = new WorkflowManageOrderListView($savedWorkflows);
+            $content               = $view->render();
+            Yii::app()->getClientScript()->setToAjaxMode();
+            Yii::app()->getClientScript()->render($content);
+            echo CJSON::encode(array('content' => $content, 'dataToOrder' => 'true'));
+        }
+
+        public function actionSaveOrder()
+        {
+            $savedWorkflowData = ArrayUtil::getArrayValue(PostUtil::getData(), 'SavedWorkflow');
+            if($savedWorkflowData != null && isset($savedWorkflowData['savedWorkflowIds']) &&
+               count($savedWorkflowData['savedWorkflowIds']) > 0)
+            {
+                $order = 1;
+                foreach($savedWorkflowData['savedWorkflowIds'] as $savedWorkflowId)
+                {
+                    $savedWorkflow        = SavedWorkflow::getById((int)$savedWorkflowId);
+                    $savedWorkflow->order = $order;
+                    $saved = $savedWorkflow->save();
+                    if(!$saved)
+                    {
+                        throw new FailedToSaveModelException();
+                    }
+                    $order ++;
+                }
+                $message = Zurmo::t('WorkflowsModule', 'Order saved successfully.');
+                echo CJSON::encode(array('message' => $message, 'type' => 'message'));
+            }
+            else
+            {
+                echo CJSON::encode(array('message' => Zurmo::t('Core', 'There was an error processing your request'),
+                                         'type' => 'error'));
+            }
+            Yii::app()->end(0, false);
+        }
 
         protected function resolveCanCurrentUserAccessWorkflows()
         {
