@@ -84,10 +84,10 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>'; //todo: is this div necessary?
+            $content  = '<div>'; //todo: is this div necessary? AA:Yes
+            $content .= $this->renderAddEmailAlertLinkContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderEmailAlertsContentAndWrapper();
-            $content .= $this->renderAddEmailAlertLinkContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
