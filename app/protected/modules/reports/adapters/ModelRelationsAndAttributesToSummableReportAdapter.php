@@ -409,7 +409,7 @@
             $attributes       = array();
             if($this->shouldIncludeIdAsGroupByAttribute)
             {
-                $attributes['id'] = array('label' => Zurmo::t('ReportsModule', 'Id'));
+                $attributes['id'] = array('label' => Zurmo::t('Core', 'Id'));
             }
             $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
             $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());

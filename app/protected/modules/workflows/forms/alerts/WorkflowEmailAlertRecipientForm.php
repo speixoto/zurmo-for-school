@@ -57,9 +57,9 @@
         public $type;
 
         /**
-         * @var string type of recipient, to, cc, or bcc
+         * @var string type of audience, to, occ, or bcc
          */
-        public $recipientType;
+        public $audienceType;
 
         /**
          * static user for example would populate this with the stringified name of the user.
@@ -114,8 +114,8 @@
             return array_merge(parent::rules(), array(
                 array('type',                     'type', 'type' => 'string'),
                 array('type',                     'required'),
-                array('recipientType',            'type', 'type' => 'string'),
-                array('recipientType',            'required'),
+                array('audienceType',            'type', 'type' => 'string'),
+                array('audienceType',            'required'),
             ));
         }
 

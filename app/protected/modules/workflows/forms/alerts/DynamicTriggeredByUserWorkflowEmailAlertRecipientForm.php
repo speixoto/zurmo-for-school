@@ -42,7 +42,7 @@
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $triggeredByUser->primaryEmail->emailAddress;
                 $recipient->toName          = strval($triggeredByUser);
-                $recipient->type            = $this->recipientType;
+                $recipient->type            = $this->audienceType;
                 $recipient->personOrAccount = $triggeredByUser;
                 $recipients[]               = $recipient;
             }

@@ -59,7 +59,7 @@
             $recipient                  = new EmailMessageRecipient();
             $recipient->toAddress       = $this->toAddress;
             $recipient->toName          = $this->toName;
-            $recipient->type            = $this->recipientType;
+            $recipient->type            = $this->audienceType;
             return array($recipient);
         }
     }

@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * On-save report form used to manage interaction between a Workflow and the user interface.
+     * On-save workflow form used to manage interaction between a Workflow and the user interface.
      */
     class OnSaveWorkflowWizardForm extends WorkflowWizardForm
     {

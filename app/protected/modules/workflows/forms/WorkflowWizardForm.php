@@ -59,7 +59,7 @@
         public $moduleClassName;
 
         /**
-         * Name of report
+         * Name of workflow
          * @var string
          */
         public $name;

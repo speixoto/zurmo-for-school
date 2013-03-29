@@ -272,7 +272,7 @@
         }
 
         /**
-         * An example where the attribute is not the real attribute would be a filter owner__User
+         * An example where the attribute is not the real attribute would be a trigger owner__User
          * In this case the real attribute returned would be 'owner'
          * @return string
          */

@@ -456,7 +456,7 @@
         {
             $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
             $rules                = array_merge($rules,
-                $modelToWorkflowAdapter->getFilterRulesByAttribute(
+                $modelToWorkflowAdapter->getTriggerRulesByAttribute(
                     $this->getResolvedAttribute(), $ruleAttributeName));
             $validators           = $this->createValueValidatorsByRules($rules);
             foreach($validators as $validator)

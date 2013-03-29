@@ -68,7 +68,7 @@
             $content                             = null;
             ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'dynamic-row-label email-alert-recipient-label');
             $content                            .= $this->renderTypeContent();
-            $content                            .= $this->renderRecipientTypeContent();
+            $content                            .= $this->renderAudienceTypeContent();
             $content                            .= $this->renderFormAttributesContent();
             return $content;
         }
@@ -81,13 +81,13 @@
             return ZurmoHtml::hiddenField($name, $this->emailAlertRecipientType, $htmlOptions);
         }
 
-        protected function renderRecipientTypeContent()
+        protected function renderAudienceTypeContent()
         {
             $params                 = array('inputPrefix' => $this->inputPrefixData);
-            $recipientTypeElement   = new EmailMessageRecipientTypesStaticDropDownElement(
-                                          $this->model, 'recipientType', $this->form, $params);
-            $recipientTypeElement->editableTemplate  = '{content}{error}';
-            return $recipientTypeElement->render();
+            $audienceTypeElement   = new EmailMessageRecipientTypesStaticDropDownElement(
+                                          $this->model, 'audienceType', $this->form, $params);
+            $audienceTypeElement->editableTemplate  = '{content}{error}';
+            return $audienceTypeElement->render();
         }
 
         protected function renderFormAttributesContent()

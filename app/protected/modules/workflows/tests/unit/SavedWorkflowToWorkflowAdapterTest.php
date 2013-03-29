@@ -136,7 +136,7 @@
             ));
             $unserializedData = unserialize($savedWorkflow->serializedData);
             $this->assertEquals($compareData['Triggers'],                     $unserializedData['Triggers']);
-            $this->assertEquals('1 and 2 or 3',                              $unserializedData['filtersStructure']);
+            $this->assertEquals('1 and 2 or 3',                              $unserializedData['triggersStructure']);
             $this->assertEquals(Workflow::CURRENCY_CONVERSION_TYPE_SPOT,       $unserializedData['currencyConversionType']);
             $this->assertEquals('CAD',                                       $unserializedData['spotConversionCurrencyCode']);
             $saved = $savedWorkflow->save();

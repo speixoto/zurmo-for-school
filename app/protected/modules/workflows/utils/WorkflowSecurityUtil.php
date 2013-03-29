@@ -51,35 +51,5 @@
             }
             return true;
         }
-        //todo: remove below if this is not needed because as someone creating a workflow or running it, i dont think we can block stuff
-/**
-        protected static function canCurrentUserAccessComponent(ComponentForWorkflowForm $componentForm)
-        {
-            $modelClassName       = $componentForm->getModelClassName();
-            $moduleClassName      = $componentForm->getModuleClassName();
-            if(!$componentForm->hasRelatedData())
-            {
-                return self::canCurrentUserCanAccessModule($moduleClassName);
-            }
-            else
-            {
-                foreach($componentForm->attributeAndRelationData as $relationOrAttribute)
-                {
-                    if(!self::canCurrentUserCanAccessModule($moduleClassName))
-                    {
-                        return false;
-                    }
-                    $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                            make($moduleClassName, $modelClassName, $componentForm->getReportType());
-                    if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
-                    {
-                        $modelClassName       = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
-                        $moduleClassName      = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                    }
-                }
-                return true;
-            }
-        }
- * **/
     }
 ?>

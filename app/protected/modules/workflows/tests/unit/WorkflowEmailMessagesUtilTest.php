@@ -63,7 +63,7 @@
             $emailMessageForm->sendAfterDurationSeconds = 86400;
             $recipients = array(array('type'              => WorkflowEmailAlertRecipientForm::
                                                              TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
-                                       'recipientType'    => EmailMessageRecipient::TYPE_TO,
+                                       'audienceType'    => EmailMessageRecipient::TYPE_TO,
                                        'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::
                                                              DYNAMIC_USER_TYPE_CREATED_BY_USER));
             $emailMessageForm->setAttributes(array(EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS => $recipients));
@@ -110,7 +110,7 @@
             $emailMessageForm->sendFromType    = EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
             $recipients = array(array('type'             => WorkflowEmailAlertRecipientForm::
                                                             TYPE_DYNAMIC_TRIGGERED_BY_USER,
-                                      'recipientType'    => EmailMessageRecipient::TYPE_TO));
+                                      'audienceType'    => EmailMessageRecipient::TYPE_TO));
             $emailMessageForm->setAttributes(array(EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS => $recipients));
             $workflow->addEmailAlert($emailMessageForm);
             $model = new WorkflowModelTestItem();

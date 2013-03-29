@@ -131,7 +131,7 @@
                 $recipient                  = new EmailMessageRecipient();
                 $recipient->toAddress       = $user->primaryEmail->emailAddress;
                 $recipient->toName          = strval($user);
-                $recipient->type            = $this->recipientType;
+                $recipient->type            = $this->audienceType;
                 $recipient->personOrAccount = $user;
                 $recipients[]               = $recipient;
             }

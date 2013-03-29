@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Class used by reporting or workflow to show available action attribute types in a dropdown.
+     * Class used by workflow to show available action attribute types in a dropdown.
      */
     class WorkflowActionAttributeTypeStaticDropDownElement extends StaticDropDownFormElement
     {

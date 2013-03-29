@@ -31,7 +31,7 @@
     {
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
-            assert('$model instanceof FilterForWorkflowForm || $model instanceof TimeTriggerForWorkflowForm');
+            assert('$model instanceof TriggerForWorkflowForm || $model instanceof TimeTriggerForWorkflowForm');
             parent::__construct($model, $attribute, $form, $params);
         }
 

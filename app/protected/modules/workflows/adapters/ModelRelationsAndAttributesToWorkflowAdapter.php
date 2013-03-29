@@ -68,7 +68,7 @@
          * @param string $moduleClassName
          * @param string $modelClassName
          * @param string $workflowType
-         * @return ModelRelationsAndAttributesToReportAdapter
+         * @return ModelRelationsAndAttributesToWorkflowAdapter
          * @throws NotSupportedException if the workflowType is invalid or null
          */
         public static function make($moduleClassName, $modelClassName, $workflowType)
@@ -186,8 +186,8 @@
         }
 
         /**
-         * Returns true/false if a string passed in is considered a relation from a reporting perspective. In this case
-         * a dropDown is not considered a relation because it is reported on as a regular attribute.
+         * Returns true/false if a string passed in is considered a relation from a workflow perspective. In this case
+         * a dropDown is not considered a relation because it is used in workflow as a regular attribute.
          * @param string $relationOrAttribute
          * @return bool
          */
@@ -380,10 +380,10 @@
                 return 'UserNameId';
             }
             $resolvedAttribute = $this->resolveRealAttributeName($attribute);
-            if(null != $filterValueElementTypeFromRule = $this->rules->getTriggerValueElementType($this->model,
+            if(null != $triggerValueElementTypeFromRule = $this->rules->getTriggerValueElementType($this->model,
                                                                                                  $resolvedAttribute))
             {
-                return $filterValueElementTypeFromRule;
+                return $triggerValueElementTypeFromRule;
             }
             return ModeAttributeToWorkflowTriggerValueElementTypeUtil::getType($this->model, $resolvedAttribute);
         }
@@ -443,7 +443,7 @@
 
         /**
          * Resolves relations to only return relations that the user has access too. always returns user relations
-         * since this is ok for a user to see when creating or editing a report.
+         * since this is ok for a user to see when creating or editing a workflow rule
          * @param User $user
          * @param array $relations
          * @return array
@@ -510,7 +510,7 @@
          */
         public function getAttributesIncludingDerivedAttributesData()
         {
-            $attributes = array('id' => array('label' => Zurmo::t('ReportsModule', 'Id')));
+            $attributes = array('id' => array('label' => Zurmo::t('Core', 'Id')));
             $attributes = array_merge($attributes, $this->getAttributesNotIncludingDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
@@ -598,7 +598,7 @@
          * @param string $ruleAttributeName
          * @return array
          */
-        public function getFilterRulesByAttribute($attribute, $ruleAttributeName)
+        public function getTriggerRulesByAttribute($attribute, $ruleAttributeName)
         {
             $rules                        = array();
             $dynamicallyDerivedAttributes =  $this->getDynamicallyDerivedAttributesData();

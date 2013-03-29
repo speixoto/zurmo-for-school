@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Helper functionality for finding the filter value element
+     * Helper functionality for finding the trigger value element
      * associated with a model's attribute
      */
     class ModeAttributeToWorkflowTriggerValueElementTypeUtil

@@ -66,7 +66,7 @@
 
         public function testStringifiedModelForValue()
         {
-             $form = new StaticUserWorkflowEmailAlertRecipientForm('ReportModelTestItem', Workflow::TYPE_ON_SAVE);
+             $form = new StaticUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
              $form->userId = Yii::app()->user->userModel->id;
              $this->assertEquals('Clark Kent', $form->stringifiedModelForValue);
 

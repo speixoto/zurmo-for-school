@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Element used by filters that can morph between a single select and a multi-select.
+     * Element used by triggers that can morph between a single select and a multi-select.
      */
     class StaticMultiSelectDropDownForWorkflowElement extends StaticDropDownForWorkflowElement
     {

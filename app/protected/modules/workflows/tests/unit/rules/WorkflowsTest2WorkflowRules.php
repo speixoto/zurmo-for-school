@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Report rules to be used with the WorkflowModelTestItem2s.  Rules are module based and should store the rules
+     * Workflow rules to be used with the WorkflowModelTestItem2s.  Rules are module based and should store the rules
      * for all the module's models.
      */
     class WorkflowsTest2WorkflowRules extends SecuredWorkflowRules
