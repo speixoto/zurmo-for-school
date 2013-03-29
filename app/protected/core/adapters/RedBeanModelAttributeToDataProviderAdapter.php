@@ -195,7 +195,7 @@
          * @return string The column name for the second attribute to be used in the
          * sort by the attribute specified in this adapater
          */
-        public function getNthColumnName($attributePosition)
+        public function getColumnNameByPosition($attributePosition)
         {
             $modelClassName = $this->modelClassName;
             $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->attribute);
@@ -391,7 +391,7 @@
          * retunrs the second column name to make the sort.
          * @return string
          */
-        public function getRelatedAttributeNthColumnName($attributePosition)
+        public function getRelatedAttributeColumnNameByPosition($attributePosition)
         {
             $modelClassName = $this->getRelationModelClassName();
             $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->relatedAttribute);

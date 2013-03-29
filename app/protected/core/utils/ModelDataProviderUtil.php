@@ -54,31 +54,31 @@
             $tableAliasName        = $builder->resolveJoins($onTableAliasName,
                                                             self::resolveCanUseFromJoins($onTableAliasName));
             $sortColumnsNameString = null;
-            $shouldConcat          = false;
+            $shouldConcatenate     = false;
             if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 if ($modelAttributeToDataProviderAdapter->relatedAttributesSortUsesTwoAttributes())
                 {
-                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeNthColumnName(0);
+                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnNameByPosition(0);
                     $sortColumnsNameString .= self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
                     $sortColumnsNameString .= ', ';
-                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeNthColumnName(1);
-                    $shouldConcat = true;
+                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnNameByPosition(1);
+                    $shouldConcatenate      = true;
                 }
                 else
                 {
-                    $resolvedSortColumnName     = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
+                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
                 }
             }
             else
             {
                 if ($modelAttributeToDataProviderAdapter->sortUsesTwoAttributes())
                 {
-                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getNthColumnName(0);
+                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getColumnNameByPosition(0);
                     $sortColumnsNameString .=  self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
                     $sortColumnsNameString .= ', ';
-                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getNthColumnName(1);
-                    $shouldConcat = true;
+                    $resolvedSortColumnName = $modelAttributeToDataProviderAdapter->getColumnNameByPosition(1);
+                    $shouldConcatenate      = true;
                 }
                 else
                 {
@@ -86,11 +86,21 @@
                 }
             }
             $sortColumnsNameString .= self::resolveSortColumnNameString($tableAliasName, $resolvedSortColumnName);
-            if ($shouldConcat)
+            if ($shouldConcatenate)
             {
-                $sortColumnsNameString = "CONCAT(" . $sortColumnsNameString . ")";
+                $sortColumnsNameString = self::resolveConcatenation($sortColumnsNameString);
             }
             return $sortColumnsNameString;
+        }
+
+        /**
+         * Wraps a string by concat to be used in queries
+         * @param string $string
+         * @return string
+         */
+        protected static function resolveConcatenation($string)
+        {
+            return "CONCAT(" . $string . ")";
         }
 
         /**
