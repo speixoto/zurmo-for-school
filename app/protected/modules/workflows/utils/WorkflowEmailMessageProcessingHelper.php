@@ -32,7 +32,7 @@
 
         protected $triggeredByUser;
 
-        public function __construct(EmailAlertForWorkflowForm $emailMessageForm, RedBeanModel $triggeredModel, User $triggeredByUser)
+        public function __construct(EmailMessageForWorkflowForm $emailMessageForm, RedBeanModel $triggeredModel, User $triggeredByUser)
         {
             $this->emailMessageForm  = $emailMessageForm;
             $this->triggeredModel    = $triggeredModel;
@@ -75,13 +75,13 @@
         protected function resolveSender()
         {
             $sender                     = new EmailMessageSender();
-            if($this->emailMessageForm->sendFromType == EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
+            if($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
             {
                 $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
             }
-            elseif($this->emailMessageForm->sendFromType == EmailAlertForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
+            elseif($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
             {
                 $sender->fromAddress        = $this->emailMessageForm->sendFromAddress;
                 $sender->fromName           = $this->emailMessageForm->sendFromName;
@@ -95,9 +95,9 @@
 
         protected function resolveRecipients(EmailMessage $emailMessage)
         {
-            foreach($this->emailMessageForm->getEmailAlertRecipients() as $emailAlertRecipient)
+            foreach($this->emailMessageForm->getEmailMessageRecipients() as $emailMessageRecipient)
             {
-                foreach($emailAlertRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
+                foreach($emailMessageRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
                 {
                     $emailMessage->recipients->add($recipient);
                 }

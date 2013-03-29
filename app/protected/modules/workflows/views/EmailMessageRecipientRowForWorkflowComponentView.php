@@ -25,18 +25,18 @@
      ********************************************************************************/
 
     /**
-     * View for displaying a row of recipient information for an email alert
+     * View for displaying a row of recipient information for an email message
      */
-    class EmailAlertRecipientRowForWorkflowComponentView extends View
+    class EmailMessageRecipientRowForWorkflowComponentView extends View
     {
-        const REMOVE_LINK_CLASS_NAME = 'remove-dynamic-email-alert-recipient-row-link';
+        const REMOVE_LINK_CLASS_NAME = 'remove-dynamic-email-message-recipient-row-link';
         /**
          * @var bool
          */
         public    $addWrapper = true;
 
         /**
-         * @var WorkflowEmailAlertRecipientToElementAdapter
+         * @var WorkflowEmailMessageRecipientToElementAdapter
          */
         protected $elementAdapter;
 
@@ -62,7 +62,7 @@
          */
         public function __construct($elementAdapter, $rowNumber, $inputPrefixData)
         {
-            assert('$elementAdapter instanceof WorkflowEmailAlertRecipientToElementAdapter');
+            assert('$elementAdapter instanceof WorkflowEmailMessageRecipientToElementAdapter');
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             $this->elementAdapter                     = $elementAdapter;
@@ -85,7 +85,7 @@
             $content .= $this->renderRecipientContent();
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => self::REMOVE_LINK_CLASS_NAME));
-            $content  = ZurmoHtml::tag('div', array('class' => "dynamic-sub-row dynamic-email-alert-recipient-row"), $content);
+            $content  = ZurmoHtml::tag('div', array('class' => "dynamic-sub-row dynamic-email-message-recipient-row"), $content);
             if($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array(), $content);
@@ -98,7 +98,7 @@
          */
         protected function renderRecipientRowNumberLabel()
         {
-            return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label dynamic-email-alert-recipient-row-number-label'),
+            return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label dynamic-email-message-recipient-row-number-label'),
                    ($this->rowNumber + 1) . '.');
         }
 

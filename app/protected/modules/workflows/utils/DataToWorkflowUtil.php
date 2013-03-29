@@ -60,7 +60,7 @@
             }
             self::resolveTriggers                   ($data, $workflow);
             self::resolveActions                    ($data, $workflow);
-            self::resolveEmailAlerts                ($data, $workflow);
+            self::resolveEmailMessages                ($data, $workflow);
             self::resolveTimeTrigger                ($data, $workflow);
         }
 
@@ -160,23 +160,23 @@
          * @param $data
          * @param Workflow $workflow
          */
-        public static function resolveEmailAlerts($data, Workflow $workflow)
+        public static function resolveEmailMessages($data, Workflow $workflow)
         {
-            $workflow->removeAllEmailAlerts();
+            $workflow->removeAllEmailMessages();
             $moduleClassName = $workflow->getModuleClassName();
-            if(count($emailAlertsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS)) > 0)
+            if(count($emailMessagesData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)) > 0)
             {
-                foreach($emailAlertsData as $key => $emailAlertData)
+                foreach($emailMessagesData as $key => $emailMessageData)
                 {
-                    $emailAlert = new EmailAlertForWorkflowForm($moduleClassName::getPrimaryModelName(),
+                    $emailMessage = new EmailMessageForWorkflowForm($moduleClassName::getPrimaryModelName(),
                                   $workflow->type, $key);
-                    $emailAlert->setAttributes($emailAlertData);
-                    $workflow->addEmailAlert($emailAlert);
+                    $emailMessage->setAttributes($emailMessageData);
+                    $workflow->addEmailMessage($emailMessage);
                 }
             }
             else
             {
-                $workflow->removeAllEmailAlerts();
+                $workflow->removeAllEmailMessages();
             }
         }
 

@@ -25,9 +25,9 @@
  ********************************************************************************/
 
     /**
-     * Form to work with dynamic triggered model users for an email alert recipient
+     * Form to work with dynamic triggered model users for an email message recipient
      */
-    class DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         const DYNAMIC_USER_TYPE_CREATED_BY_USER             = 'CreatedByUser';
 

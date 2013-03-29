@@ -25,10 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Class used by an email alert in workflow to show the duration data. For example send the email alert
+     * Class used by an email message in workflow to show the duration data. For example send the email message
      * 4 hours after the workflow runs
      */
-    class EmailAlertSendAfterDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class EmailMessageSendAfterDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
         protected function getDataAndLabelsModelPropertyName()
         {

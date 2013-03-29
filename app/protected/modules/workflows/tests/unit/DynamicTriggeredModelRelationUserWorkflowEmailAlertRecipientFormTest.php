@@ -24,7 +24,7 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientFormTest extends WorkflowBaseTest
+    class DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientFormTest extends WorkflowBaseTest
     {
         protected static $super;
 
@@ -71,7 +71,7 @@
             $newRecipient = new EmailMessageRecipient();
             $newRecipient->personOrAccount = self::$bobby;
             $newRecipients = array($newRecipient);
-            DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                 resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients);
         }
 
@@ -90,7 +90,7 @@
             $newRecipient2 = new EmailMessageRecipient();
             $newRecipient2->personOrAccount = self::$jimmy2;
             $newRecipients = array($newRecipient, $newRecipient2);
-            $recipients    = DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            $recipients    = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                              resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients);
             $this->assertEquals(4, count($recipients));
             $this->assertEquals(self::$sarah->id,  $recipients[0]->personOrAccount->id);
@@ -109,7 +109,7 @@
             $newRecipient2 = new EmailMessageRecipient();
             $newRecipient2->personOrAccount = self::$sarah;
             $newRecipients = array($newRecipient, $newRecipient2);
-            $recipients    = DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            $recipients    = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                              resolveRecipientsAsUniquePeople($existingRecipients, $newRecipients);
             $this->assertEquals(3, count($recipients));
             $this->assertEquals(self::$sarah->id,  $recipients[0]->personOrAccount->id);
@@ -122,7 +122,7 @@
          */
         public function testGetRelationValuesAndLabels()
         {
-            $form = new DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $relationValuesAndLabels = $form->getRelationValuesAndLabels();
             $this->assertEquals(5, count($relationValuesAndLabels));
         }
@@ -132,10 +132,10 @@
          */
         public function testMakeRecipientsForADerivedRelation()
         {
-            $form = new DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem',
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem',
                         Workflow::TYPE_ON_SAVE);
             $form->relation        = 'model5ViaItem';
-            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                                      DYNAMIC_USER_TYPE_OWNER;
 
             $model = new WorkflowModelTestItem();
@@ -163,10 +163,10 @@
          */
         public function testMakeRecipientsForAnInferredRelation()
         {
-            $form = new DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem5',
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem5',
                         Workflow::TYPE_ON_SAVE);
             $form->relation        = 'WorkflowModelTestItem__workflowItems__Inferred';
-            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                                      DYNAMIC_USER_TYPE_OWNER;
 
 
@@ -195,10 +195,10 @@
          */
         public function testMakeRecipientsForAHasManyRelation()
         {
-            $form = new DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem',
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem',
                         Workflow::TYPE_ON_SAVE);
             $form->relation        = 'hasMany';
-            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                                      DYNAMIC_USER_TYPE_OWNER;
 
             $model = new WorkflowModelTestItem();
@@ -226,10 +226,10 @@
          */
         public function testMakeRecipientsForAHasOneRelation()
         {
-            $form = new DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', \
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', \
                         Workflow::TYPE_ON_SAVE);
             $form->relation        = 'hasOne';
-            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::
+            $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                                      DYNAMIC_USER_TYPE_OWNER;
 
             $model = new WorkflowModelTestItem();

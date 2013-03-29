@@ -25,9 +25,9 @@
  ********************************************************************************/
 
     /**
-     * Form to work with a specific user for an email alert recipient
+     * Form to work with a specific user for an email message recipient
      */
-    class StaticUserWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class StaticUserWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         /**
          * Protected so we can attach logic to it on set.

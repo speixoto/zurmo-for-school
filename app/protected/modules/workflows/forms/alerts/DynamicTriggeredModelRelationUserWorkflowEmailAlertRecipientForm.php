@@ -25,12 +25,13 @@
  ********************************************************************************/
 
     /**
-     * Form to work with dynamic triggered model relation users for an email alert recipient
+     * Form to work with dynamic triggered model relation users for an email message recipient
      */
-    class DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm extends DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm
+    class DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm extends
+          DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm
     {
         /**
-         * When sending email alerts on related models, if there are MANY related models RELATION_FILTER_ALL means the
+         * When sending email messages on related models, if there are MANY related models RELATION_FILTER_ALL means the
          * action will be performed on all related models
          */
         const RELATION_FILTER_ALL   = 'RelationFilterAll';
@@ -123,7 +124,7 @@
             $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
                                                                                  $modelClassName, $this->workflowType);
             $valueAndLabels = array();
-            foreach($adapter->getSelectableRelationsDataForEmailAlertRecipientModelRelation() as $relation => $data)
+            foreach($adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
             {
                 $valueAndLabels[$relation] = $data['label'];
             }

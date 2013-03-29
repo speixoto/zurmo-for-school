@@ -125,7 +125,7 @@
             $formModel->timeTrigger       = $this->workflow->getTimeTrigger();
             $formModel->triggers          = $this->workflow->getTriggers();
             $formModel->actions           = $this->workflow->getActions();
-            $formModel->emailAlerts       = $this->workflow->getEmailAlerts();
+            $formModel->emailMessages     = $this->workflow->getEmailMessages();
         }
     }
 ?>

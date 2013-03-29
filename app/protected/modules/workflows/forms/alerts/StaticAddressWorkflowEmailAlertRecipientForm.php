@@ -25,9 +25,9 @@
  ********************************************************************************/
 
     /**
-     * Form to work with a specific to name and to address for an email alert recipient
+     * Form to work with a specific to name and to address for an email message recipient
      */
-    class StaticAddressWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class StaticAddressWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         /**
          * @var string

@@ -781,10 +781,10 @@
 
         /**
          * Exclude User relations and Owned relations.
-         * Utilized by @see DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm
+         * Utilized by @see DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm
          * @return sorted array
          */
-        public function getSelectableRelationsDataForEmailAlertRecipientModelRelation()
+        public function getSelectableRelationsDataForEmailMessageRecipientModelRelation()
         {
             return $this->getSelectableRelationsDataForActionTypeRelation();
         }

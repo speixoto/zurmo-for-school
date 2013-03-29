@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowEmailAlertRecipientFormTest extends WorkflowBaseTest
+    class WorkflowEmailMessageRecipientFormTest extends WorkflowBaseTest
     {
         protected static $superUserId;
 
@@ -66,7 +66,7 @@
 
         public function testStringifiedModelForValue()
         {
-             $form = new StaticUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+             $form = new StaticUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
              $form->userId = Yii::app()->user->userModel->id;
              $this->assertEquals('Clark Kent', $form->stringifiedModelForValue);
 
@@ -89,7 +89,7 @@
 
         public function testMakeRecipientsForStaticAddress()
         {
-            $form  = new StaticAddressWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form  = new StaticAddressWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $form->toName = 'someName';
             $form->toAddress = 'someone@zurmo.com';
             $model = new WorkflowModelTestItem();
@@ -102,7 +102,7 @@
 
         public function testMakeRecipientsForStaticUser()
         {
-            $form  = new StaticUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form  = new StaticUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $form->userId = self::$bobbyUserId;
             $model = new WorkflowModelTestItem();
             $recipients = $form->makeRecipients($model, Yii::app()->user->userModel);
@@ -120,7 +120,7 @@
             $role->users->add(User::getById(self::$bobbyUserId));
             $saved = $role->save();
             $this->assertTrue($saved);
-            $form  = new StaticRoleWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form  = new StaticRoleWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $form->roleId = $role->id;
             $model = new WorkflowModelTestItem();
             $recipients = $form->makeRecipients($model, Yii::app()->user->userModel);
@@ -141,7 +141,7 @@
             $group->users->add(User::getById(self::$bobbyUserId));
             $saved = $group->save();
             $this->assertTrue($saved);
-            $form  = new StaticGroupWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form  = new StaticGroupWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $form->groupId = $group->id;
             $model = new WorkflowModelTestItem();
             $recipients = $form->makeRecipients($model, Yii::app()->user->userModel);
@@ -156,7 +156,7 @@
 
         public function testMakeRecipientsForDynamicTriggeredUser()
         {
-            $form  = new DynamicTriggeredByUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form  = new DynamicTriggeredByUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $model = new WorkflowModelTestItem();
             $recipients = $form->makeRecipients($model, User::getById(self::$bobbyUserId));
             $this->assertEquals(1, count($recipients));
@@ -167,8 +167,8 @@
 
         public function testMakeRecipientsForDynamicTriggeredModelUserCreatedByUser()
         {
-            $form  = new DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_CREATED_BY_USER;
+            $form  = new DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::DYNAMIC_USER_TYPE_CREATED_BY_USER;
             $model = new WorkflowModelTestItem();
             $model->setScenario('importModel');
             $model->lastName      = 'lastName';
@@ -188,8 +188,8 @@
 
         public function testMakeRecipientsForDynamicTriggeredModelUserManagerOfCreatedByUser()
         {
-            $form  = new DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_CREATED_BY_USER;
+            $form  = new DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_CREATED_BY_USER;
             $model = new WorkflowModelTestItem();
             $model->setScenario('importModel');
             $model->lastName      = 'lastName';
@@ -209,8 +209,8 @@
 
         public function testMakeRecipientsForDynamicTriggeredModelUserModifiedByUser()
         {
-            $form  = new DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MODIFIED_BY_USER;
+            $form  = new DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::DYNAMIC_USER_TYPE_MODIFIED_BY_USER;
             $model = new WorkflowModelTestItem();
             $model->setScenario('importModel');
             $model->lastName      = 'lastName';
@@ -230,8 +230,8 @@
 
         public function testMakeRecipientsForDynamicTriggeredModelUserManagerOfModifiedByUser()
         {
-            $form  = new DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_MODIFIED_BY_USER;
+            $form  = new DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_MODIFIED_BY_USER;
             $model = new WorkflowModelTestItem();
             $model->setScenario('importModel');
             $model->lastName      = 'lastName';
@@ -251,8 +251,8 @@
 
         public function testMakeRecipientsForDynamicTriggeredModelUserOwner()
         {
-            $form  = new DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_OWNER;
+            $form  = new DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::DYNAMIC_USER_TYPE_OWNER;
             $model = new WorkflowModelTestItem();
             $model->setScenario('importModel');
             $model->lastName      = 'lastName';
@@ -272,8 +272,8 @@
 
         public function testMakeRecipientsForDynamicTriggeredModelUserManagerOfOwner()
         {
-            $form  = new DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER;
+            $form  = new DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->dynamicUserType = DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::DYNAMIC_USER_TYPE_MANAGER_OF_OWNER;
             $model = new WorkflowModelTestItem();
             $model->setScenario('importModel');
             $model->lastName      = 'lastName';

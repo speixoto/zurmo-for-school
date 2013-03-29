@@ -25,18 +25,18 @@
      ********************************************************************************/
 
     /**
-     * View class for the  email alerts component for the workflow wizard user interface
+     * View class for the  email messages component for the workflow wizard user interface
      */
-    class EmailAlertsForWorkflowWizardView extends ComponentForWorkflowWizardView
+    class EmailMessagesForWorkflowWizardView extends ComponentForWorkflowWizardView
     {
-        const ADD_EMAIL_ALERT_LINK_ID   ='AddEmailAlertLink';
+        const ADD_EMAIL_MESSAGE_LINK_ID   ='AddEmailMessageLink';
 
         /**
          * @return string
          */
         public static function getWizardStepTitle()
         {
-            return Zurmo::t('WorkflowsModule', 'Select Alerts');
+            return Zurmo::t('WorkflowsModule', 'Select Messages');
         }
 
         /**
@@ -44,7 +44,7 @@
          */
         public static function getPreviousPageLinkId()
         {
-            return 'emailAlertsPreviousLink';
+            return 'emailMessagesPreviousLink';
         }
 
         /**
@@ -52,7 +52,7 @@
          */
         public static function getNextPageLinkId()
         {
-            return 'emailAlertsNextLink';
+            return 'emailMessagesNextLink';
         }
 
         /**
@@ -60,14 +60,14 @@
          */
         public static function getZeroComponentsClassName()
         {
-            return 'ZeroEmailAlerts';
+            return 'ZeroEmailMessages';
         }
 
         public function registerScripts()
         {
             parent::registerScripts();
-            $this->registerRemoveEmailAlertScript();
-            $this->registerRemoveEmailAlertRecipientScript();
+            $this->registerRemoveEmailMessageScript();
+            $this->registerRemoveEmailMessageRecipientScript();
 
         }
 
@@ -85,9 +85,9 @@
         protected function renderFormContent()
         {
             $content  = '<div>'; //todo: is this div necessary? AA:Yes
-            $content .= $this->renderAddEmailAlertLinkContentAndWrapper();
+            $content .= $this->renderAddEmailMessageLinkContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
-            $content .= $this->renderEmailAlertsContentAndWrapper();
+            $content .= $this->renderEmailMessagesContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -98,42 +98,42 @@
          */
         protected function getZeroComponentsMessageContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Set an alert') . '</h2>';
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Set an message') . '</h2>';
         }
         protected function renderZeroComponentsContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
-                   ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $this->getZeroComponentsContent());
+                   ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES), $this->getZeroComponentsContent());
         }
 
-        protected function renderAddEmailAlertLinkContentAndWrapper()
+        protected function renderAddEmailMessageLinkContentAndWrapper()
         {
-            $content  = $this->renderAddEmailAlertLink(Zurmo::t('WorkflowsModule', 'Add Email Alert'));
-            return ZurmoHtml::tag('div', array('class' => 'add-email-alert-button-container'), $content);
+            $content  = $this->renderAddEmailMessageLink(Zurmo::t('WorkflowsModule', 'Add Email Message'));
+            return ZurmoHtml::tag('div', array('class' => 'add-email-message-button-container'), $content);
         }
 
-        protected function renderEmailAlertsContentAndWrapper()
+        protected function renderEmailMessagesContentAndWrapper()
         {
             //todo: still seems strange we call it droppable even though it is only draggable here. maybe not a big deal
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
             $itemsContent                = $this->getNonSortableListContent($items);
-            $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS));
-            $hiddenInputName             = ComponentForWorkflowForm::TYPE_EMAIL_ALERTS . 'RowCounter';
+            $idInputHtmlOptions          = array('id' => static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES));
+            $hiddenInputName             = ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES . 'RowCounter';
             $droppableAttributesContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array('class' => 'droppable-dynamic-rows-container ' .
-                                           ComponentForWorkflowForm::TYPE_EMAIL_ALERTS), $droppableAttributesContent);
+                                           ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES), $droppableAttributesContent);
             return $content;
         }
 
-        protected function renderAddEmailAlertLink($label)
+        protected function renderAddEmailMessageLink($label)
         {
-            //Zurmo::t('WorkflowsModule', 'Add Email Alert'); //self::ADD_EMAIL_ALERT_LINK_NAME
+            //Zurmo::t('WorkflowsModule', 'Add Email Message'); //self::ADD_EMAIL_MESSAGE_LINK_NAME
             assert('is_string($label)');
-            $rowCounterInputId = static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS);
+            $rowCounterInputId = static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
             $moduleClassNameId = get_class($this->model) . '[moduleClassName]';
-            $url               = Yii::app()->createUrl('workflows/default/addEmailAlert',
+            $url               = Yii::app()->createUrl('workflows/default/addEmailMessage',
                                  array_merge($_GET, array('type' => $this->model->type)));
             $aContent          = ZurmoHtml::wrapLink($label);
             return  ZurmoHtml::ajaxLink($aContent, $url,
@@ -146,13 +146,13 @@
                         'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
                         'success' => 'js:function(data){
                         $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                        $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_ALERTS
+                        $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
                             . '").find(".dynamic-rows").find("ul:first").first().append(data);
-                        rebuildWorkflowEmailAlertRowNumbers("' . get_class($this) . '");
+                        rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
                         $(".' . static::getZeroComponentsClassName() . '").hide();
                         }',
                     ),
-                    array('id' => self::ADD_EMAIL_ALERT_LINK_ID,
+                    array('id' => self::ADD_EMAIL_MESSAGE_LINK_ID,
                           'class'      => 'attachLoading z-button ')
                       //'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
                       //                                  makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));')
@@ -164,7 +164,7 @@
          */
         protected function getItemsCount()
         {
-            return count($this->model->emailAlerts);
+            return count($this->model->emailMessages);
         }
 
         /**
@@ -173,20 +173,20 @@
          */
         protected function getItemsContent(& $rowCount)
         {
-            return $this->renderEmailAlerts($rowCount, $this->model->emailAlerts);
+            return $this->renderEmailMessages($rowCount, $this->model->emailMessages);
         }
 
-        protected function renderEmailAlerts(& $rowCount, $emailAlerts)
+        protected function renderEmailMessages(& $rowCount, $emailMessages)
         {
             assert('is_int($rowCount)');
-            assert('is_array($emailAlerts)');
+            assert('is_array($emailMessages)');
             $items                      = array();
-            foreach($emailAlerts as $emailAlert)
+            foreach($emailMessages as $emailMessage)
             {
-                $inputPrefixData   = array(get_class($this->model), ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, (int)$rowCount);
+                $inputPrefixData   = array(get_class($this->model), ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, (int)$rowCount);
                 $rowCounterInputId = ComponentForWorkflowWizardView::
-                                     resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS);
-                $view              = new EmailAlertRowForWorkflowComponentView($emailAlert, $rowCount, $inputPrefixData,
+                                     resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
+                $view              = new EmailMessageRowForWorkflowComponentView($emailMessage, $rowCount, $inputPrefixData,
                                         $this->form, get_class($this->model), $rowCounterInputId);
                 $view->addWrapper  = false;
                 $items[]           = array('content' => $view->render());
@@ -195,7 +195,7 @@
             return $items;
         }
 
-        protected function registerRemoveEmailAlertScript()
+        protected function registerRemoveEmailMessageScript()
         {
             $script = '
                 $(".remove-dynamic-row-link").live("click", function(){
@@ -205,29 +205,29 @@
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }
-                    rebuildWorkflowEmailAlertRowNumbers("' . get_class($this) . '");
+                    rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
                     return false;
                 });
             ';
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript('removeEmailAlertScript', $script);
+            Yii::app()->clientScript->registerScript('removeEmailMessageScript', $script);
         }
 
-        protected function registerRemoveEmailAlertRecipientScript()
+        protected function registerRemoveEmailMessageRecipientScript()
         {
             $script = '
-                $(".' . EmailAlertRecipientRowForWorkflowComponentView::REMOVE_LINK_CLASS_NAME . '").live("click", function(){
+                $(".' . EmailMessageRecipientRowForWorkflowComponentView::REMOVE_LINK_CLASS_NAME . '").live("click", function(){
                     div = $(this).parentsUntil(".' .
-                            EmailAlertRowForWorkflowComponentView::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
-                            .find(".' . EmailAlertRowForWorkflowComponentView::EMAIL_ALERT_RECIPIENTS_ROW_CLASS_NAME .
+                            EmailMessageRowForWorkflowComponentView::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
+                            .find(".' . EmailMessageRowForWorkflowComponentView::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME .
                             '");
                     $(this).parent().parent().remove(); //removes the <li>
-                    rebuildWorkflowEmailAlertRecipientRowNumbers(div);
+                    rebuildWorkflowEmailMessageRecipientRowNumbers(div);
                     return false;
                 });
             ';
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript('removeEmailAlertRecipientScript', $script);
+            Yii::app()->clientScript->registerScript('removeEmailMessageRecipientScript', $script);
         }
     }
 ?>

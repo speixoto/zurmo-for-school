@@ -39,7 +39,7 @@
 
         const ACTIONS_VALIDATION_SCENARIO           = 'ValidateForActions';
 
-        const EMAIL_ALERTS_VALIDATION_SCENARIO      = 'ValidateForEmailAlerts';
+        const EMAIL_MESSAGES_VALIDATION_SCENARIO      = 'ValidateForEmailMessages';
 
         const GENERAL_DATA_VALIDATION_SCENARIO      = 'ValidateForGeneralData';
 
@@ -104,7 +104,7 @@
          */
         public $actions      = array();
 
-        public $emailAlerts  = array();
+        public $emailMessages  = array();
 
         public function rules()
         {
@@ -127,7 +127,7 @@
                 array('triggersStructure', 	  'validateTriggersStructure', 'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('triggers',             'validateTriggers',  'on' => self::TRIGGERS_VALIDATION_SCENARIO),
                 array('actions',              'validateActions',   'on' => self::ACTIONS_VALIDATION_SCENARIO),
-                array('emailAlerts',          'validateEmailAlerts', 'on' => self::EMAIL_ALERTS_VALIDATION_SCENARIO),
+                array('emailMessages',          'validateEmailMessages', 'on' => self::EMAIL_MESSAGES_VALIDATION_SCENARIO),
                 array('timeTriggerAttribute', 'type',                'type' => 'string'),
             );
         }
@@ -196,9 +196,9 @@
         /**
          * @return bool
          */
-        public function validateEmailAlerts()
+        public function validateEmailMessages()
         {
-            return $this->validateComponent(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, 'emailAlerts');
+            return $this->validateComponent(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, 'emailMessages');
         }
 
         /**

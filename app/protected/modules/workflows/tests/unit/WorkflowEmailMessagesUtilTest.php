@@ -59,15 +59,15 @@
             $workflow         = new Workflow();
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
-            $emailMessageForm = new EmailAlertForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $emailMessageForm = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $emailMessageForm->sendAfterDurationSeconds = 86400;
-            $recipients = array(array('type'              => WorkflowEmailAlertRecipientForm::
+            $recipients = array(array('type'              => WorkflowEmailMessageRecipientForm::
                                                              TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
                                        'audienceType'    => EmailMessageRecipient::TYPE_TO,
-                                       'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::
+                                       'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
                                                              DYNAMIC_USER_TYPE_CREATED_BY_USER));
-            $emailMessageForm->setAttributes(array(EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS => $recipients));
-            $workflow->addEmailAlert($emailMessageForm);
+            $emailMessageForm->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $workflow->addEmailMessage($emailMessageForm);
             $model = new WorkflowModelTestItem();
             $model->lastName = 'lastName';
             $model->string   = 'string';
@@ -82,7 +82,7 @@
             $this->assertEquals('WorkflowModelTestItem',    $workflowMessageInQueues[0]->modelClassName);
             $this->assertEquals($compareDateTime,           $workflowMessageInQueues[0]->processDateTime);
             $emailMessageData = SavedWorkflowToWorkflowAdapter::
-                                makeArrayFromEmailAlertForWorkflowFormAttributesData(array($emailMessageForm));
+                                makeArrayFromEmailMessageForWorkflowFormAttributesData(array($emailMessageForm));
             $this->assertEquals(serialize($emailMessageData), $workflowMessageInQueues[0]->serializedData);
             $this->assertTrue($workflowMessageInQueues[0]->delete());
         }
@@ -104,15 +104,15 @@
             $workflow         = new Workflow();
             $workflow->setId(self::$savedWorkflow->id);
             $workflow->type   = Workflow::TYPE_ON_SAVE;
-            $emailMessageForm = new EmailAlertForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $emailMessageForm = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $emailMessageForm->sendAfterDurationSeconds = 0;
             $emailMessageForm->emailTemplateId = $emailTemplate->id;
-            $emailMessageForm->sendFromType    = EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
-            $recipients = array(array('type'             => WorkflowEmailAlertRecipientForm::
+            $emailMessageForm->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $recipients = array(array('type'             => WorkflowEmailMessageRecipientForm::
                                                             TYPE_DYNAMIC_TRIGGERED_BY_USER,
                                       'audienceType'    => EmailMessageRecipient::TYPE_TO));
-            $emailMessageForm->setAttributes(array(EmailAlertForWorkflowForm::EMAIL_ALERT_RECIPIENTS => $recipients));
-            $workflow->addEmailAlert($emailMessageForm);
+            $emailMessageForm->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $workflow->addEmailMessage($emailMessageForm);
             $model = new WorkflowModelTestItem();
             $model->lastName = 'lastName';
             $model->string   = 'string';

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class DynamicUserTypeForEmailAlertRecipientStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class DynamicUserTypeForEmailMessageRecipientStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
         protected function getDataAndLabelsModelPropertyName()
         {

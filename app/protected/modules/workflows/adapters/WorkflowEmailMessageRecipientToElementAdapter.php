@@ -25,11 +25,11 @@
      ********************************************************************************/
 
     /**
-     * Helper class for adapting one of an email alert's recipients to a set of appropriate Elements
+     * Helper class for adapting one of an email message's recipients to a set of appropriate Elements
      */
-    class WorkflowEmailAlertRecipientToElementAdapter
+    class WorkflowEmailMessageRecipientToElementAdapter
     {
-        protected $emailAlertRecipientType;
+        protected $emailMessageRecipientType;
 
         protected $model;
 
@@ -37,15 +37,15 @@
 
         protected $inputPrefixData;
 
-        public function __construct(WorkflowEmailAlertRecipientForm $model, WizardActiveForm $form,
-                                    $emailAlertRecipientType, $inputPrefixData)
+        public function __construct(WorkflowEmailMessageRecipientForm $model, WizardActiveForm $form,
+                                    $emailMessageRecipientType, $inputPrefixData)
         {
 
-            assert('is_string($emailAlertRecipientType)');
+            assert('is_string($emailMessageRecipientType)');
             assert('is_array($inputPrefixData)');
             $this->model                   = $model;
             $this->form                    = $form;
-            $this->emailAlertRecipientType = $emailAlertRecipientType;
+            $this->emailMessageRecipientType = $emailMessageRecipientType;
             $this->inputPrefixData         = $inputPrefixData;
         }
 
@@ -66,7 +66,7 @@
         protected function getRecipientContent()
         {
             $content                             = null;
-            ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'dynamic-row-label email-alert-recipient-label');
+            ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'dynamic-row-label email-message-recipient-label');
             $content                            .= $this->renderTypeContent();
             $content                            .= $this->renderAudienceTypeContent();
             $content                            .= $this->renderFormAttributesContent();
@@ -78,7 +78,7 @@
             $name        = Element::resolveInputNamePrefixIntoString($this->inputPrefixData) . '[type]';
             $id          = Element::resolveInputIdPrefixIntoString($this->inputPrefixData) . 'type';
             $htmlOptions = array('id' => $id);
-            return ZurmoHtml::hiddenField($name, $this->emailAlertRecipientType, $htmlOptions);
+            return ZurmoHtml::hiddenField($name, $this->emailMessageRecipientType, $htmlOptions);
         }
 
         protected function renderAudienceTypeContent()
@@ -97,18 +97,18 @@
             $content  = null;
             if($formType == 'DynamicTriggeredModelUser')
             {
-                $dynamicUserTypeElement   = new DynamicUserTypeForEmailAlertRecipientStaticDropDownElement(
+                $dynamicUserTypeElement   = new DynamicUserTypeForEmailMessageRecipientStaticDropDownElement(
                                             $this->model, 'dynamicUserType', $this->form, $params);
                 $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
                 $content .= $dynamicUserTypeElement ->render();
             }
             elseif($formType == 'DynamicTriggeredModelRelationUser')
             {
-                $relationElement        = new ModelRelationForEmailAlertRecipientStaticDropDownElement(
+                $relationElement        = new ModelRelationForEmailMessageRecipientStaticDropDownElement(
                                           $this->model, 'relation', $this->form, $params);
                 $relationElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
 
-                $dynamicUserTypeElement = new DynamicUserTypeForEmailAlertRecipientStaticDropDownElement(
+                $dynamicUserTypeElement = new DynamicUserTypeForEmailMessageRecipientStaticDropDownElement(
                                           $this->model, 'dynamicUserType', $this->form, $params);
                 $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
                 

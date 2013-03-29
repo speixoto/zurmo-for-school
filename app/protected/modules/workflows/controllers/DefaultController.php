@@ -335,17 +335,17 @@
             echo $content;
         }
 
-        public function actionAddEmailAlert($moduleClassName, $type, $rowNumber)
+        public function actionAddEmailMessage($moduleClassName, $type, $rowNumber)
         {
             $form                        = new WizardActiveForm();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $rowCounterInputId           = ComponentForWorkflowWizardView::
-                                           resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_ALERTS);
+                                           resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
-                                           $moduleClassName::getPrimaryModelName(), $type, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS);
-            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS, (int)$rowNumber);
-            $view                        = new EmailAlertRowForWorkflowComponentView($model, (int)$rowNumber,
+                                           $moduleClassName::getPrimaryModelName(), $type, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, (int)$rowNumber);
+            $view                        = new EmailMessageRowForWorkflowComponentView($model, (int)$rowNumber,
                                            $inputPrefixData, $form,
                                            WorkflowToWizardFormAdapter::getFormClassNameByType($type), $rowCounterInputId);
             $content                     = $view->render();
@@ -355,19 +355,19 @@
             echo $content;
         }
 
-        public function actionAddEmailAlertRecipient($moduleClassName, $type, $recipientType, $rowNumber, $recipientRowNumber)
+        public function actionAddEmailMessageRecipient($moduleClassName, $type, $recipientType, $rowNumber, $recipientRowNumber)
         {
             $form                        = new WizardActiveForm();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
-            $model                       = WorkflowEmailAlertRecipientFormFactory::make($recipientType,
+            $model                       = WorkflowEmailMessageRecipientFormFactory::make($recipientType,
                                            $moduleClassName::getPrimaryModelName(), $type);
-            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_ALERTS,
-                                           (int)$rowNumber, EmailAlertForWorkflowForm::TYPE_EMAIL_ALERT_RECIPIENTS,
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES,
+                                           (int)$rowNumber, EmailMessageForWorkflowForm::TYPE_EMAIL_MESSAGE_RECIPIENTS,
                                            $recipientRowNumber);
-            $adapter                     = new WorkflowEmailAlertRecipientToElementAdapter($model, $form,
+            $adapter                     = new WorkflowEmailMessageRecipientToElementAdapter($model, $form,
                                            $recipientType, $inputPrefixData);
-            $view                        = new EmailAlertRecipientRowForWorkflowComponentView($adapter,
+            $view                        = new EmailMessageRecipientRowForWorkflowComponentView($adapter,
                                            (int)$recipientRowNumber, $inputPrefixData);
             $content                     = $view->render();
             $form->renderAddAttributeErrorSettingsScript($view::getFormId());

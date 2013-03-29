@@ -25,9 +25,9 @@
  ********************************************************************************/
 
     /**
-     * Form to work with a specific group for an email alert recipient
+     * Form to work with a specific group for an email message recipient
      */
-    class StaticGroupWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class StaticGroupWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         /**
          * @var string

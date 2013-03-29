@@ -25,9 +25,9 @@
  ********************************************************************************/
 
     /**
-     * Base class for working with email alert recipients.
+     * Base class for working with email message recipients.
      */
-    abstract class WorkflowEmailAlertRecipientForm extends ConfigurableMetadataModel
+    abstract class WorkflowEmailMessageRecipientForm extends ConfigurableMetadataModel
     {
         const TYPE_DYNAMIC_TRIGGERED_MODEL_USER             = 'DynamicTriggeredModelUser';
 
@@ -88,13 +88,13 @@
             throw new NotImplementedException();
         }
         /**
-         * @return string - If the class name is DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm,
+         * @return string - If the class name is DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm,
          * then 'DynamicTriggeredModelRelationUser' will be returned.
          */
         public static function getFormType()
         {
             $type = get_called_class();
-            $type = substr($type, 0, strlen($type) - strlen('WorkflowEmailAlertRecipientForm'));
+            $type = substr($type, 0, strlen($type) - strlen('WorkflowEmailMessageRecipientForm'));
             return $type;
         }
 
@@ -126,19 +126,19 @@
         {
             $data = array();
             $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL_USER]             =
-                DynamicTriggeredModelUserWorkflowEmailAlertRecipientForm::getTypeLabel();
+                DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION_USER]    =
-                DynamicTriggeredModelRelationUserWorkflowEmailAlertRecipientForm::getTypeLabel();
+                DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_ROLE]                              =
-                StaticRoleWorkflowEmailAlertRecipientForm::getTypeLabel();
+                StaticRoleWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_DYNAMIC_TRIGGERED_BY_USER]                   =
-                DynamicTriggeredByUserWorkflowEmailAlertRecipientForm::getTypeLabel();
+                DynamicTriggeredByUserWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_USER]                              =
-                StaticUserWorkflowEmailAlertRecipientForm::getTypeLabel();
+                StaticUserWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_ADDRESS]                            =
-                StaticAddressWorkflowEmailAlertRecipientForm::getTypeLabel();
+                StaticAddressWorkflowEmailMessageRecipientForm::getTypeLabel();
             $data[static::TYPE_STATIC_GROUP]                             =
-                StaticGroupWorkflowEmailAlertRecipientForm::getTypeLabel();
+                StaticGroupWorkflowEmailMessageRecipientForm::getTypeLabel();
             return $data;
         }
     }

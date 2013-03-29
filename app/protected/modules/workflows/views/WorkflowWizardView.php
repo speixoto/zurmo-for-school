@@ -78,8 +78,8 @@
                         $('#actionType option:selected').removeAttr('selected');
                         $('." . ActionsForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         rebuildWorkflowActionRowNumbers('ActionsForWorkflowWizardView');
-                        $('#EmailAlertsForWorkflowWizardView').find('.alert-rows').find('ul:first').find('li').remove();
-                        $('." . EmailAlertsForWorkflowWizardView::getZeroComponentsClassName() . "').show();
+                        $('#EmailMessagesForWorkflowWizardView').find('.dynamic-rows').find('ul:first').find('li').remove();
+                        $('." . EmailMessagesForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                         " . $this->registerModuleClassNameChangeScriptExtraPart() . "
                     }
                 );

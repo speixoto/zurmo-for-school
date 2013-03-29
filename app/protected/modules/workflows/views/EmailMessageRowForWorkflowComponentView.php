@@ -25,19 +25,19 @@
      ********************************************************************************/
 
     /**
-     * View for displaying a row of email alert information for a component
+     * View for displaying a row of email message information for a component
      */
-    class EmailAlertRowForWorkflowComponentView extends View
+    class EmailMessageRowForWorkflowComponentView extends View
     {
         const ADD_RECIPIENT_TYPE_NAME               = 'addRecipientType';
 
         const ADD_RECIPIENT_CLASS_NAME              = 'add-recipient-link';
 
-        const RECIPIENTS_ROW_COUNTER_CLASS_NAME     = 'email-alert-recipients-row-counter';
+        const RECIPIENTS_ROW_COUNTER_CLASS_NAME     = 'email-message-recipients-row-counter';
 
         const RECIPIENTS_CONTAINER_CLASS_NAME       = 'recipients-container';
 
-        const EMAIL_ALERT_RECIPIENTS_ROW_CLASS_NAME = 'email-alert-recipient-rows';
+        const EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME = 'email-message-recipient-rows';
 
         protected $model;
 
@@ -49,7 +49,7 @@
 
         protected $workflowWizardFormClassName;
 
-        protected $emailAlertsRowCounterInputId;
+        protected $emailMessagesRowCounterInputId;
 
         public static function getFormId()
         {
@@ -59,22 +59,22 @@
         protected static function resolveRecipientTypeDataAndLabels()
         {
             $data = array('' => Zurmo::t('WorkflowsModule', 'Add Recipient'));
-            return array_merge($data, WorkflowEmailAlertRecipientForm::getTypeValuesAndLabels());
+            return array_merge($data, WorkflowEmailMessageRecipientForm::getTypeValuesAndLabels());
         }
 
-        public function __construct(EmailAlertForWorkflowForm $model, $rowNumber, $inputPrefixData,
-                                    WizardActiveForm $form, $workflowWizardFormClassName, $emailAlertsRowCounterInputId)
+        public function __construct(EmailMessageForWorkflowForm $model, $rowNumber, $inputPrefixData,
+                                    WizardActiveForm $form, $workflowWizardFormClassName, $emailMessagesRowCounterInputId)
         {
             assert('is_int($rowNumber)');
             assert('is_array($inputPrefixData)');
             assert('is_string($workflowWizardFormClassName)');
-            assert('is_string($emailAlertsRowCounterInputId)');
+            assert('is_string($emailMessagesRowCounterInputId)');
             $this->model                        = $model;
             $this->rowNumber                    = $rowNumber;
             $this->inputPrefixData              = $inputPrefixData;
             $this->form                         = $form;
             $this->workflowWizardFormClassName  = $workflowWizardFormClassName;
-            $this->emailAlertsRowCounterInputId = $emailAlertsRowCounterInputId;
+            $this->emailMessagesRowCounterInputId = $emailMessagesRowCounterInputId;
         }
 
         public function render()
@@ -89,14 +89,14 @@
         protected function renderContent()
         {
             $content  = '<div>';
-            $content .= $this->renderEmailAlertRowNumberLabel();
+            $content .= $this->renderEmailMessageRowNumberLabel(); //todo: fix todo below
             $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), 'todo some label saying this is an alert?');
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div>';
-            $content .= $this->renderEmailAlertContent();
+            $content .= $this->renderEmailMessageContent();
             $content .= '</div>';
-            //todo: call correctly as email-alert?, fix theme? need to maybe refcator
+            //todo: call correctly as email-message?, fix theme? need to maybe refcator
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
             return ZurmoHtml::tag('li', array(), $content);
         }
@@ -104,13 +104,13 @@
         /**
          * @return string
          */
-        protected function renderEmailAlertRowNumberLabel()
+        protected function renderEmailMessageRowNumberLabel()
         {
             return ZurmoHtml::tag('span', array('class' => 'dynamic-row-number-label'),
                 ($this->rowNumber + 1) . '.');
         }
 
-        protected function renderEmailAlertContent()
+        protected function renderEmailMessageContent()
         {
             //todo: still call it attributesContainer??
             $params            = array('inputPrefix' => $this->inputPrefixData);
@@ -120,10 +120,10 @@
                                  $this->form, $params);
             $innerContent      = '<table><colgroup><col class="col-0"><col class="col-1">' .
                                  '</colgroup><tr>' . $element->render() . '</tr>';
-            $element           = new EmailAlertSendAfterDurationStaticDropDownElement(
+            $element           = new EmailMessageSendAfterDurationStaticDropDownElement(
                                  $this->model, 'sendAfterDurationSeconds', $this->form, $params);
             $innerContent     .= '<tr>' . $element->render() . '</tr>';
-            $element           = new EmailAlertSendFromTypeStaticDropDownElement(
+            $element           = new EmailMessageSendFromTypeStaticDropDownElement(
                                  $this->model, 'sendFromType', $this->form, $params);
             $innerContent     .= '<tr>' . $element->render() . '</tr>';
             $element           = new TextElement(
@@ -172,7 +172,7 @@
             $htmlOptions = array('id' => $this->resolveAddRecipientId(), 'class' => self::ADD_RECIPIENT_CLASS_NAME);
             $content     = ZurmoHtml::dropDownList(self::ADD_RECIPIENT_TYPE_NAME, null,
                            self::resolveRecipientTypeDataAndLabels(), $htmlOptions);
-            return         ZurmoHtml::tag('div', array('class' => 'email-alert-recipient-type-selector-container'), $content);
+            return         ZurmoHtml::tag('div', array('class' => 'email-message-recipient-type-selector-container'), $content);
         }
 
         protected function resolveAddRecipientId()
@@ -189,7 +189,7 @@
                                                  'class' => self::RECIPIENTS_ROW_COUNTER_CLASS_NAME);
             $hiddenInputName             = $this->resolveRecipientsPrefix() . 'RowCounter';
             $recipientsContent           = ZurmoHtml::tag('div',
-                                           array('class' => self::EMAIL_ALERT_RECIPIENTS_ROW_CLASS_NAME), $itemsContent);
+                                           array('class' => self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME), $itemsContent);
             $content                     = ZurmoHtml::hiddenField($hiddenInputName, $rowCount, $idInputHtmlOptions);
             $content                    .= ZurmoHtml::tag('div', array(), $content . $recipientsContent);
             return $content;
@@ -197,7 +197,7 @@
 
         protected function resolveRecipientsPrefix()
         {
-            return EmailAlertForWorkflowForm::TYPE_EMAIL_ALERT_RECIPIENTS . $this->rowNumber;
+            return EmailMessageForWorkflowForm::TYPE_EMAIL_MESSAGE_RECIPIENTS . $this->rowNumber;
         }
 
         /**
@@ -206,7 +206,7 @@
          */
         protected function getRecipientItemsContent(& $rowCount)
         {
-            return $this->renderRecipients($rowCount, $this->model->getEmailAlertRecipients());
+            return $this->renderRecipients($rowCount, $this->model->getEmailMessageRecipients());
         }
 
         protected function renderRecipients(& $rowCount, $recipients)
@@ -217,10 +217,10 @@
             foreach($recipients as $recipient)
             {
                 $inputPrefixData  = array_merge($this->inputPrefixData, array(
-                                    EmailAlertForWorkflowForm::TYPE_EMAIL_ALERT_RECIPIENTS, (int)$rowCount));
-                $adapter          = new WorkflowEmailAlertRecipientToElementAdapter($recipient, $this->form,
+                                    EmailMessageForWorkflowForm::TYPE_EMAIL_MESSAGE_RECIPIENTS, (int)$rowCount));
+                $adapter          = new WorkflowEmailMessageRecipientToElementAdapter($recipient, $this->form,
                                     $recipient->type, $inputPrefixData);
-                $view             = new EmailAlertRecipientRowForWorkflowComponentView($adapter, $rowCount, $inputPrefixData);
+                $view             = new EmailMessageRecipientRowForWorkflowComponentView($adapter, $rowCount, $inputPrefixData);
                 $view->addWrapper = false;
                 $items[]          = array('content' => $view->render());
                 $rowCount ++;
@@ -262,21 +262,21 @@
         protected function registerSendFromTypeChangeScript()
         {
             $inputPrefixData          = $this->inputPrefixData;
-            $sendFromTypeSelectId     = EmailAlertSendFromTypeStaticDropDownElement::
+            $sendFromTypeSelectId     = EmailMessageSendFromTypeStaticDropDownElement::
                                         resolveInputIdPrefixIntoString(array_merge($inputPrefixData, array('sendFromType')));
             $sendFromNameId           = TextElement::resolveInputIdPrefixIntoString(
                                         array_merge($inputPrefixData, array('sendFromName')));
             $sendFromAddressId        = TextElement::resolveInputIdPrefixIntoString(
                                         array_merge($inputPrefixData, array('sendFromAddress')));
-            Yii::app()->clientScript->registerScript('emailAlertSendFromTypeHelper' . $sendFromTypeSelectId, "
-                if($('#" . $sendFromTypeSelectId . "').val() == '" . EmailAlertForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
+            Yii::app()->clientScript->registerScript('emailMessageSendFromTypeHelper' . $sendFromTypeSelectId, "
+                if($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
                 {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().hide();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $sendFromTypeSelectId . "').change( function()
                     {
-                        if($(this).val() == '" . EmailAlertForWorkflowForm::SEND_FROM_TYPE_CUSTOM . "')
+                        if($(this).val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM . "')
                         {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().show();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().show();
@@ -296,14 +296,14 @@
         protected function registerAddRecipientScript()
         {
             $moduleClassNameId = $this->workflowWizardFormClassName . '[moduleClassName]';
-            $url               = Yii::app()->createUrl('workflows/default/addEmailAlertRecipient',
+            $url               = Yii::app()->createUrl('workflows/default/addEmailMessageRecipient',
                                  array_merge($_GET, array('type' => $this->model->getWorkflowType())));
             // Begin Not Coding Standard
             $ajaxSubmitScript  = ZurmoHtml::ajax(array(
                 'type'    => 'GET',
                 'data'    => 'js:\'recipientType=\' + $(this).val() + ' .
                              '\'&moduleClassName=\' + $("input:radio[name=\"' . $moduleClassNameId . '\"]:checked").val() + ' .
-                             '\'&rowNumber=\' + ($("#' . $this->emailAlertsRowCounterInputId . '").val() - 1) + ' .
+                             '\'&rowNumber=\' + ($("#' . $this->emailMessagesRowCounterInputId . '").val() - 1) + ' .
                              '\'&recipientRowNumber=\' +
                              $(this).parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent().find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '").val()',
                 'url'     =>  $url,
@@ -314,10 +314,10 @@
                     find(".' . self::RECIPIENTS_ROW_COUNTER_CLASS_NAME . '")
                     .val(existingRowNumber + 1);
                     triggeredObject.parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
-                    .find(".' . self::EMAIL_ALERT_RECIPIENTS_ROW_CLASS_NAME . '").find("ul").append(data);
-                    rebuildWorkflowEmailAlertRecipientRowNumbers(triggeredObject.
+                    .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '").find("ul").append(data);
+                    rebuildWorkflowEmailMessageRecipientRowNumbers(triggeredObject.
                     parentsUntil(".' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
-                    .find(".' . self::EMAIL_ALERT_RECIPIENTS_ROW_CLASS_NAME . '"));
+                    .find(".' . self::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME . '"));
                     triggeredObject.val("");
                 }',
             ));
@@ -331,7 +331,7 @@
                             }
                         });";
             // End Not Coding Standard
-            Yii::app()->clientScript->registerScript('workflowAddEmailAlertRecipientScript', $script);
+            Yii::app()->clientScript->registerScript('workflowAddEmailMessageRecipientScript', $script);
         }
     }
 ?>

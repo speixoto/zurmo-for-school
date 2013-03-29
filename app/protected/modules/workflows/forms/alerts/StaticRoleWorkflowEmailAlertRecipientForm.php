@@ -25,9 +25,9 @@
  ********************************************************************************/
 
     /**
-     * Form to work with a specific role for an email alert recipient
+     * Form to work with a specific role for an email message recipient
      */
-    class StaticRoleWorkflowEmailAlertRecipientForm extends WorkflowEmailAlertRecipientForm
+    class StaticRoleWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         /**
          * @var string

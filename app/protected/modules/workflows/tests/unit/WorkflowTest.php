@@ -86,7 +86,7 @@
         {
             $timeTrigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $action      = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $emailAlert  = new EmailAlertForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $emailMessage  = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $trigger     = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $workflow = new Workflow();
             $workflow->setModuleClassName('SomeModule');
@@ -116,9 +116,9 @@
             $actions = $workflow->getActions();
             $this->assertEquals($action,                $actions[0]);
             $this->assertCount(1,                       $actions);
-            $emailAlerts = $workflow->getEmailAlerts();
-            $this->assertEquals($emailAlert,            $emailAlerts[0]);
-            $this->assertCount(1,                       $emailAlerts);
+            $emailMessages = $workflow->getEmailMessages();
+            $this->assertEquals($emailMessage,            $emailMessages[0]);
+            $this->assertCount(1,                       $emailMessages);
             $triggers = $workflow->getTriggers();
             $this->assertEquals($trigger,               $triggers[0]);
             $this->assertCount(1,                       $triggers);
@@ -127,9 +127,9 @@
             $actions = $workflow->getActions();
             $this->assertCount(0,                       $actions);
 
-            $workflow->removeAllEmailAlerts();
-            $actions = $workflow->getEmailAlerts();
-            $this->assertCount(0,                       $emailAlerts);
+            $workflow->removeAllEmailMessages();
+            $actions = $workflow->getEmailMessages();
+            $this->assertCount(0,                       $emailMessages);
 
 
             $workflow->removeAllTriggers();

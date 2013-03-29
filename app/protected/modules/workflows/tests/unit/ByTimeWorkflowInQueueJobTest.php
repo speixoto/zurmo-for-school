@@ -27,7 +27,7 @@
     class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
     {
         //todo: test job. test use of chagneRequiredToProcess, make sure that carries through
-        //todo: test that time triggers do evaluate and work ok and actions/alerts are processed properly.
+        //todo: test that time triggers do evaluate and work ok and actions/messages are processed properly.
         //focus on coverage not integration testing.
         //todo: test if a queue item relates to a workflow that was deleted. make sure exception handling is ok
     }

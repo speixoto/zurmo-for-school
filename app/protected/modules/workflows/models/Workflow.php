@@ -66,7 +66,7 @@
 
         private $actions                           = array();
 
-        private $emailAlerts                       = array();
+        private $emailMessages                       = array();
 
         private $timeTriggerRequireChangeToProcess = true;
 
@@ -292,19 +292,19 @@
             $this->actions   = array();
         }
 
-        public function getEmailAlerts()
+        public function getEmailMessages()
         {
-            return $this->emailAlerts;
+            return $this->emailMessages;
         }
 
-        public function addEmailAlert(EmailAlertForWorkflowForm $emailAlert)
+        public function addEmailMessage(EmailMessageForWorkflowForm $emailMessage)
         {
-            $this->emailAlerts[] = $emailAlert;
+            $this->emailMessages[] = $emailMessage;
         }
 
-        public function removeAllEmailAlerts()
+        public function removeAllEmailMessages()
         {
-            $this->emailAlerts   = array();
+            $this->emailMessages   = array();
         }
 
         public function doesTimeTriggerRequireChangeToProcess()

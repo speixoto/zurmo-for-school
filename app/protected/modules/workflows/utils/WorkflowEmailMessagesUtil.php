@@ -31,11 +31,11 @@
     {
         public static function processAfterSave(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
-            foreach($workflow->getEmailAlerts() as $emailMessage)
+            foreach($workflow->getEmailMessages() as $emailMessage)
             {
                 try
                 {
-                    if($emailMessage->getEmailAlertRecipientFormsCount() > 0)
+                    if($emailMessage->getEmailMessageRecipientFormsCount() > 0)
                     {
                         self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredByUser);
                     }
@@ -49,11 +49,11 @@
 
         public static function processOnWorkflowMessageInQueueJob(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
-            foreach($workflow->getEmailAlerts() as $emailMessage)
+            foreach($workflow->getEmailMessages() as $emailMessage)
             {
                 try
                 {
-                    if($emailMessage->getEmailAlertRecipientFormsCount() > 0)
+                    if($emailMessage->getEmailMessageRecipientFormsCount() > 0)
                     {
                         $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredByUser);
                         $helper->process();
@@ -67,7 +67,7 @@
         }
 
         protected static function processEmailMessageAfterSave(Workflow $workflow,
-                                                               EmailAlertForWorkflowForm $emailMessage,
+                                                               EmailMessageForWorkflowForm $emailMessage,
                                                                RedBeanModel $model,
                                                                User $triggeredByUser)
         {
@@ -79,7 +79,7 @@
             else
             {
                 $emailMessageData                        = SavedWorkflowToWorkflowAdapter::
-                                                           makeArrayFromEmailAlertForWorkflowFormAttributesData(array($emailMessage));
+                                                           makeArrayFromEmailMessageForWorkflowFormAttributesData(array($emailMessage));
                 $workflowMessageInQueue                  = new WorkflowMessageInQueue();
                 $workflowMessageInQueue->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() +
                                                            $emailMessage->sendAfterDurationSeconds);

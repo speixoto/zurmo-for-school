@@ -95,7 +95,7 @@ function toggleWorkflowShouldSetValueWrapper(checkboxId)
         $('#' + checkboxId).parent().parent().parent().find('.dynamic-action-attribute-type-and-value-wrapper').hide();
     }
 }
-function rebuildWorkflowEmailAlertRowNumbers(divId){
+function rebuildWorkflowEmailMessageRowNumbers(divId){
     rowCount = 1;
     structure = '';
     $('#' + divId).find('.dynamic-row-number-label').each(function(){
@@ -103,10 +103,10 @@ function rebuildWorkflowEmailAlertRowNumbers(divId){
         rowCount ++;
     });
 }
-function rebuildWorkflowEmailAlertRecipientRowNumbers(object){
+function rebuildWorkflowEmailMessageRecipientRowNumbers(object){
     rowCount = 1;
     structure = '';
-    $(object).find('.dynamic-email-alert-recipient-row-number-label').each(function(){
+    $(object).find('.dynamic-email-message-recipient-row-number-label').each(function(){
         $(this).html(rowCount + '.');
         rowCount ++;
     });

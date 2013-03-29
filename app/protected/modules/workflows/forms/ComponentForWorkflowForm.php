@@ -52,9 +52,9 @@
         const TYPE_ACTIONS                       = 'Actions';
 
         /**
-         * Component type for email alerts
+         * Component type for email messages
          */
-        const TYPE_EMAIL_ALERTS                  = 'EmailAlerts';
+        const TYPE_EMAIL_MESSAGES                  = 'EmailMessages';
 
         /**
          * @var string

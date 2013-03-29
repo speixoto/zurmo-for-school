@@ -25,16 +25,16 @@
      ********************************************************************************/
 
     /**
-     * Helper class to build workflow email alert recipient forms
+     * Helper class to build workflow email message recipient forms
      */
-    class WorkflowEmailAlertRecipientFormFactory extends ConfigurableMetadataModel
+    class WorkflowEmailMessageRecipientFormFactory extends ConfigurableMetadataModel
     {
         public static function make($type, $modelClassName, $workflowType)
         {
             assert('is_string($type)');
             assert('is_string($modelClassName)');
             assert('is_string($workflowType)');
-            $formClassName = $type . 'WorkflowEmailAlertRecipientForm';
+            $formClassName = $type . 'WorkflowEmailMessageRecipientForm';
             return new $formClassName($modelClassName, $workflowType);
         }
     }

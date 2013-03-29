@@ -56,9 +56,9 @@
             {
                 return new ActionForWorkflowForm($modelClassName, $type);
             }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_EMAIL_ALERTS)
+            elseif($componentType == ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)
             {
-                return new EmailAlertForWorkflowForm($modelClassName, $type);
+                return new EmailMessageForWorkflowForm($modelClassName, $type);
             }
             else
             {

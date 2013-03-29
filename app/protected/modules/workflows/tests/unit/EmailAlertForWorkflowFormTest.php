@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailAlertForWorkflowFormTest extends ZurmoBaseTest
+    class EmailMessageForWorkflowFormTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
@@ -40,8 +40,8 @@
 
         public function testSetAndGetActionForUpdateAction()
         {
-            //todo: this file is copied from ActionForWorkflowFormTest.  Do similar for emailAlertForWorkflowForm.
-            //todo: test validating that at least one alert is required
+            //todo: this file is copied from ActionForWorkflowFormTest.  Do similar for emailMessageForWorkflowForm.
+            //todo: test validating that at least one message is required
             $this->fail();
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
             $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;

@@ -223,7 +223,7 @@
         }
 
         /**
-         * Utilized by Email Alert to allow user to decide when an email alert should go out.
+         * Utilized by Email Message to allow user to decide when an email message should go out.
          * @param $data
          */
         public static function resolveSendAfterDurationData(& $data)

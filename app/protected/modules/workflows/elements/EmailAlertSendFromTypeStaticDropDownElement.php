@@ -25,9 +25,9 @@
      ********************************************************************************/
 
     /**
-     * Class used by an email alert in workflow to show the send from type.
+     * Class used by an email message in workflow to show the send from type.
      */
-    class EmailAlertSendFromTypeStaticDropDownElement extends DataFromFormStaticDropDownFormElement
+    class EmailMessageSendFromTypeStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
         protected function getDataAndLabelsModelPropertyName()
         {
