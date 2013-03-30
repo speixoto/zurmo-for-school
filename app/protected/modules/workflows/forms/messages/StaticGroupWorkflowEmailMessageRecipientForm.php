@@ -48,7 +48,7 @@
 
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
-            $group       = Group::getById((int)$this->groupId); //todo: exception if role no longer exists?
+            $group       = Group::getById((int)$this->groupId); //todo: exception if group no longer exists?
             $recipients = array();
             foreach($group->users as $user)
             {

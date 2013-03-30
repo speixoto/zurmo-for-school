@@ -44,7 +44,7 @@
 
         public function testSuperUserAllDefaultControllerActions()
         {
-            $this->fail(); //make work
+            $this->fail(); //make work //todo:
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             
             $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/list');
