@@ -192,6 +192,7 @@
          * attribute name defined by the extending class's getMetadata() method.
          * For use by RedBeanModelDataProvider. Is unlikely to be of any
          * use to an application.
+         * @param string $attributeName
          */
         public static function getAttributeModelClassName($attributeName)
         {
