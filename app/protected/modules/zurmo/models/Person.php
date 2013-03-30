@@ -128,5 +128,17 @@
         {
             return false;
         }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array('firstName', $attribute);
+            }
+            return parent::getSortAttributesByAttribute($attribute);
+        }
     }
 ?>

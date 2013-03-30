@@ -776,7 +776,7 @@
             }
             return $emailSignature;
         }
-        
+
         public function isDeletable()
         {
             $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
@@ -786,7 +786,7 @@
             }
             return parent::isDeletable();
         }
-        
+
         /**
         * to change isActive attribute  properly during save
         */
@@ -807,6 +807,18 @@
                $this->unrestrictedSet('isActive', $isActive);
                $this->save();
             }
+        }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array('firstName', $attribute);
+            }
+            return parent::getSortAttributesByAttribute($attribute);
         }
     }
 ?>
