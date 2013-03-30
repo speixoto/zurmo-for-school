@@ -54,7 +54,8 @@
                     'Recycled' => 'Réactivé',
                     'Dead' => 'Mort',
                     'Office Phone' => 'Téléphone de bureau',
-                    'Billing Address' => 'Adresse de facturation'
+                    'Billing Address' => 'Adresse de facturation',
+                    'opportunity' => 'opportunité'
                 ),
             ),
             'it' => array(
