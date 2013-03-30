@@ -248,7 +248,7 @@
 
             //First we need to activate French, to import the message
             Yii::app()->languageHelper->load();
-            Yii::app()->languageHelper->activateLanguage('fr');
+            Yii::app()->languageHelper->activateLanguagesForTesting();
 
             $label = OpportunitiesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase', 'fr');
             $this->assertEquals('opportunité', $label);
