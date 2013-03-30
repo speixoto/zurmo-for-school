@@ -16595,12 +16595,10 @@ a.user-link {
   margin-top: 5px;
 }
 #MashableInboxActionBarForViews .global-search-loopa {
-  display: none;
+  width: 24px;
 }
 #MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
-  width: 220px;
-  left: 0;
-  border-left: 1px solid #d5d4d4;
+  width: 204px;
 }
 .inbox-item {
   position: relative;
