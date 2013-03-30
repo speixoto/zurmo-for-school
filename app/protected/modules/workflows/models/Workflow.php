@@ -232,7 +232,10 @@
 
         public function isNew()
         {
-            //todo:
+            if($this->id > 0)
+            {
+                return false;
+            }
             return true;
         }
 
@@ -313,12 +316,12 @@
         }
 
         /**
-         * When processing ByTime workflow in @see ByTimeWorkflowInQueueJob this should be changed to true
+         * When processing ByTime workflow in @see ByTimeWorkflowInQueueJob this should be changed to false
          * so the time trigger can be evaluated correctly.
          */
-        public function setTimeTriggerRequireChangeToProcessToTrue()
+        public function setTimeTriggerRequireChangeToProcessToFalse()
         {
-            $this->timeTriggerRequireChangeToProcess = true;
+            $this->timeTriggerRequireChangeToProcess = false;
         }
     }
 ?>

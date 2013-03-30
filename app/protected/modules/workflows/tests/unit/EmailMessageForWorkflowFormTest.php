@@ -26,160 +26,45 @@
 
     class EmailMessageForWorkflowFormTest extends WorkflowBaseTest
     {
-        public function testSetAndGetActionForUpdateAction()
-        {
-            //todo: this file is copied from ActionForWorkflowFormTest.  Do similar for emailMessageForWorkflowForm.
-            //todo: test validating that at least one message is required
-            $this->fail();
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;
-            $attributes                   = array(
-                                            'string'        => array('shouldSetValue'    => '1',
-                                                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                'value'  => 'jason'));
-            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
-
-            $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_SELF, $action->type);
-            $this->assertEquals(1, $action->getActionAttributeFormsCount());
-
-            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
-        }
-
-        /**
-         * @depends testSetAndGetActionForUpdateAction
-         */
-        public function testSetAndGetActionForUpdateRelatedAction()
-        {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
-            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
-            $action->relation             = 'hasMany2';
-            $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $attributes                   = array(
-                                            'string'     => array('shouldSetValue'    => '1',
-                                                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                'value'  => 'jason'));
-            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
-
-            $this->assertEquals(ActionForWorkflowForm::TYPE_UPDATE_RELATED,     $action->type);
-            $this->assertEquals('hasMany2',                        $action->relation );
-            $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL,     $action->relationFilter);
-            $this->assertEquals(1, $action->getActionAttributeFormsCount());
-
-            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
-        }
-
-        /**
-         * @depends testSetAndGetActionForUpdateRelatedAction
-         */
-        public function testSetAndGetActionForCreateAction()
-        {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
-            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
-            $action->relation             = 'hasMany2';
-            $attributes                   = array(
-                                            'string'        => array('shouldSetValue'    => '1',
-                                                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                'value'  => 'jason'));
-            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
-
-            $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE,     $action->type);
-            $this->assertEquals('hasMany2',                $action->relation );
-            $this->assertEquals(1, $action->getActionAttributeFormsCount());
-
-            $this->assertTrue($action->getActionAttributeFormByName('string') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getActionAttributeFormByName('string')->type);
-            $this->assertEquals('jason',  $action->getActionAttributeFormByName('string')->value);
-        }
-
-        /**
-         * @depends testSetAndGetActionForCreateAction
-         */
-        public function testSetAndGetActionForCreatingRelatedAction()
-        {
-            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
-            $action->type                 = ActionForWorkflowForm::TYPE_CREATE_RELATED;
-            $action->relation             = 'hasMany2';
-            $action->relationFilter       = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $action->relatedModelRelation = 'hasMany';
-            $attributes                   = array(
-                                            'name'        => array('shouldSetValue'    => '1',
-                                                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                'value'  => 'jason'));
-            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
-
-            $this->assertEquals(ActionForWorkflowForm::TYPE_CREATE_RELATED,     $action->type);
-            $this->assertEquals('hasMany2',  $action->relation );
-            $this->assertEquals(ActionForWorkflowForm::RELATION_FILTER_ALL,     $action->relationFilter);
-            $this->assertEquals('hasMany',   $action->relatedModelRelation);
-            $this->assertEquals(1, $action->getActionAttributeFormsCount());
-
-            $this->assertTrue($action->getActionAttributeFormByName('name') instanceof TextWorkflowActionAttributeForm);
-            $this->assertEquals('Static', $action->getActionAttributeFormByName('name')->type);
-            $this->assertEquals('jason',  $action->getActionAttributeFormByName('name')->value);
-        }
-
-        /**
-         * @depends testSetAndGetActionForCreatingRelatedAction
-         */
         public function testValidate()
         {
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
-            $validated = $action->validate();
+            $message       = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $validated     = $message->validate();
             $this->assertFalse($validated);
-            $errors                              = $action->getErrors();
-            $compareErrors                       = array('type'  => array('Type cannot be blank.', 'Invalid Type'));
+            $errors        = $message->getErrors();
+            $compareErrors = array('recipientsValidation'  => array('At least one recipient must be added'));
             $this->assertEquals($compareErrors, $errors);
-            //Update type does not require any related information
-            $action->type                         = ActionForWorkflowForm::TYPE_UPDATE_SELF;
-            $validated                           = $action->validate();
+            //Ensure validation will pass
+            $message->sendAfterDurationSeconds = 86400;
+            $message->emailTemplateId          = 5;
+            $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                                      'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                      'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                                      DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $validated = $message->validate();
+            $errors    = $message->getErrors();
             $this->assertTrue($validated);
-
-
-
-            //When the type is update_related, related information is required
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
-            $action->type                        = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
-            $validated = $action->validate();
+            //Test validation with SEND_FROM_TYPE_CUSTOM
+            $message               = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                                      'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                      'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                                      DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->emailTemplateId = 5;
+            $message->sendFromType    = EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM;
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $validated     = $message->validate();
             $this->assertFalse($validated);
-            $errors                              = $action->getErrors();
-            $compareErrors                       = array('relation'        => array('Relation cannot be blank.'),
-                                                         'relationFilter'  => array('Invalid Relation Filter'));
+            $errors        = $message->getErrors();
+            $compareErrors = array('sendFromName'  => array('From Name cannot be blank.'),
+                                   'sendFromAddress' => array('From Email Address cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
-            $action->relation                    = 'hasMany2';
-            $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $validated                           = $action->validate();
-            $this->assertTrue($validated);
-
-
-            //When the type is create, related information is required
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
-            $action->type                        = ActionForWorkflowForm::TYPE_CREATE;
-            $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $validated = $action->validate();
-            $this->assertFalse($validated);
-            $errors                              = $action->getErrors();
-            $compareErrors                       = array('relation'  => array('Relation cannot be blank.'));
-            $this->assertEquals($compareErrors, $errors);
-            $action->relation                    = 'hasMany2';
-            $validated                           = $action->validate();
-            $this->assertTrue($validated);
-
-            //When the type is create related, additional related information is required
-            $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
-            $action->type                        = ActionForWorkflowForm::TYPE_CREATE_RELATED;
-            $action->relation                    = 'hasMany2';
-            $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
-            $validated = $action->validate();
-            $this->assertFalse($validated);
-            $errors                              = $action->getErrors();
-            $compareErrors                       = array('relatedModelRelation'  => array('Related Model Relation cannot be blank.'));
-            $this->assertEquals($compareErrors, $errors);
-            $action->relatedModelRelation        = 'hasOne';
-            $validated                           = $action->validate();
+            $message->sendFromAddress = 'someone@zurmo.com';
+            $message->sendFromName    = 'Jason';
+            $validated     = $message->validate();
+            $errors        = $message->getErrors();
             $this->assertTrue($validated);
         }
     }

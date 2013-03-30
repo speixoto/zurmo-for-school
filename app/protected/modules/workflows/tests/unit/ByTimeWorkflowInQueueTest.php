@@ -100,5 +100,36 @@
             $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($savedWorkflows[0], $model2);
             $this->assertFalse($byTimeWorkflowInQueue->id > 0);
         }
+
+        /**
+         * @depends testResolveByWorkflowIdAndModel
+         */
+        public function testGetModelsToProcess($pageSize)
+        {
+            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
+            $models = ByTimeWorkflowInQueue::getModelsToProcess(10);
+            $this->assertEquals(1, count($models));
+
+            //Now have one that is not ready for processing. It should still only get 1
+            $model = new WorkflowModelTestItem();
+            $model->lastName = 'Green2';
+            $model->string   = 'string2';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+
+            $savedWorkflows = SavedWorkflow::getByName('some workflow2');
+
+            $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueue();
+            $byTimeWorkflowInQueue->modelClassName  = get_class($model);
+            $byTimeWorkflowInQueue->modelItem       = $model;
+            $byTimeWorkflowInQueue->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 86400);
+            $byTimeWorkflowInQueue->savedWorkflow   = $savedWorkflows[0];
+            $saved = $byTimeWorkflowInQueue->save();
+            $this->assertTrue($saved);
+
+            $models = ByTimeWorkflowInQueue::getModelsToProcess(10);
+            $this->assertEquals(1, count($models));
+        }
+
     }
 ?>

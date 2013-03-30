@@ -24,29 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
+    /**
+     * Class used to define notification when a workflow process hits the maximum depth processing.
+     */
+    class WorkflowMaximumDepthNotificationRules extends NotificationRules
     {
-
-        public function testRun()
+        public static function getType()
         {
-            $model       = WorkflowTestHelper::createWorkflowModelTestItem('Green', '514');
-            $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
-                                 'operator'                    => OperatorRules::TYPE_EQUALS,
-                                 'value'                       => '514',
-                                 'durationSeconds'             => '333');
-            $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
-                                       ActionForWorkflowForm::ACTION_ATTRIBUTES =>
-                                            array('string' => array('shouldSetValue'    => '1',
-                                                  'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
-                                                  'value'  => 'jason'))));
-            $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
-            WorkflowTestHelper::createExpiredByTimeWorkflowInQueue($model, $savedWorkflow);
+            return 'WorkflowMaximumDepth';
+        }
 
-            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
-            $job = new ByTimeWorkflowInQueueJob();
-            $this->assertTrue($job->run());
-            $this->assertEquals(0, count(ByTimeWorkflowInQueue::getAll()));
-            $this->assertEquals('jason', $model->string);
+        /**
+         * Any user who has access to the workflows module is added to receive a
+         * notification.
+         */
+        protected function loadUsers()
+        {
+            foreach (User::getAll() as $user)
+            {
+                if ($user->getEffectiveRight('JobsManagerModule', WorkflowsModule::RIGHT_ACCESS_WORKFLOWS) ==
+                    Right::ALLOW)
+                {
+                    $this->addUser($user);
+                }
+            }
         }
     }
 ?>

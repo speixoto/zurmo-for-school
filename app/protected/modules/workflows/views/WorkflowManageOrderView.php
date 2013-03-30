@@ -53,7 +53,7 @@
         protected function renderForm()
         {
             $content  = '<div class="wrapper">';
-            $content .= ZurmoHtml::tag('h1', array(), $this->renderTitleContent() . 'Workflow Rules Order'); //@TODO get a name for it
+            $content .= ZurmoHtml::tag('h1', array(), $this->renderTitleContent() . 'Workflow Order');
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(

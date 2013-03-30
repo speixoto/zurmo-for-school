@@ -53,13 +53,13 @@
                             $unserializedData[ComponentForWorkflowForm::TYPE_ACTIONS],  $workflow);
                 self::makeEmailMessageForWorkflowFormAndPopulateWorkflowFromData(
                     $unserializedData[ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES],  $workflow);
-                if(isset($unserializedData['timeTrigger']))
+                if(isset($unserializedData[ComponentForWorkflowForm::TYPE_TIME_TRIGGER]))
                 {
                     $moduleClassName = $workflow->getModuleClassName();
                     $timeTrigger     = new TimeTriggerForWorkflowForm($moduleClassName,
                                                                       $moduleClassName::getPrimaryModelName(),
                                                                       $workflow->getType());
-                    $timeTrigger->setAttributes($unserializedData['timeTrigger']);
+                    $timeTrigger->setAttributes($unserializedData[ComponentForWorkflowForm::TYPE_TIME_TRIGGER]);
                     $workflow->setTimeTrigger($timeTrigger);
                     $workflow->setTimeTriggerAttribute($timeTrigger->getAttributeIndexOrDerivedType());
                 }
@@ -86,7 +86,7 @@
                 self::makeArrayFromEmailMessageForWorkflowFormAttributesData($workflow->getEmailMessages());
             if($workflow->getTimeTrigger() != null)
             {
-                $data['timeTrigger'] = self::makeArrayFromTimeTriggerForWorkflowFormAttributesData(
+                $data[ComponentForWorkflowForm::TYPE_TIME_TRIGGER] = self::makeArrayFromTimeTriggerForWorkflowFormAttributesData(
                                        $workflow->getTimeTrigger());
             }
             $savedWorkflow->serializedData   = serialize($data);
@@ -120,7 +120,10 @@
             $data = array();
             foreach($timeTriggerForWorkflowForm->getAttributes() as $attribute => $value)
             {
-                $data[$attribute] = $value;
+                if($attribute != 'stringifiedModelForValue')
+                {
+                    $data[$attribute] = $value;
+                }
             }
             return $data;
         }

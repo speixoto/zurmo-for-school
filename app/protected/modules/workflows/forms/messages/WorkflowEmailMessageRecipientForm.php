@@ -114,8 +114,8 @@
             return array_merge(parent::rules(), array(
                 array('type',                     'type', 'type' => 'string'),
                 array('type',                     'required'),
-                array('audienceType',            'type', 'type' => 'string'),
-                array('audienceType',            'required'),
+                array('audienceType',             'safe'),
+                array('audienceType',             'required'),
             ));
         }
 

@@ -71,8 +71,8 @@
             $params                             = array('inputPrefix' => $this->inputPrefixData);
             $durationElement                    = new TimeTriggerDurationStaticDropDownElement($this->model,
                                                   'durationSeconds', $this->form, $params);
-            $durationElement->editableTemplate  = '{content}{error}'; //todo: remove brs just here for now so we can pick from dd in ui
-            $durationContent                    = '<BR><BR><BR>' .$durationElement->render();
+            $durationElement->editableTemplate  = '{content}{error}';
+            $durationContent                    = $durationElement->render();
             self::resolveDivWrapperForContent($durationContent, $content, 'dynamic-row-duration');
             return $content;
         }
@@ -165,10 +165,9 @@
          */
         protected function getContentForAction()
         {
-            $groupByAxisElement = null; //todo: become a edit link and change the name of this from groupby to something else
-            $content                                  = 'fxithis'.$this->renderAttributeIndexOrDerivedType();
+            $content = $this->renderAttributeIndexOrDerivedType();
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
-            self::resolveDivWrapperForContent($groupByAxisElement,             $content, 'dynamic-row-field');
+            self::resolveDivWrapperForContent(null, $content, 'dynamic-row-field');
             return $content;
         }
     }

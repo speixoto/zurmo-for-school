@@ -36,7 +36,7 @@
             $workflow->setName           ('myFirstWorkflow');
             $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW);
             $workflow->setType           (Workflow::TYPE_ON_SAVE);
-            $workflow->setTriggersStructure('1 and 2 or 3');
+            $workflow->setTriggersStructure('1 and 2 or 3 or 4');
 
             $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
             $trigger->attributeIndexOrDerivedType = 'string';
@@ -67,23 +67,44 @@
             $trigger->valueType                   = 'Between';
             $workflow->addTrigger($trigger);
 
-            //todo: add TimeTrigger
-            //todo: add Action, test that stringifiedModelValue does not get saved to SavedWorkflow
-            //todo: add emailMessage
+            $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'date';
+            $trigger->durationSeconds             = 500;
+            $trigger->valueType                   = 'Is Time For';
+            $workflow->setTimeTrigger($trigger);
+
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $attributes                   = array(
+                                            'string'        => array('shouldSetValue'    => '1',
+                                                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                'value'  => 'jason'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+
+            $message       = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $message->sendAfterDurationSeconds = 86400;
+            $message->emailTemplateId          = 5;
+            $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                                'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                                DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $workflow->addEmailMessage($message);
 
             $savedWorkflow = new SavedWorkflow();
             $this->assertNull($savedWorkflow->serializedData);
-
             SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
 
             $this->assertEquals('WorkflowsTestModule',         $savedWorkflow->moduleClassName);
-            $this->assertTrue($savedWorkflow->isActive);
+            $this->assertEquals('1', $savedWorkflow->isActive);
             $this->assertEquals('myFirstWorkflow',               $savedWorkflow->name);
             $this->assertEquals('aDescription',                $savedWorkflow->description);
             $this->assertEquals(5,                             $savedWorkflow->order);
             $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedWorkflow->triggerOn);
             $this->assertEquals(Workflow::TYPE_ON_SAVE,        $savedWorkflow->type);
-            $this->assertEquals('1 and 2 or 3',                $workflow->getTriggersStructure());
+            $this->assertEquals('1 and 2 or 3 or 4',           $workflow->getTriggersStructure());
             $compareData = array('Triggers' => array(
                 array(
                     'currencyIdForValue'           => null,
@@ -93,6 +114,7 @@
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'string',
                     'operator'					   => 'equals',
+                    'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
                 array(
                     'currencyIdForValue'           => '4',
@@ -102,6 +124,7 @@
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'currencyValue',
                     'operator'					   => 'between',
+                    'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
                 array(
                     'currencyIdForValue'           => null,
@@ -111,6 +134,7 @@
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'owner__User',
                     'operator'					   => null,
+                    'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
                 array(
                     'value'                        => 'aValue',
@@ -120,13 +144,48 @@
                     'attributeIndexOrDerivedType'  => 'createdDateTime',
                     'operator'					   => null,
                     'currencyIdForValue'           => null,
+                    'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
             ));
+            $compareData['Actions'] = array(array('type'           => ActionForWorkflowForm::TYPE_UPDATE_SELF,
+                                                  'relation'       => null,
+                                                  'relationFilter' => ActionForWorkflowForm::RELATION_FILTER_ALL,
+                                                  'relatedModelRelation' => null,
+                                                  'ActionAttributes' => array(
+                                                       'string' => array(
+                                                           'type'           => 'Static',
+                                                           'value'          => 'jason',
+                                                           'shouldSetValue' => 1,
+                                                       ),
+                                                  )));
+            $compareData['EmailMessages'] = array(array('emailTemplateId' => 5,
+                                                         'sendAfterDurationSeconds' => 86400,
+                                                         'sendFromType' => 'Default',
+                                                         'sendFromName' => null,
+                                                         'sendFromAddress' => null,
+                                                         'EmailMessageRecipients' =>
+                                                            array(array(
+                                                                'dynamicUserType' => 'CreatedByUser',
+                                                                'type' => 'DynamicTriggeredModelUser',
+                                                                'audienceType' => 1,
+                                                            ))));
+            $compareData['TimeTrigger'] = array('durationSeconds' => 500,
+                                                'currencyIdForValue' => null,
+                                                'value'              => null,
+                                                'secondValue'        => null,
+                                                'valueType'          => 'Is Time For',
+                                                'relationfilter'     => 'RelationFilterAny',
+                                                'attributeIndexOrDerivedType' => 'date',
+                                                'operator' => null);
             $unserializedData = unserialize($savedWorkflow->serializedData);
-            $this->assertEquals($compareData['Triggers'],                     $unserializedData['Triggers']);
-            $this->assertEquals('1 and 2 or 3',                              $unserializedData['triggersStructure']);
-            $this->assertEquals(Workflow::CURRENCY_CONVERSION_TYPE_SPOT,       $unserializedData['currencyConversionType']);
-            $this->assertEquals('CAD',                                       $unserializedData['spotConversionCurrencyCode']);
+            echo "<pre>";
+            print_r($unserializedData);
+            echo "</pre>";
+            $this->assertEquals($compareData['Triggers'],                    $unserializedData['Triggers']);
+            $this->assertEquals($compareData['Actions'],                     $unserializedData['Actions']);
+            $this->assertEquals($compareData['EmailMessages'],               $unserializedData['EmailMessages']);
+            $this->assertEquals($compareData['TimeTrigger'],                 $unserializedData['TimeTrigger']);
+            $this->assertEquals('1 and 2 or 3 or 4',                         $unserializedData['triggersStructure']);
             $saved = $savedWorkflow->save();
             $this->assertTrue($saved);
         }
@@ -136,10 +195,6 @@
          */
         public function testMakeWorkflowBySavedWorkflow()
         {
-            //todo: add TimeTrigger and test timeTriggerAttribute gets populated correctly.
-            //todo: add Action
-            //todo: add emailMessage
-
             $savedWorkflows               = SavedWorkflow::getAll();
             $this->assertEquals           (1, count($savedWorkflows));
             $savedWorkflow                = $savedWorkflows[0];
@@ -151,45 +206,9 @@
             $this->assertTrue             ($workflow->getIsActive());
             $this->assertEquals           (5,                             $workflow->getOrder());
             $this->assertEquals           (Workflow::TRIGGER_ON_NEW,      $workflow->getTriggerOn());
-            $this->assertEquals           (Workflow::TYPE_ROWS_AND_COLUMNS, $workflow->getType());
-            $this->assertEquals           ('1 and 2 or 3',                $workflow->getTriggersStructure());
+            $this->assertEquals           (Workflow::TYPE_ON_SAVE,        $workflow->getType());
+            $this->assertEquals           ('1 and 2 or 3 or 4',           $workflow->getTriggersStructure());
             $this->assertCount            (4, $triggers);
-
-            $this->assertEquals           (true,         $triggers[0]->availableAtRunTime);
-            $this->assertEquals           ('aValue',     $triggers[0]->value);
-            $this->assertEquals           ('string',     $triggers[0]->attributeIndexOrDerivedType);
-            $this->assertNull             ($triggers[0]->currencyIdForValue);
-            $this->assertNull             ($triggers[0]->secondValue);
-            $this->assertNull             ($triggers[0]->stringifiedModelForValue);
-            $this->assertNull             ($triggers[0]->valueType);
-            $this->assertEquals           ('equals',     $triggers[0]->operator);
-
-            $this->assertEquals           (true,             $triggers[1]->availableAtRunTime);
-            $this->assertEquals           ('aValue',         $triggers[1]->value);
-            $this->assertEquals           ('currencyValue',  $triggers[1]->attributeIndexOrDerivedType);
-            $this->assertEquals           (4,                $triggers[1]->currencyIdForValue);
-            $this->assertEquals           ('bValue',         $triggers[1]->secondValue);
-            $this->assertNull             ($triggers[1]->stringifiedModelForValue);
-            $this->assertNull             ($triggers[1]->valueType);
-            $this->assertEquals           ('between',         $triggers[1]->operator);
-
-            $this->assertEquals           (false,            $triggers[2]->availableAtRunTime);
-            $this->assertEquals           ('aValue',         $triggers[2]->value);
-            $this->assertEquals           ('owner__User',    $triggers[2]->attributeIndexOrDerivedType);
-            $this->assertNull             ($triggers[2]->currencyIdForValue);
-            $this->assertNull             ($triggers[2]->secondValue);
-            $this->assertEquals           ('someName',       $triggers[2]->stringifiedModelForValue);
-            $this->assertNull             ($triggers[2]->valueType);
-            $this->assertNull             ($triggers[2]->operator);
-
-            $this->assertEquals           (true,               $triggers[3]->availableAtRunTime);
-            $this->assertEquals           ('aValue',           $triggers[3]->value);
-            $this->assertEquals           ('createdDateTime',  $triggers[3]->attributeIndexOrDerivedType);
-            $this->assertNull             ($triggers[3]->currencyIdForValue);
-            $this->assertEquals           ('bValue',           $triggers[3]->secondValue);
-            $this->assertNull             ($triggers[3]->stringifiedModelForValue);
-            $this->assertNull             ($triggers[3]->operator);
-            $this->assertEquals           ('Between',          $triggers[3]->valueType);
         }
     }
 ?>

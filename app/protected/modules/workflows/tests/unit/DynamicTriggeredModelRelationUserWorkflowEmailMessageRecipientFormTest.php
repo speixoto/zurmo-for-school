@@ -226,7 +226,7 @@
          */
         public function testMakeRecipientsForAHasOneRelation()
         {
-            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', \
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem',
                         Workflow::TYPE_ON_SAVE);
             $form->relation        = 'hasOne';
             $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
@@ -252,6 +252,27 @@
             $this->assertEquals(1, count($recipients));
             $this->assertTrue($recipients[0]->personOrAccount->isSame(self::$super));
         }
-        //todo: test getDynamicUserTypesAndLabels() variations to make sure resolveModelClassName has full coverage
+
+        /**
+         * Test various relations to get full coverage on resolveModelClassName()
+         * @depends testMakeRecipientsForAHasOneRelation
+         */
+        public function testGetDynamicUserTypesAndLabels()
+        {
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem',
+                    Workflow::TYPE_ON_SAVE);
+            $form->relation = 'hasOne';
+            $this->assertEquals(6, count($form->getDynamicUserTypesAndLabels()));
+
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem5',
+                Workflow::TYPE_ON_SAVE);
+            $form->relation        = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $this->assertEquals(6, count($form->getDynamicUserTypesAndLabels()));
+
+            $form = new DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm('WorkflowModelTestItem',
+                Workflow::TYPE_ON_SAVE);
+            $form->relation        = 'model5ViaItem';
+            $this->assertEquals(6, count($form->getDynamicUserTypesAndLabels()));
+        }
     }
 ?>

@@ -38,6 +38,8 @@
 
         private $_workflowsToProcessAfterSave = array();
 
+        private $_processWorkflowOnSave = true;
+
         public function onCreated()
         {
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
@@ -108,6 +110,21 @@
         public function getWorkflowsToProcessAfterSave()
         {
             return $this->_workflowsToProcessAfterSave;
+        }
+
+        public function setDoNotProcessWorkflowOnSave()
+        {
+            $this->_processWorkflowOnSave = false;
+        }
+
+        public function setProcessWorkflowOnSave()
+        {
+            $this->_processWorkflowOnSave = true;
+        }
+
+        public function shouldProcessWorkflowOnSave()
+        {
+            return $this->_processWorkflowOnSave;
         }
 
         protected static function getByNameOrEquivalent($attributeName, $value)

@@ -31,6 +31,13 @@
     {
         public $enabled = true;
 
+        /**
+         * Maintained as a counter that if it gets to large (above 10) will stop workflow processing. This is to avoid
+         * an infinite loop when there are misconfigured workflow rules
+         * @var int
+         */
+        protected $depth = 0;
+
         public function init()
         {
             if ($this->enabled)
@@ -39,11 +46,12 @@
                 $modules = Module::getModuleObjects();
                 foreach ($modules as $module)
                 {
-
                     try
                     {
                         $modelClassName = $module->getPrimaryModelName();
-                        if($modelClassName != null && $module::canHaveWorkflow() && !in_array($modelClassName, $observedModels))
+                        if($modelClassName != null && $module::canHaveWorkflow() &&
+                            is_subclass_of($modelClassName, 'Item') &&
+                            !in_array($modelClassName, $observedModels))
                         {
                             $observedModels[]           = $modelClassName;
                             $modelClassName::model()->attachEventHandler('onBeforeSave', array($this, 'processWorkflowBeforeSave'));
@@ -64,12 +72,14 @@
         public function processWorkflowBeforeSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if($model->getScenario() != 'autoBuildDatabase')
+            if($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
             {
-                $originalUser               = Yii::app()->user->userModel;
+                $triggeredByUser              = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
-                SavedWorkflowsUtil::resolveBeforeSaveByModel($model);
-                Yii::app()->user->userModel = $originalUser;
+                $model->setDoNotProcessWorkflowOnSave();
+                SavedWorkflowsUtil::resolveBeforeSaveByModel($model, $triggeredByUser);
+                $model->setProcessWorkflowOnSave();
+                Yii::app()->user->userModel = $triggeredByUser;
             }
         }
 
@@ -80,12 +90,27 @@
         public function processWorkflowAfterSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if($model->getScenario() != 'autoBuildDatabase')
+            if($model->getScenario() != 'autoBuildDatabase' && $this->depth < 11 && $model->shouldProcessWorkflowOnSave())
             {
-                $originalUser               = Yii::app()->user->userModel;
+                $this->depth                = $this->depth + 1;
+                $triggeredByUser            = Yii::app()->user->userModel;
                 Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
-                SavedWorkflowsUtil::resolveAfterSaveByModel($model);
-                Yii::app()->user->userModel = $originalUser;
+                $model->setDoNotProcessWorkflowOnSave();
+                SavedWorkflowsUtil::resolveAfterSaveByModel($model, $triggeredByUser);
+                $model->setProcessWorkflowOnSave();
+                Yii::app()->user->userModel = $triggeredByUser;
+                $this->depth                = $this->depth - 1;
+            }
+            elseif($this->depth > 10)
+            {
+                $message                      = new NotificationMessage();
+                $message->htmlContent         = Zurmo::t('WorkflowsModule', 'The combination of workflow rules setup caused ' .
+                                                'an infinite loop and processing was stopped prematurely while saving the ' .
+                                                'following record: {modelName}', array('{modelName}' => strval($model)));
+                $url                          = Yii::app()->createAbsoluteUrl('workflows/default/list');
+                $message->htmlContent        .= "<br/>" . ZurmoHtml::link(Zurmo::t('WorkflowsModule', 'Manage Workflows'), $url);
+                $rules                        = new WorkflowMaximumDepthNotificationRules();
+                NotificationsUtil::submit($message, $rules);
             }
         }
     }

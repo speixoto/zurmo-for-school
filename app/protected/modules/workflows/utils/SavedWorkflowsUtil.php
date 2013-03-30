@@ -105,9 +105,10 @@
          * Given a RedBeanModel, query workflow rules and process any beforeSave triggers for either on-save or
          * by-time workflows.  Called from @see WokflowsObserver->processWorkflowBeforeSave
          * @param Item $model
+         * @param User $triggeredByUser
          * @throws NotSupportedException if the workflow type is not valid
          */
-        public static function resolveBeforeSaveByModel(Item $model)
+        public static function resolveBeforeSaveByModel(Item $model, User $triggeredByUser)
         {
             $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel(
                                              $model::getModuleClassName(), $model->isNewModel);
@@ -123,7 +124,7 @@
                     }
                     elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
                     {
-                        WorkflowActionsUtil::processBeforeSave($workflow, $model, Yii::app()->user->userModel); //todo: change to triggered
+                        WorkflowActionsUtil::processBeforeSave($workflow, $model, $triggeredByUser);
                         $model->addWorkflowToProcessAfterSave($workflow);
                     }
                     else
@@ -139,9 +140,10 @@
          * Also process any email messages.  If the workflow is by-time, then we should process the ByTimeWorkflowInQueue
          * model.
          * @param Item $model
+         * @param User $triggeredByUser
          * @throws NotSupportedException
          */
-        public static function resolveAfterSaveByModel(Item $model)
+        public static function resolveAfterSaveByModel(Item $model, User $triggeredByUser)
         {
             foreach($model->getWorkflowsToProcessAfterSave() as $workflow)
             {
@@ -151,8 +153,8 @@
                 }
                 elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
                 {
-                    WorkflowActionsUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel); //todo: change to triggered
-                    WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
+                    WorkflowActionsUtil::processAfterSave($workflow, $model, $triggeredByUser);
+                    WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, $triggeredByUser);
                 }
                 else
                 {
@@ -257,9 +259,8 @@
             assert('$workflow->getId() > 0');
             try
             {
-                //todo: are we sure want to then retrieve the savedWorkflow again? i guess it would be cached...
                 $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::
-                    resolveByWorkflowIdAndModel(SavedWorkflow::getById((int)$workflow->getId()), $model);
+                                         resolveByWorkflowIdAndModel(SavedWorkflow::getById((int)$workflow->getId()), $model);
                 $byTimeWorkflowInQueue->processDateTime = static::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
                 $saved                 = $byTimeWorkflowInQueue->save();
                 if(!$saved)

@@ -269,16 +269,18 @@
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
 
-            //Getting all selectable relations. Should yield all 3 relations
+            //Getting all selectable relations. Should yield all 7 relations
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData();
-            $this->assertEquals(6, count($relations));
+            $this->assertEquals(7, count($relations));
             $compareData        = array('label' => 'WorkflowModelTestItems');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem__workflowItems__Inferred']);
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
             $compareData        = array('label' => 'Workflow Items');
             $this->assertEquals($compareData, $relations['workflowItems']);
+            $compareData        = array('label' => 'Has One');
+            $this->assertEquals($compareData, $relations['hasOne']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
@@ -302,13 +304,15 @@
             //Test calling on model 5 with a preceding model that is NOT part of workflowItems
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
-            $this->assertEquals(6, count($relations));
+            $this->assertEquals(7, count($relations));
             $compareData        = array('label' => 'WorkflowModelTestItems');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem__workflowItems__Inferred']);
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
             $compareData        = array('label' => 'Workflow Items');
             $this->assertEquals($compareData, $relations['workflowItems']);
+            $compareData        = array('label' => 'Has One');
+            $this->assertEquals($compareData, $relations['hasOne']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
@@ -320,11 +324,13 @@
             //Test calling on model 5 with a preceding model that is one of the workflowItem models
             $precedingModel     = new WorkflowModelTestItem();
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5ViaItem');
-            $this->assertEquals(5, count($relations));
+            $this->assertEquals(6, count($relations));
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
             $compareData        = array('label' => 'Workflow Items');
             $this->assertEquals($compareData, $relations['workflowItems']);
+            $compareData        = array('label' => 'Has One');
+            $this->assertEquals($compareData, $relations['hasOne']);
             //Add Dynamically Derived Attributes
             $compareData        = array('label' => 'Owner');
             $this->assertEquals($compareData, $relations['owner']);
@@ -1237,11 +1243,11 @@
             $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('dropDown'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('float'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('integer'));
-            $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('multiDropDown'));
+            $this->assertEquals('StaticMultiSelectDropDownForWorkflow', $adapter->getTriggerValueElementType('multiDropDown'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('phone'));
             $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('radioDropDown'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('string'));
-            $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('tagCloud'));
+            $this->assertEquals('StaticMultiSelectDropDownForWorkflow', $adapter->getTriggerValueElementType('tagCloud'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('textArea'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('url'));
         }
@@ -1259,7 +1265,7 @@
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsAlternateStateTestWorkflowRules();
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
-            $this->assertEquals('AllContactStatesStaticDropDownForWizardModel', $adapter->getTriggerValueElementType('likeContactState'));
+            $this->assertEquals('LeadStateStaticDropDownForWorkflow', $adapter->getTriggerValueElementType('likeContactState'));
         }
 
         /**
@@ -1283,16 +1289,16 @@
             $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('dropDown'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('float'));
             $this->assertEquals('MixedNumberTypes',               $adapter->getTriggerValueElementType('integer'));
-            $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('multiDropDown'));
+            $this->assertEquals('StaticMultiSelectDropDownForWorkflow', $adapter->getTriggerValueElementType('multiDropDown'));
             $this->assertEquals('UserNameId',                     $adapter->getTriggerValueElementType('owner__User'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('phone'));
             $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('radioDropDown'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('string'));
-            $this->assertEquals('StaticDropDownForWorkflow',        $adapter->getTriggerValueElementType('tagCloud'));
+            $this->assertEquals('StaticMultiSelectDropDownForWorkflow', $adapter->getTriggerValueElementType('tagCloud'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('textArea'));
             $this->assertEquals('Text',                           $adapter->getTriggerValueElementType('url'));
 
-            $this->assertEquals('ContactStateStaticDropDownForWorkflow', $adapter->getTriggerValueElementType('likeContactState'));
+            $this->assertEquals('AllContactStatesStaticDropDownForWizardModel', $adapter->getTriggerValueElementType('likeContactState'));
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsAlternateStateTestWorkflowRules();
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
@@ -1314,9 +1320,8 @@
             $model              = new WorkflowModelTestItem();
             $rules              = new WorkflowsTestWorkflowRules();
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
-            $this->assertNull($adapter->getAvailableOperatorsType('boolean'));
-            $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER,
-                                $adapter->getAvailableOperatorsType('currencyValue'));
+            $this->assertEquals('Boolean', $adapter->getAvailableOperatorsType('boolean'));
+            $this->assertEquals('CurrencyValue', $adapter->getAvailableOperatorsType('currencyValue'));
             $this->assertNull($adapter->getAvailableOperatorsType('date'));
             $this->assertNull($adapter->getAvailableOperatorsType('date2'));
             $this->assertNull($adapter->getAvailableOperatorsType('date3'));
@@ -1333,7 +1338,7 @@
                                 $adapter->getAvailableOperatorsType('integer'));
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
                                 $adapter->getAvailableOperatorsType('multiDropDown'));
-            $this->assertNull($adapter->getAvailableOperatorsType('owner__User'));
+            $this->assertEquals('HasOne', $adapter->getAvailableOperatorsType('owner__User'));
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING,
                                 $adapter->getAvailableOperatorsType('phone'));
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
@@ -1354,8 +1359,21 @@
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
             $this->assertEquals(ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
                                 $adapter->getAvailableOperatorsType('likeContactState'));
-//todo: go through file and make sure each one that has like 32, is actually confirming all 32, not just 24 for example.
-            //todo: add getSelectableRelationsDataForEmailMessageRecipientModelRelation similar to existing
+        }
+
+        /**
+         * @depends testGetAvailableOperatorsType
+         */
+        public function testGetSelectableRelationsDataForEmailMessageRecipientModelRelation()
+        {
+            $model              = new WorkflowModelTestItem();
+            $rules              = new WorkflowsTestWorkflowRules();
+            $workflow             = new Workflow();
+            $workflow->setType(Workflow::TYPE_ON_SAVE);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
+            $relations          = $adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation();
+            $this->assertEquals(5, count($relations));
         }
     }
 ?>

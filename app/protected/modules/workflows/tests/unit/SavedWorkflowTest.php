@@ -31,11 +31,12 @@
             $savedWorkflow                  = new SavedWorkflow();
             $savedWorkflow->name            = 'some workflow';
             $savedWorkflow->description     = 'description';
-            $savedWorkflow->moduleClassName = 'moduleClassName';
+            $savedWorkflow->moduleClassName = 'WorkflowsTestModule';
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = 'some type';
             $savedWorkflow->serializedData  = serialize(array('something'));
-            $saved                        = $savedWorkflow->save();
+            $savedWorkflow->isActive        = true;
+            $saved                          = $savedWorkflow->save();
             $this->assertTrue($saved);
             $savedWorkflowId                = $savedWorkflow->id;
             $savedWorkflow->forget();
@@ -43,17 +44,44 @@
             $savedWorkflow                  = SavedWorkflow::getById($savedWorkflowId);
             $this->assertEquals('some workflow',               $savedWorkflow->name);
             $this->assertEquals('description',                 $savedWorkflow->description);
-            $this->assertEquals('moduleClassName',             $savedWorkflow->moduleClassName);
+            $this->assertEquals('WorkflowsTestModule',             $savedWorkflow->moduleClassName);
             $this->assertEquals(Workflow::TRIGGER_ON_NEW,      $savedWorkflow->triggerOn);
             $this->assertEquals('some type',                   $savedWorkflow->type);
             $this->assertEquals(serialize(array('something')), $savedWorkflow->serializedData);
         }
 
+        /**
+         * @depends testSetAndGetModel
+         */
         public function testGetActiveByModuleClassNameAndIsNewModel()
         {
-            //todo:
-            //getActiveByModuleClassNameAndIsNewModel($moduleClassName, $isNewModel)
-            $this->fail();
+            $savedWorkflow                  = new SavedWorkflow();
+            $savedWorkflow->name            = 'some workflow';
+            $savedWorkflow->description     = 'description';
+            $savedWorkflow->moduleClassName = 'WorkflowsTestModule';
+            $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_EXISTING;
+            $savedWorkflow->type            = 'some type';
+            $savedWorkflow->serializedData  = serialize(array('something'));
+            $savedWorkflow->isActive        = true;
+            $saved                          = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            $this->assertEquals(2, count(SavedWorkflow::getAll()));
+            $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel('WorkflowsTestModule', true);
+            $this->assertEquals(1, count($savedWorkflows));
+            $savedWorkflowId = $savedWorkflows[0]->id;
+            $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel('WorkflowsTestModule', false);
+            $this->assertEquals(1, count($savedWorkflows));
+            $this->assertTrue($savedWorkflowId != $savedWorkflows[0]->id);
+        }
+
+        /**
+         * @depends testGetActiveByModuleClassNameAndIsNewModel
+         */
+        public function testGetAllByModuleClassName()
+        {
+            $savedWorkflows = SavedWorkflow::getAllByModuleClassName('WorkflowsTestModule');
+            $this->assertEquals(2, count($savedWorkflows));
         }
     }
 ?>

@@ -202,18 +202,180 @@
          */
         public function testResolveBeforeSaveByModel()
         {
-            $this->fail();
-            //resolveBeforeSaveByRedBeanModel($model)
-            //todo: test isActive or not when processing.
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            //Add trigger
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'string';
+            $trigger->value                       = 'aValue';
+            $trigger->operator                    = 'equals';
+            $workflow->addTrigger($trigger);
+            //Add action
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $attributes                   = array('string' => array('shouldSetValue'    => '1',
+                                                  'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                  'value'  => 'jason'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            //Confirm that the workflow processes and the attribute gets updated
+            $model = new WorkflowModelTestItem();
+            $model->string = 'aValue';
+            SavedWorkflowsUtil::resolveBeforeSaveByModel($model, Yii::app()->user->userModel);
+            $this->assertEquals('jason', $model->string);
+            $this->assertTrue($model->id < 0);
+
+            //Change the workflow to inactive
+            $savedWorkflow->isActive = false;
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+            $model         = new WorkflowModelTestItem();
+            $model->string = 'aValue';
+            SavedWorkflowsUtil::resolveBeforeSaveByModel($model, Yii::app()->user->userModel);
+            $this->assertEquals('aValue', $model->string);
+            $this->assertTrue($model->id < 0);
         }
 
         /**
          * @depends testResolveBeforeSaveByModel
          */
+        public function testResolveBeforeSaveByModelForByTime()
+        {
+            //Create workflow
+            $workflow      = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_BY_TIME);
+            $workflow->setTriggersStructure('1');
+            $workflow->setIsActive(true);
+            //Add time trigger
+            $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'date';
+            $trigger->durationSeconds             = '500';
+            $trigger->valueType                   = 'Is Time For';
+            $workflow->setTimeTrigger($trigger);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            //Confirm that the workflow processes and the attribute gets updated
+            $model = new WorkflowModelTestItem();
+            $model->string = 'aValue';
+            $model->date   = '2013-02-02';
+            $this->assertEquals(0, count($model->getWorkflowsToProcessAfterSave()));
+            SavedWorkflowsUtil::resolveBeforeSaveByModel($model, Yii::app()->user->userModel);
+            $this->assertEquals(1, count($model->getWorkflowsToProcessAfterSave()));
+            $this->assertTrue($model->id < 0);
+        }
+
+        /**
+         * @depends testResolveBeforeSaveByModelForByTime
+         */
         public function testResolveAfterSaveByModel()
         {
-            $this->fail();
-            //resolveAfterSaveByRedBeanModel($model)
+            //Create workflow
+            $workflow      = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            $workflow->setIsActive(true);
+            //Add trigger
+            $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'string';
+            $trigger->value                       = 'aValue';
+            $trigger->operator                    = 'equals';
+            $workflow->addTrigger($trigger);
+            //Add action
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
+            $action->relation             = 'hasOne';
+            $attributes                   = array('name' => array('shouldSetValue'    => '1',
+                                                   'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                   'value'  => 'jason'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            $model = new WorkflowModelTestItem();
+            $model->string = 'aValue';
+            $saved         = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+            $model->addWorkflowToProcessAfterSave($workflow);
+            $this->assertEquals(0, count(WorkflowModelTestItem2::getAll()));
+            SavedWorkflowsUtil::resolveAfterSaveByModel($model, Yii::app()->user->userModel);
+            $this->assertEquals(1, count(WorkflowModelTestItem2::getAll()));
+        }
+
+        /**
+         * @depends testResolveAfterSaveByModel
+         */
+        public function testResolveAfterSaveByModelForByTime()
+        {
+            //Create workflow
+            $workflow      = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('WorkflowsTestModule');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_BY_TIME);
+            $workflow->setTriggersStructure('1');
+            $workflow->setIsActive(true);
+            //Add time trigger
+            $trigger = new TimeTriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', $workflow->getType());
+            $trigger->attributeIndexOrDerivedType = 'date';
+            $trigger->durationSeconds             = '500';
+            $trigger->valueType                   = 'Is Time For';
+            $workflow->setTimeTrigger($trigger);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+            $workflow->setId($savedWorkflow->id); //set Id back.
+
+            $model           = new WorkflowModelTestItem();
+            $model->lastName = 'something';
+            $model->string   = 'aValue';
+            $model->date     = '2013-03-03';
+            $saved           = $model->save();
+            $this->assertTrue($saved);
+
+            $model->addWorkflowToProcessAfterSave($workflow);
+            $this->assertEquals(0, count(ByTimeWorkflowInQueue::getAll()));
+            SavedWorkflowsUtil::resolveAfterSaveByModel($model, Yii::app()->user->userModel);
+            $this->assertEquals(1, count(ByTimeWorkflowInQueue::getAll()));
         }
     }
 ?>

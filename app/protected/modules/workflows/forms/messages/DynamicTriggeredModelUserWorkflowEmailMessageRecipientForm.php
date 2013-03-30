@@ -54,7 +54,7 @@
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                      array('dynamicUserType',  'type', 'type' =>  'integer'),
+                      array('dynamicUserType',  'type', 'type' =>  'string'),
                       array('dynamicUserType',  'required')));
         }
 

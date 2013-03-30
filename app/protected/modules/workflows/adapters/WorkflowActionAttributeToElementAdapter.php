@@ -45,7 +45,6 @@
 
             assert('is_string($actionType)');
             assert('is_array($inputPrefixData)');
-            //assert('static::isActionTypeValid($actionType)'); //todo: not sure why i had this here. remove.
             assert('is_bool($isAttributeRequired)');
             $this->model               = $model;
             $this->form                = $form;
@@ -123,7 +122,7 @@
             $params = array('inputPrefix' => $this->inputPrefixData);
             if($this->isAttributeRequired)
             {
-                $params['disabled'] = true; //todo: if this blocks POST, then this won't work
+                $params['disabled'] = true;
             }
             $shouldSetValueElement                    = new ShouldSetValueCheckBoxElement(
                                                         $this->model, 'shouldSetValue', $this->form, $params);

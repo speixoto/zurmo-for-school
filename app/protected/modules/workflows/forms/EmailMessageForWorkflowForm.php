@@ -208,7 +208,7 @@
                 }
                 if($this->sendFromAddress == null)
                 {
-                    $this->addError('sendFromName', Zurmo::t('WorkflowsModule', 'From Email Address cannot be blank.'));
+                    $this->addError('sendFromAddress', Zurmo::t('WorkflowsModule', 'From Email Address cannot be blank.'));
                     $validated = false;
                 }
                 return $validated;
@@ -217,7 +217,7 @@
             {
                 $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Send From Type'));
             }
-            return false;
+            return true;
         }
 
         /**
@@ -263,7 +263,7 @@
         public function getSendFromTypeValuesAndLabels()
         {
             $data                               = array();
-            $data[self::SEND_FROM_TYPE_DEFAULT] = Zurmo::t('WorkflowsModule', 'Default System From Name/Address'); //todo: relabel since we don't define this persay anywhere
+            $data[self::SEND_FROM_TYPE_DEFAULT] = Zurmo::t('WorkflowsModule', 'Default System From Name/Address');
             $data[self::SEND_FROM_TYPE_CUSTOM]  = Zurmo::t('WorkflowsModule', 'Custom From Name/Address');
             return $data;
         }

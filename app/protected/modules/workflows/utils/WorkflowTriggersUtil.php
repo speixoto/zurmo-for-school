@@ -112,7 +112,7 @@
          */
         public static function evaluatePHPString($phpStringReadyToEvaluate)
         {
-            //todo: add final safety that ther is just &&, ||, (, ), and 'true' and 'false.
+            //todo: add final safety that there is just &&, ||, (, ), and 'true' and 'false.
             return eval('return (' . $phpStringReadyToEvaluate. ');');
         }
 

@@ -84,7 +84,7 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>'; //todo: is this div necessary? AA:Yes
+            $content  = '<div>';
             $content .= $this->renderAddEmailMessageLinkContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderEmailMessagesContentAndWrapper();
@@ -114,7 +114,6 @@
 
         protected function renderEmailMessagesContentAndWrapper()
         {
-            //todo: still seems strange we call it droppable even though it is only draggable here. maybe not a big deal
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
             $itemsContent                = $this->getNonSortableListContent($items);

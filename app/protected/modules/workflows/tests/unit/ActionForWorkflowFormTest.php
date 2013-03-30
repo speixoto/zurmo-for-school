@@ -139,6 +139,7 @@
 
             //When the type is update_related, related information is required
             $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $action->relationFilter              = 'somethingInvalid';
             $action->type                        = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $validated = $action->validate();
             $this->assertFalse($validated);
@@ -183,27 +184,29 @@
         /**
          * @depends testValidate
          */
-        public function testResolveAllRequiredActionAttributeFormsAndLabelsAndSort()
+        public function testResolveAllActionAttributeFormsAndLabelsAndSort()
         {
             $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'hasMany2';
-            $data = $form->resolveAllRequiredActionAttributeFormsAndLabelsAndSort();
-            $this->assertEquals(3, count($data));
-            //todo: test various types and related related.
-        }
-
-        /**
-         * @depends testResolveAllRequiredActionAttributeFormsAndLabelsAndSort
-         */
-        public function testResolveAllActionAttributeFormsAndLabelsAndSort()
-        {
-            //todo: fix this and adjust because this is for update, the other required and nonRequired are only for create
-            $this->fail();
+            $data = $form->resolveAllActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(41, count($data));
         }
 
         /**
          * @depends testResolveAllActionAttributeFormsAndLabelsAndSort
+         */
+        public function testResolveAllRequiredActionAttributeFormsAndLabelsAndSort()
+        {
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_CREATE;
+            $form->relation        = 'hasMany2';
+            $data = $form->resolveAllRequiredActionAttributeFormsAndLabelsAndSort();
+            $this->assertEquals(3, count($data));
+        }
+
+        /**
+         * @depends testResolveAllRequiredActionAttributeFormsAndLabelsAndSort
          */
         public function testResolveAllNonRequiredActionAttributeFormsAndLabelsAndSort()
         {
@@ -244,10 +247,6 @@
             $form->relatedModelRelation = 'WorkflowModelTestItem__workflowItems__Inferred';
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
             $this->assertEquals(38, count($data));
-
-            //todo: test create_related cauuse that gets coverage on a bit more. test with inferred, derieved as well
-
-            //todo: test various types and related related. test create related non-derives and non-inferred
         }
     }
 ?>
