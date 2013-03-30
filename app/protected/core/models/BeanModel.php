@@ -288,6 +288,7 @@
         /**
          * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getDerivedRelationType($relationName)
         {
@@ -299,6 +300,7 @@
         /**
          * Returns the relation model class name of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getDerivedRelationModelClassName($relationName)
         {
