@@ -123,7 +123,7 @@
             }
         }
     }
-	&.EmailAlerts,
+	&.EmailMessages,
 	&.Actions{
 		min-height: 0;
 	}
@@ -298,7 +298,7 @@
 .Filters,
 .Triggers,
 .Actions,
-.EmailAlerts{
+.EmailMessages{
     .dynamic-row{
         padding:10px 30px;
     }
@@ -673,7 +673,7 @@
 }
 
 .zero-components-view{
-    &.Actions, &.EmailAlerts, &.TimeTrigger, &.WorkflowRulesOrder{
+    &.Actions, &.EmailMessages, &.TimeTrigger, &.WorkflowRulesOrder{
         position: relative;
         top:0;
         left: 0;
@@ -746,7 +746,7 @@
     }
 }
 
-.ZeroEmailAlerts{
+.ZeroEmailMessages{
     .large-icon:after{
         content:'\00A5';
         .symbly(235px);
@@ -779,7 +779,7 @@
     }
 }
 
-.EmailAlerts{
+.EmailMessages{
     .col-0{
         width:20% !important;
     }
@@ -792,7 +792,7 @@
 }
 
 
-.email-alert-recipient-rows{
+.email-message-recipient-rows{
     ++.border-box;
     .hasDropDown{
         float: left;
@@ -814,13 +814,13 @@
         }
     }
     &:hover{
-        .remove-dynamic-email-alert-recipient-row-link{
+        .remove-dynamic-email-message-recipient-row-link{
             .opacity(100);
         }
     }
 }
 
-.remove-dynamic-email-alert-recipient-row-link{
+.remove-dynamic-email-message-recipient-row-link{
     position: absolute;
     right: 0;
     top: 26px;
@@ -831,7 +831,7 @@
     .animateAll(0.2s);
 }
 
-.email-alert-recipient-type-selector-container{
+.email-message-recipient-type-selector-container{
     width: 22%;
     margin-top: 20px;
 }
@@ -892,7 +892,7 @@
 
 /*for actions in WORKFLOWS hide/show sequence*/
 #OnSaveWorkflowWizardView{
-	.add-email-alert-button-container,
+	.add-email-message-button-container,
 	.action-type-selector-container{
 		width: 30%;
 		float: left !important;
@@ -905,7 +905,7 @@
 		++.border-box;
 	}
 	.Actions,
-	.EmailAlerts{
+	.EmailMessages{
 		&.droppable-dynamic-rows-container,
 		&.zero-components-view{
 			width: 70% !important;
@@ -934,7 +934,7 @@
 	}
 }
 
-#AddEmailAlertLink{
+#AddEmailMessageLink{
 	margin-left: 0;
 }
 

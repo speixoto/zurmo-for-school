@@ -113,7 +113,7 @@
             {
                 throw new NotSupportedException();
             }
-            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->triggeredModel), $this->action->relation);
+            $modelClassName = get_class($this->triggeredModel);
             if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->action->relation) &&
                $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
@@ -152,7 +152,8 @@
                     }
                 }
             }
-            elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
+            elseif($modelClassName::isRelationTypeAHasOneVariant($this->action->relation) &&
+                  !$modelClassName::isOwnedRelation($this->action->relation))
             {
                 $relatedModel = $this->triggeredModel->{$this->action->relation};
                 self::processActionAttributesForAction($this->action, $relatedModel, $this->triggeredByUser, $this->triggeredModel);
@@ -193,7 +194,7 @@
 
         {
             assert('is_string($relation)');
-            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($model), $relation);
+            $modelClassName = get_class($model);
             if($model->isADerivedRelationViaCastedUpModel($relation) &&
                 $model->getDerivedRelationType($relation) == RedBeanModel::MANY_MANY)
             {
@@ -237,7 +238,8 @@
                 $model->{$relation}->add($newModel);
                 return true;
             }
-            elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
+            elseif($modelClassName::isRelationTypeAHasOneVariant($relation) &&
+                   !$modelClassName::isOwnedRelation($relation))
             {
                 $relatedModel = $model->{$relation};
                 if($relatedModel->id > 0)
@@ -263,7 +265,7 @@
             {
                 throw new NotSupportedException();
             }
-            $adapter = new RedBeanModelAttributeToDataProviderAdapter(get_class($this->triggeredModel), $this->action->relation);
+            $modelClassName = get_class($this->triggeredModel);
             if($this->triggeredModel->isADerivedRelationViaCastedUpModel($this->action->relation) &&
                 $this->triggeredModel->getDerivedRelationType($this->action->relation) == RedBeanModel::MANY_MANY)
             {
@@ -308,7 +310,8 @@
                     }
                 }
             }
-            elseif($adapter->isRelationTypeAHasOneVariant() && !$adapter->isOwnedRelation())
+            elseif($modelClassName::isRelationTypeAHasOneVariant($this->action->relation) &&
+                   !$modelClassName::isOwnedRelation($this->action->relation))
             {
                 $relatedModel = $this->triggeredModel->{$this->action->relation};
                 if($this->resolveCreateModel($relatedModel, $this->action->relatedModelRelation))

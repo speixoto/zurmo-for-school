@@ -101,12 +101,20 @@
                                                $precedingRelation = null, $nodeIdPrefix = null)
         {
             $childrenNodeData        = array();
+            $attributesData = $this->getAttributesData($modelToWorkflowAdapter, $precedingModel, $precedingRelation);
+            foreach($attributesData as $attribute => $attributeData)
+            {
+                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
+                                            'text'         => $attributeData['label'],
+                                            'wrapperClass' => 'item-to-place');
+                $childrenNodeData[] = $attributeNode;
+            }
             $selectableRelationsData = $modelToWorkflowAdapter->
-                                       getSelectableRelationsData($precedingModel, $precedingRelation);
+                getSelectableRelationsData($precedingModel, $precedingRelation);
             $resolvedSelectableRelationsData = $modelToWorkflowAdapter->
-                                               getSelectableRelationsDataResolvedForUserAccess(
-                                               Yii::app()->user->userModel,
-                                               $selectableRelationsData);
+                getSelectableRelationsDataResolvedForUserAccess(
+                Yii::app()->user->userModel,
+                $selectableRelationsData);
             foreach($resolvedSelectableRelationsData as $relation => $relationData)
             {
                 $relationModelClassName       = $modelToWorkflowAdapter->getRelationModelClassName($relation);
@@ -116,18 +124,10 @@
                     throw new NotSupportedException($relationModelClassName);
                 }
                 $relationNode                 = array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
-                                                      'text'        => $relationData['label'],
-                                                      'expanded'    => false,
-                                                      'hasChildren' => true);
+                    'text'        => $relationData['label'],
+                    'expanded'    => false,
+                    'hasChildren' => true);
                 $childrenNodeData[]           = $relationNode;
-            }
-            $attributesData = $this->getAttributesData($modelToWorkflowAdapter, $precedingModel, $precedingRelation);
-            foreach($attributesData as $attribute => $attributeData)
-            {
-                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
-                                            'text'         => $attributeData['label'],
-                                            'wrapperClass' => 'item-to-place');
-                $childrenNodeData[] = $attributeNode;
             }
             return $childrenNodeData;
         }

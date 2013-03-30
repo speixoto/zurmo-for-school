@@ -41,8 +41,8 @@
         {
             assert('is_string($resolvedModelClassName)');
             assert('is_string($resolvedAttributeName)');
-
-            $model = new $resolvedModelClassName(false); //todo: once performance3 is done, the method call can use just the modelClassName
+            //todo: switch to use just modelClassName and refactor getType to use it statically
+            $model = new $resolvedModelClassName(false);
             return ModelAttributeToWorkflowActionAttributeFormTypeUtil::getType($model, $resolvedAttributeName);
         }
     }

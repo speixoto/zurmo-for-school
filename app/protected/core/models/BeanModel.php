@@ -271,6 +271,35 @@
         }
 
         /**
+         * @return bool
+         */
+        public function isRelationTypeAHasManyVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY  ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_ONE_BELONGS_TO)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @return bool
+         */
+        public function isRelationTypeAHasOneVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_ONE)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
          * @param string $relationName
          * @return boolean true if the relation is a derived relation
          */

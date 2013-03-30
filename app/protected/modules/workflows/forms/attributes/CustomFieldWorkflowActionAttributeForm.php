@@ -32,7 +32,7 @@
         public function getCustomFieldDataAndLabels()
         {
             $modelClassName = $this->modelClassName;
-            $model          = new $modelClassName(false); //todo: once performance3 is done, we might be able to do this statically somehow
+            $model          = new $modelClassName(false);
             //cause we can call the metadata statically and get the customField name to get the CustomFieldData by name.
             $dropDownModel = $model->{$this->modelAttributeName};
             $dataAndLabels = CustomFieldDataUtil::

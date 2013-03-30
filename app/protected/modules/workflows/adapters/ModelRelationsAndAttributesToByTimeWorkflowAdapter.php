@@ -29,18 +29,6 @@
      */
     class ModelRelationsAndAttributesToByTimeWorkflowAdapter extends ModelRelationsAndAttributesToWorkflowAdapter
     {
-        /**
-         * @return array
-         */
-        public function getAttributesForTriggers()
-        {
-            //todo: maybe push back since this is same for on-save
-            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
-        }
-
         public function getAttributesForTimeTrigger()
         {
             $attributes       = $this->resolveAttributesForActionsOrTimeTriggerData(true, true, true);

@@ -472,13 +472,11 @@
         protected function resolveShouldAddSpecialOnSaveNonRelatedOperators()
         {
             $modelClassName = $this->modelClassName;
-            //todo: not needed once performance3 is complete
-            $model = new $modelClassName();
             if(( $this->workflowType == Workflow::TYPE_ON_SAVE &&
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
-                    $model->isOwnedRelation($this->getPenultimateRelation()))
+                    $modelClassName::isOwnedRelation($this->getPenultimateRelation()))
             {
                 return true;
             }
@@ -488,13 +486,11 @@
         protected function resolveShouldAddSpecialByTimeNonRelatedOperators()
         {
             $modelClassName = $this->modelClassName;
-            //todo: not needed once performance3 is complete
-            $model = new $modelClassName();
             if(( $this->workflowType == Workflow::TYPE_BY_TIME &&
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
-                    $model->isOwnedRelation($this->getPenultimateRelation()))
+                    $modelClassName::isOwnedRelation($this->getPenultimateRelation()))
             {
                 return true;
             }

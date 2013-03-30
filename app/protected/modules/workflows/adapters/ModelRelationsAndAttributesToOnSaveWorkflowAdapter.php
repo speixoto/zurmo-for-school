@@ -29,17 +29,6 @@
      */
     class ModelRelationsAndAttributesToOnSaveWorkflowAdapter extends ModelRelationsAndAttributesToWorkflowAdapter
     {
-        /**
-         * @return array
-         */
-        public function getAttributesForTriggers()
-        {
-            $attributes       = $this->getAttributesNotIncludingDerivedAttributesData();
-            $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
-            $sortedAttributes = ArrayUtil::subValueSort($attributes, 'label', 'asort');
-            return $sortedAttributes;
-        }
-
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             return $this->getSelectableRelationsDataForTriggers($precedingModel, $precedingRelation);

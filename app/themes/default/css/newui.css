@@ -180,10 +180,10 @@ a.ModalGameNotification a,
 .hasDrillDownContent,
 .first-series-and-range-area > div,
 .second-series-and-range-area > div,
-.email-alert-recipient-rows,
+.email-message-recipient-rows,
 .all-related-field,
 .static-address-field,
-#OnSaveWorkflowWizardView .add-email-alert-button-container,
+#OnSaveWorkflowWizardView .add-email-message-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container,
 #OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
 #OnSaveWorkflowWizardView .zero-components-view,
@@ -206,9 +206,9 @@ a.ModalGameNotification a,
 .dynamic-row > div:after,
 .dynamic-sub-row:before,
 .dynamic-sub-row:after,
-#OnSaveWorkflowWizardView .add-email-alert-button-container:before,
+#OnSaveWorkflowWizardView .add-email-message-button-container:before,
 #OnSaveWorkflowWizardView .action-type-selector-container:before,
-#OnSaveWorkflowWizardView .add-email-alert-button-container:after,
+#OnSaveWorkflowWizardView .add-email-message-button-container:after,
 #OnSaveWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:before,
 .workflow-order-module-selector-container:after {
@@ -221,7 +221,7 @@ a.ModalGameNotification a,
 .dynamic-row:after,
 .dynamic-row > div:after,
 .dynamic-sub-row:after,
-#OnSaveWorkflowWizardView .add-email-alert-button-container:after,
+#OnSaveWorkflowWizardView .add-email-message-button-container:after,
 #OnSaveWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:after {
   clear: both;
@@ -232,7 +232,7 @@ a.ModalGameNotification a,
 .dynamic-row,
 .dynamic-row > div,
 .dynamic-sub-row,
-#OnSaveWorkflowWizardView .add-email-alert-button-container,
+#OnSaveWorkflowWizardView .add-email-message-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container,
 .workflow-order-module-selector-container {
   zoom: 1;
@@ -16169,7 +16169,7 @@ a.user-link {
   -moz-opacity: 1;
   opacity: 1;
 }
-.droppable-dynamic-rows-container.EmailAlerts,
+.droppable-dynamic-rows-container.EmailMessages,
 .droppable-dynamic-rows-container.Actions {
   min-height: 0;
 }
@@ -16355,7 +16355,7 @@ a.user-link {
 .Filters .dynamic-row,
 .Triggers .dynamic-row,
 .Actions .dynamic-row,
-.EmailAlerts .dynamic-row {
+.EmailMessages .dynamic-row {
   padding: 10px 30px;
 }
 .sortable .dynamic-row:hover {
@@ -16691,7 +16691,7 @@ a.user-link {
   margin-right: 45px;
 }
 .zero-components-view.Actions,
-.zero-components-view.EmailAlerts,
+.zero-components-view.EmailMessages,
 .zero-components-view.TimeTrigger,
 .zero-components-view.WorkflowRulesOrder {
   position: relative;
@@ -16754,7 +16754,7 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
-.ZeroEmailAlerts .large-icon:after {
+.ZeroEmailMessages .large-icon:after {
   content: '\00A5';
   font-weight: normal;
   font-size: 235px;
@@ -16781,41 +16781,41 @@ a.user-link {
 .Triggers .value-data {
   padding-right: 0;
 }
-.EmailAlerts .col-0 {
+.EmailMessages .col-0 {
   width: 20% !important;
 }
-.EmailAlerts .col-1 {
+.EmailMessages .col-1 {
   width: 80% !important;
 }
-.EmailAlerts .panel {
+.EmailMessages .panel {
   width: 100% !important;
 }
-.email-alert-recipient-rows .hasDropDown {
+.email-message-recipient-rows .hasDropDown {
   float: left;
   min-width: 20%;
 }
-.email-alert-recipient-rows .dynamic-row-label {
+.email-message-recipient-rows .dynamic-row-label {
   width: 100%;
 }
-.email-alert-recipient-rows .value-data {
+.email-message-recipient-rows .value-data {
   padding-left: 15px;
 }
-.email-alert-recipient-rows .value-data .hasDropDown {
+.email-message-recipient-rows .value-data .hasDropDown {
   width: 100% !important;
 }
-.email-alert-recipient-rows .dynamic-sub-row {
+.email-message-recipient-rows .dynamic-sub-row {
   padding: 0 20px;
 }
-.email-alert-recipient-rows .dynamic-sub-row > div {
+.email-message-recipient-rows .dynamic-sub-row > div {
   position: relative;
 }
-.email-alert-recipient-rows:hover .remove-dynamic-email-alert-recipient-row-link {
+.email-message-recipient-rows:hover .remove-dynamic-email-message-recipient-row-link {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
 }
-.remove-dynamic-email-alert-recipient-row-link {
+.remove-dynamic-email-message-recipient-row-link {
   position: absolute;
   right: 0;
   top: 26px;
@@ -16834,7 +16834,7 @@ a.user-link {
   -ms-transition: all 0.2s ease-out;
   transition: all 0.2s ease-out;
 }
-.email-alert-recipient-type-selector-container {
+.email-message-recipient-type-selector-container {
   width: 22%;
   margin-top: 20px;
 }
@@ -16887,7 +16887,7 @@ a.user-link {
   width: 100%;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
-#OnSaveWorkflowWizardView .add-email-alert-button-container,
+#OnSaveWorkflowWizardView .add-email-message-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container {
   width: 30%;
   float: left !important;
@@ -16897,9 +16897,9 @@ a.user-link {
   float: left !important;
 }
 #OnSaveWorkflowWizardView .Actions.droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .EmailAlerts.droppable-dynamic-rows-container,
+#OnSaveWorkflowWizardView .EmailMessages.droppable-dynamic-rows-container,
 #OnSaveWorkflowWizardView .Actions.zero-components-view,
-#OnSaveWorkflowWizardView .EmailAlerts.zero-components-view {
+#OnSaveWorkflowWizardView .EmailMessages.zero-components-view {
   width: 70% !important;
   padding-left: 15px;
 }
@@ -16920,7 +16920,7 @@ a.user-link {
   width: 100%;
   float: none;
 }
-#AddEmailAlertLink {
+#AddEmailMessageLink {
   margin-left: 0;
 }
 /*WorkFlow Rules Order*/

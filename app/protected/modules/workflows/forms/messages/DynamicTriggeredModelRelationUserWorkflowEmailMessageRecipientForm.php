@@ -134,7 +134,6 @@
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $modelClassName = $this->modelClassName;
-            $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
             $recipients     = array();
             if($model->isADerivedRelationViaCastedUpModel($this->relation) &&
                 $model->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
@@ -164,7 +163,7 @@
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($adapter->isRelationTypeAHasOneVariant())
+            elseif($modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
                 if($model->{$this->relation}->id > 0)
                 {
@@ -181,7 +180,6 @@
         protected function resolveModelClassName()
         {
             $modelClassName = $this->modelClassName;
-            $adapter        = new RedBeanModelAttributeToDataProviderAdapter($modelClassName, $this->relation);
             if($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
                $modelClassName::getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
@@ -192,8 +190,8 @@
             {
                 return ModelRelationsAndAttributesToWorkflowAdapter::getInferredRelationModelClassName($this->relation);
             }
-            elseif($adapter->isRelationTypeAHasManyVariant() ||
-                   $adapter->isRelationTypeAHasOneVariant())
+            elseif($modelClassName::isRelationTypeAHasManyVariant($this->relation) ||
+                   $modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
                 return $modelClassName::getRelationModelClassName($this->relation);
             }
