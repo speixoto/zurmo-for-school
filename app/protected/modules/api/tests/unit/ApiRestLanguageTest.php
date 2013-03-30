@@ -73,7 +73,7 @@
             $response = ApiRestTestHelper::createApiCall($this->serverUrl . '/test.php/api/testModelItem2/api/read/2/' , 'GET', $headers);
             $response = json_decode($response, true);
             $this->assertEquals(ApiResponse::STATUS_FAILURE, $response['status']);
-            $this->assertEquals('ID invalide.', $response['message']);
+            $this->assertEquals('The ID specified was invalid.', $response['message']);
         }
     }
 ?>
