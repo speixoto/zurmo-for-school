@@ -159,7 +159,7 @@
             }
             else
             {
-                $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+                $resolvedAttribute = static::resolveRealAttributeName($attribute);
             }
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
             if(!isset($attributesData[$resolvedAttribute]))
@@ -351,7 +351,7 @@
             {
                 throw new NotSupportedException();
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
                                                                                                   $resolvedAttribute))
             {
@@ -382,7 +382,7 @@
                 }
                 return 'UserNameId';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if(null != $triggerValueElementTypeFromRule = $this->rules->getTriggerValueElementType($this->model,
                                                                                                  $resolvedAttribute))
             {
@@ -414,7 +414,7 @@
                 }
                 return 'User';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             return $this->getRealModelAttributeType($resolvedAttribute);
         }
 

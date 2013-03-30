@@ -191,7 +191,7 @@
             }
             else
             {
-                $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+                $resolvedAttribute = static::resolveRealAttributeName($attribute);
             }
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
             if(!isset($attributesData[$resolvedAttribute]) && !$this->model->isAttribute($resolvedAttribute))
@@ -369,7 +369,7 @@
             {
                 throw new NotSupportedException();
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
                                                                                                   $resolvedAttribute))
             {
@@ -400,7 +400,7 @@
                 }
                 return 'UserNameId';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementType($this->model,
                                                                                                  $resolvedAttribute))
             {
@@ -432,7 +432,7 @@
                 }
                 return 'User';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             return $this->getRealModelAttributeType($resolvedAttribute);
         }
 
@@ -799,7 +799,7 @@
          * @param string attribute
          * @return real model attribute name.  Parses for Inferred
          */
-        public function resolveRealAttributeName($attribute)
+        public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             $delimiter                       = FormModelUtil::DELIMITER;

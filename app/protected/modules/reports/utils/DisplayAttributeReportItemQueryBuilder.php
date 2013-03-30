@@ -222,7 +222,8 @@
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
+                    ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute),
+                    $relatedAttribute);
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }

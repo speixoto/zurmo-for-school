@@ -66,7 +66,7 @@
          */
         protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier($attribute)
         {
-            $resolvedAttribute = $this->modelToReportAdapter->resolveRealAttributeName($attribute);
+            $resolvedAttribute = ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute);
             if($this->modelToReportAdapter->getRealModelAttributeType($resolvedAttribute) == 'DateTime')
             {
                 return DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
@@ -89,7 +89,7 @@
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
+                    ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute), $relatedAttribute);
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }

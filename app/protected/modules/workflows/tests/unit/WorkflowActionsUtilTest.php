@@ -24,20 +24,8 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class WorkflowActionsUtilTest extends ZurmoBaseTest
+    class WorkflowActionsUtilTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
-        public function setup()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
         public function testProcessBeforeSave()
         {
             //todO:

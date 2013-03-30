@@ -278,11 +278,7 @@
          */
         public function getResolvedAttributeRealAttributeName()
         {
-            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
-            $modelClassName       = $this->getResolvedAttributeModelClassName();
-            $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
-                                    make($moduleClassName, $modelClassName, $this->workflowType);
-            return $modelToWorkflowAdapter->resolveRealAttributeName($this->getResolvedAttribute());
+            return ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->getResolvedAttribute());
         }
 
         /**
@@ -290,10 +286,7 @@
          */
         public function getResolvedRealAttributeNameForFirstRelation()
         {
-            $modelClassName         = $this->modelClassName;
-            $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
-                                      make($modelClassName::getModuleClassName(), $modelClassName, $this->workflowType);
-            return $modelToWorkflowAdapter->resolveRealAttributeName($this->attributeAndRelationData[0]);
+            return ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->attributeAndRelationData[0]);
         }
 
         /**
@@ -535,17 +528,7 @@
         {
             assert('count($this->attributeAndRelationData) > 0');
             array_pop($attributeAndRelationData);
-            $modelClassName = $this->modelClassName;
-            foreach($attributeAndRelationData as $relationOrAttribute)
-            {
-                $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
-                    make($modelClassName::getModuleClassName(), $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
-                {
-                    $modelClassName     = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
-                }
-            }
-            return $modelToWorkflowAdapter->resolveRealAttributeName($relationOrAttribute);
+            return ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName(end($attributeAndRelationData));
         }
 
         /**

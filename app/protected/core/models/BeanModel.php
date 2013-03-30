@@ -262,6 +262,7 @@
         /**
          * Returns the link name for a
          * relation name defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getRelationLinkName($relationName)
         {
@@ -271,9 +272,10 @@
         }
 
         /**
+         * @param string $relationName
          * @return bool
          */
-        public function isRelationTypeAHasManyVariant($relationName)
+        public static function isRelationTypeAHasManyVariant($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY  ||
@@ -286,9 +288,10 @@
         }
 
         /**
+         * @param string $relationName
          * @return bool
          */
-        public function isRelationTypeAHasOneVariant($relationName)
+        public static function isRelationTypeAHasOneVariant($relationName)
         {
             assert('self::isRelation($relationName, get_called_class())');
             if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||

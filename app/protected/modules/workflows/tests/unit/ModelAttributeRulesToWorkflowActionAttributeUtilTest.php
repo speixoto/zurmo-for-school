@@ -24,14 +24,8 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModelAttributeRulesToWorkflowActionAttributeUtilTest extends ZurmoBaseTest
+    class ModelAttributeRulesToWorkflowActionAttributeUtilTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
         public function testGetApplicableRulesByModelClassNameAndAttributeName()
         {
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::

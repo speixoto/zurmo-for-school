@@ -24,22 +24,8 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModelAttributeToWorkflowActionAttributeFormTypeUtilTest extends BaseTest
+    class ModelAttributeToWorkflowActionAttributeFormTypeUtilTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-        }
-
-        public function setup()
-        {
-
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
         public function testGetValidOperatorTypesForAllAttributeTypes()
         {
             $model              = new WorkflowModelTestItem();

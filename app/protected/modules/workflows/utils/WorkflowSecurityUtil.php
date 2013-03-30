@@ -39,17 +39,5 @@
                 return RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel);
             }
         }
-
-        public static function canCurrentUserAccessAllComponents(Array $componentForms)
-        {
-            foreach($componentForms as $componentForm)
-            {
-                if(!self::canCurrentUserAccessComponent($componentForm))
-                {
-                    return false;
-                }
-            }
-            return true;
-        }
     }
 ?>

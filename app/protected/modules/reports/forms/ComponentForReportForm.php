@@ -278,11 +278,7 @@
          */
         public function getResolvedAttributeRealAttributeName()
         {
-            $moduleClassName      = $this->getResolvedAttributeModuleClassName();
-            $modelClassName       = $this->getResolvedAttributeModelClassName();
-            $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
-                                    make($moduleClassName, $modelClassName, $this->reportType);
-            return $modelToReportAdapter->resolveRealAttributeName($this->getResolvedAttribute());
+            return ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($this->getResolvedAttribute());
         }
 
         /**

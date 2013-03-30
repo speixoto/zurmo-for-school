@@ -24,23 +24,16 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
-    class WorkflowTest extends ZurmoBaseTest
+    class WorkflowTest extends WorkflowBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
             UserTestHelper::createBasicUser('nobody');
             $somebody = UserTestHelper::createBasicUser('somebody');
             $somebody->setRight('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS);
             $somebody->setRight('AccountsModule', AccountsModule::RIGHT_CREATE_ACCOUNTS);
             assert($somebody->save()); // Not Coding Standard
-        }
-
-        public function setup()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         public function testGetTypeDropDownArray()

@@ -41,7 +41,6 @@
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-
             $bobbyBoss = UserTestHelper::createBasicUserWithEmailAddress('bobbyBoss');
             $sarahBoss = UserTestHelper::createBasicUserWithEmailAddress('sarahBoss');
             $superBoss = UserTestHelper::createBasicUserWithEmailAddress('superBoss');

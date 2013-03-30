@@ -24,12 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ModelRelationsAndAttributesToWorkflowAdapterTest extends ZurmoBaseTest
+    class ModelRelationsAndAttributesToWorkflowAdapterTest extends WorkflowBaseTest
     {
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
             $attributeName = 'calculated';
             $attributeForm = new CalculatedNumberAttributeForm();
             $attributeForm->attributeName    = $attributeName;
@@ -38,12 +37,6 @@
             $modelAttributesAdapterClassName = $attributeForm::getModelAttributeAdapterNameForSavingAttributeFormData();
             $adapter = new $modelAttributesAdapterClassName(new WorkflowModelTestItem());
             $adapter->setAttributeMetadataFromForm($attributeForm);
-        }
-
-        public function setup()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
         }
 
         public function testGetAllRelations()

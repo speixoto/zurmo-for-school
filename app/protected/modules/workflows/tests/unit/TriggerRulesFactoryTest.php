@@ -24,14 +24,8 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class TriggerRulesFactoryTest extends ZurmoBaseTest
+    class TriggerRulesFactoryTest extends WorkflowBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            SecurityTestHelper::createSuperAdmin();
-        }
-
         public function testCreateTriggerRulesByTrigger()
         {
             $trigger = new TriggerForWorkflowForm('WorkflowsTestModule', 'WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);

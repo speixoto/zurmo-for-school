@@ -47,12 +47,6 @@
             self::$savedWorkflow = $savedWorkflow;
         }
 
-        public function setup()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
-        }
-
         public function testProcessAfterSaveWhenSendIsInFuture()
         {
             $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));

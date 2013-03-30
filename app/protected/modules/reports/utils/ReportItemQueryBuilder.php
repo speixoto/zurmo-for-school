@@ -77,7 +77,7 @@
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
             if($modelToReportAdapter->relationIsReportedAsAttribute(
-                $modelToReportAdapter->resolveRealAttributeName($attribute)))
+                ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute)))
             {
                 return 'value';
             }
@@ -97,7 +97,7 @@
         {
             return new RedBeanModelAttributeToDataProviderAdapter(
                 $modelToReportAdapter->getModelClassName(),
-                $modelToReportAdapter->resolveRealAttributeName($attribute), 'id');
+                ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute), 'id');
         }
 
         /**
@@ -182,7 +182,7 @@
                         static::resolveCastingHintForAttribute($modelToReportAdapter,
                             $modelAttributeToDataProviderAdapter,
                             $modelClassName,
-                            $modelToReportAdapter->resolveRealAttributeName(
+                            ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName(
                                 $attributeAndRelationData[$key + 1]));
                     }
                     $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
@@ -219,7 +219,7 @@
             {
                 return new InferredRedBeanModelAttributeToDataProviderAdapter(
                            $modelToReportAdapter->getModelClassName(),
-                           $modelToReportAdapter->resolveRealAttributeName($attribute),
+                           ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute),
                            $modelToReportAdapter->getRelationModelClassName($attribute),
                            $modelToReportAdapter->getRelationModuleClassName($attribute));
             }

@@ -377,7 +377,7 @@
          * @param string $attribute
          * @return string
          */
-        public function resolveRealAttributeName($attribute)
+        public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
@@ -721,7 +721,7 @@
         private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
         {
             assert('is_string($attribute)');
-            if($this->getRealModelAttributeType($this->resolveRealAttributeName($attribute)) == 'DateTime')
+            if($this->getRealModelAttributeType(static::resolveRealAttributeName($attribute)) == 'DateTime')
             {
                 return true;
             }
