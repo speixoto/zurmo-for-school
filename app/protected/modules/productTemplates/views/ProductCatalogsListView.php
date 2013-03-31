@@ -24,23 +24,12 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductCategoryEditAndDetailsView extends SecuredEditAndDetailsView
+    class ProductCatalogsListView extends SecuredListView
     {
         public static function getDefaultMetadata()
         {
             $metadata = array(
                 'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type'  => 'EditLink',      'renderType' => 'Details'),
-                        ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -48,16 +37,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleProductCatalogsForProductCategory'),
+                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
                                             ),
                                         ),
                                     )
@@ -66,16 +46,9 @@
                         ),
                     ),
                 ),
+
             );
             return $metadata;
-        }
-
-        protected function getNewModelTitleLabel()
-        {
-//            return Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModuleSingularLabel',
-//                                     LabelUtil::getTranslationParamsForAllModules());
-              //TODO need to clarify with JASON
-              return 'Create Product Category';
         }
     }
 ?>

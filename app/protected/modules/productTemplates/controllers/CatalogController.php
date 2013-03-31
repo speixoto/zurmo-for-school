@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplatesCategoryController extends ZurmoModuleController
+    class ProductTemplatesCatalogController extends ZurmoModuleController
     {
         public function filters()
         {
@@ -49,15 +49,15 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $productTemplate                = new ProductCategory(false);
-            $searchForm                     = new ProductCategoriesSearchForm($productTemplate);
-            $listAttributesSelector         = new ListAttributesSelector('ProductCategoriesListView', get_class($this->getModule()), 'ProductCategory');
+            $productCatalog                 = new ProductCatalog(false);
+            $searchForm                     = new ProductCatalogsSearchForm($productCatalog);
+            $listAttributesSelector         = new ListAttributesSelector('ProductCatalogsListView', get_class($this->getModule()), 'ProductCatalog');
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
                 $pageSize,
                 null,
-                'ProductCategoriesSearchView'
+                'ProductCatalogsSearchView'
             );
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
@@ -65,12 +65,12 @@
                     $searchForm,
                     $dataProvider
                 );
-                $view = new ProductCategoriesPageView($mixedView);
+                $view = new ProductCatalogsPageView($mixedView);
             }
             else
             {
-                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'CategoriesActionBarForSearchAndListView');
-                $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider, 'CatalogsActionBarForSearchAndListView');
+                $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();
@@ -78,15 +78,10 @@
 
         public function actionDetails($id)
         {
-            $productCategory = static::getModelAndCatchNotFoundAndDisplayError('ProductCategory', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productCategory);
-//            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ProductTemplatesSearchView', $productTemplate);
-            $detailsView           = new ProductCategoryDetailsView($this->getId(), $this->getModule()->getId(), $productCategory);
-//            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplate, 'ProductTemplatesModule',
-//                                                                          'ProductTemplateDetailsAndRelationsView',
-//                                                                          Yii::app()->request->getRequestUri(),
-//                                                                          $breadCrumbView);
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+            $productCatalog = static::getModelAndCatchNotFoundAndDisplayError('ProductCatalog', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productCatalog);
+            $detailsView           = new ProductCatalogDetailsView($this->getId(), $this->getModule()->getId(), $productCatalog);
+            $view                  = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
         }
@@ -94,28 +89,22 @@
         public function actionCreate()
         {
             $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new ProductCategory()), 'Edit');
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+                                            $this->attemptToSaveModelFromPost(new ProductCatalog()), 'Edit');
+            $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $productCategory = ProductCategory::getById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productCategory);
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+            $productCatalog = ProductCatalog::getById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($productCatalog);
+            $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this,
                                              $this->makeEditAndDetailsView(
-                                                 $this->attemptToSaveModelFromPost($productCategory, $redirectUrl), 'Edit')));
+                                                 $this->attemptToSaveModelFromPost($productCatalog, $redirectUrl), 'Edit')));
             echo $view->render();
         }
-
-//        protected static function getZurmoControllerUtil()
-//        {
-//            return new ProductTemplateZurmoControllerUtil('productTemplateItems', 'ProductTemplateItemForm',
-//                                                            'ProductTemplateCategoriesForm');
-//        }
 
         /**
          * Action for displaying a mass edit form and also action when that form is first submitted.
@@ -135,31 +124,31 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massEditProgressPageSize');
-            $productCategory = new ProductCategory(false);
+            $productCatalog = new ProductCatalog(false);
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductCategoriesSearchForm($productCategory),
+                new ProductCategoriesSearchForm($productCatalog),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductCategoriesSearchView');
+                'ProductCatalogsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $productCategory = $this->processMassEdit(
+            $productCatalog = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
                 $selectedRecordCount,
-                'ProductCategoriesPageView',
-                $productCategory,
+                'ProductCatalogsSearchView',
+                $productCatalog,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
             );
             $massEditView = $this->makeMassEditView(
-                $productCategory,
+                $productCatalog,
                 $activeAttributes,
                 $selectedRecordCount,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
             );
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+            $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $massEditView));
             echo $view->render();
         }
@@ -175,13 +164,13 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massEditProgressPageSize');
-            $productCategory = new ProductCategory(false);
+            $productCatalog = new ProductCatalog(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductCategoriesSearchForm($productCategory),
+                new ProductCatalogsSearchForm($productCatalog),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductCategoriesSearchView'
+                'ProductCatalogsSearchView'
             );
             $this->processMassEditProgressSave(
                 'ProductCategory',
@@ -209,34 +198,34 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massDeleteProgressPageSize');
-            $productCategory = new ProductCategory(false);
+            $productCatalog = new ProductCatalog(false);
 
             $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductCategoriesSearchForm($productCategory),
+                new ProductCategoriesSearchForm($productCatalog),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductCategoriesSearchView');
+                'ProductCatalogsSearchView');
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
-            $productCategory = $this->processMassDelete(
+            $productCatalog = $this->processMassDelete(
                 $pageSize,
                 $activeAttributes,
                 $selectedRecordCount,
-                'ProductCategoriesPageView',
-                $productCategory,
+                'ProductCatalogsPageView',
+                $productCatalog,
                 //ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
-                'Product Categories',
+                'Product Catalogs',
                 $dataProvider
             );
             $massDeleteView = $this->makeMassDeleteView(
-                $productCategory,
+                $productCatalog,
                 $activeAttributes,
                 $selectedRecordCount,
                 //ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
-                'Product Categories'
+                'Product Catalogs'
             );
-            $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
+            $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $massDeleteView));
             echo $view->render();
         }
@@ -252,16 +241,16 @@
         {
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'massDeleteProgressPageSize');
-            $productCategory = new ProductCategory(false);
+            $productCatalog = new ProductCatalog(false);
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductCategoriesSearchForm($productCategory),
+                new ProductCatalogsSearchForm($productCatalog),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
-                'ProductCategoriesSearchView'
+                'ProductCatalogsSearchView'
             );
             $this->processMassDeleteProgress(
-                'ProductCategory',
+                'ProductCatalog',
                 $pageSize,
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
@@ -280,20 +269,20 @@
 
         public function actionDelete($id)
         {
-            $productCategory = ProductCatgeory::GetById(intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productCategory);
-            $productCategory->delete();
+            $productCatalog = ProductCatalog::GetById(intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productCatalog);
+            $productCatalog->delete();
             $this->redirect(array($this->getId() . '/index'));
         }
 
         protected static function getSearchFormClassName()
         {
-            return 'ProductCategoriesSearchForm';
+            return 'ProductCatalogsSearchForm';
         }
 
         public function actionExport()
         {
-            $this->export('ProductCategoriesSearchView', 'ProductCategory', 'productCategories');
+            $this->export('ProductCatalogsSearchView', 'ProductCatalog', 'productCatalogs');
         }
     }
 ?>

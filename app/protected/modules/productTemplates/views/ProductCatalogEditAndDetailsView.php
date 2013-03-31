@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductCategoryEditAndDetailsView extends SecuredEditAndDetailsView
+    class ProductCatalogEditAndDetailsView extends SecuredEditAndDetailsView
     {
         public static function getDefaultMetadata()
         {
@@ -53,15 +53,6 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleProductCatalogsForProductCategory'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                             ),
                         ),
                     ),
@@ -75,7 +66,7 @@
 //            return Zurmo::t('ProductTemplatesModule', 'Create ProductTemplatesModuleSingularLabel',
 //                                     LabelUtil::getTranslationParamsForAllModules());
               //TODO need to clarify with JASON
-              return 'Create Product Category';
+              return 'Create Product Catalog';
         }
     }
 ?>

@@ -25,8 +25,8 @@
      ********************************************************************************/
 
     /**
-     * User interface element for managing related model relations for activities. This class supports a HAS_MANY
-     * specifically for the 'contact' relation. This is utilized by the meeting model.
+     * User interface element for managing related model relations for product templates. This class supports a HAS_MANY
+     * specifically for the 'productCategories' relation. This is utilized by the Product Template model.
      *
      */
     class MultipleProductCategoriesForProductTemplateElement extends Element implements DerivedElementInterface

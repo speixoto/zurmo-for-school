@@ -91,6 +91,7 @@
                     'name',
                 ),
                 'relations' => array(
+                    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),
