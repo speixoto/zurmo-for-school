@@ -197,8 +197,7 @@
                     dataType: 'json',
                     success : function(data)
                     {
-                        rebuildSelectInputFromDataAndLabels
-                        ('ByTimeWorkflowWizardForm_timeTriggerAttribute', data);
+                        rebuildSelectInputFromDataAndLabels('ByTimeWorkflowWizardForm_timeTriggerAttribute', data);
                     },
                     error : function()
                     {

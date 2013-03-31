@@ -10012,6 +10012,9 @@ div.hasHalfs .twoThirds {
 .hasDropDown + input {
   margin-top: 15px;
 }
+.isMultiSelect span {
+  display: none !important;
+}
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
   width: 100%;
@@ -10928,6 +10931,9 @@ a.remove .icon:after {
   top: -2px;
   font-weight: normal !important;
   vertical-align: middle;
+}
+.creation-list .z-label:before {
+  content: "Y" !important;
 }
 table.configuration-list {
   zoom: 1;

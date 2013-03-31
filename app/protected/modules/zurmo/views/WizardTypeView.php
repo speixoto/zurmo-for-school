@@ -54,7 +54,7 @@
          */
         protected function renderMenu($items)
         {
-            $content = '<ul class="configuration-list">';
+            $content = '<ul class="configuration-list creation-list">';
             foreach ($items as $item)
             {
                 $content .= '<li>';
