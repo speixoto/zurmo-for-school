@@ -55,7 +55,7 @@
                     'Dead' => 'Mort',
                     'Office Phone' => 'Téléphone de bureau',
                     'Billing Address' => 'Adresse de facturation',
-                    'opportunity' => 'opportunité'
+                    'Opportunity' => 'Opportunité'
                 ),
             ),
             'it' => array(
