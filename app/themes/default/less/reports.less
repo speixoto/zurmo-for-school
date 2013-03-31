@@ -673,7 +673,7 @@
 }
 
 .zero-components-view{
-    &.Actions, &.EmailMessages, &.TimeTrigger, &.WorkflowRulesOrder{
+    &.Actions, &.EmailMessages, &.TimeTrigger, &.WorkflowRulesOrder, &.TimeTrigger{
         position: relative;
         top:0;
         left: 0;
@@ -681,18 +681,39 @@
     }
 }
 
-
 .related-model-selector{
     float: left;
     width: 75%;
     margin:10px 0 0 25%;
 }
 
+.missing-report:after,
+.Report .large-icon:after{
+	content:"j";
+	.symbly(250px);
+	line-height: 60%;
+}
+.SavedReport{
+	.large-icon:after{
+		content:"V";
+		.symbly(320px);
+		line-height: 55%;
+	}
+}
+
+.SavedWorkflow{
+	.large-icon:after{
+		content:'\20AC'; //euro
+		.symbly(330px);
+		line-height: 55%;
+	}
+}
+
 
 .FilterIconOrSomethingElse,
 .ZeroFilters{
     .large-icon:after{
-        content:'\00A9';//"�";
+        content:'\00A9';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -700,7 +721,7 @@
 
 .ZeroGroupBys{
     .large-icon:after{
-        content:'\002A';//"*";
+        content:'\002A';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -708,15 +729,16 @@
 
 .ZeroDisplayAttributes{
     .large-icon:after{
-        content:'\00AB';//"�";
+        content:'\00AB';
         .symbly(300px);
         line-height: 30%;   
     }
 }
 
+.WorkflowRulesOrder,
 .ZeroOrderBys{
     .large-icon:after{
-        content:'\2039';//"�";
+        content:'\2039';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -724,7 +746,7 @@
 
 .ZeroDrillDownDisplayAttributes{
     .large-icon:after{
-        content:'\00BB'; //"�";
+        content:'\00BB';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -872,9 +894,14 @@
     }
 }
 
+/*By Time Workflow*/
+.zero-components-view.TimeTrigger,
 #time-trigger-container{
-	float: left;
-	width: 100%;
+	float: right !important;
+	width: 70% !important;
+	padding-left: 15px;
+	++.cf;
+	++.border-box;
 	.value-data {
 		float: left;
 		width: 55%;
@@ -885,10 +912,12 @@
 }
 
 .time-trigger-attribute-selector-container{
-	margin: 15px 0;
+	width: 30%;
 	float: left;
-	width: 100%;
+	++.border-box;
 }
+
+
 
 /*for actions in WORKFLOWS hide/show sequence*/
 #OnSaveWorkflowWizardView{
@@ -947,13 +976,33 @@
 }
 
 #workflow-order-container,
-.WorkflowRulesOrder{
+.WorkflowRulesOrder,
+.no-workflows-to-order-view{
 	float: right !important;
 	++.border-box;
 	width: 70% !important;
 	padding-left: 15px;
+	+ .float-bar{
+		margin-top: 15px;
+	}
 }
 
-#save-order{
-	margin: 15px 0 0 0;
+.no-workflows-to-order-view{
+	position: relative;
+	top: 0;
+	left: 0;
+	min-height: 300px;
+	text-align: center;
+	.large-icon:after{
+		content:"j";
+		.symbly(200px);
+		line-height: 60%;
+	}
+	p{
+		font-size:16px;
+		line-height:24px;
+		color:#555;
+		font-weight:bold;
+		margin:15px 0 0 0;
+	}
 }

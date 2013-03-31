@@ -89,8 +89,8 @@
         {
             $content  = '<div>'; //todo: is this div necessary?
             $content .= $this->renderZeroComponentsContentAndWrapper();
-            $content .= $this->renderTimeTriggerContentAndWrapper();
             $content .= $this->renderAttributeSelectorContentAndWrapper();
+            $content .= $this->renderTimeTriggerContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -109,7 +109,7 @@
          */
         protected function getZeroComponentsMessageContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a time trigger below') . '</h2>';
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a time trigger') . '</h2>';
         }
         protected function renderZeroComponentsContentAndWrapper()
         {

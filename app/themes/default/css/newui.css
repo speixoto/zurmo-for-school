@@ -183,13 +183,17 @@ a.ModalGameNotification a,
 .email-message-recipient-rows,
 .all-related-field,
 .static-address-field,
+.zero-components-view.TimeTrigger,
+#time-trigger-container,
+.time-trigger-attribute-selector-container,
 #OnSaveWorkflowWizardView .add-email-message-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container,
 #OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
 #OnSaveWorkflowWizardView .zero-components-view,
 .workflow-order-module-selector-container,
 #workflow-order-container,
-.WorkflowRulesOrder {
+.WorkflowRulesOrder,
+.no-workflows-to-order-view {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -206,6 +210,10 @@ a.ModalGameNotification a,
 .dynamic-row > div:after,
 .dynamic-sub-row:before,
 .dynamic-sub-row:after,
+.zero-components-view.TimeTrigger:before,
+#time-trigger-container:before,
+.zero-components-view.TimeTrigger:after,
+#time-trigger-container:after,
 #OnSaveWorkflowWizardView .add-email-message-button-container:before,
 #OnSaveWorkflowWizardView .action-type-selector-container:before,
 #OnSaveWorkflowWizardView .add-email-message-button-container:after,
@@ -221,6 +229,8 @@ a.ModalGameNotification a,
 .dynamic-row:after,
 .dynamic-row > div:after,
 .dynamic-sub-row:after,
+.zero-components-view.TimeTrigger:after,
+#time-trigger-container:after,
 #OnSaveWorkflowWizardView .add-email-message-button-container:after,
 #OnSaveWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:after {
@@ -232,6 +242,8 @@ a.ModalGameNotification a,
 .dynamic-row,
 .dynamic-row > div,
 .dynamic-sub-row,
+.zero-components-view.TimeTrigger,
+#time-trigger-container,
 #OnSaveWorkflowWizardView .add-email-message-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container,
 .workflow-order-module-selector-container {
@@ -7393,32 +7405,6 @@ div.wide.form label.hasCheckBox {
   font-size: 325px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
-}
-.zero-components-view .missing-report:after,
-.splash-view .missing-report:after,
-.zero-components-view .Report .large-icon:after,
-.splash-view .Report .large-icon:after {
-  content: "j";
-  font-weight: normal;
-  font-size: 250px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 60%;
-}
-.zero-components-view .SavedReport .large-icon:after,
-.splash-view .SavedReport .large-icon:after {
-  content: "V";
-  font-weight: normal;
-  font-size: 320px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 55%;
-}
-.zero-components-view .SavedWorkflow .large-icon:after,
-.splash-view .SavedWorkflow .large-icon:after {
-  content: '\20AC';
-  font-weight: normal;
-  font-size: 330px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 55%;
 }
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
@@ -16693,7 +16679,8 @@ a.user-link {
 .zero-components-view.Actions,
 .zero-components-view.EmailMessages,
 .zero-components-view.TimeTrigger,
-.zero-components-view.WorkflowRulesOrder {
+.zero-components-view.WorkflowRulesOrder,
+.zero-components-view.TimeTrigger {
   position: relative;
   top: 0;
   left: 0;
@@ -16703,6 +16690,28 @@ a.user-link {
   float: left;
   width: 75%;
   margin: 10px 0 0 25%;
+}
+.missing-report:after,
+.Report .large-icon:after {
+  content: "j";
+  font-weight: normal;
+  font-size: 250px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
+}
+.SavedReport .large-icon:after {
+  content: "V";
+  font-weight: normal;
+  font-size: 320px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
+}
+.SavedWorkflow .large-icon:after {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 330px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
 }
 .FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {
@@ -16726,6 +16735,7 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
+.WorkflowRulesOrder .large-icon:after,
 .ZeroOrderBys .large-icon:after {
   content: '\2039';
   font-weight: normal;
@@ -16870,21 +16880,25 @@ a.user-link {
   float: left;
   width: 70%;
 }
+/*By Time Workflow*/
+.zero-components-view.TimeTrigger,
 #time-trigger-container {
-  float: left;
-  width: 100%;
+  float: right !important;
+  width: 70% !important;
+  padding-left: 15px;
 }
+.zero-components-view.TimeTrigger .value-data,
 #time-trigger-container .value-data {
   float: left;
   width: 55%;
 }
+.zero-components-view.TimeTrigger .first-value-area,
 #time-trigger-container .first-value-area {
   margin-left: 15px;
 }
 .time-trigger-attribute-selector-container {
-  margin: 15px 0;
+  width: 30%;
   float: left;
-  width: 100%;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 #OnSaveWorkflowWizardView .add-email-message-button-container,
@@ -16929,12 +16943,36 @@ a.user-link {
   float: left !important;
 }
 #workflow-order-container,
-.WorkflowRulesOrder {
+.WorkflowRulesOrder,
+.no-workflows-to-order-view {
   float: right !important;
   width: 70% !important;
   padding-left: 15px;
 }
-#save-order {
+#workflow-order-container + .float-bar,
+.WorkflowRulesOrder + .float-bar,
+.no-workflows-to-order-view + .float-bar {
+  margin-top: 15px;
+}
+.no-workflows-to-order-view {
+  position: relative;
+  top: 0;
+  left: 0;
+  min-height: 300px;
+  text-align: center;
+}
+.no-workflows-to-order-view .large-icon:after {
+  content: "j";
+  font-weight: normal;
+  font-size: 200px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
+}
+.no-workflows-to-order-view p {
+  font-size: 16px;
+  line-height: 24px;
+  color: #555;
+  font-weight: bold;
   margin: 15px 0 0 0;
 }
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
