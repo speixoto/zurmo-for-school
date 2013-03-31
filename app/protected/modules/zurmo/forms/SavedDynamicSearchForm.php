@@ -35,9 +35,15 @@
 
         public $loadSavedSearchUrl;
 
+        public $sortAttribute;
+
+        public $sortDescending;
+
         public static function getNonSearchableAttributes()
         {
-            return array_merge(parent::getNonSearchableAttributes(), array('savedSearchId', 'savedSearchName', 'loadSavedSearchUrl'));
+            return array_merge(parent::getNonSearchableAttributes(), array('loadSavedSearchUrl', 'savedSearchId',
+                                                                           'savedSearchName', 'sortAttribute',
+                                                                           'sortDescending'));
         }
 
         public function rules()
@@ -46,6 +52,8 @@
                                array('savedSearchId',      'safe'),
                                array('savedSearchName',    'safe'),
                                array('loadSavedSearchUrl', 'safe'),
+                               array('sortAttribute',      'safe'),
+                               array('sortDescending',     'safe'),
                                array('savedSearchName',    'type',   'type' => 'string'),
                                array('savedSearchName',    'length', 'max'  => 64),
                                array('savedSearchName',    'validateSaveSearch', 'on' => 'validateSaveSearch'),

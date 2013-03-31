@@ -739,7 +739,7 @@ body.blue #select-list-attributes-link,
 body.blue #more-search-linkmodal,
 body.blue #more-search-link,
 body.blue .search-form-tools,
-body.blue #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.blue #inline-edit-form > table td > a,
 body.blue .AppContent.MassEditView .ui-state-highlight p,
 body.blue #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.blue .calendar-events-1 span,
@@ -763,10 +763,10 @@ body.blue .unread td,
 body.blue .unread td a,
 body.blue a.user-link,
 body.blue .SocialItemsListView .show-create-comment,
+body.blue .back-to-inbox-link,
 body.blue #AllSocialItemsForPortletView .show-create-comment,
 body.blue a.remove:hover .icon:after,
 body.blue .juiportlet-widget-head a.edit:hover .icon:after,
-body.blue .latest-activity-toolbar a,
 body.blue a.more-panels-link,
 body.blue a.simple-link,
 body.blue a.simple-link .z-label,
@@ -785,6 +785,7 @@ body.blue #notifications-flyout .single-notification h4,
 body.blue .view-toolbar a:hover,
 body.blue .view-toolbar a:active,
 body.blue .view-toolbar a.active,
+body.blue .view-toolbar a.active span,
 body.blue .portlet-toolbar .icon-delete:before,
 body.blue .portlet-toolbar .icon-edit:before,
 body.blue #StickyListMenu > li > a:hover > span,
@@ -833,7 +834,11 @@ body.blue #show-filters-structure-div-link {
 body.blue .latest-activity-toolbar label:hover,
 body.blue .filter-portlet-model-bar label:hover,
 body.blue .latest-activity-toolbar .ui-state-active,
-body.blue .filter-portlet-model-bar .ui-state-active {
+body.blue .filter-portlet-model-bar .ui-state-active,
+body.blue #MashableInboxForm_filteredBy_area label:hover,
+body.blue #MashableInboxForm_optionForModel_area label:hover,
+body.blue #MashableInboxForm_filteredBy_area .ui-state-active,
+body.blue #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #282a76 !important;
 }
 body.blue #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -1282,7 +1287,7 @@ body.brown #select-list-attributes-link,
 body.brown #more-search-linkmodal,
 body.brown #more-search-link,
 body.brown .search-form-tools,
-body.brown #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.brown #inline-edit-form > table td > a,
 body.brown .AppContent.MassEditView .ui-state-highlight p,
 body.brown #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.brown .calendar-events-1 span,
@@ -1306,10 +1311,10 @@ body.brown .unread td,
 body.brown .unread td a,
 body.brown a.user-link,
 body.brown .SocialItemsListView .show-create-comment,
+body.brown .back-to-inbox-link,
 body.brown #AllSocialItemsForPortletView .show-create-comment,
 body.brown a.remove:hover .icon:after,
 body.brown .juiportlet-widget-head a.edit:hover .icon:after,
-body.brown .latest-activity-toolbar a,
 body.brown a.more-panels-link,
 body.brown a.simple-link,
 body.brown a.simple-link .z-label,
@@ -1328,6 +1333,7 @@ body.brown #notifications-flyout .single-notification h4,
 body.brown .view-toolbar a:hover,
 body.brown .view-toolbar a:active,
 body.brown .view-toolbar a.active,
+body.brown .view-toolbar a.active span,
 body.brown .portlet-toolbar .icon-delete:before,
 body.brown .portlet-toolbar .icon-edit:before,
 body.brown #StickyListMenu > li > a:hover > span,
@@ -1376,7 +1382,11 @@ body.brown #show-filters-structure-div-link {
 body.brown .latest-activity-toolbar label:hover,
 body.brown .filter-portlet-model-bar label:hover,
 body.brown .latest-activity-toolbar .ui-state-active,
-body.brown .filter-portlet-model-bar .ui-state-active {
+body.brown .filter-portlet-model-bar .ui-state-active,
+body.brown #MashableInboxForm_filteredBy_area label:hover,
+body.brown #MashableInboxForm_optionForModel_area label:hover,
+body.brown #MashableInboxForm_filteredBy_area .ui-state-active,
+body.brown #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #547980 !important;
 }
 body.brown #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -1825,7 +1835,7 @@ body.lime #select-list-attributes-link,
 body.lime #more-search-linkmodal,
 body.lime #more-search-link,
 body.lime .search-form-tools,
-body.lime #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.lime #inline-edit-form > table td > a,
 body.lime .AppContent.MassEditView .ui-state-highlight p,
 body.lime #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.lime .calendar-events-1 span,
@@ -1849,10 +1859,10 @@ body.lime .unread td,
 body.lime .unread td a,
 body.lime a.user-link,
 body.lime .SocialItemsListView .show-create-comment,
+body.lime .back-to-inbox-link,
 body.lime #AllSocialItemsForPortletView .show-create-comment,
 body.lime a.remove:hover .icon:after,
 body.lime .juiportlet-widget-head a.edit:hover .icon:after,
-body.lime .latest-activity-toolbar a,
 body.lime a.more-panels-link,
 body.lime a.simple-link,
 body.lime a.simple-link .z-label,
@@ -1871,6 +1881,7 @@ body.lime #notifications-flyout .single-notification h4,
 body.lime .view-toolbar a:hover,
 body.lime .view-toolbar a:active,
 body.lime .view-toolbar a.active,
+body.lime .view-toolbar a.active span,
 body.lime .portlet-toolbar .icon-delete:before,
 body.lime .portlet-toolbar .icon-edit:before,
 body.lime #StickyListMenu > li > a:hover > span,
@@ -1919,7 +1930,11 @@ body.lime #show-filters-structure-div-link {
 body.lime .latest-activity-toolbar label:hover,
 body.lime .filter-portlet-model-bar label:hover,
 body.lime .latest-activity-toolbar .ui-state-active,
-body.lime .filter-portlet-model-bar .ui-state-active {
+body.lime .filter-portlet-model-bar .ui-state-active,
+body.lime #MashableInboxForm_filteredBy_area label:hover,
+body.lime #MashableInboxForm_optionForModel_area label:hover,
+body.lime #MashableInboxForm_filteredBy_area .ui-state-active,
+body.lime #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #2b434f !important;
 }
 body.lime #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -2368,7 +2383,7 @@ body.cherry #select-list-attributes-link,
 body.cherry #more-search-linkmodal,
 body.cherry #more-search-link,
 body.cherry .search-form-tools,
-body.cherry #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.cherry #inline-edit-form > table td > a,
 body.cherry .AppContent.MassEditView .ui-state-highlight p,
 body.cherry #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.cherry .calendar-events-1 span,
@@ -2392,10 +2407,10 @@ body.cherry .unread td,
 body.cherry .unread td a,
 body.cherry a.user-link,
 body.cherry .SocialItemsListView .show-create-comment,
+body.cherry .back-to-inbox-link,
 body.cherry #AllSocialItemsForPortletView .show-create-comment,
 body.cherry a.remove:hover .icon:after,
 body.cherry .juiportlet-widget-head a.edit:hover .icon:after,
-body.cherry .latest-activity-toolbar a,
 body.cherry a.more-panels-link,
 body.cherry a.simple-link,
 body.cherry a.simple-link .z-label,
@@ -2414,6 +2429,7 @@ body.cherry #notifications-flyout .single-notification h4,
 body.cherry .view-toolbar a:hover,
 body.cherry .view-toolbar a:active,
 body.cherry .view-toolbar a.active,
+body.cherry .view-toolbar a.active span,
 body.cherry .portlet-toolbar .icon-delete:before,
 body.cherry .portlet-toolbar .icon-edit:before,
 body.cherry #StickyListMenu > li > a:hover > span,
@@ -2462,7 +2478,11 @@ body.cherry #show-filters-structure-div-link {
 body.cherry .latest-activity-toolbar label:hover,
 body.cherry .filter-portlet-model-bar label:hover,
 body.cherry .latest-activity-toolbar .ui-state-active,
-body.cherry .filter-portlet-model-bar .ui-state-active {
+body.cherry .filter-portlet-model-bar .ui-state-active,
+body.cherry #MashableInboxForm_filteredBy_area label:hover,
+body.cherry #MashableInboxForm_optionForModel_area label:hover,
+body.cherry #MashableInboxForm_filteredBy_area .ui-state-active,
+body.cherry #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #6c8092 !important;
 }
 body.cherry #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -2911,7 +2931,7 @@ body.turquoise #select-list-attributes-link,
 body.turquoise #more-search-linkmodal,
 body.turquoise #more-search-link,
 body.turquoise .search-form-tools,
-body.turquoise #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.turquoise #inline-edit-form > table td > a,
 body.turquoise .AppContent.MassEditView .ui-state-highlight p,
 body.turquoise #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.turquoise .calendar-events-1 span,
@@ -2935,10 +2955,10 @@ body.turquoise .unread td,
 body.turquoise .unread td a,
 body.turquoise a.user-link,
 body.turquoise .SocialItemsListView .show-create-comment,
+body.turquoise .back-to-inbox-link,
 body.turquoise #AllSocialItemsForPortletView .show-create-comment,
 body.turquoise a.remove:hover .icon:after,
 body.turquoise .juiportlet-widget-head a.edit:hover .icon:after,
-body.turquoise .latest-activity-toolbar a,
 body.turquoise a.more-panels-link,
 body.turquoise a.simple-link,
 body.turquoise a.simple-link .z-label,
@@ -2957,6 +2977,7 @@ body.turquoise #notifications-flyout .single-notification h4,
 body.turquoise .view-toolbar a:hover,
 body.turquoise .view-toolbar a:active,
 body.turquoise .view-toolbar a.active,
+body.turquoise .view-toolbar a.active span,
 body.turquoise .portlet-toolbar .icon-delete:before,
 body.turquoise .portlet-toolbar .icon-edit:before,
 body.turquoise #StickyListMenu > li > a:hover > span,
@@ -3005,7 +3026,11 @@ body.turquoise #show-filters-structure-div-link {
 body.turquoise .latest-activity-toolbar label:hover,
 body.turquoise .filter-portlet-model-bar label:hover,
 body.turquoise .latest-activity-toolbar .ui-state-active,
-body.turquoise .filter-portlet-model-bar .ui-state-active {
+body.turquoise .filter-portlet-model-bar .ui-state-active,
+body.turquoise #MashableInboxForm_filteredBy_area label:hover,
+body.turquoise #MashableInboxForm_optionForModel_area label:hover,
+body.turquoise #MashableInboxForm_filteredBy_area .ui-state-active,
+body.turquoise #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #447799 !important;
 }
 body.turquoise #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -3454,7 +3479,7 @@ body.violet #select-list-attributes-link,
 body.violet #more-search-linkmodal,
 body.violet #more-search-link,
 body.violet .search-form-tools,
-body.violet #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.violet #inline-edit-form > table td > a,
 body.violet .AppContent.MassEditView .ui-state-highlight p,
 body.violet #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.violet .calendar-events-1 span,
@@ -3478,10 +3503,10 @@ body.violet .unread td,
 body.violet .unread td a,
 body.violet a.user-link,
 body.violet .SocialItemsListView .show-create-comment,
+body.violet .back-to-inbox-link,
 body.violet #AllSocialItemsForPortletView .show-create-comment,
 body.violet a.remove:hover .icon:after,
 body.violet .juiportlet-widget-head a.edit:hover .icon:after,
-body.violet .latest-activity-toolbar a,
 body.violet a.more-panels-link,
 body.violet a.simple-link,
 body.violet a.simple-link .z-label,
@@ -3500,6 +3525,7 @@ body.violet #notifications-flyout .single-notification h4,
 body.violet .view-toolbar a:hover,
 body.violet .view-toolbar a:active,
 body.violet .view-toolbar a.active,
+body.violet .view-toolbar a.active span,
 body.violet .portlet-toolbar .icon-delete:before,
 body.violet .portlet-toolbar .icon-edit:before,
 body.violet #StickyListMenu > li > a:hover > span,
@@ -3548,7 +3574,11 @@ body.violet #show-filters-structure-div-link {
 body.violet .latest-activity-toolbar label:hover,
 body.violet .filter-portlet-model-bar label:hover,
 body.violet .latest-activity-toolbar .ui-state-active,
-body.violet .filter-portlet-model-bar .ui-state-active {
+body.violet .filter-portlet-model-bar .ui-state-active,
+body.violet #MashableInboxForm_filteredBy_area label:hover,
+body.violet #MashableInboxForm_optionForModel_area label:hover,
+body.violet #MashableInboxForm_filteredBy_area .ui-state-active,
+body.violet #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #4a3970 !important;
 }
 body.violet #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -3997,7 +4027,7 @@ body.honey #select-list-attributes-link,
 body.honey #more-search-linkmodal,
 body.honey #more-search-link,
 body.honey .search-form-tools,
-body.honey #inline-edit-form > table td > a .latest-activity-toolbar .filter-portlet-model-bar label,
+body.honey #inline-edit-form > table td > a,
 body.honey .AppContent.MassEditView .ui-state-highlight p,
 body.honey #ModulePermissionsEditAndDetailsView table tr:first-child th,
 body.honey .calendar-events-1 span,
@@ -4021,10 +4051,10 @@ body.honey .unread td,
 body.honey .unread td a,
 body.honey a.user-link,
 body.honey .SocialItemsListView .show-create-comment,
+body.honey .back-to-inbox-link,
 body.honey #AllSocialItemsForPortletView .show-create-comment,
 body.honey a.remove:hover .icon:after,
 body.honey .juiportlet-widget-head a.edit:hover .icon:after,
-body.honey .latest-activity-toolbar a,
 body.honey a.more-panels-link,
 body.honey a.simple-link,
 body.honey a.simple-link .z-label,
@@ -4043,6 +4073,7 @@ body.honey #notifications-flyout .single-notification h4,
 body.honey .view-toolbar a:hover,
 body.honey .view-toolbar a:active,
 body.honey .view-toolbar a.active,
+body.honey .view-toolbar a.active span,
 body.honey .portlet-toolbar .icon-delete:before,
 body.honey .portlet-toolbar .icon-edit:before,
 body.honey #StickyListMenu > li > a:hover > span,
@@ -4091,7 +4122,11 @@ body.honey #show-filters-structure-div-link {
 body.honey .latest-activity-toolbar label:hover,
 body.honey .filter-portlet-model-bar label:hover,
 body.honey .latest-activity-toolbar .ui-state-active,
-body.honey .filter-portlet-model-bar .ui-state-active {
+body.honey .filter-portlet-model-bar .ui-state-active,
+body.honey #MashableInboxForm_filteredBy_area label:hover,
+body.honey #MashableInboxForm_optionForModel_area label:hover,
+body.honey #MashableInboxForm_filteredBy_area .ui-state-active,
+body.honey #MashableInboxForm_optionForModel_area .ui-state-active {
   background-color: #46201c !important;
 }
 body.honey #MyMissionsForPortletView .filter-portlet-model-bar label a:hover,
@@ -4777,7 +4812,7 @@ section {
   display: none;
   position: absolute;
   left: 0;
-  top: 33px;
+  top: 32px;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -5766,27 +5801,34 @@ body > .ui-autocomplete {
 }
 .DynamicSearchView {
   position: relative;
-  z-index: 9999;
+  float: left;
 }
+#MashableInboxActionBarForViews > div,
 #ActionBarSearchAndListView > div {
   position: relative;
 }
-#ActionBarSearchAndListView > div:nth-child(1) {
+#MashableInboxActionBarForViews > :nth-child(1),
+#ActionBarSearchAndListView > :nth-child(1) {
   z-index: 10;
 }
-#ActionBarSearchAndListView > div:nth-child(2) {
+#MashableInboxActionBarForViews > :nth-child(2),
+#ActionBarSearchAndListView > :nth-child(2) {
   z-index: 9;
 }
-#ActionBarSearchAndListView > div:nth-child(3) {
+#MashableInboxActionBarForViews > :nth-child(3),
+#ActionBarSearchAndListView > :nth-child(3) {
   z-index: 8;
 }
-#ActionBarSearchAndListView > div:nth-child(4) {
+#MashableInboxActionBarForViews > :nth-child(4),
+#ActionBarSearchAndListView > :nth-child(4) {
   z-index: 7;
 }
-#ActionBarSearchAndListView > div:nth-child(5) {
+#MashableInboxActionBarForViews > :nth-child(5),
+#ActionBarSearchAndListView > :nth-child(5) {
   z-index: 6;
 }
-#ActionBarSearchAndListView > div:nth-child(6) {
+#MashableInboxActionBarForViews > :nth-child(6),
+#ActionBarSearchAndListView > :nth-child(6) {
   z-index: 5;
 }
 /*=dashboard*/
@@ -5803,10 +5845,11 @@ body > .ui-autocomplete {
 /*=Inner toolbar*/
 .float-bar {
   width: 100%;
+  float: left;
   position: relative;
   height: 40px;
   display: block;
-  z-index: 0;
+  z-index: 10;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
@@ -5854,6 +5897,38 @@ body > .ui-autocomplete {
   display: inline-block;
   width: 100%;
   position: relative;
+}
+.unread-count {
+  display: inline-block;
+  margin-left: 8px;
+  -webkit-border-radius: 50%;
+  -moz-border-radius: 50%;
+  -ms-border-radius: 50%;
+  -o-border-radius: 50%;
+  border-radius: 50%;
+  width: 16px;
+  height: 16px;
+  line-height: 15px;
+  text-align: center;
+  color: #545454;
+  -webkit-text-shadow: none;
+  -moz-text-shadow: none;
+  -o-text-shadow: none;
+  -ms-text-shadow: none;
+  text-shadow: none;
+  font-size: 9px;
+  font-weight: bold !important;
+  background-color: #dfdfdf;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf));
+  background-image: -moz-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -ms-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
+  background-image: -webkit-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: -o-linear-gradient(top, #ffffff, #dfdfdf);
+  background-image: linear-gradient(top, #ffffff, #dfdfdf);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#ffffff', endColorstr='#dfdfdf', GradientType=0);
+  border: 1px solid #dfdfdf;
 }
 form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container,
@@ -5955,6 +6030,7 @@ form .view-toolbar-container,
   content: "!";
   top: -2px;
 }
+#MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before {
   content: "Y";
   font-weight: normal;
@@ -6028,6 +6104,7 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+#MashableInboxMassActionMenu .parent > a:before,
 #ListViewOptionsActionMenu .parent > a:before,
 .icon-options:before {
   content: "n";
@@ -6268,8 +6345,9 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
-.icon-notice:before {
-  content: "j";
+.icon-missions-created:before,
+.icon-conversations-created:before {
+  content: "w";
   font-weight: normal;
   font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -6280,26 +6358,106 @@ form .view-toolbar-container,
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
+  top: -2px;
 }
-.general-issue-notice {
-  text-align: center;
-  width: 75%;
-  margin: 10px auto 15px auto;
+.icon-conversations-participant:before {
+  content: "b";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
   position: relative;
+  top: 0;
 }
-.general-issue-notice .icon-notice {
-  display: block;
-  line-height: 1;
-  margin-bottom: 10px;
+.icon-conversation:before {
+  content: "O";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
-.general-issue-notice .icon-notice:before {
-  margin: 0;
-  font-size: 100px;
-  line-height: 60px !important;
+.icon-conversations-closed:before {
+  content: "l";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
 }
-.general-issue-notice p {
-  font-size: 14px;
-  line-height: 21px;
+.icon-mission:before,
+.icon-missions-available:before {
+  content: "Q";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-missions-taken-but-not-accepted:before {
+  content: "e";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-notification:before {
+  content: '\00A5';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-combined:before {
+  content: '\00AE';
+  font-weight: normal;
+  font-size: 26px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
 }
 /*=Footer*/
 #FooterView {
@@ -6340,7 +6498,7 @@ td {
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
   background-size: 40px 100%,
-        40px 100%,
+        40px 100%, 
         20px 100%,
         20px 100%;
   /* Opera doesn't support this in the shorthand */
@@ -6350,18 +6508,18 @@ td {
         scroll,
         scroll;
 }
-table.items {
+.items {
   width: 100%;
-  border: 1px solid #DFDFDF;
+  border: 1px solid #dfdfdf;
   border-collapse: collapse;
   border-spacing: 1px;
-  margin: 0;
+  margin: 0 -100% 0 0;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-table.items > tbody > tr > td,
-table.items > thead > tr > td {
+.items > tbody > tr > td,
+.items > thead > tr > td {
   border: 1px solid #DFDFDF;
   border-right: none;
   border-left: none;
@@ -6369,8 +6527,8 @@ table.items > thead > tr > td {
   padding: 10px 5px;
   word-wrap: break-word;
 }
-table.items > tbody > tr > th,
-table.items > thead > tr > th {
+.items > tbody > tr > th,
+.items > thead > tr > th {
   font-weight: bold !important;
   height: 35px;
   line-height: 35px;
@@ -6378,7 +6536,7 @@ table.items > thead > tr > th {
   padding: 0 5px;
   white-space: nowrap;
 }
-table.items tr:hover {
+.items tr:hover {
   background-color: #eeeeee;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#efefef), to(#eeeeee));
@@ -6390,10 +6548,10 @@ table.items tr:hover {
   background-image: linear-gradient(top, #efefef, #eeeeee);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#efefef', endColorstr='#eeeeee', GradientType=0);
 }
-table.items tr:hover .pencil {
+.items tr:hover .pencil {
   visibility: visible;
 }
-table.items > thead {
+.items > thead {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
@@ -6405,7 +6563,7 @@ table.items > thead {
   background-image: linear-gradient(top, #f9f9f9, #f4f4f4);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f4f4f4', GradientType=0);
 }
-table.items > thead tr:hover {
+.items > thead tr:hover {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
   background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
@@ -6417,12 +6575,12 @@ table.items > thead tr:hover {
   background-image: linear-gradient(top, #f9f9f9, #f4f4f4);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f9f9f9', endColorstr='#f4f4f4', GradientType=0);
 }
-table.items > tbody tr:last-child,
-table.items > tbody tr:last-child td {
+.items > tbody tr:last-child,
+.items > tbody tr:last-child td {
   border-bottom: none;
 }
-table.items > tbody tr td:first-child:not(.checkbox-column),
-table.items > tbody tr th:first-child:not(.checkbox-column) {
+.items > tbody tr td:first-child:not(.checkbox-column),
+.items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
 .sort-link:after {
@@ -6538,6 +6696,7 @@ td.empty {
   line-height: 135%;
   text-indent: 0;
   padding: 4px;
+  word-break: normal;
 }
 .form select.multiple {
   padding: 4px 4px 4px 6px;
@@ -6955,11 +7114,18 @@ div.wide.form label.hasCheckBox {
 /*=LIST VIEW*/
 /*=Search Scope box, and account list*/
 .list-item-details {
-  display: block;
+  display: inline-block;
+  float: right;
   font-weight: normal;
   color: #999;
-  margin-top: 5px;
+  margin-right: 5px;
   font-size: 11px;
+}
+.last-comment {
+  font-weight: 400;
+  color: #666;
+  margin-left: 5px;
+  font-style: italic;
 }
 .summary {
   display: none;
@@ -7178,9 +7344,8 @@ div.wide.form label.hasCheckBox {
   float: left;
   width: 100%;
 }
-.ZurmoSearchView #search-form {
+#search-form {
   position: relative;
-  padding: 10px 0 10px 0;
   border: 1px solid #DFDFDF;
   border-bottom: none;
   background-color: #ededed;
@@ -7201,16 +7366,16 @@ div.wide.form label.hasCheckBox {
   box-shadow: inset 0 1px 0 0 #ffffff;
   zoom: 1;
 }
-.ZurmoSearchView #search-form:before {
+#search-form:before {
   content: "";
   display: table;
 }
-.ZurmoSearchView #search-form:after {
+#search-form:after {
   content: "";
   display: table;
   clear: both;
 }
-.ZurmoSearchView #search-form table {
+#search-form table {
   border-bottom: none;
 }
 .SecuredListView {
@@ -7218,6 +7383,91 @@ div.wide.form label.hasCheckBox {
   width: 100%;
   margin-bottom: 20px;
   position: relative;
+}
+#MashableInboxListView,
+#NotificationsForUserListView {
+  float: left;
+  width: 100%;
+  margin-bottom: 20px;
+  position: relative;
+}
+.filters-bar {
+  font-size: 11px;
+  padding-left: 8px;
+  border-bottom: 1px solid #DFDFDF;
+  overflow: hidden;
+  height: 40px;
+  line-height: 40px;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  position: relative;
+  border: none;
+  float: left;
+  position: absolute;
+  z-index: 51;
+  left: 250px;
+  top: 7px;
+  background: none !important;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+.filters-bar label {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 11px !important;
+  padding: 3px;
+  margin: 0 3px;
+}
+.filters-bar label:hover {
+  color: #FFF;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -ms-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+  border-radius: 3px !important;
+  border: none;
+}
+.filters-bar input[type="radio"],
+.filters-bar input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+.filters-bar .ui-state-active {
+  color: #FFF;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -ms-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+  border-radius: 3px !important;
+  border: none;
+}
+.filters-bar .ui-button-text {
+  padding: 0;
+  margin: 0;
+}
+.filters-bar > div {
+  display: inline-block;
+  margin-right: 15px;
 }
 .cgrid-view {
   /*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
@@ -7268,6 +7518,9 @@ div.wide.form label.hasCheckBox {
   float: left;
 }
 .search-view-0 input[type="text"] {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
   position: relative;
   left: -1px;
   width: 179px;
@@ -8393,7 +8646,7 @@ div.wide.form label.hasCheckBox {
 #UserDetailsAndRelationsView .GridView + .GridView {
   width: 35%;
 }
-#UserDetailsAndRelationsView .UserLatestActivitiesForPortletView {
+#UserDetailsAndRelationsView .UserLatestActivtiesForPortletView {
   margin-right: 20px !important;
 }
 #NoteInlineEditView .col-0 {
@@ -8736,6 +8989,15 @@ div.radio-input .hasDropDown {
   -ms-text-shadow: none;
   text-shadow: none;
 }
+/*
+.back-to-inbox-link{
+    .smaller();
+    .opacity(50);
+    &:hover{
+        .opacity(100);
+    }
+}
+*/
 /*=Madlib*/
 .mad-lib input {
   width: auto !important;
@@ -9090,6 +9352,7 @@ div.hasHalfs .twoThirds {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  clear: both;
 }
 #ModalView #list-view .pager {
   -webkit-box-shadow: inset 0 1px 0 #dfdfdf;
@@ -9146,6 +9409,18 @@ div.hasHalfs .twoThirds {
   font-size: 42px;
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
+}
+.LatestActivitiesForPortletView {
+  position: relative;
+}
+.LatestActivitiesForPortletView > div {
+  position: relative;
+  z-index: 1;
+}
+.LatestActivitiesForPortletView .toolbar-mbmenu {
+  position: absolute;
+  top: -35px;
+  z-index: 10;
 }
 .LatestActivitiesListView form,
 .LatestActivitiesView form {
@@ -9215,89 +9490,6 @@ div.hasHalfs .twoThirds {
   position: relative;
   top: 1px;
   margin-left: 5px;
-}
-.LatestActivitiesListView .latest-activity-toolbar,
-.LatestActivitiesView .latest-activity-toolbar,
-.LatestActivitiesListView .filter-portlet-model-bar,
-.LatestActivitiesView .filter-portlet-model-bar {
-  font-size: 11px;
-  padding-left: 8px;
-}
-.LatestActivitiesListView .latest-activity-toolbar label,
-.LatestActivitiesView .latest-activity-toolbar label,
-.LatestActivitiesListView .filter-portlet-model-bar label,
-.LatestActivitiesView .filter-portlet-model-bar label {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-size: 11px !important;
-  padding: 3px;
-  margin: 0 3px;
-}
-.LatestActivitiesListView .latest-activity-toolbar label:hover,
-.LatestActivitiesView .latest-activity-toolbar label:hover,
-.LatestActivitiesListView .filter-portlet-model-bar label:hover,
-.LatestActivitiesView .filter-portlet-model-bar label:hover {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-.LatestActivitiesListView .latest-activity-toolbar input[type="radio"],
-.LatestActivitiesView .latest-activity-toolbar input[type="radio"],
-.LatestActivitiesListView .filter-portlet-model-bar input[type="radio"],
-.LatestActivitiesView .filter-portlet-model-bar input[type="radio"],
-.LatestActivitiesListView .latest-activity-toolbar input[type="checkbox"],
-.LatestActivitiesView .latest-activity-toolbar input[type="checkbox"],
-.LatestActivitiesListView .filter-portlet-model-bar input[type="checkbox"],
-.LatestActivitiesView .filter-portlet-model-bar input[type="checkbox"] {
-  visibility: hidden;
-  display: none;
-}
-.LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
-.LatestActivitiesView .filter-portlet-model-bar .ui-state-active {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-.LatestActivitiesListView .latest-activity-toolbar .ui-button-text,
-.LatestActivitiesView .latest-activity-toolbar .ui-button-text,
-.LatestActivitiesListView .filter-portlet-model-bar .ui-button-text,
-.LatestActivitiesView .filter-portlet-model-bar .ui-button-text {
-  padding: 0;
-  margin: 0;
-}
-.LatestActivitiesListView .filter-portlet-model-bar,
-.LatestActivitiesView .filter-portlet-model-bar {
-  border-bottom: 1px solid #DFDFDF;
-  overflow: hidden;
-  height: 40px;
-  line-height: 40px;
-  background-color: #ededed;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
-  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
-  -o-box-shadow: inset 0 1px 0 0 #ffffff;
-  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
-  box-shadow: inset 0 1px 0 0 #ffffff;
-  position: relative;
 }
 .LatestActivitiesListView .items,
 .LatestActivitiesView .items {
@@ -9419,24 +9611,106 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
 }
+#MashableInboxForm_filteredBy_area,
+#MashableInboxForm_optionForModel_area,
+.latest-activity-toolbar,
+.filter-portlet-model-bar {
+  font-size: 11px;
+  padding-left: 8px;
+}
+#MashableInboxForm_filteredBy_area label,
+#MashableInboxForm_optionForModel_area label,
+.latest-activity-toolbar label,
+.filter-portlet-model-bar label {
+  cursor: pointer;
+  border: none;
+  background: none;
+  font-size: 11px !important;
+  padding: 3px;
+  margin: 0 3px;
+}
+#MashableInboxForm_filteredBy_area label:hover,
+#MashableInboxForm_optionForModel_area label:hover,
+.latest-activity-toolbar label:hover,
+.filter-portlet-model-bar label:hover {
+  color: #FFF;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -ms-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+  border-radius: 3px !important;
+  border: none;
+}
+#MashableInboxForm_filteredBy_area input[type="radio"],
+#MashableInboxForm_optionForModel_area input[type="radio"],
+.latest-activity-toolbar input[type="radio"],
+.filter-portlet-model-bar input[type="radio"],
+#MashableInboxForm_filteredBy_area input[type="checkbox"],
+#MashableInboxForm_optionForModel_area input[type="checkbox"],
+.latest-activity-toolbar input[type="checkbox"],
+.filter-portlet-model-bar input[type="checkbox"] {
+  visibility: hidden;
+  display: none;
+}
+#MashableInboxForm_filteredBy_area .ui-state-active,
+#MashableInboxForm_optionForModel_area .ui-state-active,
+.latest-activity-toolbar .ui-state-active,
+.filter-portlet-model-bar .ui-state-active {
+  color: #FFF;
+  -webkit-border-radius: 3px !important;
+  -moz-border-radius: 3px !important;
+  -ms-border-radius: 3px !important;
+  -o-border-radius: 3px !important;
+  border-radius: 3px !important;
+  border: none;
+}
+#MashableInboxForm_filteredBy_area .ui-button-text,
+#MashableInboxForm_optionForModel_area .ui-button-text,
+.latest-activity-toolbar .ui-button-text,
+.filter-portlet-model-bar .ui-button-text {
+  padding: 0;
+  margin: 0;
+}
+.filter-portlet-model-bar {
+  border-bottom: 1px solid #DFDFDF;
+  overflow: hidden;
+  height: 40px;
+  line-height: 40px;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
+  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
+  -o-box-shadow: inset 0 1px 0 0 #ffffff;
+  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  position: relative;
+}
 .activity-date {
   font-size: 11px;
   margin-bottom: 3px;
   display: block;
 }
-.LatestActivitiesForPortletView {
+.LatestActivtiesForPortletView {
   position: relative;
 }
-.LatestActivitiesForPortletView .toolbar-mbmenu {
+.LatestActivtiesForPortletView .toolbar-mbmenu {
   z-index: 999999;
   top: -34px;
   right: 10px;
 }
-.LatestActivitiesForPortletView .toolbar-mbmenu .view-toolbar {
+.LatestActivtiesForPortletView .toolbar-mbmenu .view-toolbar {
   background: none;
   margin: 0;
 }
-.LatestActivitiesForPortletView .toolbar-mbmenu li {
+.LatestActivtiesForPortletView .toolbar-mbmenu li {
   padding: 0;
 }
 /*=Search User Modal*/
@@ -11610,6 +11884,31 @@ table.configuration-list td:last-child a .z-label:before {
 .texture-swatch label {
   top: -6px;
 }
+/*Menu Prefernces*/
+.user-menu-preferences td {
+  padding-left: 0 !important;
+}
+.user-menu-preferences .multiselect-holder {
+  max-width: 100%;
+  margin: 0;
+}
+.user-menu-preferences .multiselect-right {
+  float: none;
+}
+/*Logo Uplaod*/
+.uploaded-logo-template td.name {
+  padding-top: 10px !important;
+}
+.uploaded-logo {
+  display: inline-block;
+  padding: 5px;
+  margin-right: 5px;
+  line-height: 1;
+  background: url(../images/transparency-grid.gif) left top repeat;
+}
+.uploaded-logo ~ .file-size {
+  vertical-align: top;
+}
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
   padding: 20px;
@@ -12611,10 +12910,8 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   background-color: #D4E7BC;
   color: #545454;
 }
-#NotificationsForUserListView .items th,
-#NotificationsForUserListView .items td {
-  padding-left: 15px;
-  padding-right: 15px;
+#NotificationsForUserListView h4 + div {
+  margin-top: 5px;
 }
 .panel-buffer {
   padding: 15px;
@@ -14806,77 +15103,6 @@ a.close-ModalGameNotification.simple-link {
   background: #DFDFDF;
   padding: 2px;
 }
-.icon-missions-created:before,
-.icon-conversations-created:before {
-  content: "w";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-conversations-participant:before {
-  content: "b";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: 0;
-}
-.icon-conversations-closed:before {
-  content: "l";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -1px;
-}
-.icon-missions-available:before {
-  content: "Q";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
-.icon-missions-taken-but-not-accepted:before {
-  content: "e";
-  font-weight: normal;
-  font-size: 24px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  padding: 0 0 0 0;
-  margin: 0 6px 0 -30px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  vertical-align: middle;
-  position: relative;
-  top: -2px;
-}
 .list-row-model-date {
   float: right;
   margin-right: 10px;
@@ -14886,9 +15112,6 @@ a.close-ModalGameNotification.simple-link {
 }
 #ConversationEditView textarea {
   line-height: 130%;
-}
-#ConversationsPageView .items td {
-  padding-left: 10px;
 }
 .single-coloumn-details-view.AppContent,
 #ConversationDetailsView.AppContent,
@@ -15946,6 +16169,11 @@ a.user-link {
   -o-border-radius: 3px;
   border-radius: 3px;
   padding: 15px 30px 15px 15px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
 }
 .dynamic-row > div {
   position: relative;
@@ -16393,6 +16621,91 @@ a.user-link {
 #ReportResultsSQLView > div + div {
   margin-top: 15px;
 }
+#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
+  border-left: none;
+}
+#MashableInboxActionBarForViews .search-view-0 {
+  padding: 0 15px 15px 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#MashableInboxActionBarForViews .list-view-items-summary-clone {
+  margin-top: 5px;
+}
+#MashableInboxActionBarForViews .global-search-loopa {
+  width: 24px;
+}
+#MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
+  width: 204px;
+}
+.inbox-item {
+  position: relative;
+}
+.inbox-item div + span {
+  display: block;
+  padding-right: 80px;
+  overflow: hidden;
+}
+.inbox-item .list-item-details {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.model-tag {
+  display: inline-block;
+  font-weight: 400;
+  font-size: 11px;
+  float: left;
+  margin-right: 5px;
+  margin-top: 1px;
+}
+.model-tag span {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff;
+  padding: 2px 4px;
+  line-height: 1;
+}
+.model-tag.mission span {
+  background-color: #16a085;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#1abc9c), to(#16a085));
+  background-image: -moz-linear-gradient(top, #1abc9c, #16a085);
+  background-image: -ms-linear-gradient(top, #1abc9c, #16a085);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1abc9c), color-stop(100%, #16a085));
+  background-image: -webkit-linear-gradient(top, #1abc9c, #16a085);
+  background-image: -o-linear-gradient(top, #1abc9c, #16a085);
+  background-image: linear-gradient(top, #1abc9c, #16a085);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1abc9c', endColorstr='#16a085', GradientType=0);
+}
+.model-tag.conversation span {
+  background-color: #2c3e50;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#34495e), to(#2c3e50));
+  background-image: -moz-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -ms-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #34495e), color-stop(100%, #2c3e50));
+  background-image: -webkit-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -o-linear-gradient(top, #34495e, #2c3e50);
+  background-image: linear-gradient(top, #34495e, #2c3e50);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#34495e', endColorstr='#2c3e50', GradientType=0);
+}
+.model-tag.notification span {
+  background-color: #8e44ad;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#9b59b6), to(#8e44ad));
+  background-image: -moz-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: -ms-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9b59b6), color-stop(100%, #8e44ad));
+  background-image: -webkit-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: -o-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: linear-gradient(top, #9b59b6, #8e44ad);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
+}
 @media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
@@ -16407,5 +16720,15 @@ a.user-link {
     position: relative !important;
     top: -25px !important;
     right: 0 !important;
+  }
+}
+@media screen and (max-width: 999px) {
+  .view-toolbar > a,
+  .view-toolbar .parent > a {
+    padding-left: 10px;
+  }
+  .view-toolbar > a:before,
+  .view-toolbar .parent > a:before {
+    display: none;
   }
 }

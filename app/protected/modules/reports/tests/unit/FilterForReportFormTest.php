@@ -625,9 +625,11 @@
             $validated = $filter->validate();
             $this->assertFalse($validated);
             $errors = $filter->getErrors();
-            $compareErrors                       = array('value'     => array('Value cannot be blank.'));
+            $compareErrors                       = array('value'     => array('Value cannot be blank.'),
+                                                         'operator'  => array('Operator cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
             $filter->value                       = '5';
+            $filter->operator                    = OperatorRules::TYPE_EQUALS;
             $filter->stringifiedModelForValue    = 'Jason';
             $validated = $filter->validate();
             $this->assertTrue($validated);

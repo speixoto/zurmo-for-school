@@ -80,6 +80,16 @@
             return $adaptedMetadata;
         }
 
+        protected function resolveValueForOperator()
+        {
+            if($this->filter->getOperator() == OperatorRules::TYPE_IS_NULL ||
+               $this->filter->getOperator() == OperatorRules::TYPE_IS_NOT_NULL)
+            {
+                return null;
+            }
+            return $this->filter->value;
+        }
+
         protected function resolveClausesAndStructure()
         {
             $attribute = $this->filter->getResolvedAttribute();
@@ -94,7 +104,7 @@
             {
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'operatorType'         => $this->filter->getOperator(),
-                                          'value'                => $this->filter->value,
+                                          'value'                => $this->resolveValueForOperator(),
                                           'modifierType'         => $this->modelRelationsAndAttributesToReportAdapter->
                                                                     getCalculationOrModifierType($attribute));
                 $this->structure  = '1';
@@ -115,7 +125,7 @@
             $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                       'relatedAttributeName' => 'id',
                                       'operatorType'         => $this->filter->getOperator(),
-                                      'value'                => $this->filter->value);
+                                      'value'                => $this->resolveValueForOperator());
             $this->structure  = '1';
         }
 
@@ -231,7 +241,7 @@
             {
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'operatorType'         => OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
-                                          'value'                => $this->filter->value);
+                                          'value'                => $this->resolveValueForOperator());
                 $this->clauses[2] = array('attributeName'        => $this->getRealAttributeName(),
                                           'operatorType'         => OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
                                           'value'                => $this->filter->secondValue);
@@ -241,7 +251,7 @@
             {
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'operatorType'         => $this->filter->getOperator(),
-                                          'value'                => $this->filter->value);
+                                          'value'                => $this->resolveValueForOperator());
                 $this->structure  = '1';
             }
         }
@@ -253,7 +263,7 @@
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'relatedAttributeName' => 'value',
                                           'operatorType'         => OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
-                                          'value'                => $this->filter->value);
+                                          'value'                => $this->resolveValueForOperator());
                 $this->clauses[2] = array('attributeName'        => $this->getRealAttributeName(),
                                           'relatedAttributeName' => 'value',
                                           'operatorType'         => OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO,
@@ -266,7 +276,7 @@
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'relatedAttributeName' => 'value',
                                           'operatorType'         => $this->filter->getOperator(),
-                                          'value'                => $this->filter->value);
+                                          'value'                => $this->resolveValueForOperator());
                 $this->structure  = '1';
                 $count            = 2;
             }
@@ -299,7 +309,7 @@
             $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                       'relatedAttributeName' => $relatedAttributeName,
                                       'operatorType'         => $this->filter->getOperator(),
-                                      'value'                => $this->filter->value);
+                                      'value'                => $this->resolveValueForOperator());
 
             $this->structure  = '1';
         }
@@ -308,7 +318,7 @@
         {
             $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                       'operatorType'         => $this->filter->getOperator(),
-                                      'value'                => $this->filter->value);
+                                      'value'                => $this->resolveValueForOperator());
             $this->structure  = '1';
         }
 
@@ -316,7 +326,7 @@
         {
             $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                       'operatorType'         => $this->filter->getOperator(),
-                                      'value'                => (bool)$this->filter->value);
+                                      'value'                => (bool)$this->resolveValueForOperator());
             $this->structure  = '1';
         }
 
@@ -325,7 +335,7 @@
             $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                       'relatedAttributeName' => 'id',
                                       'operatorType'         => $this->filter->getOperator(),
-                                      'value'                => $this->filter->value);
+                                      'value'                => $this->resolveValueForOperator());
             $this->structure  = '1';
         }
 

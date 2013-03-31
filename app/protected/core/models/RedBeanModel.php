@@ -2930,9 +2930,19 @@
             return $modelClassName;
         }
 
-		public static function getLastClassInBeanHeirarchy()
+        public static function getLastClassInBeanHeirarchy()
         {
             return static::$lastClassInBeanHeirarchy;
+        }
+
+        /**
+         * Returns a list of attributes to be added when sorting by the attribute
+         * @param string $attribute
+         * @return array
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            return array($attribute);
         }
     }
 ?>

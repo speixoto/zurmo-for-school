@@ -252,7 +252,7 @@
             $compareRowData     = array( 'xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                          10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                          'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
-                                         'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName', 'super');
+                                         'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super');
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
         }
@@ -465,7 +465,7 @@
             $compareRowData     = array('xFirst xLast', 1, '2013-02-12', '2013-02-12 10:15:00',
                                         10.5, 10, '7842151012', 'xString', 'xtextAreatest',
                                         'http://www.test.com', 'Test2', '$100.00', 'USD', 'someString', 'test@someString.com',
-                                        'Multi 1, Multi 2', 'Cloud 2, Cloud 3', 'Test2', 'someName', 'super');
+                                        'Multi 1,Multi 2', 'Cloud 2,Cloud 3', 'Test2', 'someName', 'super');
             $this->assertEquals($compareHeaderData, $adapter->getHeaderData());
             $this->assertEquals($compareRowData, $adapter->getData());
             

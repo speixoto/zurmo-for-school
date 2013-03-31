@@ -34,6 +34,9 @@
     {
         const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
 
+        /**
+         * Override of the parent method using RedBean
+         */
         protected function loadMessagesFromDb($category, $languageCode)
         {
             $sourceTableName   = RedBeanModel::getTableName('MessageSource');

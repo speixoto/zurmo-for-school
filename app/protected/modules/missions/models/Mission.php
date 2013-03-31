@@ -28,7 +28,7 @@
      * Class for creating Mission models.  A mission is similar to a task except a user can only have one mission at
      * a time and a mission cannot be assigned.  A user must take a mission.
      */
-    class Mission extends OwnedSecurableItem implements MashableActivityInterface
+    class Mission extends OwnedSecurableItem implements MashableActivityInterface, MashableInboxInterface
     {
         const STATUS_AVAILABLE = 1;
 
@@ -45,6 +45,11 @@
         private $sendTakenByUserUnreadCommentNotification = false;
 
         public static function getMashableActivityRulesType()
+        {
+            return 'Mission';
+        }
+
+        public static function getMashableInboxRulesType()
         {
             return 'Mission';
         }
@@ -89,18 +94,18 @@
                     'description',
                     'dueDateTime',
                     'latestDateTime',
-                    'ownerHasReadLatest',
                     'reward',
                     'status',
-                    'takenByUserHasReadLatest',
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
+                    'comments'                    => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                    'files'                       => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
                                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
-                    'takenByUser'              => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
+                    'takenByUser'                 => array(RedBeanModel::HAS_ONE,   'User', RedBeanModel::NOT_OWNED,
                                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'takenByUser'),
+                    'personsWhoHaveNotReadLatest' => array(RedBeanModel::HAS_MANY,  'PersonWhoHaveNotReadLatest',
+                                                        RedBeanModel::OWNED),
                 ),
                 'rules' => array(
                     array('description',              'required'),
@@ -111,9 +116,7 @@
                     array('latestDateTime',           'type', 'type' => 'datetime'),
                     array('status',                   'required'),
                     array('status',                   'type',    'type' => 'integer'),
-                    array('ownerHasReadLatest',       'boolean'),
                     array('reward',                   'type', 'type' => 'string'),
-                    array('takenByUserHasReadLatest', 'boolean'),
 
                 ),
                 'elements' => array(
@@ -123,14 +126,12 @@
                     'latestDateTime'    => 'DateTime',
                     'reward'            => 'TextArea',
                 ),
-                'defaultSortAttribute' => 'subject',
+                'defaultSortAttribute' => 'description',
                 'noAudit' => array(
                     'description',
                     'dueDateTime',
                     'latestDateTime',
-                    'ownerHasReadLatest',
                     'reward',
-                    'takenByUserHasReadLatest'
                 ),
             );
             return $metadata;
@@ -167,34 +168,55 @@
          */
         protected function beforeSave()
         {
+            $missionRules = new MissionMashableInboxRules();
+            $personsToAddAsHaveNotReadLatest = array();
             if (parent::beforeSave())
             {
-                if ($this->comments->isModified() || $this->getIsNewModel())
+                if ($this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-                    if ($this->getIsNewModel())
-                    {
-                        $this->ownerHasReadLatest = true;
-                    }
+                    $personsToAddAsHaveNotReadLatest = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
+                }
+                if (isset($this->originalAttributeValues['status']) &&
+                    $this->originalAttributeValues['status'] != $this->status &&
+                    $this->status == self::STATUS_TAKEN)
+                {
+                    MissionsUtil::markAllUserHasReadLatestExceptOwnerAndTakenBy($this);
                 }
                 if ($this->comments->isModified())
                 {
+                    $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                     foreach ($this->comments as $comment)
                     {
                         if ($comment->id < 0)
                         {
                             if (Yii::app()->user->userModel != $this->owner)
                             {
-                                $this->ownerHasReadLatest                 = false;
                                 $this->sendOwnerUnreadCommentNotification = true;
                             }
                             if (Yii::app()->user->userModel != $this->takenByUser && $this->takenByUser->id > 0)
                             {
-                                $this->takenByUserHasReadLatest                 = false;
                                 $this->sendTakenByUserUnreadCommentNotification = true;
                             }
                         }
                     }
+                    $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewComment($this, Yii::app()->user->userModel);
+                    foreach ($people as $person)
+                    {
+                        if ($missionRules->hasUserReadLatest($this, $person))
+                        {
+                            if(!in_array($person, $personsToAddAsHaveNotReadLatest))
+                            {
+                                $personsToAddAsHaveNotReadLatest[] = $person;
+                            }
+                        }
+                    }
+                }
+                foreach ($personsToAddAsHaveNotReadLatest as $person)
+                {
+                    $personWhoHaveNotReadLatest = $missionRules->makePersonWhoHasNotReadLatest($person);
+                    $personsToAddAsHaveNotReadLatest[] = $personWhoHaveNotReadLatest;
+                    $this->personsWhoHaveNotReadLatest->add($personWhoHaveNotReadLatest);
                 }
                 return true;
             }
@@ -240,15 +262,6 @@
                     $messageContent = Zurmo::t('MissionsModule', 'A mission you completed has been accepted');
                     MissionsUtil::makeAndSubmitStatusChangeNotificationMessage($this->takenByUser, $this->id, $messageContent);
                 }
-            }
-            if ($this->getScenario() != 'importModel' && $this->sendOwnerUnreadCommentNotification)
-            {
-                MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->owner);
-            }
-            elseif ($this->getScenario() != 'importModel' &&
-                   $this->sendTakenByUserUnreadCommentNotification && $this->takenByUser->id > 0)
-            {
-                MissionsUtil::makeAndSubmitNewCommentNotificationMessage($this->takenByUser);
             }
             parent::afterSave();
         }

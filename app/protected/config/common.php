@@ -324,6 +324,7 @@
             'install',
             'jobsManager',
             'leads',
+            'mashableInbox',
             'meetings',
             'missions',
             'notes',

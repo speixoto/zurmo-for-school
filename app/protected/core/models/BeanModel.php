@@ -192,6 +192,7 @@
          * attribute name defined by the extending class's getMetadata() method.
          * For use by RedBeanModelDataProvider. Is unlikely to be of any
          * use to an application.
+         * @param string $attributeName
          */
         public static function getAttributeModelClassName($attributeName)
         {
@@ -287,6 +288,7 @@
         /**
          * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getDerivedRelationType($relationName)
         {
@@ -298,6 +300,7 @@
         /**
          * Returns the relation model class name of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getDerivedRelationModelClassName($relationName)
         {

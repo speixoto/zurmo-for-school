@@ -24,48 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Element used to allow user to delete a notification.  Utilized from the list view only.
-     */
-    class DeleteNotificationElement extends Element implements DerivedElementInterface
+    class QQ extends Q
     {
-        protected function renderEditable()
+        public static function getDefaultMetadata()
         {
-            throw NotSupportedException();
-        }
-
-        protected function renderControlEditable()
-        {
-            throw NotSupportedException();
-        }
-
-        /**
-         * Todo: implement.
-         * @return The element's content.
-         */
-        protected function renderControlNonEditable()
-        {
-            throw NotImplementedException();
-        }
-
-        protected function renderLabel()
-        {
-            return Zurmo::t('NotificationsModule', 'Delete Notification');
-        }
-
-        public static function getDisplayName()
-        {
-            return Zurmo::t('NotificationsModule', 'Delete Notification');
-        }
-
-        /**
-         * Get the attributeNames of attributes used in
-         * the derived element.
-         * @return array of model attributeNames used.
-         */
-        public static function getModelAttributeNames()
-        {
-            return array();
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'relations' => array(
+                    'q'           => array(RedBeanModel::HAS_ONE,  'Q'),
+                    'qRequired'   => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'qUnique'     => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'qMany'       => array(RedBeanModel::HAS_MANY, 'Q')
+                ),
+                'rules' => array(
+                    array('qRequired',    'required'),
+                    array('qUnique',      'unique'),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

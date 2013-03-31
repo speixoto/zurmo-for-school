@@ -55,6 +55,8 @@
             }
             $sort = new RedBeanSort($this->modelClassName);
             $sort->sortVar = $this->getId().'_sort';
+            $sort->setSortAttribute($sortAttribute);
+            $sort->setSortDescending($sortDescending);
             $this->setSort($sort);
         }
 

@@ -257,7 +257,8 @@
                 return true;
             }
             //Owned relations such as Address or Email
-            elseif($modelAttributeToDataProviderAdapter->isOwnedRelation())
+            elseif($modelAttributeToDataProviderAdapter->isOwnedRelation() &&
+                   !$modelAttributeToDataProviderAdapter->isRelationTypeAHasManyVariant())
             {
                 return true;
             }
