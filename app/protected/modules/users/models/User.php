@@ -654,7 +654,7 @@
                     array('language', 'length',  'max'   => 10),
                     array('timeZone', 'type',    'type'  => 'string'),
                     array('timeZone', 'length',  'max'   => 64),
-                    array('timeZone', 'default', 'value' => 'UTC'),
+                    array('timeZone', 'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone', 'ValidateTimeZone'),
                     array('username', 'required'),
                     array('username', 'unique'),
