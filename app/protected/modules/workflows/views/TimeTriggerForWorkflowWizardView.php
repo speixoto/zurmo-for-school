@@ -60,6 +60,8 @@
                 $(".remove-dynamic-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function(){
                     $(this).parent().remove();
                     $("#ByTimeWorkflowWizardForm_timeTriggerAttribute").val("");
+                    $(".NoTimeTrigger").show();
+                    $("#time-trigger-container").hide();
                     return false;
                 });
             ';
@@ -145,7 +147,7 @@
             {
                 $timeTriggerContent = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), ZurmoHtml::tag('ul', array(), ''));
             }
-            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container'), $timeTriggerContent);
+            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container', 'style' => 'display:none'), $timeTriggerContent);
         }
     }
 ?>

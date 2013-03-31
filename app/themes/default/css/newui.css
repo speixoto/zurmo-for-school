@@ -16896,6 +16896,10 @@ a.user-link {
 #time-trigger-container .first-value-area {
   margin-left: 15px;
 }
+.NoTimeTrigger,
+#time-trigger-container {
+  min-height: 300px;
+}
 .time-trigger-attribute-selector-container {
   width: 30%;
   float: left;
