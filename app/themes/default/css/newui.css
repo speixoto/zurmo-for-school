@@ -8274,9 +8274,13 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.beforeToolTip .hasDropDown {
+  margin-right: 30px;
+  width: auto;
+}
 .beforeToolTip + .tooltip {
   float: right;
-  margin: 5px 0 0 -30px !important;
+  margin: 7px 0 0 -30px !important;
   position: relative;
 }
 /*=View AccountView (before editing, portlets and such)*/
