@@ -130,6 +130,5 @@
             $models = ByTimeWorkflowInQueue::getModelsToProcess(10);
             $this->assertEquals(1, count($models));
         }
-
     }
 ?>

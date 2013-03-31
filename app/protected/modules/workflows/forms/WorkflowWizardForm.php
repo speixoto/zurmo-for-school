@@ -30,7 +30,6 @@
      */
     abstract class WorkflowWizardForm extends WizardForm
     {
-        //todO: refactor this class with ReportWizardForm into a base class that we can move methods and properties into
         const MODULE_VALIDATION_SCENARIO            = 'ValidateForModule';
 
         const TIME_TRIGGER_VALIDATION_SCENARIO      = 'ValidateForTimeTrigger';
@@ -39,7 +38,7 @@
 
         const ACTIONS_VALIDATION_SCENARIO           = 'ValidateForActions';
 
-        const EMAIL_MESSAGES_VALIDATION_SCENARIO      = 'ValidateForEmailMessages';
+        const EMAIL_MESSAGES_VALIDATION_SCENARIO    = 'ValidateForEmailMessages';
 
         const GENERAL_DATA_VALIDATION_SCENARIO      = 'ValidateForGeneralData';
 
@@ -175,8 +174,7 @@
         {
             if(count($this->triggers) > 0)
             {
-                //todo: this isn't for SQL, but it still uses same logic, so we have to refactor this check.
-                if(null != $errorMessage = SQLOperatorUtil::
+                if(null != $errorMessage = PHPOperatorUtil::
                            resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->triggersStructure,
                            count($this->triggers)))
                 {

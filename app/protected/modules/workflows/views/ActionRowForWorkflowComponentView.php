@@ -69,8 +69,11 @@
             $rowId = Element::resolveInputIdPrefixIntoString($this->inputPrefixData);
             $content  = '<div class="row-utils">';
             $content .= $this->renderActionRowNumberLabel();
-            $toggleLink = ZurmoHtml::tag('a', array('data-row' => $rowId,'class' => 'edit-dynamic-row-link simple-link toggle-row'), 'Edit'); //todo: make it work
-            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), $this->model->type . '&nbsp;&nbsp;' . $toggleLink); //todo: convert to label
+            $toggleLink = ZurmoHtml::tag('a', array('data-row' => $rowId,
+                          'class' => 'edit-dynamic-row-link simple-link toggle-row'), 'Edit');
+
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'),
+                        $this->model->getDisplayLabel() . '&nbsp;&nbsp;' . $toggleLink);
             $content .= $this->renderTypeHiddenInputContent();
             $content .= $this->renderRelationHiddenInputContent();
             $content .= $this->renderRelatedModelRelationHiddenInputContent();
@@ -80,7 +83,6 @@
             $content .= $this->renderAttributesRowsContent($this->makeAttributeRows());
             $content .= $this->renderSaveActionElementsContent($rowId);
             $content .= '</div>';
-            //todo: call correctly as action, fix theme? need to maybe refcator
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
             return ZurmoHtml::tag('li', array('id' => $rowId, 'class' => 'expanded-row'), $content);
         }

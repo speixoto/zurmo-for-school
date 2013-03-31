@@ -49,7 +49,8 @@
                 }
                 catch(Exception $e)
                 {
-                    //todo: what to do?
+                    WorkflowUtil::handleProcessingException($e,
+                        'application.modules.workflows.utils.WorkflowActionsUtil.processBeforeSave');
                 }
             }
         }
@@ -74,7 +75,8 @@
                 }
                 catch(Exception $e)
                 {
-                   //todo: what to do?
+                    WorkflowUtil::handleProcessingException($e,
+                        'application.modules.workflows.utils.WorkflowActionsUtil.processAfterSave');
                 }
             }
         }
@@ -101,7 +103,8 @@
                 }
                 catch(Exception $e)
                 {
-                    //todo: what to do?
+                    WorkflowUtil::handleProcessingException($e,
+                        'application.modules.workflows.utils.WorkflowActionsUtil.processOnByTimeWorkflowInQueueJob');
                 }
             }
         }

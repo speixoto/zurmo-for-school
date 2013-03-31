@@ -486,6 +486,41 @@
             }
         }
 
+        public function getDisplayLabel()
+        {
+            $typeDataAndLabels = ActionForWorkflowForm::getTypeDataAndLabels();
+            if($this->type == self::TYPE_UPDATE_SELF)
+            {
+                return $typeDataAndLabels[$this->type];
+            }
+            elseif($this->type == self::TYPE_UPDATE_RELATED)
+            {
+                $modelClassName = $this->resolveRealModelClassName($this->relation);
+                return $typeDataAndLabels[$this->type] . ' ' . $modelClassName::getModelLabelByTypeAndLanguage('Plural');
+            }
+            elseif($this->type == self::TYPE_CREATE)
+            {
+                $modelClassName = $this->resolveRealModelClassName($this->relation);
+                return $typeDataAndLabels[$this->type] . ' ' . $modelClassName::getModelLabelByTypeAndLanguage('Singular');
+            }
+            elseif($this->type == self::TYPE_CREATE_RELATED)
+            {
+                $modelClassName        = $this->_modelClassName;
+                $relationModelAdapter  = ModelRelationsAndAttributesToWorkflowAdapter::make(
+                                         $modelClassName::getModuleClassName(), $modelClassName, $this->_workflowType);
+                $modelClassName        = $relationModelAdapter->getRelationModelClassName($this->relation);
+                $relatedModelClassName = $this->getModelClassNameAndResolveForRelations();
+                $content               = $typeDataAndLabels[$this->type] . ' ' .
+                                         $modelClassName::getModelLabelByTypeAndLanguage('Plural');
+                $content              .= ' ' . $relatedModelClassName::getModelLabelByTypeAndLanguage('Singular');
+                return $content;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
         protected function makeActionAttributeFormByAttribute($attribute)
         {
             assert('is_string($attribute)');

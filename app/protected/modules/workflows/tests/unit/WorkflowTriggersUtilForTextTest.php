@@ -33,8 +33,6 @@
      */
     class WorkflowTriggersUtilForTextTest extends WorkflowTriggersUtilBaseTest
     {
-        //todo: test $changeRequiredToProcess.  also need to test this in some of the other triggerUtils that would have an override
-        //todo: for the evaluateTimeTriggerBeforeSave method. focus should be on coverage of this. nothing more.
         public function testTimeTriggerBeforeSaveEquals()
         {
             $workflow = self::makeOnSaveWorkflowAndTimeTriggerWithoutValueType('string', 'equals', 'aValue', 500);

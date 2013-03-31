@@ -74,7 +74,14 @@
 
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
-            $user = User::getById((int)$this->userId);
+            try
+            {
+                $user = User::getById((int)$this->userId);
+            }
+            catch(NotFoundException $e)
+            {
+                return array();
+            }
             $recipients = array();
             if ($user->primaryEmail->emailAddress !== null)
             {

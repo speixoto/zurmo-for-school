@@ -112,7 +112,7 @@
          */
         protected function renderFormContent()
         {
-            $content  = '<div>'; //todo: is this div necessary?
+            $content  = '<div>';
             $content .= $this->renderAttributeSelectorContentAndWrapper();
             $content .= $this->renderZeroComponentsContentAndWrapper();
             $content .= $this->renderActionsContentAndWrapper();
@@ -158,7 +158,6 @@
 
         protected function renderActionsContentAndWrapper()
         {
-            //todo: still seems strange we call it droppable even though it is only draggable here. maybe not a big deal
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
             $itemsContent                = $this->getSortableListContent($items, ComponentForWorkflowForm::TYPE_ACTIONS);

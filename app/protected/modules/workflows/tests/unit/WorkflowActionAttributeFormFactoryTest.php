@@ -28,8 +28,14 @@
     {
         public function testMake()
         {
-            $form = ewWorkflowActionAttributeFormFactory::make('WorkflowModelTestItem', 'boolean');
-            $this->assertTrue($form instanceof BooleanWorkflowActionAttributeForm);
+            $form = WorkflowActionAttributeFormFactory::make('WorkflowModelTestItem', 'boolean');
+            $this->assertTrue($form instanceof CheckBoxWorkflowActionAttributeForm);
+        }
+
+        public function testGetType()
+        {
+            $type = WorkflowActionAttributeFormFactory::getType('WorkflowModelTestItem', 'boolean');
+            $this->assertEquals('CheckBox', $type);
         }
     }
 ?>

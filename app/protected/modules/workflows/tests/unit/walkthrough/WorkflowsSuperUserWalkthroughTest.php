@@ -44,107 +44,49 @@
 
         public function testSuperUserAllDefaultControllerActions()
         {
-            $this->fail(); //make work //todo:
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             
-            $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/list');
-            $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
-            $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/selectType');                        
+            $this->runControllerWithNoExceptionsAndGetContent      ('workflows/default/list');
+            $this->runControllerWithExitExceptionAndGetContent     ('workflows/default/create');
+            $this->runControllerWithNoExceptionsAndGetContent      ('workflows/default/selectType');
             //actionList
             //actionCreate
             //actionSelectList
             //actionEdit
             //actionSave
-
-            //test creating a report via walkthrough that has all the component parts.
-            //test for all 3 report types
-
             //test actionDelete
+            //test queue views too.
         }
-        
+
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
         public function testCreateAction()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-            
-            $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
-            $this->assertFalse(strpos($content, 'Rows and Columns Report') === false);
-            $this->assertFalse(strpos($content, 'Summation Report') === false);
-            $this->assertFalse(strpos($content, 'Matrix Report') === false);
-            
-            $this->setGetArray(array('type' => 'RowsAndColumns'));
+
+            $this->assertEquals(0, count(SavedWorkflow::getAll()));
+            $content = $this->runControllerWithExitExceptionAndGetContent     ('workflows/default/create');
+            $this->assertFalse(strpos($content, 'On Save Workflow') === false);
+            $this->assertFalse(strpos($content, 'By Time Workflow') === false);
+
+            $this->setGetArray(array('type' => 'OnSave'));
             $this->resetPostArray();
-            $content = $this->runControllerWithNoExceptionsAndGetContent     ('reports/default/create');
+            $content = $this->runControllerWithNoExceptionsAndGetContent     ('workflows/default/create');
             $this->assertFalse(strpos($content, 'Accounts') === false);
             
-            $this->setGetArray(array('type' => 'RowsAndColumns'));                                                                                
-            $this->resetPostArray(array(
-                                    'validationScenario' => 'ValidateForDisplayAttributes',
-                                    'RowsAndColumnsReportWizardForm' => array(
-                                        'moduleClassName' => 'AccountsModule',
-                                        'Filters' => array(
-                                                        '0' => array(
-                                                               'structurePosition' => 1,
-                                                               'attributeIndexOrDerivedType' => 'name',
-                                                               'operator' => 'isNotNull',
-                                                               'value' => '',
-                                                               'availableAtRunTime' => '0')),
-                                        'filtersStructure' => '1',
-                                        'displayAttributes' => '',
-                                        'DisplayAttributes' => array(   
-                                                                '0' => array(
-                                                                        'attributeIndexOrDerivedType' => 'name',
-                                                                        'label' => 'Name')),
+            $this->setGetArray(array('type' => 'OnSave'));
 
-                                        'name' => 'DJTCD',
-                                        'description' => 'DJTCD',
-                                        'currencyConversionType' => '1',
-                                        'spotConversionCurrencyCode' => '',
-                                        'ownerId' => '1',
-                                        'ownerName' => 'Super User',
-                                        'explicitReadWriteModelPermissions' => array(
-                                                                               'type' => '',
-                                                                               'nonEveryoneGroup' => '4')),
-                                        'FiltersRowCounter' => '1',
-                                        'DisplayAttributesRowCounter' => '1',
-                                        'OrderBysRowCounter' => '0',
-                                        'save' => 'save',
-                                        'ajax' => 'edit-form'
-                                    ));            
-            $this->runControllerWithNoExceptionsAndGetContent     ('reports/default/save');
+            $data   = array();
+            $data['OnSaveWorkflowWizardForm'] = array('description'       => 'someDescription',
+                                                      'isActive'          => '0',
+                                                      'name'              => 'someName',
+                                                      'triggerOn'         => Workflow::TRIGGER_ON_NEW,
+                                                      'triggersStructure' => '1 AND 2',
+                                                      'moduleClassName'   => 'WorkflowsTestModule');
+            $this->setPostArray($data);
+            $this->runControllerWithExitExceptionAndGetContent     ('workflows/default/save');
+            $this->assertEquals(1, count(SavedWorkflow::getAll()));
         }
-        
-        /*
-        * @depends on testCreateAction()
-        */
-        public function testExportActionForAsynchronous()
-        {
-          $super                    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-          $savedReport              = SavedReport::getByName('DJTCD');          
-          $savedReport              = SavedReport::getById((int)$savedReport->id);
-          $report                   = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-          $stickySearchKey          = null;
-          $dataProvider             = $this->getDataProviderForExport($report,$stickySearchKey,false);            
-          $totalItems               = intval($dataProvider->calculateTotalItemCount());  
-          if($totalItems > ExportModule::$asynchronusThreshold)
-          {
-            $this->setGetArray(array('id' => $savedReport->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithRedirectExceptionAndGetContent     ('reports/default/export');
-            $this->assertEquals('A large amount of data has been requested for export.  You will receive ' .
-                        'a notification with the download link when the export is complete.', Yii::app()->user->getFlash('notification'));
-          }
-          else
-          {
-            $this->markTestSkipped(Zurmo::t('ZurmoModule', 'Since data is not so huge normal export will work'));
-          }
-        }
-
-        //actionRelationsAndAttributesTree - for different tree types and different report types
-
-        //actionAddAttributeFromTree - all various attribute types
-
-        //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
-
-        //todO: list security elevated and not, also where the user is nobody and can't see any of the modules but has access to reports
     }
 ?>

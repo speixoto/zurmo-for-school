@@ -26,7 +26,6 @@
 
     class ByTimeWorkflowInQueueJobTest extends WorkflowBaseTest
     {
-
         public function testRun()
         {
             $model       = WorkflowTestHelper::createWorkflowModelTestItem('Green', '514');

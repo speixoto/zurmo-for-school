@@ -270,8 +270,10 @@
             }
             catch(ValueForProcessDateTimeIsNullException $e)
             {
-                //todo: for now do nothing, but this means a date or dateTime somehow was set to empty, so we can't
-                //properly process this. so we just don't create or update it.
+                //For now just log this exception. If this exception is thrown it means a date or dateTime
+                //somehow was set to empty, so we can't properly process this.
+                WorkflowUtil::handleProcessingException($e,
+                    'application.modules.workflows.utils.SavedWorkflowsUtil.processToByTimeWorkflowInQueue');
             }
         }
     }

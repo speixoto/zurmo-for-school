@@ -72,7 +72,16 @@
 
         public function getStringifiedModelForValue()
         {
-            return 'does this work?'; //todo: replace with logic if we can.
+            if($this->value != null)
+            {
+                try
+                {
+                    return strval(User::getById((int)$this->value));
+                }
+                catch(NotFoundException $e)
+                {
+                }
+            }
         }
 
         /**

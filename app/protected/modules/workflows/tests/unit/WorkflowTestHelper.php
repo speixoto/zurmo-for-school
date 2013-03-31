@@ -70,6 +70,18 @@
             return $byTimeWorkflowInQueue;
         }
 
-
+        public static function createExpiredWorkflowMessageInQueue(RedBeanModel $model, SavedWorkflow $savedWorkflow)
+        {
+            $workflowMessageInQueue                  = new WorkflowMessageInQueue();
+            $workflowMessageInQueue->modelClassName  = get_class($model);
+            $workflowMessageInQueue->modelItem       = $model;
+            $workflowMessageInQueue->processDateTime = '2007-02-02 00:00:00';
+            $workflowMessageInQueue->savedWorkflow   = $savedWorkflow;
+            $workflowMessageInQueue->triggeredByUser = Yii::app()->user->userModel;
+            $workflowMessageInQueue->serializedData  = serialize(array('something'));
+            $saved = $workflowMessageInQueue->save();
+            assert($saved); //Not Coding Standard
+            return $workflowMessageInQueue;
+        }
     }
 ?>

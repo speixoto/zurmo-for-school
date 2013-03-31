@@ -174,13 +174,10 @@
                                                 'value'              => null,
                                                 'secondValue'        => null,
                                                 'valueType'          => 'Is Time For',
-                                                'relationfilter'     => 'RelationFilterAny',
+                                                'relationFilter'     => 'RelationFilterAny',
                                                 'attributeIndexOrDerivedType' => 'date',
                                                 'operator' => null);
             $unserializedData = unserialize($savedWorkflow->serializedData);
-            echo "<pre>";
-            print_r($unserializedData);
-            echo "</pre>";
             $this->assertEquals($compareData['Triggers'],                    $unserializedData['Triggers']);
             $this->assertEquals($compareData['Actions'],                     $unserializedData['Actions']);
             $this->assertEquals($compareData['EmailMessages'],               $unserializedData['EmailMessages']);

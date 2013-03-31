@@ -113,5 +113,15 @@
                 NotificationsUtil::submit($message, $rules);
             }
         }
+
+        /**
+         * Function for testing only. Do not use otherwise.
+         * @param $depth
+         */
+        public function setDepth($depth)
+        {
+            assert('is_int($depth)');
+            $this->depth = $depth;
+        }
     }
 ?>

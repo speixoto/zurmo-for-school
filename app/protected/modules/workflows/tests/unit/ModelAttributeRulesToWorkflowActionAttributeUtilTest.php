@@ -45,12 +45,12 @@
 
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('WorkflowModelTestItem', 'float', 'value');
-            $compareData = array(array('value',  'length',  'min'  => 3, 'max' => 64));
+            $compareData = array(array('value',  'length',  'min'  => 2, 'max' => 64));
             $this->assertEquals($compareData, $rules);
 
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::
                      getApplicableRulesByModelClassNameAndAttributeName('WorkflowModelTestItem', 'integer', 'value');
-            $compareData = array(array('value',  'length',  'min'  => 3, 'max' => 64));
+            $compareData = array(array('value',  'length',  'min'  => 2, 'max' => 64));
             $this->assertEquals($compareData, $rules);
 
             $rules = ModelAttributeRulesToWorkflowActionAttributeUtil::

@@ -69,7 +69,8 @@
                 }
                 catch (NotFoundException $e)
                 {
-                    //todo:?
+                    WorkflowUtil::handleProcessingException($e,
+                        'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
                 }
                 $byTimeWorkflowInQueue->delete();
             }

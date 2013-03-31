@@ -173,8 +173,6 @@
         {
             if($this->resolveCreateModel($this->triggeredModel, $this->action->relation) && $this->canSaveTriggeredModel)
             {
-                //todo: when calling save, we need to not trigger workflows on this model since we already are running them..
-                //todo: and test this
                 $saved = $this->triggeredModel->save();
                 if(!$saved)
                 {

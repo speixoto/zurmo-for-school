@@ -25,34 +25,20 @@
      ********************************************************************************/
 
     /**
-     * Class used to define notification when a workflow process hits the maximum depth processing.
+     * Helper class to provider PHP operators and validate
+     * accurate usage of operator types
      */
-    class WorkflowMaximumDepthNotificationRules extends NotificationRules
+    class PHPOperatorUtil
     {
-        public static function getType()
-        {
-            return 'WorkflowMaximumDepth';
-        }
-
-        public static function getDisplayName()
-        {
-            return Zurmo::t('WorkflowsModule', 'Maximum depth reached for workflow processing.');
-        }
-
         /**
-         * Any user who has access to the workflows module is added to receive a
-         * notification.
+         * For now use the same method that SQL structure checks use since it works the same way
+         * @param $structure
+         * @param $clauseCount
+         * @return null | string if error message
          */
-        protected function loadUsers()
+        public static function resolveValidationForATemplateSqlStatementAndReturnErrorMessage($structure, $clauseCount)
         {
-            foreach (User::getAll() as $user)
-            {
-                if ($user->getEffectiveRight('WorkflowsModule', WorkflowsModule::RIGHT_ACCESS_WORKFLOWS) ==
-                    Right::ALLOW)
-                {
-                    $this->addUser($user);
-                }
-            }
+            return SQLOperatorUtil::resolveValidationForATemplateSqlStatementAndReturnErrorMessage($structure, $clauseCount);
         }
     }
 ?>

@@ -26,13 +26,100 @@
 
     class WorkflowActionAttributeFormTest extends WorkflowBaseTest
     {
-        public function test()
+        public function testGetTypeValuesAndLabels()
         {
-            //todo: each subForm return value of getTypeValuesAndLabels to get complete coverage
-            //getTypeValuesAndLabels($isCreatingNewModel, $isRequired)
-            $this->fail();
+            $form            = new CheckBoxWorkflowActionAttributeForm('WorkflowModelTestItem', 'boolean');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form        = new CurrencyValueWorkflowActionAttributeForm('WorkflowModelTestItem', 'currencyValue');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form            = new DateWorkflowActionAttributeForm('WorkflowModelTestItem', 'date');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(2, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
+            $this->assertEquals(3, count($valuesAndLabels));
+
+            $form            = new DateTimeWorkflowActionAttributeForm('WorkflowModelTestItem', 'dateTime');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(2, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
+            $this->assertEquals(3, count($valuesAndLabels));
+
+            $form        = new DecimalWorkflowActionAttributeForm('WorkflowModelTestItem', 'float');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form        = new DropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'dropDowns');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new EmailWorkflowActionAttributeForm('WorkflowModelTestItem', 'email');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new IntegerWorkflowActionAttributeForm('WorkflowModelTestItem', 'integer');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form        = new ContactStateWorkflowActionAttributeForm('WorkflowModelTestItem', 'likeContactState');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form        = new MultiSelectDropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'multiDropDown');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form        = new PhoneWorkflowActionAttributeForm('WorkflowModelTestItem', 'phone');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new RadioDropDownWorkflowActionAttributeForm('WorkflowModelTestItem', 'radioDropDown');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new TagCloudWorkflowActionAttributeForm('WorkflowModelTestItem', 'tagCloud');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+
+            $form        = new TextWorkflowActionAttributeForm('WorkflowModelTestItem', 'text');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new TextAreaWorkflowActionAttributeForm('WorkflowModelTestItem', 'textArea');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new UrlWorkflowActionAttributeForm('WorkflowModelTestItem', 'url');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(1, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, false);
+            $this->assertEquals(2, count($valuesAndLabels));
+
+            $form        = new UserWorkflowActionAttributeForm('WorkflowModelTestItem', 'user');
+            $valuesAndLabels = $form->getTypeValuesAndLabels(true, true);
+            $this->assertEquals(2, count($valuesAndLabels));
+            $valuesAndLabels = $form->getTypeValuesAndLabels(false, true);
+            $this->assertEquals(4, count($valuesAndLabels));
         }
 
+        /**
+         * @depends testGetTypeValuesAndLabels
+         */
         public function testValidateDynamicDateIntegerValuePossibilities()
         {
             $form                 = new DateWorkflowActionAttributeForm('WorkflowModelTestItem', 'date');

@@ -42,7 +42,8 @@
                 }
                 catch(Exception $e)
                 {
-                    //todo: what to do?
+                    WorkflowUtil::handleProcessingException($e,
+                        'application.modules.workflows.utils.WorkflowEmailMessagesUtil.processAfterSave');
                 }
             }
         }
@@ -61,7 +62,8 @@
                 }
                 catch(Exception $e)
                 {
-                    //todo: what to do?
+                    WorkflowUtil::handleProcessingException($e,
+                        'application.modules.workflows.utils.WorkflowEmailMessagesUtil.processOnWorkflowMessageInQueueJob');
                 }
             }
         }

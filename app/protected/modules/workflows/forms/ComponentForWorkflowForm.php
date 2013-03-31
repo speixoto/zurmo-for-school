@@ -29,8 +29,6 @@
      */
     abstract class ComponentForWorkflowForm extends ConfigurableMetadataModel implements RowKeyInterface
     {
-        //todo: either we have too many unused methods in this class or this can somehow be better
-        //refactored to share with ComponentForReportForm
         /**
          * Divider used for displaying labels that cross relations. An example is Account's >> Opportunities
          */

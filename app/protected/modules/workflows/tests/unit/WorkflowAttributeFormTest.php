@@ -234,7 +234,7 @@
         }
 
         /**
-         * @depends testEmailAddressWorkflowAttributeFormSetGetAndValidate
+         * @depends testEmailWorkflowAttributeFormSetGetAndValidate
          */
         public function testIntegerWorkflowAttributeFormSetGetAndValidate()
         {
@@ -356,7 +356,6 @@
             $form->type                      = WorkflowActionAttributeForm::TYPE_STATIC;
             $form->shouldSetValue            = true;
             $form->value                     = $bobby->id;
-            $form->stringifiedModelForValue  = strval($bobby);
             $validated                       = $form->validate();
             $this->assertTrue($validated);
 

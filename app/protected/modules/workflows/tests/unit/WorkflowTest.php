@@ -93,7 +93,9 @@
             $workflow->setTriggerOn(Workflow::TRIGGER_ON_NEW);
             $workflow->setType(Workflow::TYPE_ON_SAVE);
             $workflow->setTimeTrigger($timeTrigger);
+            $workflow->addTrigger($trigger);
             $workflow->addAction($action);
+            $workflow->addEmailMessage($emailMessage);
 
             $this->assertEquals('SomeModule',             $workflow->getModuleClassName());
             $this->assertEquals('a description',          $workflow->getDescription());
@@ -103,14 +105,14 @@
             $this->assertTrue  ($workflow->getIsActive());
             $this->assertEquals(6,                        $workflow->getOrder());
             $this->assertEquals('my workflow rule',       $workflow->getName());
-            $this->assertEquals(Workflow::TRIGGER_ON_NEW, $workflow->getTriggerOne());
+            $this->assertEquals(Workflow::TRIGGER_ON_NEW, $workflow->getTriggerOn());
             $this->assertEquals(Workflow::TYPE_ON_SAVE,   $workflow->getType());
             $this->assertEquals($timeTrigger,             $workflow->getTimeTrigger());
             $actions = $workflow->getActions();
             $this->assertEquals($action,                $actions[0]);
             $this->assertCount(1,                       $actions);
             $emailMessages = $workflow->getEmailMessages();
-            $this->assertEquals($emailMessage,            $emailMessages[0]);
+            $this->assertEquals($emailMessage,          $emailMessages[0]);
             $this->assertCount(1,                       $emailMessages);
             $triggers = $workflow->getTriggers();
             $this->assertEquals($trigger,               $triggers[0]);
@@ -121,7 +123,7 @@
             $this->assertCount(0,                       $actions);
 
             $workflow->removeAllEmailMessages();
-            $actions = $workflow->getEmailMessages();
+            $emailMessages = $workflow->getEmailMessages();
             $this->assertCount(0,                       $emailMessages);
 
 
@@ -130,7 +132,7 @@
             $this->assertCount(0,                       $triggers);
 
             $workflow->removeTimeTrigger();
-            $this->assertEquals(array(),           $workflow->getTimeTrigger());
+            $this->assertNull($workflow->getTimeTrigger());
         }
     }
 ?>

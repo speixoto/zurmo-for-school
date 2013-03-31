@@ -24,35 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class used to define notification when a workflow process hits the maximum depth processing.
-     */
-    class WorkflowMaximumDepthNotificationRules extends NotificationRules
+    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
     {
-        public static function getType()
+        public function getActionType()
         {
-            return 'WorkflowMaximumDepth';
+            return 'Create';
         }
 
-        public static function getDisplayName()
+        protected function getDefaultLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'Maximum depth reached for workflow processing.');
+            return Zurmo::t('Core', 'Create');
         }
 
-        /**
-         * Any user who has access to the workflows module is added to receive a
-         * notification.
-         */
-        protected function loadUsers()
+        protected function getDefaultRoute()
         {
-            foreach (User::getAll() as $user)
+            $params = array();
+            if (Yii::app()->request->getParam('redirectUrl') != null)
             {
-                if ($user->getEffectiveRight('WorkflowsModule', WorkflowsModule::RIGHT_ACCESS_WORKFLOWS) ==
-                    Right::ALLOW)
-                {
-                    $this->addUser($user);
-                }
+                $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));
             }
+            elseif ($this->getRedirectUrl() != null)
+            {
+                $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
+            }
+            return Yii::app()->createUrl($this->moduleId . '/default/create/', $params);
         }
     }
 ?>

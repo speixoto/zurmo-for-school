@@ -27,7 +27,7 @@
     /**
      * Base test class to use for workflow tests
      */
-    class WorkflowBaseTest extends ZurmoBaseTest
+    abstract class WorkflowBaseTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

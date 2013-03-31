@@ -38,7 +38,7 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CreateLink',
+                            array('type'  => 'WorkflowCreateLink',
                                 'htmlOptions' => array('class' => 'icon-create'),
                             ),
                             array(

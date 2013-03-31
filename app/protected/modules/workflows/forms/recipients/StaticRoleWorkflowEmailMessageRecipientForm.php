@@ -25,32 +25,39 @@
  ********************************************************************************/
 
     /**
-     * Form to work with a specific group for an email message recipient
+     * Form to work with a specific role for an email message recipient
      */
-    class StaticGroupWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
+    class StaticRoleWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
         /**
          * @var string
          */
-        public $groupId;
+        public $roleId;
 
         public static function getTypeLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'All users in a specific group');
+            return Zurmo::t('WorkflowsModule', 'All users in a specific role');
         }
 
         public function rules()
         {
             return array_merge(parent::rules(), array(
-                      array('groupId',  'type', 'type' =>  'integer'),
-                      array('groupId',  'required')));
+                      array('roleId',  'type', 'type' =>  'integer'),
+                      array('roleId',  'required')));
         }
 
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
-            $group       = Group::getById((int)$this->groupId); //todo: exception if group no longer exists?
+            try
+            {
+                $role       = Role::getById((int)$this->roleId);
+            }
+            catch(NotFoundException $e)
+            {
+                return array();
+            }
             $recipients = array();
-            foreach($group->users as $user)
+            foreach($role->users as $user)
             {
                 if ($user->primaryEmail->emailAddress !== null)
                 {

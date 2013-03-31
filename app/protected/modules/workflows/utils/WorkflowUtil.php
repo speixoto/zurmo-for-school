@@ -299,5 +299,26 @@
             return                  WorkflowUtil::getModelsFilteredByInferredModel($modelClassName, $inferredRelationName,
                 $model->getClassId('Item'));
         }
+
+        /**
+         * Utilize this method when processing workflow triggers, actions, and alerts.  Sometimes an exception could be
+         * thrown, but we don't want to stop execution. So we will just throw that exception into the log for now.
+         * Some exceptions can just be because an action exists against a model that no longer exists, which can happen
+         * if you are dealing with a by-time queue item for example.  In the future if we decide we need a better way
+         * to handle this type of occurrence, we can alert this method.
+         * @param Exception exception
+         * @param string $category
+         */
+        public static function handleProcessingException(Exception $exception, $category)
+        {
+            assert('is_string($category)');
+            $content = 'Exception class: ' . get_class($exception);
+            if($exception->getMessage() != null)
+            {
+                $content .= ' Thrown with message: ' . $exception->getMessage();
+            }
+            $content .= "\n" . $exception->getTraceAsString();
+            Yii::log($content, CLogger::LEVEL_WARNING, $category);
+        }
     }
 ?>

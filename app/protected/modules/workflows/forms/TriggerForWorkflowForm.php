@@ -35,8 +35,6 @@
          */
         const RELATION_FILTER_ANY   = 'RelationFilterAny';
 
-        //todo: this class shares a lot with FilterForReportForm, i dont know how we could refactor
-        //but if we could it would be nice. maybe a util that we move a lot of the logic into?
         /**
          * If the trigger attribute is a currency attribute, then this property should be populated
          * @var string
@@ -335,8 +333,6 @@
                 throw new NotSupportedException();
             }
             $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
-            //todo: probably should make a wrapper to call same thing as displayElementType but not use displayElementType since
-            //that could change and affect this in ways it shouldnt.
             return $modelToWorkflowAdapter->getDisplayElementType($this->getResolvedAttribute());
         }
 

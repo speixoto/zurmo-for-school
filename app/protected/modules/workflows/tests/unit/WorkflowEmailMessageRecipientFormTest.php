@@ -78,14 +78,6 @@
              $this->assertEquals('bobby bobbyson', $form->stringifiedModelForValue);
         }
 
-        public function test()
-        {
-            //todo: each subForm return value of getTypeValuesAndLabels to get complete coverage
-            //todo test validation of each subform based on specific validations for each subform
-            //getTypeValuesAndLabels($isCreatingNewModel, $isRequired)
-            $this->fail();
-        }
-
         public function testMakeRecipientsForStaticAddress()
         {
             $form  = new StaticAddressWorkflowEmailMessageRecipientForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);

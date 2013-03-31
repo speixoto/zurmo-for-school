@@ -115,7 +115,6 @@
             }
             $this->addError('relationFilter', Zurmo::t('WorkflowsModule', 'Invalid Relation Filter'));
             return false;
-            return true;
         }
 
         public function getRelationValuesAndLabels()

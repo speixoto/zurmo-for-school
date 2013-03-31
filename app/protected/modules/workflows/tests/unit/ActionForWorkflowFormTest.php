@@ -26,6 +26,59 @@
 
     class ActionForWorkflowFormTest extends WorkflowBaseTest
     {
+        public function testGetDisplayLabel()
+        {
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_SELF;
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Update', $label);
+
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'hasMany2';
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Update Related WorkflowModelTestItems', $label);
+
+            //Test update a derived related model (this is like account's meetings)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'model5ViaItem';
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Update Related WorkflowModelTestItem5s', $label);
+
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_CREATE;
+            $form->relation        = 'hasMany2';
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Create WorkflowModelTestItem', $label);
+
+            //Test update a inferred related model (this is like a meeting's accounts)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
+            $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
+            $form->relation        = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Update Related WorkflowModelTestItems', $label);
+
+            //Test create a related, derived related model (this is like account's meetings)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $form->type                  = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $form->relation              = 'hasMany2';
+            $form->relatedModelRelation  = 'model5ViaItem';
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Create Related WorkflowModelTestItems WorkflowModelTestItem5', $label);
+
+            //Test create a related, inferred related model (this is like a meeting's accounts)
+            $form = new ActionForWorkflowForm('WorkflowModelTestItem7', Workflow::TYPE_ON_SAVE);
+            $form->type                 = ActionForWorkflowForm::TYPE_CREATE_RELATED;
+            $form->relation             ='model5';
+            $form->relatedModelRelation = 'WorkflowModelTestItem__workflowItems__Inferred';
+            $label = $form->getDisplayLabel();
+            $this->assertEquals('Create Related WorkflowModelTestItem5s WorkflowModelTestItem', $label);
+        }
+
+        /**
+         * @depends testGetDisplayLabel
+         */
         public function testSetAndGetActionForUpdateAction()
         {
             $action                       = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);

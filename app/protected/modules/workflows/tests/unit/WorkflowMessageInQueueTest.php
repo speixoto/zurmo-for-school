@@ -26,10 +26,76 @@
 
     class WorkflowMessageInQueueTest extends WorkflowBaseTest
     {
-        public function testMethods()
+        public function testSetAndGet()
         {
-            //todO: also test getModelsToProcess()
-            $this->fail();
+            $model = new WorkflowModelTestItem();
+            $model->lastName = 'Green';
+            $model->string   = 'string';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+
+            $savedWorkflow                  = new SavedWorkflow();
+            $savedWorkflow->name            = 'some workflow';
+            $savedWorkflow->description     = 'description';
+            $savedWorkflow->moduleClassName = 'moduleClassName';
+            $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
+            $savedWorkflow->type            = 'some type';
+            $savedWorkflow->serializedData  = serialize(array('something'));
+            $saved                          = $savedWorkflow->save();
+            $this->assertTrue($saved);
+
+
+            $workflowMessageInQueue                  = new WorkflowMessageInQueue();
+            $workflowMessageInQueue->modelClassName  = get_class($model);
+            $workflowMessageInQueue->modelItem       = $model;
+            $workflowMessageInQueue->processDateTime = '2007-02-02 00:00:00';
+            $workflowMessageInQueue->savedWorkflow   = $savedWorkflow;
+            $workflowMessageInQueue->triggeredByUser = Yii::app()->user->userModel;
+            $workflowMessageInQueue->serializedData  = serialize(array('something'));
+            $saved = $workflowMessageInQueue->save();
+            $this->assertTrue($saved);
+            $id = $workflowMessageInQueue->id;
+            $workflowMessageInQueue->forget();
+
+            //Retrieve and compare
+            $workflowMessageInQueue = WorkflowMessageInQueue::getById($id);
+            $this->assertEquals('WorkflowModelTestItem',    $workflowMessageInQueue->modelClassName);
+            $this->assertTrue  ($workflowMessageInQueue->modelItem->isSame($model));
+            $this->assertEquals('2007-02-02 00:00:00',      $workflowMessageInQueue->processDateTime);
+            $this->assertTrue  ($workflowMessageInQueue->savedWorkflow->isSame($savedWorkflow));
+            $this->assertTrue  ($workflowMessageInQueue->triggeredByUser->isSame(Yii::app()->user->userModel));
+            $this->assertEquals(serialize(array('something')), $workflowMessageInQueue->serializedData);
+        }
+
+        /**
+         * @depends testSetAndGet
+         */
+        public function testGetModelsToProcess($pageSize)
+        {
+            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $models = WorkflowMessageInQueue::getModelsToProcess(10);
+            $this->assertEquals(1, count($models));
+
+            //Now have one that is not ready for processing. It should still only get 1
+            $model = new WorkflowModelTestItem();
+            $model->lastName = 'Green2';
+            $model->string   = 'string2';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+
+            $savedWorkflows = SavedWorkflow::getByName('some workflow');
+
+            $workflowMessageInQueue                  = new WorkflowMessageInQueue();
+            $workflowMessageInQueue->modelClassName  = get_class($model);
+            $workflowMessageInQueue->modelItem       = $model;
+            $workflowMessageInQueue->processDateTime = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + 86400);
+            $workflowMessageInQueue->savedWorkflow   = $savedWorkflows[0];
+            $workflowMessageInQueue->serializedData  = serialize(array('something'));
+            $saved = $workflowMessageInQueue->save();
+            $this->assertTrue($saved);
+
+            $models = WorkflowMessageInQueue::getModelsToProcess(10);
+            $this->assertEquals(1, count($models));
         }
     }
 ?>

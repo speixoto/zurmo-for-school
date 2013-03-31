@@ -89,14 +89,13 @@
         protected function renderContent()
         {
             $content  = '<div>';
-            $content .= $this->renderEmailMessageRowNumberLabel(); //todo: fix todo below
-            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), 'todo some label saying this is an alert?');
+            $content .= $this->renderEmailMessageRowNumberLabel();
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), '');
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div>';
             $content .= $this->renderEmailMessageContent();
             $content .= '</div>';
-            //todo: call correctly as email-message?, fix theme? need to maybe refcator
             $content  =  ZurmoHtml::tag('div', array('class' => 'dynamic-row'), $content);
             return ZurmoHtml::tag('li', array(), $content);
         }
@@ -112,7 +111,6 @@
 
         protected function renderEmailMessageContent()
         {
-            //todo: still call it attributesContainer??
             $params            = array('inputPrefix' => $this->inputPrefixData);
             $content           = '<div class="attributesContainer">';
             //todo: move EmailTemplatesForWorkflowStaticDropDownElement to emailTemplates module when ready.
@@ -228,7 +226,6 @@
             return $items;
         }
 
-        //todo: getNonSortableListContent and getSortableListContent need to be moved so we can call them statically ? then also for reporting too.
         /**
          * @param array $items
          * @return string

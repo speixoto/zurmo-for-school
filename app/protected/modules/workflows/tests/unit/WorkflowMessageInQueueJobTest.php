@@ -26,7 +26,53 @@
 
     class WorkflowMessageInQueueJobTest extends WorkflowBaseTest
     {
-        //todo:
-        //todo: test if a queue item relates to a workflow that was deleted. make sure exception handling is ok
+        public function testRun()
+        {
+            $model       = WorkflowTestHelper::createWorkflowModelTestItem('Green', '514');
+            $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
+                                 'operator'                    => OperatorRules::TYPE_EQUALS,
+                                 'value'                       => '514',
+                                 'durationSeconds'             => '333');
+            $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
+                                       ActionForWorkflowForm::ACTION_ATTRIBUTES =>
+                                            array('string' => array('shouldSetValue'    => '1',
+                                                  'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                  'value'  => 'jason'))));
+            $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
+            WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow);
+
+            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $job = new WorkflowMessageInQueueJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+        }
+
+        /**
+         * @depends testRun
+         */
+        public function testRunAgainstWorkflowThatWasDeleted()
+        {
+            $model       = WorkflowTestHelper::createWorkflowModelTestItem('Green', '514');
+            $timeTrigger = array('attributeIndexOrDerivedType' => 'string',
+                                    'operator'                    => OperatorRules::TYPE_EQUALS,
+                                    'value'                       => '514',
+                                    'durationSeconds'             => '333');
+            $actions     = array(array('type' => ActionForWorkflowForm::TYPE_UPDATE_SELF,
+                                    ActionForWorkflowForm::ACTION_ATTRIBUTES =>
+                                    array('string' => array('shouldSetValue'    => '1',
+                                        'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                        'value'  => 'jason'))));
+            $savedWorkflow         = WorkflowTestHelper::createByTimeSavedWorkflow($timeTrigger, array(), $actions);
+            WorkflowTestHelper::createExpiredWorkflowMessageInQueue($model, $savedWorkflow);
+
+            //Now delete the old workflow
+            $deleted = $savedWorkflow->delete();
+            $this->assertTrue($deleted);
+
+            $this->assertEquals(1, count(WorkflowMessageInQueue::getAll()));
+            $job = new WorkflowMessageInQueueJob();
+            $this->assertTrue($job->run());
+            $this->assertEquals(0, count(WorkflowMessageInQueue::getAll()));
+        }
     }
 ?>

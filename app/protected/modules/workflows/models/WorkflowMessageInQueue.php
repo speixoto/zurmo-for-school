@@ -54,8 +54,8 @@
                     array('processDateTime',  'required'),
                     array('processDateTime',  'type', 'type' => 'datetime'),
                     array('savedWorkflow',    'required'),
-                    array('serializedData',      'required'),
-                    array('serializedData',      'type', 'type' => 'string'),
+                    array('serializedData',   'required'),
+                    array('serializedData',   'type', 'type' => 'string'),
                 ),
                 'elements' => array(
                     'processDateTime' => 'DateTime'
