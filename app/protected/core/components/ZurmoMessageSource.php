@@ -36,6 +36,7 @@
 
         /**
          * Override of the parent method using RedBean
+         * @param string $category
          */
         protected function loadMessagesFromDb($category, $languageCode)
         {
