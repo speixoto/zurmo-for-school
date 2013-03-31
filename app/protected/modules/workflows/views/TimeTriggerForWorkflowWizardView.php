@@ -60,6 +60,8 @@
                 $(".remove-dynamic-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function(){
                     $(this).parent().remove();
                     $("#ByTimeWorkflowWizardForm_timeTriggerAttribute").val("");
+                    $(".NoTimeTrigger").show();
+                    $("#time-trigger-container").hide();
                     return false;
                 });
             ';
@@ -89,8 +91,8 @@
         {
             $content  = '<div>';
             $content .= $this->renderZeroComponentsContentAndWrapper();
-            $content .= $this->renderTimeTriggerContentAndWrapper();
             $content .= $this->renderAttributeSelectorContentAndWrapper();
+            $content .= $this->renderTimeTriggerContentAndWrapper();
             $content .= '</div>';
             $this->registerScripts();
             return $content;
@@ -109,7 +111,7 @@
          */
         protected function getZeroComponentsMessageContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a time trigger below') . '</h2>';
+            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a time trigger') . '</h2>';
         }
         protected function renderZeroComponentsContentAndWrapper()
         {
@@ -145,7 +147,7 @@
             {
                 $timeTriggerContent = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), ZurmoHtml::tag('ul', array(), ''));
             }
-            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container'), $timeTriggerContent);
+            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container', 'style' => 'display:none'), $timeTriggerContent);
         }
     }
 ?>

@@ -197,8 +197,7 @@
                     dataType: 'json',
                     success : function(data)
                     {
-                        rebuildSelectInputFromDataAndLabels
-                        ('ByTimeWorkflowWizardForm_timeTriggerAttribute', data);
+                        rebuildSelectInputFromDataAndLabels('ByTimeWorkflowWizardForm_timeTriggerAttribute', data);
                     },
                     error : function()
                     {
@@ -226,7 +225,11 @@
                         //$("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         }',
-                'success' => 'js:function(data){ $("#' . $inputDivId . ' ul").html(data); }',
+                'success' => 'js:function(data){
+                                $(".' . TimeTriggerForWorkflowWizardView::getZeroComponentsClassName() . '").hide();
+                                $("#time-trigger-container").show();
+                                $("#' . $inputDivId . ' ul").html(data);
+                              }',
             ));
             $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {

@@ -36,8 +36,7 @@
             $moduleId        = $moduleClassName::getDirectoryName();
             $element         = new DetailsLinkActionElement('default', $moduleId, $model->savedWorkflow->id, $params);
             $relatedModel    = self::resolveModel($model);
-            return "<span>" . $element->render() . "</span><span class='less-pronounced-text'>" .
-                   self::resolveModelContent($relatedModel) . "</span>";
+            return $element->render() . ' &mdash; <span class="less-pronounced-text">' . self::resolveModelContent($relatedModel) . '</span>';
         }
 
         protected static function resolveModel(ByTimeWorkflowInQueue $byTimeWorkflowInQueue)

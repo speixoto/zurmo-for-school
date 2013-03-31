@@ -97,7 +97,7 @@
 
         protected function getNoWorkflowsToOrderContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'This module does not have any workflows to order') . '</h2>';
+            return '<div class="large-icon"></div><p>' . Zurmo::t('WorkflowsModule', 'This module does not have any workflows to order') . '</p>';
         }
 
         protected function renderNoWorkflowsToOrderContentAndWrapper()
@@ -116,8 +116,11 @@
 
         protected function renderWorkflowOrderContentAndWrapper()
         {
-            $content =             $content = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), '');
-            return ZurmoHtml::tag('div', array('id' => 'workflow-order-container'), $content . $this->renderSaveLinkContent());
+            $content  =  ZurmoHtml::tag('div', array('id' => 'workflow-order-container'),
+                            ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), ''));
+            $content .=  '<div class="float-bar" style="display:none"><div class="view-toolbar-container clearfix dock disable-float-bar"><div class="form-toolbar">'
+                         . $this->renderSaveLinkContent() . '</div></div></div>';
+            return $content;
         }
 
         protected function renderSaveLinkContent()
@@ -125,8 +128,7 @@
             $params                = array();
             $params['label']       = Zurmo::t('Core', 'Save');
             $params['htmlOptions'] = array('id'      => 'save-order',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");',
-                                           'style'   => "display:none;");
+                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
             $element               = new SaveButtonActionElement(null, null, null, $params);
             return $element->render();
         }
@@ -186,13 +188,14 @@
                                 if(data.dataToOrder == "true")
                                 {
                                     $(".no-workflows-to-order-view").hide();
-                                    $(".select-module-view").hide(); $("#save-order").show();
+                                    $(".select-module-view").hide();
+                                    $(".float-bar").show();
                                     $(".' . $inputDivId . '").html(data.content);
                                 }
                                 else
                                 {
                                     $(".select-module-view").hide();
-                                    $("#save-order").hide();
+                                    $(".float-bar").hide();
                                     $(".' . $inputDivId . '").html("");
                                     $(".no-workflows-to-order-view").show();
                                 }}',
@@ -203,7 +206,8 @@
                 if($('#" . $id . "').val() == '')
                 {
                     $('.no-workflows-to-order-view').hide();
-                    $('.select-module-view').show(); $('#save-order').hide();
+                    $('.select-module-view').show();
+                    $('.float-bar').hide();
                     $('." . $inputDivId . "').html('');
                 }
                 else
