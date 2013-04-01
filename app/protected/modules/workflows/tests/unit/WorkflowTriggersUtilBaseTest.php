@@ -26,6 +26,29 @@
 
     class WorkflowTriggersUtilBaseTest extends WorkflowBaseTest
     {
+        public $freeze = false;
+
+        public function setup()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
+        }
+
         public static function makeOnSaveWorkflowAndTriggerWithoutValueType($attributeIndexOrDerivedType, $operator,
                                                                             $value,
                                                                             $moduleClassName = 'WorkflowsTestModule',
@@ -133,12 +156,6 @@
             $model->forget();
             unset($model);
             return $modelClassName::getById($modelId);
-        }
-
-        public function setup()
-        {
-            parent::setUp();
-            Yii::app()->user->userModel = User::getByUsername('super');
         }
     }
 ?>

@@ -34,6 +34,15 @@
         const RIGHT_DELETE_WORKFLOWS = 'Delete Workflows';
         const RIGHT_ACCESS_WORKFLOWS = 'Access Workflows Tab';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                             = array();
+            $labels[self::RIGHT_CREATE_WORKFLOWS] = Zurmo::t('WorkflowsModule', 'Create Workflows');
+            $labels[self::RIGHT_DELETE_WORKFLOWS] = Zurmo::t('WorkflowsModule', 'Delete Workflows');
+            $labels[self::RIGHT_ACCESS_WORKFLOWS] = Zurmo::t('WorkflowsModule', 'Access Workflows Tab');
+            return $labels;
+        }
+
         /**
          * @return array
          */
@@ -85,13 +94,6 @@
                         'url'   => array('/workflows/default'),
                         'right' => self::RIGHT_ACCESS_WORKFLOWS,
                         'order' => 8,
-                    ),
-                ),
-                'shortcutsCreateMenuItems' => array(
-                    array(
-                        'label' => 'Workflow',
-                        'url'   => array('/workflows/default/selectType'),
-                        'right' => self::RIGHT_CREATE_WORKFLOWS,
                     ),
                 ),
             );

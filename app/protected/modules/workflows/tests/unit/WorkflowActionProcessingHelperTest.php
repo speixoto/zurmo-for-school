@@ -26,6 +26,8 @@
 
     class WorkflowActionProcessingHelperTest extends WorkflowBaseTest
     {
+        public $freeze = false;
+
         protected static $superUserId;
 
         protected static $bobbyUserId;
@@ -41,6 +43,27 @@
             self::$superUserId = $super->id;
             self::$bobbyUserId = $bobby->id;
             self::$sarahUserId = $sarah->id;
+        }
+
+        public function setup()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
         }
 
         public function testUpdateSelf()

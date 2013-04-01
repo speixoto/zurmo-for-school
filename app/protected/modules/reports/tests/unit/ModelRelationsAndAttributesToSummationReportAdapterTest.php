@@ -236,10 +236,10 @@
             $report             = new Report();
             $report->setType(Report::TYPE_SUMMATION);
             $report->setModuleClassName('ReportsTestModule');
-            $this->assertEquals ('id',     ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName('Count'));
-            $this->assertEquals ('string', ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName('string'));
-            $this->assertEquals ('owner',  ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName('owner__User'));
-            $this->assertEquals ('owner',  ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName(
+            $this->assertEquals ('id',     ModelRelationsAndAttributesToSummationReportAdapter::resolveRealAttributeName('Count'));
+            $this->assertEquals ('string', ModelRelationsAndAttributesToSummationReportAdapter::resolveRealAttributeName('string'));
+            $this->assertEquals ('owner',  ModelRelationsAndAttributesToSummationReportAdapter::resolveRealAttributeName('owner__User'));
+            $this->assertEquals ('owner',  ModelRelationsAndAttributesToSummationReportAdapter::resolveRealAttributeName(
                                            'ReportsTestModel__owner__Inferred'));
         }
 

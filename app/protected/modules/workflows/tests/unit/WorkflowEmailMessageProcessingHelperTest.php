@@ -26,6 +26,8 @@
 
     class WorkflowEmailMessageProcessingHelperTest extends WorkflowBaseTest
     {
+        public $freeze = false;
+
         protected static $superUserId;
 
         protected static $bobbyUserId;
@@ -57,6 +59,27 @@
             $saved = $emailTemplate->save();
             assert($saved); // Not Coding Standard
             self::$emailTemplate = $emailTemplate;
+        }
+
+        public function setup()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
         }
 
         public function testProcessWithDefaultSender()

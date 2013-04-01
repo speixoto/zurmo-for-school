@@ -222,10 +222,13 @@
 
         public function testWorkflowsToProcessAfterSave()
         {
-            //todo:
-            //--Item getWorkflowsToProcessAfterSave
-            //--Item addWorkflowToProcessAfterSave
-            $this->fail();
+            $account  = new Account();
+            $workflow = new Workflow();
+            $workflow->setModuleClassName('something');
+            $account->addWorkflowToProcessAfterSave($workflow);
+            $workflows = $account->getWorkflowsToProcessAfterSave();
+            $this->assertEquals(1, count($workflows));
+            $this->assertEquals('something', $workflows[0]->getModuleClassName());
         }
     }
 ?>

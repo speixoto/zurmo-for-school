@@ -278,7 +278,7 @@
          */
         public function getResolvedAttributeRealAttributeName()
         {
-            return ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($this->getResolvedAttribute());
+            return $modelToReportAdapter->resolveRealAttributeName($this->getResolvedAttribute());
         }
 
         /**

@@ -125,7 +125,7 @@
             {
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
-                    ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName($attribute));
+                    $modelToReportAdapter->resolveRealAttributeName($attribute));
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }

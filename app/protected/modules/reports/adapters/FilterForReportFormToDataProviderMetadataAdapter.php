@@ -344,7 +344,7 @@
          */
         protected function getRealAttributeName()
         {
-            return ModelRelationsAndAttributesToReportAdapter::resolveRealAttributeName(
+            return $this->modelRelationsAndAttributesToReportAdapter->resolveRealAttributeName(
                    $this->filter->getResolvedAttribute());
         }
 

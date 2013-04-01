@@ -26,6 +26,29 @@
 
     class WorkflowActionsUtilTest extends WorkflowBaseTest
     {
+        public $freeze = false;
+
+        public function setup()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
+        }
+
         public function testProcessBeforeSave()
         {
             //Create workflow

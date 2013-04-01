@@ -26,6 +26,18 @@
 
     class SavedReportTest extends ZurmoBaseTest
     {
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setUp()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
+
         public function testSetAndGetModel()
         {
             $savedReport                  = new SavedReport();
