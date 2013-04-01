@@ -197,7 +197,7 @@
         protected static function makeComponentFormAndPopulateWorkflowFromData($componentFormsData, Workflow $workflow,
                                                                                $componentPrefix)
         {
-            assert('is_array($componentFormsData');
+            assert('is_array($componentFormsData)');
             assert('is_string($componentPrefix) || $componentPrefix == null');
             $moduleClassName    = $workflow->getModuleClassName();
             $addMethodName      = 'add' . $componentPrefix;
@@ -221,7 +221,7 @@
         protected static function makeActionForWorkflowFormAndPopulateWorkflowFromData($componentFormsData,
                                                                                        Workflow $workflow)
         {
-            assert('is_array($componentFormsData');
+            assert('is_array($componentFormsData)');
             $moduleClassName    = $workflow->getModuleClassName();
             $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
@@ -241,7 +241,7 @@
         protected static function makeEmailMessageForWorkflowFormAndPopulateWorkflowFromData($componentFormsData,
                                                                                              Workflow $workflow)
         {
-            assert('is_array($componentFormsData');
+            assert('is_array($componentFormsData)');
             $moduleClassName    = $workflow->getModuleClassName();
             $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
