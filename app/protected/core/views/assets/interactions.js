@@ -1,5 +1,4 @@
 $(window).ready(function(){
-
     //main menu flyouts or mbmenu releacment
     $('.nav:not(.user-menu-item) > .parent').live({
         mouseenter: function() {
@@ -83,7 +82,7 @@ $(window).ready(function(){
     $(window).resize(function(){
       resizeWhiteArea();
     });
-    
+
     resizeWhiteArea();
 
     /*Autogrow text areas*/
@@ -143,6 +142,9 @@ $(window).ready(function(){
         left : 0
     };
     resolveSpinner(true, '#stickyListLoadingArea', style, '.loading');
+
+
+
 
 });
 
@@ -227,11 +229,11 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId){
 */
 
 function resolveSpinner(state, domObject, styleObject, spinnerClassName){
-    
+
     if(spinnerClassName === undefined){
         spinnerClassName = '.z-spinner';
     }
-    
+
     if(state === true){
         $( spinnerClassName, domObject).spin({
             lines     : styleObject.lines  || 9,      // The number of lines to draw
