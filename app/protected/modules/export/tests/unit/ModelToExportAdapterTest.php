@@ -79,22 +79,27 @@
 
         public function testGetDataWithNoRelationsSet()
         {
-            $super = User::getByUsername('super');
-            Yii::app()->user->userModel = $super;
-            $testItem = new ExportTestModelItem();
-            $testItem->firstName = 'Bob';
-            $testItem->lastName  = 'Bob';
-            $testItem->boolean   = true;
-            $testItem->date      = '2002-04-03';
-            $testItem->dateTime  = '2002-04-03 02:00:43';
-            $testItem->float     = 54.22;
-            $testItem->integer   = 10;
-            $testItem->phone     = '21313213';
-            $testItem->string    = 'aString';
-            $testItem->textArea  = 'Some Text Area';
-            $testItem->url       = 'http://www.asite.com';
-            $testItem->email       = 'a@a.com';
-            $testItem->owner     = $super;
+            $super                                  = User::getByUsername('super');
+            Yii::app()->user->userModel             = $super;
+            $testItem                               = new ExportTestModelItem();
+            $testItem->firstName                    = 'Bob';
+            $testItem->lastName                     = 'Bob';
+            $testItem->boolean                      = true;
+            $testItem->date                         = '2002-04-03';
+            $testItem->dateTime                     = '2002-04-03 02:00:43';
+            $testItem->float                        = 54.22;
+            $testItem->integer                      = 10;
+            $testItem->phone                        = '21313213';
+            $testItem->string                       = 'aString';
+            $testItem->textArea                     = 'Some Text Area';
+            $testItem->url                          = 'http://www.asite.com';
+            $testItem->email                        = 'a@a.com';
+            $testItem->owner                        = $super;
+            $testItem->primaryAddress->street1      = '129 Noodle Boulevard';
+            $testItem->primaryAddress->street2      = 'Apartment 6000A';
+            $testItem->primaryAddress->city         = 'Noodleville';
+            $testItem->primaryAddress->postalCode   = '23453';
+            $testItem->primaryAddress->country      = 'The Good Old US of A';
 
             $customFieldValue = new CustomFieldValue();
             $customFieldValue->value = 'Multi 1';
@@ -153,14 +158,11 @@
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
-                null,
+                'Noodleville',
+                'The Good Old US of A',
+                '23453',
+                '129 Noodle Boulevard',
+                'Apartment 6000A',
                 null,
                 null,
                 null,
@@ -200,9 +202,6 @@
                 'Primary Email - Opt Out',
                 'Primary Address - City',
                 'Primary Address - Country',
-                'Primary Address - Invalid',
-                'Primary Address - Latitude',
-                'Primary Address - Longitude',
                 'Primary Address - Postal Code',
                 'Primary Address - Street 1',
                 'Primary Address - Street 2',
@@ -317,9 +316,6 @@
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
@@ -354,9 +350,6 @@
                 'Primary Email - Opt Out',
                 'Primary Address - City',
                 'Primary Address - Country',
-                'Primary Address - Invalid',
-                'Primary Address - Latitude',
-                'Primary Address - Longitude',
                 'Primary Address - Postal Code',
                 'Primary Address - Street 1',
                 'Primary Address - Street 2',
@@ -479,9 +472,6 @@
                 null,
                 null,
                 null,
-                null,
-                null,
-                null,
             );
             $compareHeaderData = array(
                 $testItem->getAttributeLabel('id'),
@@ -516,9 +506,6 @@
                 'Primary Email - Opt Out',
                 'Primary Address - City',
                 'Primary Address - Country',
-                'Primary Address - Invalid',
-                'Primary Address - Latitude',
-                'Primary Address - Longitude',
                 'Primary Address - Postal Code',
                 'Primary Address - Street 1',
                 'Primary Address - Street 2',
