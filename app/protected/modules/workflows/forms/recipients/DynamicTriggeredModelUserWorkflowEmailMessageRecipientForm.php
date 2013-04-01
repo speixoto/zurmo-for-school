@@ -46,11 +46,17 @@
          */
         public $dynamicUserType;
 
+        /**
+         * @return string
+         */
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowsModule', 'A person associated with the triggered record');
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -58,6 +64,9 @@
                       array('dynamicUserType',  'required')));
         }
 
+        /**
+         * @return array
+         */
         public function getDynamicUserTypesAndLabels()
         {
             $data = array();
@@ -79,6 +88,12 @@
             return $data;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
+         * @throws NotSupportedException
+         */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             if($this->dynamicUserType == self::DYNAMIC_USER_TYPE_CREATED_BY_USER)
@@ -138,6 +153,9 @@
             return $recipients;
         }
 
+        /**
+         * @return string
+         */
         protected function resolveModelClassName()
         {
             return $this->modelClassName;

@@ -37,6 +37,7 @@
          */
         public static function getType($model, $attributeName)
         {
+            assert('is_string($attributeName)');
             return ModelAttributeToMixedTypeUtil::getType($model, $attributeName);
         }
     }

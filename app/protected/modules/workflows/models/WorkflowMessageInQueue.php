@@ -24,13 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Model for storing message queue information.  When creating email messages to send when a workflow is fired
+     * the send dateTime can be a period in the future, for example 1 year.  This class is used for making models
+     * that store that information and then is processed by a job @see WorkflowMessageInQueueJob
+     */
     class WorkflowMessageInQueue extends Item
     {
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -65,16 +76,26 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return null|string
+         */
         public static function getModuleClassName()
         {
             return 'WorkflowsModule';
         }
 
+        /**
+         * @param $pageSize
+         * @return array of WorkflowMessageInQueue models
+         */
         public static function getModelsToProcess($pageSize)
         {
             assert('is_int($pageSize)');

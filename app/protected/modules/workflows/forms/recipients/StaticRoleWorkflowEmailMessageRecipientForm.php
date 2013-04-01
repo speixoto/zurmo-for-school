@@ -34,11 +34,17 @@
          */
         public $roleId;
 
+        /**
+         * @return string
+         */
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowsModule', 'All users in a specific role');
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -46,6 +52,11 @@
                       array('roleId',  'required')));
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
+         */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             try

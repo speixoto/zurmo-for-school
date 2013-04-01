@@ -98,6 +98,10 @@
             return $type;
         }
 
+        /**
+         * @param string $modelClassName
+         * @param string $workflowType
+         */
         public function __construct($modelClassName, $workflowType)
         {
             assert('is_string($modelClassName)');

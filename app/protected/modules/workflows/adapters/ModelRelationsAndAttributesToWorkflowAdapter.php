@@ -266,6 +266,10 @@
             }
         }
 
+        /**
+         * @param $relation
+         * @return mixed
+         */
         public static function getInferredRelationModelClassName($relation)
         {
             assert('is_string($relation)');
@@ -603,6 +607,8 @@
          */
         public function getTriggerRulesByAttribute($attribute, $ruleAttributeName)
         {
+            assert('is_string($attribute)');
+            assert('is_string($ruleAttributeName)');
             $rules                        = array();
             $dynamicallyDerivedAttributes =  $this->getDynamicallyDerivedAttributesData();
             if($this->model->isAttribute($attribute) && $this->model->{$attribute} instanceof CurrencyValue)
@@ -700,6 +706,7 @@
          */
         public function isAttributeReadOptimization($attribute)
         {
+            assert('is_string($attribute)');
             if($attribute == 'ReadOptimization')
             {
                 return true;
@@ -747,6 +754,12 @@
             }
         }
 
+        /**
+         * @param RedBeanModel $precedingModel
+         * @param null $precedingRelation
+         * @return array $sortedAttributes
+         * @throws NotSupportedException
+         */
         public function getSelectableRelationsDataForTriggers(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             if(($precedingModel != null && $precedingRelation == null) ||
@@ -836,9 +849,9 @@
         }
 
         /**
-         * Attributes for actions should never include a read-only attribute.
-         * @param boolean $requiredAttributesOnly set to true if the data returned should be read-only attributes
-         *                if false, then just non-required attributes will be included
+         * @param boolean $includeRequired
+         * @param boolean $includeNonRequired
+         * @param $includeReadOnly
          * @return array
          */
         protected function resolveAttributesForActionsOrTimeTriggerData($includeRequired = false,
@@ -876,8 +889,9 @@
          * @param null|string $precedingRelation
          * @return bool
          */
-        protected function derivedRelationLinksToPrecedingRelation($relationModelClassName, $opposingRelation, RedBeanModel $precedingModel = null,
-                                                                    $precedingRelation = null)
+        protected function derivedRelationLinksToPrecedingRelation($relationModelClassName, $opposingRelation,
+                                                                   RedBeanModel $precedingModel = null,
+                                                                   $precedingRelation = null)
         {
             assert('is_string($relationModelClassName)');
             assert('is_string($opposingRelation)');
@@ -899,10 +913,12 @@
          * @param null|string $precedingRelation
          * @return bool
          */
-        protected function inferredRelationLinksToPrecedingRelation($inferredModelClassName, $relation, RedBeanModel $precedingModel = null,
+        protected function inferredRelationLinksToPrecedingRelation($inferredModelClassName, $relation,
+                                                                    RedBeanModel $precedingModel = null,
                                                                     $precedingRelation = null)
         {
             assert('is_string($inferredModelClassName)');
+            assert('is_string($relation)');
             if($precedingModel == null || $precedingRelation == null)
             {
                 return false;
@@ -928,6 +944,7 @@
         protected function relationLinksToPrecedingRelation($relation, RedBeanModel $precedingModel = null,
                                                             $precedingRelation = null)
         {
+            assert('is_string($relation)');
             if($precedingModel == null || $precedingRelation == null)
             {
                 return false;
@@ -1032,9 +1049,9 @@
         }
 
         /**
-         * Attributes for actions should never include a read-only attribute.
-         * @param boolean $requiredAttributesOnly set to true if the data returned should be read-only attributes
-         *                if false, then just non-required attributes will be included
+         * @param boolean $includeRequired
+         * @param boolean $includeNonRequired
+         * @param $includeReadOnly
          * @return array
          */
         protected function resolveDynamicallyDerivedAttributesForActionsOrTimeTriggerData($includeRequired = false,

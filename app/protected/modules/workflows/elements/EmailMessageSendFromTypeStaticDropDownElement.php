@@ -29,6 +29,9 @@
      */
     class EmailMessageSendFromTypeStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getSendFromTypeValuesAndLabels';

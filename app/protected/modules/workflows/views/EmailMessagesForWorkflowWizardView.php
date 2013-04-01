@@ -100,18 +100,28 @@
         {
             return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Set an message') . '</h2>';
         }
+
+        /**
+         * @return string
+         */
         protected function renderZeroComponentsContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                    ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES), $this->getZeroComponentsContent());
         }
 
+        /**
+         * @return string
+         */
         protected function renderAddEmailMessageLinkContentAndWrapper()
         {
             $content  = $this->renderAddEmailMessageLink(Zurmo::t('WorkflowsModule', 'Add Email Message'));
             return ZurmoHtml::tag('div', array('class' => 'add-email-message-button-container'), $content);
         }
 
+        /**
+         * @return string
+         */
         protected function renderEmailMessagesContentAndWrapper()
         {
             $rowCount                    = 0;
@@ -126,9 +136,12 @@
             return $content;
         }
 
+        /**
+         * @param string $label
+         * @return string
+         */
         protected function renderAddEmailMessageLink($label)
         {
-            //Zurmo::t('WorkflowsModule', 'Add Email Message'); //self::ADD_EMAIL_MESSAGE_LINK_NAME
             assert('is_string($label)');
             $rowCounterInputId = static::resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
             $moduleClassNameId = get_class($this->model) . '[moduleClassName]';
@@ -153,8 +166,6 @@
                     ),
                     array('id' => self::ADD_EMAIL_MESSAGE_LINK_ID,
                           'class'      => 'attachLoading z-button ')
-                      //'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                      //                                  makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));')
             );
         }
 
@@ -175,6 +186,11 @@
             return $this->renderEmailMessages($rowCount, $this->model->emailMessages);
         }
 
+        /**
+         * @param integer $rowCount
+         * @param Array $emailMessages
+         * @return array
+         */
         protected function renderEmailMessages(& $rowCount, $emailMessages)
         {
             assert('is_int($rowCount)');

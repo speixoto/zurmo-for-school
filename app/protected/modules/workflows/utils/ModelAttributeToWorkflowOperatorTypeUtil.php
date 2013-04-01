@@ -34,8 +34,14 @@
 
         const AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE = 'CurrencyValue';
 
+        /**
+         * @param array $data
+         * @param string $type
+         */
         public static function resolveOperatorsToIncludeByType(& $data, $type)
         {
+            assert('is_array($data)');
+            assert('is_string($type)');
             if($type == self::AVAILABLE_OPERATORS_TYPE_BOOLEAN)
             {
                 $data[OperatorRules::TYPE_EQUALS] =
@@ -63,8 +69,14 @@
             parent::resolveOperatorsToIncludeByType($data, $type);
         }
 
+        /**
+         * @param array $data
+         * @param string $type
+         */
         protected static function resolveIsNullAndIsNotNullOperatorsToInclude(& $data, $type)
         {
+            assert('is_array($data)');
+            assert('is_string($type)');
             if($type != self::AVAILABLE_OPERATORS_TYPE_DROPDOWN && $type != self::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
             {
                 $data[OperatorRules::TYPE_IS_NULL] =
@@ -74,8 +86,14 @@
             }
         }
 
+        /**
+         * @param $model
+         * @param string $attributeName
+         * @return string
+         */
         public static function getAvailableOperatorsType($model, $attributeName)
         {
+            assert('is_string($attributeName)');
             if ($model->$attributeName instanceof CurrencyValue)
             {
                 return self::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE;
@@ -83,6 +101,9 @@
             return parent::getAvailableOperatorsType($model, $attributeName);
         }
 
+        /**
+         * @return string
+         */
         protected static function getAvailableOperatorsTypeForBoolean()
         {
             return static::AVAILABLE_OPERATORS_TYPE_BOOLEAN;

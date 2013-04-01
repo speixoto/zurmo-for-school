@@ -29,13 +29,20 @@
      */
     abstract class TriggerRules
     {
+        /**
+         * @var TriggerForWorkflowForm
+         */
         protected $trigger;
 
+        abstract public function evaluateBeforeSave(RedBeanModel $model, $attribute);
+
+        /**
+         * @param TriggerForWorkflowForm $trigger
+         */
         public function __construct(TriggerForWorkflowForm $trigger)
         {
             $this->trigger = $trigger;
         }
-        abstract public function evaluateBeforeSave(RedBeanModel $model, $attribute);
 
         /**
          * For a time trigger, the value must first 'change'.  If the operator is TYPE_DOES_NOT_CHANGE, then we can
@@ -48,6 +55,7 @@
          */
         public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
+            assert('is_string($attribute)');
             assert('is_bool($changeRequiredToProcess)');
             if(array_key_exists($attribute, $model->originalAttributeValues) || !$changeRequiredToProcess)
             {

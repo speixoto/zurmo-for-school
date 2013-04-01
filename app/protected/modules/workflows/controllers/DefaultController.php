@@ -210,7 +210,8 @@
             echo $content;
         }
 
-        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $trackableStructurePosition = false, $id = null)
+        public function actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber,
+                                                   $trackableStructurePosition = false, $id = null)
         {
             $postData                           = PostUtil::getData();
             $savedWorkflow                      = null;
@@ -268,7 +269,8 @@
             echo CJSON::encode($dataAndLabels);
         }
 
-        public function actionAddOrChangeTimeTriggerAttribute($type, $attributeIndexOrDerivedType, $moduleClassName, $id = null)
+        public function actionAddOrChangeTimeTriggerAttribute($type, $attributeIndexOrDerivedType, $moduleClassName,
+                                                              $id = null)
         {
             $componentType                      = TimeTriggerForWorkflowForm::getType();
             $postData                           = PostUtil::getData();
@@ -310,22 +312,26 @@
         public function actionChangeActionTypeRelatedModel($moduleClassName, $type, $relation)
         {
             $content = ZurmoHtml::dropDownList(ActionsForWorkflowWizardView::ACTION_TYPE_RELATED_MODEL_RELATION_NAME,
-                                               null, ActionsForWorkflowWizardView::resolveTypeRelatedModelRelationDataAndLabels(
+                                               null,
+                                               ActionsForWorkflowWizardView::resolveTypeRelatedModelRelationDataAndLabels(
                                                $moduleClassName, $moduleClassName::getPrimaryModelName(), $type, $relation));
             echo $content;
         }
 
-        public function actionAddAction($moduleClassName, $type, $actionType, $rowNumber, $relation = null, $relatedModelRelation = null)
+        public function actionAddAction($moduleClassName, $type, $actionType, $rowNumber, $relation = null,
+                                        $relatedModelRelation = null)
         {
             $form                        = new WizardActiveForm();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
-                                           $moduleClassName::getPrimaryModelName(), $type, ComponentForWorkflowForm::TYPE_ACTIONS);
+                                           $moduleClassName::getPrimaryModelName(), $type,
+                                           ComponentForWorkflowForm::TYPE_ACTIONS);
             $model->type                 = $actionType;
             $model->relation             = $relation;
             $model->relatedModelRelation = $relatedModelRelation;
-            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_ACTIONS, (int)$rowNumber);
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_ACTIONS,
+                                           (int)$rowNumber);
             $view                        = new ActionRowForWorkflowComponentView($model, (int)$rowNumber,
                                            $inputPrefixData, $form);
             $content                     = $view->render();
@@ -343,11 +349,14 @@
                                            resolveRowCounterInputId(ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
             $wizardFormClassName         = WorkflowToWizardFormAdapter::getFormClassNameByType($type);
             $model                       = ComponentForWorkflowFormFactory::makeByComponentType($moduleClassName,
-                                           $moduleClassName::getPrimaryModelName(), $type, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
-            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, (int)$rowNumber);
+                                           $moduleClassName::getPrimaryModelName(), $type,
+                                           ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
+            $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES,
+                                           (int)$rowNumber);
             $view                        = new EmailMessageRowForWorkflowComponentView($model, (int)$rowNumber,
                                            $inputPrefixData, $form,
-                                           WorkflowToWizardFormAdapter::getFormClassNameByType($type), $rowCounterInputId);
+                                           WorkflowToWizardFormAdapter::getFormClassNameByType($type),
+                                           $rowCounterInputId);
             $content                     = $view->render();
             $form->renderAddAttributeErrorSettingsScript($view::getFormId());
             Yii::app()->getClientScript()->setToAjaxMode();
@@ -355,7 +364,8 @@
             echo $content;
         }
 
-        public function actionAddEmailMessageRecipient($moduleClassName, $type, $recipientType, $rowNumber, $recipientRowNumber)
+        public function actionAddEmailMessageRecipient($moduleClassName, $type, $recipientType, $rowNumber,
+                                                       $recipientRowNumber)
         {
             $form                        = new WizardActiveForm();
             $form->enableAjaxValidation  = true; //ensures error validation populates correctly
@@ -455,7 +465,8 @@
             return true;
         }
 
-        protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow, $type, $id = null)
+        protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow,
+                                                                     $type, $id = null)
         {
             if($id == null)
             {

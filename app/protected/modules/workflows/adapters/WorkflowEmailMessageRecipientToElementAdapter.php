@@ -29,24 +29,42 @@
      */
     class WorkflowEmailMessageRecipientToElementAdapter
     {
+        /**
+         * @var int
+         */
         protected $emailMessageRecipientType;
 
+        /**
+         * @var WorkflowEmailMessageRecipientForm
+         */
         protected $model;
 
+        /**
+         * @var WizardActiveForm
+         */
         protected $form;
 
+        /**
+         * @var array
+         */
         protected $inputPrefixData;
 
+        /**
+         * @param WorkflowEmailMessageRecipientForm $model
+         * @param WizardActiveForm $form
+         * @param integer $emailMessageRecipientType
+         * @param array $inputPrefixData
+         */
         public function __construct(WorkflowEmailMessageRecipientForm $model, WizardActiveForm $form,
                                     $emailMessageRecipientType, $inputPrefixData)
         {
 
             assert('is_string($emailMessageRecipientType)');
             assert('is_array($inputPrefixData)');
-            $this->model                   = $model;
-            $this->form                    = $form;
+            $this->model                     = $model;
+            $this->form                      = $form;
             $this->emailMessageRecipientType = $emailMessageRecipientType;
-            $this->inputPrefixData         = $inputPrefixData;
+            $this->inputPrefixData           = $inputPrefixData;
         }
 
         /**
@@ -66,7 +84,8 @@
         protected function getRecipientContent()
         {
             $content                             = null;
-            ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),  $content, 'dynamic-row-label email-message-recipient-label');
+            ZurmoHtml::resolveDivWrapperForContent($this->model->getTypeLabel(),
+                                                   $content, 'dynamic-row-label email-message-recipient-label');
             $content                            .= $this->renderTypeContent();
             $content                            .= $this->renderAudienceTypeContent();
             $content                            .= $this->renderFormAttributesContent();
@@ -84,7 +103,7 @@
         protected function renderAudienceTypeContent()
         {
             $params                 = array('inputPrefix' => $this->inputPrefixData);
-            $audienceTypeElement   = new EmailMessageRecipientTypesStaticDropDownElement(
+            $audienceTypeElement    = new EmailMessageRecipientTypesStaticDropDownElement(
                                           $this->model, 'audienceType', $this->form, $params);
             $audienceTypeElement->editableTemplate  = '{content}{error}';
             return $audienceTypeElement->render();
@@ -107,15 +126,12 @@
                 $relationElement        = new ModelRelationForEmailMessageRecipientStaticDropDownElement(
                                           $this->model, 'relation', $this->form, $params);
                 $relationElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
-
                 $dynamicUserTypeElement = new DynamicUserTypeForEmailMessageRecipientStaticDropDownElement(
                                           $this->model, 'dynamicUserType', $this->form, $params);
                 $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
-                
-                $allRelatedDropdowns  = Zurmo::t('WorkflowsModule', '<span>For all related</span> {relationsDropDown}',
+                $allRelatedDropdowns    = Zurmo::t('WorkflowsModule', '<span>For all related</span> {relationsDropDown}',
                                         array('{relationsDropDown}' => $relationElement->render()));
-                $allRelatedDropdowns .= $dynamicUserTypeElement ->render();
-                
+                $allRelatedDropdowns   .= $dynamicUserTypeElement ->render();
                 $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
             elseif($formType == 'DynamictriggeredByUser')

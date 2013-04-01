@@ -75,6 +75,10 @@
             return $data;
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException
+         */
         public function getDurationValuesAndLabels()
         {
             if($this->attributeIndexOrDerivedType == null)
@@ -110,6 +114,14 @@
             return $data;
         }
 
+        /**
+         * @param bool $includePositiveDuration
+         * @param bool $includeNegativeDuration
+         * @param bool $isTimeBased
+         * @param bool $includeHours
+         * @return array
+         * @throws NotSupportedException
+         */
         protected function makeDurationValuesAndLabels($includePositiveDuration = false,
                                                        $includeNegativeDuration = false,
                                                        $isTimeBased             = false,

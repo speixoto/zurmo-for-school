@@ -29,6 +29,9 @@
      */
     class WorkflowsObserver extends CComponent
     {
+        /**
+         * @var bool
+         */
         public $enabled = true;
 
         /**

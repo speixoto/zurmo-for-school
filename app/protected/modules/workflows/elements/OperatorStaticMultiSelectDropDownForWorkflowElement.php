@@ -29,6 +29,9 @@
      */
     class OperatorStaticMultiSelectDropDownForWorkflowElement extends OperatorStaticDropDownElement
     {
+        /**
+         * @return array
+         */
         protected function getEditableHtmlOptions()
         {
             $htmlOptions = parent::getEditableHtmlOptions();

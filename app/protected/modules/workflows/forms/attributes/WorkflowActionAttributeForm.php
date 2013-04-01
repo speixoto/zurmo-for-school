@@ -92,6 +92,10 @@
             return $type;
         }
 
+        /**
+         * @param string $modelClassName
+         * @param string $modelAttributeName
+         */
         public function __construct($modelClassName, $modelAttributeName)
         {
             assert('is_string($modelClassName)');
@@ -110,16 +114,25 @@
             return $this->value;
         }
 
+        /**
+         * @return string
+         */
         public function getDisplayLabel()
         {
             return $this->displayLabel;
         }
 
+        /**
+         * @return string
+         */
         public function getStringifiedModelForValue()
         {
             return $this->stringifiedModelForValue;
         }
 
+        /**
+         * @param $displayLabel
+         */
         public function setDisplayLabel($displayLabel)
         {
             assert('is_string($displayLabel)');
@@ -146,6 +159,9 @@
             return array_merge($rules, $applicableRules);
         }
 
+        /**
+         * @return array
+         */
         public function attributeLabels()
         {
             return array('alternateValue' => Zurmo::t('Core', 'Value'));

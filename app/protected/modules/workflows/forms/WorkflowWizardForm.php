@@ -105,6 +105,9 @@
 
         public $emailMessages  = array();
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array(
@@ -131,6 +134,9 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function attributeLabels()
         {
             return array(

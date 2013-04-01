@@ -29,6 +29,11 @@
      */
     class WorkflowEmailMessagesUtil
     {
+        /**
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         */
         public static function processAfterSave(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
             foreach($workflow->getEmailMessages() as $emailMessage)
@@ -48,6 +53,11 @@
             }
         }
 
+        /**
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         */
         public static function processOnWorkflowMessageInQueueJob(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
             foreach($workflow->getEmailMessages() as $emailMessage)
@@ -68,6 +78,13 @@
             }
         }
 
+        /**
+         * @param Workflow $workflow
+         * @param EmailMessageForWorkflowForm $emailMessage
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @throws FailedToSaveModelException
+         */
         protected static function processEmailMessageAfterSave(Workflow $workflow,
                                                                EmailMessageForWorkflowForm $emailMessage,
                                                                RedBeanModel $model,

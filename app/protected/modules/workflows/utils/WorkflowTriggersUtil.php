@@ -32,7 +32,7 @@
         /**
          * @param Workflow $workflow
          * @param RedBeanModel $model
-         * @return bool|void
+         * @return bool
          * @throws NotSupportedException
          */
         public static function areTriggersTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
@@ -55,7 +55,7 @@
          * Utilized during @see ByTimeWorkflowQueueJob to process workflows that are by-time
          * @param Workflow $workflow
          * @param RedBeanModel $model
-         * @return bool|void
+         * @return bool
          * @throws NotSupportedException
          */
         public static function areTriggersTrueOnByTimeWorkflowQueueJob(Workflow $workflow, RedBeanModel $model)
@@ -116,6 +116,12 @@
             return eval('return (' . $phpStringReadyToEvaluate. ');');
         }
 
+        /**
+         * @param Workflow $workflow
+         * @param RedBeanModel $model
+         * @return bool
+         * @throws NotSupportedException
+         */
         protected static function resolveTimeTriggerIsTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
             if(count($workflow->getTimeTrigger()) != 1)
@@ -167,6 +173,13 @@
             return false;
         }
 
+        /**
+         * @param Workflow $workflow
+         * @param TriggerForWorkflowForm $trigger
+         * @param RedBeanModel $model
+         * @return bool
+         * @throws NotSupportedException
+         */
         protected static function isTriggerTrueByModel(Workflow $workflow, TriggerForWorkflowForm $trigger, RedBeanModel $model)
         {
             if($trigger->getAttribute() == null)
@@ -236,6 +249,14 @@
             }
         }
 
+        /**
+         * @param Workflow $workflow
+         * @param TriggerForWorkflowForm $trigger
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @return bool
+         * @throws NotSupportedException
+         */
         protected static function resolveIsTrueByEvaluationRules(Workflow $workflow, TriggerForWorkflowForm $trigger,
                                                                  RedBeanModel $model, $attribute)
         {

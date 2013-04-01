@@ -29,16 +29,38 @@
      */
     class WorkflowActionAttributeToElementAdapter
     {
+        /**
+         * @var string
+         */
         protected $actionType;
 
+        /**
+         * @var WorkflowActionAttributeForm
+         */
         protected $model;
 
+        /**
+         * @var WizardActiveForm
+         */
         protected $form;
 
+        /**
+         * @var array
+         */
         protected $inputPrefixData;
 
+        /**
+         * @var bool
+         */
         protected $isAttributeRequired;
 
+        /**
+         * @param WorkflowActionAttributeForm $model
+         * @param WizardActiveForm $form
+         * @param string $actionType
+         * @param array $inputPrefixData
+         * @param boolean $isAttributeRequired
+         */
         public function __construct(WorkflowActionAttributeForm $model, WizardActiveForm $form,
                                     $actionType, $inputPrefixData, $isAttributeRequired)
         {
@@ -98,6 +120,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function resolveTypeAndValueContent()
         {
             $typeContent                         = $this->renderTypeContent();
@@ -117,6 +142,9 @@
                                                'style' => $style), $typeAndValueContent);
         }
 
+        /**
+         * @return string
+         */
         protected function renderShouldSetValueContent()
         {
             $params = array('inputPrefix' => $this->inputPrefixData);
@@ -130,6 +158,9 @@
             return $shouldSetValueElement->render();
         }
 
+        /**
+         * @return A|string
+         */
         protected function renderTypeContent()
         {
 
@@ -155,6 +186,10 @@
             }
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         protected function renderValueContent()
         {
             $params           = array('inputPrefix' => $this->inputPrefixData);
@@ -193,20 +228,6 @@
             else
             {
                 throw new NotSupportedException();
-            }
-        }
-
-        protected static function isActionTypeValid($actionType)
-        {
-            if($actionType == ActionForWorkflowForm::TYPE_UPDATE_SELF ||
-               $actionType == ActionForWorkflowForm::TYPE_UPDATE_RELATED)
-            {
-                return true;
-            }
-            elseif($actionType == ActionForWorkflowForm::TYPE_CREATE ||
-                   $actionType == ActionForWorkflowForm::TYPE_CREATE_RELATED)
-            {
-                return false;
             }
         }
     }

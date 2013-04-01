@@ -29,6 +29,10 @@
      */
     class ByTimeWorkflowInQueueUtil
     {
+        /**
+         * @param ByTimeWorkflowInQueue $model
+         * @return string
+         */
         public static function renderSummaryContent(ByTimeWorkflowInQueue $model)
         {
             $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
@@ -39,12 +43,20 @@
             return $element->render() . ' &mdash; <span class="less-pronounced-text">' . self::resolveModelContent($relatedModel) . '</span>';
         }
 
+        /**
+         * @param ByTimeWorkflowInQueue $byTimeWorkflowInQueue
+         * @return RedBeanModel
+         */
         protected static function resolveModel(ByTimeWorkflowInQueue $byTimeWorkflowInQueue)
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($byTimeWorkflowInQueue->modelClassName);
             return $byTimeWorkflowInQueue->modelItem->castDown(array($modelDerivationPathToItem));
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @return string
+         */
         protected static function resolveModelContent(RedBeanModel $model)
         {
             $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);

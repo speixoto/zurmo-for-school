@@ -29,6 +29,11 @@
      */
     class ModelRelationsAndAttributesToOnSaveWorkflowAdapter extends ModelRelationsAndAttributesToWorkflowAdapter
     {
+        /**
+         * @param null | RedBeanModel $precedingModel
+         * @param null | string $precedingRelation
+         * @return array
+         */
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             return $this->getSelectableRelationsDataForTriggers($precedingModel, $precedingRelation);

@@ -33,12 +33,24 @@
 
         const NON_REQUIRED_ATTRIBUTES_INDEX = 'NonRequired';
 
+        /**
+         * @var ActionForWorkflowForm
+         */
         protected $model;
 
+        /**
+         * @var int
+         */
         protected $rowNumber;
 
+        /**
+         * @var array
+         */
         protected $inputPrefixData;
 
+        /**
+         * @var WizardActiveForm
+         */
         protected $form;
 
         public static function getFormId()
@@ -46,6 +58,12 @@
             return WizardView::getFormId();
         }
 
+        /**
+         * @param ActionForWorkflowForm $model
+         * @param integer $rowNumber
+         * @param array $inputPrefixData
+         * @param WizardActiveForm $form
+         */
         public function __construct(ActionForWorkflowForm $model, $rowNumber, $inputPrefixData, WizardActiveForm $form)
         {
             assert('is_int($rowNumber)');
@@ -56,6 +74,9 @@
             $this->form             = $form;
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             return $this->renderContent();
@@ -96,6 +117,9 @@
                 ($this->rowNumber + 1) . '.');
         }
 
+        /**
+         * @return string
+         */
         protected function renderTypeHiddenInputContent()
         {
             $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
@@ -106,6 +130,9 @@
             return ZurmoHtml::hiddenField($hiddenInputName, $this->model->type, $idInputHtmlOptions);
         }
 
+        /**
+         * @return string
+         */
         protected function renderRelationHiddenInputContent()
         {
             $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
@@ -116,6 +143,9 @@
             return ZurmoHtml::hiddenField($hiddenInputName, $this->model->relation, $idInputHtmlOptions);
         }
 
+        /**
+         * @return string
+         */
         protected function renderRelatedModelRelationHiddenInputContent()
         {
             $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
@@ -126,6 +156,9 @@
             return ZurmoHtml::hiddenField($hiddenInputName, $this->model->relatedModelRelation, $idInputHtmlOptions);
         }
 
+        /**
+         * @return array
+         */
         protected function makeAttributeRows()
         {
             $inputPrefixData   = $this->inputPrefixData;
@@ -140,7 +173,11 @@
             }
         }
 
-        protected function resolveAttributeRowsForUpdateTypes($inputPrefixData)
+        /**
+         * @param array $inputPrefixData
+         * @return array
+         */
+        protected function resolveAttributeRowsForUpdateTypes(Array $inputPrefixData)
         {
             assert('is_array($inputPrefixData)');
             $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
@@ -154,7 +191,11 @@
             return $attributeRows;
         }
 
-        protected function resolveAttributeRowsForCreateTypes($inputPrefixData)
+        /**
+         * @param Array $inputPrefixData
+         * @return array
+         */
+        protected function resolveAttributeRowsForCreateTypes(Array $inputPrefixData)
         {
             assert('is_array($inputPrefixData)');
             $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
@@ -174,7 +215,11 @@
             return $attributeRows;
         }
 
-        protected function renderAttributesRowsContent($attributeRows)
+        /**
+         * @param $attributeRows
+         * @return null|string
+         */
+        protected function renderAttributesRowsContent(Array $attributeRows)
         {
             assert('is_array($attributeRows)');
             $content = null;
@@ -198,6 +243,10 @@
             return $content;
         }
 
+        /**
+         * @param string $rowId
+         * @return string
+         */
         protected function renderSaveActionElementsContent($rowId)
         {
             assert('is_string($rowId)');

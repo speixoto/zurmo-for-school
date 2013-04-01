@@ -103,7 +103,6 @@
             {
                 $operatorContent                    = null;
             }
-
             if($valueElementType != null)
             {
                 $valueElementClassName              = $valueElementType . 'Element';
@@ -147,6 +146,11 @@
             return $content;
         }
 
+        /**
+         * @param string $valueElementType
+         * @param array $params
+         * @return OperatorStaticDropDownElement|OperatorStaticMultiSelectDropDownForWorkflowElement
+         */
         protected function resolveOperatorElementForMultiSelectDropDown($valueElementType, Array $params)
         {
             assert('is_string($valueElementType)');

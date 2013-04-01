@@ -29,6 +29,11 @@
      */
     class TriggerRulesFactory
     {
+        /**
+         * @param TriggerForWorkflowForm $trigger
+         * @return TriggerRules
+         * @throws NotSupportedException
+         */
         public static function createTriggerRulesByTrigger(TriggerForWorkflowForm $trigger)
         {
             $type = $trigger->getValueEvaluationType();

@@ -50,13 +50,16 @@
          */
         protected $inputPrefixData;
 
+        /**
+         * @return string
+         */
         public static function getFormId()
         {
             return WizardView::getFormId();
         }
 
         /**
-         * @param $elementAdapter
+         * @param WorkflowEmailMessageRecipientToElementAdapter $elementAdapter
          * @param integer $rowNumber
          * @param array $inputPrefixData
          */
@@ -70,6 +73,9 @@
             $this->inputPrefixData                    = $inputPrefixData;
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             return $this->renderContent();

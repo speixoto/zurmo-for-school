@@ -39,29 +39,61 @@
 
         const EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME = 'email-message-recipient-rows';
 
+        /**
+         * @var EmailMessageForWorkflowForm
+         */
         protected $model;
 
+        /**
+         * @var int
+         */
         protected $rowNumber;
 
+        /**
+         * @var array
+         */
         protected $inputPrefixData;
 
+        /**
+         * @var WizardActiveForm
+         */
         protected $form;
 
+        /**
+         * @var string
+         */
         protected $workflowWizardFormClassName;
 
+        /**
+         * @var string
+         */
         protected $emailMessagesRowCounterInputId;
 
+        /**
+         * @return string
+         */
         public static function getFormId()
         {
             return WizardView::getFormId();
         }
 
+        /**
+         * @return array
+         */
         protected static function resolveRecipientTypeDataAndLabels()
         {
             $data = array('' => Zurmo::t('WorkflowsModule', 'Add Recipient'));
             return array_merge($data, WorkflowEmailMessageRecipientForm::getTypeValuesAndLabels());
         }
 
+        /**
+         * @param EmailMessageForWorkflowForm $model
+         * @param integer $rowNumber
+         * @param array $inputPrefixData
+         * @param WizardActiveForm $form
+         * @param string $workflowWizardFormClassName
+         * @param string $emailMessagesRowCounterInputId
+         */
         public function __construct(EmailMessageForWorkflowForm $model, $rowNumber, $inputPrefixData,
                                     WizardActiveForm $form, $workflowWizardFormClassName, $emailMessagesRowCounterInputId)
         {
@@ -77,6 +109,9 @@
             $this->emailMessagesRowCounterInputId = $emailMessagesRowCounterInputId;
         }
 
+        /**
+         * @return string
+         */
         public function render()
         {
             $this->registerScripts();
@@ -109,6 +144,9 @@
                 ($this->rowNumber + 1) . '.');
         }
 
+        /**
+         * @return string
+         */
         protected function renderEmailMessageContent()
         {
             $params            = array('inputPrefix' => $this->inputPrefixData);
@@ -137,6 +175,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRecipientsContent()
         {
             $content  = '<div class="' . self::RECIPIENTS_CONTAINER_CLASS_NAME . '">';
@@ -164,6 +205,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRecipientSelectorContentAndWrapper()
         {
             $content     = ZurmoHtml::tag('h2', array(), Zurmo::t('WorkflowsModule', 'Recipients'));
@@ -173,11 +217,17 @@
             return         ZurmoHtml::tag('div', array('class' => 'email-message-recipient-type-selector-container'), $content);
         }
 
+        /**
+         * @return string
+         */
         protected function resolveAddRecipientId()
         {
-            self::ADD_RECIPIENT_TYPE_NAME . '_' . $this->rowNumber;
+            return self::ADD_RECIPIENT_TYPE_NAME . '_' . $this->rowNumber;
         }
 
+        /**
+         * @return string
+         */
         protected function renderRecipientsContentAndWrapper()
         {
             $rowCount                    = 0;
@@ -193,6 +243,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function resolveRecipientsPrefix()
         {
             return EmailMessageForWorkflowForm::TYPE_EMAIL_MESSAGE_RECIPIENTS . $this->rowNumber;
@@ -207,6 +260,11 @@
             return $this->renderRecipients($rowCount, $this->model->getEmailMessageRecipients());
         }
 
+        /**
+         * @param integer $rowCount
+         * @param array $recipients
+         * @return array
+         */
         protected function renderRecipients(& $rowCount, $recipients)
         {
             assert('is_int($rowCount)');
@@ -241,7 +299,7 @@
         }
 
         /**
-         * @param string $componentType
+         * @param string prefix
          * @return string
          */
         protected function getRecipientsRowCounterInputId($prefix)

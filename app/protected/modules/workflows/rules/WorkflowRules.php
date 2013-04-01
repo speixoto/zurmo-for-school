@@ -30,6 +30,9 @@
      */
     abstract class WorkflowRules extends ModelToComponentRules
     {
+        /**
+         * @return string|void
+         */
         public static function getRulesName()
         {
             return 'WorkflowRules';

@@ -29,8 +29,14 @@
      */
     class WorkflowManageOrderListView extends MetadataView
     {
+        /**
+         * @var array SavedWorkflow models
+         */
         protected $savedWorkflows;
 
+        /**
+         * @param array $savedWorkflows
+         */
         public function __construct(Array $savedWorkflows)
         {
             $this->savedWorkflows = $savedWorkflows;
@@ -44,6 +50,9 @@
             return $this->getSortableListContent($items);
         }
 
+        /**
+         * @return array
+         */
         protected function resolveItemsAndContent()
         {
             $items = array();

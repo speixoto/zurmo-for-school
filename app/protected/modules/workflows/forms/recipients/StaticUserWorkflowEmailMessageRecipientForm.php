@@ -35,22 +35,34 @@
          */
         protected $userId;
 
+        /**
+         * @return string
+         */
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowsModule', 'A specific user');
         }
 
+        /**
+         * @param $value
+         */
         public function setUserId($value)
         {
             $this->userId = $value;
             $this->stringifiedModelForValue = null;
         }
 
+        /**
+         * @return string
+         */
         public function getUserId()
         {
             return $this->userId;
         }
 
+        /**
+         * @return string
+         */
         public function getStringifiedModelForValue()
         {
             if($this->stringifiedModelForValue != null)
@@ -65,6 +77,9 @@
             }
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -72,6 +87,11 @@
                       array('userId',  'required')));
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
+         */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             try

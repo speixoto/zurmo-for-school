@@ -107,6 +107,13 @@
             }
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $workflowType
+         * @return array
+         * @throws NotSupportedException
+         */
         public static function resolveDataAndLabelsForTimeTriggerAvailableAttributes($moduleClassName, $modelClassName,
                                                                                      $workflowType)
         {
@@ -141,8 +148,13 @@
             return $dataAndLabels;
         }
 
+        /**
+         * @param array $data
+         * @param boolean $includeHours
+         */
         public static function resolvePositiveDurationAsDistanceFromPointData(& $data, $includeHours)
         {
+            assert('is_array($data)');
             assert('is_bool($includeHours)');
             if($includeHours)
             {
@@ -168,8 +180,13 @@
             $data[31104000] = Zurmo::t('WorkflowsModule', '{n} year from now|{n} years from now', array(1));
         }
 
+        /**
+         * @param array $data
+         * @param boolean $includeHours
+         */
         public static function resolvePositiveDurationData(& $data, $includeHours)
         {
+            assert('is_array($data)');
             assert('is_bool($includeHours)');
             if($includeHours)
             {
@@ -195,8 +212,13 @@
             $data[31104000] = Zurmo::t('WorkflowsModule', 'for {n} year|{n} years', array(1));
         }
 
+        /**
+         * @param array $data
+         * @param boolean $includeHours
+         */
         public static function resolveNegativeDurationAsDistanceFromPointData(& $data, $includeHours)
         {
+            assert('is_array($data)');
             assert('is_bool($includeHours)');
             $data[-31104000] = Zurmo::t('WorkflowsModule', '{n} year ago|{n} years ago', array(1));
             $data[-15552000] = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(180));
@@ -224,10 +246,11 @@
 
         /**
          * Utilized by Email Message to allow user to decide when an email message should go out.
-         * @param $data
+         * @param array $data
          */
         public static function resolveSendAfterDurationData(& $data)
         {
+            assert('is_array($data)');
             $data[0]        = Zurmo::t('WorkflowsModule', 'Immediately after workflow runs', array(5));
             $data[300]      = Zurmo::t('WorkflowsModule', '{n} minute after workflow runs|{n} minutes after workflow runs', array(5));
             $data[14400]    = Zurmo::t('WorkflowsModule', '{n} hour after workflow runs|{n} hours after workflow runs', array(4));
@@ -251,9 +274,17 @@
             $data[31104000] = Zurmo::t('WorkflowsModule', '{n} year after workflow runs|{n} years after workflow runs', array(1));
         }
 
+        /**
+         * @param string $modelClassName
+         * @param string $inferredRelationName
+         * @param integer $inferredModelItemId
+         * @return Array of models
+         */
         public static function getModelsFilteredByInferredModel($modelClassName, $inferredRelationName, $inferredModelItemId)
         {
-            assert('is_string($type)');
+            assert('is_string($modelClassName)');
+            assert('is_string($inferredRelationName)');
+            assert('is_int($inferredModelItemId)');
             $searchAttributeData = array();
             $searchAttributeData['clauses'] = array(
                 1 => array(
@@ -269,6 +300,11 @@
             return $modelClassName::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
+        /**
+         * @param string $relation
+         * @param $model
+         * @return array of models
+         */
         public static function getInferredModelsByAtrributeAndModel($relation, $model)
         {
             assert('is_string($relation)');
@@ -291,13 +327,18 @@
             return $relatedModels;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param string $relation
+         * @return Array of models
+         */
         public static function resolveDerivedModels(RedBeanModel $model, $relation)
         {
             assert('is_string($relation)');
             $modelClassName       = $model->getDerivedRelationModelClassName($relation);
             $inferredRelationName = $model->getDerivedRelationViaCastedUpModelOpposingRelationName($relation);
             return                  WorkflowUtil::getModelsFilteredByInferredModel($modelClassName, $inferredRelationName,
-                $model->getClassId('Item'));
+                                    (int)$model->getClassId('Item'));
         }
 
         /**

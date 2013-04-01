@@ -32,7 +32,7 @@
         /**
          * @param TriggerForWorkflowForm $model
          * @param string $attribute
-         * @param null $form
+         * @param null | ZurmoActiveForm $form
          * @param array $params
          */
         public function __construct($model, $attribute, $form = null, array $params = array())

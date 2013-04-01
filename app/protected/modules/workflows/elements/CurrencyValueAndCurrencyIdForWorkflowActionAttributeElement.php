@@ -46,6 +46,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderCurrencyIdDropDownField()
         {
             $htmlOptions  = array(
@@ -59,6 +62,9 @@
             return $inputContent . $error;
         }
 
+        /**
+         * @return string
+         */
         protected function renderEditableValueTextField()
         {
             $htmlOptions  = array(
@@ -81,10 +87,13 @@
             throw new NotSupportedException();
         }
 
-       protected function renderError()
-       {
-       }
+        protected function renderError()
+        {
+        }
 
+        /**
+         * @return A|string
+         */
         protected function renderLabel()
         {
             $label = $this->getFormattedAttributeLabel();

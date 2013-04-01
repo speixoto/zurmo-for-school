@@ -29,6 +29,9 @@
      */
     class WorkflowMessageInQueueJob extends BaseJob
     {
+        /**
+         * @var int
+         */
         protected static $pageSize = 200;
 
         /**
@@ -76,12 +79,20 @@
             return true;
         }
 
+        /**
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @return RedBeanModel
+         */
         protected function resolveModel(WorkflowMessageInQueue $workflowMessageInQueue)
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($workflowMessageInQueue->modelClassName);
             return $workflowMessageInQueue->modelItem->castDown(array($modelDerivationPathToItem));
         }
 
+        /**
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @throws NotFoundException
+         */
         protected function resolveSavedWorkflowIsValid(WorkflowMessageInQueue $workflowMessageInQueue)
         {
             if($workflowMessageInQueue->savedWorkflow->id < 0)
@@ -90,6 +101,10 @@
             }
         }
 
+        /**
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @param RedBeanModel $model
+         */
         protected function processWorkflowMessageInQueue(WorkflowMessageInQueue $workflowMessageInQueue, RedBeanModel $model)
         {
             $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($workflowMessageInQueue->savedWorkflow);
@@ -101,6 +116,10 @@
                                        self::resolveTriggeredByUser($workflowMessageInQueue));
         }
 
+        /**
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @return User
+         */
         protected static function resolveTriggeredByUser(WorkflowMessageInQueue $workflowMessageInQueue)
         {
             if($workflowMessageInQueue->triggeredByUser->id < 0)

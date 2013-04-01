@@ -24,14 +24,29 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
+    /**
+     * Helper class for processing actions that trigger
+     */
     class WorkflowActionProcessingHelper
     {
+        /**
+         * @var ActionForWorkflowForm
+         */
         protected $action;
 
+        /**
+         * @var RedBeanModel
+         */
         protected $triggeredModel;
 
+        /**
+         * @var User
+         */
         protected $triggeredByUser;
 
+        /**
+         * @var bool
+         */
         protected $canSaveTriggeredModel;
 
         /**
@@ -82,6 +97,12 @@
             }
         }
 
+        /**
+         * @param ActionForWorkflowForm $action
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @param RedBeanModel $triggeredModel
+         */
         protected static function processActionAttributesForAction(ActionForWorkflowForm $action,
                                                                    RedBeanModel $model,
                                                                    User $triggeredByUser,

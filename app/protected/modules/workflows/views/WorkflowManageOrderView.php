@@ -90,22 +90,35 @@
             return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a module to order workflow rules') . '</h2>';
         }
 
+        /**
+         * @return string
+         */
         protected function renderNoModuleSelectedContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'select-module-view zero-components-view WorkflowRulesOrder'), $this->getNoModuleSelectedContent());
         }
 
+        /**
+         * @return string
+         */
         protected function getNoWorkflowsToOrderContent()
         {
             return '<div class="large-icon"></div><p>' . Zurmo::t('WorkflowsModule', 'This module does not have any workflows to order') . '</p>';
         }
 
+        /**
+         * @return string
+         */
         protected function renderNoWorkflowsToOrderContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'no-workflows-to-order-view', 'style' => "display:none;"),
                                   $this->getNoWorkflowsToOrderContent());
         }
 
+        /**
+         * @param $form
+         * @return string
+         */
         protected function renderModuleSelectorContentAndWrapper($form)
         {
             $element                    = new ModuleForWorkflowStaticDropDownElement(new SavedWorkflow(),
@@ -114,6 +127,9 @@
             return ZurmoHtml::tag('div', array('class' => 'workflow-order-module-selector-container'), $element->render());
         }
 
+        /**
+         * @return string
+         */
         protected function renderWorkflowOrderContentAndWrapper()
         {
             $content  =  ZurmoHtml::tag('div', array('id' => 'workflow-order-container'),
@@ -123,6 +139,9 @@
             return $content;
         }
 
+        /**
+         * @return string
+         */
         protected function renderSaveLinkContent()
         {
             $params                = array();
@@ -155,8 +174,13 @@
             );
         }
 
+        /**
+         * @param string $formName
+         * @return string
+         */
         protected function renderConfigSaveAjax($formName)
         {
+            assert('is_string($formName)');
             return ZurmoHtml::ajax(array(
                 'type'       => 'POST',
                 'dataType'   => 'json',
@@ -169,10 +193,6 @@
             ));
         }
 
-        /**
-         * @param $formName
-         * @return string
-         */
         protected function renderLoadModuleOrderScriptContent()
         {
             $id         = 'SavedWorkflow_moduleClassName_value';

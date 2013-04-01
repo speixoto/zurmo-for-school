@@ -49,6 +49,9 @@
          */
         public $relationFilter = self::RELATION_FILTER_ALL;
 
+        /**
+         * @return string
+         */
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowsModule', 'A person associated with a related record');
@@ -117,6 +120,9 @@
             return false;
         }
 
+        /**
+         * @return array
+         */
         public function getRelationValuesAndLabels()
         {
             $modelClassName = $this->modelClassName;
@@ -130,6 +136,12 @@
             return $valueAndLabels;
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
+         * @throws NotSupportedException
+         */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $modelClassName = $this->modelClassName;
@@ -176,6 +188,10 @@
             return $recipients;
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         protected function resolveModelClassName()
         {
             $modelClassName = $this->modelClassName;

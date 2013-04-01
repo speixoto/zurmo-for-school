@@ -29,6 +29,12 @@
      */
     class WorkflowEmailMessageRecipientFormFactory extends ConfigurableMetadataModel
     {
+        /**
+         * @param string $type
+         * @param string $modelClassName
+         * @param string $workflowType
+         * @return WorkflowEmailMessageRecipientForm
+         */
         public static function make($type, $modelClassName, $workflowType)
         {
             assert('is_string($type)');

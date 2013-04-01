@@ -187,6 +187,12 @@
             return DateTimeUtil::convertTimestampToDbFormatDateTime($timeStamp);
         }
 
+        /**
+         * @param TimeTriggerForWorkflowForm $trigger
+         * @param RedBeanModel $model
+         * @return int
+         * @throws ValueForProcessDateTimeIsNullException
+         */
         protected static function resolveTimeStampForDateAttributeForProcessDateTime(TimeTriggerForWorkflowForm $trigger,
                                                                                      RedBeanModel $model)
         {
@@ -202,6 +208,12 @@
             }
         }
 
+        /**
+         * @param TimeTriggerForWorkflowForm $trigger
+         * @param RedBeanModel $model
+         * @return int
+         * @throws ValueForProcessDateTimeIsNullException
+         */
         protected static function resolveTimeStampForDateTimeAttributeForProcessDateTime(TimeTriggerForWorkflowForm $trigger,
                                                                                          RedBeanModel $model)
         {
@@ -216,7 +228,12 @@
             }
         }
 
-
+        /**
+         * @param TimeTriggerForWorkflowForm $trigger
+         * @param RedBeanModel $model
+         * @return mixed
+         * @throws NotSupportedException
+         */
         protected static function resolveModelValueByTimeTrigger(TimeTriggerForWorkflowForm $trigger, RedBeanModel $model)
         {
             if($trigger->getAttribute() == null)

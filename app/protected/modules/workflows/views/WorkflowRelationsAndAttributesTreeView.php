@@ -29,6 +29,9 @@
      */
     class WorkflowRelationsAndAttributesTreeView extends WizardModelRelationsAndAttributesTreeView
     {
+        /**
+         * @return string|void
+         */
         public static function getControllerId()
         {
             return 'workflows';

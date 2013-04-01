@@ -30,6 +30,9 @@
      */
     class EmailMessageSendAfterDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getSendAfterDurationValuesAndLabels';

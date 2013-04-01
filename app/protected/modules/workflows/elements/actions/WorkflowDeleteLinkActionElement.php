@@ -24,9 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Link element to delete a workflow model
+     */
     class WorkflowDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
+        /**
+         * @param array $htmlOptions
+         * @return array
+         */
+        protected function resolveConfirmAlertInHtmlOptions(Array $htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('WorkflowsModule', 'Are you sure you want to delete this workflow?');
             return $htmlOptions;

@@ -120,6 +120,12 @@
             );
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $workflowType
+         * @return array
+         */
         public static function getTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType)
         {
             assert('is_string($moduleClassName)');
@@ -136,7 +142,15 @@
             return $dataAndLabels;
         }
 
-        public static function getTypeRelatedModelRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType, $relation)
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $workflowType
+         * @param string $relation
+         * @return array
+         */
+        public static function getTypeRelatedModelRelationDataAndLabels($moduleClassName, $modelClassName,
+                                                                        $workflowType, $relation)
         {
             assert('is_string($moduleClassName)');
             assert('is_string($modelClassName)');
@@ -156,11 +170,18 @@
             return $dataAndLabels;
         }
 
+        /**
+         * @return int
+         */
         public function getRowKey()
         {
             return $this->_rowKey;
         }
 
+        /**
+         * @return bool
+         * @throws NotSupportedException
+         */
         public function isTypeAnUpdateVariant()
         {
             if($this->type == self::TYPE_UPDATE_SELF || $this->type == self::TYPE_UPDATE_RELATED)
@@ -177,16 +198,25 @@
             }
         }
 
+        /**
+         * @return array
+         */
         public function resolveAllActionAttributeFormsAndLabelsAndSort()
         {
             return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getAllAttributesForActions');
         }
 
+        /**
+         * @return array
+         */
         public function resolveAllRequiredActionAttributeFormsAndLabelsAndSort()
         {
             return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getRequiredAttributesForActions');
         }
 
+        /**
+         * @return array
+         */
         public function resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort()
         {
             return $this->resolveActionAttributeFormsAndLabelsAndSortByMethod('getNonRequiredAttributesForActions');
@@ -248,6 +278,10 @@
             }
         }
 
+        /**
+         * @param string $attribute
+         * @return string
+         */
         public function getActionAttributesAttributeFormType($attribute)
         {
             assert('is_string($attribute)');
@@ -486,6 +520,10 @@
             }
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         public function getDisplayLabel()
         {
             $typeDataAndLabels = ActionForWorkflowForm::getTypeDataAndLabels();
@@ -521,6 +559,10 @@
             }
         }
 
+        /**
+         * @param string $attribute
+         * @return WorkflowActionAttributeForm
+         */
         protected function makeActionAttributeFormByAttribute($attribute)
         {
             assert('is_string($attribute)');
@@ -531,7 +573,7 @@
         }
 
         /**
-         * @param $attributeName string
+         * @param string $attributeName
          * @return string
          */
         protected static function resolveErrorAttributePrefix($attributeName)
@@ -566,12 +608,19 @@
             }
         }
 
+        /**
+         * @return RedBeanModel
+         */
         protected function makeModelAndResolveForRelations()
         {
             $modelClassName = $this->getModelClassNameAndResolveForRelations();
             return new $modelClassName(false);
         }
 
+        /**
+         * @return string
+         * @throws NotSupportedException
+         */
         protected function getModelClassNameAndResolveForRelations()
         {
             if($this->type == self::TYPE_UPDATE_SELF)
@@ -596,6 +645,10 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @param string $methodToCall
+         * @return array
+         */
         protected function resolveActionAttributeFormsAndLabelsAndSortByMethod($methodToCall)
         {
             assert('$methodToCall == "getNonRequiredAttributesForActions" ||

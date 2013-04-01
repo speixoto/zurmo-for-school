@@ -29,6 +29,10 @@
      */
     class WorkflowMessageInQueueUtil
     {
+        /**
+         * @param WorkflowMessageInQueue $model
+         * @return string
+         */
         public static function renderSummaryContent(WorkflowMessageInQueue $model)
         {
             $params          = array('label' => strval($model->savedWorkflow), 'wrapLabel' => false);
@@ -39,12 +43,20 @@
             return $element->render() . ' &mdash; <span class="less-pronounced-text">' . self::resolveModelContent($relatedModel) . '</span>';
         }
 
+        /**
+         * @param WorkflowMessageInQueue $workflowMessageInQueue
+         * @return An|RedBeanModel
+         */
         protected static function resolveModel(WorkflowMessageInQueue $workflowMessageInQueue)
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($workflowMessageInQueue->modelClassName);
             return $workflowMessageInQueue->modelItem->castDown(array($modelDerivationPathToItem));
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @return string
+         */
         protected static function resolveModelContent(RedBeanModel $model)
         {
             $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);

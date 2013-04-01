@@ -24,8 +24,15 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class for managing security restrictions that come up for various aspects of workflow
+     */
     class WorkflowSecurityUtil
     {
+        /**
+         * @param string $moduleClassName
+         * @return bool
+         */
         public static function canCurrentUserCanAccessModule($moduleClassName)
         {
             assert('is_string($moduleClassName)');

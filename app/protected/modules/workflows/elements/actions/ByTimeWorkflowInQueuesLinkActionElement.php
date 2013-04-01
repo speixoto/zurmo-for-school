@@ -24,13 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Link element to take you to a list of ByTimeWorkflowInQueue models
+     */
     class ByTimeWorkflowInQueuesLinkActionElement extends EditLinkActionElement
     {
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('WorkflowsModule', 'Time Queue');
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->moduleId . '/defaultTimeQueue/list/');

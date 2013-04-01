@@ -109,12 +109,12 @@
                                             'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;
             }
-            $selectableRelationsData = $modelToWorkflowAdapter->
-                getSelectableRelationsData($precedingModel, $precedingRelation);
+            $selectableRelationsData         = $modelToWorkflowAdapter->
+                                               getSelectableRelationsData($precedingModel, $precedingRelation);
             $resolvedSelectableRelationsData = $modelToWorkflowAdapter->
-                getSelectableRelationsDataResolvedForUserAccess(
-                Yii::app()->user->userModel,
-                $selectableRelationsData);
+                                                getSelectableRelationsDataResolvedForUserAccess(
+                                                Yii::app()->user->userModel,
+                                                $selectableRelationsData);
             foreach($resolvedSelectableRelationsData as $relation => $relationData)
             {
                 $relationModelClassName       = $modelToWorkflowAdapter->getRelationModelClassName($relation);
@@ -123,10 +123,10 @@
                 {
                     throw new NotSupportedException($relationModelClassName);
                 }
-                $relationNode                 = array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
-                    'text'        => $relationData['label'],
-                    'expanded'    => false,
-                    'hasChildren' => true);
+                $relationNode= array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
+                                     'text'        => $relationData['label'],
+                                     'expanded'    => false,
+                                     'hasChildren' => true);
                 $childrenNodeData[]           = $relationNode;
             }
             return $childrenNodeData;
@@ -136,6 +136,7 @@
          * @param ModelRelationsAndAttributesToWorkflowAdapter $modelToWorkflowAdapter
          * @param RedBeanModel $precedingModel
          * @param null|string $precedingRelation
+         * @return array
          * @throws NotSupportedException if the treeType is invalid or null
          */
         protected function getAttributesData(ModelRelationsAndAttributesToWorkflowAdapter $modelToWorkflowAdapter,
@@ -171,7 +172,7 @@
          * @param string $precedingRelation
          */
         protected function resolvePrecedingModelRelationAndAdapterByNodeId(
-                                $nodeId, & $modelToWorkflowAdapter, & $precedingModel, & $precedingRelation)
+                           $nodeId, & $modelToWorkflowAdapter, & $precedingModel, & $precedingRelation)
         {
             assert('$modelToWorkflowAdapter instanceof ModelRelationsAndAttributesToWorkflowAdapter');
             if($nodeId == 'source')
@@ -193,7 +194,7 @@
                     $precedingModel    = $modelToWorkflowAdapter->getModel();
                 }
                 $modelToWorkflowAdapter  = $this->makeModelRelationsAndAttributesToWorkflowAdapter(
-                                         $relationModelClassName::getModuleClassName(), $relationModelClassName);
+                                           $relationModelClassName::getModuleClassName(), $relationModelClassName);
             }
         }
     }

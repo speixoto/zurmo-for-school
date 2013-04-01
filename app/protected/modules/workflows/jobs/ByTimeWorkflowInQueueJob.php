@@ -29,6 +29,9 @@
      */
     class ByTimeWorkflowInQueueJob extends BaseJob
     {
+        /**
+         * @var int
+         */
         protected static $pageSize = 200;
 
         /**
@@ -78,12 +81,20 @@
             return true;
         }
 
+        /**
+         * @param ByTimeWorkflowInQueue $byTimeWorkflowInQueue
+         * @return RedBeanModel
+         */
         protected function resolveModel(ByTimeWorkflowInQueue $byTimeWorkflowInQueue)
         {
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($byTimeWorkflowInQueue->modelClassName);
             return $byTimeWorkflowInQueue->modelItem->castDown(array($modelDerivationPathToItem));
         }
 
+        /**
+         * @param ByTimeWorkflowInQueue $byTimeWorkflowInQueue
+         * @throws NotFoundException
+         */
         protected function resolveSavedWorkflowIsValid(ByTimeWorkflowInQueue $byTimeWorkflowInQueue)
         {
             if($byTimeWorkflowInQueue->savedWorkflow->id < 0)
@@ -92,6 +103,11 @@
             }
         }
 
+        /**
+         * @param ByTimeWorkflowInQueue $byTimeWorkflowInQueue
+         * @param RedBeanModel $model
+         * @throws FailedToSaveModelException
+         */
         protected function processByTimeWorkflowInQueue(ByTimeWorkflowInQueue $byTimeWorkflowInQueue, RedBeanModel $model)
         {
             $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($byTimeWorkflowInQueue->savedWorkflow);

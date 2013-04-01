@@ -29,6 +29,9 @@
      */
     class ByTimeWorkflowInQueuesSearchView extends SearchView
     {
+        /**
+         * @var bool
+         */
         protected $showAdvancedSearch = false;
 
         /**

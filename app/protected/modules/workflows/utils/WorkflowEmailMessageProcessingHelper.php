@@ -24,14 +24,28 @@
  * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
  ********************************************************************************/
 
+    /**
+     * Helper class for processing email messages on a workflow that triggered.
+     */
     class WorkflowEmailMessageProcessingHelper
     {
         protected $emailMessageForm;
 
+        /**
+         * @var RedBeanModel
+         */
         protected $triggeredModel;
 
+        /**
+         * @var User
+         */
         protected $triggeredByUser;
 
+        /**
+         * @param EmailMessageForWorkflowForm $emailMessageForm
+         * @param RedBeanModel $triggeredModel
+         * @param User $triggeredByUser
+         */
         public function __construct(EmailMessageForWorkflowForm $emailMessageForm, RedBeanModel $triggeredModel, User $triggeredByUser)
         {
             $this->emailMessageForm  = $emailMessageForm;
@@ -39,6 +53,9 @@
             $this->triggeredByUser     = $triggeredByUser;
         }
 
+        /**
+         * @throws MissingRecipientsForEmailMessageException
+         */
         public function process()
         {
             $emailTemplate              = EmailTemplate::getById((int)$this->emailMessageForm->emailTemplateId);
@@ -60,18 +77,28 @@
             Yii::app()->emailHelper->send($emailMessage);
         }
 
+        /**
+         * @param EmailTemplate $emailTemplate
+         * @return string
+         */
         protected function resolveEmailTemplateTextContentForModelData(EmailTemplate $emailTemplate)
         {
-            //$this->triggeredModel
             return $emailTemplate->textContent;
         }
 
+        /**
+         * @param EmailTemplate $emailTemplate
+         * @return string
+         */
         protected function resolveEmailTemplateHtmlContentForModelData(EmailTemplate $emailTemplate)
         {
-            //$this->triggeredModel
             return $emailTemplate->htmlContent;
         }
 
+        /**
+         * @return EmailMessageSender
+         * @throws NotSupportedException
+         */
         protected function resolveSender()
         {
             $sender                     = new EmailMessageSender();
@@ -93,6 +120,9 @@
             return $sender;
         }
 
+        /**
+         * @param EmailMessage $emailMessage
+         */
         protected function resolveRecipients(EmailMessage $emailMessage)
         {
             foreach($this->emailMessageForm->getEmailMessageRecipients() as $emailMessageRecipient)

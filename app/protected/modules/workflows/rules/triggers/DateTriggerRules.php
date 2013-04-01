@@ -29,8 +29,15 @@
      */
     class DateTriggerRules extends TriggerRules
     {
+        /**
+         * @param RedBeanModel $model
+         * @param $attribute
+         * @return bool
+         * @throws NotSupportedException
+         */
         public function evaluateBeforeSave(RedBeanModel $model, $attribute)
         {
+            assert('is_string($attribute)');
             switch($this->trigger->valueType)
             {
 
@@ -114,6 +121,8 @@
          */
         public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
+            assert('is_string($attribute)');
+            assert('is_bool($changeRequiredToProcess)');
             if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
             {
                 throw new NotSupportedException();
@@ -122,11 +131,19 @@
                    (DateTimeUtil::isDateValueNull($model, $attribute) === false);
         }
 
+        /**
+         * @param $value
+         * @return int|mixed
+         */
         protected function sanitize($value)
         {
             return strtotime($value);
         }
 
+        /**
+         * @param $value
+         * @return int
+         */
         protected function sanitizeTriggerValue($value)
         {
             return strtotime($value);

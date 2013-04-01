@@ -29,11 +29,17 @@
      */
     class WorkflowMaximumDepthNotificationRules extends NotificationRules
     {
+        /**
+         * @return string|The
+         */
         public static function getType()
         {
             return 'WorkflowMaximumDepth';
         }
 
+        /**
+         * @return string|void
+         */
         public static function getDisplayName()
         {
             return Zurmo::t('WorkflowsModule', 'Maximum depth reached for workflow processing.');

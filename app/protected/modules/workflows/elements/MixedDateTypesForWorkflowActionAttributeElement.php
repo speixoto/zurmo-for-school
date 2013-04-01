@@ -30,6 +30,9 @@
      */
     class MixedDateTypesForWorkflowActionAttributeElement extends MixedAttributeTypesForWorkflowActionAttributeElement
     {
+        /**
+         * @return string
+         */
         protected function renderEditableFirstValueContent()
         {
             $cClipWidget = new CClipWidget();
@@ -47,6 +50,9 @@
             return $inputContent . $error;
         }
 
+        /**
+         * @return string
+         */
         protected function renderEditableSecondValueContent()
         {
             $htmlOptions          = $this->getHtmlOptionsForSecondValue();

@@ -30,6 +30,9 @@
      */
     class MixedDropDownTypesForWorkflowActionAttributeElement extends MixedAttributeTypesForWorkflowActionAttributeElement
     {
+        /**
+         * @return string
+         */
         protected function renderEditableFirstValueContent()
         {
             $htmlOptions          = $this->getHtmlOptionsForFirstValue();
@@ -41,6 +44,9 @@
             return $inputContent . $error;
         }
 
+        /**
+         * @return string
+         */
         protected function renderEditableSecondValueContent()
         {
             $htmlOptions  = $this->getHtmlOptionsForSecondValue();

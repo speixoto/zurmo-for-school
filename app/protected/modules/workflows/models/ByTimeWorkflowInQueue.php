@@ -24,13 +24,24 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class used to manage by-time workflow rules that need to be processed in the future.
+     * @see ByTimeWorkflowInQueueJob which will process expired models and determine if actions or email messages
+     * need to be sent out.  Expired refers to if the processDateTime is in the past.
+     */
     class ByTimeWorkflowInQueue extends Item
     {
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -60,16 +71,28 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return null|string
+         */
         public static function getModuleClassName()
         {
             return 'WorkflowsModule';
         }
 
+        /**
+         * @param SavedWorkflow $savedWorkflow
+         * @param RedBeanModel $model
+         * @return ByTimeWorkflowInQueue
+         * @throws NotSupportedException
+         */
         public static function resolveByWorkflowIdAndModel(SavedWorkflow $savedWorkflow, RedBeanModel $model)
         {
             $searchAttributeData = array();
@@ -113,6 +136,10 @@
             }
         }
 
+        /**
+         * @param $pageSize
+         * @return array of ByTimeWorkflowInQueue models
+         */
         public static function getModelsToProcess($pageSize)
         {
             assert('is_int($pageSize)');

@@ -30,6 +30,9 @@
      */
     class TimeTriggerDurationStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getDurationValuesAndLabels';

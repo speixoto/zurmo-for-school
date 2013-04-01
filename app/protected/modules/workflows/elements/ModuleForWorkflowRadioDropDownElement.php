@@ -30,6 +30,9 @@
      */
     class ModuleForWorkflowRadioDropDownElement extends ModuleForWizardModelRadioDropDownElement
     {
+        /**
+         * @return array
+         */
         protected function getArray()
         {
             return Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();

@@ -29,6 +29,9 @@
      */
     class MultiSelectDropDownWorkflowActionAttributeForm extends CustomFieldWorkflowActionAttributeForm
     {
+        /**
+         * @return string
+         */
         public function getValueElementType()
         {
             return 'MultiSelectStaticDropDownForWorkflow';
@@ -42,8 +45,15 @@
             return array_merge(parent::rules(), array(array('value', 'type', 'type' => 'array')));
         }
 
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
             $data                           = array();
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
             return $data;

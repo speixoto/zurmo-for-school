@@ -29,8 +29,15 @@
      */
     class CurrencyValueTriggerRules extends NumberTriggerRules
     {
+        /**
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @return bool
+         * @throws NotSupportedException
+         */
         public function evaluateBeforeSave(RedBeanModel $model, $attribute)
         {
+            assert('is_string($attribute)');
             switch($this->trigger->getOperator())
             {
 
@@ -121,12 +128,14 @@
         /**
          * @see parent::evaluateTimeTriggerBeforeSave for explanation of method
          * @param RedBeanModel $model
-         * @param $attribute
-         * @param $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
+         * @param string $attribute
+         * @param boolean $changeRequiredToProcess - if a change in value is required to confirm the time trigger is true
          * @return bool
          */
         public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
+            assert('is_string($attribute)');
+            assert('is_bool($changeRequiredToProcess)');
             if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) || !$changeRequiredToProcess)
             {
                 if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
@@ -147,6 +156,10 @@
             return floatval($value);
         }
 
+        /**
+         * @param Currency $currency
+         * @return bool
+         */
         protected  function resolveCurrency(Currency $currency)
         {
            if($this->trigger->currencyIdForValue == null)

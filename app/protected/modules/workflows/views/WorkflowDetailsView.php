@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * View to render details of a workflow model
+     */
     class WorkflowDetailsView extends DetailsView
     {
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array(
@@ -84,6 +90,9 @@
             return $metadata;
         }
 
+        /**
+         * @return null
+         */
         public function getTitle()
         {
             return $this->model->name;

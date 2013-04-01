@@ -58,6 +58,12 @@
             return 'actionsNextLink';
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $workflowType
+         * @return array
+         */
         public static function resolveTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType)
         {
             assert('is_string($moduleClassName)');
@@ -68,6 +74,13 @@
                                       getTypeRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType));
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $modelClassName
+         * @param string $workflowType
+         * @param string $relation
+         * @return array
+         */
         public static function resolveTypeRelatedModelRelationDataAndLabels($moduleClassName, $modelClassName, $workflowType, $relation)
         {
             assert('is_string($moduleClassName)');
@@ -87,6 +100,18 @@
             return 'ZeroActions';
         }
 
+        /**
+         * @return array
+         */
+        protected static function resolveTypeDataAndLabels()
+        {
+            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Action'));
+            return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
+        }
+
+        /**
+         * Register scripts needed for this view
+         */
         public function registerScripts()
         {
             parent::registerScripts();
@@ -129,12 +154,18 @@
             return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select an action') . '</h2>';
         }
 
+        /**
+         * @return string
+         */
         protected function renderZeroComponentsContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                 ComponentForWorkflowForm::TYPE_ACTIONS), $this->getZeroComponentsContent());
         }
 
+        /**
+         * @return string
+         */
         protected function renderAttributeSelectorContentAndWrapper()
         {
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
@@ -150,12 +181,9 @@
             return      ZurmoHtml::tag('div', array('class' => 'action-type-selector-container'), $content);
         }
 
-        protected static function resolveTypeDataAndLabels()
-        {
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Action'));
-            return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
-        }
-
+        /**
+         * @return string
+         */
         protected function renderActionsContentAndWrapper()
         {
             $rowCount                    = 0;
@@ -187,7 +215,12 @@
             return $this->renderActions($rowCount, $this->model->actions);
         }
 
-        protected function renderActions(& $rowCount, $actions)
+        /**
+         * @param integer $rowCount
+         * @param array $actions
+         * @return array
+         */
+        protected function renderActions(& $rowCount, Array $actions)
         {
             assert('is_int($rowCount)');
             assert('is_array($actions)');

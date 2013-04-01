@@ -465,6 +465,9 @@
             }
         }
 
+        /**
+         * @return bool
+         */
         protected function resolveShouldAddSpecialOnSaveNonRelatedOperators()
         {
             $modelClassName = $this->modelClassName;
@@ -479,6 +482,9 @@
             return false;
         }
 
+        /**
+         * @return bool
+         */
         protected function resolveShouldAddSpecialByTimeNonRelatedOperators()
         {
             $modelClassName = $this->modelClassName;

@@ -26,6 +26,9 @@
 
     class WorkflowsSearchForm extends SavedDynamicSearchForm
     {
+        /**
+         * @return string|void
+         */
         protected static function getRedBeanModelClassName()
         {
             return 'SavedWorkflow';

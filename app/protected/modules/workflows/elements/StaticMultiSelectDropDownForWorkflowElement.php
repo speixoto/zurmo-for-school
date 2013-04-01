@@ -29,6 +29,9 @@
      */
     class StaticMultiSelectDropDownForWorkflowElement extends StaticDropDownForWorkflowElement
     {
+        /**
+         * @var bool
+         */
         protected $alwaysMultiple = true;
     }
 ?>

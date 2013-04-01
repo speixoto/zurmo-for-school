@@ -62,6 +62,9 @@
             return $content;
         }
 
+        /**
+         * @return bool
+         */
         protected function shouldDisableSecondValueInputs()
         {
             if ($this->getActionAttributeType() != WorkflowActionAttributeForm::TYPE_STATIC &&
@@ -72,6 +75,9 @@
             return true;
         }
 
+        /**
+         * @return array
+         */
         protected function getHtmlOptionsForFirstValue()
         {
             $htmlOptions = array(
@@ -85,6 +91,9 @@
             return $htmlOptions;
         }
 
+        /**
+         * @return array
+         */
         protected function getHtmlOptionsForSecondValue()
         {
             $htmlOptions = array(
@@ -108,6 +117,9 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @return A|string
+         */
         protected function renderLabel()
         {
             $label = $this->getFormattedAttributeLabel();
@@ -118,6 +130,9 @@
             return ZurmoHtml::label($label, false);
         }
 
+        /**
+         * @return mixed
+         */
         protected function getActionAttributeType()
         {
             return $this->model->type;

@@ -25,7 +25,8 @@
      ********************************************************************************/
 
     /**
-     * Action bar view for the workflow search and list user interface. Provides buttons like export and update
+     * Action bar view for the workflow search and list user interface. Provides buttons like create, and links to
+     * queues.
      */
     class SecuredActionBarForWorkflowsSearchAndListView extends SecuredActionBarForSearchAndListView
     {

@@ -29,6 +29,9 @@
      */
     class WorkflowMessageInQueuesSearchView extends SearchView
     {
+        /**
+         * @var bool
+         */
         protected $showAdvancedSearch = false;
 
         /**

@@ -30,11 +30,17 @@
      */
     class WorkflowsZeroModelsYetView extends ZeroModelsYetView
     {
+        /**
+         * @return string
+         */
         protected function getCreateLinkDisplayLabel()
         {
             return Zurmo::t('WorkflowsModule', 'Create Workflow');
         }
 
+        /**
+         * @return string
+         */
         protected function getMessageContent()
         {
             return Zurmo::t('WorkflowsModule', '<h2>"If you can\'t describe what you are doing as a process, ' .

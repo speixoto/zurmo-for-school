@@ -29,6 +29,9 @@
      */
     abstract class CustomFieldWorkflowActionAttributeForm extends WorkflowActionAttributeForm
     {
+        /**
+         * @return array
+         */
         public function getCustomFieldDataAndLabels()
         {
             $modelClassName = $this->modelClassName;

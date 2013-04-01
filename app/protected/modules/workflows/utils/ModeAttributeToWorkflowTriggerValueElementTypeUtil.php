@@ -33,7 +33,7 @@
         /**
          * @param $model
          * @param string $attributeName
-         * @return null|string
+         * @return string
          * @throws NotSupportedException if the attributeName is a relation on the model
          */
         public static function getType($model, $attributeName)

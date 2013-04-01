@@ -29,6 +29,9 @@
      */
     class TimeTriggerAttributeRowForWorkflowComponentView extends AttributeRowForWorkflowComponentView
     {
+        /**
+         * @return string
+         */
         public static function getFormId()
         {
             return WorkflowWizardView::getFormId();

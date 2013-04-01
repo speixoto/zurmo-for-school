@@ -24,22 +24,29 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Helper class to adapt a SavedWorkflow object to a Workflow object and vice-versa
+     */
     class SavedWorkflowToWorkflowAdapter
     {
-        public static function makeWorkflowBySavedWorkflow($savedWorkflow)
+        /**
+         * @param SavedWorkflow $savedWorkflow
+         * @return Workflow
+         */
+        public static function makeWorkflowBySavedWorkflow(SavedWorkflow $savedWorkflow)
         {
             $workflow = new Workflow();
             if($savedWorkflow->id > 0)
             {
                 $workflow->setId((int)$savedWorkflow->id);
             }
-            $workflow->setDescription($savedWorkflow->description);
-            $workflow->setIsActive((bool)$savedWorkflow->isActive);
-            $workflow->setModuleClassName($savedWorkflow->moduleClassName);
-            $workflow->setName($savedWorkflow->name);
-            $workflow->setOrder((int)$savedWorkflow->order);
-            $workflow->setType($savedWorkflow->type);
-            $workflow->setTriggerOn($savedWorkflow->triggerOn);
+            $workflow->setDescription       ($savedWorkflow->description);
+            $workflow->setIsActive          ((bool)$savedWorkflow->isActive);
+            $workflow->setModuleClassName   ($savedWorkflow->moduleClassName);
+            $workflow->setName              ($savedWorkflow->name);
+            $workflow->setOrder             ((int)$savedWorkflow->order);
+            $workflow->setType              ($savedWorkflow->type);
+            $workflow->setTriggerOn         ($savedWorkflow->triggerOn);
             if($savedWorkflow->serializedData != null)
             {
                 $unserializedData = unserialize($savedWorkflow->serializedData);
@@ -67,6 +74,10 @@
             return $workflow;
         }
 
+        /**
+         * @param Workflow $workflow
+         * @param SavedWorkflow $savedWorkflow
+         */
         public static function resolveWorkflowToSavedWorkflow(Workflow $workflow, SavedWorkflow $savedWorkflow)
         {
             $savedWorkflow->description     = $workflow->getDescription();
@@ -92,6 +103,10 @@
             $savedWorkflow->serializedData   = serialize($data);
         }
 
+        /**
+         * @param array $componentFormsData
+         * @return array
+         */
         public static function makeArrayFromEmailMessageForWorkflowFormAttributesData(Array $componentFormsData)
         {
             $data = array();
@@ -114,6 +129,10 @@
             return $data;
         }
 
+        /**
+         * @param TimeTriggerForWorkflowForm $timeTriggerForWorkflowForm
+         * @return array
+         */
         protected static function makeArrayFromTimeTriggerForWorkflowFormAttributesData(
                                   TimeTriggerForWorkflowForm $timeTriggerForWorkflowForm)
         {
@@ -128,6 +147,10 @@
             return $data;
         }
 
+        /**
+         * @param array $componentFormsData
+         * @return array
+         */
         protected static function makeArrayFromComponentFormsAttributesData(Array $componentFormsData)
         {
             $data = array();
@@ -141,6 +164,10 @@
             return $data;
         }
 
+        /**
+         * @param array $componentFormsData
+         * @return array
+         */
         protected static function makeArrayFromActionForWorkflowFormAttributesData(Array $componentFormsData)
         {
             $data = array();
@@ -162,8 +189,16 @@
             return $data;
         }
 
-        protected static function makeComponentFormAndPopulateWorkflowFromData($componentFormsData, $workflow, $componentPrefix)
+        /**
+         * @param array $componentFormsData
+         * @param Workflow $workflow
+         * @param string $componentPrefix
+         */
+        protected static function makeComponentFormAndPopulateWorkflowFromData($componentFormsData, Workflow $workflow,
+                                                                               $componentPrefix)
         {
+            assert('is_array($componentFormsData');
+            assert('is_string($componentPrefix) || $componentPrefix == null');
             $moduleClassName    = $workflow->getModuleClassName();
             $addMethodName      = 'add' . $componentPrefix;
             $componentClassName = $componentPrefix . 'ForWorkflowForm';
@@ -179,8 +214,14 @@
             }
         }
 
-        protected static function makeActionForWorkflowFormAndPopulateWorkflowFromData($componentFormsData, $workflow)
+        /**
+         * @param array $componentFormsData
+         * @param Workflow $workflow
+         */
+        protected static function makeActionForWorkflowFormAndPopulateWorkflowFromData($componentFormsData,
+                                                                                       Workflow $workflow)
         {
+            assert('is_array($componentFormsData');
             $moduleClassName    = $workflow->getModuleClassName();
             $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
@@ -193,14 +234,20 @@
             }
         }
 
-        protected static function makeEmailMessageForWorkflowFormAndPopulateWorkflowFromData($componentFormsData, $workflow)
+        /**
+         * @param array $componentFormsData
+         * @param Workflow $workflow
+         */
+        protected static function makeEmailMessageForWorkflowFormAndPopulateWorkflowFromData($componentFormsData,
+                                                                                             Workflow $workflow)
         {
+            assert('is_array($componentFormsData');
             $moduleClassName    = $workflow->getModuleClassName();
             $rowKey             = 0;
             foreach($componentFormsData as $componentFormData)
             {
                 $component      = new EmailMessageForWorkflowForm($moduleClassName::getPrimaryModelName(),
-                                                                $workflow->getType(), $rowKey);
+                                                                  $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->addEmailMessage($component);
                 $rowKey ++;

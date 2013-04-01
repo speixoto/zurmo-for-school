@@ -24,19 +24,33 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Model to store information about a single workflow including time trigger, triggers, action, and email messages
+     *
+     */
     class SavedWorkflow extends Item
     {
+        /**
+         * @param $name
+         * @return Array of SavedWorkflow models that match the given name or an empty array if nothing matches
+         */
         public static function getByName($name)
         {
             assert('is_string($name) && $name != ""');
             return self::getSubset(null, null, null, "name = '$name'");
         }
 
+        /**
+         * @return bool
+         */
         public static function canSaveMetadata()
         {
             return true;
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();
@@ -79,16 +93,25 @@
             return $metadata;
         }
 
+        /**
+         * @return bool
+         */
         public static function isTypeDeletable()
         {
             return true;
         }
 
+        /**
+         * @return null|string
+         */
         public static function getModuleClassName()
         {
             return 'WorkflowsModule';
         }
 
+        /**
+         * @return string
+         */
         public function __toString()
         {
             if (trim($this->name) == '')
@@ -98,6 +121,11 @@
             return $this->name;
         }
 
+        /**
+         * @param $moduleClassName
+         * @param $isNewModel
+         * @return Array of SavedWorkflow models
+         */
         public static function getActiveByModuleClassNameAndIsNewModel($moduleClassName, $isNewModel)
         {
             assert('is_string($moduleClassName)');
@@ -131,6 +159,10 @@
             return self::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
+        /**
+         * @param $moduleClassName
+         * @return Array of SavedWorkflow models
+         */
         public static function getAllByModuleClassName($moduleClassName)
         {
             assert('is_string($moduleClassName)');
@@ -148,6 +180,10 @@
             return self::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
+        /**
+         * @param $isNewModel
+         * @return string
+         */
         protected static function resolveExtraTriggerOnValueByIsNewModel($isNewModel)
         {
             assert('is_bool($isNewModel)');

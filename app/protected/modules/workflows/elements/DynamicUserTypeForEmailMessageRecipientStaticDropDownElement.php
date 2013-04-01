@@ -24,8 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Renders a list of dynamic user types for choosing a recipient for an email message.
+     */
     class DynamicUserTypeForEmailMessageRecipientStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         protected function getDataAndLabelsModelPropertyName()
         {
             return 'getDynamicUserTypesAndLabels';

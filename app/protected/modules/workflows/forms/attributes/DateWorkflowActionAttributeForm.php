@@ -33,6 +33,9 @@
 
         const TYPE_DYNAMIC_FROM_EXISTING_DATE = 'DynamicFromExistingDate';
 
+        /**
+         * @return array
+         */
         public function getDynamicTypeValueDropDownArray()
         {
             $data       = array();
@@ -42,6 +45,9 @@
             return $data;
         }
 
+        /**
+         * @return string
+         */
         public function getValueElementType()
         {
             return 'MixedDateTypesForWorkflowActionAttribute';
@@ -105,8 +111,15 @@
             }
         }
 
+        /**
+         * @param bool $isCreatingNewModel
+         * @param bool $isRequired
+         * @return array
+         */
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
+            assert('is_bool($isCreatingNewModel)');
+            assert('is_bool($isRequired)');
             $data                                            = array();
             $data[static::TYPE_STATIC]                       = Zurmo::t('WorkflowsModule', 'Specifically on');
             $data[self::TYPE_DYNAMIC_FROM_TRIGGERED_DATE]    = Zurmo::t('WorkflowsModule', 'Dynamically From Triggered Date');

@@ -29,11 +29,19 @@
      */
     class DynamicTriggeredByUserWorkflowEmailMessageRecipientForm extends WorkflowEmailMessageRecipientForm
     {
+        /**
+         * @return string
+         */
         public static function getTypeLabel()
         {
             return Zurmo::t('WorkflowsModule', 'User who triggered process');
         }
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @return array
+         */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
             $recipients = array();

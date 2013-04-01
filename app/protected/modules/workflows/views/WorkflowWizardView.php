@@ -29,6 +29,9 @@
      */
     abstract class WorkflowWizardView extends WizardView
     {
+        /**
+         * @return string|void
+         */
         public static function getControllerId()
         {
             return 'workflows';

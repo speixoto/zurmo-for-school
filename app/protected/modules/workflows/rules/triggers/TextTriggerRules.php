@@ -29,8 +29,15 @@
      */
     class TextTriggerRules extends TriggerRules
     {
+        /**
+         * @param RedBeanModel $model
+         * @param string $attribute
+         * @return bool
+         * @throws NotSupportedException
+         */
         public function evaluateBeforeSave(RedBeanModel $model, $attribute)
         {
+            assert('is_string($attribute)');
             switch($this->trigger->getOperator())
             {
 

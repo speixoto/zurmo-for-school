@@ -41,6 +41,9 @@
             return parent::renderControlEditable();
         }
 
+        /**
+         * @return array
+         */
         protected function getEditableHtmlOptions()
         {
             $htmlOptions             = parent::getEditableHtmlOptions();

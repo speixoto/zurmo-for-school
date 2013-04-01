@@ -29,6 +29,9 @@
      */
     class WorkflowsPageView extends ZurmoDefaultPageView
     {
+        /**
+         * @return string
+         */
         protected function getSubtitle()
         {
             return Zurmo::t('WorkflowsModule', 'Workflows');

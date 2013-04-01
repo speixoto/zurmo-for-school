@@ -24,13 +24,22 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Link element to take you to a management area where users can manage the order of workflows for a given module
+     */
     class WorkflowManageOrderLinkActionElement extends EditLinkActionElement
     {
+        /**
+         * @return string
+         */
         protected function getDefaultLabel()
         {
             return Zurmo::t('WorkflowsModule', 'Ordering');
         }
 
+        /**
+         * @return string
+         */
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->moduleId . '/default/manageOrder/');

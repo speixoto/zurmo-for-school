@@ -98,6 +98,9 @@
             throw new NotImplementedException();
         }
 
+        /**
+         * @return int
+         */
         public function getRowKey()
         {
             return $this->_rowKey;
@@ -130,6 +133,9 @@
             }
         }
 
+        /**
+         * @return string
+         */
         public function getAttribute()
         {
             return $this->attribute;
@@ -155,6 +161,7 @@
          * @param string $moduleClassName
          * @param string $modelClassName
          * @param string $workflowType
+         * @param int $rowKey
          */
         public function __construct($moduleClassName, $modelClassName, $workflowType, $rowKey = 0)
         {
@@ -522,6 +529,10 @@
             return array_pop($attributeAndRelationData);
         }
 
+        /**
+         * @param array $attributeAndRelationData
+         * @return string
+         */
         protected function resolveRealAttributeNameForPenultimateRelation(Array $attributeAndRelationData)
         {
             assert('count($this->attributeAndRelationData) > 0');

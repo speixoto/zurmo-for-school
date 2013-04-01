@@ -39,6 +39,8 @@
          */
         public function evaluateTimeTriggerBeforeSave(RedBeanModel $model, $attribute, $changeRequiredToProcess = true)
         {
+            assert('is_string($attribute)');
+            assert('is_bool($changeRequiredToProcess)');
             if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
             {
                 throw new NotSupportedException();

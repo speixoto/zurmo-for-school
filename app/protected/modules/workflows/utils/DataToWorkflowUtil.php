@@ -24,11 +24,20 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Class to work with POST data and adapting that into a Workflow object
+     */
     class DataToWorkflowUtil
     {
+        /**
+         * @param Workflow $workflow
+         * @param array $postData
+         * @param string$wizardFormClassName
+         */
         public static function resolveWorkflowByWizardPostData(Workflow $workflow, $postData, $wizardFormClassName)
         {
             assert('is_array($postData)');
+            assert('is_string($wizardFormClassName)');
             $data = ArrayUtil::getArrayValue($postData, $wizardFormClassName);
             if(isset($data['description']))
             {
@@ -64,8 +73,13 @@
             self::resolveTimeTrigger                ($data, $workflow);
         }
 
+        /**
+         * @param array $data
+         * @param Workflow $workflow
+         */
         public static function resolveTriggers($data, Workflow $workflow)
         {
+            assert('is_array($data)');
             $workflow->removeAllTriggers();
             $moduleClassName = $workflow->getModuleClassName();
             if(count($triggersData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_TRIGGERS)) > 0)
@@ -85,6 +99,12 @@
             }
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $workflowType
+         * @param array $triggersData
+         * @return array
+         */
         public static function sanitizeTriggersData($moduleClassName, $workflowType, array $triggersData)
         {
             assert('is_string($moduleClassName)');
@@ -99,11 +119,12 @@
 
         /**
          * Public for testing purposes
-         * @param $data
+         * @param array $data
          * @param Workflow $workflow
          */
         public static function resolveActions($data, Workflow $workflow)
         {
+            assert('is_array($data)');
             $workflow->removeAllActions();
             $moduleClassName = $workflow->getModuleClassName();
             if(count($actionsData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_ACTIONS)) > 0)
@@ -124,6 +145,12 @@
             }
         }
 
+        /**
+         * @param string $modelClassName
+         * @param array $actionData
+         * @param string $workflowType
+         * @return array
+         */
         public static function sanitizeActionData($modelClassName, $actionData, $workflowType)
         {
             assert('is_string($modelClassName)');
@@ -157,11 +184,12 @@
 
         /**
          * Public for testing purposes
-         * @param $data
+         * @param array $data
          * @param Workflow $workflow
          */
         public static function resolveEmailMessages($data, Workflow $workflow)
         {
+            assert('is_array($data)');
             $workflow->removeAllEmailMessages();
             $moduleClassName = $workflow->getModuleClassName();
             if(count($emailMessagesData = ArrayUtil::getArrayValue($data, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)) > 0)
@@ -187,6 +215,7 @@
          */
         public static function resolveTimeTrigger($data, Workflow $workflow)
         {
+            assert('is_array($data)');
             if($workflow->getType() != Workflow::TYPE_BY_TIME)
             {
                 return;
@@ -202,6 +231,12 @@
             $workflow->setTimeTrigger($timeTrigger);
         }
 
+        /**
+         * @param string $moduleClassName
+         * @param string $workflowType
+         * @param array $triggerData
+         * @return mixed
+         */
         protected static function sanitizeTriggerData($moduleClassName, $workflowType, $triggerData)
         {
             assert('is_string($moduleClassName)');

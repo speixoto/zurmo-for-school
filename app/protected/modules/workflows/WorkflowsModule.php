@@ -24,12 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Module for creating workflow rules that can trigger on beforeSave or by a time duration.
+     * Then actions and email messages can be fired.
+     */
     class WorkflowsModule extends SecurableModule
     {
         const RIGHT_CREATE_WORKFLOWS = 'Create Workflows';
         const RIGHT_DELETE_WORKFLOWS = 'Delete Workflows';
         const RIGHT_ACCESS_WORKFLOWS = 'Access Workflows Tab';
 
+        /**
+         * @return array
+         */
         public function getDependencies()
         {
             return array(
@@ -38,11 +45,17 @@
             );
         }
 
+        /**
+         * @return array
+         */
         public function getRootModelNames()
         {
             return array('SavedWorkflow', 'ByTimeWorkflowInQueue', 'WorkflowMessageInQueue');
         }
 
+        /**
+         * @return array
+         */
         public static function getDefaultMetadata()
         {
             $metadata = array();
@@ -85,34 +98,36 @@
             return $metadata;
         }
 
+        /**
+         * @return string|void
+         */
         public static function getPrimaryModelName()
         {
             return 'SavedWorkflow';
         }
 
+        /**
+         * @return null|string
+         */
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_WORKFLOWS;
         }
 
+        /**
+         * @return null|string
+         */
         public static function getCreateRight()
         {
             return self::RIGHT_CREATE_WORKFLOWS;
         }
 
+        /**
+         * @return null|string
+         */
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_WORKFLOWS;
-        }
-
-        public static function getDefaultDataMakerClassName()
-        {
-          //  return 'WorkflowsDefaultDataMaker';
-        }
-
-        public static function getDemoDataMakerClassName()
-        {
-          //  return 'WorkflowsDemoDataMaker';
         }
 
         /**
@@ -125,11 +140,17 @@
             return 'WorkflowsSearchForm';
         }
 
+        /**
+         * @return bool
+         */
         public static function modelsAreNeverGloballySearched()
         {
             return true;
         }
 
+        /**
+         * @return bool
+         */
         public static function hasPermissions()
         {
             return false;

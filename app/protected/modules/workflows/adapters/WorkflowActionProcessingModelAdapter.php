@@ -33,15 +33,29 @@
      */
     class WorkflowActionProcessingModelAdapter
     {
+        /**
+         * @var RedBeanModel
+         */
         protected $model;
 
+        /**
+         * @var User
+         */
         protected $triggeredByUser;
 
+        /**
+         * @var RedBeanModel
+         */
         protected $triggeredModel;
 
+        /**
+         * @param RedBeanModel $model
+         * @param User $triggeredByUser
+         * @param RedBeanModel $triggeredModel
+         */
         public function __construct(RedBeanModel $model, User $triggeredByUser, RedBeanModel $triggeredModel = null)
         {
-            $this->model = $model;
+            $this->model           = $model;
             $this->triggeredByUser = $triggeredByUser;
             if($triggeredModel == null)
             {
@@ -53,16 +67,25 @@
             }
         }
 
+        /**
+         * @return RedBeanModel
+         */
         public function getModel()
         {
             return $this->model;
         }
 
+        /**
+         * @return RedBeanModel
+         */
         public function getTriggeredModel()
         {
             return $this->triggeredModel;
         }
 
+        /**
+         * @return User
+         */
         public function getTriggeredByUser()
         {
             return $this->triggeredByUser;

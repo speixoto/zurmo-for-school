@@ -29,6 +29,9 @@
      */
     class ModelRelationsAndAttributesToByTimeWorkflowAdapter extends ModelRelationsAndAttributesToWorkflowAdapter
     {
+        /**
+         * @return sorted array
+         */
         public function getAttributesForTimeTrigger()
         {
             $attributes       = $this->resolveAttributesForActionsOrTimeTriggerData(true, true, true);
@@ -38,6 +41,11 @@
             return $sortedAttributes;
         }
 
+        /**
+         * @param null | RedBeanModel $precedingModel
+         * @param null | string $precedingRelation
+         * @return array
+         */
         public function getSelectableRelationsData(RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             return $this->getSelectableRelationsDataForTriggers($precedingModel, $precedingRelation);

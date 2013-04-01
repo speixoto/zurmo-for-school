@@ -29,12 +29,21 @@
      */
     class MixedDateTypesForWorkflowElement extends MixedDateTypesForWizardElement
     {
+        /**
+         * @param $model
+         * @param string $attribute
+         * @param null | ZurmoActiveForm $form
+         * @param array $params
+         */
         public function __construct($model, $attribute, $form = null, array $params = array())
         {
             assert('$model instanceof TriggerForWorkflowForm || $model instanceof TimeTriggerForWorkflowForm');
             parent::__construct($model, $attribute, $form, $params);
         }
 
+        /**
+         * @return array
+         */
         protected function getValueTypeDropDownArray()
         {
             if($this->model instanceof TimeTriggerForWorkflowForm)
@@ -61,6 +70,9 @@
             return $valueTypesAndLabels;
         }
 
+        /**
+         * @return array
+         */
         protected function getEditableValueTypeHtmlOptions()
         {
             $htmlOptions = parent::getEditableValueTypeHtmlOptions();

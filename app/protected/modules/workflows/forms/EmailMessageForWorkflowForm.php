@@ -43,14 +43,29 @@
          */
         const EMAIL_MESSAGE_RECIPIENTS     = 'EmailMessageRecipients';
 
+        /**
+         * @var int
+         */
         public $emailTemplateId;
 
+        /**
+         * @var int
+         */
         public $sendAfterDurationSeconds;
 
+        /**
+         * @var string
+         */
         public $sendFromType;
 
+        /**
+         * @var string
+         */
         public $sendFromName;
 
+        /**
+         * @var string
+         */
         public $sendFromAddress;
 
         /**
@@ -90,14 +105,18 @@
             return self::EMAIL_MESSAGE_RECIPIENTS . '_' .  $attributeName . '_';
         }
 
+        /**
+         * @return int
+         */
         public function getRowKey()
         {
             return $this->_rowKey;
         }
+
         /**
          * @param string $modelClassName
          * @param string $workflowType
-         * @param int $rowNumber
+         * @param int $rowKey
          */
         public function __construct($modelClassName, $workflowType, $rowKey = 0)
         {
@@ -125,6 +144,9 @@
             return $this->_emailMessageRecipients;
         }
 
+        /**
+         * @return string
+         */
         public function getWorkflowType()
         {
             return $this->_workflowType;
@@ -260,6 +282,9 @@
             return $passedValidation;
         }
 
+        /**
+         * @return array
+         */
         public function getSendFromTypeValuesAndLabels()
         {
             $data                               = array();
@@ -268,6 +293,9 @@
             return $data;
         }
 
+        /**
+         * @return array
+         */
         public function getSendAfterDurationValuesAndLabels()
         {
             $data = array();
@@ -275,6 +303,10 @@
             return $data;
         }
 
+        /**
+         * @param $key
+         * @return integer
+         */
         protected function resolveTemporaryKeyByRealKey($key)
         {
             assert(is_int($key));

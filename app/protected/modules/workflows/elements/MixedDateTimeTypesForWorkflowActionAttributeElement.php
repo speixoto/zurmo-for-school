@@ -30,6 +30,9 @@
      */
     class MixedDateTimeTypesForWorkflowActionAttributeElement extends MixedAttributeTypesForWorkflowActionAttributeElement
     {
+        /**
+         * @return string
+         */
         protected function renderEditableFirstValueContent()
         {
             $value       = DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($this->model->value);
@@ -47,6 +50,9 @@
             return $inputContent . $error;
         }
 
+        /**
+         * @return array
+         */
         protected function getHtmlOptionsForFirstValue()
         {
             $htmlOptions           = parent::getHtmlOptionsForFirstValue();
@@ -54,6 +60,9 @@
             return $htmlOptions;
         }
 
+        /**
+         * @return string
+         */
         protected function renderEditableSecondValueContent()
         {
             $htmlOptions          = $this->getHtmlOptionsForSecondValue();

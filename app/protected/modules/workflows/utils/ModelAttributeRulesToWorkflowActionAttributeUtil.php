@@ -30,6 +30,12 @@
      */
     class ModelAttributeRulesToWorkflowActionAttributeUtil
     {
+        /**
+         * @param string $modelClassName
+         * @param string $attributeName
+         * @param string $ruleAttributeName
+         * @return array
+         */
         public static function getApplicableRulesByModelClassNameAndAttributeName($modelClassName, $attributeName,
                                                                                   $ruleAttributeName)
         {

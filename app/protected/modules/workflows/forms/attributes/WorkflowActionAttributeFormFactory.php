@@ -29,6 +29,11 @@
      */
     class WorkflowActionAttributeFormFactory extends ConfigurableMetadataModel
     {
+        /**
+         * @param $resolvedModelClassName
+         * @param $resolvedAttributeName
+         * @return WorkflowActionAttributeForm
+         */
         public static function make($resolvedModelClassName, $resolvedAttributeName)
         {
             assert('is_string($resolvedModelClassName)');
@@ -37,6 +42,11 @@
             return new $formClassName($resolvedModelClassName, $resolvedAttributeName);
         }
 
+        /**
+         * @param $resolvedModelClassName
+         * @param $resolvedAttributeName
+         * @return string
+         */
         public static function getType($resolvedModelClassName, $resolvedAttributeName)
         {
             assert('is_string($resolvedModelClassName)');

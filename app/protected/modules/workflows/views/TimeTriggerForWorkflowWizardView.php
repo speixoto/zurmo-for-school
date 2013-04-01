@@ -113,12 +113,19 @@
         {
             return '<div class="large-icon"></div><h2>' . Zurmo::t('WorkflowsModule', 'Select a time trigger') . '</h2>';
         }
+
+        /**
+         * @return string
+         */
         protected function renderZeroComponentsContentAndWrapper()
         {
             return ZurmoHtml::tag('div', array('class' => 'zero-components-view ' .
                    ComponentForWorkflowForm::TYPE_TIME_TRIGGER), $this->getZeroComponentsContent());
         }
 
+        /**
+         * @return string
+         */
         protected function renderAttributeSelectorContentAndWrapper()
         {
             $element                    = new TimeTriggerAttributeStaticDropDownElement($this->model,
@@ -129,6 +136,9 @@
                                          $attributeSelectorContent);
         }
 
+        /**
+         * @return string
+         */
         protected function renderTimeTriggerContentAndWrapper()
         {
             if($this->model->timeTriggerAttribute != null)

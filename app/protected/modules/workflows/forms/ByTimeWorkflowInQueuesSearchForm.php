@@ -24,15 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+    /**
+     * Search form for filtering a list of ByTimeWorkflowInQueue models in a list
+     */
     class ByTimeWorkflowInQueuesSearchForm extends SearchForm
     {
+        /**
+         * @var string
+         */
         public $workflowName;
 
+        /**
+         * @return string
+         */
         protected static function getRedBeanModelClassName()
         {
             return 'ByTimeWorkflowInQueue';
         }
 
+        /**
+         * @return array
+         */
         public function rules()
         {
             return array_merge(parent::rules(), array(
@@ -40,6 +52,9 @@
             ));
         }
 
+        /**
+         * @return array
+         */
         public function attributeLabels()
         {
             return array_merge(parent::attributeLabels(), array(
@@ -47,6 +62,9 @@
             ));
         }
 
+        /**
+         * @return array
+         */
         public function getAttributesMappedToRealAttributesMetadata()
         {
             return array_merge(parent::getAttributesMappedToRealAttributesMetadata(), array(

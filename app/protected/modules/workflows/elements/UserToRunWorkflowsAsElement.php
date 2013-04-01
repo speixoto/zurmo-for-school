@@ -30,6 +30,9 @@
      */
     class UserToRunWorkflowsAsElement extends SuperAdministratorToUseElement
     {
+        /**
+         * @return string
+         */
         protected static function renderTooltipContent()
         {
             $title       = Zurmo::t('WorkflowsModule', 'Zurmo processes workflow rules.  The workflows must be ' .

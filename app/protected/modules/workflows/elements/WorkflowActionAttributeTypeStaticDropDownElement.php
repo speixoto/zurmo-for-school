@@ -29,11 +29,18 @@
      */
     class WorkflowActionAttributeTypeStaticDropDownElement extends StaticDropDownFormElement
     {
+        /**
+         * @return string
+         */
         public function getIdForSelectInput()
         {
             return $this->getEditableInputId($this->attribute);
         }
 
+        /**
+         * @return array
+         * @throws NotSupportedException
+         */
         public function getDropDownArray()
         {
             if (isset($this->params['typeValuesAndLabels']))
@@ -43,6 +50,9 @@
             throw new NotSupportedException();
         }
 
+        /**
+         * @return array
+         */
         protected function getEditableHtmlOptions()
         {
             $htmlOptions = parent::getEditableHtmlOptions();
@@ -57,6 +67,9 @@
             return $htmlOptions;
         }
 
+        /**
+         * @return string
+         */
         protected function renderControlEditable()
         {
             $content = parent::renderControlEditable();
@@ -74,6 +87,9 @@
             return array(WorkflowActionAttributeForm::TYPE_STATIC);
         }
 
+        /**
+         * @return array
+         */
         public static function getValueTypesRequiringSecondInput()
         {
             return array(
