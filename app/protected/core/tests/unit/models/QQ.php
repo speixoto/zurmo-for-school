@@ -24,38 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Represents a message source that stores translated messages in database.
-     *
-     * The ZurmoMessageSource::installSchema() method must be called to create
-     * the tables with required indexes
-     */
-    class ZurmoMessageSource extends CDbMessageSource
+    class QQ extends Q
     {
-        const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
-
-        /**
-         * Override of the parent method using RedBean
-         * @param string $category
-         */
-        protected function loadMessagesFromDb($category, $languageCode)
+        public static function getDefaultMetadata()
         {
-            $sourceTableName   = RedBeanModel::getTableName('MessageSource');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
-            $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
-
-            $where             =  " messagesource.`category` = '$category' AND"
-                                . " messagetranslation.`language` = '$languageCode' ";
-
-            $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
-
-            $messages = array();
-            foreach ($beans as $bean)
-            {
-                $messages[$bean->messagesource->source] = $bean->translation;
-            }
-
-            return $messages;
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'relations' => array(
+                    'q'           => array(RedBeanModel::HAS_ONE,  'Q'),
+                    'qRequired'   => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'qUnique'     => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'qMany'       => array(RedBeanModel::HAS_MANY, 'Q')
+                ),
+                'rules' => array(
+                    array('qRequired',    'required'),
+                    array('qUnique',      'unique'),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

@@ -24,38 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Represents a message source that stores translated messages in database.
-     *
-     * The ZurmoMessageSource::installSchema() method must be called to create
-     * the tables with required indexes
-     */
-    class ZurmoMessageSource extends CDbMessageSource
+    class Q extends A
     {
-        const CACHE_KEY_PREFIX = 'ZurmoMessageSource';
-
-        /**
-         * Override of the parent method using RedBean
-         * @param string $category
-         */
-        protected function loadMessagesFromDb($category, $languageCode)
+        public static function getSortAttributesByAttribute($attribute)
         {
-            $sourceTableName   = RedBeanModel::getTableName('MessageSource');
-            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('MessageTranslation');
-            $joinTablesAdapter->addFromTableAndGetAliasName($sourceTableName, "{$sourceTableName}_id");
-
-            $where             =  " messagesource.`category` = '$category' AND"
-                                . " messagetranslation.`language` = '$languageCode' ";
-
-            $beans = MessageTranslation::getSubset($joinTablesAdapter, null, null, $where);
-
-            $messages = array();
-            foreach ($beans as $bean)
-            {
-                $messages[$bean->messagesource->source] = $bean->translation;
-            }
-
-            return $messages;
+            return array($attribute, 'junk', 'uniqueRequiredEmail');
         }
     }
 ?>

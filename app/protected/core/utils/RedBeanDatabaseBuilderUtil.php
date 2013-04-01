@@ -523,7 +523,10 @@
                         $model->$memberName = $validator->value;
                         $memberSet = true;
                         break;
-
+                    case 'UserDefaultTimeZoneDefaultValueValidator':
+                        $model->$memberName = 'UTC';
+                        $memberSet = true;
+                        break;
                     case 'CEmailValidator':
                         $model->$memberName = 'someone@somewhere.net';
                         $memberSet = true;
