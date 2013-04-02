@@ -111,7 +111,7 @@
                     'type'
                 ),
                 'relations' => array(
-                    'products'                  => array(RedBeanModel::MANY_MANY, 'Product'),
+                    'products'                  => array(RedBeanModel::HAS_MANY, 'Product'),
                     'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
                     'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
                     'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
@@ -168,6 +168,19 @@
         public static function getGamificationRulesType()
         {
             //return 'ProductTemplateGamification';
+        }
+
+        protected function beforeDelete()
+        {
+            parent::beforeDelete();
+            if(count($this->products) == 0 )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

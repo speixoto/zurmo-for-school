@@ -93,6 +93,15 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'productTemplate', 'type' => 'ProductTemplate'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'stage', 'type' => 'DropDown', 'addBlank' => true),
                                             ),
                                         ),

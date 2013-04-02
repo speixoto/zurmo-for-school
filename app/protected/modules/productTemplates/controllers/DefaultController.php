@@ -80,12 +80,7 @@
         {
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
-//            $breadCrumbView          = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this, 'ProductTemplatesSearchView', $productTemplate);
             $detailsView           = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
-//            $detailsAndRelationsView = $this->makeDetailsAndRelationsView($productTemplate, 'ProductTemplatesModule',
-//                                                                          'ProductTemplateDetailsAndRelationsView',
-//                                                                          Yii::app()->request->getRequestUri(),
-//                                                                          $breadCrumbView);
             $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $detailsView));
             echo $view->render();
@@ -228,15 +223,24 @@
                 ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural'),
                 $dataProvider
             );
-            $massDeleteView = $this->makeMassDeleteView(
-                $productTemplate,
-                $activeAttributes,
-                $selectedRecordCount,
-                ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
-            );
-            $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $massDeleteView));
-            echo $view->render();
+
+            if($productTemplate === false)
+            {
+                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the product template selected is  associated to products in the system hence could not be deleted'));
+                $this->redirect(Zurmo::app()->request->getUrlReferrer());
+            }
+            else
+            {
+                $massDeleteView = $this->makeMassDeleteView(
+                    $productTemplate,
+                    $activeAttributes,
+                    $selectedRecordCount,
+                    ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
+                );
+                $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $massDeleteView));
+                echo $view->render();
+            }
         }
 
         /**
@@ -280,8 +284,17 @@
         {
             $productTemplate = ProductTemplate::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productTemplate);
-            $productTemplate->delete();
-            $this->redirect(array($this->getId() . '/index'));
+            //Check if product template has associated products
+            if($productTemplate->delete())
+            {
+                $this->redirect(array($this->getId() . '/index'));
+            }
+            else
+            {
+                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'The product template is associated to products in the system hence could not be deleted'));
+                $this->redirect(Zurmo::app()->request->getUrlReferrer());
+            }
+
         }
 
         protected static function getSearchFormClassName()

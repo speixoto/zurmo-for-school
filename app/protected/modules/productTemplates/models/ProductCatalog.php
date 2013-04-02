@@ -26,6 +26,8 @@
 
     class ProductCatalog extends Item
     {
+        const DEFAULT_NAME = 'Default';
+        
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);

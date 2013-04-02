@@ -93,8 +93,11 @@
 
         public function actionCreate()
         {
+            $productCategory = new ProductCategory();
+            $productCatalog = ProductCatalog::getByName(ProductCatalog::DEFAULT_NAME);
+            $productCategory->productCatalogs->add($productCatalog[0]);
             $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new ProductCategory()), 'Edit');
+                                            $this->attemptToSaveModelFromPost($productCategory), 'Edit');
             $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $editAndDetailsView));
             echo $view->render();
@@ -110,12 +113,6 @@
                                                  $this->attemptToSaveModelFromPost($productCategory, $redirectUrl), 'Edit')));
             echo $view->render();
         }
-
-//        protected static function getZurmoControllerUtil()
-//        {
-//            return new ProductTemplateZurmoControllerUtil('productTemplateItems', 'ProductTemplateItemForm',
-//                                                            'ProductTemplateCategoriesForm');
-//        }
 
         /**
          * Action for displaying a mass edit form and also action when that form is first submitted.

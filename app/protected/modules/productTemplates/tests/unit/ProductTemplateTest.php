@@ -215,15 +215,18 @@
 
             $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(3, count($productTemplates));
+            $products = Product::getByName('Product 1');
+            $productTemplates[0]->products->remove($products[0]);
             $productTemplates[0]->delete();
 
             $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(2, count($productTemplates));
-
+            $products = Product::getByName('Product 2');
+            $productTemplates[0]->products->remove($products[0]);
             $productTemplates[0]->delete();
+
             $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(1, count($productTemplates));
-
             $productTemplates[0]->delete();
         }
 
@@ -273,7 +276,6 @@
             $sellPriceFormula                           = new SellPriceFormula();
             $sellPriceFormula->type                     = $sellPriceFormulaType;
             $productTemplate->sellPriceFormula          = $sellPriceFormula;
-
             return $productTemplate;
         }
     }

@@ -52,5 +52,10 @@
                                                                $postData[$this->productTemplateProductCategoryFormName]);
             }
         }
+
+        protected function checkProductTemplatesMassDeletion()
+        {
+            
+        }
     }
 ?>

@@ -100,6 +100,7 @@
                     'account'         => array(RedBeanModel::HAS_ONE, 'Account'),
                     'contact'         => array(RedBeanModel::HAS_ONE, 'Contact'),
                     'opportunity'     => array(RedBeanModel::HAS_ONE, 'Opportunity'),
+                    'productTemplate' => array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
                     'stage'           => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
                 ),
                 'rules' => array(

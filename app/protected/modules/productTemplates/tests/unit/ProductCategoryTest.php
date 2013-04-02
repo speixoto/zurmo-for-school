@@ -56,12 +56,19 @@
 
             $productCategory       = new ProductCategory();
             $productCategory->name = "My Test Category";
+
+            $productCatalog        = new ProductCatalog();
+            $productCatalog->name  = ProductCatalog::DEFAULT_NAME;
+            $productCatalog->save();
+            $productCategory->productCatalogs->add($productCatalog);
+
             $this->assertTrue($productCategory->save());
             $id                    = $productCategory->id;
             $productCategory->forget();
             unset($productCategory);
             $productCategory       = ProductCategory::getById($id);
             $this->assertEquals('My Test Category', $productCategory->name);
+            $this->assertEquals(ProductCatalog::DEFAULT_NAME, $productCategory->productCatalogs[0]->name);
         }
 
         /**
