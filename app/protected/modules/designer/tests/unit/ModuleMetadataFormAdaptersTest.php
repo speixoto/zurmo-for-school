@@ -26,18 +26,7 @@
 
     class ModuleMetadataFormAdaptersTest extends ZurmoBaseTest
     {
-        public static function setUpBeforeClass()
-        {
-            parent::setUpBeforeClass();
-            Yii::app()->languageHelper->load();
-            Yii::app()->languageHelper->setActiveLanguages(array('es', 'fr', 'it', 'de'));
-        }
-
-        public static function tearDownAfterClass()
-        {
-            Yii::app()->languageHelper->setActiveLanguages(array());
-            parent::tearDownAfterClass();
-        }
+        public static $activateDefaultLanguages = true;
 
         public function testModuleMetadataToFormAdapter()
         {

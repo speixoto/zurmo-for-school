@@ -2328,34 +2328,34 @@
          * Given an attributeName, attempt to find in the metadata a custom attribute label for the given language.
          * @return string - translated attribute label, if not found return null.
          */
-        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $language)
+        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $languageCode)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
+            assert('is_string($languageCode)');
             $metadata = static::getMetadata();
             foreach ($metadata as $notUsed => $modelClassMetadata)
             {
                 if (isset($modelClassMetadata['labels']) &&
                     isset($modelClassMetadata['labels'][$attributeName]) &&
-                    isset($modelClassMetadata['labels'][$attributeName][$language]))
+                    isset($modelClassMetadata['labels'][$attributeName][$languageCode]))
                 {
-                    return $modelClassMetadata['labels'][$attributeName][$language];
+                    return $modelClassMetadata['labels'][$attributeName][$languageCode];
                 }
             }
             return null;
         }
 
         /**
-         * Given an attributeName, return an array of all attribute labels for each language available.
+         * Given an attributeName, return an array of all attribute labels for each active language.
          * @return array - attribute labels by language for the given attributeName.
          */
-        public function getAttributeLabelsForAllSupportedLanguagesByAttributeName($attributeName)
+        public function getAttributeLabelsForAllActiveLanguagesByAttributeName($attributeName)
         {
             assert('is_string($attributeName)');
             $attirbuteLabelData = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $attirbuteLabelData[$language] = $this->getAttributeLabelByLanguage($attributeName, $language);
+                $attirbuteLabelData[$languageCode] = $this->getAttributeLabelByLanguage($attributeName, $languageCode);
             }
             return $attirbuteLabelData;
         }

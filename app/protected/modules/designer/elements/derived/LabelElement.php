@@ -78,10 +78,10 @@
         protected function getElementViewMetadata()
         {
             $metadata = array();
-            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $metadata[] = array(    'attributeName' => $this->attribute . '[' . $language . ']',
-                                        'type' => 'Text', 'label' => $name);
+                $metadata[] = array(    'attributeName' => $this->attribute . '[' . $languageCode . ']',
+                                        'type' => 'Text', 'label' => $languageData['name']);
             }
             return $metadata;
         }

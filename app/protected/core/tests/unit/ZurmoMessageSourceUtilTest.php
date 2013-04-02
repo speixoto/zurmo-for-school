@@ -157,23 +157,20 @@
 
             ZurmoMessageSourceUtil::importPoFile($testLanguageCode, $filePath);
 
-            $file = new ZurmoGettextPoFile();
-            $contexts = $file->loadWithContext($filePath);
+            $file = new ZurmoGettextPoFile($filePath);
+            $messages = $file->read($filePath);
 
             $messageSource = new ZurmoMessageSource();
 
-            foreach ($contexts as $category => $messages)
+            foreach ($messages as $message)
             {
-                foreach ($messages as $source => $compareTranslation)
-                {
-                    $translation = $messageSource->translate(
-                                                  $category,
-                                                  $source,
-                                                  $testLanguageCode
-                                                  );
+                $translation = $messageSource->translate(
+                    $message['msgctxt'],
+                    $message['msgid'],
+                    $testLanguageCode
+                );
 
-                    $this->assertEquals($translation, $compareTranslation);
-                }
+                $this->assertEquals($translation, $message['msgstr']);
             }
         }
     }
