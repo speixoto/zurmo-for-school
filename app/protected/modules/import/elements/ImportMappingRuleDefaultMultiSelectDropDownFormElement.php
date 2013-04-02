@@ -44,7 +44,6 @@
          */
         protected function renderControlEditable()
         {
-            $dropDownArray = $this->getDropDownArray();
             $content       = null;
             $content      .= ZurmoHtml::listBox($this->getNameForSelectInput(),
                                             $this->model->{$this->attribute},

@@ -240,13 +240,8 @@
          */
         public function isRelationTypeAHasManyVariant()
         {
-            if($this->getRelationType() == RedBeanModel::HAS_MANY  ||
-               $this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
-               $this->getRelationType() == RedBeanModel::HAS_ONE_BELONGS_TO)
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelationTypeAHasManyVariant($this->attribute);
         }
 
         /**
@@ -254,12 +249,8 @@
          */
         public function isRelationTypeAHasOneVariant()
         {
-            if($this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
-               $this->getRelationType() == RedBeanModel::HAS_ONE)
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelationTypeAHasOneVariant($this->attribute);
         }
 
         /**

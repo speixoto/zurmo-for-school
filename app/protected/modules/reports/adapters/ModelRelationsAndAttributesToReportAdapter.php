@@ -191,7 +191,7 @@
             }
             else
             {
-                $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+                $resolvedAttribute = static::resolveRealAttributeName($attribute);
             }
             $attributesData    = $this->getAttributesIncludingDerivedAttributesData();
             if(!isset($attributesData[$resolvedAttribute]) && !$this->model->isAttribute($resolvedAttribute))
@@ -369,7 +369,7 @@
             {
                 throw new NotSupportedException();
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if(null != $availableOperatorsTypeFromRule = $this->rules->getAvailableOperatorsTypes($this->model,
                                                                                                   $resolvedAttribute))
             {
@@ -400,7 +400,7 @@
                 }
                 return 'UserNameId';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             if(null != $filterValueElementTypeFromRule = $this->rules->getFilterValueElementType($this->model,
                                                                                                  $resolvedAttribute))
             {
@@ -432,7 +432,7 @@
                 }
                 return 'User';
             }
-            $resolvedAttribute = $this->resolveRealAttributeName($attribute);
+            $resolvedAttribute = static::resolveRealAttributeName($attribute);
             return $this->getRealModelAttributeType($resolvedAttribute);
         }
 
@@ -531,7 +531,7 @@
          */
         public function getAttributesIncludingDerivedAttributesData()
         {
-            $attributes = array('id' => array('label' => Zurmo::t('ReportsModule', 'Id')));
+            $attributes = array('id' => array('label' => Zurmo::t('Core', 'Id')));
             $attributes = array_merge($attributes, $this->getAttributesNotIncludingDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDerivedAttributesData());
             $attributes = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
@@ -799,7 +799,7 @@
          * @param string attribute
          * @return real model attribute name.  Parses for Inferred
          */
-        public function resolveRealAttributeName($attribute)
+        public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             $delimiter                       = FormModelUtil::DELIMITER;
@@ -1036,15 +1036,7 @@
         protected function getInferredRelationModelClassNamesForRelation($relation)
         {
             assert('is_string($relation)');
-            $attributes = array();
-            $metadata   = $this->model->getMetadata();
-            foreach ($metadata as $modelClassName => $modelClassMetadata)
-            {
-                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
-                {
-                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
-                }
-            }
+            return $this->model->getInferredRelationModelClassNamesForRelation($relation);
         }
 
         /**

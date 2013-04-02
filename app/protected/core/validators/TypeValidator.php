@@ -72,8 +72,8 @@
                     break;
 
                 case 'array';
-                    throw new NotSupportedException();
-
+                    $valid = is_array($value);
+                    break;
                 case 'string';
                 default:
                     return;

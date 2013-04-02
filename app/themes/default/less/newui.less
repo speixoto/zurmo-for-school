@@ -1504,6 +1504,31 @@ form,
     .view-toolbar-icons(26px);
     top:-2px;
 }
+
+.icon-workflows:before{
+	content:'\20AC';
+	.view-toolbar-icons();
+	top:-2px;
+}
+
+.icon-by-time-workflow-in-queues:before{
+	content:'\0071';
+	.view-toolbar-icons();
+	top:-2px;
+}
+
+.icon-by-workflow-message-in-queues:before{
+	content:'\00A5';
+	.view-toolbar-icons(22px);
+	top:-2px;
+}
+
+.icon-by-workflow-manage-order:before{
+	content:'\2039';
+	.view-toolbar-icons(25px);
+	top:-2px;
+}
+
 /*=Footer*/
 #FooterView{
     margin:20px 3% 0 3%;
@@ -1888,6 +1913,10 @@ a.simple-link{
     }
 }
 
+.normal-size{
+    font-size: 12px !important; 
+}
+
 /*needed for specifity*/
 .portlet-toolbar{
     a.simple-link{
@@ -1996,6 +2025,13 @@ a.simple-link{
     width: 100%;
     height: 100%;
     background:rgba(255, 255, 255, 0.5 );
+}
+
+.ui-sortable{
+	> .ui-state-highlight{
+		min-height: 45px;
+		background: #efefef;
+	}
 }
 
 /*=Checkboxes*/
@@ -2219,17 +2255,6 @@ div.wide.form{
         .symbly(325px);
         line-height: 52%;
     }
-    .missing-report:after,
-    .Report .large-icon:after{
-        content:"j";
-        .symbly(250px);
-        line-height: 60%;
-    }
-    .SavedReport .large-icon:after{
-        content:"V";
-        .symbly(320px);
-        line-height: 55%;
-    }
 }
 
 #NoUserEmailConfigurationYetView{
@@ -2238,13 +2263,13 @@ div.wide.form{
     }
 }
 
-
 .ZurmoSearchView{
     padding:0;
     .b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );
     float:left;
     width:100%;
 }
+
 #search-form{
     position: relative;
     //padding:10px 0 10px 0;
@@ -3012,16 +3037,11 @@ div.wide.form{
         width:95%;
         .box-sizing();
     }
-	.hasDropDown{
-		margin-right: 30px;
-		width: auto;
-	}
-
 }
 
 .beforeToolTip + .tooltip{
     float: right;
-    margin:7px 0 0 -30px !important;
+    margin:5px 0 0 -30px !important;
     position:relative;
 }
 
@@ -4317,6 +4337,11 @@ div.hasHalfs{
     }
 }
 
+.isMultiSelect{
+	span{
+		display: none !important;
+	}
+}
 
 
 

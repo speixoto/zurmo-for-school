@@ -76,7 +76,7 @@
                 'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
                 'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
                 'stage'       => Zurmo::t('OpportunitiesModule', 'Stage',  array(), null, $language),
-                'tasks'       => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language)));
+                'tasks'       => Zurmo::t('TasksModule',         'Tasks',  array(), null, $language)));
         }
 
         /**

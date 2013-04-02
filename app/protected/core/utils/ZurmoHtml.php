@@ -562,8 +562,10 @@ EOD;
             {
                 static::addErrorCss($htmlOptions);
             }
+            $multiSelectClass = null;
             if (isset($htmlOptions['multiple']))
             {
+                $multiSelectClass .= ' isMultiSelect';
                 if (substr($htmlOptions['name'], -2) !== '[]')
                 {
                     $htmlOptions['name'] .= '[]';
@@ -571,7 +573,7 @@ EOD;
             }
             $content  = static::tag('span', array('class' => 'select-arrow'), '');
             $content .= static::tag('select', $htmlOptions, $options);
-            return static::tag('div', array('class' => 'hasDropDown'), $content);
+            return static::tag('div', array('class' => 'hasDropDown' . $multiSelectClass), $content);
         }
 
         /**
@@ -590,11 +592,16 @@ EOD;
             {
                 unset($htmlOptions['id']);
             }
+            $multiSelectClass = null;
+            if (isset($htmlOptions['multiple']))
+            {
+                $multiSelectClass .= ' isMultiSelect';
+            }
             static::clientChange('change', $htmlOptions);
             $options  = "\n" . static::listOptions($select, $data, $htmlOptions);
             $content  = static::tag('span', array('class' => 'select-arrow'), '');
             $content .= static::tag('select', $htmlOptions, $options);
-            return static::tag('div', array('class' => 'hasDropDown'), $content);
+            return static::tag('div', array('class' => 'hasDropDown' . $multiSelectClass), $content);
         }
 
         /**
@@ -626,6 +633,27 @@ EOD;
         public static function span($class)
         {
             return static::tag('span', array('class' => $class), null);
+        }
+
+        /**
+         * @param string $innerContent
+         * @param string $content
+         * @param null|string $class
+         */
+        public static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
+        {
+            if($class != null)
+            {
+                $htmlOptions = array('class' => $class);
+            }
+            else
+            {
+                $htmlOptions = array();
+            }
+            if($innerContent != null)
+            {
+                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
+            }
         }
     }
 ?>

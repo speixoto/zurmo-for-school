@@ -32,6 +32,8 @@
      */
     class ImportSuperUserWalkthroughTest extends ImportWalkthroughBaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public function testSuperUserMappingRulesEditActionAllAttributeIndexAndDerivedTypes()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');

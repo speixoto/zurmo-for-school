@@ -24,20 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LanguagesToLanguageCollectionViewUtil
+    /**
+     * Class used by an email message in workflow to show the send from type.
+     */
+    class EmailMessageSendFromTypeStaticDropDownElement extends DataFromFormStaticDropDownFormElement
     {
-        public static function getLanguagesData()
+        /**
+         * @return string
+         */
+        protected function getDataAndLabelsModelPropertyName()
         {
-            $activeLanguages    = Yii::app()->languageHelper->getActiveLanguages();
-            $languagesData       = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $label)
-            {
-                $languagesData[$language] = array('label'         => $label,
-                                                 'active'        => in_array($language, $activeLanguages),
-                                                 'canInactivate' =>
-                                                        Yii::app()->languageHelper->canInactivateLanguage($language));
-            }
-            return $languagesData;
+            return 'getSendFromTypeValuesAndLabels';
         }
     }
 ?>

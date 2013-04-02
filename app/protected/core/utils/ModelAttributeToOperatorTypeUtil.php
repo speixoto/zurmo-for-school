@@ -43,10 +43,7 @@
                 OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
             $data[OperatorRules::TYPE_DOES_NOT_EQUAL] =
                 OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_EQUAL);
-            $data[OperatorRules::TYPE_IS_NULL] =
-                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);
-            $data[OperatorRules::TYPE_IS_NOT_NULL] =
-                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_NULL);
+            static::resolveIsNullAndIsNotNullOperatorsToInclude($data, $type);
             if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
             {
                 $data[OperatorRules::TYPE_STARTS_WITH] =
@@ -74,10 +71,22 @@
                 $data[OperatorRules::TYPE_ONE_OF] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ONE_OF);
             }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            {
+                return;
+            }
             else
             {
                 throw new NotSupportedException();
             }
+        }
+
+        protected static function resolveIsNullAndIsNotNullOperatorsToInclude(& $data, $type)
+        {
+            $data[OperatorRules::TYPE_IS_NULL] =
+                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);
+            $data[OperatorRules::TYPE_IS_NOT_NULL] =
+                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_NULL);
         }
 
         /**
@@ -87,6 +96,9 @@
          * 'equals'.
          * @param $model - instance of a RedBeanModel or RedBeanModels if the model is a HAS_MANY relation on the
          *                 original model.
+         * @param string $attributeName
+         * @return string
+         * @throws NotSupportedException
          */
         public static function getOperatorType($model, $attributeName)
         {
@@ -197,9 +209,11 @@
         /**
          * Returns the available operators type.  A string for example has 'String' as the available operators type.
          * This can than be adapted into a dropDown to display possible operators that can be used with a string.
-         * @param $model - instance of a RedBeanModel or RedBeanModels if the model is a HAS_MANY relation on the
-         *                 original model.
+         * @param  $model - instance of a RedBeanModel or RedBeanModels if the model is a HAS_MANY relation on the
+         *                  original model.
+         * @param  $attributeName
          * @return string representing the type. if no type is available then null is returned.
+         * @throws NotSupportedException
          */
         public static function getAvailableOperatorsType($model, $attributeName)
         {
@@ -242,7 +256,7 @@
                     switch(get_class($validator))
                     {
                         case 'CBooleanValidator':
-                            return null;
+                            return static::getAvailableOperatorsTypeForBoolean();
 
                         case 'CEmailValidator':
                             return self::AVAILABLE_OPERATORS_TYPE_STRING;
@@ -295,6 +309,11 @@
                 default :
                     null;
             }
+        }
+
+        protected static function getAvailableOperatorsTypeForBoolean()
+        {
+            return null;
         }
     }
 ?>

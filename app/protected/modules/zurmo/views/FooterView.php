@@ -22,14 +22,32 @@
      *
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in modified source and object code versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the "Zurmo"
+     * logo. If the display of the logo is not reasonably feasible for
+     * technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class FooterView extends View
     {
         protected function renderContent()
         {
-            //Do not remove the Zurmo Copyright notice.
-            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2013. All Rights reserved.');
+            //Do not remove the Zurmo logo or Zurmo Copyright notice.
+            //The interactive user interfaces in modified source and object code versions
+            //of this program must display Appropriate Legal Notices, as required under
+            //Section 5 of the GNU General Public License version 3.
+            //In accordance with Section 7(b) of the GNU General Public License version 3,
+            //these Appropriate Legal Notices must retain the display of the "Zurmo"
+            //logo. If the display of the logo is not reasonably feasible for
+            //technical reasons, the Appropriate Legal Notices must display the words
+            //"Copyright Zurmo Inc. 2013. All rights reserved".
+            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.');
         }
     }
 ?>

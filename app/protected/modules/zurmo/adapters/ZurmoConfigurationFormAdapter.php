@@ -44,6 +44,7 @@
             $form->dashboardListPageSize                 = Yii::app()->pagination->getGlobalValueByType('dashboardListPageSize');
             $form->gamificationModalNotificationsEnabled = Yii::app()->gameHelper->modalNotificationsEnabled;
             $form->realtimeUpdatesEnabled                = static::getRealtimeUpdatesEnabled();
+            $form->userIdOfUserToRunWorkflowsAs          = WorkflowUtil::getUserToRunWorkflowsAs()->id;
             self::getLogoAttributes($form);
             return $form;
         }
@@ -65,6 +66,7 @@
             ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
                                                     'realtimeUpdatesEnabled',
                                                     (boolean) $form->realtimeUpdatesEnabled);
+            WorkflowUtil::setUserToRunWorkflowsAs  (User::getById((int)$form->userIdOfUserToRunWorkflowsAs));
             self::setLogoAttributes($form);
         }
 

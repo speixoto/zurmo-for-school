@@ -84,26 +84,38 @@
         }
 
         protected function makeActionBarSearchAndListView($searchModel, $dataProvider,
-                                                          $actionBarViewClassName = 'SecuredActionBarForSearchAndListView')
+                                                          $actionBarViewClassName = 'SecuredActionBarForSearchAndListView',
+                                                          $viewPrefixName = null, $activeActionElementType = null)
         {
             assert('is_string($actionBarViewClassName)');
+            assert('is_string($viewPrefixName) || $viewPrefixName == null');
+            assert('is_string($activeActionElementType) || $activeActionElementType == null');
+            if($viewPrefixName == null)
+            {
+                $viewPrefixName = $this->getModule()->getPluralCamelCasedName();
+            }
             $listModel = $searchModel->getModel();
             return new ActionBarSearchAndListView(
                 $this->getId(),
                 $this->getModule()->getId(),
                 $searchModel,
                 $listModel,
-                $this->getModule()->getPluralCamelCasedName(),
+                $viewPrefixName,
                 $dataProvider,
                 GetUtil::resolveSelectedIdsFromGet(),
-                $actionBarViewClassName
+                $actionBarViewClassName,
+                $activeActionElementType
             );
         }
 
-        protected function makeListView(SearchForm $searchForm, $dataProvider)
+        protected function makeListView(SearchForm $searchForm, $dataProvider, $listViewClassName = null)
         {
+            assert('is_string($listViewClassName) || $listViewClassName == null');
             $listModel           = $searchForm->getModel();
-            $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
+            if($listViewClassName == null)
+            {
+                $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
+            }
             $listView            = new $listViewClassName(
                                        $this->getId(),
                                        $this->getModule()->getId(),

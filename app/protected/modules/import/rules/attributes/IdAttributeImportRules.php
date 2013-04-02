@@ -43,7 +43,7 @@
         public function getDisplayLabel()
         {
             $model = $this->model;
-            return $model::getModelLabelByTypeAndLanguage('Singular') . ' ' . Zurmo::t('ImportModule', 'Id');
+            return $model::getModelLabelByTypeAndLanguage('Singular') . ' ' . Zurmo::t('Core', 'Id');
         }
 
         public static function getSanitizerUtilTypesInProcessingOrder()

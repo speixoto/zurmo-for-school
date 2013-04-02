@@ -25,34 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Utilize this element to display a dropdown of available users that are super administrators.  The key is the
-     * user id and the value is the strval of the $user.
+     * When sending notifications from the system, the from 'user' must be a super administrator
      */
-    class UserToSendNotificationFromElement extends Element
+    class UserToSendNotificationFromElement extends SuperAdministratorToUseElement
     {
-        /**
-         * Renders the editable dropdown content.
-         * @return A string containing the element's content.
-         */
-        protected function renderControlEditable()
-        {
-            $dropDownArray = $this->getDropDownArray();
-            $value         = $this->model->{$this->attribute};
-            $htmlOptions   = array('id'   => $this->getEditableInputId($this->attribute));
-            $content       = ZurmoHtml::dropDownList($this->getEditableInputName($this->attribute),
-                                                 $value,
-                                                 $dropDownArray,
-                                                 $htmlOptions);
-            $content       = ZurmoHtml::tag('div', array('class' => 'beforeToolTip'), $content);
-            $content      .= self::renderTooltipContent();
-            return $content;
-        }
-
-        protected function renderControlNonEditable()
-        {
-            throw new NotImplementedException();
-        }
-
         protected static function renderTooltipContent()
         {
             $title       = Zurmo::t('EmailMessagesModule', 'Zurmo sends out system notifications.  The notifications must appear ' .
@@ -62,22 +38,6 @@
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
             $qtip->addQTip("#send-notifications-from-user-tooltip");
             return $content;
-        }
-
-        protected function renderError()
-        {
-            return null;
-        }
-
-        protected function getDropDownArray()
-        {
-            $group = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
-            $data  = array();
-            foreach ($group->users as $user)
-            {
-                $data[$user->id] = strval($user);
-            }
-            return $data;
         }
     }
 ?>

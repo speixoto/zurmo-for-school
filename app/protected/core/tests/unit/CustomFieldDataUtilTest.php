@@ -26,6 +26,8 @@
 
     class CustomFieldDataUtilTest extends BaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();

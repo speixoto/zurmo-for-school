@@ -33,6 +33,8 @@
 
         protected $hideAllSearchPanelsToStart;
 
+        protected $showAdvancedSearch = true;
+
         /**
          * Constructs a detail view specifying the controller as
          * well as the model that will have its details displayed.
@@ -110,7 +112,7 @@
          */
         protected function renderFormBottomPanel()
         {
-            $moreSearchOptionsLink        = ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            $moreSearchOptionsLink        = $this->resolveMoreSearchOptionsLinkContent();
             $selectListAttributesLink     = $this->getSelectListAttributesLinkContent();
             $clearSearchLabelPrefix       = $this->getClearSearchLabelPrefixContent();
             $clearSearchLabel             = $this->getClearSearchLabelContent();
@@ -133,6 +135,15 @@
             return $content;
         }
 
+        protected function resolveMoreSearchOptionsLinkContent()
+        {
+            if($this->showAdvancedSearch)
+            {
+                return ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
+            }
+        }
+
+
         protected function getClearSearchLabelPrefixContent()
         {
         }
@@ -144,6 +155,10 @@
 
         protected function getClearSearchLinkStartingStyle()
         {
+            if ($this->model->anyMixedAttributes == null)
+            {
+                return "display:none;";
+            }
         }
 
         protected function getExtraRenderForClearSearchLinkScript()
@@ -253,7 +268,7 @@
             $maxCellsPerRow  = $this->getMaxCellsPerRow();
             $content         = "";
             $content        .= $this->renderSummaryCloneContent();
-            assert('count($metadata["global"]["panels"]) == 2');
+            assert('count($metadata["global"]["panels"]) == 2 || count($metadata["global"]["panels"]) == 1');
             foreach ($metadata['global']['panels'] as $key => $panel)
             {
                 $startingDivStyle = "";
@@ -341,13 +356,13 @@
 
         protected function renderViewToolBarLinksForAdvancedSearch($form)
         {
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('Core', 'Search');
             $params['htmlOptions'] = array('id' => 'search-advanced-search', 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content  = $searchElement->render();
-            $closeButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
-                            '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
+            $searchElement         = new SaveButtonActionElement(null, null, null, $params);
+            $content               = $searchElement->render();
+            $closeButton           = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Close')),
+                                     '#', array('id' => 'cancel-advanced-search', 'class' => 'z-button'));
             return $closeButton . $content;
         }
 

@@ -46,7 +46,7 @@
                     array('translation',        'type', 'type' => 'blob'),
                     array('language',           'required'),
                     array('language',           'type', 'type' => 'string'),
-                    array('language',           'length',  'min'  => 1, 'max' => 5),
+                    array('language',           'length',  'min'  => 1, 'max' => 16),
                 ),
                 'elements' => array(
                     'messagesource' => 'MessageSource',

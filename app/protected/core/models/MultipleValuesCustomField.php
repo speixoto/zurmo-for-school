@@ -144,5 +144,22 @@
             }
             return ArrayUtil::stringify($values);
         }
+
+        /**
+         * Method to return all values as an array
+         * @return array
+         */
+        public function getValues()
+        {
+            $values = array();
+            if ($this->values->count() > 0)
+            {
+                foreach ($this->values as $customFieldValue)
+                {
+                    $values[] = $customFieldValue->value;
+                }
+            }
+            return $values;
+        }
     }
 ?>

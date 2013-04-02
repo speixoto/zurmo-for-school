@@ -29,6 +29,8 @@
      */
     class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
     {
+        protected $alwaysMultiple = false;
+
         /**
          * @return string
          */
@@ -46,7 +48,7 @@
         {
             $htmlOptions                 = parent::getEditableHtmlOptions();
             $htmlOptions['class']        = 'flexible-drop-down';
-            if($this->model->operator == 'oneOf')
+            if((property_exists($this->model, 'operator') && $this->model->operator == 'oneOf') || $this->alwaysMultiple)
             {
                 $htmlOptions['multiple']  = true;
                 $htmlOptions['class']    .= ' multiple ignore-style';

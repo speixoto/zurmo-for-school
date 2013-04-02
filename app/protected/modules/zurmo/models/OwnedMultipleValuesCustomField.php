@@ -50,7 +50,7 @@
          * Array of original data.
          * @var array
          */
-        private $originalCustomFieldValuesData;
+        private $originalCustomFieldValuesData = array();
 
         /**
          * Whether the @see $originalCustomFieldValuesData has been processed yet
@@ -102,6 +102,29 @@
                 }
             }
             return $value;
+        }
+
+        /**
+         * Utilized by workflow engine.  Resolves and returns data only if a change has been made to 'values'.  Otherwise
+         * returns null.  Make sure to use === when evaluating this for null.
+         * Be careful when calling this as this will not always contain the correct information
+         * if you didn't already call ->values previously.
+         * @return array
+         */
+        public function resolveOriginalCustomFieldValuesDataForNewData()
+        {
+            if($this->values->count() != count($this->originalCustomFieldValuesData))
+            {
+                return $this->originalCustomFieldValuesData;
+            }
+            foreach($this->values as $customFieldValue)
+            {
+                if(!in_array($customFieldValue->value, $this->originalCustomFieldValuesData))
+                {
+                    return $this->originalCustomFieldValuesData;
+                }
+            }
+            return null;
         }
 
         public function save($runValidation = true, array $attributeNames = null)
