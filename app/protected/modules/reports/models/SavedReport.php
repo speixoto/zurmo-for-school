@@ -105,7 +105,7 @@
                 array(
                     'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
                     'name'              => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
-                    'type'              => Zurmo::t('Core', 'Type',  array(), null, $language),
+                    'type'              => Zurmo::t('Core',        'Type',  array(), null, $language),
                 )
             );
         }
