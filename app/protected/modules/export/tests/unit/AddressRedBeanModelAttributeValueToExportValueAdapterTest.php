@@ -32,6 +32,27 @@
             $super = SecurityTestHelper::createSuperAdmin();
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
+        }
+
         public function testGetExportValue()
         {
             $data                                = array();
