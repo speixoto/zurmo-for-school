@@ -31,7 +31,7 @@
     {
         public function __construct($controllerId, $moduleId, ModelForm $searchModel, RedBeanModel $listModel,
                                     $viewPrefixName, CDataProvider $dataProvider, $selectedIds,
-                                    $actionBarViewClassName)
+                                    $actionBarViewClassName, $activeActionElementType = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
@@ -48,7 +48,7 @@
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),
                                                                $dataProvider->getPagination()->pageVar,
-                                                               $listView->getRowsAreSelectable());
+                                                               $listView->getRowsAreSelectable(), $activeActionElementType);
             $this->setView($actionBarView, 0, 0);
             $this->setView($searchView, 1, 0);
             $this->setView($listView, 2, 0);

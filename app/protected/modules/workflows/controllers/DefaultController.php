@@ -61,6 +61,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
+            $activeActionElementType        = 'WorkflowsLink';
             $savedWorkflow                    = new SavedWorkflow(false);
             $searchForm                     = new WorkflowsSearchForm($savedWorkflow);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
@@ -80,7 +81,7 @@
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
-                             'SecuredActionBarForWorkflowsSearchAndListView');
+                             'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
                 $view = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
                                               makeViewWithBreadcrumbsForCurrentUser(
                                               $this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
@@ -388,22 +389,24 @@
 
         public function actionManageOrder()
         {
-            $actionBarView       = new SecuredActionBarForWorkflowsSearchAndListView(
-                                       $this->getId(),
-                                       $this->getModule()->getId(), new SavedWorkflow(),
-                                       'list-view',
-                                       'sequence',
-                                       false);
-            $gridView = new GridView(2, 1);
+            $activeActionElementType = 'WorkflowManageOrderLink';
+            $actionBarView           = new SecuredActionBarForWorkflowsSearchAndListView(
+                                            $this->getId(),
+                                            $this->getModule()->getId(), new SavedWorkflow(),
+                                            'list-view',
+                                            'sequence',
+                                            false,
+                                            $activeActionElementType);
+            $gridView                = new GridView(2, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView(new WorkflowManageOrderView(), 1, 0);
-            $breadcrumbLinks  = array(Zurmo::t('WorkflowsModule', 'Ordering'));
-            $view             = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
-                                    makeViewWithBreadcrumbsForCurrentUser(
-                                    $this,
-                                    $gridView,
-                                    $breadcrumbLinks,
-                                    'WorkflowBreadCrumbView'));
+            $breadcrumbLinks         = array(Zurmo::t('WorkflowsModule', 'Ordering'));
+            $view                    = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
+                                            makeViewWithBreadcrumbsForCurrentUser(
+                                            $this,
+                                            $gridView,
+                                            $breadcrumbLinks,
+                                            'WorkflowBreadCrumbView'));
             echo $view->render();
         }
 
