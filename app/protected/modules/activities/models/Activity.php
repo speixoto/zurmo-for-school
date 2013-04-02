@@ -35,6 +35,16 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'latestDateTime' => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
+                    'activityItems'  => Zurmo::t('ActivitiesModule', 'Activity Items',    array(), null, $language),
+                )
+            );
+        }
+
         public static function canSaveMetadata()
         {
             return false;

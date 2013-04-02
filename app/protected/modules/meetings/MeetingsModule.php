@@ -120,5 +120,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('MeetingsModule', 'Meeting', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('MeetingsModule', 'Meetings', array(), null, $language);
+        }
     }
 ?>

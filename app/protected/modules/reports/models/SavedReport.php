@@ -98,5 +98,16 @@
         {
             return true;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'name'              => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
+                    'type'              => Zurmo::t('Core',        'Type',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

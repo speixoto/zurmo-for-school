@@ -38,5 +38,10 @@
         {
             return Zurmo::t('RssReaderModule', 'RSS Reader', array(), null, $language);
         }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return static::getSingularModuleLabel($language);
+        }
     }
 ?>

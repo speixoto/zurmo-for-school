@@ -85,5 +85,18 @@
         {
             return true;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'personOrAccount' => Zurmo::t('ZurmoModule',         'Person Or AccountsModuleSingularLabel',  $params, null, $language),
+                    'toAddress'       => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
+                    'toName'          => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
+                    'type'            => Zurmo::t('Core', 'Type',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

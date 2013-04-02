@@ -79,5 +79,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('SocialItemsModule', 'Social Item', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('SocialItemsModule', 'Social Items', array(), null, $language);
+        }
     }
 ?>

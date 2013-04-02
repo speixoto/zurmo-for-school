@@ -1,4 +1,4 @@
-﻿<?php
+<?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
@@ -183,9 +183,9 @@
                                           showIcon: true,
                                        });
                     if($('.email-archive-item').length==0)
-                    {                                     
-                        window.location.reload();                                  
-                    }                    
+                    {
+                        window.location.reload();
+                    }
                     }",
                 ));
             // End Not Coding Standard

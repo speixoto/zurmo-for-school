@@ -71,6 +71,11 @@
             return Zurmo::t('JobManagerModule', 'Job Manager', array(), null, $language);
         }
 
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('JobManagerModule', 'Job Managers', array(), null, $language);
+        }
+
         public function getRootModelNames()
         {
             return array('JobLog', 'JobInProcess');

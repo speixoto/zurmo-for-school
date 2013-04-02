@@ -52,7 +52,7 @@
          */
         protected function renderLabel()
         {
-            return Zurmo::t('UsersModule', 'Menu Preferences');
+            return Zurmo::t('UsersModule', 'Module menu');
         }
 
         protected function renderSelectionContent()
@@ -65,7 +65,6 @@
                 'rightSideName'          => $this->getEditableInputName(UserConfigurationForm::VISIBLE_AND_ORDERED_TAB_MENU_ITEMS),
                 'rightSideValue'         => $this->model->selectedVisibleAndOrderedTabMenuItems,
                 'rightSideData'          => $this->model->visibleAndOrderedTabMenuItems,
-                'rightSideDisplayLabel'  => Zurmo::t('Core', 'Menu Items'),
                 'formId'                 => $this->form->getId(),
                 'allowSorting'           => true,
                 'multiselectNavigationClasses' => 'multiselect-nav-updown',

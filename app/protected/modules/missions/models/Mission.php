@@ -141,7 +141,15 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'dueDateTime'       => Zurmo::t('TasksModule', 'Due On', array(), null, $language),
+                    'comments'        => Zurmo::t('CommentsModule', 'Comments', array(), null, $language),
+                    'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'dueDateTime'     => Zurmo::t('TasksModule', 'Due On', array(), null, $language),
+                    'files'           => Zurmo::t('ZurmoModule', 'Files', array(), null, $language),
+                    'latestDateTime'  => Zurmo::t('ActivitiesModule', 'Latest Date Time', array(), null, $language),
+                    'personsWhoHaveNotReadLatest' => Zurmo::t('MissionsModule', 'Persons Who Have Not Read Latest', array(), null, $language),
+                    'reward'          => Zurmo::t('MissionsModule', 'Reward', array(), null, $language),
+                    'status'          => Zurmo::t('MissionsModule', 'Status', array(), null, $language),
+                    'takenByUser'     => Zurmo::t('MissionsModule', 'Taken By User', array(), null, $language),
                 )
             );
         }

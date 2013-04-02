@@ -50,5 +50,10 @@
         {
             return Zurmo::t('MashableInboxModule', 'Inbox', array(), null, $language);
         }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('MashableInboxModule', 'Inboxes', array(), null, $language);
+        }
     }
 ?>

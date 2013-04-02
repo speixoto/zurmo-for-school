@@ -30,6 +30,15 @@
      */
     class ConversationParticipant extends OwnedModel
     {
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'hasReadLatest'   => Zurmo::t('ConversationsModule', 'Has Read Latest',  array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             try

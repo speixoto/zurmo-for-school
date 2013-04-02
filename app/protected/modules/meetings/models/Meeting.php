@@ -128,8 +128,12 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',   array(), null, $language),
-                    'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time', array(), null, $language),
+                    'category'      => Zurmo::t('MeetingsModule', 'Category',    array(), null, $language),
+                    'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
+                    'location'      => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                    'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                    'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
                 )
             );
         }

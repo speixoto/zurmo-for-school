@@ -101,7 +101,7 @@
          */
         public function handleGamification($event)
         {
-            if (Yii::app()->user->userModel != null)
+            if (Yii::app()->user->userModel != null && Yii::app()->gameHelper instanceof GameHelper)
             {
                 Yii::app()->gameHelper->processDeferredPoints();
                 Yii::app()->gameHelper->resolveNewBadges();

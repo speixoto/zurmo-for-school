@@ -360,10 +360,5 @@
             $compareString = "select querystring aliasName ";
             $this->assertEquals($compareString, $adapter->getSelect());
         }
-
-        public function testNewStaticCalculationOrModifierMethods()
-        {
-            $this->fail(); //todo
-        }
     }
 ?>
