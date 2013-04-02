@@ -61,7 +61,7 @@
             $user            = UserTestHelper::createBasicUser('Steven');
             $product         = ProductTestHelper::createProductByNameForOwner('Product 1', $user);
 
-            $productTemplate = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productTemplate = ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
             $this->assertTrue($productTemplate->save());
             $id              = $productTemplate->id;
             $productTemplate->forget();
@@ -85,7 +85,7 @@
             $user                                        = UserTestHelper::createBasicUser('Steven1');
             $product                                     = ProductTestHelper::createProductByNameForOwner('Product 2', $user);
 
-            $productTemplate                             = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productTemplate                             = ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
             $this->assertTrue($productTemplate->save());
             $id                                          = $productTemplate->id;
             $productTemplate->forget();
@@ -152,8 +152,6 @@
          */
         public function testUpdateProductTemplateFromForm()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
-
             $user                       = User::getByUsername('Steven');
             $currencies                 = Currency::getAll();
             $currency                   = $currencies[0];
@@ -237,33 +235,12 @@
             $this->assertEquals(0, count($productTemplates));
         }
 
-        protected function createProductTemplateByVariables($product, $priceFrequency, $type, $status, $sellPriceFormulaType)
-        {
-            $currencyArray = ProductTemplateTestHelper::getCurrencyData();
-
-            $productTemplate                            = new ProductTemplate();
-            $productTemplate->name                      = 'Red Widget';
-            $productTemplate->description               = 'Description';
-            $productTemplate->priceFrequency            = $priceFrequency;
-            $productTemplate->cost                      = $currencyArray[0];
-            $productTemplate->listPrice                 = $currencyArray[1];
-            $productTemplate->sellPrice                 = $currencyArray[2];
-
-            $productTemplate->type                      = $type;
-            $productTemplate->status                    = $status;
-            $productTemplate->products->add($product);
-            $sellPriceFormula                           = new SellPriceFormula();
-            $sellPriceFormula->type                     = $sellPriceFormulaType;
-            $productTemplate->sellPriceFormula          = $sellPriceFormula;
-            return $productTemplate;
-        }
-
         public function testProductTemplateCategories()
         {
             $user            = UserTestHelper::createBasicUser('Steven 2');
             $product         = ProductTestHelper::createProductByNameForOwner('Product 1', $user);
 
-            $productTemplate = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productTemplate = ProductTemplateTestHelper::createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
             $productCategory = ProductCategoryTestHelper::createProductCategoryByName("Test Category");
             $productCategoryII = ProductCategoryTestHelper::createProductCategoryByName("Test CategoryII");
             $productTemplate->productCategories->add($productCategory);

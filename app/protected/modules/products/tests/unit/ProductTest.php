@@ -74,5 +74,65 @@
             $this->assertTrue($product->productTemplate->isSame($productTemplates[0]));
         }
 
+        /**
+         * @depends testCreateAndGetProductById
+         */
+        public function testGetProductsByName()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $productTemplates           = Product::getByName('Product 1');
+            $this->assertEquals(1, count($productTemplates));
+            $this->assertEquals('Product 1', $productTemplates[0]->name);
+        }
+
+        /**
+         * @depends testCreateAndGetProductById
+         */
+        public function testGetLabel()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $products                   = Product::getByName('Product 1');
+            $this->assertEquals(1, count($products));
+            $this->assertEquals('Product',  $products[0]::getModelLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('Products', $products[0]::getModelLabelByTypeAndLanguage('Plural'));
+        }
+
+        /**
+         * @depends testGetProductsByName
+         */
+        public function testGetProductByNameForNonExistentName()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $products                   = Product::getByName('Red Widget 1');
+            $this->assertEquals(0, count($products));
+        }
+
+        /**
+         * @depends testCreateAndGetProductById
+         */
+        public function testGetAll()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $products                   = Product::getAll();
+            $this->assertEquals(1, count($products));
+            $this->assertEquals("superAccount", $products[0]->account->name);
+        }
+
+        public function testDeleteProduct()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+
+            $products                   = Product::getAll();
+            $this->assertEquals(1, count($products));
+            $products[0]->delete();
+        }
+
+        public function testGetAllWhenThereAreNone()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $products                   = Product::getAll();
+            $this->assertEquals(0, count($products));
+        }
+
     }
 ?>

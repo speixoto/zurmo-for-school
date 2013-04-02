@@ -72,5 +72,26 @@
 
             return $currencyArray;
         }
+
+        public static function createProductTemplateByVariables($product, $priceFrequency, $type, $status, $sellPriceFormulaType)
+        {
+            $currencyArray = ProductTemplateTestHelper::getCurrencyData();
+
+            $productTemplate                            = new ProductTemplate();
+            $productTemplate->name                      = 'Red Widget';
+            $productTemplate->description               = 'Description';
+            $productTemplate->priceFrequency            = $priceFrequency;
+            $productTemplate->cost                      = $currencyArray[0];
+            $productTemplate->listPrice                 = $currencyArray[1];
+            $productTemplate->sellPrice                 = $currencyArray[2];
+
+            $productTemplate->type                      = $type;
+            $productTemplate->status                    = $status;
+            $productTemplate->products->add($product);
+            $sellPriceFormula                           = new SellPriceFormula();
+            $sellPriceFormula->type                     = $sellPriceFormulaType;
+            $productTemplate->sellPriceFormula          = $sellPriceFormula;
+            return $productTemplate;
+        }
     }
 ?>
