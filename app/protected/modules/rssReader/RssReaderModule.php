@@ -41,7 +41,7 @@
 
         protected static function getPluralModuleLabel($language)
         {
-            static::getSingularModuleLabel($language);
+            return static::getSingularModuleLabel($language);
         }
     }
 ?>
