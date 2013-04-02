@@ -26,5 +26,47 @@
 
     class EmailRedBeanModelAttributeValueToExportValueAdapter extends TextRedBeanModelAttributeValueToExportValueAdapter
     {
+        public function resolveData(& $data)
+        {
+            if (!$this->model->{$this->attribute} instanceof Email)
+            {
+                $data[] = $this->model->{$this->attribute};
+            }
+            else
+            {
+                assert('$this->model->{$this->attribute} instanceof Email');
+                $email = $this->model->{$this->attribute};
+                if ($email->id > 0)
+                {
+                    $data[] = $email->emailAddress;
+                    $data[] = $email->isInvalid;
+                    $data[] = $email->optOut;
+                }
+                else
+                {
+                    $data[] = null;
+                    $data[] = null;
+                    $data[] = null;
+                }
+            }
+        }
+
+        /**
+         * Resolve the header data for the attribute.
+         * @param array $headerData
+         */
+        public function resolveHeaderData(& $headerData)
+        {
+            if (!$this->model->{$this->attribute} instanceof Email)
+            {
+                $headerData[] = $this->model->getAttributeLabel($this->attribute);
+            }
+            else
+            {
+                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ExportModule', 'Email Address');
+                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ExportModule', 'Is Invalid');
+                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ExportModule', 'Opt Out');
+            }
+        }
     }
 ?>
