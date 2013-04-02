@@ -155,6 +155,10 @@
 
         protected function getClearSearchLinkStartingStyle()
         {
+            if ($this->model->anyMixedAttributes == null)
+            {
+                return "display:none;";
+            }
         }
 
         protected function getExtraRenderForClearSearchLinkScript()
