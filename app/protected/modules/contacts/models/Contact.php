@@ -41,11 +41,14 @@
                     'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
                     'description'      => Zurmo::t('ZurmoModule',    'Description',  array(), null, $language),
                     'industry'         => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
+                    'meetings'         => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
+                    'notes'            => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
                     'opportunities'    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
                     'secondaryAddress' => Zurmo::t('ZurmoModule',    'Secondary Address',  array(), null, $language),
                     'secondaryEmail'   => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
                     'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
                     'state'            => Zurmo::t('ContactsModule', 'Status', $params, null, $language),
+                    'tasks'            => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
                     'website'          => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )
             );
