@@ -89,6 +89,7 @@
         {
             assert('is_string($actionBarViewClassName)');
             assert('is_string($viewPrefixName) || $viewPrefixName == null');
+            assert('is_string($activeActionElementType) || $activeActionElementType == null');
             if($viewPrefixName == null)
             {
                 $viewPrefixName = $this->getModule()->getPluralCamelCasedName();

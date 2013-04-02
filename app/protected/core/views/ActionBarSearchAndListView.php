@@ -36,6 +36,7 @@
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_string($actionBarViewClassName)');
+            assert('is_string($activeActionElementType) || $activeActionElementType == null');
             parent::__construct(3, 1);
 
             $searchViewClassName = $viewPrefixName . 'SearchView';
