@@ -485,7 +485,7 @@
             $this->addCategoryAxisProperties('inside',          0);
             $this->addCategoryAxisProperties('dashLength',      2);
             $this->addCategoryAxisProperties('gridAlpha',       0);
-
+            $this->addCategoryAxisProperties('autoGridCount',   "'false'");
 
             $this->addValueAxisProperties('title',              "'$this->yAxisName'");
             $this->addValueAxisProperties('unitPosition',       "'left'");
