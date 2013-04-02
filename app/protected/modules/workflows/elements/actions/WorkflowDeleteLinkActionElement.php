@@ -33,8 +33,9 @@
          * @param array $htmlOptions
          * @return array
          */
-        protected function resolveConfirmAlertInHtmlOptions(Array $htmlOptions)
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
+            assert('is_array($htmlOptions)');
             $htmlOptions['confirm'] = Zurmo::t('WorkflowsModule', 'Are you sure you want to delete this workflow?');
             return $htmlOptions;
         }
