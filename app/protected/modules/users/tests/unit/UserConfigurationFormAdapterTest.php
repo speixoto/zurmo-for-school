@@ -118,8 +118,7 @@
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
             $this->assertEquals(count($form->selectedVisibleAndOrderedTabMenuItems), count(MenuUtil::getVisibleAndOrderedTabMenuByUser($sally)));
             $defaultOrderedTabMenuItems = $form->selectedVisibleAndOrderedTabMenuItems;
-            $customOrderedTabMenuItems  = $defaultOrderedTabMenuItems;
-            shuffle($customOrderedTabMenuItems);
+            $customOrderedTabMenuItems  = array_reverse($defaultOrderedTabMenuItems);
             $form->selectedVisibleAndOrderedTabMenuItems = $customOrderedTabMenuItems;
             UserConfigurationFormAdapter::setConfigurationFromForm($form, $sally);
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
