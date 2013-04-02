@@ -61,8 +61,17 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
-                    'title'    => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
+                    'department'     => Zurmo::t('ZurmoModule', 'Department', array(), null, $language),
+                    'firstName'      => Zurmo::t('ZurmoModule', 'First Name', array(), null, $language),
+                    'fullName'       => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'jobTitle'       => Zurmo::t('ZurmoModule', 'Job Title', array(), null, $language),
+                    'lastname'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
+                    'mobilePhone'    => Zurmo::t('ZurmoModule', 'Mobile Phone', array(), null, $language),
+                    'officePhone'    => Zurmo::t('ZurmoModule', 'Office Phone', array(), null, $language),
+                    'officeFax'      => Zurmo::t('ZurmoModule', 'Office Fax', array(), null, $language),
+                    'primaryAddress' => Zurmo::t('ZurmoModule', 'Primary Address', array(), null, $language),
+                    'primaryEmail'   => Zurmo::t('ZurmoModule', 'Primary Email', array(), null, $language),
+                    'title'          => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
                 )
             );
         }

@@ -275,5 +275,14 @@
         {
             return false;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'owner' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
+                )
+            );
+        }
     }
 ?>

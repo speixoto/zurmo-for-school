@@ -35,6 +35,16 @@
             return self::makeModels(R::find('contactstate', "name = :name ", array(':name' => $name)));
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'name'   => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
+                    'order'  => Zurmo::t('CoreModule', 'Order', array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             if (trim($this->name) == '')

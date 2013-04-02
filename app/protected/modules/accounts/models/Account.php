@@ -36,9 +36,23 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'account'       => Zurmo::t('AccountsModule', 'Parent AccountsModuleSingularLabel',  $params, null, $language),
-                    'contacts'      => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',           $params, null, $language),
-                    'opportunities' => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'account'         => Zurmo::t('AccountsModule', 'Parent AccountsModuleSingularLabel',  $params, null, $language),
+                    'accounts'        => Zurmo::t('AccountsModule', 'AccountsModulePluralLabel',           $params, null, $language),
+                    'annualRevenue'   => Zurmo::t('AccountsModule', 'Annual Revenue',  array(), null, $language),
+                    'billingAddress'  => Zurmo::t('AccountsModule', 'Billing Address',  array(), null, $language),
+                    'contacts'        => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',           $params, null, $language),
+                    'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'employees'       => Zurmo::t('AccountsModule', 'Employees',  array(), null, $language),
+                    'industry'        => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
+                    'name'            => Zurmo::t('ZurmoModule',    'Name',  array(), null, $language),
+                    'officePhone'     => Zurmo::t('AccountsModule', 'Office Phone',  array(), null, $language),
+                    'officeFax'       => Zurmo::t('AccountsModule', 'Office Fax',  array(), null, $language),
+                    'opportunities'   => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'primaryEmail'    => Zurmo::t('ZurmoModule',    'Primary Email',  array(), null, $language),
+                    'secondaryEmail'  => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
+                    'shippingAddress' => Zurmo::t('AccountsModule', 'Shipping Address',  array(), null, $language),
+                    'type'            => Zurmo::t('AccountsModule', 'Type',  array(), null, $language),
+                    'website'         => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )
             );
         }

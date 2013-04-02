@@ -69,10 +69,10 @@
                     'serializedData',
                 ),
                 'rules' => array(
-                    array('createdDateTime',       'required'),
-                    array('createdDateTime',       'type', 'type' => 'datetime'),
-                    array('serializedData', 'required'),
-                    array('serializedData', 'type', 'type' => 'string'),
+                    array('createdDateTime', 'required'),
+                    array('createdDateTime', 'type', 'type' => 'datetime'),
+                    array('serializedData',  'required'),
+                    array('serializedData',  'type', 'type' => 'string'),
                 )
             );
             return $metadata;
@@ -86,6 +86,15 @@
         public static function canSaveMetadata()
         {
             return false;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'createdDateTime'   => Zurmo::t('ZurmoModule', 'Created Date Time',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

@@ -114,6 +114,17 @@
             return $box;
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'folders' => Zurmo::t('EmailMessagesModule', 'Folders', array(), null, $language),
+                    'name'    => Zurmo::t('ZurmoModule',         'Name',    array(), null, $language),
+                    'users'   => Zurmo::t('UsersModule',         'Users',   array(), null, $language),
+                )
+            );
+        }
+
         protected function setSpecialBox()
         {
             $this->isNotifications = $this->name == self::NOTIFICATIONS_NAME;

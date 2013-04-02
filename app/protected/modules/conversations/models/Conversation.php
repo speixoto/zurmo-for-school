@@ -45,6 +45,22 @@
             return self::getSubset(null, null, null, "subject = '$subject'");
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'description'        => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'latestDateTime'     => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
+                    'subject'            => Zurmo::t('ConversationsModule', 'Subject',  array(), null, $language),
+                    'ownerHasReadLatest' => Zurmo::t('ConversationsModule', 'Owner Has Read Latest',  array(), null, $language),
+                    'isClosed'           => Zurmo::t('ConversationsModule', 'Is Closed',  array(), null, $language),
+                    'comments'           => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
+                    'conversationItems'  => Zurmo::t('ConversationsModule', 'Conversation Items',  array(), null, $language),
+                    'conversationParticipants' => Zurmo::t('ConversationsModule', 'Conversation Participants',  array(), null, $language),
+                    'files'              => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
+                )
+            );
+        }
         public function __toString()
         {
             try
