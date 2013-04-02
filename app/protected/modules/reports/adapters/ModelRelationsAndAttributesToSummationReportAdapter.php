@@ -96,7 +96,7 @@
                     if(!$displayAttribute->hasRelatedData() &&
                         $displayAttribute->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
-                        $realAttributeName = $this->resolveRealAttributeName($resolvedAttribute);
+                        $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
                         $attributes[$resolvedAttribute] = array('label' =>
                         $this->resolveDisplayCalculationLabel($realAttributeName,
                                 $this->getCalculationOrModifierType($resolvedAttribute)));

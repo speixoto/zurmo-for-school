@@ -24,11 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LeadStateStaticDropDownForWizardModelElement extends ContactStateStaticDropDownForWizardModelElement
+    /**
+     * Helper functionality for finding the type to be used for creating a WorkflowActionAttributeForm
+     * associated with a model's attribute
+     */
+    class ModelAttributeToWorkflowActionAttributeFormTypeUtil extends ModelAttributeToMixedTypeUtil
     {
-        public function getDropDownArray()
+        /**
+         * @param $model
+         * @param $attributeName
+         * @return string
+         */
+        public static function getType($model, $attributeName)
         {
-            return LeadsUtil::getLeadStateDataFromStartingStateKeyedByIdAndLabelByLanguage(Yii::app()->language);
+            assert('is_string($attributeName)');
+            return ModelAttributeToMixedTypeUtil::getType($model, $attributeName);
         }
     }
 ?>

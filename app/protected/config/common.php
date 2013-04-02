@@ -109,7 +109,7 @@
                 'groupMap' => array(
                     'css' => array(
                         INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'themes/THEME_NAME/css/newui.css',
-                        INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
+                        //INSTANCE_ROOT . DIRECTORY_SEPARATOR . 'protected/extensions/timepicker/assets/jquery-ui-timepicker-addon.css',
                     ),
 
                     'js' => array(
@@ -264,6 +264,12 @@
             ),
             'widgetFactory' => array(
                 'widgets' => array(
+                    'ZurmoJuiDateTimePicker' => array(
+                        'cssFile' => false,
+                    ),
+                    'ZurmoJuiDatePicker' => array(
+                        'cssFile' => false,
+                    ),
                     'EJuiDateTimePicker' => array(
                         'cssFile' => false,
                     ),
@@ -283,6 +289,9 @@
                         'cssFile' => false,
                     ),
                 ),
+            ),
+            'workflowsObserver' => array(
+                'class' => 'application.modules.workflow.observers.WorkflowsObserver',
             ),
         ),
         'controllerMap' => array(
@@ -332,6 +341,7 @@
             'opportunities',
             'reports',
             'rssReader',
+            'workflows',
             'socialItems',
             'tasks',
             'zurmo' => array(

@@ -29,6 +29,8 @@
      */
     class ClearSentNotificationsEmailJob extends BaseJob
     {
+        protected static $pageSize = 100;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -82,7 +84,7 @@
             $searchAttributeData['structure'] = '1 and 2 and 3';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('EmailMessage');
             $where = RedBeanModelDataProvider::makeWhere('EmailMessage', $searchAttributeData, $joinTablesAdapter);
-            $emailMessageModels = EmailMessage::getSubset($joinTablesAdapter, null, 1000, $where, null);
+            $emailMessageModels = EmailMessage::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
 
             foreach ($emailMessageModels as $emailMessage)
             {

@@ -142,12 +142,13 @@
                 ),
                 'adminTabMenuItemsModuleOrdering' => array(
                     'home',
+                    'configuration',
                     'designer',
                     'import',
                     'groups',
                     'users',
                     'roles',
-                    'configuration'
+                    'workflows',
                 ),
                 'tabMenuItemsModuleOrdering' => array(
                     'home',

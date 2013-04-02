@@ -2740,7 +2740,8 @@
         {
             if (YII_DEBUG)
             {
-                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
+                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)),
+                    CLogger::LEVEL_WARNING);
             }
         }
 

@@ -131,6 +131,11 @@
             return true;
         }
 
+        public static function canHaveWorkflow()
+        {
+            return true;
+        }
+
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('AccountsModule', 'Account', array(), null, $language);

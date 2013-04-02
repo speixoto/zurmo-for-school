@@ -66,7 +66,12 @@
                          OperatorRules::TYPE_BETWEEN,
                          OperatorRules::TYPE_STARTS_WITH,
                          OperatorRules::TYPE_ENDS_WITH,
-                         OperatorRules::TYPE_CONTAINS);
+                         OperatorRules::TYPE_CONTAINS,
+                         OperatorRules::TYPE_BECOMES,
+                         OperatorRules::TYPE_WAS,
+                         OperatorRules::TYPE_BECOMES_ONE_OF,
+                         OperatorRules::TYPE_WAS_ONE_OF,
+                        );
         }
 
         public static function getValueTypesRequiringSecondInput()
@@ -103,28 +108,40 @@
                             secondValueArea.hide();
                             secondValueArea.find(':input, select').prop('disabled', true);
                         }
-                        if($(this).val() == '" . OperatorRules::TYPE_ONE_OF . "')
+                        arr  = " . CJSON::encode(static::getValuesRequiringMultiSelect()) . ";
+                        if(!$(this).hasClass('alwaysMultiple'))
                         {
-                            var newName = $(this).parent().parent().parent().find('.value-data')
-                                          .find('.flexible-drop-down').attr('name') + '[]';
-                            $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
-                            .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
-                            .attr('name', newName);
-                        }
-                        else
-                        {
-                            var newName = $(this).parent().parent().parent().find('.value-data')
-                                          .find('.flexible-drop-down').attr('name');
-                            if(newName != undefined)
+                            if($.inArray($(this).val(), arr) != -1)
                             {
+                                var newName = $(this).parent().parent().parent().find('.value-data')
+                                              .find('.flexible-drop-down').attr('name') + '[]';
                                 $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
-                                .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
-                                .attr('name', newName.replace('[]',''));
+                                .attr('multiple', 'multiple').addClass('multiple').addClass('ignore-style')
+                                .attr('name', newName);
+                            }
+                            else
+                            {
+                                var newName = $(this).parent().parent().parent().find('.value-data')
+                                              .find('.flexible-drop-down').attr('name');
+                                if(newName != undefined)
+                                {
+                                    $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
+                                    .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')
+                                    .attr('name', newName.replace('[]',''));
+                                }
                             }
                         }
                     }
                 );
             ");
+        }
+
+        public static function getValuesRequiringMultiSelect()
+        {
+            return array(OperatorRules::TYPE_ONE_OF,
+                OperatorRules::TYPE_BECOMES_ONE_OF,
+                OperatorRules::TYPE_WAS_ONE_OF
+            );
         }
     }
 ?>

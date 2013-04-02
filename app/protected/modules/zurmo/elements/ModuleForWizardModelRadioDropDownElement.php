@@ -26,7 +26,7 @@
 
     /**
      * Display radio buttons for selecting the module for a wizard model such as reporting or workflow
-     * @see ModuleForReportWizardView
+     * @see ModuleForReportWizardView or @see ModuleForWorkflowWizardView
      */
     abstract class ModuleForWizardModelRadioDropDownElement extends Element
     {

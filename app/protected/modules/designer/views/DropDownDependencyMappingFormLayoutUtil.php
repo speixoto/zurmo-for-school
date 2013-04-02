@@ -172,7 +172,7 @@
 
             if ($mapping->allowsAttributeSelection())
             {
-                $htmlOptions['empty'] = Zurmo::t('DesignerModule', '(None)');
+                $htmlOptions['empty'] = Zurmo::t('Core', '(None)');
                 $data                 = $mapping->getAvailableCustomFieldAttributes();
             }
             else
@@ -250,7 +250,7 @@
             $inputId             = $this->formName . '_mappingData_' . $position . '_valuesToParentValues_' . $valuePosition;
             $htmlOptions          = array();
             $htmlOptions['id']    = $inputId;
-            $htmlOptions['empty'] = Zurmo::t('DesignerModule', '(None)');
+            $htmlOptions['empty'] = Zurmo::t('Core', '(None)');
             $dataAndLabels        = CustomFieldDataUtil::
                                     getDataIndexedByDataAndTranslatedLabelsByLanguage(
                                         $parentMapping->getCustomFieldData(),

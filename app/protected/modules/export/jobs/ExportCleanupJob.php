@@ -29,6 +29,8 @@
      */
     class ExportCleanupJob extends BaseJob
     {
+        protected static $pageSize = 200;
+
         /**
          * @returns Translated label that describes this job type.
          */
@@ -70,7 +72,7 @@
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('ExportItem');
             $where = RedBeanModelDataProvider::makeWhere('ExportItem', $searchAttributeData, $joinTablesAdapter);
-            $oldExportItems = ExportItem::getSubset($joinTablesAdapter, null, 1000, $where, null);
+            $oldExportItems = ExportItem::getSubset($joinTablesAdapter, null, self::$pageSize, $where, null);
             foreach ($oldExportItems as $exportItem)
             {
                 $exportItem->delete();

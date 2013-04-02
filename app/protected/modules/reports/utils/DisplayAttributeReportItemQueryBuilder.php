@@ -220,9 +220,11 @@
                $modelToReportAdapter->isAttributeACalculationOrModifier($attribute))
             {
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);
+                $adapterClassName = get_class($modelToReportAdapter);
                 return new RedBeanModelAttributeToDataProviderAdapter(
                     $modelToReportAdapter->getModelClassName(),
-                    $modelToReportAdapter->resolveRealAttributeName($attribute), $relatedAttribute);
+                    $adapterClassName::resolveRealAttributeName($attribute),
+                    $relatedAttribute);
             }
             return parent::makeModelAttributeToDataProviderAdapter($modelToReportAdapter, $attribute);
         }

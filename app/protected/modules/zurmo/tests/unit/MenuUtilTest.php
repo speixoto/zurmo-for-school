@@ -55,6 +55,9 @@
             $this->assertEquals(1, count($menu['items']));
         }
 
+        /**
+         * @depends testGetAccessibleShortcutsCreateMenuByCurrentUser
+         */
         public function testGetAccessibleConfigureMenuByCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -71,6 +74,9 @@
             $this->assertEquals(1, count($menu));
         }
 
+        /**
+         * @depends testGetAccessibleConfigureMenuByCurrentUser
+         */
         public function testGetVisibleAndOrderedTabMenuByCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -101,7 +107,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(9, count($menu));
+            $this->assertEquals(10, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
             $this->assertEquals(3, count($menu));
