@@ -52,7 +52,7 @@
                 !is_string($translation) || empty($translation)
                 )
             {
-                return false;
+                throw new NotSupportedException();
             }
 
             try
@@ -107,7 +107,7 @@
                 !is_array($messages) || empty($messages)
                 )
             {
-                return false;
+                throw new NotSupportedException();
             }
 
             foreach ($messages as $source => $translation)
@@ -136,16 +136,23 @@
             assert('is_string($languageCode) && !empty($languageCode)');
             if (!is_string($languageCode) || empty($languageCode))
             {
-                return false;
+                throw new NotSupportedException();
             }
 
-            $file = new ZurmoGettextPoFile();
-            $contexts = $file->loadWithContext($messageFile);
+            $file = new ZurmoGettextPoFile($messageFile);
+            $messages = $file->read();
 
-            foreach ($contexts as $context => $messages)
+            foreach ($messages as $message)
             {
-                self::importMessagesArray($languageCode, $context, $messages);
+                self::importOneMessage(
+                    $languageCode,
+                    $message['msgctxt'],
+                    $message['msgid'],
+                    $message['msgstr']
+                );
             }
+
+            return true;
         }
     }
 ?>

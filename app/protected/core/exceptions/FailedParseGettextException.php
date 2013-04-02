@@ -24,20 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LanguagesToLanguageCollectionViewUtil
+    /**
+     * Exception thrown when parsing a Gettext file fails
+     */
+    class FailedParseGettextException extends CException
     {
-        public static function getLanguagesData()
-        {
-            $activeLanguages    = Yii::app()->languageHelper->getActiveLanguages();
-            $languagesData       = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $label)
-            {
-                $languagesData[$language] = array('label'         => $label,
-                                                 'active'        => in_array($language, $activeLanguages),
-                                                 'canInactivate' =>
-                                                        Yii::app()->languageHelper->canInactivateLanguage($language));
-            }
-            return $languagesData;
-        }
     }
 ?>

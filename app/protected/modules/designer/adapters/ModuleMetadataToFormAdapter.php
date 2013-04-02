@@ -53,12 +53,12 @@
                 }
             }
             $moduleClassName = $this->moduleClassName;
-            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $moduleForm->singularModuleLabels[$language] = $moduleClassName::getModuleLabelByTypeAndLanguage(
-                                                                                    'SingularLowerCase', $language);
-                $moduleForm->pluralModuleLabels[$language]   = $moduleClassName::getModuleLabelByTypeAndLanguage(
-                                                                                    'PluralLowerCase',   $language);
+                $moduleForm->singularModuleLabels[$languageCode] = $moduleClassName::getModuleLabelByTypeAndLanguage(
+                                                                                    'SingularLowerCase', $languageCode);
+                $moduleForm->pluralModuleLabels[$languageCode]   = $moduleClassName::getModuleLabelByTypeAndLanguage(
+                                                                                    'PluralLowerCase',   $languageCode);
             }
             if ($moduleForm instanceof GlobalSearchEnabledModuleForm)
             {

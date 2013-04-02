@@ -49,33 +49,170 @@
         public function actionConfigurationList()
         {
             $redirectUrlParams = array('/zurmo/' . $this->getId() . '/ConfigurationList');
-            $messageBoxContent = $this->attemptToUpdateActiveLanguagesFromPostAndGetMessageBoxContent();
+            $messageBoxContent = Zurmo::t('ZurmoModule', 'Don\'t see a language that you want to load? Help us make Zurmo better by contributing on a translation. Click <a href="{l10nServerDomain}" class="simple-link normal-size" target="_blank">here</a>.',
+                array(
+                    '{l10nServerDomain}'=>ZurmoTranslationServerUtil::getServerDomain()
+                )
+            );
             $view = new LanguageTitleBarConfigurationListView(
                             $this->getId(),
                             $this->getModule()->getId(),
-                            LanguagesToLanguageCollectionViewUtil::getLanguagesData(),
                             $messageBoxContent);
             $view = new ZurmoConfigurationPageView(ZurmoDefaultAdminViewUtil::
                                          makeStandardViewForCurrentUser($this, $view));
             echo $view->render();
         }
 
-        protected function attemptToUpdateActiveLanguagesFromPostAndGetMessageBoxContent()
+        public function actionActivate($languageCode)
         {
-            if (isset($_POST['LanguageCollection']))
+            $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+            try
             {
-                $languageCollectionActiveData = $_POST['LanguageCollection'];
-                $activeLanguages = array();
-                foreach ($languageCollectionActiveData as $language => $languageData)
+                if (Yii::app()->languageHelper->activateLanguage($languageCode))
                 {
-                    if ($languageData['active'])
-                    {
-                        $activeLanguages[] = $language;
-                    }
+                    $message = Zurmo::t('ZurmoModule', '{languageName} activated successfully',
+                        array('{languageName}' => $languageData['label'])
+                    );
+
+                    $content = LanguagesCollectionView::renderFlashMessage($message);
+
+                    RedBeansCache::forgetAll();
+                    GeneralCache::forgetAll();
                 }
-                Yii::app()->languageHelper->setActiveLanguages($activeLanguages);
-                Yii::app()->user->setFlash('notification', Zurmo::t('ZurmoModule', 'Changes to active languages saved successfully.'));
             }
+            catch (Exception $e)
+            {
+                $exceptionMessage = $e->getMessage();
+                if (!empty($exceptionMessage))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} activation failed. Error: {errorMessage}',
+                        array(
+                            '{languageName}' => $languageData['label'],
+                            '{errorMessage}' => $exceptionMessage
+                        )
+                    );
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} activation failed. Unexpected error.',
+                        array('{languageName}' => $languageData['label'])
+                    );
+                }
+
+                $content = LanguagesCollectionView::renderFlashMessage(
+                    $message,
+                    true
+                );
+            }
+
+            $view = new LanguagesCollectionView(
+                $this->getId(),
+                $this->getModule()->getId()
+            );
+            $content .= $view->renderLanguageRow($languageCode);
+            print $content;
+        }
+
+        public function actionUpdate($languageCode)
+        {
+            $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+            try
+            {
+                if (Yii::app()->languageHelper->updateLanguage($languageCode))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} updated successfully',
+                        array('{languageName}' => $languageData['label'])
+                    );
+
+                    $content = LanguagesCollectionView::renderFlashMessage($message);
+
+                    RedBeansCache::forgetAll();
+                    GeneralCache::forgetAll();
+                }
+            }
+            catch (Exception $e)
+            {
+                $exceptionMessage = $e->getMessage();
+
+                if (!empty($exceptionMessage))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} update failed. Error: {errorMessage}',
+                        array(
+                            '{languageName}' => $languageData['label'],
+                            '{errorMessage}' => $exceptionMessage
+                        )
+                    );
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} update failed. Unexpected error.',
+                        array('{languageName}' => $languageData['label'])
+                    );
+                }
+
+                $content = LanguagesCollectionView::renderFlashMessage(
+                    $message,
+                    true
+                );
+            }
+
+            $view = new LanguagesCollectionView(
+                $this->getId(),
+                $this->getModule()->getId()
+            );
+            $content .= $view->renderLanguageRow($languageCode);
+            print $content;
+        }
+
+        public function actionDeactivate($languageCode)
+        {
+            $languageData = LanguagesCollectionView::getLanguageDataByLanguageCode($languageCode);
+
+            try
+            {
+                if (Yii::app()->languageHelper->deactivateLanguage($languageCode))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} deactivated successfully',
+                        array('{languageName}' => $languageData['label'])
+                    );
+
+                    $content = LanguagesCollectionView::renderFlashMessage($message);
+
+                    RedBeansCache::forgetAll();
+                    GeneralCache::forgetAll();
+                }
+            }
+            catch (Exception $e)
+            {
+                $exceptionMessage = $e->getMessage();
+                if (!empty($exceptionMessage))
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} deactivate failed. Error: {errorMessage}',
+                        array(
+                            '{languageName}' => $languageData['label'],
+                            '{errorMessage}' => $exceptionMessage
+                        )
+                    );
+                }
+                else
+                {
+                    $message = Zurmo::t('ZurmoModule', '{languageName} deactivate failed. Unexpected error.',
+                        array('{languageName}' => $languageData['label'])
+                    );
+                }
+
+                $content = LanguagesCollectionView::renderFlashMessage(
+                    $message,
+                    true
+                );
+            }
+
+            $view = new LanguagesCollectionView(
+                $this->getId(),
+                $this->getModule()->getId()
+            );
+            $content .= $view->renderLanguageRow($languageCode);
+            print $content;
         }
     }
 ?>

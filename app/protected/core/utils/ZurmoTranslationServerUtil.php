@@ -128,7 +128,11 @@
             self::$availableLanguages = array();
             foreach ($l10nInfo->languages->language as $language)
             {
-                self::$availableLanguages[$language->code] = (array)$language;
+                self::$availableLanguages[$language->code] = array(
+                    'code'          => $language->code,
+                    'name'          => $language->name,
+                    'nativeName'    => $language->native,
+                );
             }
 
             if (is_array(self::$availableLanguages) &&
