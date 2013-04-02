@@ -156,5 +156,20 @@
             $productCategories          = ProductCategory::getAll();
             $this->assertEquals(0, count($productCategories));
         }
+
+        public function testCategoryProductTemplates()
+        {
+           $user                  = UserTestHelper::createBasicUser('Steven 1');
+           $productCategory       = new ProductCategory();
+           $productCategory->name = "My Test Category";
+           $productTemplate       = ProductTemplateTestHelper::createProductTemplateByName("Test Template");
+
+           $productCategory->productTemplates->add($productTemplate);
+           $this->assertTrue($productCategory->save());
+           $id                         = $productCategory->id;
+           unset($productCategory);
+           $productCategory            = ProductCategory::getById($id);
+           $this->assertEquals($productTemplate, $productCategory->productTemplates[0]);
+        }
     }
 ?>

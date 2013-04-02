@@ -237,30 +237,9 @@
             $this->assertEquals(0, count($productTemplates));
         }
 
-        protected function getCurrencyData()
-        {
-            $currencies                                 = Currency::getAll();
-            $currencyValue1                             = new CurrencyValue();
-            $currencyValue1->value                      = 500.54;
-            $currencyValue1->currency                   = $currencies[0];
-            $currencyValue2                             = new CurrencyValue();
-            $currencyValue2->value                      = 400.54;
-            $currencyValue2->currency                   = $currencies[0];
-            $currencyValue3                             = new CurrencyValue();
-            $currencyValue3->value                      = 300.54;
-            $currencyValue3->currency                   = $currencies[0];
-
-            $currencyArray                              = array();
-            $currencyArray[]                            = $currencyValue1;
-            $currencyArray[]                            = $currencyValue2;
-            $currencyArray[]                            = $currencyValue3;
-
-            return $currencyArray;
-        }
-
         protected function createProductTemplateByVariables($product, $priceFrequency, $type, $status, $sellPriceFormulaType)
         {
-            $currencyArray = $this->getCurrencyData();
+            $currencyArray = ProductTemplateTestHelper::getCurrencyData();
 
             $productTemplate                            = new ProductTemplate();
             $productTemplate->name                      = 'Red Widget';
@@ -277,6 +256,25 @@
             $sellPriceFormula->type                     = $sellPriceFormulaType;
             $productTemplate->sellPriceFormula          = $sellPriceFormula;
             return $productTemplate;
+        }
+
+        public function testProductTemplateCategories()
+        {
+            $user            = UserTestHelper::createBasicUser('Steven 2');
+            $product         = ProductTestHelper::createProductByNameForOwner('Product 1', $user);
+
+            $productTemplate = $this->createProductTemplateByVariables($product, ProductTemplate::PRICE_FREQUENCY_ONE_TIME, ProductTemplate::TYPE_PRODUCT, ProductTemplate::STATUS_ACTIVE, SellPriceFormula::TYPE_EDITABLE);
+            $productCategory = ProductCategoryTestHelper::createProductCategoryByName("Test Category");
+            $productCategoryII = ProductCategoryTestHelper::createProductCategoryByName("Test CategoryII");
+            $productTemplate->productCategories->add($productCategory);
+            $productTemplate->productCategories->add($productCategoryII);
+            $this->assertTrue($productTemplate->save());
+            $id              = $productTemplate->id;
+            $productTemplate->forget();
+            unset($productTemplate);
+            $productTemplate = ProductTemplate::getById($id);
+            $this->assertEquals($productCategory, $productTemplate->productCategories[0]);
+            $this->assertEquals($productCategoryII, $productTemplate->productCategories[1]);
         }
     }
 ?>

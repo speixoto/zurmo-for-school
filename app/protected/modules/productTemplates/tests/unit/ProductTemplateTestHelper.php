@@ -51,5 +51,26 @@
             $currencyValue  = array('id' => 3);
             return $currencyValue;
         }
+
+        public static function getCurrencyData()
+        {
+            $currencies                                 = Currency::getAll();
+            $currencyValue1                             = new CurrencyValue();
+            $currencyValue1->value                      = 500.54;
+            $currencyValue1->currency                   = $currencies[0];
+            $currencyValue2                             = new CurrencyValue();
+            $currencyValue2->value                      = 400.54;
+            $currencyValue2->currency                   = $currencies[0];
+            $currencyValue3                             = new CurrencyValue();
+            $currencyValue3->value                      = 300.54;
+            $currencyValue3->currency                   = $currencies[0];
+
+            $currencyArray                              = array();
+            $currencyArray[]                            = $currencyValue1;
+            $currencyArray[]                            = $currencyValue2;
+            $currencyArray[]                            = $currencyValue3;
+
+            return $currencyArray;
+        }
     }
 ?>
