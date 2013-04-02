@@ -35,5 +35,15 @@
         {
             return array('Notification', 'NotificationMessage');
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('NotificationsModule', 'Notification', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('NotificationsModule', 'Notifications', array(), null, $language);
+        }
     }
 ?>

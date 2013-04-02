@@ -287,5 +287,15 @@
         {
             return null;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'createdByUser'      => Zurmo::t('ZurmoModule', 'Created By User', array(), null, $language),
+                'createdDateTime'    => Zurmo::t('ZurmoModule', 'Created Date Time', array(), null, $language),
+                'modifiedByUser'     => Zurmo::t('ZurmoModule', 'Modified By User', array(), null, $language),
+                'modifiedDateTime'   => Zurmo::t('ZurmoModule', 'Modified Date Time', array(), null, $language),
+            ));
+        }
     }
 ?>

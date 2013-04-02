@@ -63,5 +63,16 @@
         {
             return 'ZurmoModule';
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'emailAddress'   => Zurmo::t('ZurmoModule', 'Email Address',  array(), null, $language),
+                    'isInvalid'      => Zurmo::t('ZurmoModule', 'Is Invalid',     array(), null, $language),
+                    'OptOut'         => Zurmo::t('ZurmoModule', 'Opt Out',        array(), null, $language),
+                )
+            );
+        }
     }
 ?>

@@ -265,5 +265,16 @@
             self::$cachedCurrencyById     = array();
             self::$allCachedCurrencies    = array();
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'active'        => Zurmo::t('ZurmoModule', 'Active',        array(), null, $language),
+                    'code'          => Zurmo::t('ZurmoModule', 'Code',          array(), null, $language),
+                    'rateToBase'    => Zurmo::t('ZurmoModule', 'Rate To Base',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

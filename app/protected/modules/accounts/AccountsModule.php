@@ -135,5 +135,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('AccountsModule', 'Account', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('AccountsModule', 'Accounts', array(), null, $language);
+        }
     }
 ?>

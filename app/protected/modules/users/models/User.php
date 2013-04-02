@@ -423,11 +423,22 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' =>       Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
-                    'timeZone' =>       Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
-                    'title'    =>       Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
-                    'primaryEmail' =>   Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
-                    'primaryAddress' => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
+                    'currency'        => Zurmo::t('ZurmoModule', 'Currency', array(), null, $language),
+                    'emailAccounts'   => Zurmo::t('EmailMessagesModule', 'Email Accounts', array(), null, $language),
+                    'emailBoxes'      => Zurmo::t('EmailMessagesModule', 'Email Boxes', array(), null, $language),
+                    'emailSignatures' => Zurmo::t('EmailMessagesModule', 'Email Signatures', array(), null, $language),
+                    'fullName'        => Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
+                    'groups'          => Zurmo::t('ZurmoModule', 'Groups', array(), null, $language),
+                    'hash'            => Zurmo::t('UsersModule', 'Hash',       array(), null, $language),
+                    'isActive'        => Zurmo::t('UsersModule', 'Is Active',  array(), null, $language),
+                    'language'        => Zurmo::t('ZurmoModule', 'Language',   array(), null, $language),
+                    'manager'         => Zurmo::t('UsersModule', 'Manager',    array(), null, $language),
+                    'primaryEmail'    => Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
+                    'primaryAddress'  => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
+                    'role'            => Zurmo::t('ZurmoModule', 'Role', array(), null, $language),
+                    'timeZone'        => Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
+                    'title'           => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
+                    'username'        => Zurmo::t('UsersModule', 'Username',   array(), null, $language),
                 )
             );
         }

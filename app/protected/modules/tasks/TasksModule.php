@@ -120,5 +120,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('TasksModule', 'Task', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('TasksModule', 'Tasks', array(), null, $language);
+        }
     }
 ?>

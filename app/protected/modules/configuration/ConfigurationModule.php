@@ -36,6 +36,11 @@
             return Zurmo::t('ConfigurationModule', 'Configuration', array(), null, $language);
         }
 
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ConfigurationModule', 'Configurations', array(), null, $language);
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = array();

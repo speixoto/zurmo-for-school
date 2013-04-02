@@ -63,6 +63,17 @@
             return true;
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'name' => Zurmo::t('Core', 'Owner', array(), null, $language),
+                    'size' => Zurmo::t('Core', 'Size',  array(), null, $language),
+                    'type' => Zurmo::t('Core', 'Type',  array(), null, $language),
+                )
+            );
+        }
+
         protected function beforeSave()
         {
             if (parent::beforeSave())

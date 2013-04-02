@@ -73,6 +73,18 @@
             return max(2, (int)R::getCell('select max(layoutId) + 1 from dashboard'));
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'layoutId'   => Zurmo::t('HomeModule',  'Layout Id',   array(), null, $language),
+                    'layoutType' => Zurmo::t('HomeModule',  'Layout Type', array(), null, $language),
+                    'isDefault'  => Zurmo::t('HomeModule',  'Is Default',  array(), null, $language),
+                    'name'       => Zurmo::t('ZurmoModule', 'Name',        array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             try
