@@ -58,8 +58,8 @@ $(window).ready(function(){
 function rebuildReportFiltersAttributeRowNumbersAndStructureInput(divId){
     rowCount = 1;
     structure = '';
-    $('#' + divId).find('.dynamic-row-label').each(function(){
-        //$(this).html(rowCount + '.');
+    $('#' + divId).find('.dynamic-row-label-number').each(function(){
+        $(this).html(rowCount + '.');
         if(structure != ''){
             structure += ' AND ';
         }
