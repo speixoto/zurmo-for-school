@@ -74,7 +74,14 @@
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                             $('#TriggersForWorkflowWizardView').hide();
                             $('#ActionsForWorkflowWizardView').show();
-
+                            var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
+                            $.each(actionsList, function(){
+                                if ( $(this).hasClass('expanded-row') ){
+                                    $(this).toggleClass('expanded-row');
+                                    $('.edit-dynamic-row-link', this).toggle();
+                                    $('.toggle-me', this).toggle();
+                                }
+                            });
                         }
                         if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
