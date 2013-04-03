@@ -59,7 +59,7 @@ function rebuildReportFiltersAttributeRowNumbersAndStructureInput(divId){
     rowCount = 1;
     structure = '';
     $('#' + divId).find('.dynamic-row-label').each(function(){
-        $(this).html(rowCount + '.');
+        //$(this).html(rowCount + '.');
         if(structure != ''){
             structure += ' AND ';
         }

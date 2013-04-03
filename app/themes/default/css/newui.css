@@ -8383,13 +8383,9 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.beforeToolTip .hasDropDown {
-  margin-right: 30px;
-  width: auto;
-}
 .beforeToolTip + .tooltip {
   float: right;
-  margin: 7px 0 0 -30px !important;
+  margin: 5px 0 0 -30px !important;
   position: relative;
 }
 /*=View AccountView (before editing, portlets and such)*/
@@ -16442,9 +16438,6 @@ a.user-link {
   float: right;
   width: 80%;
 }
-.first-value-area + .second-value-area {
-  margin-top: 10px;
-}
 .report-runtime-availability {
   min-width: 145px;
   position: relative;
@@ -16947,7 +16940,7 @@ a.user-link {
 .zero-components-view.TimeTrigger,
 #time-trigger-container {
   float: right !important;
-  width: 70% !important;
+  width: 80% !important;
   padding-left: 15px;
 }
 .zero-components-view.TimeTrigger .value-data,
@@ -16959,18 +16952,20 @@ a.user-link {
 #time-trigger-container .first-value-area {
   margin-left: 15px;
 }
-.NoTimeTrigger,
-#time-trigger-container {
+.time-trigger-attribute-selector-container {
+  width: 20%;
+  float: left;
   min-height: 300px;
 }
-.time-trigger-attribute-selector-container {
-  width: 30%;
+.dynamic-row-duration {
   float: left;
+  width: 100%;
+  margin-top: 10px;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 #OnSaveWorkflowWizardView .add-email-message-button-container,
 #OnSaveWorkflowWizardView .action-type-selector-container {
-  width: 30%;
+  width: 20%;
   float: left !important;
 }
 #OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
@@ -16981,7 +16976,7 @@ a.user-link {
 #OnSaveWorkflowWizardView .EmailMessages.droppable-dynamic-rows-container,
 #OnSaveWorkflowWizardView .Actions.zero-components-view,
 #OnSaveWorkflowWizardView .EmailMessages.zero-components-view {
-  width: 70% !important;
+  width: 80% !important;
   padding-left: 15px;
 }
 #OnSaveWorkflowWizardView .edit-dynamic-row-link {
@@ -17006,14 +17001,15 @@ a.user-link {
 }
 /*WorkFlow Rules Order*/
 .workflow-order-module-selector-container {
-  width: 30%;
+  width: 20%;
   float: left !important;
+  min-height: 300px;
 }
 #workflow-order-container,
 .WorkflowRulesOrder,
 .no-workflows-to-order-view {
   float: right !important;
-  width: 70% !important;
+  width: 80% !important;
   padding-left: 15px;
 }
 #workflow-order-container + .float-bar,
@@ -17021,13 +17017,14 @@ a.user-link {
 .no-workflows-to-order-view + .float-bar {
   margin-top: 15px;
 }
+.workflow-order-container,
 .no-workflows-to-order-view {
   position: relative;
   top: 0;
   left: 0;
-  min-height: 300px;
   text-align: center;
 }
+.workflow-order-container .large-icon:after,
 .no-workflows-to-order-view .large-icon:after {
   content: "j";
   font-weight: normal;
@@ -17035,6 +17032,7 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 60%;
 }
+.workflow-order-container p,
 .no-workflows-to-order-view p {
   font-size: 16px;
   line-height: 24px;
