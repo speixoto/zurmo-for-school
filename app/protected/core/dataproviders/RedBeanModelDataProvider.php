@@ -35,7 +35,6 @@
         private $searchAttributeData;
         private $calculatedTotalItemCount;
         private $offset;
-        private $pagination;
 
         /**
          * @sortAttribute - Currently supports only non-related attributes.
@@ -96,10 +95,6 @@
             {
                 $offset = 0;
                 $limit  = null;
-            }
-            if(!isset($this->pagination))
-            {
-                $limit = (int)$totalItemCount;
             }
             if ($this->offset != null)
             {
