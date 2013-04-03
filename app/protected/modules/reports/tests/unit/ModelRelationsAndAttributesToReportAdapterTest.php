@@ -1122,7 +1122,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForGroupBys();
-            $this->assertEquals(29, count($attributes));
+            $this->assertEquals(34, count($attributes));
 
             //Date/DateTime columns first...
             $compareData        = array('label' => 'Date -(Year)');
@@ -1189,6 +1189,17 @@
             $this->assertEquals($compareData, $attributes['createdByUser__User']);
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            //Text, Url, and Id attributes
+            $compareData        = array('label' => 'Id');
+            $this->assertEquals($compareData, $attributes['id']);
+            $compareData        = array('label' => 'String');
+            $this->assertEquals($compareData, $attributes['string']);
+            $compareData        = array('label' => 'Url');
+            $this->assertEquals($compareData, $attributes['url']);
+            $compareData        = array('label' => 'First Name');
+            $this->assertEquals($compareData, $attributes['firstName']);
+            $compareData        = array('label' => 'Last Name');
+            $this->assertEquals($compareData, $attributes['lastName']);
         }
 
         /**

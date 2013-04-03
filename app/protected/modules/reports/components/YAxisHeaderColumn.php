@@ -32,6 +32,10 @@
     {
         public $name;
 
+        public $value;
+
+        public $type;
+
         /**
          * Override to handle spanning of columns.  Used primarily by matrix reports to render a grid
          */
