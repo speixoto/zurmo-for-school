@@ -29,6 +29,7 @@
      */
     class LdapConfigurationForm extends ConfigurationForm
     {
+        public $serverType;
         public $host;
         public $port = 389;
         public $bindRegisteredDomain;
@@ -40,6 +41,7 @@
         public function rules()
         {
             return array(
+                array('serverType',                        'type',      'type' => 'string'),
                 array('host',                              'required'),
                 array('host',                              'type',      'type' => 'string'),
                 array('host',                              'length',    'min'  => 1, 'max' => 64),
@@ -62,6 +64,7 @@
         public function attributeLabels()
         {
             return array(
+                'serverType'                           => Zurmo::t('ZurmoModule', 'Server Type'),
                 'host'                                 => Zurmo::t('ZurmoModule', 'Host'),
                 'port'                                 => Zurmo::t('ZurmoModule', 'Port'),
                 'bindRegisteredDomain'                 => Zurmo::t('ZurmoModule', 'Username'),

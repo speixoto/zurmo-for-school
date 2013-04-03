@@ -41,7 +41,7 @@
             assert('is_int($port)');
             $ldapConnection = ldap_connect($host, $port);
             ldap_set_option($ldapConnection, LDAP_OPT_PROTOCOL_VERSION, 3);
-            ldap_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0);
+            ldap_set_option($ldapConnection, LDAP_OPT_REFERRALS, 0);            
             return $ldapConnection;
         }
 
@@ -53,7 +53,7 @@
          * @param password $bindPassword,
          * @param base domain $baseDomain
          */
-        public static function establishConnection($host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
+        public static function establishConnection($serverType, $host, $port, $bindRegisteredDomain, $bindPassword, $baseDomain)
         {
             assert('is_string($host)');
             assert('is_int($port)');
@@ -61,8 +61,15 @@
             assert('is_string($bindPassword)');
             assert('is_string($baseDomain)');
             $ldapConnection = self::makeConnection($host, $port);
-            //checking user type
-            $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; // Not Coding Standard
+            //checking server type
+            if($serverType == 'OpenLDAP')
+            {
+                $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; // Not Coding Standard
+            }
+            elseif($serverType == 'ActiveDirectory')
+            {               
+                $bindRegisteredDomain = self::resolveBindRegisteredDomain($bindRegisteredDomain, $baseDomain);
+            }
             // bind with appropriate dn to give update access
             if (@ldap_bind($ldapConnection, $bindRegisteredDomain, $bindPassword))
             {
@@ -72,5 +79,17 @@
             {
                return false;
             }
+        }
+        
+        /*
+        * Resolving Base Registered Domain for LDAP Server Type
+        */
+        public static function resolveBindRegisteredDomain()
+        {
+                $baseDomain            = str_replace(',','',$baseDomain); 
+                $domainControllers     = explode('dc=',$baseDomain);
+                $bindRegisteredDomain  = $bindRegisteredDomain . '@' . $domainControllers[1] . '.' .
+                                         $domainControllers[2];
+                return $bindRegisteredDomain;
         }
     }
