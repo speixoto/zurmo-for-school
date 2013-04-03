@@ -218,7 +218,6 @@
             {
                 return $data;
             }
-
             foreach($this->secondSeriesValueData as $secondSeriesKey)
             {
 

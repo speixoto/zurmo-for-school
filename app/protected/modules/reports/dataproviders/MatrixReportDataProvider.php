@@ -317,7 +317,6 @@
                     $value    = $row[$displayAttribute->columnAliasName];
                     if($this->isDisplayAttributeAnXAxisGroupBy($displayAttribute))
                     {
-
                         $tempData = $tempData[$value];
                     }
                     elseif($this->isDisplayAttributeAnYAxisGroupBy($displayAttribute))

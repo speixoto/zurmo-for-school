@@ -34,6 +34,20 @@
         const DATETIME_FORMAT_TIME_WIDTH = 'short';
 
         /**
+         * Convert month to a display label. If the month is invalid then it just returns the month passed in.
+         * @param string $month
+         * @return mixed
+         */
+        public static function getMonthName($month)
+        {
+            if($month != null)
+            {
+                return Yii::app()->locale->getMonthName((int)$month);
+            }
+            return $month;
+        }
+
+        /**
          * For the DateTime formatted attributes, get the locale specific date time format string.
          * @return string - datetime format.
          */

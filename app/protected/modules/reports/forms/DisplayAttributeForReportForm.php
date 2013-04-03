@@ -255,6 +255,10 @@
                     $translatedValue = Zurmo::t('ReportsModule', 'No');
                 }
             }
+            elseif($displayElementType == 'GroupByModifierMonth')
+            {
+                $translatedValue = DateTimeUtil::getMonthName($value);
+            }
             if($translatedValue === null)
             {
                 $translatedValue = '';

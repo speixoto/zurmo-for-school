@@ -490,6 +490,11 @@
                     throw new NotSupportedException();
                 }
             }
+            elseif($this->isAttributeACalculatedGroupByModifier($attribute) &&
+                   $this->getGroupByCalculationTypeByAttribute($attribute) == self::GROUP_BY_CALCULATION_MONTH)
+            {
+                return 'GroupByModifierMonth';
+            }
             elseif($this->isAttributeACalculatedGroupByModifier($attribute))
             {
                 return 'Text';
@@ -680,6 +685,17 @@
             assert('is_string($type)');
             $attributes[$attribute . FormModelUtil::DELIMITER . $type] =
                         array('label' => $this->resolveGroupByCalculationLabel($attribute, $type));
+        }
+
+        /**
+         * @param $attribute
+         * @return mixed
+         */
+        protected function getGroupByCalculationTypeByAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            list($attribute, $calculationType) = explode(FormModelUtil::DELIMITER, $attribute);
+            return $calculationType;
         }
 
         /**
