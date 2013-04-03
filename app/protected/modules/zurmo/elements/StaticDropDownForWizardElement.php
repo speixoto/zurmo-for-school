@@ -48,12 +48,21 @@
         {
             $htmlOptions                 = parent::getEditableHtmlOptions();
             $htmlOptions['class']        = 'flexible-drop-down';
-            if((property_exists($this->model, 'operator') && $this->model->operator == 'oneOf') || $this->alwaysMultiple)
+            if( $this->resolveOperatorIsOneOf() || $this->alwaysMultiple)
             {
                 $htmlOptions['multiple']  = true;
                 $htmlOptions['class']    .= ' multiple ignore-style';
             }
             return $htmlOptions;
+        }
+
+        protected function resolveOperatorIsOneOf()
+        {
+            if(($this->model->operator == 'oneOf'))
+            {
+                return true;
+            }
+            return false;
         }
     }
 ?>
