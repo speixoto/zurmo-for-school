@@ -215,12 +215,13 @@
                 $globalSearchView               = new GlobalSearchView($moduleNamesAndLabels, $sourceUrl);
                 $recentlyViewed                 = static::makeRecentlyViewedView();
                 $recentlyViewedMenu             = $recentlyViewed->renderMenu();
-                $searchAndShortcutsItems        = array(
+                $searchItem                     = array(
                                                     array(
                                                         'label'                 => '',
                                                         'dynamicLabelContent'   => $globalSearchView->render(),
                                                         'itemOptions'           => array('id' => 'search'),
-                                                    ),
+                                                    ));
+                $shortcutsItems                 = array(
                                                     array(
                                                         'label'                 => '',
                                                         'dynamicLabelContent'   => $shortcutsCreateMenuView->render(),
@@ -229,11 +230,11 @@
                 $recentlyViewedItems            = array(
                                                     array(
                                                         'label'                 => '',
-                                                        'dynamicLabelContent'   => '<a href="#" class="mobile-flyout-trigger"><span></span><em></em><span>Recently Viewed</span></a>',
+                                                        'dynamicLabelContent'   => MobileHtml::renderFlyoutTrigger('Recently Viewed'),
                                                         'itemOptions'           => array('id' => 'recently-viewed'),
                                                         'items'                 => ($recentlyViewedMenu) ? $recentlyViewedMenu : null,
                                                     ));
-                $items                          = CMap::mergeArray($searchAndShortcutsItems, $items, $recentlyViewedItems);
+                $items                          = CMap::mergeArray($searchItem, $items, $shortcutsItems, $recentlyViewedItems);
             }
             else
             {

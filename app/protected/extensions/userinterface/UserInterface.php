@@ -111,7 +111,8 @@
          */
         public function isMobile()
         {
-            return $this->selectedUserInterfaceType == self::MOBILE;
+            // TODO: @Shoaibi: Critical: Uncomment this
+            return true;// $this->selectedUserInterfaceType == self::MOBILE;
         }
 
         /**
