@@ -28,12 +28,7 @@
     {
         protected function getDropDownArray()
         {
-            return array(
-                null                                => Yii::t('Default', '--'),
-                ProductTemplate::TYPE_PRODUCT       => Yii::t('Default', 'Product'),
-                ProductTemplate::TYPE_SERVICE       => Yii::t('Default', 'Service'),
-                ProductTemplate::TYPE_SUBSCRIPTION  => Yii::t('Default', 'Subscription'),
-            );
+            return ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
         }
     }
 ?>

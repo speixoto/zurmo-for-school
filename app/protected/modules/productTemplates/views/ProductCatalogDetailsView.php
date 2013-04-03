@@ -32,7 +32,8 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EditLink',      'renderType' => 'Details'),
+                            array('type'  => 'EditLink',                 'renderType' => 'Details'),
+                            array('type'  => 'ProductCatalogDeleteLink', 'renderType' => 'Details'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(

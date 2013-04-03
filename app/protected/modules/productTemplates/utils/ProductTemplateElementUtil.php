@@ -144,5 +144,50 @@
                 });
             ";
         }
+
+        public static function getProductTemplateStatusDropdownArray()
+        {
+            return array(
+                null                                 => Yii::t('Default', '--'),
+                ProductTemplate::STATUS_ACTIVE       => Yii::t('Default', 'Active'),
+                ProductTemplate::STATUS_INACTIVE     => Yii::t('Default', 'Inactive'),
+            );
+        }
+
+        public static function getProductTemplateTypeDropdownArray()
+        {
+            return array(
+                null                                => Yii::t('Default', '--'),
+                ProductTemplate::TYPE_PRODUCT       => Yii::t('Default', 'Product'),
+                ProductTemplate::TYPE_SERVICE       => Yii::t('Default', 'Service'),
+                ProductTemplate::TYPE_SUBSCRIPTION  => Yii::t('Default', 'Subscription'),
+            );
+        }
+
+        public static function getProductTemplateTypeDisplayedGridValue($data, $row)
+        {
+            $typeDropdownData = self::getProductTemplateTypeDropdownArray();
+            if(isset($typeDropdownData[$data->type]))
+            {
+                return $typeDropdownData[$data->type];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+        public static function getProductTemplateStatusDisplayedGridValue($data, $row)
+        {
+            $statusDropdownData = self::getProductTemplateStatusDropdownArray();
+            if(isset($statusDropdownData[$data->status]))
+            {
+                return $statusDropdownData[$data->status];
+            }
+            else
+            {
+                return null;
+            }
+        }
     }
 ?>

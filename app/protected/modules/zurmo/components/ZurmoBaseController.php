@@ -547,6 +547,7 @@
                 }
             }
             Yii::app()->gameHelper->unmuteScoringModelsOnDelete();
+            return true;
         }
 
         /**

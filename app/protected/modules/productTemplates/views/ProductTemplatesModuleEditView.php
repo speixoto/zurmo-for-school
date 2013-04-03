@@ -24,11 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplateStatusDropDownElement extends StaticDropDownFormElement
+    class ProductTemplatesModuleEditView extends GlobalSearchEnabledModuleEditView
     {
-        protected function getDropDownArray()
-        {
-            return ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
-        }
     }
 ?>

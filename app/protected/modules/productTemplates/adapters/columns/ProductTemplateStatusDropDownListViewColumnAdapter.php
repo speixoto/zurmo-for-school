@@ -28,23 +28,11 @@
     {
         public function renderGridViewData()
         {
-            if ($this->getIsLink())
-            {
-                return array(
-                    'name' => $this->attribute,
-                    'type' => 'raw',
-                    'value' => $this->view->getRelatedLinkString(
-                               '$data->' . $this->attribute, $this->attribute, 'productTemplates'),
-                );
-            }
-            else
-            {
-                return array(
+            return array(
                     'name'  => $this->attribute,
-                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'value' => array('ProductTemplateElementUtil', 'getProductTemplateStatusDisplayedGridValue'),
                     'type'  => 'raw',
                 );
-            }
         }
     }
 ?>

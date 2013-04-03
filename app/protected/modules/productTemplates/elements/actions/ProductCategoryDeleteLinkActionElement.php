@@ -24,11 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductTemplateStatusDropDownElement extends StaticDropDownFormElement
+    class ProductCategoryDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        protected function getDropDownArray()
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
-            return ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
+            //TODO When language one is merged this needs to be corrected
+//            $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',
+//                                      array('{modelLabel}' => ProductTemplatesModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => 'product category'));
+            return $htmlOptions;
         }
     }
 ?>

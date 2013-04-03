@@ -74,7 +74,11 @@
             $this->assertEquals(400.54, $productTemplate->listPrice->value);
             $this->assertEquals(300.54, $productTemplate->sellPrice->value);
             $this->assertEquals(ProductTemplate::TYPE_PRODUCT, $productTemplate->type);
+            $typeArray = ProductTemplateElementUtil::getProductTemplateTypeDropdownArray();
+            $statusArray = ProductTemplateElementUtil::getProductTemplateStatusDropdownArray();
+            $this->assertEquals("Product", $typeArray[$productTemplate->type]);
             $this->assertEquals(ProductTemplate::STATUS_ACTIVE, $productTemplate->status);
+            $this->assertEquals("Active", $statusArray[$productTemplate->status]);
             $this->assertEquals($product, $productTemplate->products[0]);
             //$this->assertTrue($productTemplate->sellPriceFormula->isSame($sellPriceFormula));
             $this->assertEquals($productTemplate->sellPriceFormula->type, SellPriceFormula::TYPE_EDITABLE);

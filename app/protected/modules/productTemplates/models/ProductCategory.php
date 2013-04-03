@@ -131,5 +131,18 @@
         {
             //return 'ProductCategoryGamification';
         }
+
+        protected function beforeDelete()
+        {
+            parent::beforeDelete();
+            if(count($this->productTemplates) == 0 )
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
     }
 ?>

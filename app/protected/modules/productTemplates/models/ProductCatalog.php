@@ -27,7 +27,7 @@
     class ProductCatalog extends Item
     {
         const DEFAULT_NAME = 'Default';
-        
+
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);
@@ -129,6 +129,19 @@
         public static function getGamificationRulesType()
         {
             //return 'ProductCatalogGamification';
+        }
+
+        protected function beforeDelete()
+        {
+            parent::beforeDelete();
+            if($this->name != self::DEFAULT_NAME)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
         }
     }
 ?>

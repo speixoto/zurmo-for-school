@@ -218,16 +218,25 @@
                 'Product Catalogs',
                 $dataProvider
             );
-            $massDeleteView = $this->makeMassDeleteView(
-                $productCatalog,
-                $activeAttributes,
-                $selectedRecordCount,
-                //ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
-                'Product Catalogs'
-            );
-            $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $massDeleteView));
-            echo $view->render();
+
+            if($productCatalog === false)
+            {
+                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'One of the product catalog selected is  associated to categories in the system hence could not be deleted'));
+                $this->redirect(Zurmo::app()->request->getUrlReferrer());
+            }
+            else
+            {
+                $massDeleteView = $this->makeMassDeleteView(
+                    $productCatalog,
+                    $activeAttributes,
+                    $selectedRecordCount,
+                    //ProductTemplatesModule::getModuleLabelByTypeAndLanguage('Plural')
+                    'Product Catalogs'
+                );
+                $view = new ProductCatalogsPageView(ZurmoDefaultViewUtil::
+                                             makeStandardViewForCurrentUser($this, $massDeleteView));
+                echo $view->render();
+            }
         }
 
         /**
@@ -271,8 +280,15 @@
         {
             $productCatalog = ProductCatalog::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productCatalog);
-            $productCatalog->delete();
-            $this->redirect(array($this->getId() . '/index'));
+            if($productCatalog->delete())
+            {
+                $this->redirect(array($this->getId() . '/index'));
+            }
+            else
+            {
+                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'The product catalog is associated to categories in the system hence could not be deleted'));
+                $this->redirect(Zurmo::app()->request->getUrlReferrer());
+            }
         }
 
         protected static function getSearchFormClassName()

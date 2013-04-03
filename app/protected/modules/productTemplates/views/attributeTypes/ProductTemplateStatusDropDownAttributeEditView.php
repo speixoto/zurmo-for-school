@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductCategoryDetailsView extends DetailsView
+    class ProductTemplateStatusDropDownAttributeEditView extends AttributeEditView
     {
         public static function getDefaultMetadata()
         {
@@ -32,12 +32,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'EditLink',                  'renderType' => 'Details'),
-                            array('type'  => 'ProductCategoryDeleteLink', 'renderType' => 'Details'),
+                            array('type'  => 'CancelLink'),
+                            array('type'  => 'SaveButton'),
                         ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -47,7 +44,43 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'null', 'type' => 'AttributeType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'attributeLabels', 'type' => 'AttributeLabel'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'attributeName', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'isRequired', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'isAudited', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -58,11 +91,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        public function getTitle()
-        {
-            return $this->model->name;
         }
     }
 ?>
