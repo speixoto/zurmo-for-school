@@ -47,7 +47,25 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'status', 'type' => 'ProductTemplateStatusDropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown', 'addBlank' => true),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'priceFrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
                                             ),
                                         ),
                                     )

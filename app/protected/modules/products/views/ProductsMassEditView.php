@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductEditAndDetailsView extends SecuredEditAndDetailsView
+    class ProductsMassEditView extends MassEditView
     {
         public static function getDefaultMetadata()
         {
@@ -32,28 +32,17 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink',       'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',       'renderType' => 'Edit'),
-                            array('type'  => 'EditLink',         'renderType' => 'Details'),
-                            array('type'  => 'ProductDeleteLink','renderType' => 'Details'),
+                            array('type' => 'CancelLink'),
+                            array('type' => 'SaveButton'),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
-                        'owner',
+                        'name',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
                             'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
                                 array('cells' =>
                                     array(
                                         array(
@@ -114,12 +103,6 @@
                 ),
             );
             return $metadata;
-        }
-
-        protected function getNewModelTitleLabel()
-        {
-            return Zurmo::t('ProductsModule', 'Create ProductsModuleSingularLabel',
-                                     LabelUtil::getTranslationParamsForAllModules());
         }
     }
 ?>

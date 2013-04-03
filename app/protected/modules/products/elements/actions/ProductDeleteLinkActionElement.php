@@ -24,8 +24,13 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsSearchForm extends OwnedSearchForm
+    class ProductDeleteLinkActionElement extends DeleteLinkActionElement
     {
-       
+        protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
+        {
+            $htmlOptions['confirm'] = Zurmo::t('ProductTemplatesModule', 'Are you sure you want to delete this {modelLabel}?',
+                                      array('{modelLabel}' => ProductsModule::getModuleLabelByTypeAndLanguage('SingularLowerCase')));
+            return $htmlOptions;
+        }
     }
 ?>
