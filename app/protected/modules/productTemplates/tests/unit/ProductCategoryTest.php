@@ -98,7 +98,7 @@
         /**
          * @depends testGetProductCategoriesByName
          */
-        public function testGetProductTemplatesByNameForNonExistentName()
+        public function testGetProductCategoriesByNameForNonExistentName()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $productCategories = ProductCategory::getByName('Red Widget 1');
@@ -169,6 +169,7 @@
            $id                         = $productCategory->id;
            unset($productCategory);
            $productCategory            = ProductCategory::getById($id);
+           $this->assertEquals(1, count($productCategory->productTemplates));
            $this->assertEquals($productTemplate, $productCategory->productTemplates[0]);
         }
     }

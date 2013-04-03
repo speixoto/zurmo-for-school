@@ -93,7 +93,7 @@
                     'name',
                 ),
                 'relations' => array(
-                    'productTemplates' => array(RedBeanModel::HAS_MANY, 'ProductTemplate'),
+                    'productTemplates' => array(RedBeanModel::MANY_MANY, 'ProductTemplate'),
                     'productCatalogs'  => array(RedBeanModel::MANY_MANY, 'ProductCatalog'),
                 ),
                 'rules' => array(
