@@ -65,7 +65,7 @@
          */
         protected $showFilteredBySearchTerm = true;
 
-        protected $params;
+        public $params; // public: to support ObjectParametersUtil
 
         /**
          * Associated moduleClassName of the containing view.
@@ -178,9 +178,14 @@
                 'nextPageLabel'    => '<span>next</span>',
                 'lastPageLabel'    => '<span>last</span>',
                 'class'            => 'SimpleListLinkPager',
-                'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->params['portletId'])),
+                'paginationParams' => array_merge(GetUtil::getData(), array('portletId' => $this->getPortletId())),
                 'route'            => 'defaultPortlet/details',
             );
+        }
+
+        protected function getPortletId()
+        {
+            return ObjectParametersUtil::getValue($this, 'portletId');
         }
 
         protected function renderConfigurationForm()
@@ -252,7 +257,7 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySubscriptionType', "
-                    createButtonSetIfNotAlreadyExist('MarketingListMembersConfigurationForm_filteredBySubscriptionType_area'); // TODO: @Shoaibi/@Jason: Medium: causes Uncaught Error: cannot call methods on button prior to initialization; attempted to call method 'widget'
+                    createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area'); // TODO: @Shoaibi/@Jason: Medium: causes Uncaught Error: cannot call methods on button prior to initialization; attempted to call method 'widget'
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "

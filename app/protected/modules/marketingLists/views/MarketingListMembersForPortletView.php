@@ -32,7 +32,7 @@
          * Portlet parameters passed in from the portlet.
          * @var array
          */
-        protected $params;
+        public $params; // public: to support ObjectParametersUtil
 
         protected $controllerId;
 
@@ -68,6 +68,7 @@
             assert('is_string($uniqueLayoutId)');
             $this->moduleId       = $params['relationModuleId'];
             $this->model          = $params['relationModel'];
+            $this->modelId        = $this->model->id;
             $this->controllerId   = $params['controllerId'];
             $this->viewData       = $viewData;
             $this->params         = $params;
@@ -81,9 +82,6 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'SelectContactAndReportLink',
-                                'htmlOptions' => array('class' => 'icon-details'),
-                                'listViewGridId' => 'eval:$this->getMarketingListMembersListGridId()'),
                             array('type'  => 'MarketingListMembersSubscribeLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
@@ -112,9 +110,10 @@
         public function renderContent()
         {
             $actionElementBar       = $this->renderActionElementBar(false);
+            $selectContactOrReport  = $this->renderSelectContactOrReportElement();
             $memberSearchAndList    = $this->renderMembersSearchFormAndListContent();
             return ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),
-                                                                            $actionElementBar . $memberSearchAndList);
+                                        $actionElementBar . $selectContactOrReport . $memberSearchAndList);
         }
 
         public static function canUserConfigure()
@@ -139,6 +138,29 @@
             return 'MarketingListsModule';
         }
 
+        protected function renderSelectContactOrReportElement()
+        {
+            $formName                       = 'marketing-list-member-select-contact-or-report-form';
+            $clipWidget                     = new ClipWidget();
+            list($form, $formStart)         = $clipWidget->renderBeginWidget(
+                                                    'ZurmoActiveForm',
+                                                    array(
+                                                        'id' => $formName,
+                                                    )
+                                                );
+            $content                        = $formStart;
+            $selectContactOrReportElement   = new SelectContactOrReportElement(new MarketingListMemberSelectForm(), null, $form,
+                                                        array(
+                                                                'pageVarName'       => $this->getPageVarName(),
+                                                                'listViewGridId'    => $this->getMarketingListMembersListGridId(),
+                                                                'marketingListId'   => $this->modelId,
+                                                            )
+                                                        );
+            $content                        .= $selectContactOrReportElement->render();
+            $content                        .= $clipWidget->renderEndWidget();
+            return $content;
+        }
+
         /**
          * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
          * refresh the portlet content.
@@ -146,8 +168,13 @@
         protected function getPortletDetailsUrl()
         {
             return Yii::app()->createUrl('/' . $this->moduleId . '/defaultPortlet/details',
-                                                array_merge($_GET, array( 'portletId' => $this->params['portletId'],
+                                                array_merge($_GET, array( 'portletId' => $this->getPortletId(),
                                                                             'uniqueLayoutId' => $this->uniqueLayoutId)));
+        }
+
+        protected function getPortletId()
+        {
+            return ObjectParametersUtil::getValue($this, 'portletId');
         }
 
         /**
@@ -156,14 +183,15 @@
          */
         protected function getNonAjaxRedirectUrl()
         {
-            if ($this->params['redirectUrl'])
+            $redirectUrl = ObjectParametersUtil::getValue($this, 'redirectUrl');
+            if ($redirectUrl)
             {
-                return $this->params['redirectUrl'];
+                return $redirectUrl;
             }
             else
             {
             return Yii::app()->createUrl('/' . $this->moduleId . '/' . $this->controllerId . '/details',
-                                                                                    array( 'id' => $this->model->id));
+                                                                                    array( 'id' => $this->modelId));
             }
         }
 
@@ -217,12 +245,12 @@
             {
                 if ($this->marketingListMembersConfigurationForm->$persistentUserConfigItem !==
                     MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
-                                                                                            $this->params['portletId'],
+                                                                                            $this->getPortletId(),
                                                                                             $persistentUserConfigItem)
                                                                                         )
                 {
                     MarketingListMembersPortletPersistentConfigUtil::setForCurrentUserByPortletIdAndKey(
-                                                        $this->params['portletId'],
+                                                        $this->getPortletId(),
                                                         $persistentUserConfigItem,
                                                         $this->marketingListMembersConfigurationForm->$persistentUserConfigItem
                                                         );
@@ -243,7 +271,7 @@
                 else
                 {
                     $persistentUserConfigItemValue = MarketingListMembersPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
-                                                                                            $this->params['portletId'],
+                                                                                            $this->getPortletId(),
                                                                                             $persistentUserConfigItem
                                                                                             );
                     if(isset($persistentUserConfigItemValue))
@@ -298,7 +326,7 @@
             assert('is_string($uniquePageId)');
             assert('$form instanceOf MarketingListMembersConfigurationForm');
             $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType('subListPageSize');
-            $searchAttributes   = MarketingListMembersUtil::makeSearchAttributeData($this->model->id,
+            $searchAttributes   = MarketingListMembersUtil::makeSearchAttributeData($this->modelId,
                                                                                 $form->filteredBySubscriptionType,
                                                                                 $form->filteredBySearchTerm);
             $sortAttributes     = MarketingListMembersUtil::makeSortAttributeData();

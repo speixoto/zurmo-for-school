@@ -105,12 +105,7 @@
 
         protected function getListViewGridId()
         {
-            // TODO: @Shoaibi/@Jason: Low: should be probably ported to parent
-            if (!isset($this->params['listViewGridId']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['listViewGridId'];
+            return ObjectParametersUtil::getValue($this, 'listViewGridId');
         }
     }
 ?>

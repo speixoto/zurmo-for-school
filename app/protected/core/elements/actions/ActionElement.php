@@ -34,7 +34,7 @@
         protected $moduleId;
         protected $modelId;
         protected $route;
-        protected $params;
+        public $params; // public: to support ObjectParametersUtil
         protected $formRequiredToUse = false;
 
         abstract public function render();

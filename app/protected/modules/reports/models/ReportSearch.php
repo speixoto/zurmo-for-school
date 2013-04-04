@@ -24,33 +24,35 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to convert a contact search into
-     * an Jui AutoComplete ready array.
-     */
-    class ContactAutoCompleteUtil
+    class ReportSearch
     {
-        /**
-         * @return array - Jui AutoComplete ready array
-         *  containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        public static function getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $autoCompleteResults  = array();
-            $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName);
-            foreach ($contacts as $contact)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $contact->id,
-                    'value' => strval($contact),
-                    'label' => strval($contact),
-                );
-            }
-            return $autoCompleteResults;
+            assert('is_string($moduleClassName)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'moduleClassName',
+                    'operatorType'              => 'equals',
+                    'value'                     => $moduleClassName,
+                ),
+                2 => array(
+                    'attributeName'             => 'name',
+                    'operatorType'              => 'contains',
+                    'value'                     => $partialName
+                ),
+                3 => array(
+                    'attributeName'             => 'type',
+                    'operatorType'              => 'equals',
+                    'value'                     => $type
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2 and 3)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedReport');
+            $where             = RedBeanModelDataProvider::makeWhere('SavedReport', $searchAttributeData, $joinTablesAdapter);
+            return SavedReport::getSubset($joinTablesAdapter, null, $pageSize, $where, 'name');
         }
     }
 ?>

@@ -79,19 +79,12 @@
 
         protected function getMembersPortletClass()
         {
-            return $this->getParameterValueOrNull('membersPortletClass');
+            return ObjectParametersUtil::getValue($this, 'membersPortletClass');
         }
 
         protected function getAutorespondersPortletClass()
         {
-            return $this->getParameterValueOrNull('autorespondersPortletClass');
+            return ObjectParametersUtil::getValue($this, 'autorespondersPortletClass');
         }
-
-        protected function getParameterValueOrNull($parameterName)
-        {
-            // TODO: @Shoaibi/@Jason: Low: port this to parent, have one getParameterValueOrFalse too
-            return (!isset($this->params[$parameterName]))? false: $this->params[$parameterName];
-        }
-
     }
 ?>

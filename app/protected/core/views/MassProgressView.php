@@ -35,7 +35,7 @@
          */
         protected $skipCount;
 
-        protected $params;
+        public $params; // public: to support ObjectParametersUtil
 
         abstract protected function getMessagePrefix();
 
@@ -119,38 +119,23 @@
 
         protected function renderReturnUrl()
         {
-            if (isset($this->params['returnUrl']))
-            {
-                return $this->params['returnUrl'];
-            }
-            else
-            {
-                return Yii::app()->createUrl($this->moduleId);
-            }
+            $returnUrl = ObjectParametersUtil::getValue($this, 'returnUrl');
+            $returnUrl = ($returnUrl)? $returnUrl : Yii::app()->createUrl($this->moduleId);
+            return $returnUrl;
         }
 
         protected function renderReturnMessage()
         {
-            if (isset($this->params['returnMessage']))
-            {
-                return $this->params['returnMessage'];
-            }
-            else
-            {
-                return Zurmo::t('Core', 'Return to List');
-            }
+            $returnMessage = ObjectParametersUtil::getValue($this, 'returnMessage');
+            $returnMessage = ($returnMessage) ? $returnMessage : Zurmo::t('Core', 'Return to List');
+            return $returnMessage;
         }
 
         protected function getDefaultInsufficientPermissionSkipSavingUtil()
         {
-            if (isset($this->params['insufficientPermissionSkipSavingUtil']))
-            {
-                return $this->params['insufficientPermissionSkipSavingUtil'];
-            }
-            else
-            {
-                return $this->getInsufficientPermissionSkipSavingUtil();
-            }
+            $util = ObjectParametersUtil::getValue($this, 'insufficientPermissionSkipSavingUtil');
+            $util = ($util)? $util : $this->getInsufficientPermissionSkipSavingUtil();
+            return $util;
         }
 
         protected function callInsufficientPermissionSkipSavingUtilFunction($function, $parameters = array())

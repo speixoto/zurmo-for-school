@@ -278,20 +278,14 @@
 
         protected function getListViewGridId()
         {
-            if (!isset($this->params['listViewGridId']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['listViewGridId'];
+            // TODO: @Shoaibi/@Jason: Low: Create a common parent for Element and ActionElement, put this there.
+            return ObjectParametersUtil::getValue($this, 'listViewGridId');
         }
 
         protected function getPageVarName()
         {
-            if (!isset($this->params['pageVarName']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['pageVarName'];
+            // TODO: @Shoaibi/@Jason: Low: Create a common parent for Element and ActionElement, put this there.
+            return ObjectParametersUtil::getValue($this, 'pageVarName');
         }
 
         protected function getDefaultRoute()

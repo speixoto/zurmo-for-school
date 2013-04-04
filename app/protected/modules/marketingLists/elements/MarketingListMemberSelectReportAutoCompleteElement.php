@@ -24,33 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to convert a contact search into
-     * an Jui AutoComplete ready array.
-     */
-    class ContactAutoCompleteUtil
+    class MarketingListMemberSelectReportAutoCompleteElement extends MarketingListMemberSelectAutoCompleteBaseElement
     {
-        /**
-         * @return array - Jui AutoComplete ready array
-         *  containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        protected function getSelectType()
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $autoCompleteResults  = array();
-            $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName);
-            foreach ($contacts as $contact)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $contact->id,
-                    'value' => strval($contact),
-                    'label' => strval($contact),
-                );
-            }
-            return $autoCompleteResults;
+            return 'report';
+        }
+
+        protected function getSource()
+        {
+            return Yii::app()->createUrl('/reports/default/autoComplete/',
+                        array('moduleClassName' => Contact::getModuleClassName(),
+                                'type'          => Report::TYPE_ROWS_AND_COLUMNS,
+                            ));
         }
     }
 ?>

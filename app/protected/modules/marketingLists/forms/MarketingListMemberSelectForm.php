@@ -25,32 +25,23 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a contact search into
-     * an Jui AutoComplete ready array.
+     * Form to help manage marketing list member display options supporting filtering by subscription type.
      */
-    class ContactAutoCompleteUtil
+    class MarketingListMemberSelectForm extends CFormModel
     {
-        /**
-         * @return array - Jui AutoComplete ready array
-         *  containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        public $selectContactOrLeadSearchBox;
+
+        public $selectReportSearchBox;
+
+        public $selectContactOrReportRadioButton;
+
+        public function rules()
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $autoCompleteResults  = array();
-            $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName);
-            foreach ($contacts as $contact)
-            {
-                $autoCompleteResults[] = array(
-                    'id'    => $contact->id,
-                    'value' => strval($contact),
-                    'label' => strval($contact),
-                );
-            }
-            return $autoCompleteResults;
+            return array(
+                array('selectContactOrLeadSearchBox',           'type',    'type' => 'string'),
+                array('selectReportSearchBox',                  'type',    'type' => 'string'),
+                array('selectContactOrReportRadioButton',       'type',    'type' => 'string'),
+            );
         }
     }
 ?>

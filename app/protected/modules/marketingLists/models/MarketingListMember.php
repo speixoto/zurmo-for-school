@@ -26,11 +26,6 @@
 
     class MarketingListMember extends OwnedModel
     {
-        public static function getByName($name)
-        {
-            return self::getByNameOrEquivalent('name', $name);
-        }
-
         public static function getModuleClassName()
         {
             return 'MarketingListsModule';
@@ -82,6 +77,51 @@
         public static function canSaveMetadata()
         {
             return true;
+        }
+
+        public static function addNewMember($marketingListId, $contactId, $unsubscribed = false)
+        {
+            $member                     = new self;
+            $member->contact            = Contact::getById($contactId);
+            $member->marketingList      = MarketingList::getById($marketingListId);
+            $member->unsubscribed       = $unsubscribed;
+            if (!$member->unrestrictedSave())
+            {
+                throw new FailedToSaveModelException();
+            }
+            else
+            {
+                return true;
+            }
+        }
+
+        public static function memberAlreadyExists($marketingListId, $contactId)
+        {
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'             => 'marketingList',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => $marketingListId,
+                ),
+                2 => array(
+                    'attributeName'             => 'contact',
+                    'relatedAttributeName'      => 'id',
+                    'operatorType'              => 'equals',
+                    'value'                     => $contactId
+                ),
+            );
+            $searchAttributeData['structure'] = '(1 and 2)';
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter(get_called_class());
+            $where             = RedBeanModelDataProvider::makeWhere(get_called_class(), $searchAttributeData, $joinTablesAdapter);
+            return self::getCount($joinTablesAdapter, $where, get_called_class(), true);
+        }
+
+        public function onCreated()
+        {
+            $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
+            $this->unrestrictedSet('modifiedDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
         }
     }
 ?>

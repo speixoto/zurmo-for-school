@@ -520,6 +520,7 @@ var designer = {
     },
     updateFlashBarAfterSaveLayout : function(data, flashBarId)
     {
+        // TODO: @Shoaibi/@Jason: Medium: Port this to a global scope and get rid of MarketingListMemberSelectAutoCompleteBaseElement:123
         $('#' + flashBarId).jnotifyAddMessage(
         {
             text: data.message,

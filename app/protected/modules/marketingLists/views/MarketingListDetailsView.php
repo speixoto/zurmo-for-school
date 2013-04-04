@@ -37,12 +37,13 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'MarketingListsDetailsLink',
-                                'htmlOptions' => array('class' => 'icon-details')),
-                            array('type'  => 'MarketingListsOptionsLink',
-                                'htmlOptions' => array('class' => 'icon-edit')),
-                            array('type'  => 'MarketingListsTogglePortletsLink',
-                                'htmlOptions' => array('class' => 'hasCheckboxes'),
+                            array('type'        => 'MarketingListsDetailsLink',
+                                'model'                         => 'eval:$this->model',
+                                'htmlOptions'                   => array('class' => 'icon-details')),
+                            array('type'        => 'MarketingListsOptionsLink',
+                                'htmlOptions'                   => array('class' => 'icon-edit')),
+                            array('type'        => 'MarketingListsTogglePortletsLink',
+                                'htmlOptions'                   => array('class' => 'hasCheckboxes'),
                                 'membersPortletClass'           => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS,
                                 'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS,),
                             // TODO: @Shoaibi: also: see that all UL's are created with same ID - this is not valid html

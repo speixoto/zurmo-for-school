@@ -24,43 +24,51 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class to render a fly-out link from the report detailsview.  When this link is clicked, a little div will
-     * open up that display additional information about the marketing list
-     */
-    class MarketingListsDetailsLinkActionElement extends LinkActionElement
+    // TODO: @Shoaibi/@Jason: Low: This should be refactored and used everywhere instead of manually creating clip.
+    abstract class AutoCompleteTextElement extends TextElement
     {
-        public function getActionType()
-        {
-            return 'Details';
-        }
+        abstract protected function getWidgetValue();
 
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('MarketingListsModule', 'Details');
-        }
+        abstract protected function getSource();
 
-        protected function getDefaultRoute()
-        {
-            return null;
-        }
+        abstract protected function getOptions();
 
-        public function render()
+        /**
+         * (non-PHPdoc)
+         * @see TextElement::renderControlEditable()
+         */
+        protected function renderControlEditable()
         {
-            // TODO: @Shoaibi: Medium: This needs to display a tooltip style div with some information regarding current item. We have got model in params here.
+            $cClipWidget             = new CClipWidget();
+            $clipId                  = $this->getWidgetClipName();
+            $cClipWidget->beginClip($clipId);
+            $cClipWidget->widget('zii.widgets.jui.CJuiAutoComplete', array(
+                'name'        => $this->getWidgetName(),
+                'id'          => $this->getWidgetId(),
+                'value'       => $this->getWidgetValue(),
+                'source'      => $this->getSource(),
+                'options'     => $this->getOptions(),
+                'htmlOptions' => $this->getHtmlOptions(),
 
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                'items' => array(
-                    array(  'label'   => 'need div here with details?',
-                        'url'     => '#'))); //TODO: @Shoaibi: Medium: dont use default route
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
-                'items'                   => array($menuItems),
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            $content = $cClipWidget->getController()->clips[$clipId];
+            return $content;
+        }
+
+        protected function getWidgetId()
+        {
+            return $this->getEditableInputId();
+        }
+
+        protected function getWidgetClipName()
+        {
+            return get_class($this);
+        }
+
+        protected function getWidgetName()
+        {
+            return $this->getEditableInputName();
         }
     }
 ?>

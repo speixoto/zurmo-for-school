@@ -25,29 +25,28 @@
      ********************************************************************************/
 
     /**
-     * Helper class to convert a contact search into
+     * Helper class to convert a report search into
      * an Jui AutoComplete ready array.
      */
-    class ContactAutoCompleteUtil
+    class ReportAutoCompleteUtil
     {
         /**
          * @return array - Jui AutoComplete ready array
          *  containing id, value, and label elements.
          */
-        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        public static function getByPartialName($partialName, $pageSize, $moduleClassName, $type)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             $autoCompleteResults  = array();
-            $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName);
-            foreach ($contacts as $contact)
+            $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
+            foreach ($reports as $report)
             {
                 $autoCompleteResults[] = array(
-                    'id'    => $contact->id,
-                    'value' => strval($contact),
-                    'label' => strval($contact),
+                    'id'    => $report->id,
+                    'value' => strval($report),
+                    'label' => strval($report),
                 );
             }
             return $autoCompleteResults;

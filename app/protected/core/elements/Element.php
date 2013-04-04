@@ -428,5 +428,10 @@
             }
             return $inputIdPrefix;
         }
+
+        protected function getListViewGridId()
+        {
+            return ObjectParametersUtil::getValue($this, 'listViewGridId');
+        }
     }
 ?>

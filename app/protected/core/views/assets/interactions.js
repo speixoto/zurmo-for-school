@@ -739,11 +739,10 @@ $.extend({
 });
 
 // TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
-function createButtonSetIfNotAlreadyExist(id, classFlag) {
+function createButtonSetIfNotAlreadyExist(qualifier, classFlag) {
     classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
-    id        = (id.indexOf('#') === -1) ? '#' + id : id;
-    if ($(id).hasClass(classFlag)) {
+    if ($(qualifier).hasClass(classFlag)) {
         return false;
     }
-    $(id).buttonset();
+    $(qualifier).buttonset();
 }

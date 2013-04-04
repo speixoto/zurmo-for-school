@@ -24,33 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to convert a contact search into
-     * an Jui AutoComplete ready array.
-     */
-    class ContactAutoCompleteUtil
+    class ObjectParametersUtil
     {
-        /**
-         * @return array - Jui AutoComplete ready array
-         *  containing id, value, and label elements.
-         */
-        public static function getByPartialName($partialName, $pageSize, $stateMetadataAdapterClassName = null)
+        public static function getValue($object, $parameterName, $defaultValue = null, $throwExceptionIfNotFound = true,
+                                                                $paramsVariableName = "params", $qualifierMethod = null)
         {
-            assert('is_string($partialName)');
-            assert('is_int($pageSize)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
-            $autoCompleteResults  = array();
-            $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName);
-            foreach ($contacts as $contact)
+            $params = $object->$paramsVariableName;
+            if (array_key_exists($parameterName, $params))
             {
-                $autoCompleteResults[] = array(
-                    'id'    => $contact->id,
-                    'value' => strval($contact),
-                    'label' => strval($contact),
-                );
+                if ($qualifierMethod)
+                {
+                    return ($qualifierMethod($params[$parameterName]))? $params[$parameterName] : $defaultValue;
+                }
+                else
+                {
+                    return ($params[$parameterName])? $params[$parameterName] : $defaultValue;
+                }
             }
-            return $autoCompleteResults;
+            else if ($throwExceptionIfNotFound)
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

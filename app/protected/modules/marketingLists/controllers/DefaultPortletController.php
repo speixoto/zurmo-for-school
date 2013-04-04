@@ -43,5 +43,43 @@
                 throw new FailedToSaveModelException();
             }
         }
+
+        public function actionSubscribeContacts($marketingListId, $id, $type)
+        {
+            assert('is_int($id)');
+            assert('$type === "contact" || $type === "report"');
+            if (!in_array($type, array('contact', 'report')))
+            {
+                throw new NotSupportedException();
+            }
+            $contactIds =  ($type === 'contact') ? array($id) : SavedReport::getContactIdsByReportId($id);
+            $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
+            $message = Zurmo::t('MarketingListsModule', '{subscribedCount} subscribed.',
+                                                array('{subscribedCount}' => $subscriberInformation['subscribedCount']));
+            if (array_key_exists('skippedCount', $subscriberInformation))
+            {
+                $message .= ' ' . Zurmo::t('MarketingListsModule', '{skippedCount} skipped.',
+                                                        array('{skippedCount}' => $subscriberInformation['skippedCount']));
+            }
+            echo CJSON::encode(array('message' => $message, 'type' => 'message'));
+        }
+
+        protected function addNewSubscribers($marketingListId, $contactIds)
+        {
+            $subscriberInformation = array('subscribedCount' => 0, 'skippedCount' => 0);
+            foreach ($contactIds as $contactId)
+            {
+                if (MarketingListMember::memberAlreadyExists($marketingListId, $contactId))
+                {
+                    $subscriberInformation['skippedCount']++;
+                }
+                else
+                {
+                    MarketingListMember::addNewMember($marketingListId, $contactId, false);
+                    $subscriberInformation['subscribedCount']++;
+                }
+            }
+            return $subscriberInformation;
+        }
     }
 ?>
