@@ -46,27 +46,13 @@
          */
         public function render()
         {
-            if (Yii::app()->userInterface->isMobile())
-            {
-                return $this->renderMobileContent();
-            }
-            else
-            {
-                return $this->renderContent();
-            }
+            return $this->renderContent();
         }
 
         protected function renderContent()
         {
             $searchBoxId    = 'app-search';
             $contentPrefix  = null;
-            return $this->renderSearchView($searchBoxId, $contentPrefix);
-        }
-
-        protected function renderMobileContent()
-        {
-            $searchBoxId    = 'app-mobile-search';
-            $contentPrefix  = MobileHtml::renderFlyoutTrigger('Search');
             return $this->renderSearchView($searchBoxId, $contentPrefix);
         }
 

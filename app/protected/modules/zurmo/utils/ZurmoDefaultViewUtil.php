@@ -203,7 +203,7 @@
                 static::$showRecentlyViewed     = false;
                 $controller                     = ($controller)? $controller: Yii::app()->request->controller;
                 $shortcutsCreateMenuItems       = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-                $shortcutsCreateMenuView        = new ShortcutsCreateMenuView(
+                $shortcutsCreateMenuView        = new MobileShortcutsCreateMenuView(
                                                                         $controller->getId(),
                                                                         $controller->getModule()->getId(),
                                                                         $shortcutsCreateMenuItems
@@ -212,7 +212,7 @@
                                                     getGlobalSearchScopingModuleNamesAndLabelsDataByUser(
                                                                                             Yii::app()->user->userModel);
                 $sourceUrl                      = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
-                $globalSearchView               = new GlobalSearchView($moduleNamesAndLabels, $sourceUrl);
+                $globalSearchView               = new MobileGlobalSearchView($moduleNamesAndLabels, $sourceUrl);
                 $recentlyViewed                 = static::makeRecentlyViewedView();
                 $recentlyViewedMenu             = $recentlyViewed->renderMenu();
                 $searchItem                     = array(

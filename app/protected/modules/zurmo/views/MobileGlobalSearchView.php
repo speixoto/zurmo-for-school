@@ -24,55 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ShortcutsCreateMenuView extends View
+    /**
+     * Base view for displaying a mobile global search user interface.
+     */
+    class MobileGlobalSearchView extends GlobalSearchView
     {
-        protected $controllerId;
-
-        protected $moduleId;
-
-        protected $menuItems;
-
-        protected $displayName;
-
-        public function __construct($controllerId, $moduleId, $menuItems)
-        {
-            assert('is_string($controllerId)');
-            assert('is_string($moduleId)');
-            assert('$menuItems == null || is_array($menuItems)');
-            $this->controllerId = $controllerId;
-            $this->moduleId     = $moduleId;
-            $this->menuItems    = $menuItems;
-        }
-
-        /**
-         * Just renderContent. Do not wrap with any divs.
-         */
-        public function render()
-        {
-            return $this->renderContent();
-        }
-
         protected function renderContent()
         {
-            $contentPrefix      = null;
-            $menuId             = 'ShortcutsMenu';
-            return $this->renderMenu($menuId, $contentPrefix);
-        }
-
-        public function renderMenu($menuId, $contentPrefix = null)
-        {
-            if (empty($this->menuItems))
-            {
-                return;
-            }
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("Shortcuts");
-            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                'htmlOptions' => array('id' => $menuId),
-                'items'       => array($this->menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $contentPrefix . $cClipWidget->getController()->clips['Shortcuts'];
+            $searchBoxId    = 'app-mobile-search';
+            $contentPrefix  = MobileHtml::renderFlyoutTrigger('Search');
+            return $this->renderSearchView($searchBoxId, $contentPrefix);
         }
     }
 ?>
