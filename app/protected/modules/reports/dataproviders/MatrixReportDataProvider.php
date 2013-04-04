@@ -31,6 +31,8 @@
     {
         const HEADER_COLUMN_ALIAS_SUFFIX = 'Header';
 
+        public static $maximumGroupsCount = 400;
+
         /**
          * Resolved to include the groupBys as query only display attributes
          * @var null | array of DisplayAttributesForReportForms
@@ -71,6 +73,17 @@
         {
             assert('is_int($columnAliasName) || is_string($columnAliasName)');
             return $columnAliasName . self::HEADER_COLUMN_ALIAS_SUFFIX;
+        }
+
+        /**
+         * Override to
+         * @param Report $report
+         * @param array $config
+         */
+        public function __construct(Report $report, array $config = array())
+        {
+            parent::__construct($report, $config);
+            $this->pagination = array('pageSize' => self::$maximumGroupsCount);
         }
 
         /**
