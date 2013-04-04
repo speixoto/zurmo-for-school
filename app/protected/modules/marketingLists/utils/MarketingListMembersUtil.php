@@ -29,8 +29,6 @@
      */
     class MarketingListMembersUtil
     {
-        const CONFIG_MODULE_NAME = 'MarketingListsModule';
-
         public static function makeSearchAttributeData($marketingListId, $filterBySubscriptionType, $filterBySearchTerm)
         {
             assert('is_int($marketingListId)');

@@ -47,20 +47,36 @@
 
         public function render()
         {
-            // TODO: @Shoaibi: Medium: This needs to display a tooltip style div with some information regarding current item. We have got model in params here.
-
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                'items' => array(
-                    array(  'label'   => 'need div here with details?',
-                        'url'     => '#'))); //TODO: @Shoaibi: Medium: dont use default route
+            $items = array($this->renderMenuItem());
             $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
+            $cClipWidget->beginClip("MarketingListDetailsMenu");
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
                 'htmlOptions' => array('id' => 'ListViewDetailsActionMenu'),
-                'items'                   => array($menuItems),
+                'items'                   => $items,
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return $cClipWidget->getController()->clips['MarketingListDetailsMenu'];
         }
+
+        public function renderMenuItem()
+        {
+            $detailsOverlayView = new MarketingListDetailsOverlayView($this->getActionType(),
+                                                                        $this->controllerId,
+                                                                        $this->moduleId,
+                                                                        $this->params['model']
+                                                                        );
+            return array('label'        => $this->getLabel(),
+                         'url'          => null,
+                         'itemOptions'  => null,
+                         'items'        => array(
+                                                array(
+                                                'label'                 => '',
+                                                'dynamicLabelContent'   => $detailsOverlayView->render(),
+                                                )
+                                            )
+                            );
+        }
+
+
     }
 ?>
