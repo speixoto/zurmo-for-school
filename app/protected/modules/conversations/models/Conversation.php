@@ -24,9 +24,17 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class Conversation extends OwnedSecurableItem implements MashableActivityInterface
+    /**
+     * Base model for working with a conversation
+     */
+    class Conversation extends OwnedSecurableItem implements MashableActivityInterface, MashableInboxInterface
     {
         public static function getMashableActivityRulesType()
+        {
+            return 'Conversation';
+        }
+
+        public static function getMashableInboxRulesType()
         {
             return 'Conversation';
         }
@@ -37,6 +45,22 @@
             return self::getSubset(null, null, null, "subject = '$subject'");
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'description'        => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'latestDateTime'     => Zurmo::t('ActivitiesModule', 'Latest Date Time',  array(), null, $language),
+                    'subject'            => Zurmo::t('ConversationsModule', 'Subject',  array(), null, $language),
+                    'ownerHasReadLatest' => Zurmo::t('ConversationsModule', 'Owner Has Read Latest',  array(), null, $language),
+                    'isClosed'           => Zurmo::t('ConversationsModule', 'Is Closed',  array(), null, $language),
+                    'comments'           => Zurmo::t('CommentsModule', 'Comments',  array(), null, $language),
+                    'conversationItems'  => Zurmo::t('ConversationsModule', 'Conversation Items',  array(), null, $language),
+                    'conversationParticipants' => Zurmo::t('ConversationsModule', 'Conversation Participants',  array(), null, $language),
+                    'files'              => Zurmo::t('ZurmoModule', 'Files',  array(), null, $language),
+                )
+            );
+        }
         public function __toString()
         {
             try
@@ -98,7 +122,7 @@
             );
             $searchAttributeData['structure'] = '((1 and 2) or (3 and 4))';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Conversation');
-            $where  = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
+            $where             = RedBeanModelDataProvider::makeWhere('Conversation', $searchAttributeData, $joinTablesAdapter);
             return self::getCount($joinTablesAdapter, $where, null, true);
         }
 
@@ -130,10 +154,13 @@
                     'isClosed'
                 ),
                 'relations' => array(
-                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'                 => array(RedBeanModel::HAS_MANY,  'Comment', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'conversationItems'        => array(RedBeanModel::MANY_MANY, 'Item'),
-                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant', RedBeanModel::OWNED),
-                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED, 'relatedModel'),
+                    'conversationParticipants' => array(RedBeanModel::HAS_MANY,  'ConversationParticipant',
+                                                        RedBeanModel::OWNED),
+                    'files'                    => array(RedBeanModel::HAS_MANY,  'FileModel', RedBeanModel::OWNED,
+                                                        RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                 ),
                 'rules' => array(
                     array('description',        'type',    'type' => 'string'),

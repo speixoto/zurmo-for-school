@@ -106,7 +106,8 @@
                                               'compareAttribute' => 'endDateTime'),
                 ),
                 'relations' => array(
-                    'category'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'category'             => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'category'),
                 ),
                 'elements' => array(
                     'endDateTime'   => 'DateTime',
@@ -123,12 +124,16 @@
             return $metadata;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'endDateTime'   => 'End Time',
-                    'startDateTime' => 'Start Time',
+                    'category'      => Zurmo::t('MeetingsModule', 'Category',    array(), null, $language),
+                    'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
+                    'location'      => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                    'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                    'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
                 )
             );
         }

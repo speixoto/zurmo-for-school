@@ -28,19 +28,8 @@
      * Filter used by controllers to ascertain whether
      * any visible models exist for the logged in user. If not, it will display a helpful message.
      */
-    class ZeroEmailMessagesRequiringArchivingView extends View
+    class ZeroEmailMessagesRequiringArchivingView extends SplashView
     {
-        public $cssClasses = array('splash-view');
-
-        protected function renderContent()
-        {            
-            $content  = '<div class="' . $this->getIconName() . '">';
-            $content .= '<div class="large-icon"></div>';
-            $content .= $this->getMessageContent();            
-            $content .= '</div>';
-            return $content;
-        }
-
         protected function getIconName()
         {
             return 'EmailMessage';
@@ -48,7 +37,8 @@
 
         protected function getMessageContent()
         {
-            return Zurmo::t('EmailMessagesModule', '<p>There are no unmatched emails</p>');
+            return Zurmo::t('EmailMessagesModule', '<h2>Nothing to see here</h2><div class="large-icon"></div>' .
+            '<p>There are no unmatched emails</p>');
         }
     }
 ?>

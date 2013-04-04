@@ -143,11 +143,12 @@
                          array('type'       => 'GET',
                                'success'    => 'function(data){$("#' . $updateDivId . '").replaceWith(data)}'
                              ),
-                         array('class'      => 'mission-change-status-link attachLoading z-button ' .
+                         array('id'         => $newStatus . '-' . $updateDivId,
+                               'class'      => 'mission-change-status-link attachLoading z-button ' .
                                                self::resolveLinkSpecificCssClassNameByNewStatus($newStatus),
-                                'namespace' => 'update',
-                                'onclick'   => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
-                                                        attachLoadingSpinner($(this).attr("id"), true);'));
+                               'namespace'  => 'update',
+                               'onclick'    => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         protected static function resolveLinkSpecificCssClassNameByNewStatus($status)

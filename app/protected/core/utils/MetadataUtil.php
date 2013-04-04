@@ -106,16 +106,58 @@
             }
         }
 
-        public static function resolveEvaluateSubString(& $subString)
+        /**
+         * @param $subString String|Array to be evaluated
+         * @param null $resolveVariableName string|array Name the variable to be resolved in local scope
+         * @param null $params string|array
+         * @param null $defaultValue string
+         */
+        public static function resolveEvaluateSubString(& $subString, $resolveVariableName = null, $params = null, $defaultValue = null)
         {
             if (is_array($subString))
             {
-                array_walk($subString, self::resolveEvaluateSubString);
+                foreach($subString as $subStringNodeKey => $subStringNodeValue)
+                {
+                    self::resolveEvaluateSubString($subString[$subStringNodeKey], $resolveVariableName, $params, $defaultValue);
+                }
                 return;
             }
             if (strpos($subString, 'eval:') !== 0)
             {
                 return;
+            }
+            if ($resolveVariableName !== null)
+            {
+                if (is_array($resolveVariableName))
+                {
+                    foreach ($resolveVariableName as $index => $variableName)
+                    {
+                        if (is_array($params) && array_key_exists($index, $params))
+                        {
+                            $$variableName = $params[$index];
+                        }
+                        else if (!is_array($params) && $params !== null)
+                        {
+                            $$variableName = $params;
+
+                        }
+                        else
+                        {
+                            $$variableName = $defaultValue;
+                        }
+                    }
+                }
+                else
+                {
+                    if ($params !== null)
+                    {
+                        $$resolveVariableName = $params;
+                    }
+                    else
+                    {
+                        $$resolveVariableName = $defaultValue;
+                    }
+                }
             }
             $stringToEvaluate = substr($subString, 5);
             eval("\$subString = $stringToEvaluate;");

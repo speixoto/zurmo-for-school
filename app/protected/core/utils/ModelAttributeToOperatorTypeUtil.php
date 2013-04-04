@@ -29,6 +29,66 @@
      */
     class ModelAttributeToOperatorTypeUtil
     {
+        const AVAILABLE_OPERATORS_TYPE_STRING   = 'String';
+
+        const AVAILABLE_OPERATORS_TYPE_NUMBER   = 'Number';
+
+        const AVAILABLE_OPERATORS_TYPE_DROPDOWN = 'DropDown';
+
+        const AVAILABLE_OPERATORS_TYPE_HAS_ONE  = 'HasOne';
+
+        public static function resolveOperatorsToIncludeByType(& $data, $type)
+        {
+            $data[OperatorRules::TYPE_EQUALS] =
+                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
+            $data[OperatorRules::TYPE_DOES_NOT_EQUAL] =
+                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_EQUAL);
+            static::resolveIsNullAndIsNotNullOperatorsToInclude($data, $type);
+            if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
+            {
+                $data[OperatorRules::TYPE_STARTS_WITH] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_STARTS_WITH);
+                $data[OperatorRules::TYPE_ENDS_WITH] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ENDS_WITH);
+                $data[OperatorRules::TYPE_CONTAINS] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CONTAINS);
+            }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
+            {
+                $data[OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO);
+                $data[OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO);
+                $data[OperatorRules::TYPE_GREATER_THAN] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN);
+                $data[OperatorRules::TYPE_LESS_THAN] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_LESS_THAN);
+                $data[OperatorRules::TYPE_BETWEEN] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BETWEEN);
+            }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
+            {
+                $data[OperatorRules::TYPE_ONE_OF] =
+                    OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ONE_OF);
+            }
+            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            {
+                return;
+            }
+            else
+            {
+                throw new NotSupportedException();
+            }
+        }
+
+        protected static function resolveIsNullAndIsNotNullOperatorsToInclude(& $data, $type)
+        {
+            $data[OperatorRules::TYPE_IS_NULL] =
+                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);
+            $data[OperatorRules::TYPE_IS_NOT_NULL] =
+                OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NOT_NULL);
+        }
+
         /**
          * Returns the operator type
          * that should be used with the named attribute
@@ -36,6 +96,9 @@
          * 'equals'.
          * @param $model - instance of a RedBeanModel or RedBeanModels if the model is a HAS_MANY relation on the
          *                 original model.
+         * @param string $attributeName
+         * @return string
+         * @throws NotSupportedException
          */
         public static function getOperatorType($model, $attributeName)
         {
@@ -141,6 +204,116 @@
                 default :
                     null;
             }
+        }
+
+        /**
+         * Returns the available operators type.  A string for example has 'String' as the available operators type.
+         * This can than be adapted into a dropDown to display possible operators that can be used with a string.
+         * @param  $model - instance of a RedBeanModel or RedBeanModels if the model is a HAS_MANY relation on the
+         *                  original model.
+         * @param  $attributeName
+         * @return string representing the type. if no type is available then null is returned.
+         * @throws NotSupportedException
+         */
+        public static function getAvailableOperatorsType($model, $attributeName)
+        {
+            if ($attributeName == 'id')
+            {
+                return null;
+            }
+            if ($model->$attributeName instanceof MultipleValuesCustomField ||
+                $model->$attributeName instanceof CustomField)
+            {
+                return self::AVAILABLE_OPERATORS_TYPE_DROPDOWN;
+            }
+            $metadata = $model->getMetadata();
+            foreach ($metadata as $className => $perClassMetadata)
+            {
+                if (isset($perClassMetadata['elements'][$attributeName]))
+                {
+                    $operatorType = self::getAvailableOperatorsTypeFromModelMetadataElement(
+                                                $perClassMetadata['elements'][$attributeName]);
+                    if ($operatorType == null)
+                    {
+                        break;
+                    }
+                    else
+                    {
+                        return $operatorType;
+                    }
+                }
+            }
+            if ($model->isRelation($attributeName))
+            {
+                throw new NotSupportedException('Unsupported available operators type for Model Class: ' . get_class($model) .
+                                                ' with attribute: ' . $attributeName);
+            }
+            else
+            {
+                $validators = $model->getValidators($attributeName);
+                foreach ($validators as $validator)
+                {
+                    switch(get_class($validator))
+                    {
+                        case 'CBooleanValidator':
+                            return static::getAvailableOperatorsTypeForBoolean();
+
+                        case 'CEmailValidator':
+                            return self::AVAILABLE_OPERATORS_TYPE_STRING;
+
+                        case 'RedBeanModelTypeValidator':
+                        case 'TypeValidator':
+                            switch ($validator->type)
+                            {
+                                case 'date':
+                                    return null; //managed through valueType not operator
+
+                                case 'datetime':
+                                    return null; //managed through valueType not operator
+
+                                case 'integer':
+                                    return self::AVAILABLE_OPERATORS_TYPE_NUMBER;
+
+                                case 'float':
+                                    return self::AVAILABLE_OPERATORS_TYPE_NUMBER;
+
+                                case 'time':
+                                    return null; //todo:
+
+                                case 'array':
+                                    throw new NotSupportedException();
+                                case 'string':
+                                    return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                            }
+                            break;
+
+                        case 'CUrlValidator':
+                            return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                    }
+                }
+            }
+            return null;
+        }
+
+        protected static function getAvailableOperatorsTypeFromModelMetadataElement($element)
+        {
+            assert('is_string($element)');
+            switch ($element)
+            {
+                case 'CurrencyValue':
+                    return self::AVAILABLE_OPERATORS_TYPE_NUMBER;
+                case 'Phone':
+                    return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                case 'TextArea':
+                    return self::AVAILABLE_OPERATORS_TYPE_STRING;
+                default :
+                    null;
+            }
+        }
+
+        protected static function getAvailableOperatorsTypeForBoolean()
+        {
+            return null;
         }
     }
 ?>

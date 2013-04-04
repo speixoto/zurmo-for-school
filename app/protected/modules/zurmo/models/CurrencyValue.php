@@ -49,7 +49,7 @@
         {
             if (trim($this->value) == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return strval($this->value);
         }
@@ -103,7 +103,8 @@
         }
 
         /**
-         * Get the rateToBase from the currency model.
+         * Get the rateToBase from the currency model. If the scenario is importModel, then having a rateToBase
+         * manually set is ok.
          * @return true to signal success and that validate can proceed.
          */
         public function beforeValidate()
@@ -113,14 +114,26 @@
                 return false;
             }
             if ($this->currency->rateToBase !== null &&
-                    ($this->rateToBase === null                     ||
-                     array_key_exists('value', $this->originalAttributeValues) ||
-                     array_key_exists('currency', $this->originalAttributeValues)))
+                ($this->rateToBase === null                     ||
+                 array_key_exists('value', $this->originalAttributeValues) ||
+                 array_key_exists('currency', $this->originalAttributeValues)) &&
+                !($this->getScenario() == 'importModel' && $this->rateToBase != null))
             {
                 $this->rateToBase = $this->currency->rateToBase;
                 assert('$this->rateToBase !== null');
             }
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'currency'      => Zurmo::t('ZurmoModule', 'Currency',      array(), null, $language),
+                    'rateToBase'    => Zurmo::t('ZurmoModule', 'Rate To Base',  array(), null, $language),
+                    'value'         => Zurmo::t('ZurmoModule', 'Value',         array(), null, $language),
+                )
+            );
         }
     }
 ?>

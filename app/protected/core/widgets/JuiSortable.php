@@ -44,6 +44,12 @@
         public $baseInputNameForSortableCollection;
 
         /**
+         * If the items list is empty, should an empty <li></li> be shown.
+         * @var boolean
+         */
+        public $showEmptyList = true;
+
+        /**
          * Run this widget.
          * This method registers necessary javascript and renders the needed HTML code.
          */
@@ -74,7 +80,7 @@
                 __CLASS__ . '#' . $id,
                 "jQuery('#{$id}').sortable({$options});");
             echo ZurmoHtml::openTag($this->tagName, $this->htmlOptions) . "\n";
-            if (empty($this->items))
+            if (empty($this->items) && $this->showEmptyList)
             {
                 echo '<li></li>' . "\n";
             }

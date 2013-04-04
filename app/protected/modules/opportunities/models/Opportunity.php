@@ -61,15 +61,22 @@
             return 'OpportunitiesModule';
         }
 
-        public function untranslatedAttributeLabels()
+        public static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                    'account'  => 'AccountsModuleSingularLabel',
-                    'contacts' => 'ContactsModulePluralLabel',
-                    'products' => 'ProductsModulePluralLabel',
-                )
-            );
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'account'     => Zurmo::t('AccountsModule',      'AccountsModuleSingularLabel', $params, null, $language),
+                'amount'      => Zurmo::t('OpportunitiesModule', 'Amount',  array(), null, $language),
+                'closeDate'   => Zurmo::t('OpportunitiesModule', 'Close Date',  array(), null, $language),
+                'contacts'    => Zurmo::t('ContactsModule',      'ContactsModulePluralLabel',   $params, null, $language),
+                'description' => Zurmo::t('ZurmoModule',         'Description',  array(), null, $language),
+                'meetings'    => Zurmo::t('MeetingsModule',      'Meetings',  array(), null, $language),
+                'name'        => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
+                'notes'       => Zurmo::t('NotesModule',         'Notes',  array(), null, $language),
+                'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
+                'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
+                'stage'       => Zurmo::t('OpportunitiesModule', 'Stage',  array(), null, $language),
+                'tasks'       => Zurmo::t('TasksModule',         'Tasks',  array(), null, $language)));
         }
 
         /**
@@ -107,11 +114,19 @@
                 ),
                 'relations' => array(
                     'account'       => array(RedBeanModel::HAS_ONE,   'Account'),
+                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'amount'),
                     'products'      => array(RedBeanModel::MANY_MANY, 'Product'),
-                    'amount'        => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
                     'contacts'      => array(RedBeanModel::MANY_MANY, 'Contact'),
-                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
+                    'stage'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
+                    'source'        => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                             RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('amount',        'required'),

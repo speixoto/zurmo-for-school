@@ -26,21 +26,6 @@
 
     class MissionsListView extends SecuredListView
     {
-       /**
-        * Override to set rows as not being selectable.
-        */
-       public function __construct(
-            $controllerId,
-            $moduleId,
-            $modelClassName,
-            $dataProvider,
-            $selectedIds,
-            $gridIdSuffix = null
-        )
-        {
-            parent::__construct($controllerId, $moduleId, $modelClassName, $dataProvider, $selectedIds, $gridIdSuffix);
-            $this->rowsAreSelectable = false;
-        }
 
         public static function getDefaultMetadata()
         {

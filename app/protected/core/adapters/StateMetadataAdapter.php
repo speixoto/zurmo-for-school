@@ -32,6 +32,11 @@
     {
         protected $metadata;
 
+        public static function getStateAttributeName()
+        {
+            throw new NotImplementedException();
+        }
+
         public function __construct(array $metadata)
         {
             assert('isset($metadata["clauses"])');

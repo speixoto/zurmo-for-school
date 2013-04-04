@@ -377,6 +377,7 @@
             $compareWhere = "({$quote}i{$quote}.{$quote}hasonerelation_customfield_id{$quote} = 3)";
             $this->assertEquals($compareWhere, $where);
             //Now test that the joinTablesAdapter has correct information.
+
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
 
@@ -820,6 +821,27 @@
             $compareWhere .= "({$quote}i{$quote}.{$quote}imember{$quote} = 'somevalue22') and ";
             $compareWhere .= "({$quote}i{$quote}.{$quote}imember{$quote} = 'somevalue12')";
             $this->assertEquals($compareWhere, $where);
+        }
+
+        public function testGetDataReturningAllResults()
+        {
+            $allGG          = GG::getAll();
+            foreach ($allGG as $gg)
+            {
+                $gg->delete();
+            }
+            $numberOfRecords = rand (12, 100);
+            for ($i = 1; $i <= $numberOfRecords; $i++)
+            {
+                $gg = new GG();
+                $gg->g  = 'a';
+                $this->assertTrue($gg->save());
+            }
+            $dataProvider   = new RedBeanModelDataProvider('GG', 'g', false);
+            $totalItems     = (int)$dataProvider->calculateTotalItemCount();
+            $dataProvider->getPagination()->setPageSize($totalItems);
+            $data           = $dataProvider->getData();
+            $this->assertEquals($numberOfRecords, count($data));
         }
     }
 ?>

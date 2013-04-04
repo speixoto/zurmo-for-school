@@ -39,9 +39,9 @@
             ));
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
+            return array_merge(parent::translatedAttributeLabels($language), array(
                 'a' => 'A',
                 'b' => 'A',
                 'c' => 'A',

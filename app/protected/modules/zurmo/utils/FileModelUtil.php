@@ -83,7 +83,7 @@
         public static function resolveModelsHasManyFilesFromPost(& $model, $relationName, $postDataVariableName)
         {
             assert('$model instanceof RedBeanModel');
-            assert('$model->isRelation($relationName)');
+            assert('$model::isRelation($relationName)');
             $relationModelClassName     = $model->getRelationModelClassName($relationName);
             assert('$relationModelClassName == "FileModel" || is_subclass_of($relationModelClassName, "FileModel")');
             if (isset($_POST[$postDataVariableName]))

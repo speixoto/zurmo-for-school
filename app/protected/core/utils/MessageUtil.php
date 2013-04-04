@@ -207,7 +207,7 @@
                     $messagesInMessageFile = require($messageFileName);
                     if (!is_array($messagesInMessageFile))
                     {
-                        $problems[] = "$shortFileName is not a valid message file.\n";
+                        $problems[] = "$messageFileName is not a valid message file.\n";
                         continue;
                     }
                     $messagesInMessageFile = array_keys($messagesInMessageFile);
@@ -301,7 +301,7 @@
         return $problems;
     }
 
-    function findFileNameToCategoryToMessage($path)
+    function findFileNameToCategoryToMessage($path, $forcedCategory = 'Default')
     {
         assert('is_string($path)');
         assert('is_dir   ($path)');
@@ -333,17 +333,15 @@
                             $modelReflectionClass->isSubclassOf('OwnedModel') &&
                             !$modelReflectionClass->isAbstract())
                         {
-                           $model              = new $modelClassName(false);
-                           $modelAttributes    = $model->attributeNames();
-                           $untranslatedLabels = $model->getUntranslatedAttributeLabels();
+                           $modelAttributes    = $modelClassName::getAttributeNames();
+                           $translatedLabels = $modelClassName::getTranslatedAttributeLabels(Yii::app()->language);
                            foreach ($modelAttributes as $attributeName)
                            {
-                                $attributeLabel = $model->getAttributeLabel($attributeName);
-                                if (isset($untranslatedLabels[$attributeName]))
+                                $attributeLabel = $modelClassName::getAnAttributeLabel($attributeName);
+                                if (isset($translatedLabels[$attributeName]))
                                 {
-                                    $translatedLabel = Zurmo::t('Core', $untranslatedLabels[$attributeName],
-                                                                         LabelUtil::getTranslationParamsForAllModules());
-                                    if ($untranslatedLabels[$attributeName] == $attributeLabel ||
+                                    $translatedLabel = $translatedLabels[$attributeName];
+                                    if ($translatedLabels[$attributeName] == $attributeLabel ||
                                        $translatedLabel != $attributeLabel)
                                     {
                                         $fileNamesToCategoriesToMessages[$entry]['Default'][] = $attributeLabel;
@@ -351,7 +349,7 @@
                                     else
                                     {
                                         $fileNamesToCategoriesToMessages[$entry]['Default'][] =
-                                        $untranslatedLabels[$attributeName];
+                                        $translatedLabels[$attributeName];
                                     }
                                 }
                                 else
@@ -360,11 +358,11 @@
                                 }
                                //Find attributes that are a CustomField relation. This means there is drop down values
                                //that will need to be translated.
-                               if ($model->isRelation($attributeName) &&
-                                   ($model->getRelationModelClassName($attributeName) == 'OwnedCustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'CustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'MultipleValuesCustomField' ||
-                                   $model->getRelationModelClassName($attributeName) == 'OwnedMultipleValuesCustomField'))
+                               if ($modelClassName::isRelation($attributeName) &&
+                                   ($modelClassName::getRelationModelClassName($attributeName) == 'OwnedCustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'CustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'MultipleValuesCustomField' ||
+                                    $modelClassName::getRelationModelClassName($attributeName) == 'OwnedMultipleValuesCustomField'))
                                 {
                                     $customFieldData = CustomFieldDataModelUtil::
                                                        getDataByModelClassNameAndAttributeName($modelClassName, $attributeName);
@@ -456,6 +454,12 @@
                         {
                             foreach ($matches[1] as $index => $category)
                             {
+                                if ($forcedCategory
+                                    AND is_string($forcedCategory)
+                                    AND strlen($forcedCategory))
+                                {
+                                    $category = $forcedCategory;
+                                }
                                 if (!isset($fileNamesToCategoriesToMessages[$entry][$category]))
                                 {
                                     $fileNamesToCategoriesToMessages[$entry][$category] = array();
@@ -481,8 +485,8 @@
     function getSecurableModuleRightsPoliciesAndAuditEventLabels($moduleClassName)
     {
         assert('is_string($moduleClassName)');
-        $rightsNames     = $moduleClassName::getUntranslatedRightsLabels();
-        $policiesNames   = $moduleClassName::getUntranslatedPolicyLabels();
+        $rightsNames     = $moduleClassName::getTranslatedRightsLabels();
+        $policiesNames   = $moduleClassName::getTranslatedPolicyLabels();
         $auditEventNames = $moduleClassName::getAuditEventNames();
         $labelsData      = array_merge($rightsNames, $policiesNames);
         return             array_merge($labelsData, $auditEventNames);
@@ -492,6 +496,26 @@
     {
         $labels   = array();
         $metadata = $moduleClassName::getMetadata();
+        if (isset($metadata['global']['adminTabMenuItems']))
+        {
+            foreach ($metadata['global']['adminTabMenuItems'] as $menuItem)
+            {
+                if (isset($menuItem['items']))
+                {
+                    foreach ($menuItem['items'] as $subMenuItem)
+                    {
+                        if (!in_array($subMenuItem['label'], $labels))
+                        {
+                            $labels[] = $subMenuItem['label'];
+                        }
+                    }
+                }
+                if (!in_array($menuItem['label'], $labels))
+                {
+                    $labels[] = $menuItem['label'];
+                }
+            }
+        }
         if (isset($metadata['global']['tabMenuItems']))
         {
             foreach ($metadata['global']['tabMenuItems'] as $menuItem)

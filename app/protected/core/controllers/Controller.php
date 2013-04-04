@@ -81,8 +81,8 @@
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
-            $sortAttribute             = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);
-            $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
+            $sortAttribute             = $dataCollection->resolveSortAttributeFromSourceData($listModelClassName);
+            $sortDescending            = $dataCollection->resolveSortDescendingFromSourceData($listModelClassName);
             $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
                 Yii::app()->user->userModel->id,
@@ -90,6 +90,7 @@
             );
             $metadata                  = static::resolveDynamicSearchMetadata($searchModel, $metadataAdapter->getAdaptedMetadata(),
                                                                               $dataCollection);
+            $this->resolveMetadataBeforeMakingDataProvider($metadata);
             return RedBeanModelDataProviderUtil::makeDataProvider(
                 $metadata,
                 $listModelClassName,
@@ -99,6 +100,11 @@
                 $pageSize,
                 $stateMetadataAdapterClassName
             );
+        }
+
+        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
+        {
+
         }
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
@@ -321,11 +327,7 @@
             {
                 $model->setAttributes($_POST[$postVariableName]);
                 $model->validate();
-                $errorData = array();
-                foreach ($model->getErrors() as $attribute => $errors)
-                {
-                        $errorData[ZurmoHtml::activeId($model, $attribute)] = $errors;
-                }
+                $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($model);
                 echo CJSON::encode($errorData);
                 Yii::app()->end(0, false);
             }

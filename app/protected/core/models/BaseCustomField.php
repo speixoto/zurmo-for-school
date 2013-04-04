@@ -46,7 +46,8 @@
                 'members' => array(
                 ),
                 'relations' => array(
-                    'data' => array(RedBeanModel::HAS_ONE, 'CustomFieldData'),
+                    'data' => array(RedBeanModel::HAS_ONE, 'CustomFieldData', RedBeanModel::NOT_OWNED,
+                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'data'),
                 ),
                 'rules' => array(
                 ),

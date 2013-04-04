@@ -51,5 +51,21 @@
             $saved = $user->save();
             assert('$saved');
             return $user;
-        }        
+        }
+
+        public static function createBasicUserWithEmailAddress($name)
+        {
+            $user = new User();
+            $user->username     = strtolower($name);
+            $user->title->value = 'Mr.';
+            $user->firstName    = $name;
+            $user->lastName     = $name . 'son';
+            $user->setPassword(strtolower($name));
+            $user->primaryEmail = new Email();
+            $user->primaryEmail->emailAddress = $user->firstName . '@zurmo.com';
+            $saved = $user->save();
+            assert('$saved');
+            return $user;
+        }
     }
+?>

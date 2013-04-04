@@ -29,7 +29,7 @@
      */
     class ContactsStateMetadataAdapter extends StateMetadataAdapter
     {
-        protected function getStateIds()
+        public function getStateIds()
         {
             $states = ContactState::getAll('order');
             $startingStateOrder = ContactsUtil::getStartingStateOrder($states);
@@ -52,6 +52,11 @@
         public static function getStateModelClassName()
         {
             return 'ContactState';
+        }
+
+        public static function getStateAttributeName()
+        {
+            return 'state';
         }
     }
 ?>

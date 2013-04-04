@@ -28,9 +28,16 @@
     {
         const RIGHT_ACCESS_DESIGNER = 'Access Designer Tool';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                              = array();
+            $labels[self::RIGHT_ACCESS_DESIGNER] = Zurmo::t('DesignerModule', 'Access Designer Tool');
+            return $labels;
+        }
+
         public function getDependencies()
         {
-           return array('zurmo');
+            return array('zurmo');
         }
 
         public static function getAdminTabMenuItems($user = null)
@@ -65,15 +72,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Designer',
-                        'descriptionLabel' => 'Manage module fields, layouts, and labels.',
+                        'titleLabel'       => "eval:Zurmo::t('DesignerModule', 'Designer')",
+                        'descriptionLabel' => "eval:Zurmo::t('DesignerModule', 'Manage module fields, layouts, and labels.')",
                         'route'            => '/designer/default',
                         'right'            => self::RIGHT_ACCESS_DESIGNER,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Designer',
+                        'label' => "eval:Zurmo::t('DesignerModule', 'Designer')",
                         'url' => array('/designer/default'),
                         'right' => self::RIGHT_ACCESS_DESIGNER,
                         'order' => 1,

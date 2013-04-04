@@ -57,12 +57,21 @@
             return join(' ' , $fullName);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'title'    => 'Salutation',
+                    'department'     => Zurmo::t('ZurmoModule', 'Department', array(), null, $language),
+                    'firstName'      => Zurmo::t('ZurmoModule', 'First Name', array(), null, $language),
+                    'fullName'       => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'jobTitle'       => Zurmo::t('ZurmoModule', 'Job Title', array(), null, $language),
+                    'lastname'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
+                    'mobilePhone'    => Zurmo::t('ZurmoModule', 'Mobile Phone', array(), null, $language),
+                    'officePhone'    => Zurmo::t('ZurmoModule', 'Office Phone', array(), null, $language),
+                    'officeFax'      => Zurmo::t('ZurmoModule', 'Office Fax', array(), null, $language),
+                    'primaryAddress' => Zurmo::t('ZurmoModule', 'Primary Address', array(), null, $language),
+                    'primaryEmail'   => Zurmo::t('ZurmoModule', 'Primary Email', array(), null, $language),
+                    'title'          => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
                 )
             );
         }
@@ -86,9 +95,12 @@
                     'officeFax',
                 ),
                 'relations' => array(
-                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED),
-                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED),
-                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryAddress' => array(RedBeanModel::HAS_ONE, 'Address',          RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryAddress'),
+                    'primaryEmail'   => array(RedBeanModel::HAS_ONE, 'Email',            RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'title'          => array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'title'),
                 ),
                 'rules' => array(
                     array('department',     'type',   'type' => 'string'),
@@ -101,11 +113,11 @@
                     array('lastName',       'type',   'type' => 'string'),
                     array('lastName',       'length', 'min'  => 2, 'max' => 32),
                     array('mobilePhone',    'type',   'type' => 'string'),
-                    array('mobilePhone',    'length', 'min'  => 1, 'max' => 20),
+                    array('mobilePhone',    'length', 'min'  => 1, 'max' => 24),
                     array('officePhone',    'type',   'type' => 'string'),
-                    array('officePhone',    'length', 'min'  => 1, 'max' => 20),
+                    array('officePhone',    'length', 'min'  => 1, 'max' => 24),
                     array('officeFax',      'type',   'type' => 'string'),
-                    array('officeFax',      'length', 'min'  => 1, 'max' => 20),
+                    array('officeFax',      'length', 'min'  => 1, 'max' => 24),
                 ),
                 'elements' => array(
                     'mobilePhone'    => 'Phone',
@@ -124,6 +136,18 @@
         public static function isTypeDeletable()
         {
             return false;
+        }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array('firstName', $attribute);
+            }
+            return parent::getSortAttributesByAttribute($attribute);
         }
     }
 ?>

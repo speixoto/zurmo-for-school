@@ -47,7 +47,7 @@
                                         'type' => 'NoteInlineEditForPortlet'
                                     ),
                                     array(
-                                        'type' => 'AccountLatestActivtiesForPortlet'
+                                        'type' => 'AccountLatestActivitiesForPortlet'
                                     )
                                 )
                             )

@@ -73,9 +73,7 @@
         }
 
         /**
-        * Set the notification as being critical or not. This will override the default
-        * setting for this particular NotificationRules
-        * @param boolean $critical
+        * @param boolean $allowDuplicates
         */
         public function setAllowDuplicates($allowDuplicates)
         {

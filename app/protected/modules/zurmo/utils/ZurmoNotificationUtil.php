@@ -34,7 +34,8 @@
             if (UserConfigurationFormAdapter::resolveAndGetValue(Yii::app()->user->userModel, 'enableDesktopNotifications'))
             {
                 $makeNotification = "
-                    if (window.webkitNotifications.checkPermission() == 0) {
+                    if (window.webkitNotifications.checkPermission() == 0)
+                    {
                         nf = window.webkitNotifications.createNotification(image, title, body);
                         if (nf.hasOwnProperty('onshow'))
                         {
@@ -49,20 +50,28 @@
             {
                 $makeNotification = "";
             }
+            // Begin Not Coding Standard
             $script = "
-            var desktopNotifications = {
-                notify:function(image,title,body) {
+            var desktopNotifications =
+            {
+                notify:function(image, title, body)
+                {
                     " . $makeNotification . "
                     return false;
                 },
-                isSupported:function() {
-                    if (typeof window.webkitNotifications != 'undefined') {
+                isSupported:function()
+                {
+                    if (typeof window.webkitNotifications != 'undefined')
+                    {
                         return true
-                    } else {
+                    }
+                    else
+                    {
                         return false
                     }
                 },
-                requestAutorization:function() {
+                requestAutorization:function()
+                {
                     if (typeof window.webkitNotifications != 'undefined')
                     {
                         if (window.webkitNotifications.checkPermission() == 1)
@@ -85,31 +94,39 @@
                 }
             };
             ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_HEAD);
         }
+
         public static function renderAutoUpdaterScript()
         {
+            // Begin Not Coding Standard
             $script = "
                     var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
                     var unreadConversations = conversationsPlacer.text();
                     var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
                     function startAutoUpdater()
                     {
-                        if(unreadConversations >= 0 && unreadConversations != '') {
-                            $.ajax({
+                        if (unreadConversations >= 0 && unreadConversations != '')
+                        {
+                            $.ajax(
+                            {
                                 type: 'GET',
                                 url: url + '?unreadConversations=' + unreadConversations,
                                 async: true,
                                 cache: false,
                                 timeout: 15000,
-                                success: function(data){
+                                success: function(data)
+                                {
                                     data = JSON.parse(data);
                                     if (data != null)
                                     {
-                                        if (unreadConversations != data.unreadConversations) {
+                                        if (unreadConversations != data.unreadConversations)
+                                        {
                                             unreadConversations = data.unreadConversations;
                                             conversationsPlacer.html(unreadConversations);
-                                            if (desktopNotifications.isSupported()) {
+                                            if (desktopNotifications.isSupported())
+                                            {
                                                 desktopNotifications.notify(data.imgUrl,
                                                                             data.title,
                                                                             data.message);
@@ -118,7 +135,8 @@
                                     }
                                     setTimeout(startAutoUpdater, 10000);
                                 },
-                                error: function(XMLHttpRequest, textStatus, errorThrown){
+                                error: function(XMLHttpRequest, textStatus, errorThrown)
+                                {
                                     setTimeout(startAutoUpdater, 30000);
                                 }
                             });
@@ -126,6 +144,7 @@
                     }
                     setTimeout(startAutoUpdater, 10000);
                 ";
+            // End Not Coding Standard
             Yii::app()->clientScript->registerScript('AutoUpdater', $script, CClientScript::POS_READY);
         }
     }

@@ -34,15 +34,15 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'textContent',
-                    'htmlContent'
+                    'htmlContent',
+                    'textContent'
                 ),
                 'relations' => array(
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules' => array(
-                     array('htmlContent', 'type', 'type' => 'string'),
-                     array('textContent', 'type', 'type' => 'string')
+                     array('textContent', 'type', 'type' => 'string'),
+                     array('htmlContent', 'type', 'type' => 'string')
                 ),
                 'elements' => array(
                     'htmlContent'     => 'TextArea',
@@ -55,6 +55,16 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'htmlContent' => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
+                    'textContent' => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

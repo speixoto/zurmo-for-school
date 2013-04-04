@@ -32,14 +32,15 @@
     {
         public static function getApplicableRulesByModelClassNameAndAttributeName($modelClassName, $attributeName,
                                                                                   $ruleAttributeName,
-                                                                                  $requiredRuleIsApplicable = false)
+                                                                                  $requiredRuleIsApplicable = false,
+                                                                                  $treatDateTimeAsDate = false,
+                                                                                  $readOnlyRuleIsApplicable = true)
         {
             assert('is_string($modelClassName)');
             assert('is_string($attributeName)');
             assert('is_string($ruleAttributeName)');
             assert('is_bool($requiredRuleIsApplicable)');
-            $model    = new $modelClassName(false);
-            assert('$model->isAttribute($attributeName)');
+            assert('$modelClassName::isAnAttribute($attributeName)');
             $metadata = $modelClassName::getMetadata();
             assert('isset($metadata[$modelClassName])');
             $applicableRules = array();
@@ -47,8 +48,7 @@
             {
                 return $applicableRules;
             }
-
-            $modelAttributeClassName = $model->getAttributeModelClassName($attributeName);
+            $modelAttributeClassName = $modelClassName::getAttributeModelClassName($attributeName);
             if (isset($metadata[$modelAttributeClassName]['rules']))
             {
                 $i = 0;
@@ -62,6 +62,10 @@
                             case 'type':
                                 if ($rule['type'] == 'date' || $rule['type'] == 'datetime')
                                 {
+                                    if($treatDateTimeAsDate)
+                                    {
+                                        $rule['type'] = 'date';
+                                    }
                                     $rule[1] = 'TypeValidator';
                                 }
                                 $rule[0] = $ruleAttributeName;
@@ -85,9 +89,20 @@
                                    $applicableRules[] = $rule;
                                }
                                continue;
+                            case 'readOnly':
+                               if ($readOnlyRuleIsApplicable)
+                               {
+                                   $rule[0] = $ruleAttributeName;
+                                   $applicableRules[] = $rule;
+                               }
+                               continue;
                             case 'dateTimeDefault':
                                  //Ignore dateTimeDefault validator for this as it is not applicable to import
                                  //It would map to RedBeanModelDateTimeDefaultValueValidator and is unneeded
+                                continue;
+                            case 'RedBeanModelCompareDateTimeValidator':
+                                 //Ignore dateTimeDefault validator for this as it is not applicable to import
+                                 //We can't control if the user is mapping both the dates that are part of this
                                 continue;
                             default:
                                $rule[0] = $ruleAttributeName;

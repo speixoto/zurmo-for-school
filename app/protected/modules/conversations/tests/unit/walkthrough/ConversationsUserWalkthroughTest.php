@@ -237,15 +237,7 @@
                                      'relatedModelRelationName'   => 'comments',
                                      'redirectUrl'                => 'someRedirect'));
             $this->setPostArray(array('Comment'          => array('description' => 'a ValidComment Name 2')));
-            try
-            {
-                $content = $this->runControllerWithRedirectExceptionAndGetContent('comments/default/inlineCreateSave');
-                $this->fail();
-            }
-            catch (AccessDeniedSecurityException $e)
-            {
-                //success.
-            }
+            $content = $this->runControllerWithAccessDeniedSecurityExceptionAndGetContent('comments/default/inlineCreateSave');
 
             //Add mary as a participant.
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -364,14 +356,14 @@
             $portlets     = Portlet::getAll();
             foreach ($portlets as $portlet)
             {
-                if ($portlet->viewType == 'AccountLatestActivtiesForPortlet')
+                if ($portlet->viewType == 'AccountLatestActivitiesForPortlet')
                 {
                     $portletToUse = $portlet;
                     break;
                 }
             }
             $this->assertNotNull($portletToUse);
-            $this->assertEquals('AccountLatestActivtiesForPortletView', get_class($portletToUse->getView()));
+            $this->assertEquals('AccountLatestActivitiesForPortletView', get_class($portletToUse->getView()));
 
             //Load the portlet details for latest activity
             $getData = array('id' => $superAccountId,
@@ -499,7 +491,6 @@
             $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $conversation               = new Conversation();
             $conversation->owner        = $super;
-            $conversation->isClosed     = true;
             $conversation->subject      = "Test closed";
             $conversation->description  = "This is just to make the isClosed column in conversations table";
             $conversation->save();
@@ -507,30 +498,15 @@
             $this->assertEquals(2, count($conversations));
             $this->assertEquals($super->id, $conversations[0]->owner->id);
             //Conversation is opened
-            $this->setGetArray(array('type' => 1));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
-            $this->setGetArray(array('type' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->assertEquals(0, $conversations[0]->resolveIsClosedForNull());
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
             //Conversation is closed
-            $this->setGetArray(array('type' => 1));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
-            $this->setGetArray(array('type' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->assertEquals(1, $conversations[0]->resolveIsClosedForNull());
             $this->setGetArray(array('id' => $conversations[0]->id));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
+            $this->runControllerWithNoExceptionsAndGetContent('conversations/default/changeIsClosed');
             //Conversation is Re-opened
-            $this->setGetArray(array('type' => 1));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
-            $this->setGetArray(array('type' => 3));
-            $content = $this->runControllerWithNoExceptionsAndGetContent('conversations/default/list');
-            $this->assertNotContains('details?id=' . $conversations[0]->id . '">' . $conversations[0]->subject . '</a>', $content);
+            $this->assertEquals(0, $conversations[0]->resolveIsClosedForNull());
         }
 
         /**
@@ -549,7 +525,11 @@
             $conversations                          = Conversation::getAll();
             $this->assertEquals(2, count($conversations));
             $this->assertEquals(0, $conversations[0]->comments->count());
-            $initalQueued                           = Yii::app()->emailHelper->getQueuedCount();
+            foreach (EmailMessage::getAll() as $emailMessage)
+            {
+                $emailMessage->delete();
+            }
+            $initalQueued                           = 0;
             $conversation                           = $conversations[0];
             $conversationParticipant                = new ConversationParticipant();
             $conversationParticipant->person        = $steven;
@@ -579,6 +559,5 @@
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->htmlContent);
             $this->assertContains(strval($conversation->comments[0]), $emailMessage->content->textContent);
         }
-
     }
 ?>

@@ -41,10 +41,10 @@
             return array('SocialItem');
         }
 
-            public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
-            $labels                           = array();
-            $labels[self::RIGHT_ACCESS_SOCIAL_ITEMS] = 'Access Social Items';
+            $labels                                  = array();
+            $labels[self::RIGHT_ACCESS_SOCIAL_ITEMS] = Zurmo::t('SocialItemsModule', 'Access Social Items');
             return $labels;
         }
 
@@ -78,6 +78,16 @@
         public static function hasPermissions()
         {
             return true;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('SocialItemsModule', 'Social Item', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('SocialItemsModule', 'Social Items', array(), null, $language);
         }
     }
 ?>

@@ -50,7 +50,7 @@
 
         protected function resolveUrl()
         {
-            return '/' . $this->moduleId . '/' . $this->controllerId . '/' . $this->actionId .'/';
+            return '/' . $this->moduleId . '/' . $this->controllerId . '/' . $this->actionId . '/';
         }
     }
 ?>

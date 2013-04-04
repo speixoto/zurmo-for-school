@@ -34,9 +34,9 @@
             return self::getByNameOrEquivalent('firstName', $name);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
                     'fullName' => 'Name',
                 )
@@ -66,8 +66,10 @@
                     'currencyValue'    => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
                     'dropDown'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
                     'radioDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'multiDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED),
-                    'tagCloud'         => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED),
+                    'multiDropDown'    => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'multiDropDown'),
+                    'tagCloud'         => array(RedBeanModel::HAS_ONE,   'OwnedMultipleValuesCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'tagCloud'),
                     'hasOne'           => array(RedBeanModel::HAS_ONE,   'ExportTestModelItem2'),
                     'hasMany'          => array(RedBeanModel::MANY_MANY, 'ExportTestModelItem3'),
                     'hasOneAlso'       => array(RedBeanModel::HAS_ONE,   'ExportTestModelItem4'),
@@ -94,7 +96,7 @@
                     array('string',    'length',  'min'  => 3, 'max' => 64),
                     array('textArea',  'type',    'type' => 'string'),
                     array('url',       'url'),
-                    array('email',      'email'),
+                    array('email',     'email'),
                 ),
                 'elements' => array(
                     'currency'         => 'Currency',

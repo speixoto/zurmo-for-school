@@ -54,7 +54,7 @@
         protected function renderRightSideContent($form = null)
         {
             assert('$form == null');
-            $content  = '<div id="right-side-edit-view-panel" class="thred-info"><div class="buffer">';
+            $content  = '<div class="right-side-edit-view-panel" class="thred-info"><div class="buffer">';
             $content .= $this->renderConversationOpenCloseElement();
             $content .= '<div>';
             $content .= $this->renderConversationRelatedToAndAttachmentsContent();

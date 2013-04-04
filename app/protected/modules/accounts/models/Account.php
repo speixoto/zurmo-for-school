@@ -31,18 +31,7 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        protected function untranslatedAttributeLabels()
-        {
-            return array_merge(parent::untranslatedAttributeLabels(),
-                array(
-                    'account'       => 'Parent AccountsModuleSingularLabel',
-                    'contacts'      => 'ContactsModulePluralLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel',
-                    'products'      => 'ProductsModulePluralLabel',
-                )
-            );
         }
-
         public function __toString()
         {
             try
@@ -103,15 +92,26 @@
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_MANY_BELONGS_TO,  'Account'),
                     'accounts'         => array(RedBeanModel::HAS_MANY,             'Account'),
+                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'billingAddress'),
                     'products'         => array(RedBeanModel::HAS_MANY,             'Product'),
-                    'billingAddress'   => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
                     'contacts'         => array(RedBeanModel::HAS_MANY,             'Contact'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'industry'         => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
                     'opportunities'    => array(RedBeanModel::HAS_MANY,             'Opportunity'),
-                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED),
-                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED),
-                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED),
+                    'primaryEmail'     => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'primaryEmail'),
+                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,              'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'shippingAddress'  => array(RedBeanModel::HAS_ONE,              'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'shippingAddress'),
+                    'type'             => array(RedBeanModel::HAS_ONE,              'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'type'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('annualRevenue', 'type',    'type' => 'float'),
@@ -121,10 +121,10 @@
                     array('name',          'type',    'type' => 'string'),
                     array('name',          'length',  'min'  => 3, 'max' => 64),
                     array('officePhone',   'type',    'type' => 'string'),
-                    array('officePhone',   'length',  'min'  => 1, 'max' => 20),
+                    array('officePhone',   'length',  'min'  => 1, 'max' => 24),
                     array('officeFax',     'type',    'type' => 'string'),
-                    array('officeFax',     'length',  'min'  => 1, 'max' => 20),
-                    array('website',       'url'),
+                    array('officeFax',     'length',  'min'  => 1, 'max' => 24),
+                    array('website',       'url',     'defaultScheme' => 'http'),
                 ),
                 'elements' => array(
                     'account'         => 'Account',
@@ -174,6 +174,35 @@
         public static function getGamificationRulesType()
         {
             return 'AccountGamification';
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'account'         => Zurmo::t('AccountsModule', 'Parent AccountsModuleSingularLabel',  $params, null, $language),
+                    'accounts'        => Zurmo::t('AccountsModule', 'AccountsModulePluralLabel',           $params, null, $language),
+                    'annualRevenue'   => Zurmo::t('AccountsModule', 'Annual Revenue',  array(), null, $language),
+                    'billingAddress'  => Zurmo::t('AccountsModule', 'Billing Address',  array(), null, $language),
+                    'contacts'        => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',           $params, null, $language),
+                    'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'employees'       => Zurmo::t('AccountsModule', 'Employees',  array(), null, $language),
+                    'industry'        => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
+                    'meetings'        => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
+                    'name'            => Zurmo::t('ZurmoModule',    'Name',  array(), null, $language),
+                    'notes'           => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
+                    'officePhone'     => Zurmo::t('AccountsModule', 'Office Phone',  array(), null, $language),
+                    'officeFax'       => Zurmo::t('AccountsModule', 'Office Fax',  array(), null, $language),
+                    'opportunities'   => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'primaryEmail'    => Zurmo::t('ZurmoModule',    'Primary Email',  array(), null, $language),
+                    'secondaryEmail'  => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
+                    'shippingAddress' => Zurmo::t('AccountsModule', 'Shipping Address',  array(), null, $language),
+                    'tasks'           => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
+                    'type'            => Zurmo::t('AccountsModule', 'Type',  array(), null, $language),
+                    'website'         => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

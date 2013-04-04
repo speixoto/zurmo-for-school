@@ -126,7 +126,8 @@
 .zButton,
 .z-button,
 a.zButton,
-a.z-button {
+a.z-button,
+.white-button{
     border-top:1px solid    rgba(200, 200, 200, 0.4);
     border-left: 1px solid  rgba(185, 185, 185, 0.4);
     border-right:1px solid  rgba(185, 185, 185, 0.4);
@@ -146,9 +147,15 @@ a.z-button {
     &.attachLoading.z-button{
         color: #fff;
     }
-    &:not(.attachLoading) span{
+    &:not(.attachLoading) .z-label{
         background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
     }
+}
+
+.white-button .z-label{
+    color:#666 !important;
+    .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
+    background: url(../images/view-toolbar-gradient.png) left bottom repeat-x !important;
 }
 
 .default-btn{
@@ -198,8 +205,8 @@ a.z-button {
 
 .z-spinner{
     z-index:10;
-	width:23px;
-	height:23px;
+    width:23px;
+    height:23px;
     display:none;
     position:absolute;
     left:0px;
@@ -230,9 +237,11 @@ a.z-button {
        text-decoration: none;
    }
 }
+
 .z-action-link-active{
-    .opacity(100);
+    .opacity(100);    
 }
+
 
 // Gradients
 #gradient {

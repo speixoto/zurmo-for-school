@@ -28,8 +28,7 @@
     {
         public function testGetCustomFieldAttributeNames()
         {
-            $model = new TestCustomFieldsModel();
-            $customFieldAttributeNames = CustomFieldUtil::getCustomFieldAttributeNames($model);
-            $this->assertEquals(array('industry'), $customFieldAttributeNames);
+            $customFieldAttributeNames = CustomFieldUtil::getCustomFieldAttributeNames('TestCustomFieldsModel');
+            $this->assertEquals(array('industry', 'market'), $customFieldAttributeNames);
         }
     }

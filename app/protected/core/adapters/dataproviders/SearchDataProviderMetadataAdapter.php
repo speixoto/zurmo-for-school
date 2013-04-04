@@ -164,7 +164,7 @@
                 }
             }
             //non-relation attribute that has array of data
-            elseif (!$model->isRelation($attributeName))
+            elseif (!$model::isRelation($attributeName))
             {
                 if (isset($value['value']) && $value['value'] != '')
                 {
@@ -226,7 +226,7 @@
                     {
                         if ($relatedValue !== null)
                         {
-                            if ($model->isRelation($attributeName))
+                            if ($model::isRelation($attributeName))
                             {
                                 $this->resolveOperatorAndCastsAndAppendClauseAsAndToStructureString(
                                                                                                $model->$attributeName,

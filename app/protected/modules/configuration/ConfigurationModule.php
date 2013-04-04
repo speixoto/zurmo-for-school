@@ -31,9 +31,14 @@
            return array('zurmo');
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Configuration';
+            return Zurmo::t('ConfigurationModule', 'Configuration', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ConfigurationModule', 'Configurations', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
@@ -42,7 +47,7 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label' => 'Settings',
+                        'label' => "eval:Zurmo::t('ConfigurationModule', 'Settings')",
                         'url'   => array('/configuration/default'),
                         'right' => ZurmoModule::RIGHT_ACCESS_ADMINISTRATION
                     ),

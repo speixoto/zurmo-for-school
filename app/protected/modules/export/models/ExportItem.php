@@ -83,5 +83,16 @@
         {
             return true;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'isCompleted'    => Zurmo::t('ExportModule', 'Is Completed',     array(), null, $language),
+                    'exportFileName' => Zurmo::t('ExportModule', 'Export File Name', array(), null, $language),
+                    'exportFileType' => Zurmo::t('ExportModule', 'Export File Type', array(), null, $language),
+                )
+            );
+        }
     }
 ?>

@@ -29,5 +29,9 @@
      */
     class ContactStateSearchForm extends SearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'ContactState';
+        }
     }
 ?>

@@ -30,7 +30,7 @@
         {
             assert('is_string($name)');
             assert('$name != ""');
-            $bean = R::findOne('role', "name = :name ", array(':name' => $name)); 
+            $bean = R::findOne('role', "name = :name ", array(':name' => $name));
             assert('$bean === false || $bean instanceof RedBean_OODBBean');
             if ($bean === false)
             {
@@ -49,10 +49,13 @@
             return $this->name;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(), array(
-                'role' => 'Parent Role',
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'name'    => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                'role'    => Zurmo::t('ZurmoModule', 'Parent Role', array(), null, $language),
+                'roles'   => Zurmo::t('ZurmoModule', 'Roles', array(), null, $language),
+                'users'   => Zurmo::t('UsersModule', 'Users', array(), null, $language)
             ));
         }
 

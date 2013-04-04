@@ -261,7 +261,7 @@
             assert('is_string($operatorType)');
             if (!SQLOperatorUtil::isValidOperatorTypeByValue($operatorType, $value))
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException('value: ' . $value . ' operator type: ' . $operatorType);
             }
             if (is_string($value))
             {
@@ -1140,6 +1140,26 @@
 
         public function getCharLimits()
         {
+        }
+
+        public static function makeTimeZoneAdjustmentContent()
+        {
+            //todo: move into something that is a wrapper since we can't always know which user we should adjust timezone for.
+            $timeZoneObject  = new DateTimeZone(Yii::app()->user->userModel->timeZone);
+            $offsetInSeconds = $timeZoneObject->getOffset(new DateTime());
+            if($offsetInSeconds > 0)
+            {
+                $content = ' + ';
+            }
+            elseif($offsetInSeconds < 0)
+            {
+                $content = ' - ';
+            }
+            else
+            {
+                return;
+            }
+            return $content . 'INTERVAL ' . abs($offsetInSeconds) . ' SECOND';
         }
     }
 ?>

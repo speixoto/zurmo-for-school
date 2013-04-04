@@ -80,7 +80,7 @@
             $content .= ZurmoHtml::hiddenField($hiddenInputName, ($this->rowNumber + 1), $idInputHtmlOptions);
             $content .= ZurmoHtml::tag('div', array('id' => $this->getInputsDivId(), 'class' => 'criteria-value-container'), $this->inputContent);
             $content .= '</div>';
-            $content .= ZurmoHtml::link('_', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
+            $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-extra-dynamic-search-row-link'));
             return $content;
         }
 
@@ -130,7 +130,7 @@
                     'url'     =>  $ajaxOnChangeUrl,
                     'beforeSend' => 'js:function(){
                         $("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
-                        attachLoadingSpinner("' . $inputDivId . '", true, "dark");
+                        makeOrRemoveLoadingSpinner(true, "#' . $inputDivId . '", "dark");
                         }',
                     'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data); }',
             ));

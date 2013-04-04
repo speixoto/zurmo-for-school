@@ -27,7 +27,7 @@
     /**
      * The base View for a module's list view.
      */
-    abstract class ListView extends ModelView
+    abstract class ListView extends ModelView implements ListViewInterface
     {
         protected $controllerId;
 
@@ -72,7 +72,7 @@
 
         /**
          * Constructs a list view specifying the controller as
-         * well as the model that will have its details displayed.
+         * well as the model that will have its details displayed.isDisplayAttributeACalculationOrModifier
          */
         public function __construct(
             $controllerId,
@@ -225,6 +225,19 @@
             return $this->gridId . $this->gridIdSuffix;
         }
 
+        protected function getCGridViewFirstColumn()
+        {
+            $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
+            $checkBoxHtmlOptions = array();
+            $firstColumn = array(
+                    'class'               => 'CheckBoxColumn',
+                    'checked'             => $checked,
+                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
+                    'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
+                );
+            return $firstColumn;
+        }
+
         /**
          * Get the meta data and merge with standard CGridView column elements
          * to create a column array that fits the CGridView columns API
@@ -234,14 +247,7 @@
             $columns = array();
             if ($this->rowsAreSelectable)
             {
-                $checked = 'in_array($data->id, array(' . implode(',', $this->selectedIds) . '))'; // Not Coding Standard
-                $checkBoxHtmlOptions = array();
-                $firstColumn = array(
-                    'class'               => 'CheckBoxColumn',
-                    'checked'             => $checked,
-                    'id'                  => $this->gridId . $this->gridIdSuffix . '-rowSelector', // Always specify this as -rowSelector.
-                    'checkBoxHtmlOptions' => $checkBoxHtmlOptions,
-                );
+                $firstColumn = $this->getCGridViewFirstColumn();
                 array_push($columns, $firstColumn);
             }
 
@@ -305,11 +311,11 @@
         {
             if ($this->rowsAreSelectable)
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); addListViewSelectedIdsToUrl(id, options); }';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); addListViewSelectedIdsToUrl(id, options); }';
             }
             else
             {
-                return 'js:function(id, options) { makeSmallLoadingSpinner(id, options); }';
+                return 'js:function(id, options) { makeSmallLoadingSpinner(true, "#" + id); }';
             }
         }
 
@@ -411,7 +417,7 @@
             return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
         }
 
-        public function getLinkString($attributeString)
+        public function getLinkString($attributeString, $attribute)
         {
             $string  = 'ZurmoHtml::link(';
             $string .=  $attributeString . ', ';

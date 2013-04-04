@@ -57,14 +57,14 @@
             assert('property_exists($auditableModel, "originalAttributeValues")');
             if (!array_key_exists($attributeName, $auditableModel->originalAttributeValues))
             {
-                if (!$auditableModel->isRelation($attributeName))
+                if (!$auditableModel::isRelation($attributeName))
                 {
                     if ($auditableModel->$attributeName != $value)
                     {
                         $auditableModel->originalAttributeValues[$attributeName] = $auditableModel->$attributeName;
                     }
                 }
-                elseif (!$auditableModel->isOwnedRelation($attributeName) &&
+                elseif (!$auditableModel::isOwnedRelation($attributeName) &&
                         !$auditableModel->$attributeName instanceof CustomFieldData)
                 {
                     assert('$auditableModel->$attributeName instanceof RedBeanModel');
@@ -89,7 +89,7 @@
                 if (!in_array($attributeName, $noAuditAttributeNames))
                 {
                     $processAuditEvent = true;
-                    if (!$attributeModel->isRelation($attributeName))
+                    if (!$attributeModel::isRelation($attributeName))
                     {
                         $newValue = $attributeModel->$attributeName;
                     }
@@ -127,7 +127,7 @@
             foreach ($attributeModel->attributeNames() as $attributeName)
             {
                 if (!in_array($attributeName, $noAuditAttributeNames) &&
-                    $attributeModel->isOwnedRelation($attributeName))
+                    $attributeModel::isOwnedRelation($attributeName))
                 {
                     try
                     {
@@ -173,11 +173,11 @@
                 return 'Collection';
             }
             assert('is_string($attributeName) && $attributeName != ""');
-            if (!$attributeModel->isRelation($attributeName))
+            if (!$attributeModel::isRelation($attributeName))
             {
                 if ($value === null || $value == '')
                 {
-                    $value = Zurmo::t('ZurmoModule', '(None)');
+                    $value = Zurmo::t('Core', '(None)');
                 }
                 $s = $value;
             }
@@ -190,7 +190,7 @@
                 assert('is_array($value)');
                 if ($value[1] < 0)
                 {
-                    $s = Zurmo::t('ZurmoModule', '(None)');
+                    $s = Zurmo::t('Core', '(None)');
                 }
                 else
                 {
@@ -206,7 +206,7 @@
                     }
                     if ($value[2] === null || $value == '')
                     {
-                        $s .= Zurmo::t('ZurmoModule', '(None)');
+                        $s .= Zurmo::t('Core', '(None)');
                     }
                     else
                     {
@@ -224,7 +224,7 @@
             foreach ($item->attributeNames() as $attributeName)
             {
                 if (!in_array($attributeName, $noAuditAttributeNames) &&
-                    $item->isOwnedRelation($attributeName))
+                    $item::isOwnedRelation($attributeName))
                 {
                     try
                     {

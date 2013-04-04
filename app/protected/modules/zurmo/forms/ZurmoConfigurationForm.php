@@ -36,7 +36,15 @@
         public $modalListPageSize;
         public $dashboardListPageSize;
         public $gamificationModalNotificationsEnabled;
+        public $userIdOfUserToRunWorkflowsAs;
         public $realtimeUpdatesEnabled;
+        public $logoFileData;
+
+        const DEFAULT_LOGO_THUMBNAIL_HEIGHT = 30;
+        const DEFAULT_LOGO_THUMBNAIL_WIDTH  = 65;
+        const DEFAULT_LOGO_HEIGHT           = 32;
+        const DEFAULT_LOGO_WIDTH            = 107;
+        const LOGO_THUMB_FILE_NAME_PREFIX   = 'logoThumb-';
 
         public function rules()
         {
@@ -58,6 +66,10 @@
                 array('dashboardListPageSize',                  'numerical', 'min' => 1),
                 array('gamificationModalNotificationsEnabled',  'boolean'),
                 array('realtimeUpdatesEnabled',                 'boolean'),
+                array('subListPageSize',                        'type',      'type' => 'integer'),
+                array('logoFileData',                           'type',      'type' => 'array'),
+                array('userIdOfUserToRunWorkflowsAs',           'type',      'type' => 'integer'),
+                array('userIdOfUserToRunWorkflowsAs',           'numerical', 'min'  => 1),
             );
         }
 
@@ -72,6 +84,7 @@
                 'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
+                'userIdOfUserToRunWorkflowsAs'          => Zurmo::t('ZurmoModule', 'User to run workflows as'),
             );
         }
     }

@@ -57,13 +57,13 @@
                 throw new BadPasswordException();
             }
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) &&
-                !Yii::app()->apiRequest->isApiRequest())
+                !ApiRequest::isApiRequest())
             {
                 throw new NoRightWebLoginException();
             }
 
             if (Right::ALLOW != $user->getEffectiveRight('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API) &&
-                Yii::app()->apiRequest->isApiRequest())
+                ApiRequest::isApiRequest())
             {
                 throw new ApiNoRightWebApiLoginException();
             }
@@ -116,6 +116,12 @@
                 parent::resolveMixinsOnSaveForEnsuringColumnsAreCorrectlyFormed($baseModelClassName, $modelClassName);
             }
         }
+
+        protected static function getMixedInModelClassNames()
+        {
+            return array('Person');
+        }
+
 
         protected function linkBeans()
         {
@@ -190,12 +196,13 @@
             unset($this->originalAttributeValues['hash']);
             assert('!isset($this->originalAttributeValues["hash"])');
             $saved = parent::save($runValidation, $attributeNames);
+
             if ($saved && $passwordChanged)
             {
                 AuditEvent::
                 logAuditEvent('UsersModule', UsersModule::AUDIT_EVENT_USER_PASSWORD_CHANGED, $this->username, $this);
-            }            
-            if($saved)
+            }
+            if ($saved)
             {
                 $this->setIsActive();
             }
@@ -221,7 +228,7 @@
             {
                 Yii::app()->languageHelper->setActive($this->language);
             }
-            parent::afterSave();                       
+            parent::afterSave();
         }
 
         /**
@@ -232,7 +239,7 @@
         protected function beforeSave()
         {
             if (parent::beforeSave())
-            {                                            
+            {
                 if (isset($this->originalAttributeValues['role']) && $this->originalAttributeValues['role'][1] > 0)
                 {
                     ReadPermissionsOptimizationUtil::userBeingRemovedFromRole($this, Role::getById($this->originalAttributeValues['role'][1]));
@@ -412,15 +419,26 @@
             return true;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => 'Name',
-                    'timeZone' => 'Time Zone',
-                    'title'    => 'Salutation',
-                    'primaryEmail' => 'Email',
-                    'primaryAddress' => 'Address',
+                    'currency'        => Zurmo::t('ZurmoModule', 'Currency', array(), null, $language),
+                    'emailAccounts'   => Zurmo::t('EmailMessagesModule', 'Email Accounts', array(), null, $language),
+                    'emailBoxes'      => Zurmo::t('EmailMessagesModule', 'Email Boxes', array(), null, $language),
+                    'emailSignatures' => Zurmo::t('EmailMessagesModule', 'Email Signatures', array(), null, $language),
+                    'fullName'        => Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
+                    'groups'          => Zurmo::t('ZurmoModule', 'Groups', array(), null, $language),
+                    'hash'            => Zurmo::t('UsersModule', 'Hash',       array(), null, $language),
+                    'isActive'        => Zurmo::t('UsersModule', 'Is Active',  array(), null, $language),
+                    'language'        => Zurmo::t('ZurmoModule', 'Language',   array(), null, $language),
+                    'manager'         => Zurmo::t('UsersModule', 'Manager',    array(), null, $language),
+                    'primaryEmail'    => Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
+                    'primaryAddress'  => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
+                    'role'            => Zurmo::t('ZurmoModule', 'Role', array(), null, $language),
+                    'timeZone'        => Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
+                    'title'           => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
+                    'username'        => Zurmo::t('UsersModule', 'Username',   array(), null, $language),
                 )
             );
         }
@@ -627,11 +645,12 @@
                     'isActive'
                 ),
                 'relations' => array(
-                    'currency'         => array(RedBeanModel::HAS_ONE,             'Currency'),
-                    'groups'           => array(RedBeanModel::MANY_MANY,           'Group'),
-                    'manager'          => array(RedBeanModel::HAS_ONE,             'User'),
-                    'role'             => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
-                    'emailBoxes'       => array(RedBeanModel::HAS_MANY,            'EmailBox'),
+                    'currency'   => array(RedBeanModel::HAS_ONE,             'Currency'),
+                    'groups'     => array(RedBeanModel::MANY_MANY,           'Group'),
+                    'manager'    => array(RedBeanModel::HAS_ONE,             'User', RedBeanModel::NOT_OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'manager'),
+                    'role'       => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'Role'),
+                    'emailBoxes' => array(RedBeanModel::HAS_MANY,            'EmailBox'),
                     'emailAccounts'    => array(RedBeanModel::HAS_MANY,            'EmailAccount'),
                     'emailSignatures'  => array(RedBeanModel::HAS_MANY,            'EmailSignature',         RedBeanModel::OWNED),
                 ),
@@ -646,7 +665,7 @@
                     array('language', 'length',  'max'   => 10),
                     array('timeZone', 'type',    'type'  => 'string'),
                     array('timeZone', 'length',  'max'   => 64),
-                    array('timeZone', 'default', 'value' => 'UTC'),
+                    array('timeZone', 'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone', 'ValidateTimeZone'),
                     array('username', 'required'),
                     array('username', 'unique'),
@@ -663,16 +682,84 @@
                 ),
                 'defaultSortAttribute' => 'lastName',
                 'noExport' => array(
-                    'hash'               
+                    'hash'
                 ),
                 'noApiExport' => array(
-                    'hash'              
+                    'hash'
                 ),
                 'noAudit' => array(
-                    'serializedAvatarData',                    
+                    'serializedAvatarData',
                 ),
             );
             return $metadata;
+        }
+
+        /**
+         * Check if user's email is unique.
+         * @return boolean
+         */
+        public function beforeValidate()
+        {
+            if (!parent::beforeValidate())
+            {
+                return false;
+            }
+
+            if (isset($this->primaryEmail) &&
+                isset($this->primaryEmail->emailAddress) &&
+                !$this->isUserEmailUnique($this->primaryEmail->emailAddress))
+            {
+                return false;
+            }
+            return true;
+        }
+
+        /**
+         * Check if user email is unique in system. Two users can't share same email address.
+         * @param string $email
+         * @return bool
+         */
+        public function isUserEmailUnique($email)
+        {
+            if (!$email)
+            {
+                return true;
+            }
+
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'primaryEmail',
+                    'relatedAttributeName' => 'emailAddress',
+                    'operatorType'         => 'equals',
+                    'value'                => $email,
+                )
+            );
+
+            if ($this->id > 0)
+            {
+                $searchAttributeData['clauses'][2] = array(
+                    'attributeName'        => 'id',
+                    'operatorType'         => 'doesNotEqual',
+                    'value'                => $this->id,
+                );
+                $searchAttributeData['structure'] = '(1 AND 2)';
+            }
+            else
+            {
+                $searchAttributeData['structure'] = '1';
+            }
+
+            $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('User');
+            $where = RedBeanModelDataProvider::makeWhere('User', $searchAttributeData, $joinTablesAdapter);
+            $models = User::getSubset($joinTablesAdapter, null, null, $where, null);
+
+            if (count($models) > 0 && is_array($models))
+            {
+                // Todo: fix form element name below
+                $this->primaryEmail->addError('emailAddress', Zurmo::t('UsersModule', 'Email address already exist in system.'));
+                return false;
+            }
+            return true;
         }
 
         public static function isTypeDeletable()
@@ -690,7 +777,7 @@
             if ($this->emailSignatures->count() == 0)
             {
                 $emailSignature       = new EmailSignature();
-                $emailSignature->user = Yii::app()->user->userModel;
+                $emailSignature->user = $this;
                 $this->emailSignatures->add($emailSignature);
                 $this->save();
             }
@@ -700,7 +787,17 @@
             }
             return $emailSignature;
         }
-        
+
+        public function isDeletable()
+        {
+            $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
+            if ($superAdminGroup->users->count() == 1 && $superAdminGroup->contains($this))
+            {
+                return false;
+            }
+            return parent::isDeletable();
+        }
+
         /**
         * to change isActive attribute  properly during save
         */
@@ -709,18 +806,30 @@
             if ( Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE) ||
                 Right::DENY == $this->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API))
-            {                                        
-                $isActive = false;              
-            }            
-            else
-            { 
-                $isActive = true;                              
-            }             
-            if($this->isActive != $isActive)
             {
-               $this->unrestrictedSet('isActive', $isActive);   
+                $isActive = false;
+            }
+            else
+            {
+                $isActive = true;
+            }
+            if ($this->isActive != $isActive)
+            {
+               $this->unrestrictedSet('isActive', $isActive);
                $this->save();
-            } 
+            }
+        }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array('firstName', $attribute);
+            }
+            return parent::getSortAttributesByAttribute($attribute);
         }
     }
 ?>

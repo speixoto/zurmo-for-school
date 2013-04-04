@@ -97,6 +97,14 @@
                       areAllRequiredAttributesMappedOrHaveRules($requiredAttributeCollection,
                                                                 $mappedAttributeImportRulesCollection);
             $this->assertTrue($passed);
+
+            //Check related Model where it uses a ModelDerivedAttributeImportRules, should pass
+            $mappedAttributeImportRulesCollection = AttributeImportRulesFactory::
+                                                    makeCollection( 'ImportModelTestItem5', array('ImportModelTestItem3Derived'));
+            $passed                               = ImportRulesUtil::areAllRequiredAttributesMappedOrHaveRules(
+                                                    $requiredAttributeCollection, $mappedAttributeImportRulesCollection);
+            $this->assertTrue($passed);
+
         }
 
         public function testCheckIfAnyAttributesAreDoubleMappedWhenTheyAreDobuleMapped()

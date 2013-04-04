@@ -38,6 +38,15 @@
             );
         }
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                                   = array();
+            $labels[self::RIGHT_CREATE_CONVERSATIONS] = Zurmo::t('ContactsModule', 'Create Conversations');
+            $labels[self::RIGHT_DELETE_CONVERSATIONS] = Zurmo::t('ContactsModule', 'Delete Conversations');
+            $labels[self::RIGHT_ACCESS_CONVERSATIONS] = Zurmo::t('ContactsModule', 'Access Conversations Tab');
+            return $labels;
+        }
+
         public function getRootModelNames()
         {
             return array('Conversation', 'ConversationParticipant');
@@ -48,17 +57,9 @@
             $metadata = array();
             $metadata['global'] = array(
                 'globalSearchAttributeNames' => array(),
-                'tabMenuItems' => array(
-                    array(
-                        'label' => 'Conversations',
-                        'url'   => array('/conversations/default'),
-                        'right' => self::RIGHT_ACCESS_CONVERSATIONS,
-                        'dynamicLabelContent' => 'eval:ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser()'
-                    ),
-                ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'Conversation',
+                        'label' => "eval:Zurmo::t('ConversationsModule', 'Conversation')",
                         'url'   => array('/conversations/default/create'),
                         'right' => self::RIGHT_CREATE_CONVERSATIONS,
                     ),

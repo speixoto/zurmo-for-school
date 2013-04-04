@@ -84,26 +84,38 @@
         }
 
         protected function makeActionBarSearchAndListView($searchModel, $dataProvider,
-                                                          $actionBarViewClassName = 'SecuredActionBarForSearchAndListView')
+                                                          $actionBarViewClassName = 'SecuredActionBarForSearchAndListView',
+                                                          $viewPrefixName = null, $activeActionElementType = null)
         {
             assert('is_string($actionBarViewClassName)');
+            assert('is_string($viewPrefixName) || $viewPrefixName == null');
+            assert('is_string($activeActionElementType) || $activeActionElementType == null');
+            if($viewPrefixName == null)
+            {
+                $viewPrefixName = $this->getModule()->getPluralCamelCasedName();
+            }
             $listModel = $searchModel->getModel();
             return new ActionBarSearchAndListView(
                 $this->getId(),
                 $this->getModule()->getId(),
                 $searchModel,
                 $listModel,
-                $this->getModule()->getPluralCamelCasedName(),
+                $viewPrefixName,
                 $dataProvider,
                 GetUtil::resolveSelectedIdsFromGet(),
-                $actionBarViewClassName
+                $actionBarViewClassName,
+                $activeActionElementType
             );
         }
 
-        protected function makeListView(SearchForm $searchForm, $dataProvider)
+        protected function makeListView(SearchForm $searchForm, $dataProvider, $listViewClassName = null)
         {
+            assert('is_string($listViewClassName) || $listViewClassName == null');
             $listModel           = $searchForm->getModel();
-            $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
+            if($listViewClassName == null)
+            {
+                $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
+            }
             $listView            = new $listViewClassName(
                                        $this->getId(),
                                        $this->getModule()->getId(),
@@ -162,7 +174,11 @@
                 }
                 if ($stickySearchKey != null && $setSticky)
                 {
-                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection);
+                    if($stickySearchData == null)
+                    {
+                        $stickySearchData = array();
+                    }
+                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection, $stickySearchData);
                 }
                 $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }
@@ -593,6 +609,24 @@
                 $urlParams = array($this->getId() . '/details', 'id' => $modelId);
             }
             $this->redirect($urlParams);
+        }
+
+        protected static function getModelAndCatchNotFoundAndDisplayError($modelClassName, $id)
+        {
+            assert('is_string($modelClassName)');
+            assert('is_int($id)');
+            try
+            {
+                return $modelClassName::getById($id);
+            }
+            catch (NotFoundException $e)
+            {
+                $messageContent  = Zurmo::t('ZurmoModule', 'The record you are trying to access does not exist.');
+                $messageView     = new ModelNotFoundView($messageContent);
+                $view            = new ModelNotFoundPageView($messageView);
+                echo $view->render();
+                Yii::app()->end(0, false);
+            }
         }
     }
 ?>

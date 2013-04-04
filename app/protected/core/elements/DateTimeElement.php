@@ -41,32 +41,14 @@
                             $this->model->{$this->attribute});
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("EditableDateTimeElement");
-            $cClipWidget->widget('application.extensions.timepicker.EJuiDateTimePicker', array(
+            $cClipWidget->widget('application.core.widgets.ZurmoJuiDateTimePicker', array(
                 'attribute'  => $this->attribute,
-                'language'   => YiiToJqueryUIDatePickerLocalization::getLanguage(),
                 'value'      => $value,
                 'htmlOptions' => array(
                     'id'              => $this->getEditableInputId(),
                     'name'            => $this->getEditableInputName(),
                     'disabled'        => $this->getDisabledValue(),
-                    'style'           => 'position:relative;z-index:10000;'
-                ),
-                'options'    => array(
-                    'stepMinute'      => 5,
-                    'timeText'        => Zurmo::t('Core', 'Time'),
-                    'hourText'        => Zurmo::t('Core', 'Hour'),
-                    'minuteText'      => Zurmo::t('Core', 'Minute'),
-                    'secondText'      => Zurmo::t('Core', 'Second'),
-                    'showOn'          => 'both',
-                    'buttonImageOnly' => false,
-                    'buttonText'      => ZurmoHtml::tag('span', array(), '<!--Date-->'),
-                    'dateFormat'      => YiiToJqueryUIDatePickerLocalization::resolveDateFormat(
-                                            DateTimeUtil::getLocaleDateFormat()),
-                    'timeFormat'      => YiiToJqueryUIDatePickerLocalization::resolveTimeFormat(
-                                            DateTimeUtil::getLocaleTimeFormat()),
-                    'ampm'            => DateTimeUtil::isLocaleTimeDisplayedAs12Hours()
-                    //Note: swap time / date format is not supported currently by the EJuiDateTimePicker
-                ),
+                )
             ));
             $cClipWidget->endClip();
             $content = $cClipWidget->getController()->clips['EditableDateTimeElement'];

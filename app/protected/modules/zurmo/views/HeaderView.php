@@ -30,14 +30,13 @@
 
         public function __construct($controllerId, $moduleId, $settingsMenuItems, $userMenuItems,
                                     $shortcutsCreateMenuItems,
-                                    $notificationsUrl, $moduleNamesAndLabels, $sourceUrl, $applicationName)
+                                    $moduleNamesAndLabels, $sourceUrl, $applicationName)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_array($settingsMenuItems)');
             assert('is_array($userMenuItems)');
             assert('is_array($shortcutsCreateMenuItems)');
-            assert('is_string($notificationsUrl)');
             assert('is_array($moduleNamesAndLabels)');
             assert('is_string($sourceUrl)');
             assert('is_string($applicationName) || $applicationName == null');
@@ -49,7 +48,7 @@
             );
             $this->verticalGridView   = new GridView(2, 1);
             $this->verticalGridView->setView(
-                                        new HeaderLinksView($settingsMenuItems, $userMenuItems, $notificationsUrl,
+                                        new HeaderLinksView($settingsMenuItems, $userMenuItems,
                                                             $applicationName), 0, 0);
             $globalSearchAndShortcutsCreateMenuView = new GlobalSearchAndShortcutsCreateMenuView($moduleNamesAndLabels,
                                                           $sourceUrl,
@@ -57,11 +56,14 @@
             $horizontalGridView = new GridView(1, 1);
             $horizontalGridView->setView($globalSearchAndShortcutsCreateMenuView, 0, 0);
             $this->verticalGridView->setView($horizontalGridView, 1, 0);
-            if (Yii::app()->components['user']->loginRequiredAjaxResponse){
+            if (Yii::app()->user->loginRequiredAjaxResponse)
+            {
                 Yii::app()->clientScript->registerScript('ajaxLoginRequired', '
                     jQuery("body").ajaxSuccess(
-                        function(event, request, options) {
-                            if (request.responseText == "'.Yii::app()->components['user']->loginRequiredAjaxResponse.'") {
+                        function(event, request, options)
+                        {
+                            if (request.responseText == "' . Yii::app()->user->loginRequiredAjaxResponse . '")
+                            {
                                 window.location.reload(true);
                             }
                         }

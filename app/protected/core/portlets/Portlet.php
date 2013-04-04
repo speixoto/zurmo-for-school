@@ -214,7 +214,7 @@
 
         public function beforeDelete()
         {
-            $className = $this->viewType.'View';
+            $className = $this->viewType . 'View';
             if (@class_exists($className))
             {
                 $class = new ReflectionClass($className);

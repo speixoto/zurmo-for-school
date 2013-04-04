@@ -68,7 +68,7 @@
          */
         public function isRelation()
         {
-            throw new NotSupportedException();
+            return false;
         }
 
         /**
@@ -76,15 +76,6 @@
          * @see RedBeanModelAttributeToDataProviderAdapter::getRelationType()
          */
         public function getRelationType()
-        {
-            throw new NotSupportedException();
-        }
-
-        /**
-         * (non-PHPdoc)
-         * @see RedBeanModelAttributeToDataProviderAdapter::hasRelatedAttribute()
-         */
-        public function hasRelatedAttribute()
         {
             throw new NotSupportedException();
         }

@@ -109,5 +109,19 @@
         {
             return true;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'endDateTime'   => Zurmo::t('ZurmoModule',       'End Date Time',  array(), null, $language),
+                    'isProcessed'   => Zurmo::t('JobsManagerModule', 'Is Processed',  array(), null, $language),
+                    'message'       => Zurmo::t('JobsManagerModule', 'Message',  array(), null, $language),
+                    'startDateTIme' => Zurmo::t('ZurmoModule',       'Start Date Time',  array(), null, $language),
+                    'status'        => Zurmo::t('JobsManagerModule', 'Status',  array(), null, $language),
+                    'type'          => Zurmo::t('Core',              'Type',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

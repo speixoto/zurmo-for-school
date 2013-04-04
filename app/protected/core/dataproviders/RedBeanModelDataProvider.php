@@ -55,6 +55,8 @@
             }
             $sort = new RedBeanSort($this->modelClassName);
             $sort->sortVar = $this->getId().'_sort';
+            $sort->setSortAttribute($sortAttribute);
+            $sort->setSortDescending($sortDescending);
             $this->setSort($sort);
         }
 
@@ -143,14 +145,13 @@
         public static function resolveSortAttributeColumnName($modelClassName, &$joinTablesAdapter, $sortAttribute)
         {
             assert('$sortAttribute === null || is_string($sortAttribute) && $sortAttribute != ""');
-            $model = new $modelClassName(false);
             $sortRelatedAttribute = null;
-            if ($model->isRelation($sortAttribute))
+            if ($modelClassName::isRelation($sortAttribute))
             {
-                $relationType = $model->getRelationType($sortAttribute);
+                $relationType = $modelClassName::getRelationType($sortAttribute);
                 //MANY_MANY not supported currently for sorting.
                 assert('$relationType != RedBeanModel::MANY_MANY');
-                $relationModelClassName = $model->getRelationModelClassName($sortAttribute);
+                $relationModelClassName = $modelClassName::getRelationModelClassName($sortAttribute);
                 $sortRelatedAttribute   = self::getSortAttributeName($relationModelClassName);
             }
             $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(

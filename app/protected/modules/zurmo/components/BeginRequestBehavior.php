@@ -33,7 +33,7 @@
 
         public function attach($owner)
         {
-            if (Yii::app()->apiRequest->isApiRequest())
+            if (ApiRequest::isApiRequest())
             {
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSentryLogs'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
@@ -43,6 +43,7 @@
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleSetupDatabaseConnection'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAutoBuildCompleted'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleDisableGamification'));
+                $owner->attachEventHandler('onBeginRequest', array($this, 'handleInitApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleBeginApiRequest'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleLibraryCompatibilityCheck'));
                 $owner->attachEventHandler('onBeginRequest', array($this, 'handleStartPerformanceClock'));
@@ -52,6 +53,7 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleClearCache'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadLanguage'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadTimeZone'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
                 }
@@ -84,9 +86,11 @@
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleUserTimeZoneConfirmed'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadActivitiesObserver'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadConversationsObserver'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadGamification'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleCheckAndUpdateCurrencyRates'));
                     $owner->attachEventHandler('onBeginRequest', array($this, 'handleResolveCustomData'));
+                    $owner->attachEventHandler('onBeginRequest', array($this, 'handlePublishLogoAssets'));
                 }
             }
         }
@@ -122,8 +126,9 @@
                 if ($memcacheServiceHelper->runCheckAndGetIfSuccessful())
                 {
                     $cacheComponent = Yii::createComponent(array(
-                        'class' => 'CMemCache',
-                        'servers' => Yii::app()->params['memcacheServers']));
+                        'class'     => 'CMemCache',
+                        'keyPrefix' => ZURMO_TOKEN,
+                        'servers'   => Yii::app()->params['memcacheServers']));
                     Yii::app()->setComponent('cache', $cacheComponent);
                 }
                 // todo: Find better way to append this prefix for tests.
@@ -141,9 +146,14 @@
         */
         public function handleImports($event)
         {
+            //Clears file cache so that everything is clean.
+            if (isset($_GET['clearCache']) && $_GET['clearCache'] == 1)
+            {
+                GeneralCache::forgetEntry('filesClassMap');
+            }
             try
             {
-                $filesToInclude = GeneralCache::getEntry('filesToInclude');
+                Yii::$classMap = GeneralCache::getEntry('filesClassMap');
             }
             catch (NotFoundException $e)
             {
@@ -155,11 +165,11 @@
                 {
                     $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
                 }
-                GeneralCache::cacheEntry('filesToInclude', $filesToInclude);
-            }
-            foreach ($filesToInclude as $file)
-            {
-                Yii::import($file);
+                foreach ($filesToInclude as $file)
+                {
+                    Yii::import($file);
+                }
+                GeneralCache::cacheEntry('filesClassMap', Yii::$classMap);
             }
         }
 
@@ -321,6 +331,21 @@
             }
         }
 
+        public function handleInitApiRequest($event)
+        {
+            $apiRequest = Yii::createComponent(
+                array('class' => 'application.modules.api.components.ApiRequest'));
+            $apiRequest->init();
+            Yii::app()->setComponent('apiRequest', $apiRequest);
+            Yii::app()->apiRequest->init();
+
+            $apiHelper = Yii::createComponent(
+                array('class' => 'application.modules.api.components.ZurmoApiHelper'));
+            //Have to invoke component init(), because it is not called automatically
+            $apiHelper->init();
+            Yii::app()->setComponent('apiHelper', $apiHelper);
+        }
+
         public function handleBeginApiRequest($event)
         {
             if (Yii::app()->isApplicationInMaintenanceMode())
@@ -415,7 +440,7 @@
 
         public function handleLoadLanguage($event)
         {
-            if (!Yii::app()->apiRequest->isApiRequest())
+            if (!ApiRequest::isApiRequest())
             {
                 if (isset($_GET['lang']) && $_GET['lang'] != null)
                 {
@@ -453,13 +478,19 @@
         public function handleLoadActivitiesObserver($event)
         {
             $activitiesObserver = new ActivitiesObserver();
-            $activitiesObserver->init(); //runs init();
+            $activitiesObserver->init();
         }
 
         public function handleLoadConversationsObserver($event)
         {
             $conversationsObserver = new ConversationsObserver();
-            $conversationsObserver->init(); //runs init();
+            $conversationsObserver->init();
+        }
+
+        public function handleLoadWorkflowsObserver($event)
+        {
+            $workflowsObserver = new WorkflowsObserver();
+            $workflowsObserver->init();
         }
 
         public function handleLoadGamification($event)
@@ -471,6 +502,36 @@
         public function handleDisableGamification($event)
         {
             Yii::app()->gamificationObserver->enabled = false;
+        }
+
+        public function handlePublishLogoAssets($event)
+        {
+            if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
+            {
+                $logoFileModelId        = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
+                $logoFileModel          = FileModel::getById($logoFileModelId);
+                $logoFileSrc            = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                         DIRECTORY_SEPARATOR . $logoFileModel->name);
+                //logoFile is either not published or we have dangling url for asset
+                if ($logoFileSrc === false || file_exists($logoFileSrc) === false)
+                {
+                    //Logo file is not published in assets
+                    //Check if it exists in runtime/uploads
+                    if(file_exists(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                        DIRECTORY_SEPARATOR . $logoFileModel->name) === false)
+                    {
+                        $logoFilePath    = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $logoFileModel->name;
+                        file_put_contents($logoFilePath, $logoFileModel->fileContent->content, LOCK_EX);
+                        ZurmoConfigurationFormAdapter::publishLogo($logoFileModel->name, $logoFilePath);
+                    }
+                    else
+                    {
+                        //Logo File exist in runtime/uploads but not published
+                        Yii::app()->getAssetManager()->publish(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                               DIRECTORY_SEPARATOR . $logoFileModel->name);
+                    }
+                }
+            }
         }
      }
 ?>

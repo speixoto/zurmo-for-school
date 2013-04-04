@@ -30,6 +30,15 @@
      */
     class ConversationParticipant extends OwnedModel
     {
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'hasReadLatest'   => Zurmo::t('ConversationsModule', 'Has Read Latest',  array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             try
@@ -63,7 +72,8 @@
                     'hasReadLatest',
                 ),
                 'relations' => array(
-                    'person'      => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'person'      => array(RedBeanModel::HAS_ONE, 'Item', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'person'),
                 ),
                 'rules' => array(
                     array('hasReadLatest', 'boolean'),

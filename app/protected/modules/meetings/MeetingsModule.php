@@ -42,12 +42,13 @@
             return array('Meeting');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                              = LabelUtil::getTranslationParamsForAllModules();
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_MEETINGS] = 'Create MeetingsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_MEETINGS] = 'Delete MeetingsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_MEETINGS] = 'Access MeetingsModulePluralLabel';
+            $labels[self::RIGHT_CREATE_MEETINGS] = Zurmo::t('MeetingsModule', 'Create MeetingsModulePluralLabel', $params);
+            $labels[self::RIGHT_DELETE_MEETINGS] = Zurmo::t('MeetingsModule', 'Delete MeetingsModulePluralLabel', $params);
+            $labels[self::RIGHT_ACCESS_MEETINGS] = Zurmo::t('MeetingsModule', 'Access MeetingsModulePluralLabel', $params);
             return $labels;
         }
 
@@ -113,6 +114,26 @@
         public static function modelsAreNeverGloballySearched()
         {
             return true;
+        }
+
+        public static function isReportable()
+        {
+            return true;
+        }
+
+        public static function canHaveWorkflow()
+        {
+            return true;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('MeetingsModule', 'Meeting', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('MeetingsModule', 'Meetings', array(), null, $language);
         }
     }
 ?>

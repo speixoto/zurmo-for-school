@@ -42,7 +42,7 @@
                     array('fileContent', 'required'),
                     array('name',        'required'),
                     array('name', 'type', 'type' => 'string'),
-                    array('name', 'length',  'min'  => 3, 'max' => 64),
+                    array('name', 'length',  'min'  => 3, 'max' => 100),
                     array('size',        'required'),
                     array('size', 'type', 'type' => 'integer'),
                     array('type',        'required'),
@@ -61,6 +61,17 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'name' => Zurmo::t('Core', 'Owner', array(), null, $language),
+                    'size' => Zurmo::t('Core', 'Size',  array(), null, $language),
+                    'type' => Zurmo::t('Core', 'Type',  array(), null, $language),
+                )
+            );
         }
 
         protected function beforeSave()

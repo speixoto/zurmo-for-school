@@ -28,6 +28,13 @@
     {
         const RIGHT_ACCESS_IMPORT = 'Access Import Tool';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                            = array();
+            $labels[self::RIGHT_ACCESS_IMPORT] = Zurmo::t('ImportModule', 'Access Import Tool');
+            return $labels;
+        }
+
         public function getDependencies()
         {
            return array('zurmo');
@@ -44,7 +51,7 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label' => 'Import',
+                        'label' => "eval:Zurmo::t('ImportModule', 'Import')",
                         'url'   => array('/import/default'),
                         'right' => self::RIGHT_ACCESS_IMPORT,
                     ),
@@ -52,15 +59,15 @@
                 'configureMenuItems' => array(
                     array(
                         'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => 'Import',
-                        'descriptionLabel' => 'Import data into Zurmo',
+                        'titleLabel'       => "eval:Zurmo::t('ImportModule', 'Import')",
+                        'descriptionLabel' => "eval:Zurmo::t('ImportModule', 'Import data into Zurmo')",
                         'route'            => '/import/default',
                         'right'            => self::RIGHT_ACCESS_IMPORT,
                     ),
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => 'Import',
+                        'label' => "eval:Zurmo::t('ImportModule', 'Import')",
                         'url' => array('/import/default'),
                         'right' => self::RIGHT_ACCESS_IMPORT,
                         'order' => 2,

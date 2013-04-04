@@ -66,10 +66,13 @@
                     'latestDateTime',
                 ),
                 'relations' => array(
-                    'comments'  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED, 'relatedModel'),
+                    'comments'  => array(RedBeanModel::HAS_MANY, 'Comment', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
                     'note'      => array(RedBeanModel::HAS_ONE,  'Note'),
-                    'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED, 'relatedModel'),
-                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User'),
+                    'files'     => array(RedBeanModel::HAS_MANY, 'FileModel', RedBeanModel::OWNED,
+                                         RedBeanModel::LINK_TYPE_POLYMORPHIC, 'relatedModel'),
+                    'toUser'    => array(RedBeanModel::HAS_ONE,  'User', RedBeanModel::NOT_OWNED,
+                                         RedBeanModel::LINK_TYPE_SPECIFIC, 'toUser'),
                 ),
                 'rules' => array(
                     array('description',    'type',     'type' => 'string'),
@@ -121,6 +124,20 @@
         public static function hasReadPermissionsOptimization()
         {
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'comments'       => Zurmo::t('SocialItemsModule', 'Comments',  array(), null, $language),
+                    'description'    => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'files'          => Zurmo::t('ZurmoModule',  'Files',  array(), null, $language),
+                    'latestDateTime' => Zurmo::t('ActivitiesModule',  'Latest Date Time',  array(), null, $language),
+                    'note'           => Zurmo::t('NotesModule', 'Note',  array(), null, $language),
+                    'toUser'         => Zurmo::t('SocialItemsModule', 'To User',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

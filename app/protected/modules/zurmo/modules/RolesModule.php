@@ -30,6 +30,15 @@
         const RIGHT_DELETE_ROLES = 'Delete Roles';
         const RIGHT_ACCESS_ROLES = 'Access Roles Tab';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                             = array();
+            $labels[self::RIGHT_CREATE_ROLES] = Zurmo::t('ZurmoModule', 'Create Roles');
+            $labels[self::RIGHT_DELETE_ROLES] = Zurmo::t('ZurmoModule', 'Delete Roles');
+            $labels[self::RIGHT_ACCESS_ROLES] = Zurmo::t('ZurmoModule', 'Access Roles Tab');
+            return $labels;
+        }
+
         public function canDisable()
         {
             return false;
@@ -75,14 +84,6 @@
                         'descriptionLabel' => 'Manage Roles',
                         'route'            => '/zurmo/role',
                         'right'            => self::RIGHT_ACCESS_ROLES,
-                    ),
-                ),
-                'headerMenuItems' => array(
-                    array(
-                        'label' => 'Roles',
-                        'url' => array('/zurmo/role'),
-                        'right' => self::RIGHT_ACCESS_ROLES,
-                        'order' => 5,
                     ),
                 ),
             );

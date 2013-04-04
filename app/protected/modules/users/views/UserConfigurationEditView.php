@@ -114,7 +114,20 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => null, 'type' => 'DerivedExplicitReadWritePermissionsUserConfig'),
+                                                array('attributeName' => 'null', 'type' => 'DerivedExplicitReadWritePermissionsUserConfig'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                            ),
+                        ),
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MenuItemsSelection'),
                                             ),
                                         ),
                                     )

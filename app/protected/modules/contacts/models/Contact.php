@@ -31,14 +31,25 @@
             return ZurmoModelSearch::getModelsByFullName('Contact', $name);
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'state'         => 'Status',
-                    'account'       => 'AccountsModuleSingularLabel',
-                    'opportunities' => 'OpportunitiesModulePluralLabel',
-                    'products'      => 'ProductsModulePluralLabel',
+
+                    'account'          => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
+                    'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
+                    'description'      => Zurmo::t('ZurmoModule',    'Description',  array(), null, $language),
+                    'industry'         => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
+                    'meetings'         => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
+                    'notes'            => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
+                    'opportunities'    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'secondaryAddress' => Zurmo::t('ZurmoModule',    'Secondary Address',  array(), null, $language),
+                    'secondaryEmail'   => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
+                    'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
+                    'state'            => Zurmo::t('ContactsModule', 'Status', $params, null, $language),
+                    'tasks'            => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
+                    'website'          => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )
             );
         }
@@ -82,13 +93,23 @@
                 ),
                 'relations' => array(
                     'account'          => array(RedBeanModel::HAS_ONE,   'Account'),
+                    'industry'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'industry'),
                     'products'         => array(RedBeanModel::MANY_MANY, 'Product'),
-                    'industry'         => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
                     'opportunities'    => array(RedBeanModel::MANY_MANY, 'Opportunity'),
-                    'secondaryAddress' => array(RedBeanModel::HAS_ONE,   'Address',          RedBeanModel::OWNED),
-                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email',            RedBeanModel::OWNED),
-                    'source'           => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED),
-                    'state'            => array(RedBeanModel::HAS_ONE,   'ContactState'),
+                    'secondaryAddress' => array(RedBeanModel::HAS_ONE,   'Address',          RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryAddress'),
+                    'secondaryEmail'   => array(RedBeanModel::HAS_ONE,   'Email',            RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'secondaryEmail'),
+                    'source'           => array(RedBeanModel::HAS_ONE,   'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'source'),
+                    'state'            => array(RedBeanModel::HAS_ONE,   'ContactState', RedBeanModel::NOT_OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'state'),
+                ),
+                'derivedRelationsViaCastedUpModel' => array(
+                    'meetings' => array(RedBeanModel::MANY_MANY, 'Meeting', 'activityItems'),
+                    'notes'    => array(RedBeanModel::MANY_MANY, 'Note',    'activityItems'),
+                    'tasks'    => array(RedBeanModel::MANY_MANY, 'Task',    'activityItems'),
                 ),
                 'rules' => array(
                     array('companyName',      'type',    'type' => 'string'),

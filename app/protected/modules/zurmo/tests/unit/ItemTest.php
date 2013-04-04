@@ -219,5 +219,16 @@
             $this->assertEquals($super, $account->createdByUser);
             $this->assertEquals($user, $account->modifiedByUser);
          }
+
+        public function testWorkflowsToProcessAfterSave()
+        {
+            $account  = new Account();
+            $workflow = new Workflow();
+            $workflow->setModuleClassName('something');
+            $account->addWorkflowToProcessAfterSave($workflow);
+            $workflows = $account->getWorkflowsToProcessAfterSave();
+            $this->assertEquals(1, count($workflows));
+            $this->assertEquals('something', $workflows[0]->getModuleClassName());
+        }
     }
 ?>

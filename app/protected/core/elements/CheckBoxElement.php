@@ -40,6 +40,11 @@
                 is_string($this->model->{$this->attribute}) ||
                 is_integer(BooleanUtil::boolIntVal($this->model->{$this->attribute}))'
             );
+            return $this->form->checkBox($this->model, $this->attribute, $this->getEditableHtmlOptions());
+        }
+
+        protected function getEditableHtmlOptions()
+        {
             $htmlOptions             = array();
             $htmlOptions['id']       = $this->getEditableInputId();
             $htmlOptions['name']     = $this->getEditableInputName();
@@ -50,8 +55,12 @@
                 {
                     $htmlOptions['uncheckValue'] = 1;
                 }
+                if($htmlOptions['disabled'] == 'disabled')
+                {
+                    $htmlOptions['labelClass'] = 'disabled';
+                }
             }
-            return $this->form->checkBox($this->model, $this->attribute, $htmlOptions);
+            return $htmlOptions;
         }
 
         /**

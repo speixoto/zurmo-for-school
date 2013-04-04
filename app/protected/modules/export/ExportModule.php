@@ -33,7 +33,14 @@
 
         // Used to determine if data will be exported directly in browser
         // or to be exported via asynchronous via background job.
-        public static $asynchronusTreshold = 2500;
+        public static $asynchronusThreshold = 2500;
+
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                                    = array();
+            $labels[self::RIGHT_ACCESS_EXPORT]  = Zurmo::t('ExportModule', 'Access Export Tool');
+            return $labels;
+        }
 
         public function getDependencies()
         {

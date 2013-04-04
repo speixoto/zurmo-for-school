@@ -31,7 +31,7 @@
     {
         const USER_EMAIL_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.UserEmailConfigurationCheckControllerFilter';
-              
+
         const EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH =
               'application.modules.emailMessages.controllers.filters.EmailMessagesRequiringArchivingCheckControllerFilter';
 
@@ -51,7 +51,7 @@
                 ),
                 array(self::USER_EMAIL_CONFIGURATION_FILTER_PATH . ' + createEmailMessage',
                      'controller' => $this,
-                ),                
+                ),
                 array(self::EMAIL_MESSAGES_REQUIRING_ARCHIVING_CONFIGURATION_FILTER_PATH . ' + matchingList' ,
                      'controller' => $this,
                 )
@@ -151,6 +151,8 @@
                     $configurationForm->password        = $_POST['UserEmailConfigurationForm']['outboundPassword'];
                     $configurationForm->security        = $_POST['UserEmailConfigurationForm']['outboundSecurity'];
                     $configurationForm->aTestToAddress  = $_POST['UserEmailConfigurationForm']['aTestToAddress'];
+                    $fromNameToSendMessagesFrom         = $_POST['UserEmailConfigurationForm']['fromName'];
+                    $fromAddressToSendMessagesFrom      = $_POST['UserEmailConfigurationForm']['fromAddress'];
                 }
                 if ($configurationForm->aTestToAddress != null)
                 {
@@ -160,10 +162,21 @@
                     $emailHelper->outboundUsername = $configurationForm->username;
                     $emailHelper->outboundPassword = $configurationForm->password;
                     $emailHelper->outboundSecurity = $configurationForm->security;
-                    $userToSendMessagesFrom        = User::getById((int)$configurationForm->userIdOfUserToSendNotificationsAs);
-
-                    $emailMessage = EmailMessageHelper::sendTestEmail($emailHelper, $userToSendMessagesFrom,
+                    if (isset($fromNameToSendMessagesFrom) && isset($fromAddressToSendMessagesFrom))
+                    {
+                        $from = array(
+                            'name'      => $fromNameToSendMessagesFrom,
+                            'address'   => $fromAddressToSendMessagesFrom
+                        );
+                        $emailMessage = EmailMessageHelper::sendTestEmail($emailHelper, $from,
                                                                       $configurationForm->aTestToAddress);
+                    }
+                    else
+                    {
+                        $userToSendMessagesFrom        = User::getById((int)$configurationForm->userIdOfUserToSendNotificationsAs);
+                        $emailMessage = EmailMessageHelper::sendTestEmailFromUser($emailHelper, $userToSendMessagesFrom,
+                                                                      $configurationForm->aTestToAddress);
+                    }
                     $messageContent  = null;
                     if (!$emailMessage->hasSendError())
                     {
@@ -340,11 +353,7 @@
                     $contact = new Contact();
                     $contact->setAttributes($_POST[$type][$emailMessageId]);
                     $contact->validate();
-                    $errorData = array();
-                    foreach ($contact->getErrors() as $attribute => $errors)
-                    {
-                            $errorData[ZurmoHtml::activeId($contact, $attribute)] = $errors;
-                    }
+                    $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($contact);
                     echo CJSON::encode($errorData);
                     Yii::app()->end(0, false);
                 }
@@ -422,8 +431,8 @@
                 }
                 Yii::app()->end(false);
             }
-        }        
-        
+        }
+
         public function actionCreateEmailMessage($toAddress = null, $relatedId = null, $relatedModelClassName = null)
         {
             $postData         = PostUtil::getData();
@@ -520,11 +529,7 @@
                 }
                 else
                 {
-                    $errorData = array();
-                    foreach ($emailMessageForm->getErrors() as $attribute => $errors)
-                    {
-                            $errorData[ZurmoHtml::activeId($emailMessageForm, $attribute)] = $errors;
-                    }
+                    $errorData = ZurmoActiveForm::makeErrorsDataAndResolveForOwnedModelAttributes($emailMessageForm);
                     echo CJSON::encode($errorData);
                 }
                 Yii::app()->end(false);

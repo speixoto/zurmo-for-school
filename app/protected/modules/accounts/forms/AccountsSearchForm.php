@@ -35,6 +35,16 @@
         public $anyInvalidEmail;
         public $anyOptOutEmail;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'Account';
+        }
+
+        public function __construct(Account $model)
+        {
+            parent::__construct($model);
+        }
+
         public function rules()
         {
             return array_merge(parent::rules(), array(

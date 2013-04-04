@@ -40,9 +40,8 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-
             $this->assertEquals(3, count($menu));
-            $this->assertEquals(6, count($menu['items']));
+            $this->assertEquals(7, count($menu['items']));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
             $this->assertEquals(0, count($menu));
@@ -56,6 +55,9 @@
             $this->assertEquals(1, count($menu['items']));
         }
 
+        /**
+         * @depends testGetAccessibleShortcutsCreateMenuByCurrentUser
+         */
         public function testGetAccessibleConfigureMenuByCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
@@ -72,17 +74,20 @@
             $this->assertEquals(1, count($menu));
         }
 
+        /**
+         * @depends testGetAccessibleConfigureMenuByCurrentUser
+         */
         public function testGetVisibleAndOrderedTabMenuByCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(6, count($menu));
+            $this->assertEquals(7, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(1, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $this->assertEquals(Right::NONE,  Yii::app()->user->userModel->getExplicitActualRight ('AccountsModule', AccountsModule::RIGHT_ACCESS_ACCOUNTS));
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(2, count($menu));
+            $this->assertEquals(3, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(0, count($menu));
             $bill = User::getByUsername('billy');
@@ -95,23 +100,23 @@
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', $bill);
             $this->assertEquals(1, count($menu));
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(4, count($menu));
+            $this->assertEquals(5, count($menu));
         }
 
         public function testGetAccessibleHeaderMenuByModuleClassNameForCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(9, count($menu));
+            $this->assertEquals(6, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(3, count($menu));
+            $this->assertEquals(2, count($menu));
             $bill = User::getByUsername('billy');
             $bill->setRight('ZurmoModule', ZurmoModule::RIGHT_ACCESS_ADMINISTRATION);
             $saved = $bill->save();
             $this->assertTrue($saved);
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(4, count($menu));
+            $this->assertEquals(3, count($menu));
         }
 
         public function testGetAccessibleOrderedUserHeaderMenuForCurrentUser()
@@ -131,7 +136,7 @@
             $backupMetadata                           = $metadata;
             $metadata['global']['shortcutsCreateMenuItems'] = array(
                 array(
-                    'label' => 'AccountsModuleSingularLabel',
+                    'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
                     'url'   => array('/accounts/default/create'),
                     'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
                 ),
@@ -143,7 +148,7 @@
                 'url'   => null,
                 'items' => array(
                         array(
-                            'label' => 'Account',
+                            'label' => 'Accounts',
                             'url'   => array('/accounts/default/create'),
                             'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
                         ),
@@ -171,6 +176,11 @@
                             'label' => 'Opportunity',
                             'url'   => array('/opportunities/default/create'),
                             'right' => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                        ),
+                        array(
+                            'label' => 'Report',
+                            'url'   => array('/reports/default/selectType'),
+                            'right' => ReportsModule::RIGHT_CREATE_REPORTS,
                         ),
                 ),
             );

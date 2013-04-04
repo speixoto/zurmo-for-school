@@ -32,6 +32,11 @@
         public $avatarType;
         public $customAvatarEmailAddress;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'User';
+        }
+
         public function __construct(User $model)
         {
             $this->model = $model;

@@ -50,13 +50,14 @@
             return array();
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
+            $params                            = LabelUtil::getTranslationParamsForAllModules();
             $labels                            = array();
-            $labels[self::RIGHT_CREATE_LEADS]  = 'Create LeadsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_LEADS]  = 'Delete LeadsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_LEADS]  = 'Access LeadsModulePluralLabel Tab';
-            $labels[self::RIGHT_CONVERT_LEADS] = 'Convert LeadsModulePluralLabel';
+            $labels[self::RIGHT_CREATE_LEADS]  = Zurmo::t('LeadsModule', 'Create LeadsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_LEADS]  = Zurmo::t('LeadsModule', 'Delete LeadsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_LEADS]  = Zurmo::t('LeadsModule', 'Access LeadsModulePluralLabel Tab', $params);
+            $labels[self::RIGHT_CONVERT_LEADS] = Zurmo::t('LeadsModule', 'Convert LeadsModulePluralLabel',    $params);
             return $labels;
         }
 
@@ -90,14 +91,14 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'LeadsModulePluralLabel',
+                        'label' => "eval:Zurmo::t('LeadsModule', 'LeadsModulePluralLabel', \$translationParams)",
                         'url'   => array('/leads/default'),
                         'right' => self::RIGHT_ACCESS_LEADS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'LeadsModuleSingularLabel',
+                        'label' => "eval:Zurmo::t('LeadsModule', 'LeadsModuleSingularLabel', \$translationParams)",
                         'url'   => array('/leads/default/create'),
                         'right' => self::RIGHT_CREATE_LEADS
                     ),

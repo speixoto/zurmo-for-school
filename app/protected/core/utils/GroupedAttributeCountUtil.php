@@ -44,15 +44,13 @@
         {
             assert('($filterByAttributeName == null && $filterByAttributeValue == null) ||
                         ($filterByAttributeName != null && $filterByAttributeValue != null)');
-
-            $model              = new $modelClassName();
             $tableName          = RedBeanModel::getTableName($modelClassName);
             $joinTablesAdapter  = new RedBeanModelJoinTablesQueryAdapter($modelClassName);
             $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
-            if ($model->isRelation($attributeName) && $model->getRelationType($attributeName) == RedBeanModel::HAS_MANY)
+            if ($modelClassName::isRelation($attributeName) && $modelClassName::getRelationType($attributeName) == RedBeanModel::HAS_MANY)
             {
                 assert('$attributeName == "values"'); //until we expand support on this method.
-                $relationModelClassName = $model->getRelationModelClassName($attributeName);
+                $relationModelClassName = $modelClassName::getRelationModelClassName($attributeName);
                 $attributeTableName     = RedBeanModel::getTableName($relationModelClassName);
                 $columnName             = 'value';
                 $relationTableAliasName = $joinTablesAdapter->addLeftTableAndGetAliasName(
@@ -64,15 +62,15 @@
             else
             {
                 $attributeTableName = $tableName;
-                $columnName         = $model->getColumnNameByAttribute($attributeName);
+                $columnName         = $modelClassName::getColumnNameByAttribute($attributeName);
             }
 
             $where = null;
             if ($filterByAttributeName != null)
             {
-               $attributeModelClassName    = $model->resolveAttributeModelClassName($filterByAttributeName);
+               $attributeModelClassName    = $modelClassName::resolveAttributeModelClassName($filterByAttributeName);
                $filterByAttributeTableName = RedBeanModel::getTableName($attributeModelClassName);
-               $filterByColumnName         = $model->getColumnNameByAttribute($filterByAttributeName);
+               $filterByColumnName         = $modelClassName::getColumnNameByAttribute($filterByAttributeName);
                $where = $filterByAttributeTableName . '.' . $filterByColumnName . '=' . $filterByAttributeValue;
                if ($filterByAttributeTableName != $tableName)
                {

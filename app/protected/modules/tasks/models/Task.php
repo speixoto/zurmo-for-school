@@ -102,12 +102,15 @@
             return $metadata;
         }
 
-        protected function untranslatedAttributeLabels()
+        protected static function translatedAttributeLabels($language)
         {
-            return array_merge(parent::untranslatedAttributeLabels(),
+            return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'completedDateTime' => 'Completed On',
-                    'dueDateTime'       => 'Due On',
+                    'completedDateTime' => Zurmo::t('TasksModule', 'Completed On', array(), null, $language),
+                    'completed'         => Zurmo::t('TasksModule', 'Completed',  array(), null, $language),
+                    'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'dueDateTime'       => Zurmo::t('TasksModule', 'Due On',       array(), null, $language),
+                    'name'              => Zurmo::t('TasksModule', 'Name',  array(), null, $language),
                 )
             );
         }

@@ -27,8 +27,13 @@
     /**
      * A class for creating notification models.
      */
-    class Notification extends Item
+    class Notification extends Item implements MashableInboxInterface
     {
+        public static function getMashableInboxRulesType()
+        {
+            return 'Notification';
+        }
+
         public function __toString()
         {
             if ($this->type == null)
@@ -91,9 +96,8 @@
             );
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Notification');
-            $where = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
-            $models = self::getSubset($joinTablesAdapter, null, null, $where, null);
-            return count($models);
+            $where  = RedBeanModelDataProvider::makeWhere('Notification', $searchAttributeData, $joinTablesAdapter);
+            return self::getCount($joinTablesAdapter, $where, null, true);
         }
 
         public static function getDefaultMetadata()
@@ -102,16 +106,19 @@
             $metadata[__CLASS__] = array(
                 'members' => array(
                     'type',
+                    'ownerHasReadLatest',
                 ),
                 'relations' => array(
-                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage'),
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'notificationMessage' => array(RedBeanModel::HAS_ONE,  'NotificationMessage', RedBeanModel::NOT_OWNED),
+                    'owner' =>               array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                                   RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
-                    array('owner',  'required'),
-                    array('type',   'required'),
-                    array('type',   'type',    'type' => 'string'),
-                    array('type',   'length',  'min'  => 3, 'max' => 64),
+                    array('owner',                  'required'),
+                    array('type',                   'required'),
+                    array('type',                   'type',    'type' => 'string'),
+                    array('type',                   'length',  'min'  => 3, 'max' => 64),
+                    array('ownerHasReadLatest',     'boolean'),
                 ),
                 'elements' => array(
                     'owner' => 'User',
@@ -119,7 +126,8 @@
                 'defaultSortAttribute' => null,
                 'noAudit' => array(
                     'owner',
-                    'type'
+                    'type',
+                    'ownerHasReadLatest',
                 )
             );
             return $metadata;
@@ -128,6 +136,23 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'NotificationsModule';
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'ownerHasReadLatest'  => Zurmo::t('NotificationsModule', 'Owner Has Read Latest',  array(), null, $language),
+                    'notificationMessage' => Zurmo::t('NotificationsModule', 'Notification Message',  array(), null, $language),
+                    'owner'               => Zurmo::t('ZurmoModule', 'Owner',  array(), null, $language),
+                    'type'                => Zurmo::t('Core', 'Type',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

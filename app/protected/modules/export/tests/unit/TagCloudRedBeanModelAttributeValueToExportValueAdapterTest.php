@@ -84,14 +84,22 @@
 
             $adapter = new TagCloudRedBeanModelAttributeValueToExportValueAdapter($model, 'tagCloud');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('tagCloud') => 'Tag 2, Tag 3');
+            $compareData = array('Tag 2,Tag 3');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('tagCloud'));
             $this->assertEquals($compareData, $data);
 
             $data = array();
             $model = new ExportTestModelItem();
             $adapter = new TagCloudRedBeanModelAttributeValueToExportValueAdapter($model, 'tagCloud');
             $adapter->resolveData($data);
-            $compareData = array($model->getAttributeLabel('tagCloud') => '');
+            $compareData = array('');
+            $this->assertEquals($compareData, $data);
+            $data = array();
+            $adapter->resolveHeaderData($data);
+            $compareData = array($model->getAttributeLabel('tagCloud'));
             $this->assertEquals($compareData, $data);
         }
     }

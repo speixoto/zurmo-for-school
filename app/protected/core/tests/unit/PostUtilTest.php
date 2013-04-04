@@ -109,7 +109,7 @@
             $this->assertEquals($language, 'en');
 
             //test sanitizing a SearchForm date attribute and a SearchForm dateTime attribute
-            $searchForm        = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm        = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $postData          = array( 'date__Date'  =>
                                     array('type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
                                           'firstDate' => '3/25/11'),
@@ -145,7 +145,7 @@
             $this->assertEquals($language, 'en');
 
             //test sanitizing a SearchForm date attribute and a SearchForm dateTime attribute
-            $searchForm        = new ASearchFormTestModel(new MixedRelationsModel());
+            $searchForm        = new MixedRelationsModelSearchFormTestModel(new MixedRelationsModel());
             $postData          = array( 'dateDateTimeADate__Date'  =>
                                     array('type'      => MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER,
                                           'firstDate' => '3/25/11'),

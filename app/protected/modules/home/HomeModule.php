@@ -30,6 +30,15 @@
         const RIGHT_DELETE_DASHBOARDS = 'Delete Dashboards';
         const RIGHT_ACCESS_DASHBOARDS = 'Access Dashboards';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                              = array();
+            $labels[self::RIGHT_CREATE_DASHBOARDS] = Zurmo::t('HomeModule', 'Create Dashboards');
+            $labels[self::RIGHT_DELETE_DASHBOARDS] = Zurmo::t('HomeModule', 'Delete Dashboards');
+            $labels[self::RIGHT_ACCESS_DASHBOARDS] = Zurmo::t('HomeModule', 'Access Dashboards');
+            return $labels;
+        }
+
         public function getDependencies()
         {
             return array(
@@ -48,14 +57,14 @@
             $metadata['global'] = array(
                 'adminTabMenuItems' => array(
                     array(
-                        'label'       => 'Back to Application',
+                        'label'       => "eval:Zurmo::t('HomeModule', 'Back to Application')",
                         'url'         => array('/home/default'),
                         'itemOptions' => array('class' => 'back-to-app-menu-item')
                     ),
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'Home',
+                        'label' => "eval:Zurmo::t('HomeModule', 'Home')",
                         'url'   => array('/home/default'),
                     ),
                 ),
@@ -63,9 +72,14 @@
             return $metadata;
         }
 
-        protected static function getSingularModuleLabel()
+        protected static function getSingularModuleLabel($language)
         {
-            return 'Home';
+            return Zurmo::t('HomeModule', 'Home', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return static::getSingularModuleLabel($language);
         }
 
         public static function getDeleteRight()

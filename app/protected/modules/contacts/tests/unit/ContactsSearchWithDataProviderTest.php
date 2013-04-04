@@ -136,5 +136,28 @@
             $this->assertEquals(1, count($data));
             $this->assertEquals($contact->id, $data[0]->id);
         }
+
+        public function testDefaultFullnameOrderOnContacts()
+        {
+            $super                      = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $contact                    = new Contact();
+            $contact->firstName         = 'Jackie';
+            $contact->lastName          = 'Bonn';
+            $contact->owner             = $super;
+            $contact->state             = ContactsUtil::getStartingState();
+            $this->assertTrue($contact->save());
+            $searchAttributeData        = array();
+            $dataProvider               = new RedBeanModelDataProvider('Contact', null, false, $searchAttributeData);
+            $data                       = $dataProvider->getData();
+            $contacts                   = array();
+            foreach ($data as $contact)
+            {
+                $contacts[] = strval($contact);
+            }
+            $sortedContacts             = $contacts;
+            sort($sortedContacts);
+            $this->assertEquals($contacts, $sortedContacts);
+        }
     }
 ?>

@@ -349,5 +349,57 @@
                 echo CJSON::encode(null);
             }
         }
+
+        public function actionUploadLogo($filesVariableName)
+        {
+            assert('is_string($filesVariableName)');
+            try
+            {
+                $uploadedFile = CUploadedFile::getInstanceByName($filesVariableName);
+                assert('$uploadedFile instanceof CUploadedFile');
+
+                $logoFilePath   = sys_get_temp_dir() . DIRECTORY_SEPARATOR . $uploadedFile->getName();
+                $thumbFilePath  = sys_get_temp_dir() . DIRECTORY_SEPARATOR .
+                                                      ZurmoConfigurationForm::LOGO_THUMB_FILE_NAME_PREFIX . $uploadedFile->getName();
+                $uploadedFile->saveAs($logoFilePath);
+                ZurmoConfigurationFormAdapter::resizeLogoImageFile($logoFilePath, $thumbFilePath,
+                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_WIDTH,
+                                                                   ZurmoConfigurationForm::DEFAULT_LOGO_THUMBNAIL_HEIGHT);
+                Yii::app()->user->setState('logoFileName', $uploadedFile->getName());
+                $logoFileData = array('name'            => $uploadedFile->getName(),
+                                      'type'            => $uploadedFile->getType(),
+                                      'size'            => $uploadedFile->getSize(),
+                                      'thumbnail_url'   => Yii::app()->createUrl('zurmo/default/thumbnail/',
+                                                                                 array('filePath'=>$thumbFilePath)));
+            }
+            catch (FailedFileUploadException $e)
+            {
+                $logoFileData = array('error' => Zurmo::t('ZurmoModule', 'Error') . ' ' . $e->getMessage());
+            }
+            echo CJSON::encode(array($logoFileData));
+            Yii::app()->end(0, false);
+        }
+
+        public function actionDeleteLogo()
+        {
+            Yii::app()->user->setState('logoFileName', null);
+            Yii::app()->user->setState('deleteCustomLogo', true);
+            Yii::app()->end(0, false);
+        }
+
+        public function actionLogo($id)
+        {
+            $logo = FileModel::getById($id);
+            header("Content-Type:   $logo->type");
+            header("Content-Length: $logo->size");
+            header("Content-Name:   $logo->name");
+            echo $logo->fileContent->content;
+        }
+
+        public function actionThumbnail($filePath)
+        {
+            header("Content-Type:   ZurmoFileHelper::getMimeType($filePath)");
+            echo file_get_contents($filePath);
+        }
     }
 ?>

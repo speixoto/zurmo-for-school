@@ -165,7 +165,8 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'relations' => array(
-                    'owner' => array(RedBeanModel::HAS_ONE, 'User'),
+                    'owner' => array(RedBeanModel::HAS_ONE, 'User', RedBeanModel::NOT_OWNED,
+                                     RedBeanModel::LINK_TYPE_SPECIFIC, 'owner'),
                 ),
                 'rules' => array(
                     array('owner', 'required'),
@@ -209,6 +210,13 @@
                                                          $quotedExtraSelectColumnNameAndAliases);
         }
 
+        /**
+         * @param User $user
+         * @param RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter
+         * @param $where
+         * @param $selectDistinct
+         * @throws NotSupportedException
+         */
         public static function resolveReadPermissionsOptimizationToSqlQuery(User $user,
                                     RedBeanModelJoinTablesQueryAdapter $joinTablesAdapter,
                                     & $where,
@@ -228,9 +236,8 @@
                     $quote                               = DatabaseCompatibilityUtil::getQuote();
                     $modelAttributeToDataProviderAdapter = new OwnedSecurableItemIdToDataProviderAdapter(
                                                                $modelClassName, null);
-                    $ownedTableAliasName = ModelDataProviderUtil::
-                                           resolveShouldAddFromTableAndGetAliasName( $modelAttributeToDataProviderAdapter,
-                                                                                     $joinTablesAdapter);
+                    $builder           = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
+                    $ownedTableAliasName = $builder->resolveJoins();
                     $ownerColumnName = RedBeanModel::getForeignKeyName('OwnedSecurableItem', 'owner');
                     $mungeIds = ReadPermissionsOptimizationUtil::getMungeIdsByUser($user);
                     if ($where != null)
@@ -267,6 +274,15 @@
         public static function isTypeDeletable()
         {
             return false;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'owner' => Zurmo::t('ZurmoModule', 'Owner', array(), null, $language),
+                )
+            );
         }
     }
 ?>

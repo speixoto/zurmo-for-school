@@ -32,6 +32,11 @@
         public $newPassword;
         public $newPassword_repeat;
 
+        protected static function getRedBeanModelClassName()
+        {
+            return 'User';
+        }
+
         public function __construct(User $model)
         {
             $this->model = $model;

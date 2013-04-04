@@ -32,13 +32,24 @@
             $currencyValue = $this->model->{$this->attribute};
             if ($currencyValue->id > 0)
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = $currencyValue->value;
-                $data[$this->model->getAttributeLabel($this->attribute) . ' ' . Zurmo::t('ExportModule', 'Currency')] = $currencyValue->currency->code;
+                $data[] = $currencyValue->value;
+                $data[] = $currencyValue->currency->code;
             }
             else
             {
-                $data[$this->model->getAttributeLabel($this->attribute)] = null;
+                $data[] = null;
+                $data[] = null;
             }
+        }
+
+        /**
+         * Resolve the header data for the attribute.
+         * @param array $headerData
+         */
+        public function resolveHeaderData(& $headerData)
+        {
+            $headerData[] = $this->model->getAttributeLabel($this->attribute);
+            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' ' . Zurmo::t('ZurmoModule', 'Currency');
         }
     }
 ?>

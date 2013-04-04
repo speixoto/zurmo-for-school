@@ -40,7 +40,7 @@ function attachLoadingOnSubmit(formId)
         return false;
     }
     $('#' + formId).find(".attachLoading:first").addClass("loading");
-    attachLoadingSpinner(formId, true);
+    makeOrRemoveLoadingSpinner(true, $('#' + formId).find(".attachLoading:first"));
 
     return true;
 }
@@ -53,21 +53,24 @@ function detachLoadingOnSubmit(formId)
 
 function beforeValidateAction(form)
 {
+    var context;
     if(form.find(".attachLoadingTarget").hasClass("loading") || form.find(".attachLoading:first").hasClass("loading"))
     {
         return false;
     }
     if(form.find(".attachLoadingTarget").length)
     {
-        form.find(".attachLoadingTarget").addClass("loading");
-        form.find(".attachLoadingTarget").addClass("loading-ajax-submit");
+        context = form.find(".attachLoadingTarget");
+        context.addClass("loading");
+        context.addClass("loading-ajax-submit");
     }
     else
     {
-        form.find(".attachLoading:first").addClass("loading");
-        form.find(".attachLoading:first").addClass("loading-ajax-submit");
+        context = form.find(".attachLoading:first");
+        context.addClass("loading");
+        context.addClass("loading-ajax-submit");
     }
-    attachLoadingSpinner(form.attr('id'), true);
+    makeOrRemoveLoadingSpinner(true, context);
     return true;
 }
 
@@ -79,6 +82,7 @@ function afterValidateAction(form, data, hasError)
         {
             form.find(".attachLoadingTarget").removeClass("loading");
             form.find(".attachLoadingTarget").removeClass("loading-ajax-submit");
+            form.find(".attachLoadingTarget").removeClass("attachLoadingTarget");
         }
         else
         {

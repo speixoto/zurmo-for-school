@@ -26,6 +26,8 @@
 
     class BaseTest extends PHPUnit_Framework_TestCase
     {
+        public static $activateDefaultLanguages = false;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();
@@ -49,6 +51,7 @@
                                    Yii::app()->db->password);
             assert('RedBeanDatabase::isSetup()'); // Not Coding Standard
             GeneralCache::forgetAll();
+            BeanModelCache::forgetAll();
             if ($freeze)
             {
                 RedBeanDatabase::freeze();
@@ -64,10 +67,21 @@
             Yii::app()->timeZoneHelper->setTimeZone(Yii::app()->getConfigTimeZoneValue());
             Yii::app()->timeZoneHelper->load(); //resets timezone
             Yii::app()->languageHelper->flushModuleLabelTranslationParameters();
+            if (static::$activateDefaultLanguages)
+            {
+                Yii::app()->languageHelper->load();
+                Yii::app()->languageHelper->activateLanguagesForTesting();
+                Yii::app()->languageHelper->importMessagesForTesting();
+            }
         }
 
         public static function tearDownAfterClass()
         {
+            if (static::$activateDefaultLanguages)
+            {
+                Yii::app()->languageHelper->deactivateLanguagesForTesting();
+            }
+
             if (RedBeanDatabase::isFrozen())
             {
                 TestDatabaseUtil::deleteRowsFromAllTablesExceptLog();
@@ -82,6 +96,7 @@
             RedBeanDatabase::close();
             assert('!RedBeanDatabase::isSetup()'); // Not Coding Standard
             GeneralCache::forgetAll();
+            BeanModelCache::forgetAll();
         }
 
         public static function resetAndPopulateFilesArrayByFilePathAndName($arrayName, $filePath, $fileName)

@@ -25,7 +25,7 @@
      ********************************************************************************/
 
     /**
-     * Used for testing with @see MixedRelationsModel
+     * Used for testing with @see A
      */
     class ASearchFormTestModel extends DynamicSearchForm
     {
@@ -36,7 +36,12 @@
         public $dateDateTimeADate__Date;
         public $dateDateTimeADateTime__DateTime;
 
-        public function __construct(RedBeanModel $model)
+        protected static function getRedBeanModelClassName()
+        {
+            return 'A';
+        }
+
+        public function __construct(A $model)
         {
             parent::__construct($model);
             $this->addAttributeNamesThatCanBeSplitUsingDelimiter('dateDateTimeADate__Date');

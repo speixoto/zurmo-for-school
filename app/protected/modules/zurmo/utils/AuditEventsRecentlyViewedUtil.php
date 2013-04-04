@@ -29,6 +29,8 @@
      */
     class AuditEventsRecentlyViewedUtil
     {
+        const RECENTLY_VIEWED_COUNT = 10;
+
         /**
          * Get the content for displaying recently viewed information via an ajax call.
          * @see RecentlyViewedView
@@ -38,24 +40,19 @@
         {
             assert('is_int($count)');
             $content     = null;
-            $auditEvents = self::getRecentlyViewedAuditEventsByUser($user, $count);
-            if (count($auditEvents) > 0)
+            $recentlyViewedData = self::getRecentlyViewedByUser($user, $count);
+            if (count($recentlyViewedData) > 0)
             {
-                foreach ($auditEvents as $auditEvent)
+                foreach ($recentlyViewedData as $recentlyViewed)
                 {
-                    assert('is_string($auditEvent->modelClassName)');
-                    assert('$auditEvent->serializedData != null');
-                    $modelClassName   = $auditEvent->modelClassName;
-                    $unserializedData = unserialize($auditEvent->serializedData);
-                    if ($unserializedData)
-                    {
-                        $moduleClassName = $unserializedData[1];
-                        $linkHtmlOptions = array('style' => 'text-decoration:underline;');
-                        $content .= ZurmoHtml::link($unserializedData[0],
-                                    self::getRouteByAuditEvent($auditEvent, $moduleClassName), $linkHtmlOptions);
-                        $content .= '&#160;-&#160;<span style="font-size:75%">';
-                        $content .= $moduleClassName::getModuleLabelByTypeAndLanguage('Singular') . '</span><br/>';
-                    }
+                    $moduleClassName                       = $recentlyViewed[0];
+                    $modelId                               = $recentlyViewed[1];
+                    $modelName                             = $recentlyViewed[2];
+                    $linkHtmlOptions = array('style' => 'text-decoration:underline;');
+                    $content .= ZurmoHtml::link($modelName,
+                                self::getRouteByRecentlyViewed($moduleClassName, $modelId), $linkHtmlOptions);
+                    $content .= '&#160;-&#160;<span style="font-size:75%">';
+                    $content .= $moduleClassName::getModuleLabelByTypeAndLanguage('Singular') . '</span><br/>';
                 }
             }
             else
@@ -74,24 +71,19 @@
         {
             assert('is_int($count)');
             $recentlyViewedItems = array();
-            $auditEvents = self::getRecentlyViewedAuditEventsByUser($user, $count);
-            if (count($auditEvents) > 0)
+            $recentlyViewedData = self::getRecentlyViewedByUser($user, $count);
+            if (count($recentlyViewedData) > 0)
             {
-                foreach ($auditEvents as $auditEvent)
+                foreach ($recentlyViewedData as $recentlyViewed)
                 {
-                    assert('is_string($auditEvent->modelClassName)');
-                    assert('$auditEvent->serializedData != null');
-                    $modelClassName   = $auditEvent->modelClassName;
-                    $unserializedData = unserialize($auditEvent->serializedData);
-                    if ($unserializedData)
-                    {
-                        $recentlyViewedItem                    = array();
-                        $moduleClassName                       = $unserializedData[1];
-                        $recentlyViewedItem['link']            = ZurmoHtml::link('<span></span><em></em><span>' . $unserializedData[0] . '</span>',
-                                    self::getRouteByAuditEvent($auditEvent, $moduleClassName));
-                        $recentlyViewedItem['moduleClassName'] = $moduleClassName;
-                        $recentlyViewedItems[]                 = $recentlyViewedItem;
-                    }
+                    $recentlyViewedItem                    = array();
+                    $moduleClassName                       = $recentlyViewed[0];
+                    $modelId                               = $recentlyViewed[1];
+                    $modelName                             = $recentlyViewed[2];
+                    $recentlyViewedItem['link']            = ZurmoHtml::link('<span></span><em></em><span>' . $modelName . '</span>',
+                                self::getRouteByRecentlyViewed($moduleClassName, $modelId));
+                    $recentlyViewedItem['moduleClassName'] = $moduleClassName;
+                    $recentlyViewedItems[]                 = $recentlyViewedItem;
                 }
             }
             return $recentlyViewedItems;
@@ -116,6 +108,84 @@
             assert('is_string($moduleClassName)');
             return Yii::app()->createUrl($moduleClassName::getDirectoryName() . '/default/details/',
                                          array('id' => $auditEvent->modelId));
+        }
+
+        /**
+         * Given an user, get the recently viewed moduleClassName and modelId limited by count
+         * @param User $user
+         * @param integer $count
+         * @return array($moduleClassName, $modelId)
+         */
+        protected static function getRecentlyViewedByUser(User $user, $count)
+        {
+            assert('is_int($count)');
+            $recentlyViewed = unserialize(ZurmoConfigurationUtil::getByUserAndModuleName($user, 'ZurmoModule', 'recentlyViewed'));
+            if (!is_array($recentlyViewed))
+            {
+                return array();
+            }
+            return array_slice($recentlyViewed, 0, $count);
+        }
+
+        /**
+         * Returns the url for the details view of a modelId on the moduleClassName
+         * @param string $moduleClassName
+         * @param integer $modelId
+         * @return string
+         */
+        protected static function getRouteByRecentlyViewed($moduleClassName, $modelId)
+        {
+            assert('is_string($moduleClassName)');
+            assert('$modelId > 0');
+            return Yii::app()->createUrl($moduleClassName::getDirectoryName() . '/default/details/',
+                                         array('id' => $modelId));
+        }
+
+        public static function resolveNewRecentlyViewedModel($moduleName, RedBeanModel $model, $count)
+        {
+            assert('strlen($moduleName) > 0 && is_int($model->id)');
+            $newItem        = array($moduleName, $model->id, strval($model));
+            $recentlyViewed = unserialize(ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            if (!is_array($recentlyViewed))
+            {
+                $recentlyViewed = array();
+            }
+            if (in_array($newItem, $recentlyViewed))
+            {
+                $key = array_search($newItem, $recentlyViewed);
+                unset($recentlyViewed[$key]);
+                array_keys($recentlyViewed);
+            }
+            if (array_unshift($recentlyViewed, $newItem) > $count)
+            {
+                array_pop($recentlyViewed);
+            }
+            ZurmoConfigurationUtil::
+                    setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
+        }
+
+        public static function deleteModelFromRecentlyViewed($moduleName, RedBeanModel $model)
+        {
+            if (!isset($model) || !isset($moduleName))
+            {
+                return;
+            }
+            $newItem        = array($moduleName, $model->id, strval($model));
+            $recentlyViewed = unserialize(ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            if (!is_array($recentlyViewed))
+            {
+                return;
+            }
+            if (in_array($newItem, $recentlyViewed))
+            {
+                $key = array_search($newItem, $recentlyViewed);
+                unset($recentlyViewed[$key]);
+                array_keys($recentlyViewed);
+            }
+            ZurmoConfigurationUtil::
+                    setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', serialize($recentlyViewed));
         }
     }
 ?>

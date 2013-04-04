@@ -49,8 +49,9 @@
             $amChart->id =  $this->uniqueLayoutId;
             $amChart->type = $this->resolveViewAndMetadataValueByName('type');
             $amChart->addSerialGraph('value', 'column');
-            $amChart->xAxisName = $chartDataProvider->getXAxisName();
-            $amChart->yAxisName = $chartDataProvider->getYAxisName();
+            $amChart->xAxisName        = $chartDataProvider->getXAxisName();
+            $amChart->yAxisName        = $chartDataProvider->getYAxisName();
+            $amChart->yAxisUnitContent = Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getCodeForCurrentUserForDisplay());
             $javascript = $amChart->javascriptChart();
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $this->uniqueLayoutId, $javascript);
             $cClipWidget = new CClipWidget();
@@ -67,7 +68,7 @@
             return array(
                 'perUser' => array(
                     'title' => "eval:Zurmo::t('OpportunitiesModule', 'Opportunities By Sales Stage', LabelUtil::getTranslationParamsForAllModules())",
-                    'type'  => 'Column2D',
+                    'type'  => ChartRules::TYPE_COLUMN_2D,
                 ),
                 'global' => array(
                 ),

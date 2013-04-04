@@ -65,19 +65,19 @@
             $portlets     = Portlet::getAll();
             foreach ($portlets as $portlet)
             {
-                if ($portlet->viewType == 'AccountLatestActivtiesForPortlet')
+                if ($portlet->viewType == 'AccountLatestActivitiesForPortlet')
                 {
                     $portletToUse = $portlet;
                     break;
                 }
             }
             $this->assertNotNull($portletToUse);
-            $this->assertEquals('AccountLatestActivtiesForPortletView', get_class($portletToUse->getView()));
+            $this->assertEquals('AccountLatestActivitiesForPortletView', get_class($portletToUse->getView()));
 
             //Load the portlet details for latest activity
             $getData = array('id' => $superAccountId,
                              'portletId' => $portletToUse->id,
-                             'uniqueLayoutId' => 'AccountDetailsAndRelationsView_'.$portletToUse->id,
+                             'uniqueLayoutId' => 'AccountDetailsAndRelationsView_' . $portletToUse->id,
                              'LatestActivitiesConfigurationForm' => array(
                                 'filteredByModelName' => 'all',
                                 'rollup' => ''

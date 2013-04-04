@@ -30,6 +30,15 @@
         const RIGHT_DELETE_GROUPS = 'Delete Groups';
         const RIGHT_ACCESS_GROUPS = 'Access Groups Tab';
 
+        public static function getTranslatedRightsLabels()
+        {
+            $labels                             = array();
+            $labels[self::RIGHT_CREATE_GROUPS] = Zurmo::t('ZurmoModule', 'Create Groups');
+            $labels[self::RIGHT_DELETE_GROUPS] = Zurmo::t('ZurmoModule', 'Delete Groups');
+            $labels[self::RIGHT_ACCESS_GROUPS] = Zurmo::t('ZurmoModule', 'Access Groups Tab');
+            return $labels;
+        }
+
         public function canDisable()
         {
             return false;
@@ -75,14 +84,6 @@
                         'descriptionLabel' => 'Manage Groups',
                         'route'            => '/zurmo/group',
                         'right'            => self::RIGHT_ACCESS_GROUPS,
-                    ),
-                ),
-                'headerMenuItems' => array(
-                    array(
-                        'label' => 'Groups',
-                        'url' => array('/zurmo/group'),
-                        'right' => self::RIGHT_ACCESS_GROUPS,
-                        'order' => 3,
                     ),
                 ),
             );

@@ -66,7 +66,8 @@
                     'type',
                 ),
                 'relations' => array(
-                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item'),
+                    'personOrAccount'      => array(RedBeanModel::HAS_ONE, 'Item',    RedBeanModel::NOT_OWNED,
+                                                    RedBeanModel::LINK_TYPE_SPECIFIC, 'personOrAccount')
                 ),
                 'rules' => array(
                     array('toAddress', 'required'),
@@ -83,6 +84,19 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'personOrAccount' => Zurmo::t('ZurmoModule',         'Person Or AccountsModuleSingularLabel',  $params, null, $language),
+                    'toAddress'       => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
+                    'toName'          => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
+                    'type'            => Zurmo::t('Core', 'Type',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

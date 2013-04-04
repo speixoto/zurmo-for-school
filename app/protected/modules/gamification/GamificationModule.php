@@ -45,9 +45,9 @@
             $metadata['global'] = array(
                 'userHeaderMenuItems' => array(
                         array(
-                            'label' => 'Leaderboard',
+                            'label' => "eval:Zurmo::t('GamificationModule', 'Leaderboard')",
                             'url' => array('/gamification/default/leaderboard'),
-                            'order' => 3,
+                            'order' => 2,
                         ),
                 ),
             );

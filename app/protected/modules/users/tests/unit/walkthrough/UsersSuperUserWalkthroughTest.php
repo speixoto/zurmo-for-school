@@ -332,8 +332,8 @@
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
-            $this->assertEquals(1,$user->isActive);
-            
+            $this->assertEquals(1, $user->isActive);
+
             //Change the user's status to inactive and confirm the changes in rights and isActive attribute.
             $this->setGetArray(array('id' => $user->id));
             $this->setPostArray(array('User' => array('userStatus'  => UserStatusUtil::INACTIVE)));
@@ -343,8 +343,8 @@
             $this->assertTrue(Right::DENY == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));
             $this->assertTrue(Right::DENY == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE));
             $this->assertTrue(Right::DENY == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
-            $this->assertEquals(0,$user->isActive);
-            
+            $this->assertEquals(0, $user->isActive);
+
             //Now change the user's status back to active.
             $this->setGetArray(array('id' => $user->id));
             $this->setPostArray(array('User' => array('userStatus'  => UserStatusUtil::ACTIVE)));
@@ -354,7 +354,7 @@
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_MOBILE));
             $this->assertTrue(Right::NONE == $user->getExplicitActualRight ('UsersModule', UsersModule::RIGHT_LOGIN_VIA_WEB_API));
-            $this->assertEquals(1,$user->isActive);
+            $this->assertEquals(1, $user->isActive);
         }
 
         /**
@@ -427,6 +427,46 @@
                                                                 'customAvatarEmailAddress' => ''))
                                 );
             $this->runControllerWithRedirectExceptionAndGetContent('users/default/changeAvatar');
-        }        
+        }
+
+        public function testSuperUserChangeOtherUserEmailSignature()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $aUser = User::getByUsername('auser');
+            $this->assertEquals(0, $aUser->emailSignatures->count());
+            $this->assertEquals($aUser, $aUser->getEmailSignature()->user);
+
+            //Change email settings
+            $this->setPostArray(array('EmailSmtpConfigurationForm' => array(
+                                    'host'                              => 'abc',
+                                    'port'                              => '565',
+                                    'username'                          => 'myuser',
+                                    'password'                          => 'apassword',
+                                    'security'                          => 'ssl',
+                                    'userIdOfUserToSendNotificationsAs' => $super->id)));
+            $this->runControllerWithRedirectExceptionAndGetContent('emailMessages/default/configurationEditOutbound');
+            $this->assertEquals('Email configuration saved successfully.',
+                                Yii::app()->user->getFlash('notification'));
+
+            //Change aUser email signature
+            $this->setGetArray(array('id' => $aUser->id));
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/emailConfiguration');
+            $this->assertNotContains('abc email signature', $content);
+            $this->setPostArray(array('UserEmailConfigurationForm' => array(
+                                    'fromName'                          => 'abc',
+                                    'fromAddress'                       => 'abc@zurmo.org',
+                                    'useCustomOutboundSettings'         => 0,
+                                    'emailSignatureHtmlContent'         => 'abc email signature')));
+            $this->runControllerWithRedirectExceptionAndGetContent('users/default/emailConfiguration');
+            $this->assertEquals('User email configuration saved successfully.',
+                                Yii::app()->user->getFlash('notification'));
+            $aUser = User::getByUsername('auser');
+            $this->assertEquals(1, $aUser->emailSignatures->count());
+            $this->assertEquals('abc email signature', $aUser->emailSignatures[0]->htmlContent);
+            $this->resetPostArray();
+            $content = $this->runControllerWithNoExceptionsAndGetContent('users/default/emailConfiguration');
+            $this->assertContains('abc email signature', $content);
+        }
     }
 ?>

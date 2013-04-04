@@ -34,24 +34,34 @@
 
         protected $applicationName;
 
-        public function __construct($settingsMenuItems, $userMenuItems, $notificationsUrl, $applicationName)
+        public function __construct($settingsMenuItems, $userMenuItems, $applicationName)
         {
             assert('is_array($settingsMenuItems)');
             assert('is_array($userMenuItems)');
-            assert('is_string($notificationsUrl)');
             assert('is_string($applicationName) || $applicationName == null');
             $this->settingsMenuItems     = $settingsMenuItems;
             $this->userMenuItems         = $userMenuItems;
-            $this->notificationsUrl      = $notificationsUrl;
             $this->applicationName       = $applicationName;
         }
 
         protected function renderContent()
         {
-            $imagePath = Yii::app()->baseUrl . '/themes/default/images/';
             $homeUrl   = Yii::app()->createUrl('home/default');
             $content   = '<div class="clearfix"><div id="corp-logo">';
-            $content  .= '<a href="' . $homeUrl . '"><img src="' . $imagePath . 'Zurmo_logo.png" alt="Zurmo Logo" width="107" height="32" /></a>';
+            if($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
+            {
+                $logoFileModel = FileModel::getById($logoFileModelId);
+                $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
+                                                                                DIRECTORY_SEPARATOR . $logoFileModel->name);
+            }
+            else
+            {
+                $logoFileSrc   = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
+            }
+            $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
+            $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
+            //width="'.$logoWidth.'" height="'.$logoHeight.'"
+            $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc.'" alt="Zurmo Logo" /></a>';
             if ($this->applicationName != null)
             {
                 $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);
@@ -61,7 +71,6 @@
             $content  .= static::renderHeaderMenuContent(
                             static::resolveUserMenuItemsWithTopLevelItem($this->userMenuItems),
                             'user-header-menu');
-            $content  .= static::renderNotificationsLinkContent();
             $content  .= static::renderHeaderMenuContent(
                             static::resolveSettingsMenuItemsWithTopLevelItem($this->settingsMenuItems),
                             'settings-header-menu');
@@ -102,59 +111,6 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['headerMenu'];
-        }
-
-        protected function renderNotificationsLinkContent()
-        {
-            $label    = Zurmo::t('ZurmoModule', 'Notifications');
-            $content  = null;
-            $count    = Notification::getCountByUser(Yii::app()->user->userModel);
-            // Begin Not Coding Standard
-            $content  .= '<div id="notifications" class="user-menu-item">';
-            $content  .= "<a id=\"notifications-flyout-link\" href=\"#\" class=\"notifications-link unread\">";
-            $content  .= "<span id='notifications-link'><strong>" . $count ."</strong></span></a>";
-            $content  .= ZurmoHtml::tag('div', array('id' => 'notifications-flyout'), '<span class="z-spinner"></span>', 'div');
-            Yii::app()->clientScript->registerScript('notificationPopupLinkScript', "
-                $('#notifications-link').live('click', function()
-                {
-                        if ( $('#notifications').hasClass('nav-open') === true ){
-                            attachLoadingSpinner('notifications-flyout', true);
-                            $.ajax({
-                                url 	 : '" . $this->notificationsUrl . "',
-                                type     : 'GET',
-                                dataType : 'html',
-                                success  : function(html)
-                                {
-                                    jQuery('#notifications-flyout').empty().html(html);
-                                }
-                            });
-                        }
-                        return false;
-                });
-            ", CClientScript::POS_HEAD);
-            Yii::app()->clientScript->registerScript('deleteNotificationFromAjaxListViewScript', "
-                function deleteNotificationFromAjaxListView(element, modelId, event)
-                {
-                    event.stopPropagation();
-                    $.ajax({
-                        url : '" . Yii::app()->createUrl('notifications/default/deleteFromAjax') . "?id=' + modelId,
-                        type : 'GET',
-                        dataType : 'json',
-                        success : function(data)
-                        {
-                            //remove row
-                            $(element).parent().remove();
-                        },
-                        error : function()
-                        {
-                            //todo: error call
-                        }
-                    });
-                }
-            ", CClientScript::POS_END);
-            $content  .= '</div>';
-            // End Not Coding Standard
-            return $content;
         }
     }
 ?>
