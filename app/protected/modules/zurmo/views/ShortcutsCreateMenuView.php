@@ -52,13 +52,6 @@
             return $this->renderContent();
         }
 
-        protected function renderContent()
-        {
-            $contentPrefix      = null;
-            $menuId             = 'ShortcutsMenu';
-            return $this->renderMenu($menuId, $contentPrefix);
-        }
-
         public function renderMenu($menuId, $contentPrefix = null)
         {
             if (empty($this->menuItems))
@@ -73,6 +66,23 @@
             ));
             $cClipWidget->endClip();
             return $contentPrefix . $cClipWidget->getController()->clips['Shortcuts'];
+        }
+
+        protected function renderContent()
+        {
+            $contentPrefix      = $this->getContentPrefix();
+            $menuId             = $this->getMenuId();
+            return $this->renderMenu($menuId, $contentPrefix);
+        }
+
+        protected function getContentPrefix()
+        {
+            return null;
+        }
+
+        protected function getMenuId()
+        {
+            return 'ShortcutsMenu';
         }
     }
 ?>

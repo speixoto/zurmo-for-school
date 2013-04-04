@@ -111,7 +111,7 @@
          */
         public function isMobile()
         {
-            return $this->selectedUserInterfaceType == self::MOBILE;
+            return true; //$this->selectedUserInterfaceType == self::MOBILE;
         }
 
         /**

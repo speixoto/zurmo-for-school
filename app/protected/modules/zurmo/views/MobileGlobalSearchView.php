@@ -29,11 +29,14 @@
      */
     class MobileGlobalSearchView extends GlobalSearchView
     {
-        protected function renderContent()
+        protected function getContentPrefix()
         {
-            $searchBoxId    = 'app-mobile-search';
-            $contentPrefix  = MobileHtml::renderFlyoutTrigger('Search');
-            return $this->renderSearchView($searchBoxId, $contentPrefix);
+            return parent::getContentPrefix() . MobileHtml::renderFlyoutTrigger('Search');
+        }
+
+        protected function getSearchBoxId()
+        {
+            return parent::getSearchBoxId() . '-mobile';
         }
     }
 ?>

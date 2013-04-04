@@ -26,12 +26,14 @@
 
     class MobileShortcutsCreateMenuView extends ShortcutsCreateMenuView
     {
-        protected function renderContent()
+        protected function getContentPrefix()
         {
-            $contentPrefix                      = MobileHtml::renderFlyoutTrigger('Shortcuts');
-            $menuId                             = 'MobileShortcutsMenu';
-            $this->menuItems['renderHeader']    = false;
-            return $this->renderMenu($menuId, $contentPrefix);
+            return parent::getContentPrefix() . MobileHtml::renderFlyoutTrigger('Shortcuts');
+        }
+
+        protected function getMenuId()
+        {
+            return 'Mobile' . parent::getMenuId();
         }
     }
 ?>
