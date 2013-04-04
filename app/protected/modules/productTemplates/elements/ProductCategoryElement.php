@@ -24,26 +24,34 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProfitMarginSellPriceFormulaRules extends SellPriceFormulaRules
+    /**
+     * Display the category selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on category.  Also includes a hidden input for the category
+     * id.
+     */
+    class ProductCategoryElement extends ModelElement
     {
-        public static function isSellPriceEditable()
+        protected static $moduleId = 'productTemplates';
+
+        protected $controllerId = 'category';
+
+        /**
+         * Render a hidden input, a text input with an auto-complete
+         * event, and a select button. These three items together
+         * form the Category Editable Element
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
         {
-            return false;
+            assert('$this->model->{$this->attribute} instanceof ProductCategory');
+            return parent::renderControlEditable();
         }
 
-        public static function getDisplayLabel()
+        protected function getModalTitleForSelectingModel()
         {
-            return Zurmo::t('ProductTemplateModule', 'Profit Margin');
-        }
-
-        public static function getType()
-        {
-            return SellPriceFormula::TYPE_PROFIT_MARGIN;
-        }
-
-        public static function getDisplaySellPriceFormula()
-        {
-            return Zurmo::t('ProductTemplateModule', self::getDisplayLabel() . self::getSellPriceFormulaDisplaySeparator() . 'Cost / (100 - {discount})');
+            return Zurmo::t('ZurmoModule', 'Select a Category');
         }
     }
 ?>

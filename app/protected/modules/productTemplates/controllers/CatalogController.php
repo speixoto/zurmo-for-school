@@ -127,7 +127,7 @@
             $productCatalog = new ProductCatalog(false);
             $activeAttributes = $this->resolveActiveAttributesFromMassEditPost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductCategoriesSearchForm($productCatalog),
+                new ProductCatalogsSearchForm($productCatalog),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,
@@ -202,7 +202,7 @@
 
             $activeAttributes = $this->resolveActiveAttributesFromMassDeletePost();
             $dataProvider = $this->getDataProviderByResolvingSelectAllFromGet(
-                new ProductCategoriesSearchForm($productCatalog),
+                new ProductCatalogsSearchForm($productCatalog),
                 $pageSize,
                 Yii::app()->user->userModel->id,
                 null,

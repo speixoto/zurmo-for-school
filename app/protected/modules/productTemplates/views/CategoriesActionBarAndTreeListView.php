@@ -24,26 +24,23 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProfitMarginSellPriceFormulaRules extends SellPriceFormulaRules
+    class CategoriesActionBarAndTreeListView extends GridView
     {
-        public static function isSellPriceEditable()
+        public function __construct($controllerId, $moduleId, $categories)
         {
-            return false;
+            assert('$controllerId != null');
+            assert('$moduleId != null');
+            assert('is_array($categories)');
+            parent::__construct(2, 1);
+            $this->setView(new ActionBarForCategoriesTreeListView ($controllerId, $moduleId), 0, 0);
+            $categoriesTreeListView = new ProductCategoriesTreeListView($controllerId, $moduleId, $categories);
+            $categoriesTreeListView->setCssClasses(array('DetailsView'));
+            $this->setView($categoriesTreeListView, 1, 0);
         }
 
-        public static function getDisplayLabel()
+        public function isUniqueToAPage()
         {
-            return Zurmo::t('ProductTemplateModule', 'Profit Margin');
-        }
-
-        public static function getType()
-        {
-            return SellPriceFormula::TYPE_PROFIT_MARGIN;
-        }
-
-        public static function getDisplaySellPriceFormula()
-        {
-            return Zurmo::t('ProductTemplateModule', self::getDisplayLabel() . self::getSellPriceFormulaDisplaySeparator() . 'Cost / (100 - {discount})');
+            return true;
         }
     }
 ?>

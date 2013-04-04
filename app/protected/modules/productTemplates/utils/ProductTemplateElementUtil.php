@@ -148,7 +148,6 @@
         public static function getProductTemplateStatusDropdownArray()
         {
             return array(
-                null                                 => Yii::t('Default', '--'),
                 ProductTemplate::STATUS_ACTIVE       => Yii::t('Default', 'Active'),
                 ProductTemplate::STATUS_INACTIVE     => Yii::t('Default', 'Inactive'),
             );
@@ -157,7 +156,6 @@
         public static function getProductTemplateTypeDropdownArray()
         {
             return array(
-                null                                => Yii::t('Default', '--'),
                 ProductTemplate::TYPE_PRODUCT       => Yii::t('Default', 'Product'),
                 ProductTemplate::TYPE_SERVICE       => Yii::t('Default', 'Service'),
                 ProductTemplate::TYPE_SUBSCRIPTION  => Yii::t('Default', 'Subscription'),

@@ -24,30 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class CategoriesActionBarForSearchAndListView extends SecuredActionBarForSearchAndListView
+    /**
+     * View that renders role module breadcrumb content
+     */
+    class ProductCategoryBreadCrumbView extends BreadCrumbView
     {
-        public static function getDefaultMetadata()
+            protected function getHomeLinkLabel()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'CreateLink',
-                                'htmlOptions' => array('class' => 'icon-create'),
-                            ),
-                            array('type'  => 'ExportLink',
-                                  'htmlOptions' => array('class' => 'icon-export'),
-                                  'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
-                            array('type'  => 'MassDeleteLink',
-                                  'htmlOptions' => array('class' => 'icon-delete'),
-                                  'listViewGridId' => 'eval:$this->listViewGridId',
-                                  'pageVarName' => 'eval:$this->pageVarName'),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Zurmo::t('ProductTemplatesModule', 'Product Categories Home');
         }
     }
 ?>

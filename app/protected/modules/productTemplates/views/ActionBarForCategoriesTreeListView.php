@@ -24,8 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductCategoriesSearchForm extends OwnedSearchForm
+    /**
+     * Renders an action bar specifically for the search and listview.
+     */
+    class ActionBarForCategoriesTreeListView extends ActionBarForSecurityTreeListView
     {
-
     }
 ?>

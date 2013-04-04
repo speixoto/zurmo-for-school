@@ -24,26 +24,45 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProfitMarginSellPriceFormulaRules extends SellPriceFormulaRules
+    /**
+     * View that renders a modal tree view of the
+     * categories that is used for selecting a parent
+     * role.  Does not allow picking of a category
+     * that has the same modelId or is downstream
+     * from that modelId in the role heirarchy.
+     */
+    class SelectParentCategoryModalTreeListView extends RolesModalTreeListView
     {
-        public static function isSellPriceEditable()
+        /**
+         * Override to ensure that the modelId is not null
+         */
+        public function __construct($controllerId,
+                                    $moduleId,
+                                    $modelId,
+                                    $roles,
+                                    $sourceIdFieldId,
+                                    $sourceNameFieldId)
         {
-            return false;
+            assert('$modelId != null');
+            parent::__construct    ($controllerId,
+                                    $moduleId,
+                                    $modelId,
+                                    $roles,
+                                    $sourceIdFieldId,
+                                    $sourceNameFieldId);
         }
 
-        public static function getDisplayLabel()
+        /**
+         * Only display node as linkable if the roleId does not
+         * match the $this->modelId
+         */
+        protected function resolveIsNodeLinkableById($id, $name)
         {
-            return Zurmo::t('ProductTemplateModule', 'Profit Margin');
-        }
-
-        public static function getType()
-        {
-            return SellPriceFormula::TYPE_PROFIT_MARGIN;
-        }
-
-        public static function getDisplaySellPriceFormula()
-        {
-            return Zurmo::t('ProductTemplateModule', self::getDisplayLabel() . self::getSellPriceFormulaDisplaySeparator() . 'Cost / (100 - {discount})');
+            if ($id == $this->modelId)
+            {
+                return false;
+            }
+            return true;
         }
     }
 ?>

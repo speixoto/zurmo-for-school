@@ -43,7 +43,7 @@
 
         public static function getDisplaySellPriceFormula()
         {
-            return Zurmo::t('ProductTemplateModule', ' List Price - ({discount} * List Price)');
+            return Zurmo::t('ProductTemplateModule', self::getDisplayLabel() . self::getSellPriceFormulaDisplaySeparator() . 'List Price - ({discount} * List Price)');
         }
     }
 ?>

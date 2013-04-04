@@ -90,11 +90,13 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'name',
+                    'name'
                 ),
                 'relations' => array(
-                    'productTemplates' => array(RedBeanModel::MANY_MANY, 'ProductTemplate'),
-                    'productCatalogs'  => array(RedBeanModel::MANY_MANY, 'ProductCatalog'),
+                    'productTemplates'  => array(RedBeanModel::MANY_MANY, 'ProductTemplate'),
+                    'productCatalogs'   => array(RedBeanModel::MANY_MANY, 'ProductCatalog'),
+                    'productCategory'   => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'ProductCategory'),
+                    'productCategories' => array(RedBeanModel::HAS_MANY, 'ProductCategory'),
                 ),
                 'rules' => array(
                     array('name',  'required'),

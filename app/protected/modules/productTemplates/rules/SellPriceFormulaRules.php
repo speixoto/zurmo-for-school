@@ -45,5 +45,10 @@
         {
             throw new NotImplementedException();
         }
+
+        public static function getSellPriceFormulaDisplaySeparator()
+        {
+            return ', ';
+        }
     }
 ?>

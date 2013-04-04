@@ -24,26 +24,42 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProfitMarginSellPriceFormulaRules extends SellPriceFormulaRules
+    /**
+     * Display the category selection.  This is specifically
+     * for selecting a parent category.
+     */
+    class ParentProductCategoryElement extends ProductCategoryElement
     {
-        public static function isSellPriceEditable()
+        protected function renderControlEditable()
         {
-            return false;
+            assert('$this->model instanceof ProductCategory');
+            return parent::renderControlEditable();
         }
 
-        public static function getDisplayLabel()
+        /**
+         * Override to ensure the text box is disabled.
+         * This will force the select button to be utililzed
+         * instead of type-ahead.
+         * @return The element's content as a string.
+         */
+        protected function renderTextField($idInputName)
         {
-            return Zurmo::t('ProductTemplateModule', 'Profit Margin');
+            $htmlOptions               = array();
+            $htmlOptions['disabled']   = 'disabled';
+            $htmlOptions['id']         = $this->getIdForTextField();
+            $htmlOptions['name']       = $this->getNameForTextField();
+            $htmlOptions['value']      = $this->getName();
+            return $this->form->textField($this->model, $this->attribute, $htmlOptions);
         }
 
-        public static function getType()
+        protected function getModalTitleForSelectingModel()
         {
-            return SellPriceFormula::TYPE_PROFIT_MARGIN;
+            return Zurmo::t('ProductTemplates', 'Select a Parent Category');
         }
 
-        public static function getDisplaySellPriceFormula()
+        protected function renderLabel()
         {
-            return Zurmo::t('ProductTemplateModule', self::getDisplayLabel() . self::getSellPriceFormulaDisplaySeparator() . 'Cost / (100 - {discount})');
+            return Zurmo::t('ProductTemplates', 'Parent Category');
         }
     }
 ?>
