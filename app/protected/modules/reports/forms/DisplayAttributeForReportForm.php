@@ -31,6 +31,8 @@
     {
         const COLUMN_ALIAS_PREFIX = 'col';
 
+        const HEADER_SORTABLE_TYPE_ASORT = 'asort';
+
         /**
          * @var string
          */
@@ -264,6 +266,29 @@
                 $translatedValue = '';
             }
             return $translatedValue;
+        }
+
+        /**
+         * For matrix reports, months for example need to be sorted using asort so the columns or rows are sorted
+         * correctly. Eventually expand to support sorting by users and custom fields.
+         * @return string | null
+         * @throws NotSupportedException
+         */
+        public function getHeaderSortableType()
+        {
+            if($this->attributeIndexOrDerivedType == null)
+            {
+                throw new NotSupportedException();
+            }
+            $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
+            if($modelToReportAdapter->isAttributeACalculatedGroupByModifier($this->getResolvedAttribute()))
+            {
+                return self::HEADER_SORTABLE_TYPE_ASORT;
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 ?>

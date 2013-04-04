@@ -441,6 +441,14 @@
                     }
                 }
             }
+            //Sort for group bys correctly.
+            foreach($this->getDisplayAttributesThatAreXAxisGroupBys() as $displayAttribute)
+            {
+                if($displayAttribute->getHeaderSortableType() == DisplayAttributeForReportForm::HEADER_SORTABLE_TYPE_ASORT)
+                {
+                    asort($this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]);
+                }
+            }
             return $this->xAxisGroupByDataValues;
         }
 
