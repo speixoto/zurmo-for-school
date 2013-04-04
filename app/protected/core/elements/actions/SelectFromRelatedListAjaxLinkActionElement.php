@@ -48,15 +48,6 @@
 
         protected function getDefaultRoute()
         {
-//            return Yii::app()->createUrl($this->moduleId . '/default/SelectFromRelatedList/',
-//                    array(
-//                    'uniqueLayoutId'          => $this->getUniqueLayoutId(),
-//                    'portletId'               => $this->getPortletId(),
-//                    'relationAttributeName'   => $this->params['relationAttributeName'],
-//                    'relationModelId'         => $this->params['relationModelId'],
-//                    'relationModuleId'        => $this->params['relationModuleId'],
-//                    )
-//            );
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/SelectFromRelatedList/',
                     array(
                     'uniqueLayoutId'          => $this->getUniqueLayoutId(),
