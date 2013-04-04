@@ -673,7 +673,7 @@
 }
 
 .zero-components-view{
-    &.Actions, &.EmailMessages, &.TimeTrigger, &.WorkflowRulesOrder, &.TimeTrigger{
+    &.Actions, &.EmailMessages, &.WorkflowRulesOrder, &.TimeTrigger{
         position: relative;
         top:0;
         left: 0;
@@ -925,7 +925,7 @@
 }
 
 /*for actions in WORKFLOWS hide/show sequence*/
-#OnSaveWorkflowWizardView{
+.ComponentForWorkflowWizardView{
 	.add-email-message-button-container,
 	.action-type-selector-container{
 		width: 20%;
@@ -939,7 +939,8 @@
 		++.border-box;
 	}
 	.Actions,
-	.EmailMessages{
+	.EmailMessages,
+	.TimeTrigger{
 		&.droppable-dynamic-rows-container,
 		&.zero-components-view{
 			width: 80% !important;

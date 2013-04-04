@@ -80,6 +80,7 @@ function rebuildWorkflowActionRowNumbers(divId){
     structure = '';
     $('#' + divId).find('.dynamic-row-number-label').each(function(){
         $(this).html(rowCount + '.');
+        console.log(rowCount, $(this));
         rowCount ++;
     });
 }
