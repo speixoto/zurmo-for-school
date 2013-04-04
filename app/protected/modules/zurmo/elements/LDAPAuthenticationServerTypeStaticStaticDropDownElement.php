@@ -23,16 +23,16 @@
      * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
-    /* 
-    dropdown element to show LDAP Authentication server type
+    /** 
+    * Dropdown element to show LDAP Authentication server type
     */
     class LDAPAuthenticationServerTypeStaticStaticDropDownElement extends StaticDropDownFormElement
     {
         protected function getDropDownArray()
         {
             return array(
-                'ActiveDirectory' => Zurmo::t('UsersModule', 'Active Directory'),
-                'OpenLDAP'        => Zurmo::t('UsersModule', 'OpenLDAP'),                
+                ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY => Zurmo::t('UsersModule', 'Active Directory'),
+                ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP        => Zurmo::t('UsersModule', 'OpenLDAP'),                
             );
         }
     }
