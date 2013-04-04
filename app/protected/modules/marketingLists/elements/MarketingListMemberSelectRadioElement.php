@@ -104,12 +104,12 @@
 
         protected function getSelectContactOrLeadSearchBoxId()
         {
-            return ObjectParametersUtil::getValue($this, 'selectContactSearchBoxId');
+            return ObjectParametersUtil::getValue($this->params, 'selectContactSearchBoxId');
         }
 
         protected function getSelectReportSearchBoxId()
         {
-            return ObjectParametersUtil::getValue($this, 'selectReportSearchBoxId');
+            return ObjectParametersUtil::getValue($this->params, 'selectReportSearchBoxId');
         }
     }
 ?>

@@ -35,7 +35,7 @@
          */
         protected $skipCount;
 
-        public $params; // public: to support ObjectParametersUtil
+        protected $params;
 
         abstract protected function getMessagePrefix();
 
@@ -119,21 +119,21 @@
 
         protected function renderReturnUrl()
         {
-            $returnUrl = ObjectParametersUtil::getValue($this, 'returnUrl');
+            $returnUrl = ObjectParametersUtil::getValue($this->params, 'returnUrl');
             $returnUrl = ($returnUrl)? $returnUrl : Yii::app()->createUrl($this->moduleId);
             return $returnUrl;
         }
 
         protected function renderReturnMessage()
         {
-            $returnMessage = ObjectParametersUtil::getValue($this, 'returnMessage');
+            $returnMessage = ObjectParametersUtil::getValue($this->params, 'returnMessage');
             $returnMessage = ($returnMessage) ? $returnMessage : Zurmo::t('Core', 'Return to List');
             return $returnMessage;
         }
 
         protected function getDefaultInsufficientPermissionSkipSavingUtil()
         {
-            $util = ObjectParametersUtil::getValue($this, 'insufficientPermissionSkipSavingUtil');
+            $util = ObjectParametersUtil::getValue($this->params, 'insufficientPermissionSkipSavingUtil');
             $util = ($util)? $util : $this->getInsufficientPermissionSkipSavingUtil();
             return $util;
         }

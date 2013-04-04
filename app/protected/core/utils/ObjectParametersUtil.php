@@ -26,19 +26,25 @@
 
     class ObjectParametersUtil
     {
-        public static function getValue($object, $parameterName, $defaultValue = null, $throwExceptionIfNotFound = true,
-                                                                $paramsVariableName = "params", $qualifierMethod = null)
+        public static function getValue($parameters, $parameterName, $defaultValue = null, $throwExceptionIfNotFound = true,
+                                                                $qualifierMethod = null)
         {
-            $params = $object->$paramsVariableName;
-            if (array_key_exists($parameterName, $params))
+            if (array_key_exists($parameterName, $parameters))
             {
                 if ($qualifierMethod)
                 {
-                    return ($qualifierMethod($params[$parameterName]))? $params[$parameterName] : $defaultValue;
+                    if (is_callable($qualifierMethod))
+                    {
+                        return ($qualifierMethod($parameters[$parameterName]))? $parameters[$parameterName] : $defaultValue;
+                    }
+                    else
+                    {
+                        throw new NotSupportedException($qualifierMethod . ' is not a valid callable');
+                    }
                 }
                 else
                 {
-                    return ($params[$parameterName])? $params[$parameterName] : $defaultValue;
+                    return ($parameters[$parameterName])? $parameters[$parameterName] : $defaultValue;
                 }
             }
             else if ($throwExceptionIfNotFound)

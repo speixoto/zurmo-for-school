@@ -79,12 +79,12 @@
 
         protected function getMembersPortletClass()
         {
-            return ObjectParametersUtil::getValue($this, 'membersPortletClass');
+            return ObjectParametersUtil::getValue($this->params, 'membersPortletClass');
         }
 
         protected function getAutorespondersPortletClass()
         {
-            return ObjectParametersUtil::getValue($this, 'autorespondersPortletClass');
+            return ObjectParametersUtil::getValue($this->params, 'autorespondersPortletClass');
         }
     }
 ?>

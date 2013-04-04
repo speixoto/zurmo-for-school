@@ -140,7 +140,7 @@
 
         protected function getModelId()
         {
-            $marketingListId = ObjectParametersUtil::getValue($this, 'marketingListId', null, false);
+            $marketingListId = ObjectParametersUtil::getValue($this->params, 'marketingListId', null, false);
             if (!isset($marketingListId))
             {
                 if (!isset($this->model))
@@ -157,7 +157,7 @@
 
         protected function getRadioButtonClass()
         {
-            return ObjectParametersUtil::getValue($this, 'radioButtonClass');
+            return ObjectParametersUtil::getValue($this->params, 'radioButtonClass');
         }
     }
 ?>

@@ -32,7 +32,7 @@
          * Portlet parameters passed in from the portlet.
          * @var array
          */
-        public $params; // public: to support ObjectParametersUtil
+        protected  $params;
 
         protected $controllerId;
 
@@ -174,7 +174,7 @@
 
         protected function getPortletId()
         {
-            return ObjectParametersUtil::getValue($this, 'portletId');
+            return ObjectParametersUtil::getValue($this->params, 'portletId');
         }
 
         /**
@@ -183,7 +183,7 @@
          */
         protected function getNonAjaxRedirectUrl()
         {
-            $redirectUrl = ObjectParametersUtil::getValue($this, 'redirectUrl');
+            $redirectUrl = ObjectParametersUtil::getValue($this->params, 'redirectUrl');
             if ($redirectUrl)
             {
                 return $redirectUrl;

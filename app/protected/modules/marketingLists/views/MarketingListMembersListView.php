@@ -65,7 +65,7 @@
          */
         protected $showFilteredBySearchTerm = true;
 
-        public $params; // public: to support ObjectParametersUtil
+        protected  $params;
 
         /**
          * Associated moduleClassName of the containing view.
@@ -185,7 +185,7 @@
 
         protected function getPortletId()
         {
-            return ObjectParametersUtil::getValue($this, 'portletId');
+            return ObjectParametersUtil::getValue($this->params, 'portletId');
         }
 
         protected function renderConfigurationForm()

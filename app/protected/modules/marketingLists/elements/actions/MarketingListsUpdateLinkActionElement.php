@@ -105,7 +105,7 @@
 
         protected function getListViewGridId()
         {
-            return ObjectParametersUtil::getValue($this, 'listViewGridId');
+            return ObjectParametersUtil::getValue($this->params, 'listViewGridId');
         }
     }
 ?>

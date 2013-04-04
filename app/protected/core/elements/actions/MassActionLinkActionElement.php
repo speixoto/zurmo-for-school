@@ -279,13 +279,13 @@
         protected function getListViewGridId()
         {
             // TODO: @Shoaibi/@Jason: Low: Create a common parent for Element and ActionElement, put this there.
-            return ObjectParametersUtil::getValue($this, 'listViewGridId');
+            return ObjectParametersUtil::getValue($this->params, 'listViewGridId');
         }
 
         protected function getPageVarName()
         {
             // TODO: @Shoaibi/@Jason: Low: Create a common parent for Element and ActionElement, put this there.
-            return ObjectParametersUtil::getValue($this, 'pageVarName');
+            return ObjectParametersUtil::getValue($this->params, 'pageVarName');
         }
 
         protected function getDefaultRoute()
