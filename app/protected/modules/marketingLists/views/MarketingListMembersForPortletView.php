@@ -174,7 +174,7 @@
 
         protected function getPortletId()
         {
-            return ObjectParametersUtil::getValue($this->params, 'portletId');
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'portletId');
         }
 
         /**
@@ -183,7 +183,7 @@
          */
         protected function getNonAjaxRedirectUrl()
         {
-            $redirectUrl = ObjectParametersUtil::getValue($this->params, 'redirectUrl');
+            $redirectUrl = ArrayUtil::getArrayValue($this->params, 'redirectUrl');
             if ($redirectUrl)
             {
                 return $redirectUrl;

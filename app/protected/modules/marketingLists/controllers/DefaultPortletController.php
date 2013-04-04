@@ -44,6 +44,16 @@
             }
         }
 
+        public function actionCountMembers($marketingListId)
+        {
+            $countArray = array(
+                            'subscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, false),
+                            'unsubscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, true)
+                                );
+            echo CJSON::encode($countArray);
+
+        }
+
         public function actionSubscribeContacts($marketingListId, $id, $type)
         {
             assert('is_int($id)');
@@ -56,7 +66,7 @@
             $subscriberInformation = $this->addNewSubscribers($marketingListId, $contactIds);
             $message = Zurmo::t('MarketingListsModule', '{subscribedCount} subscribed.',
                                                 array('{subscribedCount}' => $subscriberInformation['subscribedCount']));
-            if (array_key_exists('skippedCount', $subscriberInformation))
+            if (array_key_exists('skippedCount', $subscriberInformation) && $subscriberInformation['skippedCount'])
             {
                 $message .= ' ' . Zurmo::t('MarketingListsModule', '{skippedCount} skipped.',
                                                         array('{skippedCount}' => $subscriberInformation['skippedCount']));

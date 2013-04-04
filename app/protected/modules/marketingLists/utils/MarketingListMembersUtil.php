@@ -70,7 +70,7 @@
                                                         'value'                     => $filterBySearchTerm
                                                 ),
                     /*
-                     // TODO: @Jason: High: Bug: Undefined Index: attributeName
+                     // TODO: @Jason: Low: Bug: Undefined Index: attributeName
 
                                                 array(  'attributeName'             => 'contact',
                                                         'relatedModelData'          => array(
@@ -121,7 +121,6 @@
             }
             return array(array('MarketingListMember' => $searchAttributeData));
         }
-
 
         public static function makeSortAttributeData()
         {

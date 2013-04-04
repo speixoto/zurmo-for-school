@@ -119,21 +119,21 @@
 
         protected function renderReturnUrl()
         {
-            $returnUrl = ObjectParametersUtil::getValue($this->params, 'returnUrl');
+            $returnUrl = ArrayUtil::getArrayValue($this->params, 'returnUrl');
             $returnUrl = ($returnUrl)? $returnUrl : Yii::app()->createUrl($this->moduleId);
             return $returnUrl;
         }
 
         protected function renderReturnMessage()
         {
-            $returnMessage = ObjectParametersUtil::getValue($this->params, 'returnMessage');
+            $returnMessage = ArrayUtil::getArrayValue($this->params, 'returnMessage');
             $returnMessage = ($returnMessage) ? $returnMessage : Zurmo::t('Core', 'Return to List');
             return $returnMessage;
         }
 
         protected function getDefaultInsufficientPermissionSkipSavingUtil()
         {
-            $util = ObjectParametersUtil::getValue($this->params, 'insufficientPermissionSkipSavingUtil');
+            $util = ArrayUtil::getArrayValue($this->params, 'insufficientPermissionSkipSavingUtil');
             $util = ($util)? $util : $this->getInsufficientPermissionSkipSavingUtil();
             return $util;
         }

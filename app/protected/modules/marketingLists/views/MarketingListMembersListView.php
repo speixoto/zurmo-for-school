@@ -149,6 +149,7 @@
 
         protected function renderContent()
         {
+            $this->registerScriptsForDynamicMemberCountUpdate();
             return $this->renderConfigurationForm() . parent::renderContent();
         }
 
@@ -185,7 +186,7 @@
 
         protected function getPortletId()
         {
-            return ObjectParametersUtil::getValue($this->params, 'portletId');
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'portletId');
         }
 
         protected function renderConfigurationForm()
@@ -285,6 +286,48 @@
                 );
                 ");
             }
+        }
+
+        protected function registerScriptsForDynamicMemberCountUpdate()
+        {
+
+            Yii::app()->clientScript->registerScript($this->uniquePageId.'_dynamicMemberCountUpdate', '
+                function updateMemberStats(newCount, oldContent, elementClass)
+                {
+                    countStrippedOldContent = oldContent.substr(oldContent.indexOf(" "));
+                    $(elementClass).html(newCount + countStrippedOldContent);
+                }
+
+                $("#' . $this->getGridViewId() . ' .pager .refresh a").unbind("click.dynamicMemberCountUpdate").bind("click.dynamicMemberCountUpdate", function (event)
+                {
+                    var modelId                 = "' . $this->getModelId() . '";
+                    var subscriberCountClass    = ".' . MarketingListDetailsOverlayView::SUBSCRIBERS_STATS_CLASS . '";
+                    var unsubscriberCountClass  = ".' . MarketingListDetailsOverlayView::UNSUBSCRIBERS_STATS_CLASS . '";
+                    var subscriberHtml          = $(subscriberCountClass).html();
+                    var unsubscriberHtml        = $(unsubscriberCountClass).html();
+                    var url                     = "' . MarketingListDetailsOverlayView::getMemberCountUpdateUrl() . '";
+                    $.ajax(
+                            {
+                                url:        url,
+                                dataType:   "json",
+                                data:       { marketingListId: modelId },
+                                success:    function(data, status, request) {
+                                                updateMemberStats(data.subscriberCount, subscriberHtml, subscriberCountClass);
+                                                updateMemberStats(data.unsubscriberCount, unsubscriberHtml, unsubscriberCountClass);
+                                            },
+                                error:      function(request, status, error) {
+                                                // TODO: @Shoaibi/@Jason: Medium: What should we do here?
+                                            },
+                            }
+                        );
+                    });
+                ');
+        }
+
+        protected function getModelId()
+        {
+            $model = ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'relationModel');
+            return $model->id;
         }
     }
 ?>

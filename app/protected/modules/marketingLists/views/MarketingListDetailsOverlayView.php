@@ -26,6 +26,21 @@
 
     class MarketingListDetailsOverlayView extends SecuredEditAndDetailsView
     {
+        const MEMBER_STATS_CLASS         = 'marketing-list-member-stats';
+
+        const SUBSCRIBERS_STATS_CLASS    = 'marketing-list-subscribers-stats';
+
+        const UNSUBSCRIBERS_STATS_CLASS  = 'marketing-list-unsubscribers-stats';
+
+        const INVALID_EMAIL_STATS_CLASS  = 'marketing-list-invalid-email-stats';
+
+        const DESCRIPTION_CLASS          = 'marketing-list-description';
+
+        public static function getMemberCountUpdateUrl()
+        {
+            return Yii::app()->createUrl('/marketingLists/defaultPortlet/countMembers/');
+        }
+
         protected function renderContent()
         {
             // TODO: @Shoaibi/@Jason: High: An alternate to this was to use metadata and have separate item for each of the functions defined below.
@@ -36,9 +51,9 @@
         protected function renderMemberStats()
         {
             $memberStats    = $this->renderSubscriberCount() .
-                                $this->renderUnsubscriberCount() .
-                                $this->renderInvalidEmailsCount();
-            return ZurmoHtml::tag('div', array('class' => 'marketing-list-member-stats'), $memberStats);
+                                $this->renderUnsubscriberCount();
+                                // $this->renderInvalidEmailsCount();
+            return ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
 
         }
 
@@ -54,23 +69,25 @@
 
         protected function renderMemberCountMessage($unsubscribers = false)
         {
-            $count          = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, $unsubscribers);
-            $divClass       = ($unsubscribers)? 'marketing-list-unsubscribers-stats' : 'marketing-list-subscribers-stats';
-            $messageSuffix  = ($unsubscribers)? 'unsubscribers' : 'subscribers';
-            $message        = Zurmo::t('MarketingListsModule', '{count} ' . $messageSuffix, array('{count}' => $count));
-            return ZurmoHtml::tag('div', array('class' => $divClass), $message);
+            $messageDivClass    = ($unsubscribers)?
+                                        static::UNSUBSCRIBERS_STATS_CLASS :
+                                        static::SUBSCRIBERS_STATS_CLASS;
+            $count              = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, $unsubscribers);
+            $messageSuffix      = ($unsubscribers)? 'unsubscribers' : 'subscribers';
+            $message            = Zurmo::t('MarketingListsModule', '{count} ' . $messageSuffix, array('{count}' => $count));
+            return ZurmoHtml::tag('div', array('class' => $messageDivClass), $message);
         }
 
         protected function renderInvalidEmailsCount()
         {
-            $count          = 0; // TODO: @Shoaibi/@Jason: Critical: How do we do this?
+            $count          = 0; // TODO: @Shoaibi/@Jason: Low: How do we do this?, Check how many members have !isInvalid Email
             $message        = Zurmo::t('MarketingListsModule', '{count} invalid email address', array('{count}' => $count));
-            return ZurmoHtml::tag('div', array('class' => 'marketing-list-invalid-email-stats'), $message);
+            return ZurmoHtml::tag('div', array('class' => static::INVALID_EMAIL_STATS_CLASS), $message);
         }
 
         protected function renderDescription()
         {
-            return ZurmoHtml::tag('div', array('class' => 'marketing-list-description'), $this->model->description);
+            return ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->description);
         }
     }
 ?>

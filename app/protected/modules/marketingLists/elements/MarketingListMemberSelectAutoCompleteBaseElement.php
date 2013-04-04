@@ -78,42 +78,48 @@
         protected function getWidgetSelectActionJS()
         {
             return 'js: function(event, ui) {
-                            var searchBox = $(this);
-                            url = "' . $this->getSubscribeUrl() . '";
+                            var searchBox           = $(this);
+                            var listGridViewId      = "' . $this->getListViewGridId() .'";
+                            var notificationBarId   = "' . static::NOTIFICATION_BAR_ID . '";
+                            var radioButtonClass    = "' . $this->getRadioButtonClass() . '";
+                            var url                 = "' . $this->getSubscribeUrl() . '";
+                            var modelId             = "' . $this->getModelId() . '";
+                            var selectType          = "' . $this->getSelectType() . '";
+                            var disableTextBox      = "' . static::DISABLE_TEXT_BOX_WHEN_AJAX_IN_PROGRESS . '";
+                            var disableRadioButton  = "' . static::DISABLE_RADIO_BUTTON_WHEN_AJAX_IN_PROGRESS . '";
                             $.ajax(
                                 {
-                                    async:      true,
                                     url:        url,
                                     dataType:   "json",
-                                    data:       { marketingListId: ' . $this->getModelId() . ', id: ui.item.id,
-                                                                                type: "' . $this->getSelectType() . '" },
+                                    data:       { marketingListId: modelId, id: ui.item.id, type: selectType },
                                     beforeSend: function(request, settings) {
-                                                    $("#' . $this->getListViewGridId() .'").addClass("loading");
-                                                    if (' . static::DISABLE_TEXT_BOX_WHEN_AJAX_IN_PROGRESS . ' == true)
+                                                    makeSmallLoadingSpinner(listGridViewId);
+                                                    $("#" + listGridViewId).addClass("loading");
+                                                    if (disableTextBox == true)
                                                     {
                                                         $(searchBox).attr("disabled", "disabled");
                                                     }
-                                                    if (' . static::DISABLE_RADIO_BUTTON_WHEN_AJAX_IN_PROGRESS . ' == true)
+                                                    if (disableRadioButton == true)
                                                     {
-                                                        $(".' . $this->getRadioButtonClass() . '").attr("disabled", "disabled");
+                                                        $("." + radioButtonClass).attr("disabled", "disabled");
                                                     }
                                                 },
                                     success:    function(data, status, request) {
-                                                    $("#' . $this->getListViewGridId() .'").find(".pager").find(".refresh").find("a").click();
-                                                    updateFlashBar(data, "' . static::NOTIFICATION_BAR_ID . '");
+                                                    $("#" + listGridViewId).find(".pager").find(".refresh").find("a").click();
+                                                    updateFlashBar(data, notificationBarId);
                                                 },
                                     error:      function(request, status, error) {
                                                     var data = {' . // Not Coding Standard
                                                                 '   "message" : "' . Zurmo::t('MarketingListsModule', 'There was an error processing your request'). '",
                                                                     "type"    : "error"
                                                                 };
-                                                    updateFlashBar(data, "' . static::NOTIFICATION_BAR_ID . '");
+                                                    updateFlashBar(data, notificationBarId);
                                                 },
                                     complete:   function(request, status) {
                                                     $(searchBox).removeAttr("disabled");
                                                     $(searchBox).val("");
-                                                    $(".' . $this->getRadioButtonClass() . '").removeAttr("disabled");
-                                                    $("#' . $this->getListViewGridId() .'").removeClass("loading");
+                                                    $("." + radioButtonClass).removeAttr("disabled");
+                                                    $("#" + listGridViewId).removeClass("loading");
                                                     event.preventDefault();
                                                 }
                                 }
@@ -140,7 +146,7 @@
 
         protected function getModelId()
         {
-            $marketingListId = ObjectParametersUtil::getValue($this->params, 'marketingListId', null, false);
+            $marketingListId = ArrayUtil::getArrayValue($this->params, 'marketingListId');
             if (!isset($marketingListId))
             {
                 if (!isset($this->model))
@@ -157,7 +163,7 @@
 
         protected function getRadioButtonClass()
         {
-            return ObjectParametersUtil::getValue($this->params, 'radioButtonClass');
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'radioButtonClass');
         }
     }
 ?>

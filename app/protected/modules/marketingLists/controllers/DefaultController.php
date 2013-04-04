@@ -78,6 +78,7 @@
         }
 
         /*
+        // TODO: @Shoaibi: Low: Cleanup this.
         public function actionDetails($id)
         {
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
@@ -261,13 +262,10 @@
 
         protected static function resolveTitleByMassActionId($actionId)
         {
-            if (strpos($actionId, 'massSubscribe') === 0)
+            if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
             {
-                return Zurmo::t('MarketingListsModule', 'Mass Subscribe');
-            }
-            else if (strpos($actionId, 'massUnsubscribe') === 0)
-            {
-                return Zurmo::t('MarketingListsModule', 'Mass Unsubscribe');
+                $term = 'Mass '. ucfirst(str_replace('mass', '', $actionId));
+                return Zurmo::t('MarketingListsModule', $term);
             }
             else
             {
@@ -300,7 +298,7 @@
             if (strpos($actionId, 'massSubscribe') === 0 || strpos($actionId, 'massUnsubscribe') === 0)
             {
                 $viewNameSuffix    = (!$returnProgressViewName)? 'View': 'ProgressView';
-                $viewNamePrefix    = ucfirst(str_replace('Progress', '', $actionId));
+                $viewNamePrefix    = static::resolveMassActionId($actionId, true);
                 $viewNamePrefix    = 'MarketingListMembers' . $viewNamePrefix;
                 return $viewNamePrefix . $viewNameSuffix;
             }

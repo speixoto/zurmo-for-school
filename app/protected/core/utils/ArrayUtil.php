@@ -41,6 +41,18 @@
             return null;
         }
 
+        public static function getArrayValueWithExceptionIfNotFound($array, $element)
+        {
+            if(!array_key_exists($element, $array))
+            {
+                throw new NotSupportedException($element . " does not exist.");
+            }
+            else
+            {
+                return static::getArrayValue($array, $element);
+            }
+        }
+
         public static function resolveArrayToLowerCase($array)
         {
             return unserialize(TextUtil::strToLowerWithDefaultEncoding(serialize($array)));

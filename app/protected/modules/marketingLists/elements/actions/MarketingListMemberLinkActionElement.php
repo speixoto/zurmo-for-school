@@ -88,9 +88,7 @@
                             linkId  = $(this).attr("id");
                             if (linkId.indexOf("delete") !== -1 && !onAjaxSubmitRelatedListAction("' . $unlinkConfirmMessage . '", "' . $this->getGridId() . '"))
                             {
-                                // TODO: @Shoaibi/@Jason: Low: Should probably only use preventDefault()
                                 event.preventDefault();
-                                return false;
                             }
                             $.ajax({
                                 "error"     : function(xhr, textStatus, errorThrown)
@@ -104,9 +102,7 @@
                                 "url"       : linkUrl,
                                 "cache"	    : false
                             });
-                            // TODO: @Shoaibi/@Jason: Low: Should probably only use preventDefault()
                             event.preventDefault();
-                            return false;
                         }
                     );
                 ');
