@@ -39,8 +39,8 @@
                 if ($email->id > 0)
                 {
                     $data[] = $email->emailAddress;
-                    $data[] = $email->isInvalid;
-                    $data[] = $email->optOut;
+                    $data[] = (bool) $email->isInvalid;
+                    $data[] = (bool) $email->optOut;
                 }
                 else
                 {
