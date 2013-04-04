@@ -6635,7 +6635,7 @@ td {
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
   background-size: 40px 100%,
-        40px 100%,
+        40px 100%, 
         20px 100%,
         20px 100%;
   /* Opera doesn't support this in the shorthand */
@@ -7069,6 +7069,7 @@ a.simple-link:before {
 }
 /*=Popup Modals*/
 .ui-dialog {
+  width: 75%;
   overflow: visible;
   padding: 0 !important;
   margin: 0 !important;
@@ -16833,7 +16834,7 @@ a.user-link {
 #ReportResultsSQLView > div + div {
   margin-top: 15px;
 }
-@media screen and (min-width: 1600px) {
+@media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
   }
@@ -17003,7 +17004,7 @@ orientation : portrait // orientation: landscape    Target orientation
   		flex-flow: row wrap;
   		width:100% !important;
   	}
-
+  
   	.view-toolbar .nav,
   	.view-toolbar > a {
   		float:none;
@@ -17012,23 +17013,23 @@ orientation : portrait // orientation: landscape    Target orientation
   		-webkit-flex: 1 auto;
   		flex: 1 auto;
   	}
-
-
+  
+  
   	.view-toolbar .parent > a,
   	.view-toolbar > a {
   		padding:0 5px;
   		text-align:center;
   	}
-
+  
   	.view-toolbar .parent > a{
   		width:100%;
   	}
-
+  
   	.view-toolbar .parent a:before,
   	.view-toolbar > a:before{
   		display:none;
   	}
-
+  
   	.view-toolbar .parent a:after{
   		margin-left:5px;
   		margin-right:5px;
@@ -17106,9 +17107,9 @@ orientation : portrait // orientation: landscape    Target orientation
   .AppContainer {
     min-width: 0 !important;
     /* should be 100% but i need to put box-sizing on top level nodes */
-
+  
     /*background-image:none;*/
-
+  
     margin: 0 10px;
     overflow-y: scroll;
     -webkit-overflow-scrolling: touch;
@@ -17244,27 +17245,18 @@ orientation : portrait // orientation: landscape    Target orientation
   #MenuView #recently-viewed > a > em:before {
     content: "{";
   }
-<<<<<<< local
-  #RecentlyViewedView {
-=======
   #search {
     position: relative;
   }
   #search > div {
->>>>>>> other
     display: none;
-<<<<<<< local
-=======
     position: absolute;
     margin: 0;
     padding: 10px;
     left: 43px;
     top: -7px;
     width: auto;
->>>>>>> other
   }
-<<<<<<< local
-=======
   #search > div input {
     margin: 0;
     border-left: 1px solid #D5D4D4;
@@ -17345,7 +17337,9 @@ orientation : portrait // orientation: landscape    Target orientation
   #MenuView #recently-viewed > ul a:hover {
     color: #fff !important;
   }
->>>>>>> other
+  #RecentlyViewedView {
+    display: none;
+  }
   #RecentlyViewedView ul {
     max-height: 200px;
     overflow: scroll;
