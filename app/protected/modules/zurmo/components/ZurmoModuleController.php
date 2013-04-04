@@ -153,6 +153,8 @@
         protected function export($stickySearchKey = null, $modelClassName = null, $exportFileName = null)
         {
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
+            assert('$modelClassName == null || is_string($modelClassName)');
+            assert('$exportFileName == null || is_string($exportFileName)');
             if($modelClassName == null)
             {
                 $modelClassName        = $this->getModelName();

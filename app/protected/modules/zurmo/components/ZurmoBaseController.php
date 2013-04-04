@@ -412,57 +412,50 @@
             $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             if (isset($_POST['selectedRecordCount']))
             {
-                        if($this->doMassDelete(
+                        $this->doMassDelete(
                             get_class($listModel),
                             $modelClassName,
                             $selectedRecordCount,
                             $dataProvider,
                             $_GET[$modelClassName . '_page'],
                             $pageSize
-                        ))
+                        );
+
+                        // Cancel diminish of save scoring
+                        if ($selectedRecordCount > $pageSize)
                         {
-                            // Cancel diminish of save scoring
-                            if ($selectedRecordCount > $pageSize)
-                            {
-                                $view = new $pageViewClassName( ZurmoDefaultViewUtil::
-                                                                makeStandardViewForCurrentUser($this,
-                                                                $this->makeMassDeleteProgressView(
-                                                                $listModel,
-                                                                1,
-                                                                $selectedRecordCount,
-                                                                1,
-                                                                $pageSize,
-                                                                $title,
-                                                                null)
-                                ));
-                                echo $view->render();
-                                Yii::app()->end(0, false);
-                            }
-                            else
-                            {
-                                $skipCount = MassDeleteInsufficientPermissionSkipSavingUtil::getCount($modelClassName);
-                                $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
-                                    $selectedRecordCount, $skipCount);
-                                MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
-                                $notificationContent =  $successfulCount . ' ' .
-                                                        LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
-                                                        ' ' . Zurmo::t('ZurmoModule', 'successfully deleted') . '.';
-                                if ($skipCount > 0)
-                                {
-                                    $notificationContent .= ' ' .
-                                        MassDeleteInsufficientPermissionSkipSavingUtil::getSkipCountMessageContentByModelClassName(
-                                            $skipCount, $modelClassName);
-                                }
-                                Yii::app()->user->setFlash('notification', $notificationContent);
-                                //TODO This has the issue in case of product category where i select only 1 for delete, it redirects to default
-                                //view and not category list view
-                                $this->redirect(array('default/'));
-                                Yii::app()->end(0, false);
-                            }
+                            $view = new $pageViewClassName( ZurmoDefaultViewUtil::
+                                                            makeStandardViewForCurrentUser($this,
+                                                            $this->makeMassDeleteProgressView(
+                                                            $listModel,
+                                                            1,
+                                                            $selectedRecordCount,
+                                                            1,
+                                                            $pageSize,
+                                                            $title,
+                                                            null)
+                            ));
+                            echo $view->render();
+                            Yii::app()->end(0, false);
                         }
                         else
                         {
-                            return false;
+                            $skipCount = MassDeleteInsufficientPermissionSkipSavingUtil::getCount($modelClassName);
+                            $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
+                                $selectedRecordCount, $skipCount);
+                            MassDeleteInsufficientPermissionSkipSavingUtil::clear($modelClassName);
+                            $notificationContent =  $successfulCount . ' ' .
+                                                    LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount) .
+                                                    ' ' . Zurmo::t('ZurmoModule', 'successfully deleted') . '.';
+                            if ($skipCount > 0)
+                            {
+                                $notificationContent .= ' ' .
+                                    MassDeleteInsufficientPermissionSkipSavingUtil::getSkipCountMessageContentByModelClassName(
+                                        $skipCount, $modelClassName);
+                            }
+                            Yii::app()->user->setFlash('notification', $notificationContent);
+                            $this->redirect(array('default/'));
+                            Yii::app()->end(0, false);
                         }
                     }
             return $listModel;
@@ -535,10 +528,7 @@
             {
                 if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($modelToDelete, Permission::DELETE))
                 {
-                    if(!$modelToDelete->delete(false))
-                    {
-                        return false;
-                    }
+                    $modelToDelete->delete(false);
                 }
                 else
                 {
@@ -547,7 +537,6 @@
                 }
             }
             Yii::app()->gameHelper->unmuteScoringModelsOnDelete();
-            return true;
         }
 
         /**
@@ -563,6 +552,8 @@
             if (isset($_POST[$postVariableName]))
             {
                 $postData = $_POST[$postVariableName];
+                print_r($postData);
+                exit;
                 $controllerUtil   = static::getZurmoControllerUtil();
                 $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSucessfully,
                                                                        $modelToStringValue);
