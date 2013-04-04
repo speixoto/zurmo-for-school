@@ -46,7 +46,14 @@
          */
         public function render()
         {
-            return $this->renderContent();
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return $this->renderMobileContent();
+            }
+            else
+            {
+                return $this->renderContent();
+            }
         }
 
         protected function renderContent()
