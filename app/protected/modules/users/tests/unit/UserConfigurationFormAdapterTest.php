@@ -127,7 +127,7 @@
             $billy = User::getByUsername('billy');
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals($form->selectedVisibleAndOrderedTabMenuItems, $defaultOrderedTabMenuItems);
-            $form->visibleAndOrderedTabMenuItems = $customOrderedTabMenuItems;
+            $form->selectedVisibleAndOrderedTabMenuItems = $customOrderedTabMenuItems;
             UserConfigurationFormAdapter::setConfigurationFromForm($form, $billy);
             $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
             $this->assertEquals($form->selectedVisibleAndOrderedTabMenuItems, $customOrderedTabMenuItems);
