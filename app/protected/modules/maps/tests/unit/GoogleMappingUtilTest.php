@@ -42,10 +42,6 @@
 
         public function testGeoCodeResultData()
         {
-            if (Yii::app()->params['testGoogleGeoCodeApiKey'] == null)
-            {
-                $this->markTestSkipped(Zurmo::t('Default', 'Test GoogleGeoCodeApiKey is not set in perInstanceTest.php file.'));
-            }
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
 

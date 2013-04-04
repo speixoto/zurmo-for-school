@@ -113,7 +113,7 @@
             $where                              = RedBeanModelDataProvider::makeWhere('Address',
                                                                                       $searchAttributeData,
                                                                                       $joinTablesAdapter);
-            $addressCollection                  = Address::getSubset($joinTablesAdapter, null, $count, $where, null);
+            $addressCollection                  = Address::getSubset($joinTablesAdapter, null, $count, $where, null);            
             return $addressCollection;
         }
 

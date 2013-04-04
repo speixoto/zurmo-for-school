@@ -120,17 +120,20 @@
         {
             CApplicationComponent::init();
 
-            if (Yii::app()->apiRequest->isApiRequest())
+            if (ApiRequest::isApiRequest())
             {
                 if ($sessionId = Yii::app()->apiRequest->getSessionId())
                 {
                     Yii::app()->session->setSessionID($sessionId);
                     Yii::app()->session->open();
                     $session = Yii::app()->getSession();
-                    if ($session['token'] != Yii::app()->apiRequest->getSessionToken() || $session['token'] == '')
+                    if (Yii::app()->apiRequest->isSessionTokenRequired())
                     {
-                        Yii::app()->session->clear();
-                        Yii::app()->session->destroy();
+                        if ($session['token'] != Yii::app()->apiRequest->getSessionToken() || $session['token'] == '')
+                        {
+                            Yii::app()->session->clear();
+                            Yii::app()->session->destroy();
+                        }
                     }
                 }
                 else

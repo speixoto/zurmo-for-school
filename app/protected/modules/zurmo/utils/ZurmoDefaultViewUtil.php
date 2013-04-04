@@ -128,7 +128,6 @@
             $settingsMenuItems        = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
             $userMenuItems            = static::getAndResolveUserMenuItemsForHeader();
             $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-            $notificationsUrl         = Yii::app()->createUrl('notifications/default/recentNotifcations');
             $moduleNamesAndLabels     = GlobalSearchUtil::
                                         getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
             $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
@@ -136,7 +135,7 @@
                                         $moduleNamesAndLabels);
             $applicationName          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
             return new HeaderView($controller->getId(), $controller->getModule()->getId(), $settingsMenuItems,
-                                  $userMenuItems, $shortcutsCreateMenuItems, $notificationsUrl,
+                                  $userMenuItems, $shortcutsCreateMenuItems,
                                   $moduleNamesAndLabels, $sourceUrl, $applicationName);
         }
 
@@ -216,12 +215,13 @@
                 $globalSearchView               = new GlobalSearchView($moduleNamesAndLabels, $sourceUrl);
                 $recentlyViewed                 = static::makeRecentlyViewedView();
                 $recentlyViewedMenu             = $recentlyViewed->renderMenu();
-                $searchAndShortcutsItems        = array(
+                $searchItem                     = array(
                                                     array(
                                                         'label'                 => '',
                                                         'dynamicLabelContent'   => $globalSearchView->render(),
                                                         'itemOptions'           => array('id' => 'search'),
-                                                    ),
+                                                    ));
+                $shortcutsItems                 = array(
                                                     array(
                                                         'label'                 => '',
                                                         'dynamicLabelContent'   => $shortcutsCreateMenuView->render(),
@@ -230,11 +230,11 @@
                 $recentlyViewedItems            = array(
                                                     array(
                                                         'label'                 => '',
-                                                        'dynamicLabelContent'   => '<a href="#" class="mobile-flyout-trigger"><span></span><em></em><span>Recently Viewed</span></a>',
+                                                        'dynamicLabelContent'   => MobileHtml::renderFlyoutTrigger('Recently Viewed'),
                                                         'itemOptions'           => array('id' => 'recently-viewed'),
                                                         'items'                 => ($recentlyViewedMenu) ? $recentlyViewedMenu : null,
                                                     ));
-                $items                          = CMap::mergeArray($searchAndShortcutsItems, $items, $recentlyViewedItems);
+                $items                          = CMap::mergeArray($searchItem, $items, $shortcutsItems, $recentlyViewedItems);
             }
             else
             {

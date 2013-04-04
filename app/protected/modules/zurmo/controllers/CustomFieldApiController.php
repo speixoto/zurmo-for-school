@@ -42,7 +42,7 @@
 
         public function actionRead()
         {
-            $params = Yii::app()->apiHelper->getRequestParams();
+            $params = Yii::app()->apiRequest->getParams();
             if (!isset($params['id']))
             {
                 $message = Zurmo::t('ZurmoModule', 'The ID specified was invalid.');
@@ -95,5 +95,10 @@
         {
             throw new ApiUnsupportedException();
         }
+
+        protected static function getSearchFormClassName()
+        {
+            return 'CustomFieldsSearchForm';
+        }
     }
-?>
+    ?>

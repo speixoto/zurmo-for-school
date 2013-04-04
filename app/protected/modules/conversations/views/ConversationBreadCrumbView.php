@@ -31,7 +31,11 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('ConversationsModule', 'Conversations');
+            return Zurmo::t('ConversationsModule', 'Inbox');
+        }
+
+        protected function getHomeUrl() {
+            return Yii::app()->createUrl('mashableInbox/' . $this->controllerId . '/list');
         }
     }
 ?>

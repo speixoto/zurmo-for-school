@@ -37,7 +37,6 @@
         protected function renderControlEditable()
         {
             assert('$this->model instanceof ZurmoConfigurationForm');
-            assert('$this->attribute == null');
             $existingFilesInformation = array();
 
             if (!empty($this->model->logoFileData))
@@ -65,7 +64,8 @@
                 'afterDeleteAction'    => null
             ));
             $cClipWidget->endClip();
-            $content = '<tr><td></td><td colspan="3"><div class="file-upload-box">' . $cClipWidget->getController()->clips['logoFileElement'] . '</div></td></tr>';
+            $content = '<tr><td></td><td colspan="3"><div class="file-upload-box">' .
+                       $cClipWidget->getController()->clips['logoFileElement'] . '</div></td></tr>';
             return $content;
         }
 

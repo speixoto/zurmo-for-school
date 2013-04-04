@@ -5,49 +5,63 @@
         {
             foreach ($items as $item)
             {
-                echo ZurmoHtml::openTag('li', isset($item['itemOptions']) ? $item['itemOptions'] : array());
-                if (isset($item['linkOptions']))
+                $liClose    = null;
+                $rendered   = false;
+                if (!array_key_exists('renderHeader', $item) || $item['renderHeader'])
                 {
-                     $htmlOptions = $item['linkOptions'];
-                }
-                else
-                {
-                    $htmlOptions = array();
-                }
-                if (!empty($item['label']))
-                {
-                    $resolvedLabelContent = ZurmoHtml::tag('em', array(), '') . ZurmoHtml::tag('span', array(), $item['label']);
-                }
-                else
-                {
-                    $resolvedLabelContent = static::resolveAndGetSpanAndDynamicLabelContent($item);
-                }
-                if ((isset($item['ajaxLinkOptions'])))
-                {
-                    echo ZurmoHtml::ajaxLink($resolvedLabelContent, $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
-                }
-                elseif (isset($item['url']))
-                {
-                    echo ZurmoHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
-                }
-                else
-                {
-                    if (!empty($item['label']))
+                    $rendered   = true;
+                    $liClose    = ZurmoHtml::closeTag('li') . "\n";
+                    echo ZurmoHtml::openTag('li', isset($item['itemOptions']) ? $item['itemOptions'] : array());
+                    if (isset($item['linkOptions']))
                     {
-                        echo ZurmoHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
+                         $htmlOptions = $item['linkOptions'];
                     }
                     else
                     {
-                        echo $resolvedLabelContent;
+                        $htmlOptions = array();
+                    }
+                    if (!empty($item['label']))
+                    {
+                        $resolvedLabelContent = ZurmoHtml::tag('em', array(), '') . ZurmoHtml::tag('span', array(), $item['label']);
+                    }
+                    else
+                    {
+                        $resolvedLabelContent = static::resolveAndGetSpanAndDynamicLabelContent($item);
+                    }
+                    if ((isset($item['ajaxLinkOptions'])))
+                    {
+                        echo ZurmoHtml::ajaxLink($resolvedLabelContent, $item['url'], $item['ajaxLinkOptions'], $htmlOptions);
+                    }
+                    elseif (isset($item['url']))
+                    {
+                        echo ZurmoHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
+                    }
+                    else
+                    {
+                        if (!empty($item['label']))
+                        {
+                            echo ZurmoHtml::link($resolvedLabelContent, "javascript:void(0);", $htmlOptions);
+                        }
+                        else
+                        {
+                            echo $resolvedLabelContent;
+                        }
                     }
                 }
                 if (isset($item['items']) && count($item['items']))
                 {
-                    echo "\n" . ZurmoHtml::openTag('ul', $this->submenuHtmlOptions) . "\n";
+                    $nestedUlOpen   = null;
+                    $nestedUlClose  = null;
+                    if ($rendered)
+                    {
+                        $nestedUlOpen   = "\n" . ZurmoHtml::openTag('ul', $this->submenuHtmlOptions) . "\n";
+                        $nestedUlClose  = ZurmoHtml::closeTag('ul') . "\n";
+                    }
+                    echo $nestedUlOpen;
                     $this->renderMenuRecursive($item['items']);
-                    echo ZurmoHtml::closeTag('ul') . "\n";
+                    echo $nestedUlClose;
                 }
-                echo ZurmoHtml::closeTag('li') . "\n";
+                echo $liClose;
             }
         }
 
@@ -56,6 +70,14 @@
             if (isset($item['dynamicLabelContent']))
             {
                 return $item['dynamicLabelContent'];
+            }
+        }
+
+        protected function resolveNavigationClass()
+        {
+            if (!Yii::app()->userInterface->isMobile())
+            {
+                parent::resolveNavigationClass();
             }
         }
     }

@@ -50,8 +50,7 @@ a:link, a:active, a:visited{
     #more-search-linkmodal,
     #more-search-link,
     .search-form-tools,
-    #inline-edit-form > table td > a
-    .latest-activity-toolbar .filter-portlet-model-bar label,
+    #inline-edit-form > table td > a,
     .AppContent.MassEditView .ui-state-highlight p,
     #ModulePermissionsEditAndDetailsView table tr:first-child th,
     .calendar-events-1 span,
@@ -75,10 +74,10 @@ a:link, a:active, a:visited{
     .unread td a,
     a.user-link,
     .SocialItemsListView .show-create-comment,
+    .back-to-inbox-link,
     #AllSocialItemsForPortletView .show-create-comment,
     a.remove:hover .icon:after,
     .juiportlet-widget-head a.edit:hover .icon:after,
-    .latest-activity-toolbar a,
     a.more-panels-link,
     a.simple-link,
     a.simple-link .z-label,
@@ -88,11 +87,12 @@ a:link, a:active, a:visited{
     .show-file-upload-box,
     #clear-search-linkmodal,
     .z-action-link,
-    .showAllCommentsLink
+    .showAllCommentsLink,
     .treeview span:hover
     .z-action-link,
     .drop-zone,
     .missing-chart,
+    a.active-tab
     {
         color: @themeColor;
     }
@@ -101,6 +101,7 @@ a:link, a:active, a:visited{
     .view-toolbar a:hover,
     .view-toolbar a:active,
     .view-toolbar a.active,
+    .view-toolbar a.active span,
     .portlet-toolbar .icon-delete:before,
     .portlet-toolbar .icon-edit:before,
     //.ZeroModelsYetView a span:before,
@@ -161,6 +162,12 @@ a:link, a:active, a:visited{
     .latest-activity-toolbar .ui-state-active,
     .filter-portlet-model-bar .ui-state-active,
     #clear-search-link
+    #MashableInboxForm_filteredBy_area label:hover,
+    #MashableInboxForm_optionForModel_area label:hover,
+    #MashableInboxForm_filteredBy_area .ui-state-active,
+    #MashableInboxForm_optionForModel_area .ui-state-active
+    //.latest-activity-toolbar .filter-portlet-model-bar label,
+    
     {
         background-color: @themeColor !important;
     }

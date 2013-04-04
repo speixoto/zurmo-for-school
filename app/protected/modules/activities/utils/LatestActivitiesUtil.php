@@ -40,31 +40,7 @@
          */
         public static function getMashableModelDataForCurrentUser($includeHavingRelatedItems = true)
         {
-            //todo: cache results to improve performance if needed.
-            $mashableModelClassNames = array();
-            $modules = Module::getModuleObjects();
-            foreach ($modules as $module)
-            {
-                $modelClassNames = $module::getModelClassNames();
-                foreach ($modelClassNames as $modelClassName)
-                {
-                    $classToEvaluate     = new ReflectionClass($modelClassName);
-                    if ($classToEvaluate->implementsInterface('MashableActivityInterface') &&
-                    !$classToEvaluate->isAbstract())
-                    {
-                        if (RightsUtil::canUserAccessModule(get_class($module), Yii::app()->user->userModel))
-                        {
-                            if (!$includeHavingRelatedItems && !$modelClassName::hasRelatedItems())
-                            {
-                                continue;
-                            }
-                            $mashableModelClassNames[$modelClassName] =
-                            $modelClassName::getModelLabelByTypeAndLanguage('Plural');
-                        }
-                    }
-                }
-            }
-            return $mashableModelClassNames;
+            return MashableUtil::getModelDataForCurrentUserByInterfaceName('MashableActivityInterface', $includeHavingRelatedItems);
         }
 
         /**

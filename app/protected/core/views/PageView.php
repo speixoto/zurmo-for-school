@@ -206,6 +206,9 @@
             }
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(
+                    Yii::getPathOfAlias('application.core.views.assets')) . '/ZurmoDialog.js');
+            Yii::app()->clientScript->registerScriptFile(
+                Yii::app()->getAssetManager()->publish(
                     Yii::getPathOfAlias('application.core.views.assets')) . '/interactions.js');
             Yii::app()->clientScript->registerScriptFile(
                 Yii::app()->getAssetManager()->publish(

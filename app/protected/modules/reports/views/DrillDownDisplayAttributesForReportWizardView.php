@@ -96,7 +96,8 @@
          */
         protected function getZeroComponentsMessageContent()
         {
-            return '<div class="large-icon"></div><h2>' . Zurmo::t('ReportsModule', 'Drag or double click your display columns here') . '</h2>';
+            return '<div class="large-icon"></div><h2>' .
+                   Zurmo::t('ReportsModule', 'Drag or double click your drill down display columns here') . '</h2>';
         }
     }
 ?>

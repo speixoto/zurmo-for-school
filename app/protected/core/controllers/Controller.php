@@ -81,8 +81,8 @@
             $dataCollection->resolveSelectedListAttributesForSearchModelFromSourceData();
             $sanitizedSearchAttributes = GetUtil::sanitizePostByDesignerTypeForSavingModel($searchModel,
                                                                                            $searchAttributes);
-            $sortAttribute             = SearchUtil::resolveSortAttributeFromGetArray($listModelClassName);
-            $sortDescending            = SearchUtil::resolveSortDescendingFromGetArray($listModelClassName);
+            $sortAttribute             = $dataCollection->resolveSortAttributeFromSourceData($listModelClassName);
+            $sortDescending            = $dataCollection->resolveSortDescendingFromSourceData($listModelClassName);
             $metadataAdapter           = new SearchDataProviderMetadataAdapter(
                 $searchModel,
                 Yii::app()->user->userModel->id,

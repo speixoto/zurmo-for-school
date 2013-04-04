@@ -141,14 +141,7 @@
                 $this->getController()->getRoute(),
                 $hasActiveChild
             );
-            if (isset($this->htmlOptions['class']))
-            {
-                $this->htmlOptions['class'] .= ' nav';
-            }
-            else
-            {
-                $this->htmlOptions['class'] = 'nav';
-            }
+            $this->resolveNavigationClass();
         }
 
         /**
@@ -218,6 +211,18 @@
             if (isset($item['dynamicLabelContent']))
             {
                 return ZurmoHtml::tag('span', array(), $item['dynamicLabelContent']);
+            }
+        }
+
+        protected function resolveNavigationClass()
+        {
+            if (isset($this->htmlOptions['class']))
+            {
+                $this->htmlOptions['class'] .= ' nav';
+            }
+            else
+            {
+                $this->htmlOptions['class'] = 'nav';
             }
         }
 

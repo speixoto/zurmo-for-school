@@ -162,7 +162,11 @@
                 }
                 if ($stickySearchKey != null && $setSticky)
                 {
-                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection);
+                    if($stickySearchData == null)
+                    {
+                        $stickySearchData = array();
+                    }
+                    SavedSearchUtil::setDataByKeyAndDataCollection($stickySearchKey, $dataCollection, $stickySearchData);
                 }
                 $searchModel->loadSavedSearchUrl = Yii::app()->createUrl($this->getModule()->getId() . '/' . $this->getId() . '/list/');
             }

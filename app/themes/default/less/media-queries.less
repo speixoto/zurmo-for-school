@@ -1,18 +1,18 @@
-@media screen and (min-width: 1600px) {
-	.AppContainer{
-		margin:0 auto !important;
-	}
-	#HeaderLinksView > div {
-		margin: 0 !important;
-	}
-	#app-search {
-		margin-left:0 !important;
-	}
-	#ShortcutsMenu{
-		position: relative !important;
-		top:-25px !important;
-		right:0 !important;
-	}
+@media screen and (min-width: 1601px) {
+    .AppContainer{
+        margin:0 auto !important;
+    }
+    #HeaderLinksView > div {
+        margin: 0 !important;
+    }
+    #app-search {
+        margin-left:0 !important;
+    }
+    #ShortcutsMenu{
+        position: relative !important;
+        top:-25px !important;
+        right:0 !important;
+    }
 }
 
 /*
@@ -22,7 +22,7 @@ min-device-width: … px  Used when the device’s width is bigger or equal to w
 max-device-width: … px  Used when the device’s width is smaller or equal to width
 orientation : portrait // orientation: landscape    Target orientation
 -webkit-min-device-pixel-ratio : 1.5
-	
+
 	http://bennettfeely.com/flexplorer/
 */
 
@@ -76,8 +76,8 @@ orientation : portrait // orientation: landscape    Target orientation
 			-moz-justify-content: flex-start;
 			-webkit-justify-content: flex-start;
 			justify-content: flex-start;
-			width:100% !important; 
-			height:100% !important; 
+			width:100% !important;
+			height:100% !important;
 			display:block;
 		}
 		#FooterView{
@@ -102,7 +102,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		-webkit-flex: 1 0 auto;
 		flex: 1 0 auto;
 	}
-	
+
 	#login-box{
 		width:100%;
 		height:auto;
@@ -172,7 +172,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		-moz-flex-flow: row wrap;
 		-webkit-flex-flow: row wrap;
 		flex-flow: row wrap;
-		width:100% !important; 
+		width:100% !important;
 	}
 
 	.view-toolbar .nav,
@@ -184,13 +184,13 @@ orientation : portrait // orientation: landscape    Target orientation
 		flex: 1 auto;
 	}
 
-	
+
 	.view-toolbar .parent > a,
 	.view-toolbar > a {
 		padding:0 5px;
 		text-align:center;
 	}
-	
+
 	.view-toolbar .parent > a{
 		width:100%;
 	}
@@ -199,7 +199,7 @@ orientation : portrait // orientation: landscape    Target orientation
 	.view-toolbar > a:before{
 		display:none;
 	}
-	
+
 	.view-toolbar .parent a:after{
 		margin-left:5px;
 		margin-right:5px;
@@ -261,7 +261,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
 	}
-	
+
 	.AppContent{
 		position:relative;
 		top:20px;
@@ -275,12 +275,12 @@ orientation : portrait // orientation: landscape    Target orientation
 		transform: translate3d(0, 0, 0);
 		-webkit-transform: translate3d(0, 0, 0);
 	}
-	
+
 	#HomePageView .AppContent {
 		padding-right: 10px;
 	}
-	
-	.AppContent.nav-open{
+
+	.AppContainer .nav-open{
 		transform: translate3d(45px, 0, 0);
 		-webkit-transform: translate3d(45px, 0, 0);
 		//.b-shadow(-1px 0 15px 0 #ccc);
@@ -289,7 +289,7 @@ orientation : portrait // orientation: landscape    Target orientation
 	#settings-header-menu{
 		display: none;
 	}
-	
+
 	.AppNavigation{
 		width: 45px;
 		.unstyle-panel();
@@ -448,8 +448,9 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
-	
+
 	#RecentlyViewedView{
+		display: none;
 		h3, ul{
 			//display:none;
 		}
@@ -485,7 +486,7 @@ orientation : portrait // orientation: landscape    Target orientation
 	.breadcrumbs{
 		padding-bottom:10px;
 	}
-	
+
 	.BreadCrumbView #StickyListMenu > li > a > span{
 		top:2px;
 	}
@@ -533,7 +534,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		width: 100%;
 	}
 
-	#right-side-edit-view-panel{
+	.right-side-edit-view-panel{
 		float:none;
 		width:100%;
 		position:relative;
@@ -557,7 +558,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		padding:0 10px;
 	}
 	#ConversationDetailsView{
-		#right-side-edit-view-panel{
+		.right-side-edit-view-panel{
 			display:none;
 		}
 	}
@@ -638,7 +639,16 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
-   
+    /*dialog*/
+	.ui-dialog .ui-dialog-titlebar-close {
+		right: 5px;
+		top: 5px;
+	}
 
-   /*closing media query bracket*/ 
+	.ui-dialog{
+		width: 98%;
+	}
+
+
+   /*closing media query bracket*/
 }

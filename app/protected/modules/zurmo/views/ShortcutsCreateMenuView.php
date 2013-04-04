@@ -49,24 +49,39 @@
          */
         public function render()
         {
-            return $this->renderContent();
+            return (Yii::app()->userInterface->isMobile()) ? $this->renderMobileContent() : $this->renderContent();
         }
 
         protected function renderContent()
         {
-            $content  = '<a href="#" class="mobile-flyout-trigger"><span></span><em></em><span>Shortcuts</span></a>';
+            $contentPrefix      = null;
+            $menuId             = 'ShortcutsMenu';
+            return $this->renderMenu($menuId, $contentPrefix);
+        }
+
+        public function renderMobileContent()
+        {
+            $contentPrefix                      = MobileHtml::renderFlyoutTrigger('Shortcuts');
+            $menuId                             = 'MobileShortcutsMenu';
+            $this->menuItems['renderHeader']    = false;
+            return $this->renderMenu($menuId, $contentPrefix);
+        }
+
+        public function renderMenu($menuId, $contentPrefix = null)
+        {
             if (empty($this->menuItems))
             {
                 return;
             }
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Shortcuts");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'MobileShortcutsMenu'),
-                'items'                   => array($this->menuItems),
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                'htmlOptions' => array('id' => $menuId),
+                'items'       => array($this->menuItems),
             ));
             $cClipWidget->endClip();
-            return $content . $cClipWidget->getController()->clips['Shortcuts'];
+            return $contentPrefix . $cClipWidget->getController()->clips['Shortcuts'];
+
         }
     }
 ?>

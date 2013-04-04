@@ -10,6 +10,10 @@ function processAjaxSuccessError(id, data)
 function processListViewSummaryClone(listViewId, summaryCssClass)
 {
     replacementContent = $('#' + listViewId).find('.' + summaryCssClass).html();
+    if (typeof(replacementContent) == 'undefined')
+    {
+        replacementContent = null;
+    }
     $('#' + listViewId).parent().parent('.GridView')
     .find('form').first().find('.list-view-items-summary-clone')
     .html(replacementContent);

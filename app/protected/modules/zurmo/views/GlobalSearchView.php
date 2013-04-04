@@ -51,9 +51,27 @@
 
         protected function renderContent()
         {
-            $content  = '<a href="#" class="mobile-flyout-trigger"><span></span><em></em><span>Search</span></a>';
-            $content .= '<div id="app-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
+            $searchBoxId    = 'app-search';
+            $contentPrefix  = null;
+            return $this->renderSearchView($searchBoxId, $contentPrefix);
+        }
+
+        protected function renderMobileContent()
+        {
+            $searchBoxId    = 'app-mobile-search';
+            $contentPrefix  = MobileHtml::renderFlyoutTrigger('Search');
+            return $this->renderSearchView($searchBoxId, $contentPrefix);
+        }
+
+        protected function renderSearchView($searchBoxId, $contentPrefix = null)
+        {
+            $globalSearchContent    = $this->renderGlobalSearchContent();
+            $spinner                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+            $searchBox              = ZurmoHtml::tag('div', array('id' => $searchBoxId, 'class' => 'clearfix'),
+                                                            $globalSearchContent . $spinner);
+            $content                = $contentPrefix . $searchBox;
             return $content;
+
         }
 
         protected function renderGlobalSearchContent()

@@ -35,7 +35,7 @@
             $importRulesClassName = $importRulesType . 'ImportRules';
             if (@class_exists($importRulesClassName) === false)
             {
-                throw new NotSupportedException();
+                throw new NotSupportedException($importRulesClassName);
             }
             return $importRulesClassName;
         }
