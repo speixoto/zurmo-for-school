@@ -125,7 +125,7 @@
         {
             $content  = '<div>';
             $content .= $this->renderEmailMessageRowNumberLabel();
-            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), '');
+            $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-row-label'), '&nbsp;');
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link'));
             $content .= '<div>';

@@ -50,13 +50,17 @@
                                                                            $bindPassword, $baseDomain);
                 if ($ldapConnection)
                 {
-                    if($serverType == 'OpenLDAP')
+                    if($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
                     {
                         $ldapFilter = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))';
                     }
-                    elseif($serverType == 'ActiveDirectory')
+                    elseif($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
                     {
                         $ldapFilter = '(sAMAccountName=' . $this->username . ')';
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
                     }
                     $ldapResults             = ldap_search($ldapConnection, $baseDomain, $ldapFilter);
                     $ldapResultsCount        = ldap_count_entries($ldapConnection, $ldapResults);

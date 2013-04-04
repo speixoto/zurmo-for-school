@@ -62,13 +62,17 @@
             assert('is_string($baseDomain)');
             $ldapConnection = self::makeConnection($host, $port);
             //checking server type
-            if($serverType == 'OpenLDAP')
+            if($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
             {
                 $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; // Not Coding Standard
             }
-            elseif($serverType == 'ActiveDirectory')
+            elseif($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
             {               
                 $bindRegisteredDomain = self::resolveBindRegisteredDomain($bindRegisteredDomain, $baseDomain);
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             // bind with appropriate dn to give update access
             if (@ldap_bind($ldapConnection, $bindRegisteredDomain, $bindPassword))
@@ -86,6 +90,8 @@
         */
         public static function resolveBindRegisteredDomain($bindRegisteredDomain, $baseDomain)
         {
+                assert('is_string($bindRegisteredDomain)');
+                assert('is_int($baseDomain)');
                 $baseDomain            = str_replace(',','',$baseDomain); 
                 $domainControllers     = explode('dc=',$baseDomain);
                 $bindRegisteredDomain  = $bindRegisteredDomain . '@' . $domainControllers[1] . '.' .

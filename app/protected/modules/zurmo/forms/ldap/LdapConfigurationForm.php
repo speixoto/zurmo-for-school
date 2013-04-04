@@ -42,6 +42,7 @@
         {
             return array(
                 array('serverType',                        'type',      'type' => 'string'),
+                array('serverType',                        'length',    'min'  => 1, 'max' => 25),
                 array('host',                              'required'),
                 array('host',                              'type',      'type' => 'string'),
                 array('host',                              'length',    'min'  => 1, 'max' => 64),

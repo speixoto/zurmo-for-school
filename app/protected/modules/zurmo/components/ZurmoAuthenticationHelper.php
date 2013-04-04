@@ -29,6 +29,8 @@
      */
     class ZurmoAuthenticationHelper extends CApplicationComponent
     {
+        const SERVER_TYPE_OPEN_LDAP        = 'OpenLDAP';
+        const SERVER_TYPE_ACTIVE_DIRECTORY = 'ActiveDirectory';
          /**
          * Ldap server type. Example OpenLDAP
          * @var string

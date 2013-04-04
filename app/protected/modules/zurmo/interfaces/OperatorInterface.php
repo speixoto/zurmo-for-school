@@ -25,44 +25,10 @@
      ********************************************************************************/
 
     /**
-     * Element used by filters or triggers that can morph between a single select and a multi-select.
+     * Implemented by any model that has an operator that can be called using getOperator
      */
-    class StaticDropDownForWizardElement extends DataFromFormStaticDropDownFormElement
+    interface OperatorInterface
     {
-        protected $alwaysMultiple = false;
-
-        /**
-         * @return string
-         */
-        protected function getDataAndLabelsModelPropertyName()
-        {
-            return 'getCustomFieldDataAndLabels';
-        }
-
-        /**
-         * The class is set to flexible-drop-down so this can be used by the operator to signal that the select input
-         * can change to a multi-select or back.
-         * @return array
-         */
-        protected function getEditableHtmlOptions()
-        {
-            $htmlOptions                 = parent::getEditableHtmlOptions();
-            $htmlOptions['class']        = 'flexible-drop-down';
-            if( $this->resolveOperatorIsOneOf() || $this->alwaysMultiple)
-            {
-                $htmlOptions['multiple']  = true;
-                $htmlOptions['class']    .= ' multiple ignore-style';
-            }
-            return $htmlOptions;
-        }
-
-        protected function resolveOperatorIsOneOf()
-        {
-            if(($this->model instanceof OperatorInterface  && $this->model->operator == 'oneOf'))
-            {
-                return true;
-            }
-            return false;
-        }
+        public function getOperator();
     }
 ?>

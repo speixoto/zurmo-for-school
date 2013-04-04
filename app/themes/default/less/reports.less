@@ -349,7 +349,7 @@
 }
 
 .first-value-area + .second-value-area{
-    margin-top:10px;
+    //margin-top:10px;
 }
 
 .report-runtime-availability{
@@ -673,7 +673,7 @@
 }
 
 .zero-components-view{
-    &.Actions, &.EmailMessages, &.TimeTrigger, &.WorkflowRulesOrder, &.TimeTrigger{
+    &.Actions, &.EmailMessages, &.WorkflowRulesOrder, &.TimeTrigger{
         position: relative;
         top:0;
         left: 0;
@@ -898,9 +898,8 @@
 .zero-components-view.TimeTrigger,
 #time-trigger-container{
 	float: right !important;
-	width: 70% !important;
+	width: 80% !important;
 	padding-left: 15px;
-
 	++.cf;
 	++.border-box;
 	.value-data {
@@ -912,22 +911,24 @@
 	}
 }
 
-.NoTimeTrigger,
-#time-trigger-container{
+.time-trigger-attribute-selector-container{
+	width: 20%;
+	float: left;
+	++.border-box;
 	min-height: 300px;
 }
 
-.time-trigger-attribute-selector-container{
-	width: 30%;
+.dynamic-row-duration{
 	float: left;
-	++.border-box;
+	width: 100%;
+	margin-top: 10px;
 }
 
 /*for actions in WORKFLOWS hide/show sequence*/
-#OnSaveWorkflowWizardView{
+.ComponentForWorkflowWizardView{
 	.add-email-message-button-container,
 	.action-type-selector-container{
-		width: 30%;
+		width: 20%;
 		float: left !important;
 		++.cf;
 		++.border-box;
@@ -938,10 +939,11 @@
 		++.border-box;
 	}
 	.Actions,
-	.EmailMessages{
+	.EmailMessages,
+	.TimeTrigger{
 		&.droppable-dynamic-rows-container,
 		&.zero-components-view{
-			width: 70% !important;
+			width: 80% !important;
 			padding-left: 15px;
 		}
 	}
@@ -973,10 +975,11 @@
 
 /*WorkFlow Rules Order*/
 .workflow-order-module-selector-container{
-	width: 30%;
+	width: 20%;
 	float: left !important;
 	++.cf;
 	++.border-box;
+	min-height: 300px;
 }
 
 #workflow-order-container,
@@ -984,18 +987,19 @@
 .no-workflows-to-order-view{
 	float: right !important;
 	++.border-box;
-	width: 70% !important;
+	width: 80% !important;
 	padding-left: 15px;
 	+ .float-bar{
 		margin-top: 15px;
 	}
 }
 
+.workflow-order-container,
 .no-workflows-to-order-view{
 	position: relative;
 	top: 0;
 	left: 0;
-	min-height: 300px;
+
 	text-align: center;
 	.large-icon:after{
 		content:"j";

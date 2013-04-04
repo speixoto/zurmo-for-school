@@ -107,23 +107,23 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(10, count($menu));
+            $this->assertEquals(7, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(3, count($menu));
+            $this->assertEquals(2, count($menu));
             $bill = User::getByUsername('billy');
             $bill->setRight('ZurmoModule', ZurmoModule::RIGHT_ACCESS_ADMINISTRATION);
             $saved = $bill->save();
             $this->assertTrue($saved);
             $menu = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
-            $this->assertEquals(4, count($menu));
+            $this->assertEquals(3, count($menu));
         }
 
         public function testGetAccessibleOrderedUserHeaderMenuForCurrentUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getAccessibleOrderedUserHeaderMenuForCurrentUser();
-            $this->assertEquals(3, count($menu));
+            $this->assertEquals(4, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');
             $menu = MenuUtil::getAccessibleOrderedUserHeaderMenuForCurrentUser();
             $this->assertEquals(3, count($menu));

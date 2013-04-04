@@ -31,8 +31,8 @@
         protected function getDropDownArray()
         {
             return array(
-                'ActiveDirectory' => Zurmo::t('Core', 'Active Directory'),
-                'OpenLDAP'        => Zurmo::t('Core', 'OpenLDAP'),                
+                'ActiveDirectory' => Zurmo::t('UsersModule', 'Active Directory'),
+                'OpenLDAP'        => Zurmo::t('UsersModule', 'OpenLDAP'),                
             );
         }
     }

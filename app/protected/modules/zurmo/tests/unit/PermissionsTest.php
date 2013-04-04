@@ -1165,7 +1165,6 @@
             }
 
             $parentRole           = Role::getByName('Sales Manager');
-            $childRole            = Role::getByName('Sales Person');
             $childChildRole       = Role::getByName('Junior Sales Person');
             $userInParentRole     = $parentRole->users[0];
             $userInChildChildRole = $childChildRole->users[0];

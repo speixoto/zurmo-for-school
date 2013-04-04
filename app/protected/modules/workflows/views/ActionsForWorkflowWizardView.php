@@ -300,7 +300,7 @@
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         $("#' . $inputDivId . '").show();
                         }',
-                'success' => 'js:function(data){ $("#' . $inputDivId . '").html(data);}',
+                'success' => 'js:function(data){$("#' . $inputDivId . '").html(data);}',
             ));
             $script = "$('#" . $id . "').live('change', function()
             {
@@ -360,12 +360,12 @@
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(xhr, options){
                     //attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
+
                     //check if any li is open and if yes validate the form again
-                    var actionsList = $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
-                        '").find(".dynamic-rows").find("ul:first").children();
+                    var actionsList = $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS . '").find(".dynamic-rows").find("ul:first").children();
                     $.each(actionsList, function(){
                         if ( $(this).hasClass("expanded-row") ){
-                            alert("please save and validate the open action panel");
+                            /*alert("please save and validate the open action panel");
                             try{
                                 xhr.abort();
                             } catch(error){
@@ -376,12 +376,13 @@
                             $("#' . self::ACTION_TYPE_RELATION_DIV_ID . '").hide();
                             $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").html("");
                             $("#' . self::ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID . '").hide();
-                            return false;
+                            return false;*/
                         }
                     });
                 }',
                 'success' => 'js:function(data){
                     //when ajax comes back after choosing something in thedropdown
+                     $("#actionsNextLink").hide();
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
                         '").find(".dynamic-rows").find("ul:first").children().hide();
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);

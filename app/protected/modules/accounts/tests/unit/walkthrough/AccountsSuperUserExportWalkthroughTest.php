@@ -130,7 +130,7 @@
         }
 
         /**
-        * Walkthrough test for synchronous download
+        * Walkthrough test for asynchronous download
         */
         public function testAsynchronousDownloadDefaultControllerActions()
         {
@@ -225,6 +225,52 @@
 
             $this->assertEquals($notificationsBeforeCount + 1, count(Notification::getAll()));
             $this->assertEquals($notificationMessagesBeforeCount + 1, count(NotificationMessage::getAll()));
+        }
+
+        public function testExportWithSelectAllForMoreThan10Records()
+        {
+            $super    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $accounts = Account::getAll();
+            foreach ($accounts as $account)
+            {
+                $account->delete();
+            }
+            $exportItems = ExportItem::getAll();
+            foreach ($exportItems as $exportItem)
+            {
+                $exportItem->delete();
+            }
+            $numberOfRecords    = rand (12, 100);
+            ExportModule::$asynchronusThreshold = $numberOfRecords - 1;
+            for ($i = 1; $i <= $numberOfRecords; $i++)
+            {
+                $randomData = RandomDataUtil::getRandomDataByModuleAndModelClassNames('AccountsModule', 'Account');
+                AccountTestHelper::createAccountByNameForOwner($randomData['names'][$i], $super);
+            }
+            $this->setGetArray(array(
+                'Account_page' => '1',
+                'export' => '',
+                'selectAll' => '1',
+                'selectedIds' => '',
+                'ajax' => ''));
+
+            $this->runControllerWithRedirectExceptionAndGetUrl('accounts/default/export');
+
+            // Start background job
+            $job = new ExportJob();
+            $this->assertTrue($job->run());
+
+            $exportItems = ExportItem::getAll();
+            $this->assertEquals(1, count($exportItems));
+            $fileModel = $exportItems[0]->exportFileModel;
+            $this->assertEquals(1, $exportItems[0]->isCompleted);
+            $this->assertEquals('csv', $exportItems[0]->exportFileType);
+            $this->assertEquals('accounts', $exportItems[0]->exportFileName);
+            $this->assertTrue($fileModel instanceOf ExportFileModel);
+            for ($i = 1; $i <= $numberOfRecords; $i++)
+            {
+                $this->assertContains($randomData['names'][$i], $fileModel->fileContent->content);
+            }
         }
     }
 ?>

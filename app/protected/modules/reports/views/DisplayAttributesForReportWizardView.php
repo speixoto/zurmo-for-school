@@ -78,7 +78,7 @@
             $hiddenInputName     = get_class($this->model) . '[displayAttributes]';
             $idInputHtmlOptions  = array('id' => $hiddenInputId);
             $content             = ZurmoHtml::hiddenField($hiddenInputName, null,
-                $idInputHtmlOptions);
+                                   $idInputHtmlOptions);
             $content            .= $this->form->error($this->model, 'displayAttributes',
                 array('inputID' => $hiddenInputId));
             $content            .= parent::renderRightSideContent();
