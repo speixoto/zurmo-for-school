@@ -140,6 +140,22 @@
         }
 
         /**
+         * @return string
+         */
+        public function getModelClassName()
+        {
+            return $this->modelClassName;
+        }
+
+        /**
+         * @return string
+         */
+        public function getModelAttributeName()
+        {
+            return $this->modelAttributeName;
+        }
+
+        /**
          * Override to properly handle retrieving rule information from the model for the attribute name.
          */
         public function rules()
