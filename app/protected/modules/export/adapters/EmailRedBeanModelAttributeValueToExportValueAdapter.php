@@ -63,9 +63,9 @@
             }
             else
             {
-                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ExportModule', 'Email Address');
-                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ExportModule', 'Is Invalid');
-                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ExportModule', 'Opt Out');
+                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Email Address');
+                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid');
+                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out');
             }
         }
     }

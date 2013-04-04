@@ -71,9 +71,9 @@
             $adapter     = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'secondaryEmail');
             $adapter->resolveHeaderData($data);
             $compareData = array(
-                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ExportModule', 'Email Address'),
-                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ExportModule', 'Is Invalid'),
-                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ExportModule', 'Opt Out'),
+                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Email Address'),
+                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid'),
+                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out'),
             );
 
             $this->assertEquals($compareData, $data);
