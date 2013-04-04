@@ -552,8 +552,6 @@
             if (isset($_POST[$postVariableName]))
             {
                 $postData = $_POST[$postVariableName];
-                print_r($postData);
-                exit;
                 $controllerUtil   = static::getZurmoControllerUtil();
                 $model            = $controllerUtil->saveModelFromPost($postData, $model, $savedSucessfully,
                                                                        $modelToStringValue);
