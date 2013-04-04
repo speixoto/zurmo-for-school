@@ -58,6 +58,7 @@
         {
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
+
                         if(linkId == '" . ModuleForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
@@ -73,18 +74,17 @@
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                             $('#TriggersForWorkflowWizardView').hide();
                             $('#ActionsForWorkflowWizardView').show();
-
+                            var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
+                            $.each(actionsList, function(){
+                                if ( $(this).hasClass('expanded-row') ){
+                                    $(this).toggleClass('expanded-row');
+                                    $('.edit-dynamic-row-link', this).toggle();
+                                    $('.toggle-me', this).toggle();
+                                }
+                            });
                         }
                         if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
-                           var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
-                            $.each(actionsList, function(){
-                                if ( $(this).hasClass('expanded-row') ){
-                                    //fires on next button when a panel is open
-                                    alert('please save and validate the open action panel');
-                                    return false;
-                                }
-                            });
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
@@ -97,13 +97,16 @@
                             $('#EmailMessagesForWorkflowWizardView').hide();
                             $('#GeneralDataForWorkflowWizardView').show();
                         }
+
                         var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
                         if (rowData.purpose === 'validate-action'){
                             $('#' + rowData.row.toString()).toggleClass('expanded-row');
                             $('#' + rowData.row.toString() + ' .toggle-me').toggle();
                             $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();
                             $('#' + rowData.row.toString()).siblings().show();
+                            $('#actionsNextLink').show();
                         }
+
                         if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "

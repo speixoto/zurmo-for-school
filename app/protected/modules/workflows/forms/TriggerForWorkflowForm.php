@@ -27,7 +27,7 @@
     /**
      * Component form for trigger definitions
      */
-    class TriggerForWorkflowForm extends ComponentForWorkflowForm
+    class TriggerForWorkflowForm extends ComponentForWorkflowForm implements OperatorInterface
     {
         /**
          * When performing actions on related models, if there are MANY related models RELATION_FILTER_ALL means the

@@ -76,7 +76,6 @@
                             $('#TimeTriggerForWorkflowWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
                             $('#TriggersForWorkflowWizardView').show();
-
                         }
                         if(linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -84,6 +83,14 @@
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
                             $('#TriggersForWorkflowWizardView').hide();
                             $('#ActionsForWorkflowWizardView').show();
+                            var actionsList = $('#ActionsForWorkflowWizardView').find('ul:first').children();
+                            $.each(actionsList, function(){
+                                if ( $(this).hasClass('expanded-row') ){
+                                    $(this).toggleClass('expanded-row');
+                                    $('.edit-dynamic-row-link', this).toggle();
+                                    $('.toggle-me', this).toggle();
+                                }
+                            });
                         }
                         if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
@@ -99,6 +106,16 @@
                             $('#EmailMessagesForWorkflowWizardView').hide();
                             $('#GeneralDataForWorkflowWizardView').show();
                         }
+
+                        var rowData = $('#" . $formName . "').find('.attachLoadingTarget').data() || {};
+                        if (rowData.purpose === 'validate-action'){
+                            $('#' + rowData.row.toString()).toggleClass('expanded-row');
+                            $('#' + rowData.row.toString() + ' .toggle-me').toggle();
+                            $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();
+                            $('#' + rowData.row.toString()).siblings().show();
+                            $('#actionsNextLink').show();
+                        }
+
                         if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "

@@ -186,10 +186,10 @@ a.ModalGameNotification a,
 .zero-components-view.TimeTrigger,
 #time-trigger-container,
 .time-trigger-attribute-selector-container,
-#OnSaveWorkflowWizardView .add-email-message-button-container,
-#OnSaveWorkflowWizardView .action-type-selector-container,
-#OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .zero-components-view,
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container,
+.ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .zero-components-view,
 .workflow-order-module-selector-container,
 #workflow-order-container,
 .WorkflowRulesOrder,
@@ -214,10 +214,10 @@ a.ModalGameNotification a,
 #time-trigger-container:before,
 .zero-components-view.TimeTrigger:after,
 #time-trigger-container:after,
-#OnSaveWorkflowWizardView .add-email-message-button-container:before,
-#OnSaveWorkflowWizardView .action-type-selector-container:before,
-#OnSaveWorkflowWizardView .add-email-message-button-container:after,
-#OnSaveWorkflowWizardView .action-type-selector-container:after,
+.ComponentForWorkflowWizardView .add-email-message-button-container:before,
+.ComponentForWorkflowWizardView .action-type-selector-container:before,
+.ComponentForWorkflowWizardView .add-email-message-button-container:after,
+.ComponentForWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:before,
 .workflow-order-module-selector-container:after {
   content: "";
@@ -231,8 +231,8 @@ a.ModalGameNotification a,
 .dynamic-sub-row:after,
 .zero-components-view.TimeTrigger:after,
 #time-trigger-container:after,
-#OnSaveWorkflowWizardView .add-email-message-button-container:after,
-#OnSaveWorkflowWizardView .action-type-selector-container:after,
+.ComponentForWorkflowWizardView .add-email-message-button-container:after,
+.ComponentForWorkflowWizardView .action-type-selector-container:after,
 .workflow-order-module-selector-container:after {
   clear: both;
 }
@@ -244,8 +244,8 @@ a.ModalGameNotification a,
 .dynamic-sub-row,
 .zero-components-view.TimeTrigger,
 #time-trigger-container,
-#OnSaveWorkflowWizardView .add-email-message-button-container,
-#OnSaveWorkflowWizardView .action-type-selector-container,
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container,
 .workflow-order-module-selector-container {
   zoom: 1;
 }
@@ -8383,13 +8383,9 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
-.beforeToolTip .hasDropDown {
-  margin-right: 30px;
-  width: auto;
-}
 .beforeToolTip + .tooltip {
   float: right;
-  margin: 7px 0 0 -30px !important;
+  margin: 5px 0 0 -30px !important;
   position: relative;
 }
 /*=View AccountView (before editing, portlets and such)*/
@@ -16442,9 +16438,6 @@ a.user-link {
   float: right;
   width: 80%;
 }
-.first-value-area + .second-value-area {
-  margin-top: 10px;
-}
 .report-runtime-availability {
   min-width: 145px;
   position: relative;
@@ -16741,7 +16734,6 @@ a.user-link {
 }
 .zero-components-view.Actions,
 .zero-components-view.EmailMessages,
-.zero-components-view.TimeTrigger,
 .zero-components-view.WorkflowRulesOrder,
 .zero-components-view.TimeTrigger {
   position: relative;
@@ -16947,7 +16939,7 @@ a.user-link {
 .zero-components-view.TimeTrigger,
 #time-trigger-container {
   float: right !important;
-  width: 70% !important;
+  width: 80% !important;
   padding-left: 15px;
 }
 .zero-components-view.TimeTrigger .value-data,
@@ -16959,35 +16951,39 @@ a.user-link {
 #time-trigger-container .first-value-area {
   margin-left: 15px;
 }
-.NoTimeTrigger,
-#time-trigger-container {
+.time-trigger-attribute-selector-container {
+  width: 20%;
+  float: left;
   min-height: 300px;
 }
-.time-trigger-attribute-selector-container {
-  width: 30%;
+.dynamic-row-duration {
   float: left;
+  width: 100%;
+  margin-top: 10px;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
-#OnSaveWorkflowWizardView .add-email-message-button-container,
-#OnSaveWorkflowWizardView .action-type-selector-container {
-  width: 30%;
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container {
+  width: 20%;
   float: left !important;
 }
-#OnSaveWorkflowWizardView .droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .zero-components-view {
+.ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .zero-components-view {
   float: left !important;
 }
-#OnSaveWorkflowWizardView .Actions.droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .EmailMessages.droppable-dynamic-rows-container,
-#OnSaveWorkflowWizardView .Actions.zero-components-view,
-#OnSaveWorkflowWizardView .EmailMessages.zero-components-view {
-  width: 70% !important;
+.ComponentForWorkflowWizardView .Actions.droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .EmailMessages.droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .TimeTrigger.droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .Actions.zero-components-view,
+.ComponentForWorkflowWizardView .EmailMessages.zero-components-view,
+.ComponentForWorkflowWizardView .TimeTrigger.zero-components-view {
+  width: 80% !important;
   padding-left: 15px;
 }
-#OnSaveWorkflowWizardView .edit-dynamic-row-link {
+.ComponentForWorkflowWizardView .edit-dynamic-row-link {
   display: none;
 }
-#OnSaveWorkflowWizardView .ui-sortable {
+.ComponentForWorkflowWizardView .ui-sortable {
   min-height: 300px;
   position: relative;
 }
@@ -17006,14 +17002,15 @@ a.user-link {
 }
 /*WorkFlow Rules Order*/
 .workflow-order-module-selector-container {
-  width: 30%;
+  width: 20%;
   float: left !important;
+  min-height: 300px;
 }
 #workflow-order-container,
 .WorkflowRulesOrder,
 .no-workflows-to-order-view {
   float: right !important;
-  width: 70% !important;
+  width: 80% !important;
   padding-left: 15px;
 }
 #workflow-order-container + .float-bar,
@@ -17021,13 +17018,14 @@ a.user-link {
 .no-workflows-to-order-view + .float-bar {
   margin-top: 15px;
 }
+.workflow-order-container,
 .no-workflows-to-order-view {
   position: relative;
   top: 0;
   left: 0;
-  min-height: 300px;
   text-align: center;
 }
+.workflow-order-container .large-icon:after,
 .no-workflows-to-order-view .large-icon:after {
   content: "j";
   font-weight: normal;
@@ -17035,6 +17033,7 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 60%;
 }
+.workflow-order-container p,
 .no-workflows-to-order-view p {
   font-size: 16px;
   line-height: 24px;

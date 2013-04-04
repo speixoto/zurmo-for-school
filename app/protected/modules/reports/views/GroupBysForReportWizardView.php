@@ -86,6 +86,14 @@
         }
 
         /**
+         * @return bool
+         */
+        protected function isListContentSortable()
+        {
+            return true;
+        }
+
+        /**
          * @return int
          */
         protected function getItemsCount()

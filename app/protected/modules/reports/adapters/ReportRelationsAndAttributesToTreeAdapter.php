@@ -104,7 +104,7 @@
             $attributesData          = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
             foreach($attributesData as $attribute => $attributeData)
             {
-                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
+                $attributeNode      = array('id'		   => self::makeNodeId($attribute),
                                             'text'         => $attributeData['label'],
                                             'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;
@@ -123,7 +123,7 @@
                 {
                     throw new NotSupportedException($relationModelClassName);
                 }
-                $relationNode                 = array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
+                $relationNode                 = array('id' => self::makeNodeId($relation, $nodeIdPrefix),
                     'text'        => $relationData['label'],
                     'expanded'    => false,
                     'hasChildren' => true);

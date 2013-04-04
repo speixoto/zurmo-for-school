@@ -27,7 +27,7 @@
     /**
      * Component form for filter definitions
      */
-    class FilterForReportForm extends ComponentForReportForm
+    class FilterForReportForm extends ComponentForReportForm implements OperatorInterface
     {
         /**
          * True if the filter is to be available as a run time filter that can be changed when running the report
