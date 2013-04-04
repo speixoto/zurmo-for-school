@@ -47,7 +47,7 @@
             assert('$modelClassName == null || is_string($modelClassName)');
             if($modelClassName == null)
             {
-                $modelClassName           = $moduleClassName::getPrimaryModelName();
+                $modelClassName       = $moduleClassName::getPrimaryModelName();
             }
             $editableMetadata         = $viewClassName::getMetadata();
             $designerRulesType        = $viewClassName::getDesignerRulesType();
