@@ -12000,6 +12000,9 @@ table.configuration-list td:last-child a .z-label:before {
 .user-menu-preferences .multiselect-right {
   float: none;
 }
+.user-menu-preferences .multiselect-nav {
+  margin-left: 0;
+}
 /*Logo Uplaod*/
 .uploaded-logo-template td.name {
   padding-top: 10px !important;
