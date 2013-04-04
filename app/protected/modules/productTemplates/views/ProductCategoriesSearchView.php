@@ -24,6 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
+     //TO DO Extend from Simply search view and make the changes in Prouct category search form as well
     class ProductCategoriesSearchView extends SavedDynamicSearchView
     {
         public static function getDefaultMetadata()

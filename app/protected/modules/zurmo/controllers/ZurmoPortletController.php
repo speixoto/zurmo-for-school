@@ -148,7 +148,9 @@
                                                         $relationAttributeName, $relationModelId, $relationModuleId, $relationModelClassName = null)
         {
             if($relationModelClassName == null)
+            {
                 $relationModelClassName = Yii::app()->getModule($relationModuleId)->getPrimaryModelName();
+            }
             $relationModel          = $relationModelClassName::getById((int)$relationModelId);
             $modelClassName         = $this->getModule()->getPrimaryModelName();
             $model                  = $modelClassName::getById((int)$modelId);

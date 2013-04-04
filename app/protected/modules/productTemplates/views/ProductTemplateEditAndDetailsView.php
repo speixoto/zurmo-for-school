@@ -75,7 +75,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'status', 'type' => 'ProductTemplateStatusDropDown', 'addBlank' => true),
+                                                array('attributeName' => 'status', 'type' => 'ProductTemplateStatusDropDown'),
                                             ),
                                         ),
                                     )
@@ -84,7 +84,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown', 'addBlank' => true),
+                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown'),
                                             ),
                                         ),
                                     )
