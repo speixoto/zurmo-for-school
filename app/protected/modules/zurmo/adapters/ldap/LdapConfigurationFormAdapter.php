@@ -36,6 +36,7 @@
         public static function makeFormFromGlobalConfiguration()
         {
             $form                                    = new LdapConfigurationForm();
+            $form->serverType                              = Yii::app()->authenticationHelper->ldapServerType;
             $form->host                              = Yii::app()->authenticationHelper->ldapHost;
             $form->port                              = Yii::app()->authenticationHelper->ldapPort;
             $form->bindRegisteredDomain              = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
@@ -50,12 +51,13 @@
          */
         public static function setConfigurationFromForm(LdapConfigurationForm $form)
         {
+            Yii::app()->authenticationHelper->ldapServerType           = $form->serverType;
             Yii::app()->authenticationHelper->ldapHost                 = $form->host;
             Yii::app()->authenticationHelper->ldapPort                 = $form->port;
             Yii::app()->authenticationHelper->ldapBindRegisteredDomain = $form->bindRegisteredDomain;
             Yii::app()->authenticationHelper->ldapBindPassword         = $form->bindPassword;
             Yii::app()->authenticationHelper->ldapBaseDomain           = $form->baseDomain;
-            Yii::app()->authenticationHelper->ldapEnabled                  = $form->enabled;
+            Yii::app()->authenticationHelper->ldapEnabled              = $form->enabled;
             Yii::app()->authenticationHelper->setLdapSettings();
        }
     }

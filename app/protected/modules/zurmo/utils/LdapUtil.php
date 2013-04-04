@@ -84,7 +84,7 @@
         /*
         * Resolving Base Registered Domain for LDAP Server Type
         */
-        public static function resolveBindRegisteredDomain()
+        public static function resolveBindRegisteredDomain($bindRegisteredDomain, $baseDomain)
         {
                 $baseDomain            = str_replace(',','',$baseDomain); 
                 $domainControllers     = explode('dc=',$baseDomain);
