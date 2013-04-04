@@ -94,7 +94,8 @@
                 'options' => array(
                     'cancel' => 'li.expanded-row',
                     'placeholder' => 'ui-state-highlight',
-                    'containment' => 'parent'
+                    'containment' => 'parent',
+                    'deactivate' => 'js:function() { rebuildWorkflowActionRowNumbers("' . $componentType . 'attributeRowsUl"); }'
                 ),
                 'showEmptyList' => false
             ));
