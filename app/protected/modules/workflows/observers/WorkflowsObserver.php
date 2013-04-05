@@ -77,12 +77,20 @@
             $model                   = $event->sender;
             if($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
             {
-                $triggeredByUser              = Yii::app()->user->userModel;
-                Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
-                $model->setDoNotProcessWorkflowOnSave();
-                SavedWorkflowsUtil::resolveBeforeSaveByModel($model, $triggeredByUser);
-                $model->setProcessWorkflowOnSave();
-                Yii::app()->user->userModel = $triggeredByUser;
+
+                try
+                {
+                    $triggeredByUser              = Yii::app()->user->userModel;
+                    Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
+                    $model->setDoNotProcessWorkflowOnSave();
+                    SavedWorkflowsUtil::resolveBeforeSaveByModel($model, $triggeredByUser);
+                    $model->setProcessWorkflowOnSave();
+                    Yii::app()->user->userModel = $triggeredByUser;
+                }
+                catch(MissingASuperAdministratorException $e)
+                {
+                    //skip running workflow, since no super administrators are available.
+                }
             }
         }
 
@@ -95,13 +103,20 @@
             $model                   = $event->sender;
             if($model->getScenario() != 'autoBuildDatabase' && $this->depth < 11 && $model->shouldProcessWorkflowOnSave())
             {
-                $this->depth                = $this->depth + 1;
-                $triggeredByUser            = Yii::app()->user->userModel;
-                Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
-                $model->setDoNotProcessWorkflowOnSave();
-                SavedWorkflowsUtil::resolveAfterSaveByModel($model, $triggeredByUser);
-                $model->setProcessWorkflowOnSave();
-                Yii::app()->user->userModel = $triggeredByUser;
+                try
+                {
+                    $this->depth                = $this->depth + 1;
+                    $triggeredByUser            = Yii::app()->user->userModel;
+                    Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
+                    $model->setDoNotProcessWorkflowOnSave();
+                    SavedWorkflowsUtil::resolveAfterSaveByModel($model, $triggeredByUser);
+                    $model->setProcessWorkflowOnSave();
+                    Yii::app()->user->userModel = $triggeredByUser;
+                }
+                catch(MissingASuperAdministratorException $e)
+                {
+                    //skip running workflow, since no super administrators are available.
+                }
                 $this->depth                = $this->depth - 1;
             }
             elseif($this->depth > 10)

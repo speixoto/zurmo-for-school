@@ -24,51 +24,10 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowModelTestItem4 extends OwnedSecurableItem
+    /**
+     * Exception thrown when there is an expectation to use one of the super administrators, but there are none.
+     */
+    class MissingASuperAdministratorException extends CException
     {
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata[__CLASS__] = array(
-                'members' => array(
-                    'name',
-                ),
-                'rules' => array(
-                    array('name',  'type',   'type' => 'string'),
-                    array('name',  'length', 'max' => 32),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function isTypeDeletable()
-        {
-            return true;
-        }
-
-        public static function getModuleClassName()
-        {
-            return 'WorkflowsTestModule';
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @param null | string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel($language = null)
-        {
-            return 'WorkflowModelTestItem4';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @param null | string $language
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel($language = null)
-        {
-            return 'WorkflowModelTestItem4s';
-        }
     }
 ?>

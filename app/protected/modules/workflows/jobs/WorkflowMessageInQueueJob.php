@@ -60,23 +60,32 @@
          */
         public function run()
         {
-            $originalUser               = Yii::app()->user->userModel;
-            Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
-            foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
+            try
             {
-                try
+                $originalUser               = Yii::app()->user->userModel;
+                Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
+                foreach (WorkflowMessageInQueue::getModelsToProcess(self::$pageSize) as $workflowMessageInQueue)
                 {
-                    $model = $this->resolveModel($workflowMessageInQueue);
-                    $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
-                    $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                    try
+                    {
+                        $model = $this->resolveModel($workflowMessageInQueue);
+                        $this->resolveSavedWorkflowIsValid($workflowMessageInQueue);
+                        $this->processWorkflowMessageInQueue($workflowMessageInQueue, $model);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                    }
+                    $workflowMessageInQueue->delete();
                 }
-                catch (NotFoundException $e)
-                {
-                }
-                $workflowMessageInQueue->delete();
+                Yii::app()->user->userModel = $originalUser;
+                return true;
             }
-            Yii::app()->user->userModel = $originalUser;
-            return true;
+            catch(MissingASuperAdministratorException $e)
+            {
+                //skip running workflow, since no super administrators are available.
+                $this->errorMessage = Zurmo::t('WorkflowsModule', 'Could not process since no super administrators were found');
+                return false;
+            }
         }
 
         /**

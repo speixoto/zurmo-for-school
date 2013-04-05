@@ -283,7 +283,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getInferredRelationsData();
             $this->assertEquals(2, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -292,7 +292,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -322,7 +322,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
             $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);

@@ -141,5 +141,35 @@
         {
             return 'ContactGamification';
         }
+
+        /**
+         * Override since Person has its own override.
+         * @see RedBeanModel::getLabel
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
+            }
+            return get_called_class();
+        }
+
+        /**
+         * Override since Person has its own override.
+         * @see RedBeanModel::getPluralLabel
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language)
+        {
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
+            }
+            return static::getLabel($language) . 's';
+        }
     }
 ?>

@@ -37,7 +37,7 @@
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'hasMany2';
             $label = $form->getDisplayLabel();
-            $this->assertEquals('Update Related WorkflowModelTestItems', $label);
+            $this->assertEquals('Update Related Workflows Test', $label);
 
             //Test update a derived related model (this is like account's meetings)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
@@ -50,14 +50,14 @@
             $form->type            = ActionForWorkflowForm::TYPE_CREATE;
             $form->relation        = 'hasMany2';
             $label = $form->getDisplayLabel();
-            $this->assertEquals('Create WorkflowModelTestItem', $label);
+            $this->assertEquals('Create Workflows Test', $label);
 
             //Test update a inferred related model (this is like a meeting's accounts)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'WorkflowModelTestItem__workflowItems__Inferred';
             $label = $form->getDisplayLabel();
-            $this->assertEquals('Update Related WorkflowModelTestItems', $label);
+            $this->assertEquals('Update Related Workflows Tests', $label);
 
             //Test create a related, derived related model (this is like account's meetings)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
@@ -65,7 +65,7 @@
             $form->relation              = 'hasMany2';
             $form->relatedModelRelation  = 'model5ViaItem';
             $label = $form->getDisplayLabel();
-            $this->assertEquals('Create Related WorkflowModelTestItems WorkflowModelTestItem5', $label);
+            $this->assertEquals('Create Related Workflows Tests WorkflowModelTestItem5', $label);
 
             //Test create a related, inferred related model (this is like a meeting's accounts)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem7', Workflow::TYPE_ON_SAVE);

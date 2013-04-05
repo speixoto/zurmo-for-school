@@ -35,6 +35,7 @@
          * a user specified, then a fall back of the first user that is a super administrator will be returned
          * @return User $user
          * @throws NotSupportedException if there is no user specified and there are no users in the super admin group
+         * @throws MissingASuperAdministratorException if there are no super administrators available
          */
         public static function getUserToRunWorkflowsAs()
         {
@@ -57,7 +58,7 @@
             }
             if ($superGroup->users->count() == 0)
             {
-                throw new NotSupportedException();
+                throw new MissingASuperAdministratorException();
             }
             return $superGroup->users->offsetGet(0);
         }

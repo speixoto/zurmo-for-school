@@ -60,25 +60,34 @@
          */
         public function run()
         {
-            $originalUser               = Yii::app()->user->userModel;
-            Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
-            foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize) as $byTimeWorkflowInQueue)
+            try
             {
-                try
+                $originalUser               = Yii::app()->user->userModel;
+                Yii::app()->user->userModel = WorkflowUtil::getUserToRunWorkflowsAs();
+                foreach (ByTimeWorkflowInQueue::getModelsToProcess(self::$pageSize) as $byTimeWorkflowInQueue)
                 {
-                    $model = $this->resolveModel($byTimeWorkflowInQueue);
-                    $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
-                    $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                    try
+                    {
+                        $model = $this->resolveModel($byTimeWorkflowInQueue);
+                        $this->resolveSavedWorkflowIsValid($byTimeWorkflowInQueue);
+                        $this->processByTimeWorkflowInQueue($byTimeWorkflowInQueue, $model);
+                    }
+                    catch (NotFoundException $e)
+                    {
+                        WorkflowUtil::handleProcessingException($e,
+                            'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
+                    }
+                    $byTimeWorkflowInQueue->delete();
                 }
-                catch (NotFoundException $e)
-                {
-                    WorkflowUtil::handleProcessingException($e,
-                        'application.modules.workflows.jobs.ByTimeWorkflowInQueueJob.run');
-                }
-                $byTimeWorkflowInQueue->delete();
+                Yii::app()->user->userModel = $originalUser;
+                return true;
             }
-            Yii::app()->user->userModel = $originalUser;
-            return true;
+            catch(MissingASuperAdministratorException $e)
+            {
+                //skip running workflow, since no super administrators are available.
+                $this->errorMessage = Zurmo::t('WorkflowsModule', 'Could not process since no super administrators were found');
+                return false;
+            }
         }
 
         /**
