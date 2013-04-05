@@ -17518,7 +17518,11 @@ orientation : portrait // orientation: landscape    Target orientation
   #NoUserEmailConfigurationYetView .large-icon,
   #NoGlobalEmailConfigurationYetView .large-icon,
   .ZeroModelsYetView .large-icon {
-    display: none;
+    width: 100%;
+    text-align: center;
+    margin-top: 0;
+    border-right: none;
+    float: none;
   }
   #NoUserEmailConfigurationYetView p,
   #NoGlobalEmailConfigurationYetView p,
