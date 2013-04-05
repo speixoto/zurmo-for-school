@@ -36,15 +36,6 @@
             return 'CampaignsModule';
         }
 
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'CampaignsModuleSingularLabel';
-        }
-
         public function __toString()
         {
             try
@@ -59,15 +50,6 @@
             {
                 return '';
             }
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'CampaignsModulePluralLabel';
         }
 
         public static function canSaveMetadata()

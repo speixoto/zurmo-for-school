@@ -61,7 +61,7 @@
             $this->content  = $content;
         }
 
-        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = null, $language = null)
+        public function resolveMergeTagsArrayToAttributes($model, & $invalidTags = array(), $language = null)
         {
             $language = ($language)? $language : $this->language;
             if (empty($this->mergeTags))
@@ -75,7 +75,7 @@
             }
         }
 
-        public function resolveMergeTags($model,& $invalidTags = null, $language = null)
+        public function resolveMergeTags($model, & $invalidTags = array(), $language = null)
         {
             if (!$this->extractMergeTagsPlaceHolders() ||
                     $this->resolveMergeTagsArrayToAttributes($model, $invalidTags, $language) &&

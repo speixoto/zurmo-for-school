@@ -33,8 +33,7 @@
         public function getDependencies()
         {
             return array(
-                'configuration',
-                'zurmo',
+                'emailMessages',
             );
         }
 
@@ -91,6 +90,16 @@
         public static function modelsAreNeverGloballySearched()
         {
             return false;
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('EmailTemplatesModule', 'Email Template', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('EmailTemplatesModule', 'Email Templates', array(), null, $language);
         }
     }
 ?>

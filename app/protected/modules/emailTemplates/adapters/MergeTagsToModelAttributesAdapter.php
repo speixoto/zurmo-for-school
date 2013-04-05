@@ -32,7 +32,7 @@
     {
         const PROPERTY_NOT_FOUND = "!MERGETAG-TO-ATTR-FAILED";
 
-        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = null, $language = 'en')
+        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en')
         {
             $resolvedMergeTags = array();
             foreach($mergeTags as $mergeTag)
@@ -42,7 +42,7 @@
                 $resolvedValue              =  static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
                 if ($resolvedValue === static::PROPERTY_NOT_FOUND)
                 {
-                    if (is_array($invalidTags))
+                    if (empty($invalidTags))
                     {
                         $invalidTags[] = $mergeTag;
                     }

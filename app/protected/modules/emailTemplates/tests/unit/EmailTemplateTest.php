@@ -157,8 +157,8 @@
         {
             $emailTemplate = EmailTemplate::getByName('Test Email Template');
             $this->assertEquals(1, count($emailTemplate));
-            $this->assertEquals('EmailTemplate',  $emailTemplate[0]::getModelLabelByTypeAndLanguage('Singular'));
-            $this->assertEquals('EmailTemplates', $emailTemplate[0]::getModelLabelByTypeAndLanguage('Plural'));
+            $this->assertEquals('Email Template',  $emailTemplate[0]::getModelLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('Email Templates', $emailTemplate[0]::getModelLabelByTypeAndLanguage('Plural'));
         }
 
         /*

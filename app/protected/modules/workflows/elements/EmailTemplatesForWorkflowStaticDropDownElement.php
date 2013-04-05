@@ -34,9 +34,7 @@
          */
         protected function getDropDownArray()
         {
-            //todo: temporary until emailTemplates is merged in
-            return array('1' => 'template a', '2' => 'template b', '3' => 'template c');
-            return EmailTemplate::someCall();
+            return EmailTemplate::getAllDataAndLabels();
         }
     }
 ?>

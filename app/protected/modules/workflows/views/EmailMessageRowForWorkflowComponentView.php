@@ -151,7 +151,6 @@
         {
             $params            = array('inputPrefix' => $this->inputPrefixData);
             $content           = '<div class="attributesContainer">';
-            //todo: move EmailTemplatesForWorkflowStaticDropDownElement to emailTemplates module when ready.
             $element           = new EmailTemplatesForWorkflowStaticDropDownElement($this->model, 'emailTemplateId',
                                  $this->form, $params);
             $innerContent      = '<table><colgroup><col class="col-0"><col class="col-1">' .

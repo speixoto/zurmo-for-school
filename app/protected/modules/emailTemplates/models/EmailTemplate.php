@@ -43,8 +43,8 @@
         public static function getTypeDropDownArray()
         {
              return array(
-                 self::TYPE_WORKFLOW     => Zurmo::t('EmailTemplatesModule', 'Workflow'),
-                 self::TYPE_CONTACT      => Zurmo::t('EmailTemplatesModule', 'Contact'),
+                 self::TYPE_WORKFLOW     => Zurmo::t('WorkflowsModule', 'Workflow'),
+                 self::TYPE_CONTACT      => Zurmo::t('ContactsModule',  'Contact'),
              );
         }
 
@@ -74,15 +74,6 @@
             }
         }
 
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-     /*   protected static function getPluralLabel()
-        {
-            return 'EmailTemplatesModulePluralLabel';
-        }
-*/
         public static function canSaveMetadata()
         {
             return true;
@@ -217,6 +208,32 @@
             else
             {
             }
+        }
+
+        public static function getAllDataAndLabels()
+        {
+            $dataAndLabels = array();
+            $emailTemplates = static::getAll('name');
+            foreach($emailTemplates as $emailTemplate)
+            {
+                $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);
+            }
+            return $dataAndLabels;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'language'    => Zurmo::t('ZurmoModule', 'Language',   array(), null, $language),
+                    'htmlContent' => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
+                    'name'        => Zurmo::t('ZurmoModule',    'Name',  array(), null, $language),
+                    'subject'     => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
+                    'type'        => Zurmo::t('Core',                'Type',  array(), null, $language),
+                    'textContent' => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

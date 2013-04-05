@@ -52,15 +52,6 @@
             }
         }
 
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'MarketingListsModulePluralLabel';
-        }
-
         public static function canSaveMetadata()
         {
             return true;

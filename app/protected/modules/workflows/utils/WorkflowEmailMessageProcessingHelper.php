@@ -83,7 +83,9 @@
          */
         protected function resolveEmailTemplateTextContentForModelData(EmailTemplate $emailTemplate)
         {
-            return $emailTemplate->textContent;
+            $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
+                                                        $emailTemplate->textContent);
+            return $mergeTagsUtil->resolveMergeTags($this->triggeredModel);
         }
 
         /**
@@ -92,7 +94,9 @@
          */
         protected function resolveEmailTemplateHtmlContentForModelData(EmailTemplate $emailTemplate)
         {
-            return $emailTemplate->htmlContent;
+            $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
+                                                        $emailTemplate->htmlContent);
+            return $mergeTagsUtil->resolveMergeTags($this->triggeredModel);
         }
 
         /**

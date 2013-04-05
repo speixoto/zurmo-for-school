@@ -31,18 +31,14 @@
             return 'MarketingListsModule';
         }
 
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
+        protected static function getPluralLabel($language = null)
         {
-            return 'Marketing List Members';
+            return Zurmo::t('MarketingListsModule', 'Marketing List Members', array(), null, $language);
         }
 
-        protected static function getLabel()
+        protected static function getLabel($language = null)
         {
-            return 'Marketing List Member';
+            return Zurmo::t('MarketingListsModule', 'Marketing List Member', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
