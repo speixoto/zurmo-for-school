@@ -30,6 +30,7 @@
         {
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
             $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
+            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
         }
 
         /**
