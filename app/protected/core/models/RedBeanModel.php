@@ -2289,7 +2289,7 @@
          * @param null | string $language
          * @return dynamic label name based on module.
          */
-        protected static function getPluralLabel($language)
+        protected static function getPluralLabel($language = null)
         {
             if(null != $moduleClassName = static::getModuleClassName())
             {
