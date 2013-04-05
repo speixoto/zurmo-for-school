@@ -2251,34 +2251,51 @@
             assert('in_array($type, array("Singular", "SingularLowerCase", "Plural", "PluralLowerCase"))');
             if ($type == 'Singular')
             {
-               return Zurmo::t('Core', static::getLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return static::getLabel($language);
             }
             if ($type == 'SingularLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                return TextUtil::strToLowerWithDefaultEncoding(static::getLabel($language));
             }
             if ($type == 'Plural')
             {
-               return Zurmo::t('Core', static::getPluralLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return static::getPluralLabel($language);
             }
             if ($type == 'PluralLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getPluralLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                return TextUtil::strToLowerWithDefaultEncoding(static::getPluralLabel($language));
             }
         }
 
-        protected static function getLabel()
+        /**
+         * Returns the display name for the model class. Defaults to the module label. Override if the model
+         * label is not the module label. Make sure to return a translated label. Also provides fall back in
+         * moduleClassName is null.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
+            }
             return get_called_class();
         }
 
-        protected static function getPluralLabel()
+        /**
+         * Returns the display name for plural of the model class. Defaults to the module label. Override if the model
+         * label is not the module label. Make sure to return a translated label
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language)
         {
-            return static::getLabel() . 's';
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
+            }
+            return static::getLabel($language) . 's';
         }
 
         /**
