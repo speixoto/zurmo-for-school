@@ -406,6 +406,7 @@ orientation : portrait // orientation: landscape    Target orientation
 		}
 	}
 
+	#MenuView #shortcuts,
 	#MenuView #recently-viewed{
 		position: relative;
 		> ul{
@@ -500,34 +501,16 @@ orientation : portrait // orientation: landscape    Target orientation
 
 	.details-table{
 		margin-right:0;
-		.toolbar-mbmenu{
-			right:10px;
-			.view-toolbar{
-				position:relative;
-				clear:both;
-			}
-		}
-	}
-
-	.LatestActivtiesForPortletView{
-		.toolbar-mbmenu{
-			right:10px;
-			.view-toolbar{
-				position:relative;
-				clear:both;
-			}
-		}
 	}
 
 	.juiportlet-widget.OpportunitiesForContactRelatedListView,
-	.juiportlet-widget.OpportunitiesForAccountRelatedListView,
-	.juiportlet-widget.ContactsForOpportunityRelatedListView,
-	.juiportlet-widget.ContactsForAccountRelatedListView{
-		h3:before{
-			text-indent:0;
-			top:5px;
-		}
-	}
+	 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
+	 .juiportlet-widget.ContactsForOpportunityRelatedListView,
+	 .juiportlet-widget.ContactsForAccountRelatedListView{
+		 h3:before{
+			 //top:4px;
+		 }
+	 }
 
 	.juiportlet-widget{
 		margin-right:0 !important;
@@ -586,22 +569,32 @@ orientation : portrait // orientation: landscape    Target orientation
 		padding:0 10px 0 0;
 	}
 
-	.toolbar-mbmenu .options-menu{
-		> li > a{
-			text-indent:-9999px;
-			width:auto;
-			padding:0;
-			&:after{
-				content: "n";
-				.symbly(24px);
-			}
-			span{
-				display:none;
-			}
+	.toolbar-mbmenu{
+		right:10px;
+		.view-toolbar{
+			position:relative;
+			clear:both;
 		}
-		ul{
-			right:0;
-			margin-top:-8px;
+		.options-menu{
+			> li > a{
+				text-indent:-9999px;
+				width:auto;
+				padding:0;
+				&:after{
+					content: "n";
+					.symbly(24px);
+					left: -5px;
+					top: -1px;
+					margin-left:10px;
+				}
+				span{
+					display:none;
+				}
+			}
+			ul{
+				right:0;
+				margin-top:-8px;
+			}
 		}
 	}
 

@@ -6763,6 +6763,42 @@ td {
 .items > tbody tr th:first-child:not(.checkbox-column) {
   padding-left: 10px;
 }
+.stacked-list td {
+  padding-left: 0;
+}
+.stacked-list td div.button-column {
+  float: right;
+  display: block;
+  margin: 5px 0 0 0;
+  line-height: 100%;
+}
+.stacked-list td div.checkbox-column {
+  float: left;
+  margin: -6px 0 0 0 !important;
+  width: auto;
+}
+.stacked-list td div.checkbox-column label {
+  margin: 0 5px 0 0;
+}
+.stacked-list td div.checkbox-column ~ div {
+  padding-left: 25px;
+}
+.stacked-list td > div {
+  margin: 0 0 3px 0;
+}
+.stacked-list td > div:last-child {
+  margin-bottom: 0;
+}
+.stacked-list td input[type="checkbox"] {
+  margin-right: 10px;
+  margin-top: 2px;
+  float: left;
+}
+.stacked-list td:first-child div:first-child {
+  font-size: 13px;
+  font-weight: bold;
+  margin: 0 0 5px 0;
+}
 .sort-link:after {
   margin-left: 10px;
   font-size: 12px;
@@ -9270,32 +9306,6 @@ div.hasParallelFields .twoThirds,
 div.hasHalfs .twoThirds {
   width: 64%;
 }
-.juiportlet-widget td {
-  padding-left: 0;
-}
-.juiportlet-widget td div.button-column {
-  float: left;
-  display: block;
-  margin-left: 0px;
-  margin-top: 5px;
-  line-height: 100%;
-  height: 50px;
-}
-.juiportlet-widget td div.checkbox-column {
-  height: 50px;
-  float: left;
-  margin-left: 0;
-  margin-top: -6px;
-  width: auto;
-}
-.juiportlet-widget td div.checkbox-column label {
-  margin: 0 5px 0 0;
-}
-.juiportlet-widget td input[type="checkbox"] {
-  margin-right: 10px;
-  margin-top: 2px;
-  float: left;
-}
 .juiportlet-widget.OpportunitiesForAccountRelatedListView div.button-column,
 .juiportlet-widget.ContactsForAccountRelatedListView div.button-column {
   padding-top: 4px;
@@ -10698,21 +10708,6 @@ a.remove .icon:after {
   line-height: 100%;
   position: absolute;
   top: 6px;
-}
-.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div,
-.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div,
-.juiportlet-widget.ContactsForAccountRelatedListView td:first-child div {
-  font-size: 11px;
-  margin-top: 3px;
-}
-.juiportlet-widget.OpportunitiesForContactRelatedListView td:first-child div:first-child,
-.juiportlet-widget.OpportunitiesForAccountRelatedListView td:first-child div:first-child,
-.juiportlet-widget.ContactsForOpportunityRelatedListView td:first-child div:first-child,
-.juiportlet-widget.ContactsForAccountRelatedListView td:first-child div:first-child {
-  font-size: 12px;
-  font-weight: bold;
-  margin-top: 0;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;
@@ -17269,9 +17264,11 @@ orientation : portrait // orientation: landscape    Target orientation
     top: -7px;
     width: auto;
   }
+  #MenuView #shortcuts,
   #MenuView #recently-viewed {
     position: relative;
   }
+  #MenuView #shortcuts > ul,
   #MenuView #recently-viewed > ul {
     border: 1px solid #b6b6b6;
     background-color: #ebebeb;
@@ -17298,9 +17295,11 @@ orientation : portrait // orientation: landscape    Target orientation
     padding-top: 3px;
     padding-bottom: 3px;
   }
+  #MenuView #shortcuts > ul li,
   #MenuView #recently-viewed > ul li {
     line-height: 100%;
   }
+  #MenuView #shortcuts > ul a,
   #MenuView #recently-viewed > ul a {
     color: #666;
     font-size: 11px !important;
@@ -17310,13 +17309,17 @@ orientation : portrait // orientation: landscape    Target orientation
     height: auto !important;
     float: none !important;
   }
+  #MenuView #shortcuts > ul a span,
   #MenuView #recently-viewed > ul a span,
+  #MenuView #shortcuts > ul a em,
   #MenuView #recently-viewed > ul a em {
     display: none !important;
   }
+  #MenuView #shortcuts > ul a em + span,
   #MenuView #recently-viewed > ul a em + span {
     display: block !important;
   }
+  #MenuView #shortcuts > ul a > span,
   #MenuView #recently-viewed > ul a > span {
     height: auto !important;
     margin: 0;
@@ -17332,6 +17335,7 @@ orientation : portrait // orientation: landscape    Target orientation
     text-indent: 0;
     font-weight: normal !important;
   }
+  #MenuView #shortcuts > ul a:hover,
   #MenuView #recently-viewed > ul a:hover {
     color: #fff !important;
   }
@@ -17366,27 +17370,6 @@ orientation : portrait // orientation: landscape    Target orientation
   }
   .details-table {
     margin-right: 0;
-  }
-  .details-table .toolbar-mbmenu {
-    right: 10px;
-  }
-  .details-table .toolbar-mbmenu .view-toolbar {
-    position: relative;
-    clear: both;
-  }
-  .LatestActivtiesForPortletView .toolbar-mbmenu {
-    right: 10px;
-  }
-  .LatestActivtiesForPortletView .toolbar-mbmenu .view-toolbar {
-    position: relative;
-    clear: both;
-  }
-  .juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
-  .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
-  .juiportlet-widget.ContactsForOpportunityRelatedListView h3:before,
-  .juiportlet-widget.ContactsForAccountRelatedListView h3:before {
-    text-indent: 0;
-    top: 5px;
   }
   .juiportlet-widget {
     margin-right: 0 !important;
@@ -17439,6 +17422,13 @@ orientation : portrait // orientation: landscape    Target orientation
   #CommentInlineEditForModelView {
     padding: 0 10px 0 0;
   }
+  .toolbar-mbmenu {
+    right: 10px;
+  }
+  .toolbar-mbmenu .view-toolbar {
+    position: relative;
+    clear: both;
+  }
   .toolbar-mbmenu .options-menu > li > a {
     text-indent: -9999px;
     width: auto;
@@ -17449,6 +17439,9 @@ orientation : portrait // orientation: landscape    Target orientation
     font-weight: normal;
     font-size: 24px;
     font-family: "ZurmoGamificationSymblyReguRg";
+    left: -5px;
+    top: -1px;
+    margin-left: 10px;
   }
   .toolbar-mbmenu .options-menu > li > a span {
     display: none;
