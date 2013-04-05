@@ -323,7 +323,7 @@
             'accounts',
             'activities',
             'api',
-            'campaigns',
+           // 'campaigns',
             'comments',
             'configuration',
             'contacts',
