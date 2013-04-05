@@ -26,8 +26,7 @@
 
     class MarketingListMembersListView extends SecuredListView
     {
-        // TODO: @Shoaibi: Low: There is an extra spacing in div of portlet, check whats that all about.
-        // TODO: @Shoaibi: Low: refactor this and LatestActivitiesListView, create a parent PortletListView Class
+        // TODO: @Shoaibi/@Amit: Low: There is an extra spacing in div of portlet, check whats that all about.
         /**
          * Form that has the information for how to display the marketing list member view.
          * @var object MarketingListMembersConfigurationForm
@@ -258,7 +257,7 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySubscriptionType', "
-                    createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area'); // TODO: @Shoaibi/@Jason: Medium: causes Uncaught Error: cannot call methods on button prior to initialization; attempted to call method 'widget'
+                    createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
                             " . $ajaxSubmitScript . "

@@ -24,7 +24,6 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    // TODO: @Shoaibi: Low: breadcrumb looks funny
     class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
     {
         const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';

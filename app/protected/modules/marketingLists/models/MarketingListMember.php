@@ -37,8 +37,14 @@
          */
         protected static function getPluralLabel()
         {
-            // TODO: @Shoaibi/@Jason: High: Shouldn't this be for MarketingListMember?
-            return 'MarketingListsModulePluralLabel';
+            // TODO: @Shoaibi/@Jason: High: Why "Marketing Lists"?
+            return 'Marketing List Members';
+        }
+
+        protected static function getLabel()
+        {
+            // TODO: @Shoaibi/@Jason: High: Same as above.
+            return 'Marketing List Member';
         }
 
         public static function getDefaultMetadata()

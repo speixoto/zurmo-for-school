@@ -77,73 +77,8 @@
             echo $view->render();
         }
 
-        /*
-        // TODO: @Shoaibi: Low: Cleanup this.
         public function actionDetails($id)
         {
-            $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
-                                      array(strval($marketingList), 'MarketingListsModule'), $marketingList);
-            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                              'listPageSize', get_class($this->getModule()));
-            $marketingListMember            = new MarketingListMember(false);
-            $searchForm                     = new MarketingListMembersSearchForm($marketingListMember);
-         /*   $dataProvider                   = $this->resolveSearchDataProvider(
-                                              $searchForm,
-                                              $pageSize,
-                                              null,
-                                              'MarketingListMembersSearchView'
-                                              );/
-            $searchAttributes = array();
-            $metadataAdapter  = new MarketingListsMembersSearchDataProviderMetadataAdapter(
-                $marketingListMember,
-                Yii::app()->user->userModel->id,
-                $searchAttributes,
-                $id
-            );
-            $dataProvider = RedBeanModelDataProviderUtil::makeDataProvider(
-                $metadataAdapter->getAdaptedMetadata(),
-                'MarketingListMember',
-                'RedBeanModelDataProvider',
-                'latestDateTime',
-                true,
-                $pageSize
-            );
-            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
-            {
-                $mixedView = $this->makeListView($searchForm, $dataProvider);
-                $view = new MarketingListsPageView($mixedView);
-            }
-            else
-            {
-                $breadcrumbLinks = array(StringUtil::getChoppedStringContent(strval($marketingList), 25));
-                $mixedView       = $this->makeActionBarDetailsSearchAndListView($marketingList, $searchForm, $dataProvider);
-                $view            = new MarketingListsPageView(ZurmoDefaultViewUtil::
-                                       makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,
-                                                                             'MarketingListBreadCrumbView'));
-            }
-            echo $view->render();
-        }
-
-        protected function makeActionBarDetailsSearchAndListView(MarketingList $marketingList,
-                                                                 MarketingListMembersSearchForm $searchModel, $dataProvider)
-        {
-            $listModel = $searchModel->getModel();
-            return new MarketingListMembersActionBarDetailsSearchAndListView(
-                        $this->getId(),
-                        $this->getModule()->getId(),
-                        $marketingList,
-                        $searchModel,
-                        $listModel,
-                        $dataProvider,
-                        GetUtil::resolveSelectedIdsFromGet());
-        }
-        */
-
-        public function actionDetails($id)
-        {
-            // TODO: @Shoaibi: Low: what about ajax?
             $marketingList = static::getModelAndCatchNotFoundAndDisplayError('MarketingList', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
@@ -160,7 +95,7 @@
         }
 
 
-        public function actionEdit($id, $redirectUrl = null)
+        public function actionEdit($id)
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
@@ -228,7 +163,6 @@
 
         protected static function triggerMarketingListMemberMassAction()
         {
-            // TODO: @Shoaibi/@Jason: Medium: Wrong labels shown
             static::triggerMassAction(   'MarketingListMember',
                                         'MarketingListMembersSearchForm',
                                         'MarketingListMembersPageView',

@@ -27,9 +27,8 @@
     /**
      * The base View for a module's mass confirmation actions view.
      */
-    abstract class MassConfirmView extends MassActionView
+    abstract class MassActionRequiringConfirmationView extends MassActionView
     {
-        // TODO: @Shoaibi/@Jason: Low: This class should be named to a verbose one
         abstract protected function renderSubmitButtonName();
 
         public static function getDefaultMetadata()
@@ -89,9 +88,9 @@
 
         protected function renderItemLabel()
         {
-            // TODO: @Shoaibi/@Jason: High: Is this alright?
-            return Zurmo::t('Core', $this->modelClassName . 'SingularLabel|' . $this->modelClassName . 'PluralLabel',
-                array_merge(array($this->selectedRecordCount), LabelUtil::getTranslationParamsForAllModules()));
+            $type   = ($this->selectedRecordCount > 1)? 'Plural' : 'Singular';
+            $model  = $this->modelClassName;
+            return $model::getModelLabelByTypeAndLanguage($type);
         }
     }
 ?>

@@ -27,7 +27,7 @@
     /**
      * The base View for a module's mass delete view.
      */
-    class MassDeleteView extends MassConfirmView
+    class MassDeleteView extends MassActionRequiringConfirmationView
     {
         public static function getDesignerRulesType()
         {

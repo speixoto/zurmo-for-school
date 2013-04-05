@@ -57,16 +57,15 @@
             }
             if ($filterBySearchTerm)
             {
-                // TODO: @Shoaibi/@Jason: Medium: is "contains" correct operatorType?
                 $searchTermAttributeClauses = array(
                                                 array(  'attributeName'             => 'contact',
                                                         'relatedAttributeName'      => 'firstName',
-                                                        'operatorType'              => 'contains',
+                                                        'operatorType'              => 'startswith',
                                                         'value'                     => $filterBySearchTerm
                                                     ),
                                                 array(  'attributeName'             => 'contact',
                                                         'relatedAttributeName'      => 'lastName',
-                                                        'operatorType'              => 'contains',
+                                                        'operatorType'              => 'startswith',
                                                         'value'                     => $filterBySearchTerm
                                                 ),
                     /*
@@ -84,7 +83,7 @@
                                                         'relatedModelData'          => array(
                                                             'attributeName'                 => 'primaryEmail',
                                                             'relatedAttributeName'          => 'emailAddress',
-                                                            'operatorType'                  => 'contains',
+                                                            'operatorType'                  => 'startswith',
                                                             'value'                         => $filterBySearchTerm
                                                         ),
                                                 ),
@@ -92,7 +91,7 @@
                                                         'relatedModelData'          => array(
                                                             'attributeName'                 => 'secondaryEmail',
                                                             'relatedAttributeName'          => 'emailAddress',
-                                                            'operatorType'                  => 'contains',
+                                                            'operatorType'                  => 'startswith',
                                                             'value'                         => $filterBySearchTerm
                                                         ),
                                                 ),

@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListDetailsOverlayView extends SecuredEditAndDetailsView
+    class MarketingListDetailsOverlayView extends DetailsView
     {
         const MEMBER_STATS_CLASS         = 'marketing-list-member-stats';
 
@@ -43,17 +43,18 @@
 
         protected function renderContent()
         {
-            // TODO: @Shoaibi/@Jason: High: An alternate to this was to use metadata and have separate item for each of the functions defined below.
-            return $this->renderMemberStats() . ZurmoHtml::tag('hr') . $this->renderDescription() .
-                        $this->renderAfterFormLayoutForDetailsContent();
+            $content = $this->renderMemberStatisticsContent();
+            $content .= $this->renderDescriptionContent();
+            $content .= $this->renderAfterFormLayoutForDetailsContent();
+            return $content;
         }
 
-        protected function renderMemberStats()
+        protected function renderMemberStatisticsContent()
         {
-            $memberStats    = $this->renderSubscriberCount() .
-                                $this->renderUnsubscriberCount();
-                                // $this->renderInvalidEmailsCount();
-            return ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
+            $memberStats    = $this->renderSubscriberCount();
+            $memberStats    .= $this->renderUnsubscriberCount();  // . $this->renderInvalidEmailsCount();
+            $content        = ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
+            return $content;
 
         }
 
@@ -75,19 +76,31 @@
             $count              = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, $unsubscribers);
             $messageSuffix      = ($unsubscribers)? 'unsubscribers' : 'subscribers';
             $message            = Zurmo::t('MarketingListsModule', '{count} ' . $messageSuffix, array('{count}' => $count));
-            return ZurmoHtml::tag('div', array('class' => $messageDivClass), $message);
+            $content            = ZurmoHtml::tag('div', array('class' => $messageDivClass), $message);
+            return $content;
         }
 
         protected function renderInvalidEmailsCount()
         {
             $count          = 0; // TODO: @Shoaibi/@Jason: Low: How do we do this?, Check how many members have !isInvalid Email
             $message        = Zurmo::t('MarketingListsModule', '{count} invalid email address', array('{count}' => $count));
-            return ZurmoHtml::tag('div', array('class' => static::INVALID_EMAIL_STATS_CLASS), $message);
+            $content        = ZurmoHtml::tag('div', array('class' => static::INVALID_EMAIL_STATS_CLASS), $message);
+            return $content;
         }
 
-        protected function renderDescription()
+        protected function renderDescriptionContent()
         {
-            return ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->description);
+            $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->description);
+            return $content;
+        }
+
+        protected function renderAfterFormLayoutForDetailsContent()
+        {
+            $content                            = parent::renderAfterFormLayoutForDetailsContent();
+            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
+                                                                                                        $this->getModel(),
+                                                                                                        $content);
+            return $ownedSecurableItemDetailsContent;
         }
     }
 ?>

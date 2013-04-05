@@ -26,7 +26,6 @@
 
     class MarketingListDeleteLinkActionElement extends DeleteLinkActionElement
     {
-        // TODO: @Shoaibi: Low: Where is this used?
         protected function resolveConfirmAlertInHtmlOptions($htmlOptions)
         {
             $htmlOptions['confirm'] = Zurmo::t('Default', 'Are you sure you want to delete this {modelLabel}?',

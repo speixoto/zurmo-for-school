@@ -29,7 +29,7 @@
         protected function getSubtitle()
         {
             // TODO: @Shoaibi/@Jason: High: What to do here?
-            return Zurmo::t('Default', 'MarketingListMembersPluralLabel', LabelUtil::getTranslationParamsForAllModules());
+            return MarketingListMember::getModelLabelByTypeAndLanguage('Plural');
         }
     }
 ?>

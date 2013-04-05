@@ -60,8 +60,7 @@
 
         public function renderMenuItem()
         {
-            $detailsOverlayView = new MarketingListDetailsOverlayView($this->getActionType(),
-                                                                        $this->controllerId,
+            $detailsOverlayView = new MarketingListDetailsOverlayView($this->controllerId,
                                                                         $this->moduleId,
                                                                         $this->params['model']
                                                                         );
@@ -76,7 +75,5 @@
                                             )
                             );
         }
-
-
     }
 ?>
