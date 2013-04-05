@@ -73,6 +73,18 @@
             return max(2, (int)R::getCell('select max(layoutId) + 1 from dashboard'));
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'layoutId'   => Zurmo::t('HomeModule',  'Layout Id',   array(), null, $language),
+                    'layoutType' => Zurmo::t('HomeModule',  'Layout Type', array(), null, $language),
+                    'isDefault'  => Zurmo::t('HomeModule',  'Is Default',  array(), null, $language),
+                    'name'       => Zurmo::t('ZurmoModule', 'Name',        array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             try
@@ -154,6 +166,26 @@
                 '50,50' => Zurmo::t('HomeModule', '2 Columns'), // Not Coding Standard
                 '75,25' => Zurmo::t('HomeModule', '2 Columns Left Strong'), // Not Coding Standard
             );
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('HomeModule', 'Dashboard', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('HomeModule', 'Dashboards', array(), null, $language);
         }
     }
 ?>

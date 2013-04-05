@@ -29,6 +29,7 @@
      */
     class LdapConfigurationForm extends ConfigurationForm
     {
+        public $serverType;
         public $host;
         public $port = 389;
         public $bindRegisteredDomain;
@@ -40,6 +41,8 @@
         public function rules()
         {
             return array(
+                array('serverType',                        'type',      'type' => 'string'),
+                array('serverType',                        'length',    'min'  => 1, 'max' => 25),
                 array('host',                              'required'),
                 array('host',                              'type',      'type' => 'string'),
                 array('host',                              'length',    'min'  => 1, 'max' => 64),
@@ -62,13 +65,23 @@
         public function attributeLabels()
         {
             return array(
+                'serverType'                           => Zurmo::t('ZurmoModule', 'Server Type'),
                 'host'                                 => Zurmo::t('ZurmoModule', 'Host'),
                 'port'                                 => Zurmo::t('ZurmoModule', 'Port'),
                 'bindRegisteredDomain'                 => Zurmo::t('ZurmoModule', 'Username'),
                 'bindPassword'                         => Zurmo::t('ZurmoModule', 'Password'),
-                'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'),
+                'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'.self::renderHelpContent()),
                 'enabled'                              => Zurmo::t('ZurmoModule', 'Turn On Ldap')
             );
+        }
+        
+        protected static function renderHelpContent()
+        {
+            $title       = Zurmo::t('ZurmoModule', 'Like: dc=server,dc=world for both LDAP and Active Directory');
+            $content     = '<span id="ldap-rollup-tooltip" class="tooltip" title="' . $title . '">?</span>';
+            $qtip = new ZurmoTip();
+            $qtip->addQTip("#ldap-rollup-tooltip");
+            return $content;
         }
     }
 ?>

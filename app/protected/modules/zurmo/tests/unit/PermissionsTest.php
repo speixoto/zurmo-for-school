@@ -1155,8 +1155,34 @@
             $this->assertEquals(0, count(Permission::getAll()));
         }
 
-        // The above performance test, for now at least, must be the last test
-        // in the suite, because it is not finished and leaves things in a state
-        // that may affect things adversely. It will eventually go elsewhere.
+        public function testPermissionsPropagationViaRolesWhenChildRoleHaveNoUsers()
+        {
+            $childRole      = Role::getByName('Sales Person');
+            foreach ($childRole->users as $user)
+            {
+                $childRole->users->remove($user);
+                $this->assertTrue($childRole->save());
+            }
+
+            $parentRole           = Role::getByName('Sales Manager');
+            $childChildRole       = Role::getByName('Junior Sales Person');
+            $userInParentRole     = $parentRole->users[0];
+            $userInChildChildRole = $childChildRole->users[0];
+            $this->assertEquals(0, count($childRole->users));
+
+            Permission::removeAll();
+
+            $accounts = Account::getAll();
+            $account  = $accounts[0];
+
+            $this->assertEquals(Permission::ALL,  $account->getEffectivePermissions($account->owner));
+            $this->assertEquals(Permission::NONE, $account->getEffectivePermissions($userInParentRole));
+            $this->assertEquals(Permission::NONE, $account->getEffectivePermissions($userInChildChildRole));
+
+            $account->addPermissions($userInChildChildRole, Permission::READ);
+            $this->assertTrue($account->save());
+            $this->assertEquals(Permission::READ, $account->getEffectivePermissions($userInParentRole));
+            $this->assertEquals(Permission::READ, $account->getEffectivePermissions($userInChildChildRole));
+        }
     }
 ?>

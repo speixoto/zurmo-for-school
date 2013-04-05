@@ -65,5 +65,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return 'Reports Test';
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return 'Reports Tests';
+        }
     }
 ?>

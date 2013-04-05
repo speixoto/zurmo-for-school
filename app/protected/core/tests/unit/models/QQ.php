@@ -24,20 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class LanguagesToLanguageCollectionViewUtil
+    class QQ extends Q
     {
-        public static function getLanguagesData()
+        public static function getDefaultMetadata()
         {
-            $activeLanguages    = Yii::app()->languageHelper->getActiveLanguages();
-            $languagesData       = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $label)
-            {
-                $languagesData[$language] = array('label'         => $label,
-                                                 'active'        => in_array($language, $activeLanguages),
-                                                 'canInactivate' =>
-                                                        Yii::app()->languageHelper->canInactivateLanguage($language));
-            }
-            return $languagesData;
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'relations' => array(
+                    'q'           => array(RedBeanModel::HAS_ONE,  'Q'),
+                    'qRequired'   => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eRequired'),
+                    'qUnique'     => array(RedBeanModel::HAS_ONE,  'Q', RedBeanModel::NOT_OWNED,
+                                           RedBeanModel::LINK_TYPE_SPECIFIC, 'eUnique'),
+                    'qMany'       => array(RedBeanModel::HAS_MANY, 'Q')
+                ),
+                'rules' => array(
+                    array('qRequired',    'required'),
+                    array('qUnique',      'unique'),
+                ),
+            );
+            return $metadata;
         }
     }
 ?>

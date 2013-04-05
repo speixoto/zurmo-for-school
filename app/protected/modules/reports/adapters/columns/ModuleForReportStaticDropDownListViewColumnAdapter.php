@@ -36,7 +36,7 @@
         {
             return array(
                 'name'   => 'moduleClassName',
-                'header' => Zurmo::t('ReportsModule', 'Module'),
+                'header' => Zurmo::t('Core', 'Module'),
                 'type'   => 'raw',
                 'value'  => 'ReportUtil::renderNonEditableModuleStringContent($data->moduleClassName)'
             );

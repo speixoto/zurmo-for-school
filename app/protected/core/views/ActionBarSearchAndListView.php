@@ -30,17 +30,18 @@
     class ActionBarSearchAndListView extends GridView
     {
         public function __construct($controllerId, $moduleId, ModelForm $searchModel, RedBeanModel $listModel,
-                                    $moduleName, CDataProvider $dataProvider, $selectedIds,
-                                    $actionBarViewClassName)
+                                    $viewPrefixName, CDataProvider $dataProvider, $selectedIds,
+                                    $actionBarViewClassName, $activeActionElementType = null)
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
             assert('is_string($actionBarViewClassName)');
+            assert('is_string($activeActionElementType) || $activeActionElementType == null');
             parent::__construct(3, 1);
 
-            $searchViewClassName = $moduleName . 'SearchView';
+            $searchViewClassName = $viewPrefixName . 'SearchView';
             $searchView          = new $searchViewClassName($searchModel, get_class($listModel));
-            $listViewClassName   = $moduleName . 'ListView';
+            $listViewClassName   = $viewPrefixName . 'ListView';
             $listView            = new $listViewClassName($controllerId, $moduleId,
                                                           get_class($listModel), $dataProvider,
                                                           $selectedIds, null, array(),
@@ -48,7 +49,7 @@
             $actionBarView       = new $actionBarViewClassName($controllerId, $moduleId, $listModel,
                                                                $listView->getGridViewId(),
                                                                $dataProvider->getPagination()->pageVar,
-                                                               $listView->getRowsAreSelectable());
+                                                               $listView->getRowsAreSelectable(), $activeActionElementType);
             $this->setView($actionBarView, 0, 0);
             $this->setView($searchView, 1, 0);
             $this->setView($listView, 2, 0);

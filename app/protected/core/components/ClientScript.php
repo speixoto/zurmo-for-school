@@ -77,6 +77,10 @@
                 $this->removeAllPageLoadedScriptFilesWhenRenderingInAjaxMode();
             }
             parent::render($output);
+            if (!$this->isAjaxMode())
+            {
+                cleanAndSanitizeScriptHeader($output);
+            }
         }
 
         /**

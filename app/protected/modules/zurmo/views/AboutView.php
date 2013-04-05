@@ -158,7 +158,7 @@
                 <p>
                     Zurmo Inc. <span>|</span>
                     <strong>Phone: </strong> (888) 435.2221 <span>|</span>
-                    <strong>Address: </strong> 113 McHenry Road Suite 207, Buffalo Grove IL 60089
+                    <strong>Address: </strong> 27 North Wacker Drive Suite 370, Chicago, IL 60606
                 </p>
             </div>';
 

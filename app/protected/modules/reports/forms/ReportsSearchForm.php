@@ -26,5 +26,9 @@
 
     class ReportsSearchForm extends OwnedSearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'SavedReport';
+        }
     }
 ?>

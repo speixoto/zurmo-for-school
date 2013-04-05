@@ -34,11 +34,7 @@
          */
         public static function t($category, $message, $params = array(), $source = null, $language = null)
         {
-            $translation = parent::t($category, $message, $params, $source, $language);
-            if ($translation == $message)
-            {
-                $translation = parent::t('Default', $message, $params, $source, $language);
-            }
+            $translation = parent::t('Default',$message,$params,$source,$language);
             return $translation;
         }
     }

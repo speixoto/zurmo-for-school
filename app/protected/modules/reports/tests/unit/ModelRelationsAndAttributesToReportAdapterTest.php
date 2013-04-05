@@ -283,7 +283,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getInferredRelationsData();
             $this->assertEquals(2, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -292,7 +292,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData();
             $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -322,7 +322,7 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, $report->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
             $this->assertEquals(6, count($relations));
-            $compareData        = array('label' => 'ReportModelTestItems');
+            $compareData        = array('label' => 'Reports Tests');
             $this->assertEquals($compareData, $relations['ReportModelTestItem__reportItems__Inferred']);
             $compareData        = array('label' => 'ReportModelTestItem2s');
             $this->assertEquals($compareData, $relations['ReportModelTestItem2__reportItems__Inferred']);
@@ -1122,7 +1122,7 @@
             $report->setModuleClassName('ReportsTestModule');
             $adapter            = new ModelRelationsAndAttributesToMatrixReportAdapter($model, $rules, $report->getType());
             $attributes         = $adapter->getAttributesForGroupBys();
-            $this->assertEquals(29, count($attributes));
+            $this->assertEquals(34, count($attributes));
 
             //Date/DateTime columns first...
             $compareData        = array('label' => 'Date -(Year)');
@@ -1189,6 +1189,17 @@
             $this->assertEquals($compareData, $attributes['createdByUser__User']);
             $compareData        = array('label' => 'Modified By User');
             $this->assertEquals($compareData, $attributes['modifiedByUser__User']);
+            //Text, Url, and Id attributes
+            $compareData        = array('label' => 'Id');
+            $this->assertEquals($compareData, $attributes['id']);
+            $compareData        = array('label' => 'String');
+            $this->assertEquals($compareData, $attributes['string']);
+            $compareData        = array('label' => 'Url');
+            $this->assertEquals($compareData, $attributes['url']);
+            $compareData        = array('label' => 'First Name');
+            $this->assertEquals($compareData, $attributes['firstName']);
+            $compareData        = array('label' => 'Last Name');
+            $this->assertEquals($compareData, $attributes['lastName']);
         }
 
         /**

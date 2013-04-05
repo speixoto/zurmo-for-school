@@ -86,14 +86,6 @@
                         'right'            => self::RIGHT_ACCESS_GROUPS,
                     ),
                 ),
-                'headerMenuItems' => array(
-                    array(
-                        'label' => 'Groups',
-                        'url' => array('/zurmo/group'),
-                        'right' => self::RIGHT_ACCESS_GROUPS,
-                        'order' => 3,
-                    ),
-                ),
             );
             return $metadata;
         }

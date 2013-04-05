@@ -20,6 +20,7 @@
     }
 }
 
+.ComponentForWorkflowWizardView,
 .ComponentForReportWizardView{
     .view-toolbar-container{
         margin-top:30px;
@@ -54,7 +55,7 @@
     }
 }
 
-
+#ModuleForWorkflowWizardView,
 #ModuleForReportWizardView {
     table{
         span{
@@ -90,12 +91,11 @@
     min-height: 500px;
     max-height:600px;
     overflow: auto;
-    margin-top:10px;
-    //z-index: 10;
+    z-index: 10;
+    .animateAll(0.5s);
 	.big-spinner{
-		position: relative;
-		left: 50%;
-		margin:30px 0 0 -21px;
+		margin-left: 45%;
+		margin-top: 30%;
 	}
 }
 
@@ -106,11 +106,14 @@
     padding-left: 15px;
     margin-top:10px;
     position: relative;
-    //z-index: 5;
+    z-index: 5;
     &.error{
         
     }
-    .ui-droppable{
+}
+
+.droppable-dynamic-rows-container{
+    &.ui-droppable{
         float: left;
         width: 100%;
         z-index: 0;
@@ -123,6 +126,10 @@
             }
         }
     }
+	&.EmailMessages,
+	&.Actions{
+		min-height: 0;
+	}
 }
 
 .activate-drop-zone{
@@ -187,9 +194,10 @@
     margin:0 0 5px 0;
     background: #f0f0f0;
     .radius(3px);
-    padding:15px 30px 15px 15px;
+    padding:10px 30px 10px 10px;
     ++.border-box;
-    > div{
+	.b-shadow(~'inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15)');
+	> div{
         position: relative;
         float: left;
         width: 100%;
@@ -211,10 +219,14 @@
     label.hasCheckBox{
         margin-left:0 !important;
     }
+    .edit-dynamic-row-link{
+        margin-left: 0;
+        cursor: pointer;
+    }
     .remove-dynamic-row-link{
         position: absolute;
         right: 10px;
-        top: 15px;
+        top: 10px;
         display: block;
         .symbly(24px);
         color:#a7a7a7 !important;
@@ -241,6 +253,9 @@
             .opacity(100);
         }
     }
+    .z-button{
+        margin-left:0;
+    }
 }
 
 .dynamic-row.clone{
@@ -250,13 +265,51 @@
 }
 
 .glow{
-    background-color: #ffffe0;
-    border-color: #e6db55;
+	background-color: #ffffe0;
+	border-color: #e6db55;
 }
 
-.Filters{
+.dynamic-sub-row{
+    ++.cf;
+    ++.border-box;
+    position: relative;
+    width: 100%;
+    display: block;
+    margin:0 0 10px 0;
+    .dynamic-action-attribute-should-set-value{
+        padding: 0;
+        width: auto;
+        margin-right:10px;
+    }
+    .dynamic-row-label{
+        width: 25%;
+    }
+    .dynamic-action-attribute-type-and-value-wrapper{
+        width: 70%;
+    }
+    + h3{
+        margin-top: 15px;
+    }
+}
+
+.dynamic-action-attribute-type{
+    width: 35%;
+    float: left;
+    > span{
+        line-height: 26px;
+    }
+    + .value-data{
+        width: 65%;
+        padding-left: 15px;
+    }
+}
+
+.Filters,
+.Triggers,
+.Actions,
+.EmailMessages{
     .dynamic-row{
-        padding:15px 30px;
+        padding:10px 30px;
     }
 }
 
@@ -269,6 +322,11 @@
         cursor: move;
         background-color: #f5f5f5;
     }
+    .expanded-row{
+        .dynamic-row:hover{
+            background-image: none !important;
+        }
+    }
 }
 
 .dynamic-row-label{
@@ -278,6 +336,7 @@
     ++.border-box;
 }
 
+.dynamic-action-attribute-should-set-value,
 .dynamic-row-operator{
     float: left;
     width:20%;
@@ -285,6 +344,7 @@
     padding-left: 15px;
 }
 
+.dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field{
     float: right;
     width: 75%;
@@ -298,7 +358,7 @@
 }
 
 .first-value-area + .second-value-area{
-    margin-top:10px;
+    //margin-top:10px;
 }
 
 .report-runtime-availability{
@@ -338,10 +398,9 @@
         width:80%;
     }    
     .remove-dynamic-row-link{
-        top:42px;
+        //top:42px;
     }
 }
-
 
 .dynamic-and-for-mixed{
     display: inline-block;
@@ -349,6 +408,7 @@
     font-weight: bold;
 }
 
+#show-triggers-structure-wrapper,
 #show-filters-structure-wrapper{
     position: relative;
     z-index: 1;
@@ -363,6 +423,7 @@
     }
 }
 
+#show-triggers-structure-div-link,
 #show-filters-structure-div-link{
     ++.z-link;
 }
@@ -607,7 +668,7 @@
         border-right:none;
         margin-right: 0;
         width: 100%;
-        textalign:center;
+        text-align:center;
     }
     h2{
         padding-top:10px;
@@ -620,10 +681,48 @@
     }
 }
 
+.zero-components-view{
+    &.Actions, &.EmailMessages, &.WorkflowRulesOrder, &.TimeTrigger{
+        position: relative;
+        top:0;
+        left: 0;
+        float: none;
+    }
+}
+
+.related-model-selector{
+    float: left;
+    width: 75%;
+    margin:10px 0 0 25%;
+}
+
+.missing-report:after,
+.Report .large-icon:after{
+	content:"j";
+	.symbly(250px);
+	line-height: 60%;
+}
+.SavedReport{
+	.large-icon:after{
+		content:"V";
+		.symbly(320px);
+		line-height: 55%;
+	}
+}
+
+.SavedWorkflow{
+	.large-icon:after{
+		content:'\20AC'; //euro
+		.symbly(330px);
+		line-height: 55%;
+	}
+}
+
+
 .FilterIconOrSomethingElse,
 .ZeroFilters{
     .large-icon:after{
-        content:'\00A9';//"�";
+        content:'\00A9';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -631,7 +730,7 @@
 
 .ZeroGroupBys{
     .large-icon:after{
-        content:'\002A';//"*";
+        content:'\002A';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -639,15 +738,16 @@
 
 .ZeroDisplayAttributes{
     .large-icon:after{
-        content:'\00AB';//"�";
+        content:'\00AB';
         .symbly(300px);
         line-height: 30%;   
     }
 }
 
+.WorkflowRulesOrder,
 .ZeroOrderBys{
     .large-icon:after{
-        content:'\2039';//"�";
+        content:'\2039';
         .symbly(300px);
         line-height: 30%;   
     }
@@ -655,8 +755,41 @@
 
 .ZeroDrillDownDisplayAttributes{
     .large-icon:after{
-        content:'\00BB'; //"�";
+        content:'\00BB';
         .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroTriggers{
+    .large-icon:after{
+        content:'\007E';
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroActions{
+    .large-icon:after{
+        content:'\00A3';
+        .symbly(300px);
+        line-height: 30%;   
+    }
+}
+
+.ZeroEmailMessages{
+    .large-icon:after{
+        content:'\00A5';
+        .symbly(235px);
+        line-height: 30%;   
+    }
+}
+
+.NoTimeTrigger,
+.ZeroTimeTrigger{
+    .large-icon:after{
+        content:'q';
+        .symbly(235px);
         line-height: 30%;   
     }
 }
@@ -669,4 +802,224 @@
     > div + div{
         margin-top:15px;
     }
+}
+
+.Triggers{
+    .value-data{
+        padding-right: 0;
+    }
+}
+
+.EmailMessages{
+    .col-0{
+        width:20% !important;
+    }
+    .col-1{
+        width: 80% !important;
+    }
+    .panel{
+        width:100% !important;
+    }
+}
+
+
+.email-message-recipient-rows{
+    ++.border-box;
+    .hasDropDown{
+        float: left;
+        min-width: 20%;
+    }
+    .dynamic-row-label{
+        width: 100%;
+    }
+    .value-data{
+        padding-left: 15px;
+        .hasDropDown{
+            width: 100% !important;
+        }
+    }
+    .dynamic-sub-row{
+        padding:0 20px;
+        > div{
+            position: relative;
+        }
+    }
+    &:hover{
+        .remove-dynamic-email-message-recipient-row-link{
+            .opacity(100);
+        }
+    }
+}
+
+.remove-dynamic-email-message-recipient-row-link{
+    position: absolute;
+    right: 0;
+    top: 26px;
+    display: block;
+    .symbly(24px);
+    color:#a7a7a7 !important;
+    .opacity(0);
+    .animateAll(0.2s);
+}
+
+.email-message-recipient-type-selector-container{
+    width: 22%;
+    margin-top: 20px;
+}
+
+.all-related-field{
+    ++.border-box;
+    float: left;
+    width: 80%;
+    padding-left: 15px;
+    .value-data{
+        width: 44.5%;
+    }
+    > span{
+        float: left;
+        line-height: 26px;
+        + .value-data{
+            float: left;
+        }
+    }
+}
+
+.static-address-field{
+    ++.border-box;
+    float: left;
+    width: 80%;
+    .value-data{
+        width: 50%;
+        float: left;
+        > span{
+            float: left;
+            line-height: 26px;
+            width:30%;
+        }
+        > input {
+            float: left;
+            width: 70%;
+        }
+    }
+}
+
+/*By Time Workflow*/
+.zero-components-view.TimeTrigger,
+#time-trigger-container{
+	float: right !important;
+	width: 80% !important;
+	padding-left: 15px;
+	++.cf;
+	++.border-box;
+	.value-data {
+		float: left;
+		width: 55%;
+	}
+	.first-value-area{
+		margin-left: 15px;
+	}
+}
+
+.time-trigger-attribute-selector-container{
+	width: 20%;
+	float: left;
+	++.border-box;
+	min-height: 300px;
+}
+
+.dynamic-row-duration{
+	float: left;
+	width: 100%;
+	margin-top: 10px;
+}
+
+/*for actions in WORKFLOWS hide/show sequence*/
+.ComponentForWorkflowWizardView{
+	.add-email-message-button-container,
+	.action-type-selector-container{
+		width: 20%;
+		float: left !important;
+		++.cf;
+		++.border-box;
+	}
+	.droppable-dynamic-rows-container,
+	.zero-components-view{
+		float: left !important;
+		++.border-box;
+	}
+	.Actions,
+	.EmailMessages,
+	.TimeTrigger{
+		&.droppable-dynamic-rows-container,
+		&.zero-components-view{
+			width: 80% !important;
+			padding-left: 15px;
+		}
+	}
+	.edit-dynamic-row-link{
+		display:none;
+	}
+	.ui-sortable{
+		min-height: 300px;
+		position:relative;
+	}
+}
+
+.action-type-selector-container{
+	> .hasDropDown{
+		float: none;
+		width:100%;
+	}
+	.related-model-selector{
+		margin-left: 0;
+		margin-top:15px;
+		width: 100%;
+		float: none;
+	}
+}
+
+#AddEmailMessageLink{
+	margin-left: 0;
+}
+
+/*WorkFlow Rules Order*/
+.workflow-order-module-selector-container{
+	width: 20%;
+	float: left !important;
+	++.cf;
+	++.border-box;
+	min-height: 300px;
+}
+
+#workflow-order-container,
+.WorkflowRulesOrder,
+.no-workflows-to-order-view{
+	float: right !important;
+	++.border-box;
+	width: 80% !important;
+	padding-left: 15px;
+	+ .float-bar{
+		margin-top: 15px;
+	}
+}
+
+.workflow-order-container,
+.no-workflows-to-order-view{
+	position: relative;
+	top: 0;
+	left: 0;
+
+	text-align: center;
+	.large-icon:after{
+		content:"j";
+		.symbly(200px);
+		line-height: 60%;
+	}
+	p{
+		font-size:16px;
+		line-height:24px;
+		color:#555;
+		font-weight:bold;
+		margin:15px 0 0 0;
+	}
 }

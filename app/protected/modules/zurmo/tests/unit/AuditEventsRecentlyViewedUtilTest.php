@@ -51,9 +51,49 @@
             assert(AuditEvent::getCount() == 4); // Not Coding Standard
         }
 
+        public function testResolveNewRecentlyViewedModel()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            $this->assertNull(ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            $account1       = new Account();
+            $account1->name = 'For test recently viewed';
+            $this->assertTrue($account1->save());
+            AuditEventsRecentlyViewedUtil::resolveNewRecentlyViewedModel('AccountsModule', $account1, 2);
+            $this->assertEquals(serialize(array(array('AccountsModule', $account1->id, strval($account1)))),
+                                ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            AuditEventsRecentlyViewedUtil::resolveNewRecentlyViewedModel('AccountsModule', $account1, 2);
+            $this->assertEquals(serialize(array(array('AccountsModule', $account1->id, strval($account1)))),
+                                ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            $account2       = new Account();
+            $account2->name = 'For test recently viewed';
+            $this->assertTrue($account2->save());
+            AuditEventsRecentlyViewedUtil::resolveNewRecentlyViewedModel('AccountsModule', $account2, 2);
+            $this->assertEquals(serialize(array(array('AccountsModule', $account2->id, strval($account2)),
+                                                array('AccountsModule', $account1->id, strval($account1)))),
+                                ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            AuditEventsRecentlyViewedUtil::resolveNewRecentlyViewedModel('AccountsModule', $account1, 2);
+            $this->assertEquals(serialize(array(array('AccountsModule', $account1->id, strval($account1)),
+                                                array('AccountsModule', $account2->id, strval($account2)))),
+                                ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+            $account3       = new Account();
+            $account3->name = 'For test recently viewed';
+            $this->assertTrue($account3->save());
+            AuditEventsRecentlyViewedUtil::resolveNewRecentlyViewedModel('AccountsModule', $account3, 2);
+            $this->assertEquals(serialize(array(array('AccountsModule', $account3->id, strval($account3)),
+                                                array('AccountsModule', $account1->id, strval($account1)))),
+                                ZurmoConfigurationUtil::
+                                    getForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed'));
+        }
+
         public function testFetRecentlyViewedAjaxContentByUser()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', null);
             $account1 = new Account();
             $account1->name = 'Dooble1';
             $this->assertTrue($account1->save());
@@ -84,6 +124,39 @@
             $this->assertNotEmpty($content);
             $this->assertTrue(strpos($content, 'Dooble2') !== false);
             $this->assertTrue(strpos($content, 'Dooble1') !== false);
+        }
+
+        public function testDeleteModelFromRecentlyViewed()
+        {
+            Yii::app()->user->userModel = User::getByUsername('super');
+            ZurmoConfigurationUtil::setForCurrentUserByModuleName('ZurmoModule', 'recentlyViewed', null);
+            $account1 = new Account();
+            $account1->name = 'Dooble1';
+            $this->assertTrue($account1->save());
+
+            $account2 = new Account();
+            $account2->name = 'Dooble2';
+            $this->assertTrue($account2->save());
+
+            $account3 = new Account();
+            $account3->name  = 'Dooble3';
+            $account3->owner = User::getByUsername('jimmy');
+            $this->assertTrue($account3->save());
+
+            //Now create some audit entries for the Item Viewed event.
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account1), 'AccountsModule'), $account1);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account2), 'AccountsModule'), $account2);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($account1), 'AccountsModule'), $account3);
+            $content = AuditEventsRecentlyViewedUtil::getRecentlyViewedAjaxContentByUser(Yii::app()->user->userModel, 5);
+            $this->assertContains('Dooble1', $content);
+            $this->assertContains('Dooble2', $content);
+            $this->assertContains('Dooble3', $content);
+
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_DELETED, strval($account1), $account1);
+            $content = AuditEventsRecentlyViewedUtil::getRecentlyViewedAjaxContentByUser(Yii::app()->user->userModel, 5);
+            $this->assertNotContains('Dooble1', $content);
+            $this->assertContains('Dooble2', $content);
+            $this->assertContains('Dooble3', $content);
         }
     }
 ?>

@@ -36,6 +36,10 @@
         // changes can be written to the audit log.
         public $originalAttributeValues = array();
 
+        private $_workflowsToProcessAfterSave = array();
+
+        private $_processWorkflowOnSave = true;
+
         public function onCreated()
         {
             $this->unrestrictedSet('createdDateTime',  DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
@@ -98,6 +102,31 @@
             return parent::save($runValidation, $attributeNames);
         }
 
+        public function addWorkflowToProcessAfterSave(Workflow $workflow)
+        {
+            $this->_workflowsToProcessAfterSave[] = $workflow;
+        }
+
+        public function getWorkflowsToProcessAfterSave()
+        {
+            return $this->_workflowsToProcessAfterSave;
+        }
+
+        public function setDoNotProcessWorkflowOnSave()
+        {
+            $this->_processWorkflowOnSave = false;
+        }
+
+        public function setProcessWorkflowOnSave()
+        {
+            $this->_processWorkflowOnSave = true;
+        }
+
+        public function shouldProcessWorkflowOnSave()
+        {
+            return $this->_processWorkflowOnSave;
+        }
+
         protected static function getByNameOrEquivalent($attributeName, $value)
         {
             assert('is_string($attributeName)');
@@ -140,7 +169,8 @@
             parent::afterSave();
             $this->logAuditEventsListForCreatedAndModifed($this->isNewModel);
             AuditUtil::clearRelatedModelsOriginalAttributeValues($this);
-            $this->originalAttributeValues = array();
+            $this->originalAttributeValues      = array();
+            $this->_workflowsToProcessAfterSave = array();
             $this->isNewModel = false; //reset.
         }
 
@@ -256,6 +286,16 @@
         public static function getGamificationRulesType()
         {
             return null;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'createdByUser'      => Zurmo::t('ZurmoModule', 'Created By User', array(), null, $language),
+                'createdDateTime'    => Zurmo::t('ZurmoModule', 'Created Date Time', array(), null, $language),
+                'modifiedByUser'     => Zurmo::t('ZurmoModule', 'Modified By User', array(), null, $language),
+                'modifiedDateTime'   => Zurmo::t('ZurmoModule', 'Modified Date Time', array(), null, $language),
+            ));
         }
     }
 ?>

@@ -822,5 +822,26 @@
             $compareWhere .= "({$quote}i{$quote}.{$quote}imember{$quote} = 'somevalue12')";
             $this->assertEquals($compareWhere, $where);
         }
+
+        public function testGetDataReturningAllResults()
+        {
+            $allGG          = GG::getAll();
+            foreach ($allGG as $gg)
+            {
+                $gg->delete();
+            }
+            $numberOfRecords = rand (12, 100);
+            for ($i = 1; $i <= $numberOfRecords; $i++)
+            {
+                $gg = new GG();
+                $gg->g  = 'a';
+                $this->assertTrue($gg->save());
+            }
+            $dataProvider   = new RedBeanModelDataProvider('GG', 'g', false);
+            $totalItems     = (int)$dataProvider->calculateTotalItemCount();
+            $dataProvider->getPagination()->setPageSize($totalItems);
+            $data           = $dataProvider->getData();
+            $this->assertEquals($numberOfRecords, count($data));
+        }
     }
 ?>

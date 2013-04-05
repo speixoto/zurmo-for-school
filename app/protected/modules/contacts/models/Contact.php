@@ -36,9 +36,20 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'state'         => Zurmo::t('ContactsModule', 'Status',                         $params, null, $language),
-                    'account'       => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
-                    'opportunities' => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+
+                    'account'          => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel',    $params, null, $language),
+                    'companyName'      => Zurmo::t('ContactsModule', 'Company Name',  array(), null, $language),
+                    'description'      => Zurmo::t('ZurmoModule',    'Description',  array(), null, $language),
+                    'industry'         => Zurmo::t('ZurmoModule',    'Industry',  array(), null, $language),
+                    'meetings'         => Zurmo::t('MeetingsModule', 'Meetings',  array(), null, $language),
+                    'notes'            => Zurmo::t('NotesModule',    'Notes',  array(), null, $language),
+                    'opportunities'    => Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', $params, null, $language),
+                    'secondaryAddress' => Zurmo::t('ZurmoModule',    'Secondary Address',  array(), null, $language),
+                    'secondaryEmail'   => Zurmo::t('ZurmoModule',    'Secondary Email',  array(), null, $language),
+                    'source'           => Zurmo::t('ContactsModule', 'Source', $params, null, $language),
+                    'state'            => Zurmo::t('ContactsModule', 'Status', $params, null, $language),
+                    'tasks'            => Zurmo::t('TasksModule',    'Tasks',  array(), null, $language),
+                    'website'          => Zurmo::t('ZurmoModule',    'Website',  array(), null, $language),
                 )
             );
         }
@@ -46,24 +57,6 @@
         public static function getModuleClassName()
         {
             return 'ContactsModule';
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'ContactsModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'ContactsModulePluralLabel';
         }
 
         public static function canSaveMetadata()
@@ -147,6 +140,36 @@
         public static function getGamificationRulesType()
         {
             return 'ContactGamification';
+        }
+
+        /**
+         * Override since Person has its own override.
+         * @see RedBeanModel::getLabel
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
+            }
+            return get_called_class();
+        }
+
+        /**
+         * Override since Person has its own override.
+         * @see RedBeanModel::getPluralLabel
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
+            }
+            return static::getLabel($language) . 's';
         }
     }
 ?>

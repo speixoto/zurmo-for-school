@@ -46,6 +46,8 @@
             $form->enableDesktopNotifications       = static::resolveAndGetValue($user, 'enableDesktopNotifications');
             $form->defaultPermissionGroupSetting    = static::resolveAndGetValue($user, 'defaultPermissionGroupSetting', false);
             $form->defaultPermissionSetting         = static::resolveAndGetDefaultPermissionSetting($user);
+            $form->visibleAndOrderedTabMenuItems    = static::getVisibleAndOrderedTabMenuItemsByUser($user);
+            $form->selectedVisibleAndOrderedTabMenuItems = static::getVisibleAndOrderedTabMenuItemsByUser($user, true);
             return $form;
         }
 
@@ -64,7 +66,10 @@
             static::setValue($user, (bool)$form->enableDesktopNotifications, 'enableDesktopNotifications');
             static::setValue($user, (int)$form->defaultPermissionSetting, 'defaultPermissionSetting', false);
             static::setDefaultPermissionGroupSetting($user, (int)$form->defaultPermissionGroupSetting,
-                (int)$form->defaultPermissionSetting);
+                                                    (int)$form->defaultPermissionSetting);
+            ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'VisibleAndOrderedTabMenuItems',
+                                                           serialize($form->selectedVisibleAndOrderedTabMenuItems));
+            MenuUtil::forgetCacheEntryForTabMenuByUser($user);
         }
 
         /**
@@ -73,16 +78,10 @@
          */
         public static function setConfigurationFromFormForCurrentUser(UserConfigurationForm $form)
         {
-            Yii::app()->pagination->setForCurrentUserByType('listPageSize', (int)$form->listPageSize);
-            Yii::app()->pagination->setForCurrentUserByType('subListPageSize', (int)$form->subListPageSize);
-            Yii::app()->themeManager->setThemeColorValue(Yii::app()->user->userModel, $form->themeColor);
-            Yii::app()->themeManager->setBackgroundTextureValue (Yii::app()->user->userModel, $form->backgroundTexture);
-            static::setValue(Yii::app()->user->userModel, (bool)$form->hideWelcomeView, 'hideWelcomeView');
-            static::setValue(Yii::app()->user->userModel, (bool)$form->turnOffEmailNotifications, 'turnOffEmailNotifications');
-            static::setValue(Yii::app()->user->userModel, (bool)$form->enableDesktopNotifications, 'enableDesktopNotifications');
-            static::setValue(Yii::app()->user->userModel, (int)$form->defaultPermissionSetting, 'defaultPermissionSetting', false);
-            static::setDefaultPermissionGroupSetting(Yii::app()->user->userModel,
-                (int)$form->defaultPermissionGroupSetting, (int)$form->defaultPermissionSetting);
+            $user = Yii::app()->user->userModel;
+            static::setConfigurationFromForm($form, $user);
+            Yii::app()->user->setState('listPageSize', (int)$form->listPageSize);
+            Yii::app()->user->setState('subListPageSize', (int)$form->subListPageSize);
         }
 
         public static function resolveAndGetValue(User $user, $key, $returnBoolean = true)
@@ -130,6 +129,25 @@
                 ZurmoConfigurationUtil::setByUserAndModuleName($user, 'ZurmoModule', 'defaultPermissionGroupSetting',
                     null);
             }
+        }
+
+        public static function getVisibleAndOrderedTabMenuItemsByUser($user, $selected = false)
+        {
+            $visibleAndOrderedTabMenuItems = array();
+            $tabMenuItems = MenuUtil::getVisibleAndOrderedTabMenuByUser($user);
+            foreach ($tabMenuItems as $menuItem)
+            {
+                if ($selected === true)
+                {
+                    $visibleAndOrderedTabMenuItems[] = $menuItem['moduleId'];
+                }
+                else
+                {
+                    $moduleId = $menuItem['moduleId'];
+                    $visibleAndOrderedTabMenuItems[$moduleId] = $menuItem['label'];
+                }
+            }
+            return $visibleAndOrderedTabMenuItems;
         }
     }
 ?>

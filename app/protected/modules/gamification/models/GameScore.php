@@ -160,6 +160,26 @@
         }
 
         /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('GamificationModule', 'Game Score', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('GamificationModule', 'Game Scores', array(), null, $language);
+        }
+
+        /**
          * Add a single point of value to the value count.
          */
         public function addValue()

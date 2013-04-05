@@ -26,6 +26,8 @@
 
     class ZurmoBaseTest extends BaseTest
     {
+        public static $activateDefaultLanguages = false;
+
         public static function setUpBeforeClass()
         {
             parent::setUpBeforeClass();

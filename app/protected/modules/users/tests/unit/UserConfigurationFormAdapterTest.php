@@ -112,5 +112,25 @@
             $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER);
             $this->assertNull(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'defaultPermissionGroupSetting', false));
         }
+        public function testEditTabMenuOrderByMakeFormAndSetConfigurationFromForm()
+        {
+            $sally = User::getByUsername('sally');
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
+            $this->assertEquals(count($form->selectedVisibleAndOrderedTabMenuItems), count(MenuUtil::getVisibleAndOrderedTabMenuByUser($sally)));
+            $defaultOrderedTabMenuItems = $form->selectedVisibleAndOrderedTabMenuItems;
+            $customOrderedTabMenuItems  = array_reverse($defaultOrderedTabMenuItems);
+            $form->selectedVisibleAndOrderedTabMenuItems = $customOrderedTabMenuItems;
+            UserConfigurationFormAdapter::setConfigurationFromForm($form, $sally);
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($sally);
+            $this->assertEquals($form->selectedVisibleAndOrderedTabMenuItems, $customOrderedTabMenuItems);
+
+            $billy = User::getByUsername('billy');
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
+            $this->assertEquals($form->selectedVisibleAndOrderedTabMenuItems, $defaultOrderedTabMenuItems);
+            $form->selectedVisibleAndOrderedTabMenuItems = $customOrderedTabMenuItems;
+            UserConfigurationFormAdapter::setConfigurationFromForm($form, $billy);
+            $form = UserConfigurationFormAdapter::makeFormFromUserConfigurationByUser($billy);
+            $this->assertEquals($form->selectedVisibleAndOrderedTabMenuItems, $customOrderedTabMenuItems);
+        }
     }
 ?>

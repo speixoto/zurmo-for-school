@@ -86,17 +86,8 @@
         {
             $userMenuItemsWithTopLevel = static::resolveUserMenuItemsWithTopLevelItem($userMenuItems);
             $settingsMenuItemsWithTopLevel = static::resolveSettingsMenuItemsWithTopLevelItem($settingsMenuItems);
-
-            if (self::MERGE_USER_AND_SETTINGS_MENU_IF_MOBILE && Yii::app()->userInterface->isMobile())
-            {
-                $menuItems = CMap::mergeArray($userMenuItemsWithTopLevel, $settingsMenuItemsWithTopLevel);
-                return static::renderHeaderMenuContent($menuItems, self::MERGED_MENU_ID);
-            }
-            else
-            {
-                return static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID) .
-                    static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
-            }
+            return static::renderHeaderMenuContent($userMenuItemsWithTopLevel, self::USER_MENU_ID) .
+                static::renderHeaderMenuContent($settingsMenuItemsWithTopLevel, self::SETTINGS_MENU_ID);
         }
 
         protected static function resolveUserMenuItemsWithTopLevelItem($menuItems)

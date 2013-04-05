@@ -35,6 +35,16 @@
             return self::getSubset(null, null, null, "description = '$description'");
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'description'   => Zurmo::t('ZurmoModule',    'Description',  array(), null, $language),
+                    'files'         => Zurmo::t('ZurmoModule',    'Files',        array(), null, $language),
+                )
+            );
+        }
+
         public function __toString()
         {
             if (trim($this->description) == '')

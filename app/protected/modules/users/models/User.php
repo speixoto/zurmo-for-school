@@ -423,11 +423,22 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' =>       Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
-                    'timeZone' =>       Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
-                    'title'    =>       Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
-                    'primaryEmail' =>   Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
-                    'primaryAddress' => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
+                    'currency'        => Zurmo::t('ZurmoModule', 'Currency', array(), null, $language),
+                    'emailAccounts'   => Zurmo::t('EmailMessagesModule', 'Email Accounts', array(), null, $language),
+                    'emailBoxes'      => Zurmo::t('EmailMessagesModule', 'Email Boxes', array(), null, $language),
+                    'emailSignatures' => Zurmo::t('EmailMessagesModule', 'Email Signatures', array(), null, $language),
+                    'fullName'        => Zurmo::t('ZurmoModule', 'Name',       array(), null, $language),
+                    'groups'          => Zurmo::t('ZurmoModule', 'Groups', array(), null, $language),
+                    'hash'            => Zurmo::t('UsersModule', 'Hash',       array(), null, $language),
+                    'isActive'        => Zurmo::t('UsersModule', 'Is Active',  array(), null, $language),
+                    'language'        => Zurmo::t('ZurmoModule', 'Language',   array(), null, $language),
+                    'manager'         => Zurmo::t('UsersModule', 'Manager',    array(), null, $language),
+                    'primaryEmail'    => Zurmo::t('ZurmoModule', 'Email',      array(), null, $language),
+                    'primaryAddress'  => Zurmo::t('ZurmoModule', 'Address',    array(), null, $language),
+                    'role'            => Zurmo::t('ZurmoModule', 'Role', array(), null, $language),
+                    'timeZone'        => Zurmo::t('UsersModule', 'Time Zone',  array(), null, $language),
+                    'title'           => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language),
+                    'username'        => Zurmo::t('UsersModule', 'Username',   array(), null, $language),
                 )
             );
         }
@@ -654,7 +665,7 @@
                     array('language', 'length',  'max'   => 10),
                     array('timeZone', 'type',    'type'  => 'string'),
                     array('timeZone', 'length',  'max'   => 64),
-                    array('timeZone', 'default', 'value' => 'UTC'),
+                    array('timeZone', 'UserDefaultTimeZoneDefaultValueValidator'),
                     array('timeZone', 'ValidateTimeZone'),
                     array('username', 'required'),
                     array('username', 'unique'),
@@ -776,7 +787,7 @@
             }
             return $emailSignature;
         }
-        
+
         public function isDeletable()
         {
             $superAdminGroup = Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME);
@@ -786,7 +797,7 @@
             }
             return parent::isDeletable();
         }
-        
+
         /**
         * to change isActive attribute  properly during save
         */
@@ -807,6 +818,18 @@
                $this->unrestrictedSet('isActive', $isActive);
                $this->save();
             }
+        }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array('firstName', $attribute);
+            }
+            return parent::getSortAttributesByAttribute($attribute);
         }
     }
 ?>

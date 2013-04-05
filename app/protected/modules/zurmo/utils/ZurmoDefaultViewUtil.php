@@ -125,18 +125,31 @@
 
         protected static function makeHeaderView(CController $controller)
         {
+            $headerView               = null;
             $settingsMenuItems        = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
             $userMenuItems            = static::getAndResolveUserMenuItemsForHeader();
-            $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-            $moduleNamesAndLabels     = GlobalSearchUtil::
-                                        getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
-            $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
-            GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption(
-                                        $moduleNamesAndLabels);
             $applicationName          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
-            return new HeaderView($controller->getId(), $controller->getModule()->getId(), $settingsMenuItems,
-                                  $userMenuItems, $shortcutsCreateMenuItems,
-                                  $moduleNamesAndLabels, $sourceUrl, $applicationName);
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $headerView           = new MobileHeaderView($settingsMenuItems, $userMenuItems, $applicationName);
+            }
+            else
+            {
+                $shortcutsCreateMenuItems = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
+                $moduleNamesAndLabels     = GlobalSearchUtil::
+                                                getGlobalSearchScopingModuleNamesAndLabelsDataByUser(Yii::app()->user->userModel);
+                $sourceUrl                = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
+                GlobalSearchUtil::resolveModuleNamesAndLabelsDataWithAllOption($moduleNamesAndLabels);
+                $headerView               = new HeaderView($controller->getId(),
+                                                            $controller->getModule()->getId(),
+                                                            $settingsMenuItems,
+                                                            $userMenuItems,
+                                                            $shortcutsCreateMenuItems,
+                                                            $moduleNamesAndLabels,
+                                                            $sourceUrl,
+                                                            $applicationName);
+            }
+            return $headerView;
         }
 
         protected static function getAndResolveUserMenuItemsForHeader()
@@ -203,7 +216,7 @@
                 static::$showRecentlyViewed     = false;
                 $controller                     = ($controller)? $controller: Yii::app()->request->controller;
                 $shortcutsCreateMenuItems       = MenuUtil::getAccessibleShortcutsCreateMenuByCurrentUser();
-                $shortcutsCreateMenuView        = new ShortcutsCreateMenuView(
+                $shortcutsCreateMenuView        = new MobileShortcutsCreateMenuView(
                                                                         $controller->getId(),
                                                                         $controller->getModule()->getId(),
                                                                         $shortcutsCreateMenuItems
@@ -212,7 +225,7 @@
                                                     getGlobalSearchScopingModuleNamesAndLabelsDataByUser(
                                                                                             Yii::app()->user->userModel);
                 $sourceUrl                      = Yii::app()->createUrl('zurmo/default/globalSearchAutoComplete');
-                $globalSearchView               = new GlobalSearchView($moduleNamesAndLabels, $sourceUrl);
+                $globalSearchView               = new MobileGlobalSearchView($moduleNamesAndLabels, $sourceUrl);
                 $recentlyViewed                 = static::makeRecentlyViewedView();
                 $recentlyViewedMenu             = $recentlyViewed->renderMenu();
                 $searchItem                     = array(

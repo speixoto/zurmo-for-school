@@ -31,7 +31,7 @@
             $address = $this->makeAddress();
             if ($address == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return $address;
         }
@@ -81,9 +81,24 @@
             return $this->invalid;
         }
 
-        protected static function getPluralLabel()
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
-            return 'Addresses';
+            return Zurmo::t('ZurmoModule', 'Address', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('ZurmoModule', 'Addresses', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
@@ -100,7 +115,6 @@
                     'street1',
                     'street2',
                     'state',
-                    // Todo: make these relations.
                 ),
                 'rules' => array(
                     array('city',       'type',      'type'      => 'string'),
@@ -179,6 +193,23 @@
         public static function getModuleClassName()
         {
             return 'ZurmoModule';
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'city'        => Zurmo::t('ZurmoModule', 'City',         array(), null, $language),
+                    'country'     => Zurmo::t('ZurmoModule', 'Country',      array(), null, $language),
+                    'invalid'     => Zurmo::t('ZurmoModule', 'Invalid',      array(), null, $language),
+                    'latitude'    => Zurmo::t('ZurmoModule', 'Latitude',     array(), null, $language),
+                    'longitude'   => Zurmo::t('ZurmoModule', 'Longitude',    array(), null, $language),
+                    'postalCode'  => Zurmo::t('ZurmoModule', 'Postal Code',  array(), null, $language),
+                    'street1'     => Zurmo::t('ZurmoModule', 'Street 1',     array(), null, $language),
+                    'street2'     => Zurmo::t('ZurmoModule', 'Street 2',     array(), null, $language),
+                    'state'       => Zurmo::t('ZurmoModule', 'State',        array(), null, $language),
+                )
+            );
         }
     }
 ?>

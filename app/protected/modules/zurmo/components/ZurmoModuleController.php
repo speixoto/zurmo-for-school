@@ -155,7 +155,6 @@
             assert('$stickySearchKey == null || is_string($stickySearchKey)');
             $modelClassName        = $this->getModelName();
             $searchFormClassName   = static::getSearchFormClassName();
-            $pageSize              = null;
             $model                 = new $modelClassName(false);
             if ($searchFormClassName != null)
             {
@@ -167,7 +166,7 @@
             }
             $stateMetadataAdapterClassName = $this->getModule()->getStateMetadataAdapterClassName();
             $dataProvider                  = $this->getDataProviderByResolvingSelectAllFromGet(
-                                             $searchForm, $pageSize, Yii::app()->user->userModel->id,
+                                             $searchForm, null, Yii::app()->user->userModel->id,
                                              $stateMetadataAdapterClassName, $stickySearchKey);
             if (!$dataProvider)
             {
@@ -182,7 +181,8 @@
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)
-                    {                        
+                    {
+                        $dataProvider->getPagination()->setPageSize($totalItems);
                         $modelsToExport = $dataProvider->getData();
                         if(count($modelsToExport) > 0)
                         {
@@ -193,7 +193,7 @@
                         {
                             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
                             {
-                                $modelToExportAdapter  = new ModelToExportAdapter($model);                                
+                                $modelToExportAdapter  = new ModelToExportAdapter($model);
                                 $data[] = $modelToExportAdapter->getData();
                             }
                         }
@@ -232,6 +232,7 @@
                 {
                     if ($dataProvider)
                     {
+                        $dataProvider->getPagination()->setPageSize($totalItems);
                         $serializedData = serialize($dataProvider);
                     }
                     else
@@ -244,7 +245,7 @@
                     $exportItem->isCompleted     = 0;
                     $exportItem->exportFileType  = 'csv';
                     $exportItem->exportFileName  = $this->getModule()->getName();
-                    $exportItem->modelClassName = $modelClassName;
+                    $exportItem->modelClassName  = $modelClassName;
                     $exportItem->serializedData  = $serializedData;
                     $exportItem->save();
                     $exportItem->forget();

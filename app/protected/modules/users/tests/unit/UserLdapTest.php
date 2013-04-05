@@ -32,6 +32,9 @@
             SecurityTestHelper::createSuperAdmin();
             if (ZurmoTestHelper::isAuthenticationLdapTestConfigurationSet())
             {
+                Yii::app()->authenticationHelper->ldapServerType           =
+                    Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapServerType'];
+                    
                 Yii::app()->authenticationHelper->ldapHost                 =
                     Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'];
 

@@ -49,22 +49,7 @@
          */
         public function render()
         {
-            return (Yii::app()->userInterface->isMobile()) ? $this->renderMobileContent() : $this->renderContent();
-        }
-
-        protected function renderContent()
-        {
-            $contentPrefix      = null;
-            $menuId             = 'ShortcutsMenu';
-            return $this->renderMenu($menuId, $contentPrefix);
-        }
-
-        public function renderMobileContent()
-        {
-            $contentPrefix                      = MobileHtml::renderFlyoutTrigger('Shortcuts');
-            $menuId                             = 'MobileShortcutsMenu';
-            $this->menuItems['renderHeader']    = false;
-            return $this->renderMenu($menuId, $contentPrefix);
+            return $this->renderContent();
         }
 
         public function renderMenu($menuId, $contentPrefix = null)
@@ -73,6 +58,7 @@
             {
                 return;
             }
+            $this->qualifyMenuItems();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Shortcuts");
             $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
@@ -81,7 +67,28 @@
             ));
             $cClipWidget->endClip();
             return $contentPrefix . $cClipWidget->getController()->clips['Shortcuts'];
+        }
 
+        protected function renderContent()
+        {
+            $contentPrefix      = $this->getContentPrefix();
+            $menuId             = $this->getMenuId();
+            return $this->renderMenu($menuId, $contentPrefix);
+        }
+
+        protected function getContentPrefix()
+        {
+            return null;
+        }
+
+        protected function getMenuId()
+        {
+            return 'ShortcutsMenu';
+        }
+
+        protected function qualifyMenuItems()
+        {
+            // used in subclasses for adding custom data inside menuItems
         }
     }
 ?>

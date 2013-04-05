@@ -256,6 +256,34 @@ function resolveSpinner(state, domObject, styleObject, spinnerClassName){
     }
 }
 
+function attachLoadingSpinnerForLanguageActivation( id, state, color ){
+    if ( color === 'dark' ){
+        color = '#999';
+    } else {
+        color = '#fff';
+    }
+    if ( state === true ){
+        $( '.z-spinner', id ).spin({
+            lines : 9, // The number of lines to draw
+            length : 2.3, // The length of each line
+            width : 1.7, // The line thickness
+            radius : 3, // The radius of the inner circle
+            rotate : 0, // The rotation offset
+            color : color, // #rgb or #rrggbb
+            speed : 2.5, // Rounds per second
+            trail : 37, // Afterglow percentage
+            shadow : false, // Whether to render a shadow
+            hwaccel : true, // Whether to use hardware acceleration
+            className : 'spinner', // The CSS class to assign to the spinner
+            zIndex : 2e9, // The z-index (defaults to 2000000000)
+            top : 4, // Top position relative to parent in px
+            left : 0 // Left position relative to parent in px
+        });
+    } else {
+        $( '.z-spinner', id ).spin(false);
+    }
+}
+
 /*
 * @shade (String) HEX color (with #) or 'dark', default value is #FFF (white).
 */

@@ -205,7 +205,7 @@
         public static function clearFileAndRelatedDataFromImport($import)
         {
             assert('$import instanceof Import');
-            $unserializedData                       = $import->serializedData;
+            $unserializedData                       = unserialize($import->serializedData);
             $newUnserializedData['importRulesType'] = $unserializedData['importRulesType'];
             if ($import->save())
             {

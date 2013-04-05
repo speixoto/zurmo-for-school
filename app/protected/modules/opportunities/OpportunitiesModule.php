@@ -99,6 +99,11 @@
             return Zurmo::t('OpportunitiesModule', 'Opportunity', array(), null, $language);
         }
 
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('OpportunitiesModule', 'Opportunities', array(), null, $language);
+        }
+
         public static function getAccessRight()
         {
             return self::RIGHT_ACCESS_OPPORTUNITIES;
@@ -135,6 +140,11 @@
         }
 
         public static function isReportable()
+        {
+            return true;
+        }
+
+        public static function canHaveWorkflow()
         {
             return true;
         }

@@ -96,7 +96,7 @@
                     array('string',    'length',  'min'  => 3, 'max' => 64),
                     array('textArea',  'type',    'type' => 'string'),
                     array('url',       'url'),
-                    array('email',      'email'),
+                    array('email',     'email'),
                 ),
                 'elements' => array(
                     'currency'         => 'Currency',

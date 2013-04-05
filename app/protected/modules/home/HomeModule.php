@@ -77,6 +77,11 @@
             return Zurmo::t('HomeModule', 'Home', array(), null, $language);
         }
 
+        protected static function getPluralModuleLabel($language)
+        {
+            return static::getSingularModuleLabel($language);
+        }
+
         public static function getDeleteRight()
         {
             return self::RIGHT_DELETE_DASHBOARDS;

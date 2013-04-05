@@ -62,5 +62,36 @@
         {
             return true;
         }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'htmlContent'   => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
+                    'notifications' => Zurmo::t('NotificationsModule', 'Notifications',  array(), null, $language),
+                    'textContent'   => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                )
+            );
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('NotificationsModule', 'Notification Message', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('NotificationsModule', 'Notification Messages', array(), null, $language);
+        }
     }
 ?>

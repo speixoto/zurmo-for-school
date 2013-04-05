@@ -27,7 +27,7 @@
     /**
      * View for selecting a type of report to create
      */
-    class ReportWizardTypeView extends MetadataView
+    class ReportWizardTypeView extends WizardTypeView
     {
         /**
          * @return string
@@ -38,23 +38,9 @@
         }
 
         /**
-         * @return string
-         */
-        protected function renderContent()
-        {
-            $content  = $this->renderTitleContent();
-            $categoryData = $this->getReportTypeData();
-            foreach ($categoryData as $category => $categoryItems)
-            {
-                $content .= $this->renderMenu($categoryItems);
-            }
-            return $content;
-        }
-
-        /**
          * @return array
          */
-        protected function getReportTypeData()
+        protected function getTypeData()
         {
             $categories = array();
             $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('ReportsModule', 'Rows and Columns Report'),
@@ -67,45 +53,6 @@
                                                 'route'               => 'reports/default/create?type=' . Report::TYPE_MATRIX// Not Coding Standard
                                             );
             return $categories;
-        }
-
-        /**
-         * @param array $items
-         * @return string
-         */
-        protected function renderMenu($items)
-        {
-            $content = '<ul class="configuration-list">';
-            foreach ($items as $item)
-            {
-                $content .= '<li>';
-                $content .= '<h4>' . $item['titleLabel'] . '</h4>';
-                if(isset($item['descriptionLabel']))
-                {
-                    $content .= ' - ' . $item['descriptionLabel'];
-                }
-                $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array('class' => 'z-label'), $this->getLinkText()),
-                                        Yii::app()->createUrl($item['route']));
-                $content .= '</li>';
-            }
-            $content .= '</ul>';
-            return $content;
-        }
-
-        /**
-         * @param $text
-         */
-        protected function setLinkText($text)
-        {
-            $this->linkText = $text;
-        }
-
-        /**
-         * @return string
-         */
-        protected function getLinkText()
-        {
-            return Zurmo::t('ReportsModule', 'Create');
         }
     }
 ?>

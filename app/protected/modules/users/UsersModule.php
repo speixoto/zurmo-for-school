@@ -274,5 +274,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('UsersModule', 'User', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('UsersModule', 'Users', array(), null, $language);
+        }
     }
 ?>

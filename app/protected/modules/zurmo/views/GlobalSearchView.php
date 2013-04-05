@@ -51,16 +51,19 @@
 
         protected function renderContent()
         {
-            $searchBoxId    = 'app-search';
-            $contentPrefix  = null;
+            $searchBoxId    = $this->getSearchBoxId();
+            $contentPrefix  = $this->getContentPrefix();
             return $this->renderSearchView($searchBoxId, $contentPrefix);
         }
 
-        protected function renderMobileContent()
+        protected function getContentPrefix()
         {
-            $searchBoxId    = 'app-mobile-search';
-            $contentPrefix  = MobileHtml::renderFlyoutTrigger('Search');
-            return $this->renderSearchView($searchBoxId, $contentPrefix);
+            return null;
+        }
+
+        protected function getSearchBoxId()
+        {
+            return 'app-search';
         }
 
         protected function renderSearchView($searchBoxId, $contentPrefix = null)
@@ -71,8 +74,9 @@
                                                             $globalSearchContent . $spinner);
             $content                = $contentPrefix . $searchBox;
             return $content;
-
         }
+
+
 
         protected function renderGlobalSearchContent()
         {

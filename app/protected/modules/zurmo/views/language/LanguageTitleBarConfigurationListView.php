@@ -31,11 +31,10 @@
         public function __construct(
             $controllerId,
             $moduleId,
-            $languagesData,
             $messageBoxContent = null)
         {
             parent::__construct(1, 1);
-            $this->setView(new LanguagesCollectionView($controllerId, $moduleId, $languagesData, $messageBoxContent), 0, 0);
+            $this->setView(new LanguagesCollectionView($controllerId, $moduleId, $messageBoxContent), 0, 0);
         }
     }
 ?>

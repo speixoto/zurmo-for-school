@@ -64,8 +64,7 @@
                 'afterDeleteAction'    => null
             ));
             $cClipWidget->endClip();
-            $content = '<tr><td></td><td colspan="3"><div class="file-upload-box">' .
-                       $cClipWidget->getController()->clips['logoFileElement'] . '</div></td></tr>';
+            $content = '<div class="file-upload-box">' . $cClipWidget->getController()->clips['logoFileElement'] . '</div>';
             return $content;
         }
 
@@ -75,7 +74,13 @@
 
         protected function renderLabel()
         {
-            return Zurmo::t('ZurmoModule', 'Please select a logo to upload');
+            $title    = Zurmo::t('ZurmoModule', 'The uploaded image will be resized to 32 pixels height while ' .
+                                                'maintaining the correct aspect ratio on its width.');
+            $content  = Zurmo::t('ZurmoModule', 'Please select a logo to upload');
+            $content .= '<span id="logo-upload-tooltip" class="tooltip"  title="' . $title . '">?</span>';
+            $qtip     = new ZurmoTip();
+            $qtip->addQTip("#logo-upload-tooltip");
+            return $content;
         }
     }
 ?>

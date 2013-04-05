@@ -85,5 +85,38 @@
         {
             return true;
         }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Recipient', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Recipients', array(), null, $language);
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'personOrAccount' => Zurmo::t('ZurmoModule',         'Person Or AccountsModuleSingularLabel',  $params, null, $language),
+                    'toAddress'       => Zurmo::t('EmailMessagesModule', 'To Address',  array(), null, $language),
+                    'toName'          => Zurmo::t('EmailMessagesModule', 'To Name',  array(), null, $language),
+                    'type'            => Zurmo::t('Core', 'Type',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

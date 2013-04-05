@@ -113,23 +113,23 @@
 
         protected function renderApplyLinkContent()
         {
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('Core', 'Apply');
             $params['htmlOptions'] = array('id'  => 'list-attributes-apply',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            return $searchElement->render();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
 
         protected function renderApplyResetContent()
         {
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('Core', 'Reset');
             $params['htmlOptions'] = array('id'  => 'list-attributes-reset',
                                            'class' => 'default-btn',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            return $searchElement->render();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            return $element->render();
         }
     }
 ?>

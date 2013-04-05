@@ -2251,34 +2251,51 @@
             assert('in_array($type, array("Singular", "SingularLowerCase", "Plural", "PluralLowerCase"))');
             if ($type == 'Singular')
             {
-               return Zurmo::t('Core', static::getLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return static::getLabel($language);
             }
             if ($type == 'SingularLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                return TextUtil::strToLowerWithDefaultEncoding(static::getLabel($language));
             }
             if ($type == 'Plural')
             {
-               return Zurmo::t('Core', static::getPluralLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language);
+                return static::getPluralLabel($language);
             }
             if ($type == 'PluralLowerCase')
             {
-               return strtolower(Zurmo::t('Core', static::getPluralLabel(),
-                        LabelUtil::getTranslationParamsForAllModules(), null, $language));
+                return TextUtil::strToLowerWithDefaultEncoding(static::getPluralLabel($language));
             }
         }
 
-        protected static function getLabel()
+        /**
+         * Returns the display name for the model class. Defaults to the module label. Override if the model
+         * label is not the module label. Make sure to return a translated label. Also provides fall back in
+         * moduleClassName is null.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
+            }
             return get_called_class();
         }
 
-        protected static function getPluralLabel()
+        /**
+         * Returns the display name for plural of the model class. Defaults to the module label. Override if the model
+         * label is not the module label. Make sure to return a translated label
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
         {
-            return static::getLabel() . 's';
+            if(null != $moduleClassName = static::getModuleClassName())
+            {
+                return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
+            }
+            return static::getLabel($language) . 's';
         }
 
         /**
@@ -2328,34 +2345,34 @@
          * Given an attributeName, attempt to find in the metadata a custom attribute label for the given language.
          * @return string - translated attribute label, if not found return null.
          */
-        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $language)
+        protected static function getTranslatedCustomAttributeLabelByLanguage($attributeName, $languageCode)
         {
             assert('is_string($attributeName)');
-            assert('is_string($language)');
+            assert('is_string($languageCode)');
             $metadata = static::getMetadata();
             foreach ($metadata as $notUsed => $modelClassMetadata)
             {
                 if (isset($modelClassMetadata['labels']) &&
                     isset($modelClassMetadata['labels'][$attributeName]) &&
-                    isset($modelClassMetadata['labels'][$attributeName][$language]))
+                    isset($modelClassMetadata['labels'][$attributeName][$languageCode]))
                 {
-                    return $modelClassMetadata['labels'][$attributeName][$language];
+                    return $modelClassMetadata['labels'][$attributeName][$languageCode];
                 }
             }
             return null;
         }
 
         /**
-         * Given an attributeName, return an array of all attribute labels for each language available.
+         * Given an attributeName, return an array of all attribute labels for each active language.
          * @return array - attribute labels by language for the given attributeName.
          */
-        public function getAttributeLabelsForAllSupportedLanguagesByAttributeName($attributeName)
+        public function getAttributeLabelsForAllActiveLanguagesByAttributeName($attributeName)
         {
             assert('is_string($attributeName)');
             $attirbuteLabelData = array();
-            foreach (Yii::app()->languageHelper->getSupportedLanguagesData() as $language => $name)
+            foreach (Yii::app()->languageHelper->getActiveLanguagesData() as $languageCode => $languageData)
             {
-                $attirbuteLabelData[$language] = $this->getAttributeLabelByLanguage($attributeName, $language);
+                $attirbuteLabelData[$languageCode] = $this->getAttributeLabelByLanguage($attributeName, $languageCode);
             }
             return $attirbuteLabelData;
         }
@@ -2740,7 +2757,8 @@
         {
             if (YII_DEBUG)
             {
-                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)), CLogger::LEVEL_WARNING);
+                Yii::log(Zurmo::t('Core', 'Failed to set unsafe attribute "{attribute}".', array('{attribute}' => $name)),
+                    CLogger::LEVEL_WARNING);
             }
         }
 
@@ -2930,9 +2948,19 @@
             return $modelClassName;
         }
 
-		public static function getLastClassInBeanHeirarchy()
+        public static function getLastClassInBeanHeirarchy()
         {
             return static::$lastClassInBeanHeirarchy;
+        }
+
+        /**
+         * Returns a list of attributes to be added when sorting by the attribute
+         * @param string $attribute
+         * @return array
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            return array($attribute);
         }
     }
 ?>

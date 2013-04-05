@@ -85,7 +85,7 @@
             $searchAttributeData = $this->getMetadataForUnreadForCurrentUser();
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('Mission');
             $where  = RedBeanModelDataProvider::makeWhere('Mission', $searchAttributeData, $joinTablesAdapter);
-            return Mission::getCount($joinTablesAdapter, $where, null, true);
+            return Mission::getCount($joinTablesAdapter, $where, 'Mission', true);
         }
 
         public function getModelClassName()

@@ -34,15 +34,15 @@
             $metadata = parent::getDefaultMetadata();
             $metadata[__CLASS__] = array(
                 'members' => array(
-                    'textContent',
-                    'htmlContent'
+                    'htmlContent',
+                    'textContent'
                 ),
                 'relations' => array(
                     'user'     => array(RedBeanModel::HAS_ONE,  'User'),
                 ),
                 'rules' => array(
-                     array('htmlContent', 'type', 'type' => 'string'),
-                     array('textContent', 'type', 'type' => 'string')
+                     array('textContent', 'type', 'type' => 'string'),
+                     array('htmlContent', 'type', 'type' => 'string')
                 ),
                 'elements' => array(
                     'htmlContent'     => 'TextArea',
@@ -55,6 +55,36 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Signature', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Signatures', array(), null, $language);
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'htmlContent' => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
+                    'textContent' => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

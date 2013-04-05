@@ -37,7 +37,7 @@
         {
             if ($this->dataProvider->getItemCount() > 0 || $this->showTableOnEmpty)
             {
-                echo "<table class=\"{$this->itemsCssClass}\">\n";
+                echo "<table class=\"{$this->itemsCssClass} stacked-list\">\n";
                 ob_start();
                 $this->renderTableBody();
                 $body = ob_get_clean();

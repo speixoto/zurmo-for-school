@@ -329,7 +329,7 @@
                 }
                 foreach ($dynamicSearchAttributes as $key => $data)
                 {
-                    if (is_string($data) && $data == 'undefined')
+                    if (is_string($data) && $data == 'undefined' || $data == null)
                     {
                         unset($dynamicSearchAttributes[$key]);
                     }

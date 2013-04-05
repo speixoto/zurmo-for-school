@@ -109,5 +109,39 @@
         {
             return true;
         }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('JobsManagerModule', 'Job Log', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('JobsManagerModule', 'Job Logs', array(), null, $language);
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'endDateTime'   => Zurmo::t('ZurmoModule',       'End Date Time',  array(), null, $language),
+                    'isProcessed'   => Zurmo::t('JobsManagerModule', 'Is Processed',  array(), null, $language),
+                    'message'       => Zurmo::t('JobsManagerModule', 'Message',  array(), null, $language),
+                    'startDateTIme' => Zurmo::t('ZurmoModule',       'Start Date Time',  array(), null, $language),
+                    'status'        => Zurmo::t('JobsManagerModule', 'Status',  array(), null, $language),
+                    'type'          => Zurmo::t('Core',              'Type',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

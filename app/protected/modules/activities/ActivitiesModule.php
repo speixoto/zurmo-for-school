@@ -46,5 +46,10 @@
         {
             return Zurmo::t('ActivitiesModule', 'Activity', array(), null, $language);
         }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ActivitiesModule', 'Activities', array(), null, $language);
+        }
     }
 ?>

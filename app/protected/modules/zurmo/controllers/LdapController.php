@@ -69,6 +69,7 @@
                 }
                 else
                 {
+                    $configurationForm->serverType            = $_POST['LdapConfigurationForm']['serverType'];
                     $configurationForm->host                  = $_POST['LdapConfigurationForm']['host'];
                     $configurationForm->port                  = $_POST['LdapConfigurationForm']['port'];
                     $configurationForm->bindRegisteredDomain  = $_POST['LdapConfigurationForm']['bindRegisteredDomain'];
@@ -78,23 +79,25 @@
                 }
                 if ($configurationForm->host != null && $configurationForm->port != null &&
                     $configurationForm->bindRegisteredDomain != null && $configurationForm->bindPassword != null &&
-                    $configurationForm->baseDomain != null)
+                    $configurationForm->baseDomain != null && $configurationForm->serverType != null)
                 {
                     $authenticationHelper = new ZurmoAuthenticationHelper;
+                    $authenticationHelper->ldapServerType           = $configurationForm->serverType;
                     $authenticationHelper->ldapHost                 = $configurationForm->host;
                     $authenticationHelper->ldapPort                 = $configurationForm->port;
                     $authenticationHelper->ldapBindRegisteredDomain = $configurationForm->bindRegisteredDomain;
                     $authenticationHelper->ldapBindPassword         = $configurationForm->bindPassword;
                     $authenticationHelper->ldapBaseDomain           = $configurationForm->baseDomain;
                     $authenticationHelper->ldapEnabled              = $configurationForm->enabled;
-
+                    
+                    $serverType                = $configurationForm->serverType;
                     $host                      = $configurationForm->host;
                     $port                      = $configurationForm->port;
                     $bindRegisteredDomain      = $configurationForm->bindRegisteredDomain;
                     $bindPassword              = $configurationForm->bindPassword;
                     $baseDomain                = $configurationForm->baseDomain;
-                    $testConnectionResults     = LdapUtil::establishConnection($host,$port,$bindRegisteredDomain,
-                                                                               $bindPassword,$baseDomain);
+                    $testConnectionResults     = LdapUtil::establishConnection($serverType, $host, $port, $bindRegisteredDomain,
+                                                                               $bindPassword, $baseDomain);
                     if($testConnectionResults)
                     {
                        $messageContent = Zurmo::t('ZurmoModule', 'Successfully Connected to Ldap Server') . "\n";
