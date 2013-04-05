@@ -424,9 +424,14 @@
             }
             elseif (!is_string($inputIdPrefix))
             {
-                throw notSupportedException();
+                throw new NotSupportedException();
             }
             return $inputIdPrefix;
+        }
+
+        protected function getListViewGridId()
+        {
+            return ArrayUtil::getArrayValueWithExceptionIfNotFound($this->params, 'listViewGridId');
         }
     }
 ?>

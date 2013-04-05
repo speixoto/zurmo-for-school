@@ -1,0 +1,44 @@
+.tabs-container,
+.email-template-content{
+    position: relative;
+    min-height: 200px;
+    > .tab{
+        position: absolute;
+        top:27px;
+        left: 0;
+        width: 100%;
+        min-height: 170px;
+        display: none;
+        label{
+            display: none;
+        }
+    }
+    .tab.active-tab{
+        display: block;
+    }
+    
+}
+
+.tabs-nav{
+    margin-bottom: 10px;
+    //border-bottom: 1px solid #dfdfdf;
+    a{
+        display: inline-block;
+        padding:0 12px;
+        line-height: 26px;
+        margin: 0 5px 0 0;
+        background:url(../images/table-items-header.png) left bottom repeat-x;
+        border: 1px solid #dfdfdf;
+        border-bottom: none;
+        .radius(3px 3px 0 0 );
+        .smaller();
+        font-weight: 700;
+        color: #666;
+        .t-shadow(0 1px 0 #fff);
+    }
+    a:hover,
+    a.active-tab{
+        background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+        text-decoration: none;
+    }
+}

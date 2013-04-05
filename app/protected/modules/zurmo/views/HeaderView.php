@@ -26,7 +26,7 @@
 
     class HeaderView extends View
     {
-        private $verticalGridView;
+        protected $verticalGridView;
 
         public function __construct($controllerId, $moduleId, $settingsMenuItems, $userMenuItems,
                                     $shortcutsCreateMenuItems,
@@ -42,10 +42,10 @@
             assert('is_string($applicationName) || $applicationName == null');
 
             $shortcutsCreateMenuView = new ShortcutsCreateMenuView(
-                $controllerId,
-                $moduleId,
-                $shortcutsCreateMenuItems
-            );
+                                                                $controllerId,
+                                                                $moduleId,
+                                                                $shortcutsCreateMenuItems
+                                                            );
             $this->verticalGridView   = new GridView(2, 1);
             $this->verticalGridView->setView(
                                         new HeaderLinksView($settingsMenuItems, $userMenuItems,
@@ -56,6 +56,17 @@
             $horizontalGridView = new GridView(1, 1);
             $horizontalGridView->setView($globalSearchAndShortcutsCreateMenuView, 0, 0);
             $this->verticalGridView->setView($horizontalGridView, 1, 0);
+
+        }
+
+        protected function renderContent()
+        {
+            $this->renderLoginRequiredAjaxResponse();
+            return $this->verticalGridView->render();
+        }
+
+        protected function renderLoginRequiredAjaxResponse()
+        {
             if (Yii::app()->user->loginRequiredAjaxResponse)
             {
                 Yii::app()->clientScript->registerScript('ajaxLoginRequired', '
@@ -70,11 +81,6 @@
                     );
                 ');
             }
-        }
-
-        protected function renderContent()
-        {
-            return $this->verticalGridView->render();
         }
     }
 ?>

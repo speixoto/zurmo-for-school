@@ -125,7 +125,15 @@
 
         protected function getGridViewWidgetPath()
         {
-            return 'application.core.widgets.ExtendedGridView';
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $widget = 'application.core.widgets.StackedExtendedGridView';
+            }
+            else
+            {
+                $widget = 'application.core.widgets.ExtendedGridView';
+            }
+            return $widget;
         }
 
         public function getRowsAreSelectable()

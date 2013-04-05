@@ -45,5 +45,8 @@
     unset($common_config['defaultController']);
     //Not applicable for console applications.
     unset($common_config['controllerMap']);
+    //Not applicable for console applications.
+    unset($common_config['userInterface']);
+
     return $common_config
 ?>

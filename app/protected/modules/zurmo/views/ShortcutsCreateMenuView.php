@@ -52,20 +52,43 @@
             return $this->renderContent();
         }
 
-        protected function renderContent()
+        public function renderMenu($menuId, $contentPrefix = null)
         {
             if (empty($this->menuItems))
             {
                 return;
             }
+            $this->qualifyMenuItems();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Shortcuts");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ShortcutsMenu'),
-                'items'                   => array($this->menuItems),
+            $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
+                'htmlOptions' => array('id' => $menuId),
+                'items'       => array($this->menuItems),
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['Shortcuts'];
+            return $contentPrefix . $cClipWidget->getController()->clips['Shortcuts'];
+        }
+
+        protected function renderContent()
+        {
+            $contentPrefix      = $this->getContentPrefix();
+            $menuId             = $this->getMenuId();
+            return $this->renderMenu($menuId, $contentPrefix);
+        }
+
+        protected function getContentPrefix()
+        {
+            return null;
+        }
+
+        protected function getMenuId()
+        {
+            return 'ShortcutsMenu';
+        }
+
+        protected function qualifyMenuItems()
+        {
+            // used in subclasses for adding custom data inside menuItems
         }
     }
 ?>

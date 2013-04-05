@@ -8,6 +8,17 @@ a:link, a:active, a:visited{
 }
 
 .AppColors(){
+
+    #nav-trigger{
+        border-right: 1px solid darken(@themeColor, 12%);
+        .b-shadow(1px 0 0 0 lighten(@themeColor, 1%));
+        color:lighten(@themeColor, 100%);
+    }
+    #nav-trigger:active{
+        .t-shadow(0 1px 0 lighten(@themeColor, 25%));
+        //#gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
+    }
+    
     .textColor{ color: @textColor; }
     .themeColor{ color: @themeColor; }
     .themeColor2{ color: @themeColor2; }
@@ -150,7 +161,7 @@ a:link, a:active, a:visited{
     .filter-portlet-model-bar label:hover,
     .latest-activity-toolbar .ui-state-active,
     .filter-portlet-model-bar .ui-state-active,
-    
+    #clear-search-link
     #MashableInboxForm_filteredBy_area label:hover,
     #MashableInboxForm_optionForModel_area label:hover,
     #MashableInboxForm_filteredBy_area .ui-state-active,

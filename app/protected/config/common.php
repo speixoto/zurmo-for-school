@@ -262,6 +262,9 @@
                     ),
                 ),
             ),
+            'userInterface' => array(
+                'class' => 'application.extensions.userinterface.UserInterface',
+            ),
             'widgetFactory' => array(
                 'widgets' => array(
                     'ZurmoJuiDateTimePicker' => array(
@@ -320,12 +323,14 @@
             'accounts',
             'activities',
             'api',
+            'campaigns',
             'comments',
             'configuration',
             'contacts',
             'conversations',
             'designer',
             'emailMessages',
+            'emailTemplates',
             'export',
             'gamification',
             'home',
@@ -333,6 +338,7 @@
             'install',
             'jobsManager',
             'leads',
+            'marketingLists',
             'mashableInbox',
             'meetings',
             'missions',

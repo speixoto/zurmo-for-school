@@ -327,7 +327,7 @@
                             Yii::app()->user->userModel->id,
                             null,
                             'UsersSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $user = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,

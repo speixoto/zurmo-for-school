@@ -79,6 +79,7 @@
                     'subject',
                     'type',
                     'sentDateTime',
+                    'sendOnDateTime',
                 ),
                 'relations' => array(
                     'folder'        => array(RedBeanModel::HAS_ONE,  'EmailFolder', RedBeanModel::NOT_OWNED,
@@ -99,7 +100,8 @@
                     array('subject', 'length',  'min'  => 3, 'max' => 255),
                     array('folder', 'required'),
                     array('sender', 'required'),
-                    array('sentDateTime',  'type', 'type' => 'datetime'),
+                    array('sentDateTime',    'type', 'type' => 'datetime'),
+                    array('sendOnDateTime',  'type', 'type' => 'datetime'),
                 ),
                 'elements' => array(
                     'sentDateTime'  => 'DateTime',

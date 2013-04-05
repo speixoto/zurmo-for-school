@@ -51,9 +51,32 @@
 
         protected function renderContent()
         {
-            $content  = '<div id="app-search" class="clearfix">' . $this->renderGlobalSearchContent() . '<span class="z-spinner"></span></div>';
+            $searchBoxId    = $this->getSearchBoxId();
+            $contentPrefix  = $this->getContentPrefix();
+            return $this->renderSearchView($searchBoxId, $contentPrefix);
+        }
+
+        protected function getContentPrefix()
+        {
+            return null;
+        }
+
+        protected function getSearchBoxId()
+        {
+            return 'app-search';
+        }
+
+        protected function renderSearchView($searchBoxId, $contentPrefix = null)
+        {
+            $globalSearchContent    = $this->renderGlobalSearchContent();
+            $spinner                = ZurmoHtml::tag('span', array('class' => 'z-spinner'), '');
+            $searchBox              = ZurmoHtml::tag('div', array('id' => $searchBoxId, 'class' => 'clearfix'),
+                                                            $globalSearchContent . $spinner);
+            $content                = $contentPrefix . $searchBox;
             return $content;
         }
+
+
 
         protected function renderGlobalSearchContent()
         {

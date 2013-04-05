@@ -27,83 +27,26 @@
     /**
      * Mass delete progress view.
      */
-    class MassDeleteProgressView extends ProgressView
+    class MassDeleteProgressView extends MassProgressView
     {
-        /**
-         * Integer of how many records were skipped
-         * during the mass delete process.
-         */
-        protected $skipCount;
-
-        /**
-         * Constructs a mass delete progress view specifying the controller as
-         * well as the model that will have its mass edit displayed.
-         */
-        public function __construct(
-        $controllerId,
-        $moduleId,
-        $model,
-        $totalRecordCount,
-        $start,
-        $pageSize,
-        $page,
-        $refreshActionId,
-        $title,
-        $skipCount)
+        protected function getMessagePrefix()
         {
-            assert('$skipCount == null || is_int($skipCount)');
-            $this->skipCount = $skipCount;
-            parent::__construct(
-                        $controllerId,
-                        $moduleId,
-                        $model,
-                        $totalRecordCount,
-                        $start,
-                        $pageSize,
-                        $page,
-                        $refreshActionId,
-                        $title);
+            return Zurmo::t('Core', 'Deleting');
         }
 
-        protected function getMessage()
+        protected function getCompleteMessageSuffix()
         {
-            return Zurmo::t('Core', 'Deleting') . " " . $this->start . " - " . $this->getEndSize() . " " . Zurmo::t('Core', 'of') . " " .
-                $this->totalRecordCount . " " . Zurmo::t('Core', 'total') . " " .
-                Zurmo::t('Core', LabelUtil::getUncapitalizedRecordLabelByCount($this->totalRecordCount));
-        }
-
-        protected function getCompleteMessage()
-        {
-            $successfulCount = MassDeleteInsufficientPermissionSkipSavingUtil::resolveSuccessfulCountAgainstSkipCount(
-                               $this->totalRecordCount, $this->skipCount);
-            $content =         $successfulCount . ' ' . LabelUtil::getUncapitalizedRecordLabelByCount($successfulCount)
-                               . ' ' . Zurmo::t('Core', 'successfully deleted') . '.';
-            if ($this->skipCount > 0)
-            {
-                $content .= '<br/>' .
-                            MassDeleteInsufficientPermissionSkipSavingUtil::getSkipCountMessageContentByModelClassName(
-                                            $this->skipCount, get_class($this->model));
-            }
-            return $content;
-        }
-
-        protected function renderFormLinks()
-        {
-            $listButton = ZurmoHtml::link(ZurmoHtml::wrapLabel(Zurmo::t('Core', 'Return to List')), Yii::app()->createUrl($this->moduleId));
-            $content = '<div id="' . $this->progressBarId . '-links" style="display:none;">';
-            $content .= $listButton;
-            $content .= '</div>';
-            return $content;
-        }
-
-        protected function onProgressComplete()
-        {
-            MassDeleteInsufficientPermissionSkipSavingUtil::clear(get_class($this->model));
+            return Zurmo::t('Core', 'successfully deleted');
         }
 
         protected function headerLabelPrefixContent()
         {
-            return Zurmo::t('Core', 'Mass Update');
+            return Zurmo::t('Core', 'Mass Delete');
+        }
+
+        protected function getInsufficientPermissionSkipSavingUtil()
+        {
+            return 'MassDeleteInsufficientPermissionSkipSavingUtil';
         }
     }
 ?>

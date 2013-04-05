@@ -206,16 +206,17 @@
             );
         }
 
+        protected static function resolveActiveAttributesFromPostForMassAction($actionId)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            return Yii::app()->request->getPost(ucfirst($actionId), array());
+        }
+
         protected function resolveActiveAttributesFromMassEditPost()
         {
-            if (isset($_POST['MassEdit']))
-            {
-                return $_POST['MassEdit'];
-            }
-            else
-            {
-                return array();
-            }
+            // TODO: @Shoaibi/@Jason: Low: Deprecated, Better to use resolveActiveAttributesFromPostForMassAction directly inside main code with actionId
+            trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
+            return static::resolveActiveAttributesFromPostForMassAction('massEdit');
         }
 
         /**
@@ -223,14 +224,9 @@
         */
         protected function resolveActiveAttributesFromMassDeletePost()
         {
-            if (isset($_POST['MassDelete']))
-            {
-                return $_POST['MassDelete'];
-            }
-            else
-            {
-                return array();
-            }
+            // TODO: @Shoaibi/@Jason: Low: Deprecated, Better to use resolveActiveAttributesFromPostForMassAction directly inside main code with actionId
+            trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
+            return static::resolveActiveAttributesFromPostForMassAction('massDelete');
         }
 
         protected function makeMassEditView(
@@ -239,7 +235,9 @@
             $selectedRecordCount,
             $title)
         {
-            $alertMessage          = $this->getMassEditAlertMessage(get_class($model));
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
+            $alertMessage          = static::getMassEditAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Zurmo::t('Core', 'Mass Update') . ': ' . $title;
@@ -256,6 +254,8 @@
             $selectedRecordCount,
             $title)
         {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated');
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
@@ -266,9 +266,9 @@
             return $view;
         }
 
-        protected function getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, $countEmptyStringAsElement = true)
+        protected static function getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider, $countEmptyStringAsElement = true)
         {
-            if ($_GET['selectAll'])
+            if (Yii::app()->request->getQuery('selectAll'))
             {
                 return intval($dataProvider->calculateTotalItemCount());
             }
@@ -276,29 +276,40 @@
             {
                 if ($countEmptyStringAsElement)
                 {
-                    return count(explode(",", trim($_GET['selectedIds'], ', '))); // Not Coding Standard
+                    return count(explode(",", trim(Yii::app()->request->getQuery('selectedIds'), ', '))); // Not Coding Standard
                 }
                 else
                 {
-                    return count(array_filter(explode(",", trim($_GET['selectedIds'], " ,")))); // Not Coding Standard
+                    return count(array_filter(explode(",", trim(Yii::app()->request->getQuery('selectedIds'), " ,")))); // Not Coding Standard
                 }
             }
         }
 
-        protected function getMassEditProgressStartFromGet($getVariableName, $pageSize)
+
+        protected static function getMassActionProgressStartFromGet($pageVariableName, $pageSize)
         {
-            if ($_GET[$getVariableName . '_page'] == 1)
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $page = Yii::app()->request->getQuery($pageVariableName);
+            if ($page == 1)
             {
                 return 1;
             }
-            elseif ($_GET[$getVariableName . '_page']>1)
+            elseif ($page > 1)
             {
-                return ((($_GET[$getVariableName . '_page'] - 1) * $pageSize) +1);
+                return ((($page - 1) * $pageSize) +1);
             }
             else
             {
                 throw new NotSupportedException();
             }
+        }
+
+
+        protected function getMassEditProgressStartFromGet($getVariableName, $pageSize)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet. Pay close attention to arguments.');
+            return static::getMassActionProgressStartFromGet($getVariableName . '_page', $pageSize);
         }
 
        /**
@@ -306,18 +317,9 @@
         */
         protected function getMassDeleteProgressStartFromGet($getVariableName, $pageSize)
         {
-            if ($_GET[$getVariableName . '_page'] == 1)
-            {
-                return 1;
-            }
-            elseif ($_GET[$getVariableName . '_page']>1)
-            {
-                return ((($_GET[$getVariableName . '_page'] - 1) * $pageSize) +1);
-            }
-            else
-            {
-                throw new NotSupportedException();
-            }
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet.  Pay close attention to arguments.');
+            return static::getMassActionProgressStartFromGet($getVariableName , '_page', $pageSize);
         }
 
         protected function attemptToValidateAjaxFromPost($model, $postVariableName)
@@ -332,12 +334,13 @@
             }
         }
 
-        protected function getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
+        protected static function getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             if ($dataProvider === null)
             {
-                $modelsToSave = array();
-                $IdsToSave = explode(",", $_GET['selectedIds']); // Not Coding Standard
+                $modelsToUpdate = array();
+                $IdsToUpdate = explode(",", Yii::app()->request->getQuery('selectedIds')); // Not Coding Standard
                 if ($page == 1)
                 {
                     $start = 0;
@@ -360,60 +363,44 @@
                 }
                 for ($i = $start; $i < $end; ++$i)
                 {
-                    //eval('$modelsToSave[] = ' . $modelClassName . '::getById(intval(' . $IdsToSave[$i] . '));');
-                    $modelsToSave[] = $modelClassName::getById(intval($IdsToSave[$i]));
+                    $modelsToUpdate[] = $modelClassName::getById(intval($IdsToUpdate[$i]));
                 }
-                return $modelsToSave;
+                return $modelsToUpdate;
             }
             else
             {
                 return $dataProvider->getData();
             }
+        }
+
+        protected function getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
+            return static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
         }
 
         /** for mass delete */
         protected function getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
-            if ($dataProvider === null)
-            {
-                $modelsToDelete = array();
-                $IdsToDelete = explode(",", $_GET['selectedIds']); // Not Coding Standard
-                if ($page == 1)
-                {
-                    $start = 0;
-                }
-                elseif ($page > 1)
-                {
-                    $start = ($page - 1) * $pageSize;
-                }
-                else
-                {
-                    throw new NotSupportedException();
-                }
-                if (($pageSize * $page) > $selectedRecordCount)
-                {
-                    $end = $selectedRecordCount;
-                }
-                else
-                {
-                    $end = $pageSize * $page;
-                }
-                for ($i = $start; $i < $end; ++$i)
-                {
-                    //eval('$modelsToDelete[] = ' . $modelClassName . '::getById(intval(' . $IdsToDelete[$i] . '));');
-                    $modelsToDelete[] = $modelClassName::getById(intval($IdsToDelete[$i]));
-                }
-                return $modelsToDelete;
-            }
-            else
-            {
-                return $dataProvider->getData();
-            }
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
+            return static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
         }
 
-        protected function getMassEditAlertMessage($postVariableName)
+        protected static function getMassEditAlertMessage($postVariableName)
         {
-            if (!isset($_POST[$postVariableName]) && isset($_POST['save']))
+            // TODO: @Shoaibi/@Jason: Low: Deprecated
+            trigger_error('Deprecated: Recommended to use resolveMassEditAlertMessage.');
+            return static::resolveMassEditAlertMessage($postVariableName);
+        }
+
+        protected static function resolveMassEditAlertMessage($postVariableName)
+        {
+            // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
+            $form = Yii::app()->request->getPost($postVariableName);
+            $save = Yii::app()->request->getPost('save');
+            if (!isset($form) && isset($save))
             {
                 return Zurmo::t('Core', 'You must select at least one field to modify.');
             }

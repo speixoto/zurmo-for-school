@@ -137,7 +137,7 @@
                 Yii::app()->user->userModel->id,
                 null,
                 'AccountsSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $account = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
@@ -212,7 +212,7 @@
                 Yii::app()->user->userModel->id,
                 null,
                 'AccountsSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $account = $this->processMassDelete(
                 $pageSize,
                 $activeAttributes,

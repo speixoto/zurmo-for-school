@@ -37,14 +37,14 @@
         public function testSaveModelFromPostFailedValidiation()
         {
             Yii::app()->user->userModel = User::getByUsername('super');
-            $savedSucessfully   = false;
+            $savedSuccessfully   = false;
             $modelToStringValue = null;
             $postData           = array();
             $model              = new OwnedSecurableTestItem();
             $this->assertFalse($model->hasErrors());
             $controllerUtil = new ZurmoControllerUtil();
-            $model = $controllerUtil->saveModelFromPost($postData, $model, $savedSucessfully, $modelToStringValue);
-            $this->assertFalse($savedSucessfully);
+            $model = $controllerUtil->saveModelFromPost($postData, $model, $savedSuccessfully, $modelToStringValue);
+            $this->assertFalse($savedSuccessfully);
             $this->assertNull($modelToStringValue);
             $this->assertTrue($model->hasErrors());
         }
@@ -60,14 +60,14 @@
             }
 
             Yii::app()->user->userModel = User::getByUsername('super');
-            $savedSucessfully   = false;
+            $savedSuccessfully   = false;
             $modelToStringValue = null;
             $postData           = array('member' => 'abc');
             $model              = new OwnedSecurableTestItem();
             $this->assertFalse($model->hasErrors());
             $controllerUtil = new ZurmoControllerUtil();
-            $model = $controllerUtil->saveModelFromPost($postData, $model, $savedSucessfully, $modelToStringValue);
-            $this->assertTrue($savedSucessfully);
+            $model = $controllerUtil->saveModelFromPost($postData, $model, $savedSuccessfully, $modelToStringValue);
+            $this->assertTrue($savedSuccessfully);
             $this->assertEquals('abc', $modelToStringValue);
             $this->assertFalse($model->hasErrors());
             $this->assertTrue($model->id > 0);

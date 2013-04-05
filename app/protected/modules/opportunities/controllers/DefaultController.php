@@ -159,7 +159,7 @@
                 Yii::app()->user->userModel->id,
                 null,
                 'OpportunitiesSearchView');
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $opportunity = $this->processMassEdit(
                 $pageSize,
                 $activeAttributes,
@@ -235,7 +235,7 @@
                 null,
                 'OpportunitiesSearchView'
             );
-            $selectedRecordCount = $this->getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
+            $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
             $opportunity = $this->processMassDelete(
                 $pageSize,
                 $activeAttributes,

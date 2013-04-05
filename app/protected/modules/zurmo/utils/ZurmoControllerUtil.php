@@ -29,14 +29,14 @@
      */
     class ZurmoControllerUtil
     {
-        public function saveModelFromPost($postData, $model, & $savedSucessfully, & $modelToStringValue)
+        public function saveModelFromPost($postData, $model, & $savedSuccessfully, & $modelToStringValue)
         {
             $sanitizedPostData                 = PostUtil::sanitizePostByDesignerTypeForSavingModel(
                                                  $model, $postData);
-            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSucessfully, $modelToStringValue);
+            return $this->saveModelFromSanitizedData($sanitizedPostData, $model, $savedSuccessfully, $modelToStringValue);
         }
 
-        public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSucessfully, & $modelToStringValue)
+        public function saveModelFromSanitizedData($sanitizedData, $model, & $savedSuccessfully, & $modelToStringValue)
         {
             //note: the logic for ExplicitReadWriteModelPermission might still need to be moved up into the
             //post method above, not sure how this is coming in from API.
@@ -74,7 +74,7 @@
                         resolveExplicitReadWriteModelPermissions($model, $explicitReadWriteModelPermissions);
                         //todo: handle if success is false, means adding/removing permissions save failed.
                     }
-                    $savedSucessfully = true;
+                    $savedSuccessfully = true;
                     $this->afterSuccessfulSave($model);
                 }
             }

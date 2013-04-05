@@ -158,7 +158,7 @@
 
         public function actionSave($type, $id = null)
         {
-            $postData                  = PostUtil::getData();            
+            $postData                  = PostUtil::getData();
             $savedReport               = null;
             $report                    = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
@@ -542,6 +542,14 @@
         {
             $metadata = SavedReportUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
                 Report::getReportableModulesClassNamesCurrentUserHasAccessTo());
+        }
+
+        public function actionAutoComplete($term, $moduleClassName, $type)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                'autoCompleteListPageSize', get_class($this->getModule()));
+            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName, $type);
+            echo CJSON::encode($autoCompleteResults);
         }
     }
 ?>

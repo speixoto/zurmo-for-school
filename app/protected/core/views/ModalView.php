@@ -55,7 +55,7 @@
             return $this->view->render();
         }
 
-        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center', $class = null)
+        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''")
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -68,7 +68,7 @@
                     'update'     => '#' . $containerId);
         }
 
-        public static function getAjaxBeforeSendOptionForModalLinkContent($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center', $class = null)
+        public static function getAjaxBeforeSendOptionForModalLinkContent($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''")
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -90,20 +90,25 @@
             }
             else
             {
-                $position = '" . $position . "';
+                $position = "'" . $position . "'";
             }
-            $dialogClassContent = null;
-            if ($class != null)
-            {
-                $dialogClassContent = ", 'dialogClass':'" . $class . "'";
-            }
+            $modalTitle = CJavaScript::quote($title);
+
             // Begin Not Coding Standard
-            return "js:function(){jQuery('#" . $containerId . "').html('');" .
-                                    "makeLargeLoadingSpinner(true, '#" . $containerId . "');" .
-                                    "window.scrollTo(0, 0);" .
-                                    "jQuery('#" . $containerId . "').dialog({'title':\"" . CJavaScript::quote($title) . "\",'autoOpen':true," .
-                                    "'modal':true,'height':" . $heightContent . ",'width':" . $width .
-                                    ", 'position':" . $position . $dialogClassContent . "}); return true;}";
+            return "js:function(){
+                jQuery('#{$containerId}').html('');
+                makeLargeLoadingSpinner(true, '#{$containerId}');
+                window.scrollTo(0, 0);
+                jQuery('#{$containerId}').dialog({
+                    'title' : '{$modalTitle}',
+                    'autoOpen' : true,
+                    'modal' : true,
+                    'position' : {$position},
+                    'dialogClass' : {$class},
+                    'height' : {$heightContent}
+                });
+                return true;
+            }";
             // End Not Coding Standard
         }
     }

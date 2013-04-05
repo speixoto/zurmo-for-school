@@ -41,7 +41,7 @@
             assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             $autoCompleteResults  = array();
             $contacts                = ContactSearch::getContactsByPartialFullName($partialName, $pageSize,
-                                                            $stateMetadataAdapterClassName = null);
+                                                            $stateMetadataAdapterClassName);
             foreach ($contacts as $contact)
             {
                 $autoCompleteResults[] = array(

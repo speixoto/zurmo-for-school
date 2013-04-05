@@ -27,117 +27,41 @@
     /**
      * Class to render link to export from a listview.
      */
-    class ExportLinkActionElement extends LinkActionElement
+    class ExportLinkActionElement extends MassActionLinkActionElement
     {
         public function getActionType()
         {
             return 'Export';
         }
 
-        public function render()
+        protected function getSelectedMenuNameSuffix()
         {
-            $gridId         = $this->getListViewGridId();
-            $selectedName   = $gridId . '-exportActionSelected';
-            $allName        = $gridId . '-exportActionAll';
-            Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionUpdateSelected', "
-                $('#" . $gridId . "-exportActionSelected').unbind('click.action');
-                $('#" . $gridId . "-exportActionSelected').bind('click.action', function()
-                    {
-                        if ($('#" . $gridId . "-selectedIds').val() == '')
-                        {
-                            alert('" . Zurmo::t('Core', 'You must select at least one record') . "');
-                            $(this).val('');
-                            return false;
-                        }
-                        var options =
-                        {
-                            url     : $.fn.yiiGridView.getUrl('" . $gridId . "'),
-                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
-                        }
-                        if (options.url.split( '?' ).length == 2)
-                        {
-                            options.url = options.baseUrl +'/'+ 'export' + '?' + options.url.split( '?' )[1];
-                        }
-                        else
-                        {
-                            options.url = options.baseUrl +'/'+ 'export';
-                        }
-                        addListViewSelectedIdsToUrl('" . $gridId . "', options);
-                        var data = '' + 'export=' + '&selectAll=&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-            ");
-            Yii::app()->clientScript->registerScript($gridId . '-listViewExportActionUpdateAll', "
-                $('#" . $gridId . "-exportActionAll').unbind('click.action');
-                $('#" . $gridId . "-exportActionAll').bind('click.action', function()
-                    {
-                        var options =
-                        {
-                            url     : $.fn.yiiGridView.getUrl('" . $gridId . "'),
-                            baseUrl : '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "'
-                        }
-                        if (options.url.split( '?' ).length == 2)
-                        {
-                            options.url = options.baseUrl +'/'+ 'export' + '?' + options.url.split( '?' )[1];
-                        }
-                        else
-                        {
-                            options.url = options.baseUrl +'/'+ 'export';
-                        }
-                        var data = '' + 'export=' + '&selectAll=1&ajax=&" . $this->getPageVarName() . "=1'; " . // Not Coding Standard
-                        "url = $.param.querystring(options.url, data);
-                        window.location.href = url;
-                        return false;
-                    }
-                );
-            ");
-            $menuItems = array('label' => $this->getLabel(), 'url' => null,
-                                    'items' => array(
-                                        array(  'label'   => Zurmo::t('Core', 'Selected'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $selectedName)),
-                                        array(  'label'   => Zurmo::t('Core', 'All Results'),
-                                                'url'     => '#',
-                                                'itemOptions' => array( 'id'   => $allName))));
-            $cClipWidget = new CClipWidget();
-            $cClipWidget->beginClip("ActionMenu");
-            $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'htmlOptions' => array('id' => 'ListViewExportActionMenu'),
-                'items'                   => array($menuItems),
-            ));
-            $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['ActionMenu'];
+            return '-exportActionSelected';
+        }
+
+        protected function getAllMenuNameSuffix()
+        {
+            return '-exportActionAll';
+        }
+
+        protected function getActionName()
+        {
+            return 'export';
+        }
+
+        protected function getScriptNameSuffixForSelectedMenu()
+        {
+            return '-listViewExportActionUpdateSelected';
+        }
+
+        protected function getScriptNameSuffixForAllMenu()
+        {
+            return '-listViewExportActionUpdateAll';
         }
 
         protected function getDefaultLabel()
         {
             return Zurmo::t('Core', 'Export');
-        }
-
-        protected function getListViewGridId()
-        {
-            if (!isset($this->params['listViewGridId']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['listViewGridId'];
-        }
-
-        protected function getPageVarName()
-        {
-            if (!isset($this->params['pageVarName']))
-            {
-                throw new NotSupportedException();
-            }
-            return $this->params['pageVarName'];
-        }
-
-        protected function getDefaultRoute()
-        {
-            return $this->moduleId . '/' . $this->controllerId . '/export/';
         }
     }
 ?>

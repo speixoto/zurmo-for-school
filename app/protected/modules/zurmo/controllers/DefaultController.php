@@ -333,6 +333,22 @@
             StickySearchUtil::clearDataByKey($key);
         }
 
+        /**
+         * Change user interface. Available options: desktop, mobile and tablet.
+         */
+        public function actionUserInterface()
+        {
+            Yii::import('application.extensions.userinterface.UserInterface');
+            if (isset($_GET['userInterface']))
+            {
+                if (in_array($_GET['userInterface'], array(UserInterface::DESKTOP, UserInterface::MOBILE, UserInterface::TABLET)))
+                {
+                    Yii::app()->userInterface->setSelectedUserInterfaceType($_GET['userInterface']);
+                }
+                $this->redirect('/');
+            }
+        }
+
         public function actionGetUpdatesForRefresh($unreadConversations)
         {
             $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
