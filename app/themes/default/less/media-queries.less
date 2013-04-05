@@ -161,11 +161,26 @@ orientation : portrait // orientation: landscape    Target orientation
 			margin-left:65px;
 		}
 	}
+	.social-links{
+		display: none;
+	}
+	#MobileWelcomeView{
+		h1{
+			font-size: 30px;
+			text-align: center;
+		}
+	}
 	#welcome-gallery{
 		display: block;
 		margin-bottom: 15px;
+		margin-right: 0;
+		width: 100%;
 		img{
 			width: 100%;
+			.radius(6px);
+		}
+		span{
+			display: none;
 		}
 	}
 	.dashboard-link{
@@ -173,9 +188,14 @@ orientation : portrait // orientation: landscape    Target orientation
 	}
 	#instructions{
 		padding-bottom: 30px;
+		text-align: center;
 		p{
 			padding: 0;
 		}
+	}
+	.help-section{
+		width: 100%;
+		float: none;
 	}
 	.hide-welcome {
 		top: 10px;

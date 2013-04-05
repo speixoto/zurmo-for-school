@@ -15068,19 +15068,19 @@ a.close-ModalGameNotification.simple-link {
 #WelcomeView h1 span {
   font-size: 14px;
 }
-#WelcomeView .social-links {
-  margin: 30px -5px 0 0 !important;
-}
 #WelcomeView a {
   text-decoration: underline !important;
 }
-#WelcomeView .dashboard-link {
+#WelcomeView .social-links {
+  margin: 30px -5px 0 0 !important;
+}
+.dashboard-link {
   text-decoration: none !important;
   margin-top: 30px;
   margin-left: 0;
   font-size: 14px !important;
 }
-#WelcomeView .dashboard-link .z-label {
+.dashboard-link .z-label {
   line-height: 36px !important;
 }
 #welcome-content {
@@ -16969,21 +16969,43 @@ orientation : portrait // orientation: landscape    Target orientation
   #credit-link span {
     margin-left: 65px;
   }
+  .social-links {
+    display: none;
+  }
+  #MobileWelcomeView h1 {
+    font-size: 30px;
+    text-align: center;
+  }
   #welcome-gallery {
     display: block;
     margin-bottom: 15px;
+    margin-right: 0;
+    width: 100%;
   }
   #welcome-gallery img {
     width: 100%;
+    -webkit-border-radius: 6px;
+    -moz-border-radius: 6px;
+    -ms-border-radius: 6px;
+    -o-border-radius: 6px;
+    border-radius: 6px;
+  }
+  #welcome-gallery span {
+    display: none;
   }
   .dashboard-link {
     margin: 30px 0 0 0 !important;
   }
   #instructions {
     padding-bottom: 30px;
+    text-align: center;
   }
   #instructions p {
     padding: 0;
+  }
+  .help-section {
+    width: 100%;
+    float: none;
   }
   .hide-welcome {
     top: 10px;
