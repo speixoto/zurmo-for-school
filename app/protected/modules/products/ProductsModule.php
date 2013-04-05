@@ -46,9 +46,9 @@
         public static function getUntranslatedRightsLabels()
         {
             $labels                              = array();
-            $labels[self::RIGHT_CREATE_PRODUCTS] = 'Create ProductsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_PRODUCTS] = 'Delete ProductsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_PRODUCTS] = 'Access ProductsModulePluralLabel Tab';
+            $labels[self::RIGHT_CREATE_PRODUCTS] = Zurmo::t('ProductsModule', 'Create ProductsModulePluralLabel',     $params);
+            $labels[self::RIGHT_DELETE_PRODUCTS] = Zurmo::t('ProductsModule', 'Delete ProductsModulePluralLabel',     $params);
+            $labels[self::RIGHT_ACCESS_PRODUCTS] = Zurmo::t('ProductsModule', 'Access ProductsModulePluralLabel Tab', $params);
             return $labels;
         }
 
@@ -67,14 +67,14 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => 'ProductsModulePluralLabel',
+			'label' => "eval:Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', \$translationParams)",
                         'url'   => array('/products/default'),
                         'right' => self::RIGHT_ACCESS_PRODUCTS,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => 'ProductsModuleSingularLabel',
+			'label' => "eval:Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', \$translationParams)",
                         'url'   => array('/products/default/create'),
                         'right' => self::RIGHT_CREATE_PRODUCTS,
                     ),
@@ -86,6 +86,21 @@
         public static function getPrimaryModelName()
         {
             return 'Product';
+        }
+
+	public static function getSingularCamelCasedName()
+        {
+            return 'Product';
+        }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return Zurmo::t('ProductsModule', 'Product', array(), null, $language);
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return Zurmo::t('ProductsModule', 'Products', array(), null, $language);
         }
 
         public static function getAccessRight()

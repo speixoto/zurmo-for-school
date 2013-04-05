@@ -48,7 +48,7 @@
 
         protected function renderControlEditable()
         {
-            assert('$this->model instanceof ProductTemplate');
+            assert('$this->model instanceof ProductTemplate || $this->model instanceof Product');
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ModelElement");
             $cClipWidget->widget('application.core.widgets.MultiSelectAutoComplete', array(

@@ -31,7 +31,6 @@
             return self::getByNameOrEquivalent('name', $name);
         }
 
-        }
         public function __toString()
         {
             try

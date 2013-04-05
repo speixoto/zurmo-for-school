@@ -26,6 +26,9 @@
 
     class ProductTemplatesSearchForm extends OwnedSearchForm
     {
-
+	protected static function getRedBeanModelClassName()
+        {
+            return 'ProductTemplate';
+        }
     }
 ?>
