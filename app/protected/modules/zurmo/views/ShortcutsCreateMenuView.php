@@ -58,6 +58,7 @@
             {
                 return;
             }
+            $this->qualifyMenuItems();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Shortcuts");
             $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
@@ -83,6 +84,11 @@
         protected function getMenuId()
         {
             return 'ShortcutsMenu';
+        }
+
+        protected function qualifyMenuItems()
+        {
+            // used in subclasses for adding custom data inside menuItems
         }
     }
 ?>

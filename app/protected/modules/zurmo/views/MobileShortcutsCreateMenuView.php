@@ -35,5 +35,10 @@
         {
             return 'Mobile' . parent::getMenuId();
         }
+
+        protected function qualifyMenuItems()
+        {
+            $this->menuItems['renderHeader'] = false;
+        }
     }
 ?>
