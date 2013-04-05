@@ -47,7 +47,7 @@
             //logo and Zurmo copyright notice. If the display of the logo is not reasonably
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
             //"Copyright Zurmo Inc. 2013. All rights reserved".
-            return Zurmo::t('ZurmoModule', 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.');
+            return 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.';
         }
     }
 ?>
