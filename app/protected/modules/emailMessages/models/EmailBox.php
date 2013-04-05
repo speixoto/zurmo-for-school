@@ -114,6 +114,17 @@
             return $box;
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'folders' => Zurmo::t('EmailMessagesModule', 'Folders', array(), null, $language),
+                    'name'    => Zurmo::t('ZurmoModule',         'Name',    array(), null, $language),
+                    'users'   => Zurmo::t('UsersModule',         'Users',   array(), null, $language),
+                )
+            );
+        }
+
         protected function setSpecialBox()
         {
             $this->isNotifications = $this->name == self::NOTIFICATIONS_NAME;
@@ -166,6 +177,26 @@
         public static function isTypeDeletable()
         {
             return true;
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Box', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Boxes', array(), null, $language);
         }
 
         public function isDeletable()

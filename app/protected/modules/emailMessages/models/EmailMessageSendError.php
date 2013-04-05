@@ -69,10 +69,10 @@
                     'serializedData',
                 ),
                 'rules' => array(
-                    array('createdDateTime',       'required'),
-                    array('createdDateTime',       'type', 'type' => 'datetime'),
-                    array('serializedData', 'required'),
-                    array('serializedData', 'type', 'type' => 'string'),
+                    array('createdDateTime', 'required'),
+                    array('createdDateTime', 'type', 'type' => 'datetime'),
+                    array('serializedData',  'required'),
+                    array('serializedData',  'type', 'type' => 'string'),
                 )
             );
             return $metadata;
@@ -86,6 +86,35 @@
         public static function canSaveMetadata()
         {
             return false;
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Send Error', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Send Errors', array(), null, $language);
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'createdDateTime'   => Zurmo::t('ZurmoModule', 'Created Date Time',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

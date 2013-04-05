@@ -26,6 +26,17 @@
 
     class ReportRelationsAndAttributesToTreeAdapterTest extends ZurmoBaseTest
     {
+        public static function setUpBeforeClass()
+        {
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+        }
+
+        public function setup()
+        {
+            parent::setUp();
+            Yii::app()->user->userModel = User::getByUsername('super');
+        }
 
         public function testGetDataWhereNodeIdIsSource()
         {
@@ -73,6 +84,24 @@
             //resolveAttributeByNodeId($nodeIdWithoutTreeType)
 
             //test both when there is one part and more than one part
+        }
+
+        public function testWhereNestedGroupBysAndGettingDataForOrderBy()
+        {
+            $report                              = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $groupBy = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'hasOne___name';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ReportRelationsAndAttributesToTreeAdapter($report, ComponentForReportForm::TYPE_ORDER_BYS);
+            $data    = $adapter->getData(ComponentForReportForm::TYPE_ORDER_BYS . '_hasOne');
+            $this->assertEquals('OrderBys_hasOne___name', $data[0]['id']);
+            $this->assertEquals('OrderBys_hasOne___createdByUser', $data[1]['id']);
+            $this->assertEquals('OrderBys_hasOne___hasMany3', $data[2]['id']);
+            $this->assertEquals('OrderBys_hasOne___modifiedByUser', $data[3]['id']);
+            $this->assertEquals('OrderBys_hasOne___owner', $data[4]['id']);
         }
     }
 ?>

@@ -75,6 +75,10 @@
                     array('type',       		 'required'),
                     array('type',       		 'type',   'type' => 'string'),
                     array('type',       		 'length', 'max'  => 15),
+                ),
+                'elements' => array(
+                    'type'            => 'ReportTypeStaticDropDown',
+                    'moduleClassName' => 'ModuleForReportStaticDropDown',
                 )
             );
             return $metadata;
@@ -93,6 +97,17 @@
         public static function hasReadPermissionsOptimization()
         {
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'description'       => Zurmo::t('ZurmoModule', 'Description',  array(), null, $language),
+                    'name'              => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
+                    'type'              => Zurmo::t('Core',        'Type',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

@@ -58,5 +58,27 @@
             NotificationsUtil::submit($message, $rules);
             echo 'Test notification created';
         }
+
+        public function actionCreateMultipleLineTest()
+        {
+            $message                    = new NotificationMessage();
+            $message->textContent       = 'As a result of some fields recently becoming required, at least 1 ' .
+                                          'workflow rule will no longer work properly.';
+            $message->textContent      .= "\n";
+            $message->textContent      .= "<a href=''>Workflow #1</a>";
+            $message->textContent      .= "\n";
+            $message->textContent      .= "<a href=''>Workflow #2</a>";
+            $message->htmlContent       = 'As a result of some fields recently becoming required, at least 1 '  .
+                                          'workflow rule will no longer work properly.';
+            $message->htmlContent      .= "<div><ul><li>";
+            $message->htmlContent      .= "<a href=''>Workflow #1</a>";
+            $message->htmlContent      .= "</li><li>";
+            $message->htmlContent      .= "<a href=''>Workflow #2</a>";
+            $message->htmlContent      .= "</li></ul></div>";
+            $rules                      = new SimpleDuplicateNotificationRules();
+            $rules->addUser(Yii::app()->user->userModel);
+            NotificationsUtil::submit($message, $rules);
+            echo 'Test notification created';
+        }
     }
 ?>

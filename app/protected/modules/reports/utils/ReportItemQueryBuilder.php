@@ -219,7 +219,7 @@
             {
                 return new InferredRedBeanModelAttributeToDataProviderAdapter(
                            $modelToReportAdapter->getModelClassName(),
-                           $modelToReportAdapter->resolveRealAttributeName($attribute),
+                    $modelToReportAdapter->resolveRealAttributeName($attribute),
                            $modelToReportAdapter->getRelationModelClassName($attribute),
                            $modelToReportAdapter->getRelationModuleClassName($attribute));
             }

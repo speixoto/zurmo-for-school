@@ -32,14 +32,14 @@
         /**
          * @var int
          */
-        protected static $maximumGroupsCount = 400;
+
 
         /**
          * @return string
          */
         protected function renderResultsGridContent()
         {
-            if($this->dataProvider->calculateTotalGroupingsCount() > self::$maximumGroupsCount)
+            if($this->dataProvider->calculateTotalGroupingsCount() > MatrixReportDataProvider::$maximumGroupsCount)
             {
                 return $this->renderMaximumGroupsContent();
             }
@@ -67,7 +67,7 @@
             $content .= Zurmo::t('ReportsModule', 'Your report has too many groupings to plot. ' .
                 'Please adjust the filters to reduce the number below {maximum}. ' .
                 '<br />The maximum is calculated as x-axis groupings multiplied by y-axis groupings',
-                array('{maximum}' => self::$maximumGroupsCount));
+                array('{maximum}' => MatrixReportDataProvider::$maximumGroupsCount));
             $content .= '</p></div>';
             return $content;
         }

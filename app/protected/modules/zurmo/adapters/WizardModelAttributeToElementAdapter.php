@@ -74,18 +74,7 @@
          */
         protected static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
         {
-            if($class != null)
-            {
-                $htmlOptions = array('class' => $class);
-            }
-            else
-            {
-                $htmlOptions = array();
-            }
-            if($innerContent != null)
-            {
-                $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
-            }
+            ZurmoHtml::resolveDivWrapperForContent($innerContent, $content, $class);
         }
 
         /**

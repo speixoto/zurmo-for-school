@@ -135,6 +135,12 @@
     }
 }
 
+.creation-list{
+	.z-label:before{
+		content: "Y" !important;
+	}
+}
+
 table.configuration-list{
     .clearfix();
     h4{
@@ -388,17 +394,6 @@ table.configuration-list{
     }
 }
 
-#LanguagesCollectionView{
-    tr:last-child{
-        td{
-            border-bottom: none !important;
-        }
-    }
-    .checkbox-column{
-        padding-left:15px !important;
-    }
-}
-
 /*Roles*/
 #RolesTreeListView{
     .z-action-link{
@@ -406,6 +401,7 @@ table.configuration-list{
         text-decoration: underline !important;
     }
 }
+
 /*Jobs*/
 #JobsCollectionView{
     .form form{
@@ -484,6 +480,14 @@ table.configuration-list{
 
 /*Languages*/
 #LanguagesCollectionView{
+    padding-bottom: 0 !important;
+    h1 + div{
+        padding: 15px;
+        a{
+            float: none;
+            margin: 0 !important;
+        }
+    }
     form{
         padding:0;
     }
@@ -496,6 +500,33 @@ table.configuration-list{
     }
     form td > label:first-child{
         margin-top:0 !important;
+    }
+    tr:last-child{
+        td{
+            border-bottom: none !important;
+        }
+    }
+    .checkbox-column{
+        padding-left:15px !important;
+    }
+    a{
+        position: relative;
+        float: right;
+        right:0;
+        top:0;
+        margin:-6px 0 0 10px;
+    }
+    .configuration-list{
+        border-top: 1px solid #ccc;
+        li:first-child{
+            border-top: 1px solid #fff;
+        }
+    }
+    .z-label{
+        padding: 0 25px;
+    }
+    .z-label:before{
+        display: none !important;
     }
 }
 
@@ -1045,4 +1076,38 @@ table.configuration-list{
     label{
         top:-6px;
     }
+}
+
+/*Menu Prefernces*/
+.user-menu-preferences{
+	td{
+		padding-left: 0 !important;
+	}
+	.multiselect-holder{
+		max-width: 100%;
+		margin: 0;
+	}
+	.multiselect-right{
+		float: none;
+	}
+	.multiselect-nav{
+		margin-left: 0;
+	}
+}
+
+/*Logo Uplaod*/
+.uploaded-logo-template{
+	td.name{
+		padding-top: 10px !important;
+	}
+}
+.uploaded-logo{
+	display: inline-block;
+	padding: 5px;
+	margin-right: 5px;
+	line-height: 1;
+	background: url(../images/transparency-grid.gif) left top repeat;
+	~ .file-size{
+		vertical-align:top;
+	}
 }

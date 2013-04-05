@@ -65,26 +65,18 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'account'  => Zurmo::t('AccountsModule', 'AccountsModuleSingularLabel', $params, null, $language),
-                'contacts' => Zurmo::t('ContactsModule', 'ContactsModulePluralLabel',   $params, null, $language)));
-        }
-
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'OpportunitiesModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'OpportunitiesModulePluralLabel';
+                'account'     => Zurmo::t('AccountsModule',      'AccountsModuleSingularLabel', $params, null, $language),
+                'amount'      => Zurmo::t('OpportunitiesModule', 'Amount',  array(), null, $language),
+                'closeDate'   => Zurmo::t('OpportunitiesModule', 'Close Date',  array(), null, $language),
+                'contacts'    => Zurmo::t('ContactsModule',      'ContactsModulePluralLabel',   $params, null, $language),
+                'description' => Zurmo::t('ZurmoModule',         'Description',  array(), null, $language),
+                'meetings'    => Zurmo::t('MeetingsModule',      'Meetings',  array(), null, $language),
+                'name'        => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
+                'notes'       => Zurmo::t('NotesModule',         'Notes',  array(), null, $language),
+                'probability' => Zurmo::t('OpportunitiesModule', 'Probability',  array(), null, $language),
+                'source'      => Zurmo::t('ContactsModule',      'Source',   array(), null, $language),
+                'stage'       => Zurmo::t('OpportunitiesModule', 'Stage',  array(), null, $language),
+                'tasks'       => Zurmo::t('TasksModule',         'Tasks',  array(), null, $language)));
         }
 
         public static function canSaveMetadata()

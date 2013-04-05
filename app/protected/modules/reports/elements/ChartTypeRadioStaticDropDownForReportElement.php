@@ -70,7 +70,7 @@
             $data = array();
             if ($this->getAddBlank())
             {
-                $data[''] = Zurmo::t('ReportsModule', '(None)');
+                $data[''] = Zurmo::t('Core', '(None)');
             }
             return array_merge($data, $this->getDropDownArray());
         }

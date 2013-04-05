@@ -303,8 +303,17 @@
         public function resolveRawValueByDisplayAttributeKey($displayAttributeKey)
         {
             assert('is_int($displayAttributeKey)');
-            $model = $this->resolveModel($displayAttributeKey);
-            return $this->resolveRawValueByModel($this->displayAttributes[$displayAttributeKey], $model);
+            if(null != $model = $this->resolveModel($displayAttributeKey))
+            {
+                return $this->resolveRawValueByModel($this->displayAttributes[$displayAttributeKey], $model);
+            }
+            //Not using isset, because a null value would not resolve correctly
+            $columnAliasName = $this->displayAttributes[$displayAttributeKey]->columnAliasName;
+            if(array_key_exists($columnAliasName, $this->selectedColumnNamesAndValues))
+            {
+                return $this->selectedColumnNamesAndValues[$columnAliasName];
+            }
+            throw new NotSupportedException();
         }
 
         /**

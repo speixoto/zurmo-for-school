@@ -30,12 +30,6 @@
     class ModelRelationsAndAttributesToMatrixReportAdapter extends ModelRelationsAndAttributesToSummableReportAdapter
     {
         /**
-         * For matrix reporting, grouping on the Id attribute is not allowed
-         * @var bool
-         */
-        protected $shouldIncludeIdAsGroupByAttribute = false;
-
-        /**
          * Matrix reports never allow the group by attribute as a display attribute since only calculations are displayed
          * in the matrix.
          * (non-PHPdoc)
@@ -58,7 +52,7 @@
          */
         protected static function getAttributeTypesToExcludeAsGroupByModifiers()
         {
-            return array_merge(array('CurrencyValue', 'Decimal', 'Integer', 'Phone', 'Text',  'Url'),
+            return array_merge(array('CurrencyValue', 'Decimal', 'Integer', 'Phone'),
                    parent::getAttributeTypesToExcludeAsGroupByModifiers());
         }
     }

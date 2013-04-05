@@ -377,7 +377,7 @@
          * @param string $attribute
          * @return string
          */
-        public function resolveRealAttributeName($attribute)
+        public static function resolveRealAttributeName($attribute)
         {
             assert('is_string($attribute)');
             if($attribute == ModelRelationsAndAttributesToSummableReportAdapter::DISPLAY_CALCULATION_COUNT)
@@ -409,7 +409,7 @@
             $attributes       = array();
             if($this->shouldIncludeIdAsGroupByAttribute)
             {
-                $attributes['id'] = array('label' => Zurmo::t('ReportsModule', 'Id'));
+                $attributes['id'] = array('label' => Zurmo::t('Core', 'Id'));
             }
             $attributes       = array_merge($attributes, $this->getGroupByModifierAttributes());
             $attributes       = array_merge($attributes, $this->getDynamicallyDerivedAttributesData());
@@ -489,6 +489,11 @@
                 {
                     throw new NotSupportedException();
                 }
+            }
+            elseif($this->isAttributeACalculatedGroupByModifier($attribute) &&
+                   $this->getGroupByCalculationTypeByAttribute($attribute) == self::GROUP_BY_CALCULATION_MONTH)
+            {
+                return 'GroupByModifierMonth';
             }
             elseif($this->isAttributeACalculatedGroupByModifier($attribute))
             {
@@ -683,6 +688,17 @@
         }
 
         /**
+         * @param $attribute
+         * @return mixed
+         */
+        protected function getGroupByCalculationTypeByAttribute($attribute)
+        {
+            assert('is_string($attribute)');
+            list($attribute, $calculationType) = explode(FormModelUtil::DELIMITER, $attribute);
+            return $calculationType;
+        }
+
+        /**
          * @param string $attribute
          * @param string $type
          * @return string
@@ -721,7 +737,7 @@
         private function shouldDoTimeZoneAdjustmentOnModifierClause($attribute)
         {
             assert('is_string($attribute)');
-            if($this->getRealModelAttributeType($this->resolveRealAttributeName($attribute)) == 'DateTime')
+            if($this->getRealModelAttributeType(static::resolveRealAttributeName($attribute)) == 'DateTime')
             {
                 return true;
             }

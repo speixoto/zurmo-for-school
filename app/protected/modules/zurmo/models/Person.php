@@ -61,15 +61,39 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'fullName' => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
-                    'title'    => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
+                    'department'     => Zurmo::t('ZurmoModule', 'Department', array(), null, $language),
+                    'firstName'      => Zurmo::t('ZurmoModule', 'First Name', array(), null, $language),
+                    'fullName'       => Zurmo::t('ZurmoModule', 'Name', array(), null, $language),
+                    'jobTitle'       => Zurmo::t('ZurmoModule', 'Job Title', array(), null, $language),
+                    'lastname'       => Zurmo::t('ZurmoModule', 'Last Name', array(), null, $language),
+                    'mobilePhone'    => Zurmo::t('ZurmoModule', 'Mobile Phone', array(), null, $language),
+                    'officePhone'    => Zurmo::t('ZurmoModule', 'Office Phone', array(), null, $language),
+                    'officeFax'      => Zurmo::t('ZurmoModule', 'Office Fax', array(), null, $language),
+                    'primaryAddress' => Zurmo::t('ZurmoModule', 'Primary Address', array(), null, $language),
+                    'primaryEmail'   => Zurmo::t('ZurmoModule', 'Primary Email', array(), null, $language),
+                    'title'          => Zurmo::t('ZurmoModule', 'Salutation', array(), null, $language)
                 )
             );
         }
 
-        protected static function getPluralLabel()
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
-            return 'People';
+            return Zurmo::t('ZurmoModule', 'Person', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('ZurmoModule', 'People', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
@@ -127,6 +151,18 @@
         public static function isTypeDeletable()
         {
             return false;
+        }
+
+        /**
+         * Overriding so when sorting by lastName it sorts bye firstName lastName
+         */
+        public static function getSortAttributesByAttribute($attribute)
+        {
+            if ($attribute == 'lastName')
+            {
+                return array('firstName', $attribute);
+            }
+            return parent::getSortAttributesByAttribute($attribute);
         }
     }
 ?>

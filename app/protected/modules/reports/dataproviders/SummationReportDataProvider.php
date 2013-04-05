@@ -204,15 +204,18 @@
         protected function makeNonStackedReportDataProviderToAmChartMakerAdapter()
         {
             $resultsData              = $this->fetchChartData();
-            $firstSeriesAttributeName = $this->resolveChartFirstSeriesAttributeNameForReportResultsRowData();
             $firstRangeAttributeName  = $this->resolveChartFirstRangeAttributeNameForReportResultsRowData();
+            $firstSeriesDisplayAttributeKey  = $this->getDisplayAttributeKeyByAttribute($this->report->getChart()->firstSeries);
             $chartData                = array();
             foreach ($resultsData as $data)
             {
+                $firstSeriesDataValue = $data->resolveRawValueByDisplayAttributeKey($firstSeriesDisplayAttributeKey);
                 $chartData[] = array(ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName(1)
                                         => $data->$firstRangeAttributeName,
                                      ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesDisplayLabelName(1)
-                                        => strval($data->$firstSeriesAttributeName));
+                                        =>
+                                     $this->getDisplayAttributeByAttribute($this->report->getChart()->firstSeries)->
+                                     resolveValueAsLabelForHeaderCell($firstSeriesDataValue));
             }
             return new ReportDataProviderToAmChartMakerAdapter($this->report, $chartData);
         }

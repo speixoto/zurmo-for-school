@@ -182,8 +182,8 @@
             $params['htmlOptions'] = array('id'      => 'save-advanced-search',
                                            'value'   => 'saveSearch',
                                            'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            $content .= $element->render();
             $content .= $this->renderDeleteLinkContent();
             $content .= $form->error($this->model, 'savedSearchName');
             return $content;
@@ -235,6 +235,7 @@
         {
             return parent::getExtraRenderForClearSearchLinkScript() .
                     "$('#" . static::getSavedSearchListDropDown() . "').val();
+                     $('#" . get_class($this->model) . "_savedSearchId').val('');
                      $('#save-search-area').hide();
                      jQuery.yii.submitForm(this, '', {}); return false;
             ";

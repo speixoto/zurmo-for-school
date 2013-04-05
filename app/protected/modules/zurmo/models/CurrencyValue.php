@@ -49,7 +49,7 @@
         {
             if (trim($this->value) == '')
             {
-                return Zurmo::t('ZurmoModule', '(None)');
+                return Zurmo::t('Core', '(None)');
             }
             return strval($this->value);
         }
@@ -123,6 +123,17 @@
                 assert('$this->rateToBase !== null');
             }
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'currency'      => Zurmo::t('ZurmoModule', 'Currency',      array(), null, $language),
+                    'rateToBase'    => Zurmo::t('ZurmoModule', 'Rate To Base',  array(), null, $language),
+                    'value'         => Zurmo::t('ZurmoModule', 'Value',         array(), null, $language),
+                )
+            );
         }
     }
 ?>

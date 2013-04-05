@@ -64,11 +64,11 @@
             assert('is_string($modelClassName) || $modelClassName == null');
             $this->pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                         'listPageSize', get_class($this->getModule()));
-            $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues();
-            $getData            = GetUtil::getData();
+            $getData = GetUtil::getData();
+            $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues($modelClassName, $getData);
             if(Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
             {
-                $this->renderListViewForAjax($mashableInboxForm, $modelClassName, $getData);
+                $this->renderListViewForAjax($mashableInboxForm, $modelClassName);
             }
             else
             {
@@ -76,9 +76,9 @@
             }
         }
 
-        private function getMashableInboxFormWithDefaultValues()
+        private function getMashableInboxFormWithDefaultValues($modelClassName, $getData)
         {
-            $mashableInboxForm  = new MashableInboxForm();
+            $mashableInboxForm = MashableUtil::restoreSelectedOptionsAsStickyData($modelClassName);
             if ($mashableInboxForm->optionForModel == null)
             {
                 $mashableInboxForm->optionForModel = 2;
@@ -87,6 +87,15 @@
             {
                 $mashableInboxForm->filteredBy = MashableInboxForm::FILTERED_BY_ALL;
             }
+            if (isset($getData["MashableInboxForm"]))
+            {
+                $mashableInboxForm->attributes = $getData["MashableInboxForm"];
+            }
+            if ($mashableInboxForm->massAction != null)
+            {
+                $this->resolveAjaxMassAction($modelClassName, $mashableInboxForm);
+            }
+            MashableUtil::saveSelectedOptionsAsStickyData($mashableInboxForm, $modelClassName);
             return $mashableInboxForm;
         }
 
@@ -140,16 +149,8 @@
          * @param string $modelClassName
          * @param array $getData
          */
-        private function renderListViewForAjax($mashableInboxForm, $modelClassName, $getData)
+        private function renderListViewForAjax($mashableInboxForm, $modelClassName)
         {
-            if (isset($getData["MashableInboxForm"]))
-            {
-                $mashableInboxForm->attributes = $getData["MashableInboxForm"];
-            }
-            if ($mashableInboxForm->massAction != null)
-            {
-                $this->resolveAjaxMassAction($modelClassName, $mashableInboxForm);
-            }
             if ($modelClassName !== null) {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel(
                                                       $modelClassName);

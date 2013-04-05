@@ -53,6 +53,8 @@
             //Change Ldap settings
             $this->resetGetArray();
             $this->setPostArray(array('LdapConfigurationForm' => array(
+                                      'serverType'            =>
+                                      Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapServerType'],
                                       'host'                  =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
                                       'port'                  =>
@@ -70,6 +72,8 @@
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;
+            $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapServerType'],
+                                Yii::app()->authenticationHelper->ldapServerType);
             $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapHost'],
                                 Yii::app()->authenticationHelper->ldapHost);
             $this->assertEquals(Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapPort'],
@@ -97,6 +101,7 @@
             //check Ldap connection
             $this->resetGetArray();
             $this->setPostArray(array('LdapConfigurationForm' => array(
+                                      'serverType'                        => Yii::app()->authenticationHelper->ldapServerType,
                                       'host'                              => Yii::app()->authenticationHelper->ldapHost,
                                       'port'                              => Yii::app()->authenticationHelper->ldapPort,
                                       'bindRegisteredDomain'              => Yii::app()->authenticationHelper->ldapBindRegisteredDomain,

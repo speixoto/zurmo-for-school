@@ -194,6 +194,16 @@
             return true;
         }
 
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'name'   => Zurmo::t('ZurmoModule', 'Name',  array(), null, $language),
+                    'type'   => Zurmo::t('Core',        'Type',  array(), null, $language),
+                )
+            );
+        }
+
         public function beforeDelete()
         {
             if ($this->emailBox->isSpecialBox())
@@ -201,6 +211,26 @@
                 throw new NotSupportedException();
             }
             return parent::beforeDelete();
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Folder', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email Folders', array(), null, $language);
         }
     }
 ?>

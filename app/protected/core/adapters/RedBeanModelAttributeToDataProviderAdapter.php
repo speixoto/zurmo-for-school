@@ -192,6 +192,23 @@
         }
 
         /**
+         * @return string The column name for the attribute to be used in the
+         * sort by the attribute specified in this adapater based on the position
+         * in the array returned by getSortAttributesByAttribute
+         */
+        public function getColumnNameByPosition($attributePosition)
+        {
+            $modelClassName = $this->modelClassName;
+            $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->attribute);
+            if ($attributePosition >= count($sortAttributes))
+            {
+                throw new InvalidArgumentException('Attribute position is not valid');
+            }
+            $sortAtribute = $sortAttributes[$attributePosition];
+            return $modelClassName::getColumnNameByAttribute($sortAtribute);
+        }
+
+        /**
          * @return true/false - Is the attribute a relation on the model class name.
          */
         public function isRelation()
@@ -223,13 +240,8 @@
          */
         public function isRelationTypeAHasManyVariant()
         {
-            if($this->getRelationType() == RedBeanModel::HAS_MANY  ||
-               $this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
-               $this->getRelationType() == RedBeanModel::HAS_ONE_BELONGS_TO)
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelationTypeAHasManyVariant($this->attribute);
         }
 
         /**
@@ -237,12 +249,8 @@
          */
         public function isRelationTypeAHasOneVariant()
         {
-            if($this->getRelationType() == RedBeanModel::HAS_MANY_BELONGS_TO ||
-               $this->getRelationType() == RedBeanModel::HAS_ONE)
-            {
-                return true;
-            }
-            return false;
+            $modelClassName = $this->modelClassName;
+            return $modelClassName::isRelationTypeAHasOneVariant($this->attribute);
         }
 
         /**
@@ -368,6 +376,24 @@
         {
             $modelClassName = $this->getRelationModelClassName();
             return $modelClassName::getColumnNameByAttribute($this->relatedAttribute);
+        }
+
+        /**
+         * If the attribute is a relation and the attribute has more sort attributes on the relation
+         * retunrs the column name to make the sort by the position in the array return from
+         * getSortAttributesByAttribute
+         * @return string
+         */
+        public function getRelatedAttributeColumnNameByPosition($attributePosition)
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            $sortAttributes = $modelClassName::getSortAttributesByAttribute($this->relatedAttribute);
+            if ($attributePosition >= count($sortAttributes))
+            {
+                throw new InvalidArgumentException('Attribute position is not valid');
+            }
+            $sortAttribute = $sortAttributes[$attributePosition];
+            return $modelClassName::getColumnNameByAttribute($sortAttribute);
         }
 
         /**
@@ -548,6 +574,30 @@
          */
         public function isInferredRelation()
         {
+            return false;
+        }
+
+        /**
+         * Returns true if the attribute uses another attribute in the sort
+         * @return boolean
+         */
+        public function sortUsesTwoAttributes()
+        {
+            $modelClassName = $this->modelClassName;
+            if (count($modelClassName::getSortAttributesByAttribute($this->attribute)) > 1)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        public function relatedAttributesSortUsesTwoAttributes()
+        {
+            $modelClassName = $this->getRelationModelClassName();
+            if (count($modelClassName::getSortAttributesByAttribute($this->relatedAttribute)) > 1)
+            {
+                return true;
+            }
             return false;
         }
     }

@@ -141,7 +141,15 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'dueDateTime'       => Zurmo::t('TasksModule', 'Due On', array(), null, $language),
+                    'comments'        => Zurmo::t('CommentsModule', 'Comments', array(), null, $language),
+                    'description'     => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'dueDateTime'     => Zurmo::t('TasksModule', 'Due On', array(), null, $language),
+                    'files'           => Zurmo::t('ZurmoModule', 'Files', array(), null, $language),
+                    'latestDateTime'  => Zurmo::t('ActivitiesModule', 'Latest Date Time', array(), null, $language),
+                    'personsWhoHaveNotReadLatest' => Zurmo::t('MissionsModule', 'Persons Who Have Not Read Latest', array(), null, $language),
+                    'reward'          => Zurmo::t('MissionsModule', 'Reward', array(), null, $language),
+                    'status'          => Zurmo::t('MissionsModule', 'Status', array(), null, $language),
+                    'takenByUser'     => Zurmo::t('MissionsModule', 'Taken By User', array(), null, $language),
                 )
             );
         }
@@ -172,20 +180,20 @@
             $personsToAddAsHaveNotReadLatest = array();
             if (parent::beforeSave())
             {
-                if ($this->comments->isModified() || $this->getIsNewModel())
+                if ($this->getIsNewModel())
                 {
                     $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
-                    $people = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
-                    foreach ($people as $person)
-                    {
-                        if(!in_array($person, $personsToAddAsHaveNotReadLatest))
-                        {
-                            $personsToAddAsHaveNotReadLatest[] = $person;
-                        }
-                    }
+                    $personsToAddAsHaveNotReadLatest = MissionsUtil::resolvePeopleToSendNotificationToOnNewMission($this);
+                }
+                if (isset($this->originalAttributeValues['status']) &&
+                    $this->originalAttributeValues['status'] != $this->status &&
+                    $this->status == self::STATUS_TAKEN)
+                {
+                    MissionsUtil::markAllUserHasReadLatestExceptOwnerAndTakenBy($this);
                 }
                 if ($this->comments->isModified())
                 {
+                    $this->unrestrictedSet('latestDateTime', DateTimeUtil::convertTimestampToDbFormatDateTime(time()));
                     foreach ($this->comments as $comment)
                     {
                         if ($comment->id < 0)

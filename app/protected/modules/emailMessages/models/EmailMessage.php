@@ -66,24 +66,6 @@
             return 'EmailMessagesModule';
         }
 
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'Email';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'Emails';
-        }
-
         public static function canSaveMetadata()
         {
             return false;
@@ -132,11 +114,6 @@
             return true;
         }
 
-        public function hasSendError()
-        {
-            return !($this->error == null || $this->error->id < 0);
-        }
-
         public static function hasReadPermissionsOptimization()
         {
             return true;
@@ -145,6 +122,49 @@
         public static function hasRelatedItems()
         {
             return true;
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'account'      => Zurmo::t('EmailMessagesModule', 'Email Account',  array(), null, $language),
+                    'content'      => Zurmo::t('EmailMessagesModule', 'Content',  array(), null, $language),
+                    'error'        => Zurmo::t('Core',                'Error',  array(), null, $language),
+                    'folder'       => Zurmo::t('ZurmoModule',         'Folder',  array(), null, $language),
+                    'files'        => Zurmo::t('ZurmoModule',         'Files',  array(), null, $language),
+                    'recipients'   => Zurmo::t('EmailMessagesModule', 'Recipients',  array(), null, $language),
+                    'sender'       => Zurmo::t('EmailMessagesModule', 'Sender',  array(), null, $language),
+                    'sentDateTime' => Zurmo::t('EmailMessagesModule', 'Sent Date Time',  array(), null, $language),
+                    'subject'      => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
+                    'type'         => Zurmo::t('Core',                'Type',  array(), null, $language),
+                )
+            );
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Email', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('EmailMessagesModule', 'Emails', array(), null, $language);
+        }
+
+        public function hasSendError()
+        {
+            return !($this->error == null || $this->error->id < 0);
         }
     }
 ?>

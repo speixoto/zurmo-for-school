@@ -34,6 +34,20 @@
         const DATETIME_FORMAT_TIME_WIDTH = 'short';
 
         /**
+         * Convert month to a display label. If the month is invalid then it just returns the month passed in.
+         * @param string $month
+         * @return mixed
+         */
+        public static function getMonthName($month)
+        {
+            if($month != null)
+            {
+                return Yii::app()->locale->getMonthName((int)$month);
+            }
+            return $month;
+        }
+
+        /**
          * For the DateTime formatted attributes, get the locale specific date time format string.
          * @return string - datetime format.
          */
@@ -125,8 +139,12 @@
         public static function convertTimestampToDbFormatDate($timestamp)
         {
             assert('is_int($timestamp)');
-            return Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
+            $timeZone = date_default_timezone_get();
+            date_default_timezone_set('GMT');
+            $result   = Yii::app()->dateFormatter->format(DatabaseCompatibilityUtil::getDateFormat(),
                                                      $timestamp);
+            date_default_timezone_set($timeZone);
+            return $result;
         }
 
         public static function convertTimestampToDbFormatDateTime($timestamp)
@@ -265,14 +283,42 @@
                         $dateTime->getTimestamp());
         }
 
-        public static function isDateTimeValueNull(RedBeanModel $model, $attributeName)
+        public static function isDateValueNull(RedBeanModel $model, $attributeName)
         {
             assert('is_string($attributeName) || $attributeName == null');
-            if ($model->$attributeName != null && $model->$attributeName != '0000-00-00 00:00:00')
+            return self::isDateStringNull($model->$attributeName);
+        }
+
+        public static function isDateStringNull($date)
+        {
+            assert('is_string($date) || $date == null');
+            if ($date != null && $date != '0000-00-00')
             {
                 return false;
             }
             return true;
+        }
+
+        public static function isDateTimeValueNull(RedBeanModel $model, $attributeName)
+        {
+            assert('is_string($attributeName) || $attributeName == null');
+            return self::isDateTimeStringNull($model->$attributeName);
+        }
+
+        public static function isDateTimeStringNull($dateTime)
+        {
+            assert('is_string($dateTime) || $dateTime == null');
+            if ($dateTime != null && $dateTime != '0000-00-00 00:00:00')
+            {
+                return false;
+            }
+            return true;
+        }
+
+        public static function resolveDateAsDateTime($date)
+        {
+            assert('is_string($date)');
+            return $date . ' 00:00:00';
         }
     }
 ?>

@@ -80,12 +80,12 @@
             }
             $content .= $scope->render();
             //Search button
-            $params = array();
+            $params                = array();
             $params['label']       = Zurmo::t('ZurmoModule', 'Search');
             $params['htmlOptions'] = array('id' => $this->getSearchFormId() . '-search',
                 'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $searchElement = new SaveButtonActionElement(null, null, null, $params);
-            $content .= $searchElement->render();
+            $element               = new SaveButtonActionElement(null, null, null, $params);
+            $content .= $element->render();
             $content .= "</div>";
             $clipWidget->renderEndWidget();
             $content .= "</div>";

@@ -192,6 +192,7 @@
          * attribute name defined by the extending class's getMetadata() method.
          * For use by RedBeanModelDataProvider. Is unlikely to be of any
          * use to an application.
+         * @param string $attributeName
          */
         public static function getAttributeModelClassName($attributeName)
         {
@@ -262,6 +263,7 @@
         /**
          * Returns the link name for a
          * relation name defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getRelationLinkName($relationName)
         {
@@ -271,8 +273,39 @@
         }
 
         /**
-         * Returns the opposing relation name of a derived relation
-         * defined by the extending class's getMetadata() method.
+         * @param string $relationName
+         * @return bool
+         */
+        public static function isRelationTypeAHasManyVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY  ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_ONE_BELONGS_TO)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param string $relationName
+         * @return bool
+         */
+        public static function isRelationTypeAHasOneVariant($relationName)
+        {
+            assert('self::isRelation($relationName, get_called_class())');
+            if(static::getRelationType($relationName) == RedBeanModel::HAS_MANY_BELONGS_TO ||
+               static::getRelationType($relationName) == RedBeanModel::HAS_ONE)
+            {
+                return true;
+            }
+            return false;
+        }
+
+        /**
+         * @param string $relationName
+         * @return boolean true if the relation is a derived relation
          */
         public static function isADerivedRelationViaCastedUpModel($relationName)
         {
@@ -287,6 +320,7 @@
         /**
          * Returns the relation type of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getDerivedRelationType($relationName)
         {
@@ -298,6 +332,7 @@
         /**
          * Returns the relation model class name of a derived relation
          * defined by the extending class's getMetadata() method.
+         * @param string $relationName
          */
         public static function getDerivedRelationModelClassName($relationName)
         {
@@ -315,6 +350,23 @@
             assert("self::isADerivedRelationViaCastedUpModel('$relationName')");
             $derivedRelations = static::getDerivedRelationNameToTypeModelClassNameAndOppposingRelationForModel();
             return $derivedRelations[$relationName][2];
+        }
+
+        /**
+         * @param $relation
+         * @return null|string
+         */
+        public static function getInferredRelationModelClassNamesForRelation($relation)
+        {
+            assert('is_string($relation)');
+            $metadata   = static::getMetadata();
+            foreach ($metadata as $modelClassName => $modelClassMetadata)
+            {
+                if (isset($metadata[$modelClassName][$relation . 'ModelClassNames']))
+                {
+                    return $metadata[$modelClassName][$relation . 'ModelClassNames'];
+                }
+            }
         }
 
         /**

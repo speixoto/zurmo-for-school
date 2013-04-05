@@ -76,8 +76,7 @@
          */
         protected function renderLabel()
         {
-            return ZurmoHtml::tag('label', array(),
-                   $this->calculatedDerivedAttributeMetadata->getLabelByLanguage(Yii::app()->language));
+            return $this->calculatedDerivedAttributeMetadata->getLabelByLanguage(Yii::app()->language);
         }
 
         /**

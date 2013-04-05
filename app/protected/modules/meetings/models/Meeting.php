@@ -56,24 +56,6 @@
             return 'MeetingsModule';
         }
 
-        /**
-         * Returns the display name for the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getLabel()
-        {
-            return 'MeetingsModuleSingularLabel';
-        }
-
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-        protected static function getPluralLabel()
-        {
-            return 'MeetingsModulePluralLabel';
-        }
-
         public static function canSaveMetadata()
         {
             return true;
@@ -128,8 +110,12 @@
         {
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',   array(), null, $language),
-                    'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time', array(), null, $language),
+                    'category'      => Zurmo::t('MeetingsModule', 'Category',    array(), null, $language),
+                    'description'   => Zurmo::t('ZurmoModule',    'Description', array(), null, $language),
+                    'endDateTime'   => Zurmo::t('MeetingsModule', 'End Time',    array(), null, $language),
+                    'location'      => Zurmo::t('MeetingsModule', 'Location',    array(), null, $language),
+                    'name'          => Zurmo::t('ZurmoModule',    'Name',        array(), null, $language),
+                    'startDateTime' => Zurmo::t('MeetingsModule', 'Start Time',  array(), null, $language),
                 )
             );
         }

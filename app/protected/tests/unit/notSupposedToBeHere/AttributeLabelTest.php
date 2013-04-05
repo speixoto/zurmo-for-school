@@ -26,6 +26,8 @@
 
     class AttributeLabelTest extends BaseTest
     {
+        public static $activateDefaultLanguages = true;
+
         public function testAttributesTranslateToAllSupportedLanguagesCorrectly()
         {
             $this->assertEquals('en', Yii::app()->language);
@@ -82,8 +84,8 @@
             //Set language back to english.
             Yii::app()->language = 'en';
             //Retrieve all the language labels for a particular attribute.
-            $officePhoneLabels    = $account->getAttributeLabelsForAllSupportedLanguagesByAttributeName('officePhone');
-            $billingAddressLabels = $account->getAttributeLabelsForAllSupportedLanguagesByAttributeName('billingAddress');
+            $officePhoneLabels    = $account->getAttributeLabelsForAllActiveLanguagesByAttributeName('officePhone');
+            $billingAddressLabels = $account->getAttributeLabelsForAllActiveLanguagesByAttributeName('billingAddress');
             $comparePhoneLabels = array(
                 'de' => 'GermanSomething',
                 'en' => 'EnglishSomething',

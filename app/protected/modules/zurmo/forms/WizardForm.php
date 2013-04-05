@@ -71,19 +71,18 @@
             assert('is_string($componentType)');
             assert('is_string($componentName)');
             $passedValidation = true;
-            $count            = 0;
             foreach($this->{$componentName} as $model)
             {
                 if(!$model->validate())
                 {
-                    foreach($model->getErrors() as $attribute => $error)
+                    foreach($model->getErrors() as $attribute => $errorArray)
                     {
-                        $attributePrefix = static::resolveErrorAttributePrefix($componentType, $count);
-                        $this->addError( $attributePrefix . $attribute, $error);
+                        assert('is_array($errorArray)');
+                        $attributePrefix = static::resolveErrorAttributePrefix($componentType, $model->getRowKey());
+                        $this->addError( $attributePrefix . $attribute, $errorArray[0]);
                     }
                     $passedValidation = false;
                 }
-                $count ++;
             }
             return $passedValidation;
         }
