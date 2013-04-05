@@ -30,6 +30,22 @@
     class ZurmoAuthenticationHelper extends CApplicationComponent
     {
         /**
+         * Defines a OpenLDAP authentication server type.
+         */
+        const SERVER_TYPE_OPEN_LDAP        = 'OpenLDAP';
+        
+        /**
+         * Defines a Active Directory authentication server type.
+         */         
+        const SERVER_TYPE_ACTIVE_DIRECTORY = 'ActiveDirectory';
+        
+        /**
+         * Ldap server type. Example OpenLDAP
+         * @var string
+         */
+        public $ldapServerType;
+        
+        /**
          * Ldap server host name. Example someDomain.com
          * @var string
          */
@@ -71,6 +87,7 @@
          * @var array
          */
         protected $settingsToLoad = array(
+            'ldapServerType', 
             'ldapHost',
             'ldapPort',
             'ldapBindRegisteredDomain',

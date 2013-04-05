@@ -53,6 +53,16 @@
                                     array(
                                         array(
                                             'elements' => array(
+                                                array('attributeName' => 'serverType', 
+                                                'type' => 'LDAPAuthenticationServerTypeStaticStaticDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
                                                 array('attributeName' => 'host', 'type' => 'Text'),
                                             ),
                                         ),

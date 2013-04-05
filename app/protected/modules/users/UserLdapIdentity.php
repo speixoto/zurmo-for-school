@@ -40,16 +40,28 @@
         {
             try
             {
+                $serverType                = Yii::app()->authenticationHelper->ldapServerType;
                 $host                      = Yii::app()->authenticationHelper->ldapHost;
                 $port                      = Yii::app()->authenticationHelper->ldapPort;
                 $baseDomain                = Yii::app()->authenticationHelper->ldapBaseDomain;
                 $bindPassword              = Yii::app()->authenticationHelper->ldapBindPassword;
                 $bindRegisteredDomain      = Yii::app()->authenticationHelper->ldapBindRegisteredDomain;
-                $ldapConnection            = LdapUtil::establishConnection($host, $port, $bindRegisteredDomain,
+                $ldapConnection            = LdapUtil::establishConnection($serverType, $host, $port, $bindRegisteredDomain,
                                                                            $bindPassword, $baseDomain);
                 if ($ldapConnection)
                 {
-                    $ldapFilter              = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))';
+                    if($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
+                    {
+                        $ldapFilter = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))';
+                    }
+                    elseif($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
+                    {
+                        $ldapFilter = '(sAMAccountName=' . $this->username . ')';
+                    }
+                    else
+                    {
+                        throw new NotSupportedException();
+                    }
                     $ldapResults             = ldap_search($ldapConnection, $baseDomain, $ldapFilter);
                     $ldapResultsCount        = ldap_count_entries($ldapConnection, $ldapResults);
                     if ($ldapResultsCount > 0)
