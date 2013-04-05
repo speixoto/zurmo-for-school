@@ -1,6 +1,6 @@
 {
 DisplayStrings = (
-"~"
+"\U00A1"
 );
 customParameters = (
 {
@@ -8230,11 +8230,21 @@ unicode = 2026;
 },
 {
 glyphname = exclamdown;
-lastChange = "2013-03-19 20:51:02 -0300";
+lastChange = "2013-04-05 12:44:41 -0300";
 layers = (
 {
 layerId = "2B2FE4A8-39A2-493B-A970-B9343EE81639";
 name = Regular;
+paths = (
+{
+closed = 1;
+nodes = (
+"512 100 LINE",
+"88 100 LINE",
+"300 400 LINE"
+);
+}
+);
 width = 600;
 }
 );
