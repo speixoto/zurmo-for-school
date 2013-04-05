@@ -33,7 +33,7 @@
 
         public static function getDisplayLabel()
         {
-            return Zurmo::t('ProductTemplateModule', 'Same As List');
+            return Zurmo::t('ProductTemplatesModule', 'Same As List');
         }
 
         public static function getType()
@@ -43,7 +43,7 @@
 
         public static function getDisplaySellPriceFormula()
         {
-            Zurmo::t('ProductTemplateModule', 'Same As List');
+            return Zurmo::t('ProductTemplatesModule', 'Same As List');
         }
     }
 ?>

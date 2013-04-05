@@ -28,11 +28,12 @@
     {
         protected function renderControlNonEditable()
         {
-            $sellPriceFormulaModel = $this->model->{$this->attribute};
-            $type = $sellPriceFormulaModel->type;
+	    assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
+	    $sellPriceFormulaModel = $this->model->{$this->attribute};
+	    $type = $sellPriceFormulaModel->type;
             $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
             $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
-            $content = '';
+	    $content = '';
             if($type != null)
             {
                 $content = $displayedSellPriceFormulaList[$type];
@@ -42,7 +43,7 @@
                     $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
                 }
             }
-            
+
             return $content;
         }
 

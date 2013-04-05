@@ -83,7 +83,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown', 'addBlank' => true),
+                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown'),
                                             ),
                                         ),
                                     )
@@ -92,7 +92,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sellPriceFormula', 'type' => 'SellPriceFormulaInformation', 'addBlank' => true),
+                                                array('attributeName' => 'sellPriceFormula', 'type' => 'SellPriceFormulaInformation'),
                                             ),
                                         ),
                                     )

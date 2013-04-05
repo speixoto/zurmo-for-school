@@ -57,9 +57,6 @@
                     array('type',                        'type',    'type' => 'integer'),
                     array('discountOrMarkupPercentage',  'type',    'type' => 'float'),
                 ),
-//                'elements' => array(
-//                    'type'                => 'SellPriceFormulaTypeDropDown',
-//                ),
                 'defaultSortAttribute' => 'type',
                 'customFields' => array(
                 ),

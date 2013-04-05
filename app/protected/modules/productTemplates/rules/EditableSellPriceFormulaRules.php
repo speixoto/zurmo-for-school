@@ -33,7 +33,7 @@
 
         public static function getDisplayLabel()
         {
-            return Zurmo::t('ProductTemplateModule', 'Editable');
+            return Zurmo::t('ProductTemplatesModule', 'Editable');
         }
 
         public static function getType()
@@ -43,7 +43,7 @@
 
         public static function getDisplaySellPriceFormula()
         {
-            return Zurmo::t('ProductTemplateModule', 'NA');
+            return Zurmo::t('ProductTemplatesModule', 'NA');
         }
     }
 ?>
