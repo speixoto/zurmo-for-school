@@ -108,5 +108,29 @@
                 }
             }
         }
+
+        public static function getWorkflowsMissingRequiredActionAttributes()
+        {
+            $savedWorkflows = SavedWorkflow::getAll();
+            $workflows      = array();
+            foreach($savedWorkflows as $savedWorkflow)
+            {
+                $workflow        = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+                $missingRequired = false;
+                foreach($workflow->getActions() as $action)
+                {
+                    if(!$action->isTypeAnUpdateVariant() && $action->isMissingRequiredActionAttributes())
+                    {
+                        $missingRequired = true;
+                        break;
+                    }
+                }
+                if($missingRequired)
+                {
+                    $workflows[] = $workflow;
+                }
+            }
+            return $workflows;
+        }
     }
 ?>

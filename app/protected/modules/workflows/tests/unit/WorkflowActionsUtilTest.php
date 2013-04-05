@@ -49,6 +49,80 @@
             parent::teardown();
         }
 
+        public function testGetWorkflowsMissingRequiredActionAttributesWhereActionIsOk()
+        {
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('WorkflowsTest2Module');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            //Add action
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
+            $action->relation             = 'hasMany2';
+            $attributes                   = array('string' => array('shouldSetValue'    => '1',
+                                                       'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                       'value'  => 'jason'),
+                                                  'lastName' => array('shouldSetValue'    => '1',
+                                                       'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                       'value'    => 'jason'),
+                                                  'owner__User' => array('shouldSetValue'    => '1',
+                                                       'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                                                       'value'    => Yii::app()->user->userModel->id));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(array(), WorkflowActionsUtil::getWorkflowsMissingRequiredActionAttributes());
+        }
+
+        /**
+         * @depends testGetWorkflowsMissingRequiredActionAttributesWhereActionIsOk
+         */
+        public function testGetWorkflowsMissingRequiredActionAttributesWhereActionIsMissingRequiredAttribute()
+        {
+            //Create workflow
+            $workflow = new Workflow();
+            $workflow->setDescription    ('aDescription');
+            $workflow->setIsActive       (true);
+            $workflow->setOrder          (5);
+            $workflow->setModuleClassName('WorkflowsTest2Module');
+            $workflow->setName           ('myFirstWorkflow');
+            $workflow->setTriggerOn      (Workflow::TRIGGER_ON_NEW_AND_EXISTING);
+            $workflow->setType           (Workflow::TYPE_ON_SAVE);
+            $workflow->setTriggersStructure('1');
+            //Add action that is missing required owner
+            $action                       = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
+            $action->type                 = ActionForWorkflowForm::TYPE_CREATE;
+            $action->relation             = 'hasMany2';
+            $attributes                   = array('string' => array('shouldSetValue'    => '1',
+                'type'   => WorkflowActionAttributeForm::TYPE_STATIC,
+                'value'  => 'jason'),
+                'lastName' => array('shouldSetValue'    => '1',
+                    'type'     => WorkflowActionAttributeForm::TYPE_STATIC,
+                    'value'    => 'jason'));
+            $action->setAttributes(array(ActionForWorkflowForm::ACTION_ATTRIBUTES => $attributes));
+            $workflow->addAction($action);
+            //Create the saved Workflow
+            $savedWorkflow = new SavedWorkflow();
+            SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
+            $saved = $savedWorkflow->save();
+            $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
+            $this->assertTrue($saved);
+            $this->assertEquals(array($workflow), WorkflowActionsUtil::getWorkflowsMissingRequiredActionAttributes());
+        }
+
+        /**
+         * @depends testGetWorkflowsMissingRequiredActionAttributesWhereActionIsMissingRequiredAttribute
+         */
         public function testProcessBeforeSave()
         {
             //Create workflow

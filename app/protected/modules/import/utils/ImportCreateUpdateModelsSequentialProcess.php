@@ -102,7 +102,7 @@
             $totalItemCount                        = $this->dataProvider->getTotalItemCount();
             $this->subSequenceCompletionPercentage = (($page + 1) / $pageCount) * 100;
 
-            if (($page + 1) > $pageCount)
+            if (($page + 1) == $pageCount)
             {
                 $this->nextStep    = null;
                 $this->nextMessage = null;

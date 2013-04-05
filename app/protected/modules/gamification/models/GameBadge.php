@@ -122,6 +122,8 @@
          * process grade change points for the given badge.
          * @param GameBadge $gameBadge
          * @param User $user
+         * @param $gradeChangeOrNewBadge
+         * @throws NotSupportedException
          */
         public static function processBonusPoints(GameBadge $gameBadge, User $user, $gradeChangeOrNewBadge)
         {
@@ -151,6 +153,26 @@
                     throw new NotSupportedException();
                 }
             }
+        }
+
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
+        {
+            return Zurmo::t('GamificationModule', 'Game Badge', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('GamificationModule', 'Game Badges', array(), null, $language);
         }
     }
 ?>

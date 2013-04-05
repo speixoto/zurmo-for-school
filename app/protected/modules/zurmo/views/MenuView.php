@@ -44,13 +44,29 @@
             {
                 return null;
             }
+
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Tabs");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                'items' => $this->items
+                'items' => static::resolveForHiddenItems($this->items)
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['Tabs'];
+        }
+
+        protected static function resolveForHiddenItems($items)
+        {
+            assert('is_array($items)');
+            $count = 1;
+            foreach($items as $key => $item)
+            {
+                if($count > 6)
+                {
+                    $items[$key]['itemOptions']['class'] = 'hidden-nav-item';
+                }
+                $count ++;
+            }
+            return $items;
         }
     }
 ?>

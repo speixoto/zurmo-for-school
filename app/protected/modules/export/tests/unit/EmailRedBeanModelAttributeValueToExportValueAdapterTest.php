@@ -34,28 +34,57 @@
 
         public function testGetExportValue()
         {
-            $data = array();
-            $model = new ExportTestModelItem();
+            $data         = array();
+            $model        = new ExportTestModelItem();
             $model->email = 'a@a.com';
 
-            $adapter = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'email');
+            $adapter     = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'email');
             $adapter->resolveData($data);
             $compareData = array('a@a.com');
             $this->assertEquals($compareData, $data);
-            $data = array();
+            $data        = array();
             $adapter->resolveHeaderData($data);
             $compareData = array($model->getAttributeLabel('email'));
             $this->assertEquals($compareData, $data);
 
-            $data = array();
-            $model = new ExportTestModelItem();
-            $adapter = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'email');
+            $data        = array();
+            $model       = new ExportTestModelItem();
+            $adapter     = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'email');
             $adapter->resolveData($data);
             $compareData = array('');
             $this->assertEquals($compareData, $data);
-            $data = array();
+            $data        = array();
             $adapter->resolveHeaderData($data);
             $compareData = array($model->getAttributeLabel('email'));
+            $this->assertEquals($compareData, $data);
+
+            $model                               = new ExportTestModelItem();
+            $model->lastName                     = 'testLastName';
+            $model->string                       = 'testString';
+            $model->secondaryEmail->emailAddress = 'b@b.com';
+            $model->secondaryEmail->isInvalid    = false;
+            $model->secondaryEmail->optOut       = true;
+
+            $this->assertTrue($model->save());
+
+            $data        = array();
+            $adapter     = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'secondaryEmail');
+            $adapter->resolveHeaderData($data);
+            $compareData = array(
+                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Email Address'),
+                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid'),
+                $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out'),
+            );
+
+            $this->assertEquals($compareData, $data);
+
+            $data        = array();
+            $adapter->resolveData($data);
+            $compareData = array(
+                'b@b.com',
+                false,
+                true,
+            );
             $this->assertEquals($compareData, $data);
         }
     }
