@@ -16969,6 +16969,25 @@ orientation : portrait // orientation: landscape    Target orientation
   #credit-link span {
     margin-left: 65px;
   }
+  #welcome-gallery {
+    display: block;
+    margin-bottom: 15px;
+  }
+  #welcome-gallery img {
+    width: 100%;
+  }
+  .dashboard-link {
+    margin: 30px 0 0 0 !important;
+  }
+  #instructions {
+    padding-bottom: 30px;
+  }
+  #instructions p {
+    padding: 0;
+  }
+  .hide-welcome {
+    top: 10px;
+  }
   /*
   	.view-toolbar{
   		display: -ms-flex;
@@ -17114,9 +17133,6 @@ orientation : portrait // orientation: landscape    Target orientation
   .AppContainer .nav-open {
     transform: translate3d(45px, 0, 0);
     -webkit-transform: translate3d(45px, 0, 0);
-  }
-  #settings-header-menu {
-    display: none;
   }
   .AppNavigation {
     width: 45px;
