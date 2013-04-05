@@ -45,9 +45,10 @@ orientation : portrait // orientation: landscape    Target orientation
 	.symbly(30px);
 }
 
-@media all and (max-width: 640px) {
+@media all and (max-width: 2000px) { /*640*/
 	html, body {
 		margin: 0;
+		width: 100%;
 		width: 100%;
 	}
 	body{
@@ -308,7 +309,10 @@ orientation : portrait // orientation: landscape    Target orientation
 		border-right:1px solid #eee;
 		border-left:1px solid #eee;
 		.radius(0 0 0 5px);
-		> .nav > li > a{
+		> ul > li{
+			.clearfix();
+		}
+		> ul > li > a{
 			em{
 				display:inline-block;
 				position:relative;
@@ -382,6 +386,9 @@ orientation : portrait // orientation: landscape    Target orientation
 				margin: 0;
 				border-left: 1px solid #D5D4D4;
 			}
+		}
+		.global-search-loopa{
+			display: none;
 		}
 	}
 

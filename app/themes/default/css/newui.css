@@ -4745,13 +4745,10 @@ section {
   line-height: 150%;
 }
 /*=Login*/
-#LoginPageView {
-  padding-top: 30px;
-}
 #LoginView {
   min-width: 900px;
   height: 100%;
-  margin: 0 30px 30px 30px;
+  margin: 30px;
   -webkit-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -moz-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
   -o-box-shadow: 0 0 12px 5px rgba(153, 153, 153, 0.3);
@@ -4775,7 +4772,7 @@ section {
   top: -4px;
   left: 6px;
 }
-#login-box {
+#LoginView #login-box {
   float: left;
   width: 500px;
   margin: -100px auto 0 -250px;
@@ -4784,11 +4781,21 @@ section {
   top: 40%;
   left: 50%;
 }
-#login-box .form {
+#LoginView #LoginLogo {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  width: 50%;
+  padding-right: 10px;
+  float: left;
+  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
+}
+#LoginView .form {
   width: 50%;
   float: right;
 }
-#login-box .form form {
+#LoginView .form form {
   padding-top: 0 !important;
   padding-bottom: 0 !important;
   background: none !important;
@@ -4802,43 +4809,33 @@ section {
   box-shadow: none !important;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
 }
-#login-box .form form > div {
+#LoginView .form form > div {
   margin-bottom: 15px;
 }
-#login-box .form form > div.clearfix {
+#LoginView .form form > div.clearfix {
   margin-bottom: 0;
 }
-#login-box .form form label {
+#LoginView .form form label {
   display: inline-block;
   margin-bottom: 5px;
 }
-#login-box .form form input[type="password"],
-#login-box .form form input[type="text"] {
+#LoginView .form form input[type="password"],
+#LoginView .form form input[type="text"] {
   background: #fff !important;
   margin: 0 !important;
 }
-#login-box .form form input[type="checkbox"] {
+#LoginView .form form input[type="checkbox"] {
   float: left;
   margin-right: 10px !important;
   margin-top: 1px !important;
   clear: both;
 }
-#login-box .form form .errorMessage {
+#LoginView .form form .errorMessage {
   font-size: 11px;
   padding-top: 4px;
 }
-#login-box .error {
+#LoginView .error {
   margin-bottom: 40px !important;
-}
-#LoginLogo {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 100%;
-  width: 50%;
-  padding-right: 10px;
-  float: left;
-  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
 }
 #Login {
   margin-left: 0;
@@ -5560,9 +5557,6 @@ body > .ui-autocomplete {
   margin-left: 0px;
 }
 /*=Left Sidebar*/
-.nav em {
-  display: none;
-}
 .AppNavigation {
   width: 170px;
   float: left;
@@ -5629,9 +5623,6 @@ body > .ui-autocomplete {
   content: "";
   display: table;
   clear: both;
-}
-#MenuView .nav em {
-  display: none;
 }
 #MenuView a {
   height: 35px;
@@ -5788,6 +5779,7 @@ body > .ui-autocomplete {
 }
 #RecentlyViewedView li em {
   z-index: 9999;
+  position: absolute;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -5981,7 +5973,7 @@ body > .ui-autocomplete {
   position: relative;
   height: 40px;
   display: block;
-  z-index: 0;
+  z-index: 10;
 }
 .float-bar .view-toolbar-container {
   z-index: 222222;
@@ -6591,6 +6583,62 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+.icon-workflows:before {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-by-time-workflow-in-queues:before {
+  content: '\0071';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-by-workflow-message-in-queues:before {
+  content: '\00A5';
+  font-weight: normal;
+  font-size: 22px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-by-workflow-manage-order:before {
+  content: '\2039';
+  font-weight: normal;
+  font-size: 25px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -6609,11 +6657,6 @@ form .view-toolbar-container,
   display: inline-block;
   margin-left: 10px;
   font-size: 11px;
-  -webkit-text-shadow: 0 1px 0 #ffffff;
-  -moz-text-shadow: 0 1px 0 #ffffff;
-  -o-text-shadow: 0 1px 0 #ffffff;
-  -ms-text-shadow: 0 1px 0 #ffffff;
-  text-shadow: 0 1px 0 #ffffff;
 }
 #credit-link span {
   margin-left: 70px;
@@ -6635,15 +6678,15 @@ td {
   background: -webkit-linear-gradient(left, #ffffff 30%, rgba(255, 255, 255, 0)), -webkit-linear-gradient(left, rgba(255, 255, 255, 0), #ffffff 70%) 100%, -webkit-radial-gradient(0 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)), -webkit-radial-gradient(100% 50%, farthest-side, rgba(0, 0, 0, 0.15), rgba(0, 0, 0, 0)) 100% 0;
   background-repeat: no-repeat;
   background-size: 40px 100%,
-        40px 100%, 
-        20px 100%,
-        20px 100%;
+		40px 100%,
+		20px 100%,
+		20px 100%;
   /* Opera doesn't support this in the shorthand */
 
   background-attachment: local,
-        local,
-        scroll,
-        scroll;
+		local,
+		scroll,
+		scroll;
 }
 .items {
   width: 100%;
@@ -6816,6 +6859,10 @@ td.empty {
   -o-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   -ms-box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
   box-shadow: 0 0 1px 1px rgba(153, 153, 153, 0.3);
+  /* http://www.useragentman.com/blog/2011/08/24/how-to-simulate-css3-box-shadow-in-ie7-8-without-javascript/ */
+
+  zoom: 1;
+  filter: progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=0), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=90), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=180), progid:DXImageTransform.Microsoft.Shadow(Color=#bfbfbf, Strength=1, Direction=270);
   width: 100%;
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -6917,6 +6964,7 @@ td.empty {
   border-left: 1px solid #d7d7d7;
   border-right: 1px solid #d7d7d7;
   border-bottom: 1px solid #bababa;
+  color: #656565;
   display: inline-block;
   -webkit-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
   -moz-text-shadow: rgba(255, 255, 255, 0.8) 0px 1px;
@@ -6994,7 +7042,7 @@ td.empty {
   color: #fff;
   margin-left: 0;
 }
-body div.view-toolbar-container a.simple-link:not(.z-button) {
+body div.form-toolbar a.simple-link:not(.z-button) {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -7009,15 +7057,16 @@ body div.view-toolbar-container a.simple-link:not(.z-button) {
   border-radius: 0 !important;
   padding: 0  !important;
   border: none !important;
+  margin: !important;
   text-decoration: underline;
   font-weight: normal;
 }
-body div.view-toolbar-container a.simple-link:not(.z-button):hover span.z-label {
+body div.form-toolbar a.simple-link:not(.z-button):hover span.z-label {
   background: none !important;
   background-image: none !important;
   background: transparent !important;
 }
-body div.view-toolbar-container a.simple-link:not(.z-button) span.z-label {
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label {
   background: none !important;
   background-image: none !important;
   -webkit-box-shadow: none  !important;
@@ -7036,7 +7085,7 @@ body div.view-toolbar-container a.simple-link:not(.z-button) span.z-label {
   text-decoration: underline;
   font-weight: normal;
 }
-body div.view-toolbar-container a.simple-link:not(.z-button) span.z-label:before {
+body div.form-toolbar a.simple-link:not(.z-button) span.z-label:before {
   content: "" !important;
 }
 a.simple-link {
@@ -7062,14 +7111,15 @@ a.simple-link {
 a.simple-link:before {
   content: "" !important;
 }
+.normal-size {
+  font-size: 12px !important;
+}
 /*needed for specifity*/
 .portlet-toolbar a.simple-link {
   background: none !important;
-  margin-left: 10px;
 }
 /*=Popup Modals*/
 .ui-dialog {
-  width: 75%;
   overflow: visible;
   padding: 0 !important;
   margin: 0 !important;
@@ -7197,6 +7247,10 @@ a.simple-link:before {
   height: 100%;
   background: rgba(255, 255, 255, 0.5);
 }
+.ui-sortable > .ui-state-highlight {
+  min-height: 45px;
+  background: #efefef;
+}
 /*=Checkboxes*/
 label.hasCheckBox {
   display: block;
@@ -7250,60 +7304,6 @@ div.wide.form label.hasCheckBox {
   color: #999;
   margin-right: 5px;
   font-size: 11px;
-}
-.model-tag {
-  display: inline-block;
-  font-weight: 400;
-  font-size: 11px;
-  float: left;
-  margin-right: 5px;
-  margin-top: 1px;
-}
-.model-tag span {
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
-  color: #fff;
-  padding: 2px 4px;
-  line-height: 1;
-}
-.model-tag.mission span {
-  background-color: #16a085;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#1abc9c), to(#16a085));
-  background-image: -moz-linear-gradient(top, #1abc9c, #16a085);
-  background-image: -ms-linear-gradient(top, #1abc9c, #16a085);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1abc9c), color-stop(100%, #16a085));
-  background-image: -webkit-linear-gradient(top, #1abc9c, #16a085);
-  background-image: -o-linear-gradient(top, #1abc9c, #16a085);
-  background-image: linear-gradient(top, #1abc9c, #16a085);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1abc9c', endColorstr='#16a085', GradientType=0);
-}
-.model-tag.conversation span {
-  background-color: #2c3e50;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#34495e), to(#2c3e50));
-  background-image: -moz-linear-gradient(top, #34495e, #2c3e50);
-  background-image: -ms-linear-gradient(top, #34495e, #2c3e50);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #34495e), color-stop(100%, #2c3e50));
-  background-image: -webkit-linear-gradient(top, #34495e, #2c3e50);
-  background-image: -o-linear-gradient(top, #34495e, #2c3e50);
-  background-image: linear-gradient(top, #34495e, #2c3e50);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#34495e', endColorstr='#2c3e50', GradientType=0);
-}
-.model-tag.notification span {
-  background-color: #8e44ad;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#9b59b6), to(#8e44ad));
-  background-image: -moz-linear-gradient(top, #9b59b6, #8e44ad);
-  background-image: -ms-linear-gradient(top, #9b59b6, #8e44ad);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9b59b6), color-stop(100%, #8e44ad));
-  background-image: -webkit-linear-gradient(top, #9b59b6, #8e44ad);
-  background-image: -o-linear-gradient(top, #9b59b6, #8e44ad);
-  background-image: linear-gradient(top, #9b59b6, #8e44ad);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
 }
 .last-comment {
   font-weight: 400;
@@ -7497,24 +7497,6 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
 }
-.zero-components-view .missing-report:after,
-.splash-view .missing-report:after,
-.zero-components-view .Report .large-icon:after,
-.splash-view .Report .large-icon:after {
-  content: "j";
-  font-weight: normal;
-  font-size: 250px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 60%;
-}
-.zero-components-view .SavedReport .large-icon:after,
-.splash-view .SavedReport .large-icon:after {
-  content: "V";
-  font-weight: normal;
-  font-size: 320px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  line-height: 55%;
-}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -7574,18 +7556,6 @@ div.wide.form label.hasCheckBox {
   width: 100%;
   margin-bottom: 20px;
   position: relative;
-}
-#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
-  border-left: none;
-}
-#MashableInboxActionBarForViews .search-view-0 {
-  padding: 0 15px 15px 15px;
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-}
-#MashableInboxActionBarForViews .list-view-items-summary-clone {
-  margin-top: 5px;
 }
 .filters-bar {
   font-size: 11px;
@@ -9606,6 +9576,18 @@ div.hasHalfs .twoThirds {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 28px;
 }
+.LatestActivitiesForPortletView {
+  position: relative;
+}
+.LatestActivitiesForPortletView > div {
+  position: relative;
+  z-index: 1;
+}
+.LatestActivitiesForPortletView .toolbar-mbmenu {
+  position: absolute;
+  top: -35px;
+  z-index: 10;
+}
 .LatestActivitiesListView form,
 .LatestActivitiesView form {
   position: relative;
@@ -9674,94 +9656,6 @@ div.hasHalfs .twoThirds {
   position: relative;
   top: 1px;
   margin-left: 5px;
-}
-.LatestActivitiesListView .latest-activity-toolbar,
-.LatestActivitiesView .latest-activity-toolbar,
-.LatestActivitiesListView .filter-portlet-model-bar,
-.LatestActivitiesView .filter-portlet-model-bar {
-  font-size: 11px;
-  padding-left: 8px;
-  white-space: nowrap;
-}
-.LatestActivitiesListView .latest-activity-toolbar label,
-.LatestActivitiesView .latest-activity-toolbar label,
-.LatestActivitiesListView .filter-portlet-model-bar label,
-.LatestActivitiesView .filter-portlet-model-bar label {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-size: 11px !important;
-  padding: 3px;
-  margin: 0 3px;
-}
-.LatestActivitiesListView .latest-activity-toolbar label:hover,
-.LatestActivitiesView .latest-activity-toolbar label:hover,
-.LatestActivitiesListView .filter-portlet-model-bar label:hover,
-.LatestActivitiesView .filter-portlet-model-bar label:hover {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-.LatestActivitiesListView .latest-activity-toolbar input[type="radio"],
-.LatestActivitiesView .latest-activity-toolbar input[type="radio"],
-.LatestActivitiesListView .filter-portlet-model-bar input[type="radio"],
-.LatestActivitiesView .filter-portlet-model-bar input[type="radio"],
-.LatestActivitiesListView .latest-activity-toolbar input[type="checkbox"],
-.LatestActivitiesView .latest-activity-toolbar input[type="checkbox"],
-.LatestActivitiesListView .filter-portlet-model-bar input[type="checkbox"],
-.LatestActivitiesView .filter-portlet-model-bar input[type="checkbox"] {
-  visibility: hidden;
-  display: none;
-}
-.LatestActivitiesListView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesView .latest-activity-toolbar .ui-state-active,
-.LatestActivitiesListView .filter-portlet-model-bar .ui-state-active,
-.LatestActivitiesView .filter-portlet-model-bar .ui-state-active {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-.LatestActivitiesListView .latest-activity-toolbar .ui-button-text,
-.LatestActivitiesView .latest-activity-toolbar .ui-button-text,
-.LatestActivitiesListView .filter-portlet-model-bar .ui-button-text,
-.LatestActivitiesView .filter-portlet-model-bar .ui-button-text {
-  padding: 0;
-  margin: 0;
-}
-.LatestActivitiesListView .filter-portlet-model-bar,
-.LatestActivitiesView .filter-portlet-model-bar {
-  border-bottom: 1px solid #DFDFDF;
-  overflow: hidden;
-  height: 40px;
-  line-height: 40px;
-  background-color: #ededed;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
-  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
-  -o-box-shadow: inset 0 1px 0 0 #ffffff;
-  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
-  box-shadow: inset 0 1px 0 0 #ffffff;
-  position: relative;
-}
-.LatestActivitiesListView .filter-portlet-model-bar label,
-.LatestActivitiesView .filter-portlet-model-bar label {
-  margin: 0 3px 0 0;
 }
 .LatestActivitiesListView .items,
 .LatestActivitiesView .items {
@@ -10208,6 +10102,9 @@ div.hasHalfs .twoThirds {
 }
 .hasDropDown + input {
   margin-top: 15px;
+}
+.isMultiSelect span {
+  display: none !important;
 }
 /*=Mass Edit + DELETE view*/
 .AppContent.MassEditView #edit-form table {
@@ -16834,6 +16731,91 @@ a.user-link {
 #ReportResultsSQLView > div + div {
   margin-top: 15px;
 }
+#MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
+  border-left: none;
+}
+#MashableInboxActionBarForViews .search-view-0 {
+  padding: 0 15px 15px 15px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+}
+#MashableInboxActionBarForViews .list-view-items-summary-clone {
+  margin-top: 5px;
+}
+#MashableInboxActionBarForViews .global-search-loopa {
+  width: 24px;
+}
+#MashableInboxActionBarForViews #MashableInboxForm_searchTerm {
+  width: 204px;
+}
+.inbox-item {
+  position: relative;
+}
+.inbox-item div + span {
+  display: block;
+  padding-right: 80px;
+  overflow: hidden;
+}
+.inbox-item .list-item-details {
+  position: absolute;
+  top: 0;
+  right: 0;
+}
+.model-tag {
+  display: inline-block;
+  font-weight: 400;
+  font-size: 11px;
+  float: left;
+  margin-right: 5px;
+  margin-top: 1px;
+}
+.model-tag span {
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  color: #fff;
+  padding: 2px 4px;
+  line-height: 1;
+}
+.model-tag.mission span {
+  background-color: #16a085;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#1abc9c), to(#16a085));
+  background-image: -moz-linear-gradient(top, #1abc9c, #16a085);
+  background-image: -ms-linear-gradient(top, #1abc9c, #16a085);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1abc9c), color-stop(100%, #16a085));
+  background-image: -webkit-linear-gradient(top, #1abc9c, #16a085);
+  background-image: -o-linear-gradient(top, #1abc9c, #16a085);
+  background-image: linear-gradient(top, #1abc9c, #16a085);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#1abc9c', endColorstr='#16a085', GradientType=0);
+}
+.model-tag.conversation span {
+  background-color: #2c3e50;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#34495e), to(#2c3e50));
+  background-image: -moz-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -ms-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #34495e), color-stop(100%, #2c3e50));
+  background-image: -webkit-linear-gradient(top, #34495e, #2c3e50);
+  background-image: -o-linear-gradient(top, #34495e, #2c3e50);
+  background-image: linear-gradient(top, #34495e, #2c3e50);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#34495e', endColorstr='#2c3e50', GradientType=0);
+}
+.model-tag.notification span {
+  background-color: #8e44ad;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#9b59b6), to(#8e44ad));
+  background-image: -moz-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: -ms-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9b59b6), color-stop(100%, #8e44ad));
+  background-image: -webkit-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: -o-linear-gradient(top, #9b59b6, #8e44ad);
+  background-image: linear-gradient(top, #9b59b6, #8e44ad);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
+}
 @media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
@@ -16878,7 +16860,8 @@ orientation : portrait // orientation: landscape    Target orientation
   font-size: 30px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
-@media all and (max-width: 640px) {
+@media all and (max-width: 2000px) {
+  /*640*/
   html,
   body {
     margin: 0;
@@ -17178,7 +17161,19 @@ orientation : portrait // orientation: landscape    Target orientation
     -o-border-radius: 0 0 0 5px;
     border-radius: 0 0 0 5px;
   }
-  #MenuView > .nav > li > a em {
+  #MenuView > ul > li {
+    zoom: 1;
+  }
+  #MenuView > ul > li:before {
+    content: "";
+    display: table;
+  }
+  #MenuView > ul > li:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  #MenuView > ul > li > a em {
     display: inline-block;
     position: relative;
     top: 4px;
@@ -17209,13 +17204,13 @@ orientation : portrait // orientation: landscape    Target orientation
     -webkit-box-sizing: border-box;
     box-sizing: border-box;
   }
-  #MenuView > .nav > li > a em:before {
+  #MenuView > ul > li > a em:before {
     content: "z";
   }
-  #MenuView > .nav > li > a em + span {
+  #MenuView > ul > li > a em + span {
     text-indent: -9999px !important;
   }
-  #MenuView > .nav > li > a span {
+  #MenuView > ul > li > a span {
     width: 33px;
   }
   #MenuView #search > a > em:before {
@@ -17260,6 +17255,9 @@ orientation : portrait // orientation: landscape    Target orientation
   #search > div input {
     margin: 0;
     border-left: 1px solid #D5D4D4;
+  }
+  #search .global-search-loopa {
+    display: none;
   }
   #shortcuts {
     position: relative;

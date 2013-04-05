@@ -1,0 +1,56 @@
+#MashableInboxActionBarForViews{
+	.view-toolbar ul:first-child > li > a {
+		border-left: none;
+	}
+	.search-view-0{
+		padding:0 15px 15px 15px;
+		.box-sizing();
+	}
+	.list-view-items-summary-clone{
+		margin-top:5px;
+	}
+	.global-search-loopa{
+		width: 24px;
+	}
+	#MashableInboxForm_searchTerm{
+		width: 204px;
+	}
+}
+
+.inbox-item{
+	position: relative;
+	div + span{
+		display: block;
+		padding-right: 80px;
+		overflow:hidden;
+	}
+	.list-item-details{
+		position: absolute;
+		top: 0;
+		right: 0;
+	}
+}
+
+.model-tag{
+	display: inline-block;
+	font-weight:400;
+	.smaller();
+	float: left;
+	margin-right: 5px;
+	margin-top: 1px;
+	span{
+		.radius(3px);
+		color:#fff;
+		padding:2px 4px;
+		line-height: 1;
+	}
+	&.mission span{
+		#gradient > .vertical(#1ABC9C, #16A085 ); //green
+	}
+	&.conversation span{
+		#gradient > .vertical(#34495E, #2C3E50 ); //dark
+	}
+	&.notification span{
+		#gradient > .vertical(#9B59B6, #8E44AD ); //purple
+	}
+}
