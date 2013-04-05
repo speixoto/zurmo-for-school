@@ -53,6 +53,10 @@
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
+            if (!RedBeanDatabase::isSetup())
+            {
+                return null;
+            }
             $metadata = $moduleName::getMetadata();
             if (isset($metadata['global']) && isset($metadata['global'][$key]))
             {
@@ -104,6 +108,10 @@
         {
             assert('is_string($moduleName)');
             assert('is_string($key)');
+            if (!RedBeanDatabase::isSetup())
+            {
+                return null;
+            }
             $metadata = $moduleName::getMetadata();
             $metadata['global'][$key] = $value;
             $moduleName::setMetadata($metadata);

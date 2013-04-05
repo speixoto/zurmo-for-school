@@ -73,15 +73,9 @@
             {
                 return Yii::app()->user->userModel->timeZone;
             }
-            else if (Yii::app()->isApplicationInstalled())
-            {
-                return $this->_timeZone;
-                //return $this->getGlobalValue(); until we can make the command tests pass, this needs to be off, otherwise
-                //tests fail.
-            }
             else
             {
-                return $this->_timeZone;
+                return $this->getGlobalValue();
             }
         }
 
@@ -95,7 +89,10 @@
             {
                 return $timeZone;
             }
-            return $this->_timeZone;
+            else
+            {
+                return $this->_timeZone;
+            }
         }
 
         /**
