@@ -107,7 +107,7 @@
             $content = null;
             $first = true;
             $dropDownItems = array();
-            $dropDownItemHtmlOptions = array('prompt' => 'Actions'); // TODO: Use Better phrase with translation
+            $dropDownItemHtmlOptions = array('prompt' => Zurmo::t('Core', 'Action'));
             if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
