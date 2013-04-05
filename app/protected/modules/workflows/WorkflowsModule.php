@@ -88,14 +88,6 @@
                         'right'            => self::RIGHT_CREATE_WORKFLOWS,
                     ),
                 ),
-                'headerMenuItems' => array(
-                    array(
-                        'label' => 'Workflows',
-                        'url'   => array('/workflows/default'),
-                        'right' => self::RIGHT_ACCESS_WORKFLOWS,
-                        'order' => 8,
-                    ),
-                ),
             );
             return $metadata;
         }

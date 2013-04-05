@@ -560,6 +560,26 @@
         }
 
         /**
+         * Detects if an existing action has missing action attributes. This can happen if an existing workflow exists
+         * and a change is made in designer that makes a new required custom attribute for example.
+         * @return boolean
+         */
+        public function isMissingRequiredActionAttributes()
+        {
+            $modelClassName                   = $this->getModelClassNameAndResolveForRelations();
+            $adapter = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
+                       $modelClassName, $this->_workflowType);
+            foreach($adapter->getRequiredAttributesForActions() as $attribute => $data)
+            {
+                if(!$this->hasActionAttributeFormByName($attribute))
+                {
+                    return true;
+                }
+            }
+            return false;
+        }
+
+        /**
          * @param string $attribute
          * @return WorkflowActionAttributeForm
          */

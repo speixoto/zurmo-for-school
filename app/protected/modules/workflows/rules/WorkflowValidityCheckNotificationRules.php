@@ -24,40 +24,41 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class BeginRequestTestBehavior extends BeginRequestBehavior
+    /**
+     * Class used to define notification when a workflow or series of workflows are not valid. This means they are
+     * missing required action attributes.
+     */
+    class WorkflowValidityCheckNotificationRules extends NotificationRules
     {
-        public function attach($owner)
+        /**
+         * @return string|The
+         */
+        public static function getType()
         {
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleApplicationCache'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleImports'));
-            $owner->attachEventHandler('onBeginRequest', array($this, 'handleLoadWorkflowsObserver'));
+            return 'WorkflowValidityCheck';
         }
 
         /**
-        * Import all files that need to be included(for lazy loading)
-        * @param $event
-        */
-        public function handleImports($event)
+         * @return string|void
+         */
+        public static function getDisplayName()
         {
-            try
-            {
-                $filesToInclude = GeneralCache::getEntry('filesToIncludeForTests');
-            }
-            catch (NotFoundException $e)
-            {
-                $filesToInclude   = FileUtil::getFilesFromDir(Yii::app()->basePath . '/modules', Yii::app()->basePath . '/modules', 'application.modules', true);
-                $filesToIncludeFromFramework = FileUtil::getFilesFromDir(Yii::app()->basePath . '/core', Yii::app()->basePath . '/core', 'application.core', true);
-                $totalFilesToIncludeFromModules = count($filesToInclude);
+            return Zurmo::t('WorkflowsModule', 'Workflows require attention.');
+        }
 
-                foreach ($filesToIncludeFromFramework as $key => $file)
-                {
-                    $filesToInclude[$totalFilesToIncludeFromModules + $key] = $file;
-                }
-                GeneralCache::cacheEntry('filesToIncludeForTests', $filesToInclude);
-            }
-            foreach ($filesToInclude as $file)
+        /**
+         * Any user who has access to the workflows module is added to receive a
+         * notification.
+         */
+        protected function loadUsers()
+        {
+            foreach (User::getAll() as $user)
             {
-                Yii::import($file);
+                if ($user->getEffectiveRight('WorkflowsModule', WorkflowsModule::RIGHT_ACCESS_WORKFLOWS) ==
+                    Right::ALLOW)
+                {
+                    $this->addUser($user);
+                }
             }
         }
     }

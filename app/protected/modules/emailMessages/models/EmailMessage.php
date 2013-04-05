@@ -144,20 +144,22 @@
 
         /**
          * Returns the display name for the model class.
+         * @param null | string $language
          * @return dynamic label name based on module.
          */
-        protected static function getLabel()
+        protected static function getLabel($language = null)
         {
-            return 'Email';
+            return Zurmo::t('EmailMessagesModule', 'Email', array(), null, $language);
         }
 
         /**
          * Returns the display name for plural of the model class.
+         * @param null | string $language
          * @return dynamic label name based on module.
          */
-        protected static function getPluralLabel()
+        protected static function getPluralLabel($language = null)
         {
-            return 'Emails';
+            return Zurmo::t('EmailMessagesModule', 'Emails', array(), null, $language);
         }
 
         public function hasSendError()

@@ -81,9 +81,24 @@
             return $this->invalid;
         }
 
-        protected static function getPluralLabel()
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
-            return 'Addresses';
+            return Zurmo::t('ZurmoModule', 'Address', array(), null, $language);
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return Zurmo::t('ZurmoModule', 'Addresses', array(), null, $language);
         }
 
         public static function getDefaultMetadata()
