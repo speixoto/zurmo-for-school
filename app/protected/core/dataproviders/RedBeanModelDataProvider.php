@@ -163,7 +163,7 @@
         /**
          * Each model has a sort attribute that is used to order the models if none is specified.
          */
-        protected static function getSortAttributeName($modelClassName)
+        public static function getSortAttributeName($modelClassName)
         {
             $metadata = $modelClassName::getMetadata();
             while (!isset($metadata[$modelClassName]['defaultSortAttribute']))

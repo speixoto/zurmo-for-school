@@ -60,12 +60,12 @@
                 $searchTermAttributeClauses = array(
                                                 array(  'attributeName'             => 'contact',
                                                         'relatedAttributeName'      => 'firstName',
-                                                        'operatorType'              => 'startswith',
+                                                        'operatorType'              => 'startsWith',
                                                         'value'                     => $filterBySearchTerm
                                                     ),
                                                 array(  'attributeName'             => 'contact',
                                                         'relatedAttributeName'      => 'lastName',
-                                                        'operatorType'              => 'startswith',
+                                                        'operatorType'              => 'startsWith',
                                                         'value'                     => $filterBySearchTerm
                                                 ),
                     /*
@@ -83,7 +83,7 @@
                                                         'relatedModelData'          => array(
                                                             'attributeName'                 => 'primaryEmail',
                                                             'relatedAttributeName'          => 'emailAddress',
-                                                            'operatorType'                  => 'startswith',
+                                                            'operatorType'                  => 'startsWith',
                                                             'value'                         => $filterBySearchTerm
                                                         ),
                                                 ),
@@ -91,7 +91,7 @@
                                                         'relatedModelData'          => array(
                                                             'attributeName'                 => 'secondaryEmail',
                                                             'relatedAttributeName'          => 'emailAddress',
-                                                            'operatorType'                  => 'startswith',
+                                                            'operatorType'                  => 'startsWith',
                                                             'value'                         => $filterBySearchTerm
                                                         ),
                                                 ),
@@ -123,7 +123,8 @@
 
         public static function makeSortAttributeData()
         {
-            return array('MarketingListMember' => 'createdDateTime'); // TODO: @Shoaibi/@Jason: Low: change this.
+            $sortAttribute = RedBeanModelDataProvider::getSortAttributeName('MarketingListMember');
+            return array('MarketingListMember' => $sortAttribute);
         }
-  }
+    }
 ?>

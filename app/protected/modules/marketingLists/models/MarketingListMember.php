@@ -37,13 +37,11 @@
          */
         protected static function getPluralLabel()
         {
-            // TODO: @Shoaibi/@Jason: High: Why "Marketing Lists"?
             return 'Marketing List Members';
         }
 
         protected static function getLabel()
         {
-            // TODO: @Shoaibi/@Jason: High: Same as above.
             return 'Marketing List Member';
         }
 
@@ -71,7 +69,9 @@
                     'createdDateTime'  => 'DateTime',
                     'modifiedDateTime' => 'DateTime',
                     'unsubscribed'     => 'CheckBox',
-            ));
+                ),
+                'defaultSortAttribute' => 'createdDateTime',
+            );
             return $metadata;
         }
 

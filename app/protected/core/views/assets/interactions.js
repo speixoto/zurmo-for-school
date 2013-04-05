@@ -52,7 +52,7 @@ $(window).ready(function(){
         var recentlyViewedHeight = 0;
 
         if($(window).width() > 960 ){
-        	console.log('resizing white area');
+        	//console.log('resizing white area');
         	//if login
          	if ( $('#LoginPageView').length > 0 ) {
              	appChromeHeight = 40 + $('#FooterView').outerHeight(true);

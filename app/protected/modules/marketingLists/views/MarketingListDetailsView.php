@@ -45,8 +45,7 @@
                             array('type'        => 'MarketingListsTogglePortletsLink',
                                 'htmlOptions'                   => array('class' => 'hasCheckboxes'),
                                 'membersPortletClass'           => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS,
-                                'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS,),
-                            // TODO: @Shoaibi: also: see that all UL's are created with same ID - this is not valid html
+                                'autorespondersPortletClass'    => MarketingListDetailsAndRelationsView::AUTORESPONDERS_PORTLET_CLASS),
                         ),
                     ),
                 ),
@@ -61,8 +60,8 @@
 
         protected function renderContent()
         {
+            // TODO: @Shoaibi/@Jason: Low: Do security walkthrough
             $actionElementBarContent        = $this->renderActionElementBar(false);
-            // TODO: @Shoaibi: any security things to think about?  shouldRenderToolBarElement like in SecuredActionBarForSearchAndListView
             $content                        = $this->renderTitleContent();
             $content                       .= ZurmoHtml::tag('div', array('class' => 'view-toolbar-container clearfix'),
                                                 ZurmoHtml::tag('div', array('class' => 'view-toolbar'),

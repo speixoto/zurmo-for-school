@@ -28,7 +28,6 @@
     {
         protected function getSubtitle()
         {
-            // TODO: @Shoaibi/@Jason: High: What to do here?
             return MarketingListMember::getModelLabelByTypeAndLanguage('Plural');
         }
     }

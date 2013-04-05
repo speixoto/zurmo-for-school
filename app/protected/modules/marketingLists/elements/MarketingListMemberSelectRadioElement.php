@@ -62,29 +62,39 @@
 
         protected function registerScripts()
         {
-            $selectContactId    = $this->getSelectContactOrLeadSearchBoxId();
-            $selectReportId     = $this->getSelectReportSearchBoxId();
+            $selectContactBoxId    = $this->getSelectContactOrLeadSearchBoxId();
+            $selectReportBoxId     = $this->getSelectReportSearchBoxId();
             Yii::app()->clientScript->registerScript($this->getListViewGridId() . '-toggleSelectContactOrReportSearchBoxVisibility', '
-                if(!$.hasActiveAjaxRequests())
+                // TODO: @Shoaibi/@Jason: Medium: Get rid of global js variable from here
+                function toggleSelectContactOrReportByRadioButtonId()
                 {
-                    // Do this on only first page load.
-                    $("#' . $this->getEditableInputId() . '_0").attr("checked", "checked");
-                    $("#' . $selectReportId . '").hide();
-                    $("#' . $selectContactId . '").show();
+                    var selectContactBoxId  = "#' . $selectContactBoxId . '";
+                    var selectReportBoxId   = "#' . $selectReportBoxId . '";
+                    var hideBoxId           = selectReportBoxId;
+                    var showBoxId           = selectContactBoxId;
+                    var radioButtonIdSuffix = window.selectContactOrReportRadioButtonSuffix;
+                    var radioButtonIdSuffix = (radioButtonIdSuffix === undefined) ? 0 : radioButtonIdSuffix;
+                    var radioButtonId       = "#' . $this->getEditableInputId() . '_" + radioButtonIdSuffix;
+                    if ($(radioButtonId).attr("checked") !== "checked")
+                    {
+                        $(radioButtonId).attr("checked", "checked");
+                    }
+                    if (radioButtonIdSuffix == 1)
+                    {
+                        showBoxId = selectReportBoxId;
+                        hideBoxId = selectContactBoxId;
+                    }
+                    $(hideBoxId).hide();
+                    $(showBoxId).show();
                 }
+                toggleSelectContactOrReportByRadioButtonId(); // call it on page load to ensure proper radio buttons checked and divs shown
                 $(".' . $this->attribute . '").unbind("change.action").bind("change.action", function(event)
                     {
-                        if ($("#' . $selectContactId . '").is(":visible"))
-                        {
-                            $("#' . $selectContactId . '").hide();
-                            $("#' . $selectReportId . '").show();
-                        }
-                        else
-                        {
-                            $("#' . $selectReportId . '").hide();
-                            $("#' . $selectContactId . '").show();
-                        }
-                    });
+                        radioButtonId       = ($(this)).attr("id");
+                        window.selectContactOrReportRadioButtonSuffix = radioButtonId.charAt(radioButtonId.length - 1);
+                        toggleSelectContactOrReportByRadioButtonId();
+                    }
+                );
             ');
         }
 

@@ -80,7 +80,7 @@
                         'elements' => array(
                             array('type'                            => 'MarketingListMemberSubscribeLink'),
                             array('type'                            => 'MarketingListMemberUnsubscribeLink'),
-                            array('type'                            => 'MarketingListMemberDeleteLink'), // TODO: @Shoaibi/@Jason: Low: Rename this, may be unlink
+                            array('type'                            => 'MarketingListMemberDeleteLink'),
                         ),
                     ),
                      'panels' => array(
@@ -268,7 +268,6 @@
             if ($this->showFilteredBySearchTerm)
             {
                 Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySearchTerm', "
-                // TODO: @Shoaibi/@Jason: Low: We support both, clicking outside and enter
                 $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').unbind('change.action').bind('change.action', function(event)
                     {
                         " . $ajaxSubmitScript . "

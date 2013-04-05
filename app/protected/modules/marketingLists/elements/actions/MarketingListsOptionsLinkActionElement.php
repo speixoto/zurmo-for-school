@@ -50,7 +50,7 @@
             $deleteElementContent   = $deleteElement->renderMenuItem();
             $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId, $this->params);
             $editElementContent     = $editElement->renderMenuItem();
-            // TODO: @Shoaibi: securable on these items from the outside coming in?
+            // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
             $menuItems              = array('label' => $this->getLabel(), 'url' => null,
                                                 'items' => array( $editElementContent, $deleteElementContent));
             $cClipWidget            = new CClipWidget();
