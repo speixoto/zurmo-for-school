@@ -249,7 +249,7 @@
 
         public static function resolveSanitizeMessageSubject(EmailMessage $message)
         {
-            return imap_utf8($message->subject);
+            $message->subject = imap_utf8($message->subject);
         }
                 
     }
