@@ -32,6 +32,13 @@
         protected static $showRecentlyViewed = true;
 
         /**
+         * Override if you have a module with views that when displayed, the left side menu shows a different module
+         * as 'active'
+         * @var string
+         */
+        protected static $activeModuleId;
+
+        /**
          * Given a controller, contained view, construct the gridview
          * used by the designer page view.
          * @param CController $controller
@@ -175,11 +182,20 @@
             foreach ($items as $key => $item)
             {
                 if ($controller != null && isset($item['moduleId']) &&
-                   $controller->resolveAndGetModuleId() == $item['moduleId'])
+                    static::resolveActiveModuleId($controller) == $item['moduleId'])
                 {
                     $items[$key]['active'] = true;
                 }
             }
+        }
+
+        protected static function resolveActiveModuleId($controller)
+        {
+            if(static::$activeModuleId != null)
+            {
+                return static::$activeModuleId;
+            }
+            return $controller->resolveAndGetModuleId();
         }
 
         protected static function makeRecentlyViewedView()

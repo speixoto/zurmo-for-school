@@ -62,7 +62,7 @@
                     array(
                         static::ZERO_MODELS_FOR_WORKFLOW_CHECK_FILTER_PATH . ' + listForWorkflow',
                         'controller'                    => $this,
-                        'activeActionElementType'       => 'EmailTemplatesForWorkflowLink',
+                        'activeActionElementType'       => EmailTemplatesForWorkflowLinkActionElement::getType(),
                         'breadcrumbLinks'               => static::getListForWorkflowBreadcrumbLinks(),
                         'stateMetadataAdapterClassName' => 'EmailTemplatesForWorkflowStateMetadataAdapter'
                     ),
@@ -109,7 +109,7 @@
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                                               'listPageSize', get_class($this->getModule()));
-            $activeActionElementType        = 'EmailTemplatesForWorkflowLink';
+            $activeActionElementType        = EmailTemplatesForWorkflowLinkActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
@@ -125,7 +125,7 @@
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
-                $view      = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                $view      = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
                              makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
             echo $view->render();
@@ -141,13 +141,17 @@
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
-                $view               = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                $view               = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            else
+            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             echo $view->render();
         }
@@ -162,14 +166,18 @@
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                $view               = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            else
+            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::
                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             echo $view->render();
         }
@@ -185,19 +193,23 @@
 
             if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
-            $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
-            $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-            $view                     = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
-                                        makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                        $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+                $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+                $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $view                     = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
+                                            makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
+                                            $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            else
+            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 //todO: fix breadcrumbs for marketing module.
                 $breadcrumbLinks[]    = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
                 $view                 = new EmailTemplatesPageView((ZurmoDefaultViewUtil::
                                         makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
                                         $breadcrumbLinks, 'EmailTemplateBreadCrumbView')));
+            }
+            else
+            {
+                throw new NotSupportedException();
             }
             echo $view->render();
         }
@@ -217,11 +229,14 @@
             {
                 $this->redirect(array($this->getId() . '/listForWorkflow'));
             }
-            else
+            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $this->redirect(array($this->getId() . '/index'));
             }
-
+            else
+            {
+                throw new NotSupportedException();
+            }
         }
     }
 ?>

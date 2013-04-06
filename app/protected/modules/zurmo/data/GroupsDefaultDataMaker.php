@@ -47,6 +47,9 @@
             $everyone->setRight('EmailMessagesModule', EmailMessagesModule::RIGHT_ACCESS_EMAIL_MESSAGES, Right::ALLOW);
             $everyone->setRight('EmailMessagesModule', EmailMessagesModule::RIGHT_CREATE_EMAIL_MESSAGES, Right::ALLOW);
             $everyone->setRight('EmailMessagesModule', EmailMessagesModule::RIGHT_DELETE_EMAIL_MESSAGES, Right::ALLOW);
+            $everyone->setRight('EmailTemplatesModule', EmailTemplatesModule::RIGHT_ACCESS_EMAIL_TEMPLATES, Right::ALLOW);
+            $everyone->setRight('EmailTemplatesModule', EmailTemplatesModule::RIGHT_CREATE_EMAIL_TEMPLATES, Right::ALLOW);
+            $everyone->setRight('EmailTemplatesModule', EmailTemplatesModule::RIGHT_DELETE_EMAIL_TEMPLATES, Right::ALLOW);
             $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_ACCESS_LEADS, Right::ALLOW);
             $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_CREATE_LEADS, Right::ALLOW);
             $everyone->setRight('LeadsModule',         LeadsModule::RIGHT_DELETE_LEADS, Right::ALLOW);
@@ -54,6 +57,9 @@
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_DELETE_OPPORTUNITIES, Right::ALLOW);
+            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
+            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
+            $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
             $everyone->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS, Right::ALLOW);
             $everyone->setRight('MeetingsModule',      MeetingsModule::RIGHT_CREATE_MEETINGS, Right::ALLOW);
             $everyone->setRight('MeetingsModule',      MeetingsModule::RIGHT_DELETE_MEETINGS, Right::ALLOW);

@@ -47,7 +47,7 @@
                                 'htmlOptions'     => array( 'class' => 'icon-workflows' )
                             ),
                             array(
-                                'type'            => 'EmailTemplatesForWorkflowLink',
+                                'type'            => EmailTemplatesForWorkflowLinkActionElement::getType(),
                                 'htmlOptions'     => array( 'class' => 'icon-email-templates' )
                             ),
                             array(

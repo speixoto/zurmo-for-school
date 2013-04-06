@@ -61,7 +61,7 @@
                                         $pageVar,
                                         false, $this->activeActionElementType);
             $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
-            $view                    = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+            $view                    = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
                                        makeViewWithBreadcrumbsForCurrentUser(
                                        $this->controller, $mixedView, $this->breadcrumbLinks, 'WorkflowBreadCrumbView'));
             echo $view->render();

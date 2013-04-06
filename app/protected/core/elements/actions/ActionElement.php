@@ -45,6 +45,12 @@
 
         abstract public function getActionType();
 
+        public static function getType()
+        {
+            $name = get_called_class();
+            return substr($name, 0, strlen($name) - strlen('ActionElement'));
+        }
+
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
         {
             $this->controllerId = $controllerId;

@@ -26,20 +26,36 @@
 
     class WorkflowCreateLinkActionElement extends CreateLinkActionElement
     {
+        /**
+         * Manage security check during render since you have multiple modules to check against
+         * @return null|string
+         */
+        public function getActionType()
+        {
+            return null;
+        }
+
         public function render()
         {
             $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
+            if(RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule', WorkflowsModule::getCreateRight(),
+                                                        Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
+                                  'url'     => Yii::app()->createUrl('workflows/default/create'));
+            }
+            if(RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
+                                                        Yii::app()->user->userModel))
+            {
+                $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
+                                 'url'     => Yii::app()->createUrl('emailTemplates/default/create',
+                                              array('type' => EmailTemplate::TYPE_WORKFLOW)));
+            }
             if (!empty($items))
             {
+                $menuItems = array( 'label' => $this->getLabel(),
+                                    'url'   => null,
+                                    'items' => $items);
                 $cClipWidget = new CClipWidget();
                 $cClipWidget->beginClip("ActionMenu");
                 $cClipWidget->widget('application.core.widgets.MbMenu', array(
