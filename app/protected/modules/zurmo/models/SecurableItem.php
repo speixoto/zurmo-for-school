@@ -150,7 +150,8 @@
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
                 $propagatedPermissions = Permission::NONE;
-                foreach ($user->role->roles as $role)
+                $descendentRoles = $this->getAllDescendentRoles($user->role);
+                foreach ($descendentRoles as $role)
                 {
                     foreach ($role->users as $userInRole)
                     {
@@ -167,6 +168,21 @@
                 // get_securableitem_propagated_allow_permissions_for_permitable.
                 throw new NotSupportedException();
             }
+        }
+
+        protected function getAllDescendentRoles($role)
+        {
+            $descendentRoles = array();
+            if(count($role->roles) > 0)
+            {
+                foreach ($role->roles as $childRole)
+                {
+                    $descendentRoles[] = $childRole;
+                    $descendentRoles = array_merge($descendentRoles,
+                                                   $this->getAllDescendentRoles($childRole));
+                }
+            }
+            return $descendentRoles;
         }
 
         public function getExplicitActualPermissions($permitable = null)
