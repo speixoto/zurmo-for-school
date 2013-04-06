@@ -67,12 +67,22 @@
 
         protected function steps()
         {
-            return array('processRows');
+            return array('processRows', 'completeImport');
         }
 
         protected function stepMessages()
         {
-            return array('processRows' => Zurmo::t('ImportModule', 'Processing'));
+            return array('processRows'    => Zurmo::t('ImportModule', 'Processing'),
+                         'completeImport' => Zurmo::t('ImportModule', 'Completing...')
+                    );
+        }
+
+        protected function completeImport()
+        {
+            $this->nextStep    = null;
+            $this->nextMessage = null;
+            $this->complete    = true;
+            return null;
         }
 
         protected function processRows($params)
@@ -104,9 +114,8 @@
 
             if (($page + 1) == $pageCount)
             {
-                $this->nextStep    = null;
-                $this->nextMessage = null;
-                $this->complete    = true;
+                $this->nextStep    = 'completeImport';
+                $this->setNextMessageByStep($this->nextStep);
                 return null;
             }
             else
