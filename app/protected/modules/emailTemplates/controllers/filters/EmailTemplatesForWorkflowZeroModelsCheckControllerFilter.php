@@ -24,32 +24,19 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Filter used by email template controller for showing if workflow email templates exist yet
+     */
+    class EmailTemplatesForWorkflowZeroModelsCheckControllerFilter extends WorkflowZeroModelsCheckControllerFilter
     {
-        public function render()
+        protected function resolveMessageModuleId()
         {
-            $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
-            if (!empty($items))
-            {
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
-            }
-            return null;
+            return 'emailTemplates';
+        }
+
+        protected function getMessageViewClassName()
+        {
+            return 'EmailTemplatesForWorkflowZeroModelsYetView';
         }
     }
 ?>

@@ -25,16 +25,20 @@
      ********************************************************************************/
 
     /**
-     * Element for displaying the available workflow email templates
+     * Renders an action bar and a zero models yet view.
      */
-    class EmailTemplatesForWorkflowStaticDropDownElement extends StaticDropDownFormElement
+    class ActionBarAndZeroModelsYetView extends GridView
     {
-        /**
-         * @return array
-         */
-        protected function getDropDownArray()
+        public function __construct(ActionBarForSearchAndListView $actionBarView, ZeroModelsYetView $zeroModelsYetView)
         {
-            return EmailTemplate::getAllDataAndLabels();
+            parent::__construct(2, 1);
+            $this->setView($actionBarView, 0, 0);
+            $this->setView($zeroModelsYetView, 1, 0);
+        }
+
+        public function isUniqueToAPage()
+        {
+            return true;
         }
     }
 ?>

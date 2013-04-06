@@ -29,6 +29,16 @@
      */
     class EmailTemplateModelClassNameElement extends StaticDropDownFormElement
     {
+        protected function renderLabel()
+        {
+            if ($this->form === null)
+            {
+                return $this->getFormattedAttributeLabel();
+            }
+            $id = $this->getIdForSelectInput();
+            return $this->form->labelEx($this->model, $this->attribute, array('for' => $id));
+        }
+
         protected function getDropDownArray()
         {
             return $this->getAvailableModelNamesArray();
@@ -36,21 +46,21 @@
 
         protected function getAvailableModelNamesArray()
         {
-            // NOTE: @Shoaibi/@Jason: User shouldn't be able to edit a template created against a model he hasn't got access for.
             $modules = Module::getModuleObjects();
             $availableModels = array();
             foreach ($modules as $module)
             {
                 $moduleClassName = get_class($module);
-                if (RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel) &&
-                                                    method_exists($moduleClassName, 'getPrimaryModelName'))
+                if ($moduleClassName::canHaveContentTemplates() &&
+                    RightsUtil::canUserAccessModule($moduleClassName, Yii::app()->user->userModel) &&
+                    method_exists($moduleClassName, 'getPrimaryModelName'))
                 {
                     try
                     {
                         $modelClassName = $moduleClassName::getPrimaryModelName();
                         if (!isset($availableModels[$modelClassName]))
                         {
-                            $availableModels[$modelClassName] = $modelClassName::getModelLabelByTypeAndLanguage('Singular');
+                            $availableModels[$modelClassName] = $modelClassName::getModelLabelByTypeAndLanguage('Plural');
                         }
                         else
                         {

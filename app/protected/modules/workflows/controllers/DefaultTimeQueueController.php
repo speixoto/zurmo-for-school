@@ -29,6 +29,28 @@
       */
     class WorkflowsDefaultTimeQueueController extends ZurmoBaseController
     {
+        const ZERO_MODELS_CHECK_FILTER_PATH = 'application.modules.workflows.controllers.filters.WorkflowZeroModelsCheckControllerFilter';
+
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('WorkflowsModule', 'Time Queue');
+            return array($title);
+        }
+
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    array(
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        'controller' => $this,
+                        'activeActionElementType' => 'ByTimeWorkflowInQueuesLink',
+                        'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                    ),
+                )
+            );
+        }
+
         public function actionIndex()
         {
             $this->actionList();
@@ -43,8 +65,7 @@
             $searchForm                     = new ByTimeWorkflowInQueuesSearchForm($model);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'ByTimeWorkflowInQueuesSearchView');
-            $title                          = Zurmo::t('WorkflowsModule', 'Time Queue');
-            $breadcrumbLinks                = array($title,);
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(

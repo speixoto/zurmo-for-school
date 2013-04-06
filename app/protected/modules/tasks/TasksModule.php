@@ -121,6 +121,11 @@
             return true;
         }
 
+        public static function canHaveContentTemplates()
+        {
+            return true;
+        }
+
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('TasksModule', 'Task', array(), null, $language);

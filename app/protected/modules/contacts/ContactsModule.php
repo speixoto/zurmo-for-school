@@ -197,5 +197,10 @@
         {
             return true;
         }
+
+        public static function canHaveContentTemplates()
+        {
+            return true;
+        }
     }
 ?>

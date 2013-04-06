@@ -60,15 +60,35 @@
             {
                 return true;
             }
-            $messageViewClassName         = $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
-            $messageView                  = new $messageViewClassName($this->controller->getId(),
-                                                                      $this->controller->getModule()->getId(),
+            $messageViewClassName         = $this->getMessageViewClassName();
+            $messageView                  = new $messageViewClassName($this->resolveMessageControllerId(),
+                                                                      $this->resolveMessageModuleId(),
                                                                       $modelClassName);
+            $this->resolveAndRenderView($messageView);
+            return false;
+        }
+
+        protected function getMessageViewClassName()
+        {
+            return $this->controller->getModule()->getPluralCamelCasedName() . 'ZeroModelsYetView';
+        }
+
+        protected function resolveMessageControllerId()
+        {
+            return $this->controller->getId();
+        }
+
+        protected function resolveMessageModuleId()
+        {
+            return $this->controller->getModule()->getId();
+        }
+
+        protected function resolveAndRenderView(View $messageView)
+        {
             $pageViewClassName            = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
             $view                         = new $pageViewClassName(ZurmoDefaultViewUtil::
-                                                 makeStandardViewForCurrentUser($this->controller, $messageView));
+                                            makeStandardViewForCurrentUser($this->controller, $messageView));
             echo $view->render();
-            return false;
         }
     }
 ?>

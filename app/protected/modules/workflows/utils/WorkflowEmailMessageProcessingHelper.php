@@ -61,7 +61,7 @@
             $emailTemplate              = EmailTemplate::getById((int)$this->emailMessageForm->emailTemplateId);
             $emailMessage               = new EmailMessage();
             $emailMessage->owner        = $this->triggeredByUser;
-            $emailMessage->subject      = $emailTemplate->subject;
+            $emailMessage->subject      = $this->resolveEmailTemplateSubjectForModelData($emailTemplate);
             $emailContent               = new EmailMessageContent();
             $emailContent->textContent  = $this->resolveEmailTemplateTextContentForModelData($emailTemplate);
             $emailContent->htmlContent  = $this->resolveEmailTemplateHtmlContentForModelData($emailTemplate);
@@ -78,6 +78,23 @@
         }
 
         /**
+         * If the content cannot be resolved for the merge tags, then use the original content
+         * @param EmailTemplate $emailTemplate
+         * @return string
+         */
+        protected function resolveEmailTemplateSubjectForModelData(EmailTemplate $emailTemplate)
+        {
+            $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
+                                                        $emailTemplate->subject);
+            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            {
+                return $emailTemplate->subject;
+            }
+            return $resolvedContent;
+        }
+
+        /**
+         * If the content cannot be resolved for the merge tags, then use the original content
          * @param EmailTemplate $emailTemplate
          * @return string
          */
@@ -85,10 +102,15 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->textContent);
-            return $mergeTagsUtil->resolveMergeTags($this->triggeredModel);
+            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            {
+                return $emailTemplate->textContent;
+            }
+            return $resolvedContent;
         }
 
         /**
+         * If the content cannot be resolved for the merge tags, then use the original content
          * @param EmailTemplate $emailTemplate
          * @return string
          */
@@ -96,7 +118,11 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->htmlContent);
-            return $mergeTagsUtil->resolveMergeTags($this->triggeredModel);
+            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            {
+                return $emailTemplate->htmlContent;
+            }
+            return $resolvedContent;
         }
 
         /**

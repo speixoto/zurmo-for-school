@@ -29,6 +29,23 @@
       */
     class WorkflowsDefaultController extends ZurmoBaseController
     {
+        const USER_EMAIL_TEMPLATE_ACCESS_FILTER_PATH =
+            'application.modules.workflows.controllers.filters.UserCanAccessEmailTemplatesForWorkflowCheckControllerFilter';
+
+        const ZERO_MODELS_CHECK_FILTER_PATH = 'application.modules.workflows.controllers.filters.WorkflowZeroModelsCheckControllerFilter';
+
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('WorkflowsModule', 'Workflows');
+            return array($title);
+        }
+
+        public static function getManageOrderBreadcrumbLinks()
+        {
+            $title = Zurmo::t('WorkflowsModule', 'Ordering');
+            return array($title);
+        }
+
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -39,9 +56,22 @@
                         'rightName' => WorkflowsModule::RIGHT_CREATE_WORKFLOWS,
                    ),
                    array(
-                       ZurmoModuleController::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
-                       'controller' => $this,
+                        static::USER_EMAIL_TEMPLATE_ACCESS_FILTER_PATH,
+                        'controller' => $this,
                    ),
+                   array(
+                       static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                       'controller' => $this,
+                       'activeActionElementType' => 'WorkflowsLink',
+                       'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                   ),
+                    array(
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + manageOrder',
+                        'controller' => $this,
+                        'activeActionElementType' => 'WorkflowManageOrderLink',
+                        'breadcrumbLinks'         => static::getManageOrderBreadcrumbLinks(),
+                    ),
+
                 )
             );
         }
@@ -66,10 +96,7 @@
             $searchForm                     = new WorkflowsSearchForm($savedWorkflow);
             $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize, null,
                                               'WorkflowsSearchView');
-            $title           = Zurmo::t('WorkflowsModule', 'Workflows');
-            $breadcrumbLinks = array(
-                 $title,
-            );
+            $breadcrumbLinks                = static::getListBreadcrumbLinks();
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView(
@@ -400,7 +427,7 @@
             $gridView                = new GridView(2, 1);
             $gridView->setView($actionBarView, 0, 0);
             $gridView->setView(new WorkflowManageOrderView(), 1, 0);
-            $breadcrumbLinks         = array(Zurmo::t('WorkflowsModule', 'Ordering'));
+            $breadcrumbLinks         = static::getManageOrderBreadcrumbLinks();
             $view                    = new WorkflowsPageView(  ZurmoDefaultAdminViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser(
                                             $this,

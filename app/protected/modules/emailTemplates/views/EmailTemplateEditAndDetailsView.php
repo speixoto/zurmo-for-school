@@ -45,15 +45,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'EmailTemplateType'),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
                                             ),
                                         ),

@@ -101,7 +101,7 @@
                     array('type',                       'required'),
                     array('type',                       'type',    'type' => 'integer'),
                     array('type',                       'numerical', 'min' => self::TYPE_WORKFLOW,
-                                                                'max' => self::TYPE_CONTACT),
+                                                                     'max' => self::TYPE_CONTACT),
                     array('modelClassName',             'required'),
                     array('modelClassName',             'type',     'type' => 'string'),
                     array('modelClassName',             'length', 'max' => 64),
@@ -132,26 +132,24 @@
 
         public function validateModelExists($attribute, $params)
         {
+            $passedValidation = true;
             if (!empty($this->$attribute))
             {
                 if (@class_exists($this->$attribute))
                 {
-                    if (is_subclass_of($this->$attribute, 'RedBeanModel'))
-                    {
-                    }
-                    else
+                    if (!is_subclass_of($this->$attribute, 'RedBeanModel'))
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
+                        $passedValidation = false;
                     }
                 }
                 else
                 {
                     $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name does not exist.'));
+                    $passedValidation = false;
                 }
             }
-            else
-            {
-            }
+            return $passedValidation;
         }
 
         public function validateHtmlContentAndTextContent($attribute, $params)
@@ -159,10 +157,9 @@
             if (empty($this->textContent) && empty($this->htmlContent))
             {
                 $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.'));
+                return false;
             }
-            else
-            {
-            }
+            return true;
         }
 
         public function setToUserDefaultLanguage($attribute, $params)
@@ -178,6 +175,7 @@
 
         public function validateMergeTags($attribute, $params)
         {
+            $passedValidation = true;
             if (!empty($this->$attribute) && @class_exists($this->modelClassName))
             {
                 $model          = new $this->modelClassName(false);
@@ -197,23 +195,45 @@
                                             ': Invalid MergeTag({mergeTag}) used.';
                             $this->addError($attribute, Zurmo::t('EmailTemplatesModule', $errorMessage,
                                                         array('{mergeTag}' => $tag)));
+                            $passedValidation = false;
                         }
                     }
                     else
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
+                        $passedValidation = false;
                     }
                 }
             }
-            else
-            {
-            }
+            return $passedValidation;
         }
 
-        public static function getAllDataAndLabels()
+        /**
+         * @param $type
+         * @return Array of EmailTemplate models
+         */
+        public static function getActiveByModuleClassNameAndIsNewModel($type)
         {
+            assert('is_int($type)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'type',
+                    'operatorType'         => 'equals',
+                    'value'                => $type,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
+            $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+        }
+
+        public static function getDataAndLabelsByType($type)
+        {
+            assert('is_int($type)');
             $dataAndLabels = array();
-            $emailTemplates = static::getAll('name');
+            $emailTemplates = static::getActiveByModuleClassNameAndIsNewModel($type);
             foreach($emailTemplates as $emailTemplate)
             {
                 $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);
@@ -226,12 +246,13 @@
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language),
                 array(
-                    'language'    => Zurmo::t('ZurmoModule', 'Language',   array(), null, $language),
-                    'htmlContent' => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
-                    'name'        => Zurmo::t('ZurmoModule',    'Name',  array(), null, $language),
-                    'subject'     => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
-                    'type'        => Zurmo::t('Core',                'Type',  array(), null, $language),
-                    'textContent' => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                    'modelClassName'  => Zurmo::t('Core',                'Module',   array(), null, $language),
+                    'language'        => Zurmo::t('ZurmoModule',         'Language',   array(), null, $language),
+                    'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
+                    'name'            => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
+                    'subject'         => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
+                    'type'            => Zurmo::t('Core',                'Type',  array(), null, $language),
+                    'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
                 )
             );
         }

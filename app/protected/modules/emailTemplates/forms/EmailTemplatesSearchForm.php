@@ -26,5 +26,12 @@
 
     class EmailTemplatesSearchForm extends OwnedSearchForm
     {
+        /**
+         * @return string
+         */
+        protected static function getRedBeanModelClassName()
+        {
+            return 'EmailTemplate';
+        }
     }
 ?>

@@ -74,7 +74,7 @@
             $this->assertTrue($this->contactHtmlMergeTagsUtil instanceof MergeTagsUtil);
         }
 
-        /*
+        /**
          * @depends testCanInstantiateContactMergeTags
          */
         public function testTextMergeFieldsArePopulatedCorrectlyWithCustomLanguage()
@@ -85,7 +85,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        /*
+        /**
          * @depends testCanInstantiateContactMergeTags
          */
         public function testTextMergeFieldsArePopulatedCorrectlyWithNoLanguage()
@@ -96,7 +96,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        /*
+        /**
          * @depends testCanInstantiateContactMergeTags
          */
         public function testTextMergeFieldsArePopulatedCorrectlyWithDefaultLanguage()
@@ -107,7 +107,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        /*
+        /**
          * @depends testCanInstantiateContactMergeTags
          */
         public function testHtmlMergeFieldsArePopulatedCorrectlyWithCustomLanguage()
@@ -118,7 +118,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        /*
+        /**
          * @depends testCanInstantiateContactMergeTags
          */
         public function testHtmlMergeFieldsArePopulatedCorrectlyWithNoLanguage()
@@ -129,7 +129,7 @@
             $this->assertEmpty($this->invalidTags);
         }
 
-        /*
+        /**
          * @depends testCanInstantiateContactMergeTags
          */
         public function testHtmlMergeFieldsArePopulatedCorrectlyWithDefaultLanguage()
@@ -140,6 +140,9 @@
             $this->assertEmpty($this->invalidTags);
         }
 
+        /**
+         * @depends testHtmlMergeFieldsArePopulatedCorrectlyWithDefaultLanguage
+         */
         public function testSucceedsWhenDataHasNoMergeTags()
         {
             $emailTemplateWithNoMergeTags = EmailTemplateTestHelper::createEmailTemplateByName(
@@ -156,6 +159,9 @@
             $this->assertEmpty($this->invalidTags);
         }
 
+        /**
+         * @depends testSucceedsWhenDataHasNoMergeTags
+         */
         public function testFailsOnInvalidMergeTags()
         {
             $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(
@@ -182,5 +188,35 @@
             $this->assertEquals(1, count($this->invalidTags));
             $this->assertTrue($this->invalidTags[0] == 'INVALID^TAG');
         }
+
+        /**
+         * @depends testFailsOnInvalidMergeTags
+         */
+        public function testTextMergeTag()
+        {
+            $content                = 'some subject [[STRING]] and something else';
+            $model                  = new EmailTemplateModelTestItem();
+            $model->string          = 'abc';
+            $contactMergeTagsUtil   = MergeTagsUtilFactory::make(1, null, $content);
+            $resolvedContent        = $contactMergeTagsUtil->resolveMergeTags($model, $this->invalidTags);
+            $compareContent         = 'some subject abc and something else';
+            $this->assertEquals($compareContent, $resolvedContent);
+        }
+
+        /**
+         * @depends testTextMergeTag
+         */
+        public function testPhoneMergeTag()
+        {
+            $content                = 'some subject [[PHONE]] and something else';
+            $model                  = new EmailTemplateModelTestItem();
+            $model->string          = 'myPhone';
+            $contactMergeTagsUtil   = MergeTagsUtilFactory::make(1, null, $content);
+            $resolvedContent        = $contactMergeTagsUtil->resolveMergeTags($model, $this->invalidTags);
+            $compareContent         = 'some subject myPhone and something else';
+            $this->assertEquals($compareContent, $resolvedContent);
+        }
+
+        //TODO WorkflowActionAttributeFormResolveValueTest - use setupBeforeClass from this.
     }
 ?>

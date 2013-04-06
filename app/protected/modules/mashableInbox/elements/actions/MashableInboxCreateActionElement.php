@@ -31,7 +31,7 @@
     {
         public function getActionType()
         {
-            return 'Edit';
+            return 'Create';
         }
 
         public function render()
@@ -81,3 +81,4 @@
             return Yii::app()->createUrl($moduleId . '/' . $this->controllerId . '/create');
         }
     }
+?>

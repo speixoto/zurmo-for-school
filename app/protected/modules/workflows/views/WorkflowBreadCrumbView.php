@@ -36,5 +36,23 @@
         {
             return Zurmo::t('WorkflowsModule', 'Workflows');
         }
+
+        /**
+         * Override to handle the actions for email templates.
+         * @return string
+         */
+        protected function resolveModuleId()
+        {
+            return 'workflows';
+        }
+
+        /**
+         * Override to handle the actions for email templates.
+         * @return string
+         */
+        protected function resolveControllerId()
+        {
+            return 'default';
+        }
     }
 ?>

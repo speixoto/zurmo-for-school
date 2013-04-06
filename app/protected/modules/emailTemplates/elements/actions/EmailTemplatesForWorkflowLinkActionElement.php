@@ -24,32 +24,25 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Link element to take you to a list of email template models that are specific for workflow
+     */
+    class EmailTemplatesForWorkflowLinkActionElement extends EditLinkActionElement
     {
-        public function render()
+        /**
+         * @return string
+         */
+        protected function getDefaultLabel()
         {
-            $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
-            if (!empty($items))
-            {
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
-            }
-            return null;
+            return Zurmo::t('EmailTemplatesModule', 'Email Templates');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getDefaultRoute()
+        {
+            return Yii::app()->createUrl('emailTemplates/default/listForWorkflow/');
         }
     }
 ?>

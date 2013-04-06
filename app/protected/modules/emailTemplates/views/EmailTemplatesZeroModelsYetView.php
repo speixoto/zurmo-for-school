@@ -24,32 +24,30 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Class for showing a message and create link when there are no email templates visible to the logged in user when
+     * going to the email templates list view.
+     */
+    class EmailTemplatesZeroModelsYetView extends ZeroModelsYetView
     {
-        public function render()
+        /**
+         * @return string
+         */
+        protected function getCreateLinkDisplayLabel()
         {
-            $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
-            if (!empty($items))
-            {
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
-            }
-            return null;
+            return Zurmo::t('EmailTemplatesModule', 'Create Email Template');
+        }
+
+        /**
+         * @return string
+         */
+        protected function getMessageContent()
+        {
+            return Zurmo::t('EmailTemplatesModule', '<h2>"TODO, ' .
+                                               'you don\'t know what you\'re doing."</h2><i>- W. Edwards Deming</i>' .
+                                               '</i><div class="large-icon"></div><p>Make life easier and create a ' .
+                                               'workflow process to automate and streamline your business processes. ' .
+                                               'Just make sure you know what you\'re doing.</p>');
         }
     }
 ?>

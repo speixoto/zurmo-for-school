@@ -38,7 +38,7 @@
 
         protected function getDefaultRoute()
         {
-            $params = array();
+            $params = $this->getRouteParameters();
             if (Yii::app()->request->getParam('redirectUrl') != null)
             {
                 $params = array_merge($params, array('redirectUrl' => Yii::app()->request->getParam('redirectUrl')));

@@ -66,7 +66,17 @@
 
         protected function getHomeUrl()
         {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/index');
+            return Yii::app()->createUrl($this->resolveModuleId() . '/' . $this->resolveControllerId() . '/index');
+        }
+
+        protected function resolveModuleId()
+        {
+            return $this->moduleId;
+        }
+
+        protected function resolveControllerId()
+        {
+            return $this->controllerId;
         }
     }
 ?>

@@ -24,32 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Filter used by workflow controller to ascertain if the user can access email templates, which is a requirement
+     * to use workflow
+     */
+    class UserCanAccessEmailTemplatesForWorkflowCheckControllerFilter extends CFilter
     {
-        public function render()
+        public $controller;
+
+        protected function preFilter($filterChain)
         {
-            $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
-            if (!empty($items))
+            if(!RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
             {
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
+                $messageView        = new UserIsMissingFullAccessToUseWorkflowSplashView();
+                $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';
+                $view               = new $pageViewClassName(ZurmoDefaultAdminViewUtil::
+                                      makeStandardViewForCurrentUser($this->controller, $messageView));
+                echo $view->render();
+                return false;
             }
-            return null;
+            return true;
         }
     }
 ?>

@@ -50,14 +50,20 @@
 
         protected function renderContent()
         {
-            $label              = $this->getCreateLinkDisplayLabel();
-            $params             = array('htmlOptions' => array('class' => 'z-button green-button'), 'label' => $label);
+
+            $params             = $this->getCreateLinkParams();
             $createLinkElement  = new CreateLinkActionElement($this->controllerId, $this->moduleId, null, $params);
             $content = '<div class="' . $this->getIconName() . '">';
             $content .= $this->getMessageContent();
             $content .= $createLinkElement->render();
             $content .= '</div>';
             return $content;
+        }
+
+        protected function getCreateLinkParams()
+        {
+            $label              = $this->getCreateLinkDisplayLabel();
+            return array('htmlOptions' => array('class' => 'z-button green-button'), 'label' => $label);
         }
 
         protected function getIconName()

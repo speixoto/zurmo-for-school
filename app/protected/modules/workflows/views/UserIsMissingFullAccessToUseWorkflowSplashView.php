@@ -24,32 +24,26 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * If a user has access to workflow, but not email templates, then that user cannot properly use workflow.
+     */
+    class UserIsMissingFullAccessToUseWorkflowSplashView extends SplashView
     {
-        public function render()
+        /**
+         * @return null|string
+         */
+        protected function getIconName()
         {
-            $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
-            if (!empty($items))
-            {
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
-            }
-            return null;
+            return 'Report';
+        }
+
+        /**
+         * @return string
+         */
+        protected function getMessageContent()
+        {
+            return Zurmo::t('WorkflowsModule', '<h2>Not so fast!</h2><div class="large-icon"></div>' .
+            '<p>To manage workflows you must have access to email templates. Contact the CRM administrator about this issue.</p>');
         }
     }
 ?>

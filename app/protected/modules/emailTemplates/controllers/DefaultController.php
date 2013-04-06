@@ -26,6 +26,57 @@
 
     class EmailTemplatesDefaultController extends ZurmoModuleController
     {
+        const ZERO_MODELS_FOR_WORKFLOW_CHECK_FILTER_PATH =
+              'application.modules.emailTemplates.controllers.filters.EmailTemplatesForWorkflowZeroModelsCheckControllerFilter';
+/**
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('WorkflowsModule', 'Workflows');
+            return array($title);
+        }
+**/
+        public static function getListForWorkflowBreadcrumbLinks()
+        {
+            $title = Zurmo::t('EmailTemplatesModule', 'Email Templates');
+            return array($title);
+        }
+
+        public static function getDetailsAndEditForWorkflowBreadcrumbLinks()
+        {
+            return array(Zurmo::t('EmailTemplatesModule', 'Email Templates') =>
+                         array('default/listForWorkflow'));
+        }
+
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    /**
+                    array(
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list, index',
+                        'controller' => $this,
+                        'activeActionElementType' => 'WorkflowsLink',
+                        'breadcrumbLinks'         => static::getListBreadcrumbLinks(),
+                    ),
+                     * */
+                    array(
+                        static::ZERO_MODELS_FOR_WORKFLOW_CHECK_FILTER_PATH . ' + listForWorkflow',
+                        'controller'                    => $this,
+                        'activeActionElementType'       => 'EmailTemplatesForWorkflowLink',
+                        'breadcrumbLinks'               => static::getListForWorkflowBreadcrumbLinks(),
+                        'stateMetadataAdapterClassName' => 'EmailTemplatesForWorkflowStateMetadataAdapter'
+                    ),
+
+                )
+            );
+        }
+
+        public function actionIndex()
+        {
+            //todo: watch where this goes... since we wont have actionList anymore
+            $this->actionList();
+        }
+
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -54,40 +105,100 @@
             echo $view->render();
         }
 
-
-        public function actionCreate()
+        public function actionListForWorkflow()
         {
-            $editAndDetailsView = $this->makeEditAndDetailsView(
-                                            $this->attemptToSaveModelFromPost(new EmailTemplate()), 'Edit');
-            $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                                              'listPageSize', get_class($this->getModule()));
+            $activeActionElementType        = 'EmailTemplatesForWorkflowLink';
+            $emailTemplate                  = new EmailTemplate(false);
+            $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);
+            $dataProvider                   = $this->resolveSearchDataProvider($searchForm, $pageSize,
+                                              'EmailTemplatesForWorkflowStateMetadataAdapter',
+                                              'EmailTemplatesSearchView');
+            $breadcrumbLinks                = static::getListForWorkflowBreadcrumbLinks();
+            if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
+            {
+                $mixedView = $this->makeListView($searchForm, $dataProvider);
+                $view = new WorkflowsPageView($mixedView);
+            }
+            else
+            {
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                             'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
+                $view      = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                             makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+            }
+            echo $view->render();
+        }
+
+        public function actionCreate($type)
+        {
+            $type = (int)$type;
+            $emailTemplate       = new EmailTemplate();
+            $emailTemplate->type = $type;
+            $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
+            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+                $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
+                $view               = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
+                                      $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+            }
+            else
+            {
+                $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            }
             echo $view->render();
         }
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $template = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($template);
-            $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this,
-                                                $this->makeEditAndDetailsView(
-                                                $this->attemptToSaveModelFromPost($template, $redirectUrl), 'Edit')));
+            $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
+
+            $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
+            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+                $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $view               = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                                      makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
+                                      $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+            }
+            else
+            {
+                $view = new EmailTemplatesPageView(ZurmoDefaultViewUtil::
+                        makeStandardViewForCurrentUser($this, $editAndDetailsView));
+            }
             echo $view->render();
         }
 
         public function actionDetails($id)
         {
-            $template = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
-            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($template);
-            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($template),
-                                        'EmailTemplatesModule'), $template);
+            $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
+            ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($emailTemplate);
+            AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED, array(strval($emailTemplate),
+                                        'EmailTemplatesModule'), $emailTemplate);
             $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
-                                                                            $this->getModule()->getId(), $template);
-            $breadcrumbLinks          = array(StringUtil::getChoppedStringContent(strval($template), 25));
-            $view                     = new EmailTemplatesPageView((ZurmoDefaultViewUtil::
-                                                makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
-                                                    $breadcrumbLinks, 'EmailTemplateBreadCrumbView')));
+                                                                            $this->getModule()->getId(), $emailTemplate);
 
+            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            {
+            $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+            $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+            $view                     = new WorkflowsPageView(ZurmoDefaultAdminViewUtil::
+                                        makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
+                                        $breadcrumbLinks, 'WorkflowBreadCrumbView'));
+            }
+            else
+            {
+                //todO: fix breadcrumbs for marketing module.
+                $breadcrumbLinks[]    = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
+                $view                 = new EmailTemplatesPageView((ZurmoDefaultViewUtil::
+                                        makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
+                                        $breadcrumbLinks, 'EmailTemplateBreadCrumbView')));
+            }
             echo $view->render();
         }
 
@@ -100,8 +211,17 @@
         {
             $emailTemplate = static::getModelAndCatchNotFoundAndDisplayError('EmailTemplate', intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailTemplate);
+            $type          = $emailTemplate->type;
             $emailTemplate->delete();
-            $this->redirect(array($this->getId() . '/index'));
+            if($type == EmailTemplate::TYPE_WORKFLOW)
+            {
+                $this->redirect(array($this->getId() . '/listForWorkflow'));
+            }
+            else
+            {
+                $this->redirect(array($this->getId() . '/index'));
+            }
+
         }
     }
 ?>

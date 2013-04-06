@@ -587,5 +587,13 @@
         {
             return false;
         }
+
+        /**
+         * Override in modules that can be used in content templates
+         */
+        public static function canHaveContentTemplates()
+        {
+            return false;
+        }
     }
 ?>

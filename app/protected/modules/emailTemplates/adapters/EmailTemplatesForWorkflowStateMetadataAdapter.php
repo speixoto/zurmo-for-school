@@ -24,32 +24,47 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class WorkflowCreateLinkActionElement extends CreateLinkActionElement
+    /**
+     * Adapter class to showing just workflow email templates. Not exactly a 'state' like contact/lead but sufficient
+     * for what we are doing with email templates either being for 'workflow' or 'marketing'.
+     */
+    class EmailTemplatesForWorkflowStateMetadataAdapter extends StateMetadataAdapter
     {
-        public function render()
+        /**
+         * Creates where clauses and adds structure information
+         * to existing DataProvider metadata.
+         */
+        public function getAdaptedDataProviderMetadata()
         {
-            $items = array();
-            $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
-                             'url'     => Yii::app()->createUrl('workflows/default/create'));
-            $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
-                             'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                          array('type' => EmailTemplate::TYPE_WORKFLOW)));
-            $menuItems = array( 'label' => $this->getLabel(),
-                                'url'   => null,
-                                'items' => $items);
-            //TODO: security split check?
-            if (!empty($items))
+            $metadata      = $this->metadata;
+            $clauseCount   = count($metadata['clauses']);
+            $startingCount = $clauseCount + 1;
+            $structure     = '';
+            $metadata['clauses'][$startingCount] = array(
+                'attributeName' => 'type',
+                'operatorType'  => 'equals',
+                'value'         => EmailTemplate::TYPE_WORKFLOW
+            );
+            $structure    .= $startingCount;
+            if (empty($metadata['structure']))
             {
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
+                $metadata['structure'] = '(' . $structure . ')';
             }
-            return null;
+            else
+            {
+                $metadata['structure'] = '(' . $metadata['structure'] . ') and (' . $structure . ')';
+            }
+            return $metadata;
+        }
+
+        /**
+         * Not Used
+         * @return array|void
+         * @throws NotImplementedException
+         */
+        protected function getStateIds()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>
