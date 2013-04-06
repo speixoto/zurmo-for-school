@@ -266,7 +266,7 @@
             $emailMessage = new EmailMessage();
             $emailMessage->subject = $subjectKOI8R;
             $this->assertEquals($subjectKOI8R,$emailMessage->subject);
-            EmailMessageUtil::resolveSanitizeMessageSubject(emailMessage);
+            EmailMessageUtil::resolveSanitizeFromImapToUtf8($emailMessage);
             $this->assertEquals($subjectUTF8,$emailMessage->subject);
             //$this->assertTrue($emailMessage->save(false));
         }

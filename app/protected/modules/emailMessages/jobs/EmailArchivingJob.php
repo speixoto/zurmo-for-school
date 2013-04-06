@@ -356,8 +356,8 @@
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotValidated', $message);
                 return false;
             }
-            
-            EmailMessageUtil::resolveSanitizeMessageSubject($emailMessage);
+                        
+            EmailMessageUtil::resolveSanitizeFromImapToUtf8($emailMessage);
             $saved = $emailMessage->save();
             try
             {
