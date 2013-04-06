@@ -369,6 +369,5 @@
             $this->assertEquals(1, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
         }
-        
     }
 ?>
