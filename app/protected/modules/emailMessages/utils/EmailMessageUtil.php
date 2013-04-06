@@ -246,5 +246,11 @@
            }
            return $textContent;
         }
+
+        public static function resolveSanitizeMessageSubject(EmailMessage $message)
+        {
+            return imap_utf8($message->subject);
+        }
+                
     }
 ?>

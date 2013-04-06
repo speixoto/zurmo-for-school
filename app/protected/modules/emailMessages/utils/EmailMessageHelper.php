@@ -142,9 +142,4 @@
             $emailHelper->sendImmediately($emailMessage);
             return $emailMessage;
         }
-        
-        public static function sanitizeSubject($subject)
-        {
-            return imap_utf8($subject);
-        }
     }

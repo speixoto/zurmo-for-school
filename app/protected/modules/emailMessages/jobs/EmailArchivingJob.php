@@ -281,7 +281,7 @@
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $emailOwner;
-            $emailMessage->subject = EmailMessageHelper::sanitizeSubject($message->subject);
+            $emailMessage->subject = $message->subject;
 
             $emailContent              = new EmailMessageContent();
             $emailContent->textContent = $message->textBody;
@@ -356,7 +356,8 @@
                 $this->resolveMessageSubjectAndContentAndSendSystemMessage('EmailMessageNotValidated', $message);
                 return false;
             }
-
+            
+            EmailMessageUtil::resolveSanitizeMessageSubject($emailMessage);
             $saved = $emailMessage->save();
             try
             {

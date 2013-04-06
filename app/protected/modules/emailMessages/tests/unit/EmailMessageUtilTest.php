@@ -256,6 +256,21 @@
             $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
             $this->assertEquals("\n\n\nA test \n\nmessage.", $textContent);
         }
+        
+        public function testResolveSanitizeMessageSubject()
+        {
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
+            $subjectUTF8 = 'Тестовое письмо. Test email';
+            $subjectKOI8R = '=?KOI8-R?Q?=F4=C5=D3=D4=CF=D7=CF=C5_=D0=C9=D3=D8=CD=CF=2E_Te?= =?KOI8-R?Q?st_email?=';
+            $emailMessage = new EmailMessage();
+            $emailMessage->subject = $subjectKOI8R;
+            $this->assertEquals($subjectKOI8R,$emailMessage->subject);
+            EmailMessageUtil::resolveSanitizeMessageSubject(emailMessage);
+            $this->assertEquals($subjectUTF8,$emailMessage->subject);
+            //$this->assertTrue($emailMessage->save(false));
+        }
+ 
     }
 ?>
 
