@@ -164,17 +164,5 @@
         {
             return !($this->error == null || $this->error->id < 0);
         }
-        protected function beforeSave()
-        {
-             if (parent::beforeSave())
-             {
-                 $this->subject = imap_utf8($this->subject);
-                 return true;
-             }
-             else
-             {
-                 return false;
-             }
-        }
     }
 ?>
