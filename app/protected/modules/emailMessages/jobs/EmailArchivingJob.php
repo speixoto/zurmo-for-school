@@ -281,7 +281,7 @@
 
             $emailMessage = new EmailMessage();
             $emailMessage->owner   = $emailOwner;
-            $emailMessage->subject = $message->subject;
+            $emailMessage->subject = imap_utf8($message->subject);
 
             $emailContent              = new EmailMessageContent();
             $emailContent->textContent = $message->textBody;
