@@ -95,7 +95,7 @@
                     'name',
                     'description',
                     'quantity',
-		    'priceFrequency',
+		    'pricefrequency',
                     'sellPrice',
                     'type'
                 ),
@@ -104,9 +104,11 @@
                     'contact'			=> array(RedBeanModel::HAS_ONE, 'Contact'),
                     'opportunity'		=> array(RedBeanModel::HAS_ONE, 'Opportunity'),
                     'productTemplate'		=> array(RedBeanModel::HAS_ONE, 'ProductTemplate'),
-                    'stage'			=> array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED),
+                    'stage'			=> array(RedBeanModel::HAS_ONE, 'OwnedCustomField', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'stage'),
 		    'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
-                    'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED),
+                    'sellPrice'                 => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'sellPrice'),
                 ),
                 'rules' => array(
                     array('name',		'required'),
@@ -116,7 +118,7 @@
                     array('quantity',		'type',    'type' => 'integer'),
                     array('stage',		'required'),
 		    array('type',		'type',    'type' => 'integer'),
-                    array('priceFrequency',	'type',    'type' => 'integer'),
+                    array('pricefrequency',	'type',    'type' => 'integer'),
 		    array('sellPrice',		'required'),
                 ),
                 'elements' => array(

@@ -112,8 +112,7 @@
                 ),
                 'relations' => array(
                     'products'                  => array(RedBeanModel::HAS_MANY, 'Product'),
-                    'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED,
-                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'sellPriceFormula'),
+                    'sellPriceFormula'          => array(RedBeanModel::HAS_ONE,   'SellPriceFormula', RedBeanModel::OWNED),
                     'productCategories'         => array(RedBeanModel::MANY_MANY, 'ProductCategory'),
                     'cost'                      => array(RedBeanModel::HAS_ONE,   'CurrencyValue',    RedBeanModel::OWNED,
                                                 RedBeanModel::LINK_TYPE_SPECIFIC, 'cost'),

@@ -121,7 +121,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'priceFrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
+                                                array('attributeName' => 'pricefrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
                                             ),
                                         ),
                                     )
