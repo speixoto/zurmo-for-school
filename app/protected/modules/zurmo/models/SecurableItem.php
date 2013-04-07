@@ -135,7 +135,13 @@
         {
             if ($permitable instanceof User)
             {
-                return $this->recursiveGetPropagatedAllowPermissions($permitable);
+                $allowPermissions = Permission::NONE;
+                $descendentRoles = $this->getAllDescendentRoles($permitable->role);
+                foreach ($descendentRoles as $role)
+                {
+                    $allowPermissions |= $this->recursiveGetPropagatedAllowPermissions($role);
+                }
+                return $allowPermissions;
             }
             else
             {
@@ -143,21 +149,16 @@
             }
         }
 
-        protected function recursiveGetPropagatedAllowPermissions(User $user)
+        protected function recursiveGetPropagatedAllowPermissions($role)
         {
             if (!SECURITY_OPTIMIZED)
             {
                 // The slow way will remain here as documentation
                 // for what the optimized way is doing.
                 $propagatedPermissions = Permission::NONE;
-                $descendentRoles = $this->getAllDescendentRoles($user->role);
-                foreach ($descendentRoles as $role)
+                foreach ($role->users as $userInRole)
                 {
-                    foreach ($role->users as $userInRole)
-                    {
-                        $propagatedPermissions |= $this->getEffectivePermissions($userInRole) |
-                                                  $this->recursiveGetPropagatedAllowPermissions($userInRole);
-                    }
+                    $propagatedPermissions |= $this->getEffectivePermissions($userInRole) ;
                 }
                 return $propagatedPermissions;
             }
