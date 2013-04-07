@@ -157,6 +157,7 @@
                     'leads',
                     'contacts',
                     'opportunities',
+                    'marketing',
                     'reports',
                 )
             );

@@ -61,7 +61,7 @@
                                                         array(),
                                                         'MarketingListsActionBarForListView'
                                                     );
-                $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
+                $view = new MarketingListsPageView(MarketingDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this, $mixedView));
             }
             echo $view->render();

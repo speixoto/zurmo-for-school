@@ -338,6 +338,7 @@
             'install',
             'jobsManager',
             'leads',
+            'marketing',
             'marketingLists',
             'mashableInbox',
             'meetings',
