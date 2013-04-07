@@ -94,6 +94,7 @@
                 ),
                 'relations' => array(
                     'productTemplates'  => array(RedBeanModel::MANY_MANY, 'ProductTemplate'),
+		    'products'  => array(RedBeanModel::MANY_MANY, 'Product'),
                     'productCatalogs'   => array(RedBeanModel::MANY_MANY, 'ProductCatalog'),
                     'productCategory'   => array(RedBeanModel::HAS_MANY_BELONGS_TO, 'ProductCategory'),
                     'productCategories' => array(RedBeanModel::HAS_MANY, 'ProductCategory'),

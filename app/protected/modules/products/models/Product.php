@@ -87,6 +87,14 @@
             return true;
         }
 
+	public static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language), array(
+                'pricefrequency'     => Zurmo::t('ProductsModule', 'Price Frequency', $params, null, $language),
+                ));
+        }
+
         public static function getDefaultMetadata()
         {
             $metadata = parent::getDefaultMetadata();

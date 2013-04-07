@@ -79,6 +79,10 @@
         public function actionDetails($id)
         {
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
+	    if(Yii::app()->request->isAjaxRequest)
+	    {
+		die();
+	    }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);
             $detailsView           = new ProductTemplateDetailsView($this->getId(), $this->getModule()->getId(), $productTemplate);
             $view = new ProductTemplatesPageView(ZurmoDefaultViewUtil::
@@ -272,7 +276,7 @@
 
         public function actionModalList()
         {
-            $modalListLinkProvider = new SelectFromRelatedEditModalListLinkProvider(
+	    $modalListLinkProvider = new ProductTemplateSelectFromRelatedEditModalListLinkProvider(
                                             $_GET['modalTransferInformation']['sourceIdFieldId'],
                                             $_GET['modalTransferInformation']['sourceNameFieldId']
             );

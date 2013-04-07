@@ -72,7 +72,10 @@
         {
             $productCategory = new ProductCategory();
             $productCatalog = ProductCatalog::getByName(ProductCatalog::DEFAULT_NAME);
-            $productCategory->productCatalogs->add($productCatalog[0]);
+	    if(!empty($productCatalog))
+	    {
+		$productCategory->productCatalogs->add($productCatalog[0]);
+	    }
             $editAndDetailsView = $this->makeEditAndDetailsView(
                                             $this->attemptToSaveModelFromPost($productCategory), 'Edit');
             $view = new ProductCategoriesPageView(ZurmoDefaultViewUtil::

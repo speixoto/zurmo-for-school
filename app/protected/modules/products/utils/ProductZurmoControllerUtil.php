@@ -25,26 +25,37 @@
      ********************************************************************************/
 
     /**
-     * Display the account selection. This is a
-     * combination of a type-ahead input text field
-     * and a selection button which renders a modal list view
-     * to search on account.  Also includes a hidden input for the user
-     * id.
+     * Class helps support adding/removing product categories while saving a product template from a post.
      */
-    class AccountElement extends ModelElement
+    class ProductZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
     {
-        protected static $moduleId = 'accounts';
+        protected $productCategoryFormName;
 
-        /**
-         * Render a hidden input, a text input with an auto-complete
-         * event, and a select button. These three items together
-         * form the Account Editable Element
-         * @return The element's content as a string.
-         */
-        protected function renderControlEditable()
+        protected $peopleAddedAsProductCategories;
+
+        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productCategoryFormName)
         {
-            assert('$this->model->{$this->attribute} instanceof Account');
-            return parent::renderControlEditable();
+            assert('is_string($relatedItemsRelationName)');
+            assert('is_string($relatedItemsFormName)');
+            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
+            $this->productCategoryFormName = $productCategoryFormName;
+        }
+
+        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
+        {
+            assert('$model instanceof Product');
+            $postData = PostUtil::getData();
+            if (isset($postData[$this->productCategoryFormName]))
+            {
+                $this->peopleAddedAsProductCategories = ProductCategoriesUtil::
+                                                               resolveProductHasManyProductCategoriesFromPost($model,
+                                                               $postData[$this->productCategoryFormName]);
+            }
+        }
+
+        protected function checkProductsMassDeletion()
+        {
+
         }
     }
 ?>

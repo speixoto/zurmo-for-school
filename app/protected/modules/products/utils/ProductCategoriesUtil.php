@@ -25,37 +25,45 @@
      ********************************************************************************/
 
     /**
-     * Class helps support adding/removing product categories while saving a product template from a post.
+     * Helper class for product category logic.
      */
-    class ProductTemplateZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
+    class ProductCategoriesUtil
     {
-        protected $productTemplateProductCategoryFormName;
-
-        protected $peopleAddedAsProductTemplateProductCategories;
-
-        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productTemplateProductCategoryFormName)
+        public static function resolveProductHasManyProductCategoriesFromPost(
+                                    Product $product, $postData)
         {
-            assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName)');
-            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
-            $this->productTemplateProductCategoryFormName = $productTemplateProductCategoryFormName;
-        }
-
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
-        {
-            assert('$model instanceof ProductTemplate');
-            $postData = PostUtil::getData();
-            if (isset($postData[$this->productTemplateProductCategoryFormName]))
+            $newCategory = array();
+            if (isset($postData['categoryIds']) && strlen($postData['categoryIds']) > 0)
             {
-                $this->peopleAddedAsProductTemplateProductCategories = ProductTemplateProductCategoriesUtil::
-                                                               resolveProductTemplateHasManyProductCategoriesFromPost($model,
-                                                               $postData[$this->productTemplateProductCategoryFormName]);
+                $categoryIds = explode(",", $postData['categoryIds']);  // Not Coding Standard
+                foreach ($categoryIds as $categoryId)
+                {
+                    $newCategory[$categoryId] = ProductCategory::getById((int)$categoryId);
+                }
+                if ($product->productCategories->count() > 0)
+                {
+                    $categoriesToRemove = array();
+                    foreach ($product->productCategories as $index => $existingCategory)
+                    {
+                        $categoriesToRemove[] = $existingCategory;
+                    }
+                    foreach ($categoriesToRemove as $categoryToRemove)
+                    {
+                        $product->productCategories->remove($categoryToRemove);
+                    }
+                }
+                //Now add missing categories
+                foreach ($newCategory as $category)
+                {
+                    $product->productCategories->add($category);
+                }
             }
-        }
-
-        protected function checkProductTemplatesMassDeletion()
-        {
-
+            else
+            {
+                //remove all categories
+                $product->productCategories->removeAll();
+            }
+            return $newCategory;
         }
     }
 ?>

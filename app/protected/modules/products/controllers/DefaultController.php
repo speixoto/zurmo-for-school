@@ -119,13 +119,19 @@
 
         public function actionEdit($id, $redirectUrl = null)
         {
-            $product = Product::getById(intval($id));
+	    $product = Product::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($product);
             $view = new ProductsPageView(ZurmoDefaultViewUtil::
                                          makeStandardViewForCurrentUser($this,
                                              $this->makeEditAndDetailsView(
                                                  $this->attemptToSaveModelFromPost($product, $redirectUrl), 'Edit')));
             echo $view->render();
+        }
+
+	protected static function getZurmoControllerUtil()
+        {
+            return new ProductZurmoControllerUtil('productItems', 'ProductItemForm',
+                                                            'ProductCategoriesForm');
         }
 
         /**
