@@ -89,6 +89,10 @@ EOD;
             $messageLogger = new MessageLogger($messageStreamer);
             InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
             $messageStreamer->add(Zurmo::t('Commands', 'Autobuild complete, rebuilding read permissions.'));
+            if (SHOW_QUERY_DATA)
+            {
+                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+            }
             ReadPermissionsOptimizationUtil::rebuild();
             $messageStreamer->add(Zurmo::t('Commands', 'Rebuild read permissions complete.'));
             $endTime = microtime(true);
