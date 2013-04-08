@@ -56,7 +56,35 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        /**
+         * Testing groupBy and displayAttributes together
+         */
+        public function testGetAttributesForOrderBys()
+        {
+            $model              = new ReportModelTestItem();
+            $model2             = new ReportModelTestItem2();
+            $rules              = new ReportsTestReportRules();
+            $report             = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
+            $groupBy->attributeIndexOrDerivedType = 'hasOne___name';
+            $groupBy->axis                        = 'x';
+            $report->addGroupBy($groupBy);
 
+            $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem2', $report->getType());
+            $displayAttribute->attributeIndexOrDerivedType = 'Count';
+            $report->addDisplayAttribute($displayAttribute);
+            $adapter            = new ModelRelationsAndAttributesToSummationReportAdapter($model2, $rules, $report->getType());
+            $attributes         = $adapter->getAttributesForOrderBys($report->getGroupBys(), $report->getDisplayAttributes(), $model, 'hasOne');
+            $this->assertEquals(2, count($attributes));
+            $this->assertTrue(isset($attributes['name']));
+            $this->assertTrue(isset($attributes['Count']));
+        }
+
+        /**
+         * @depends testGetAttributesForOrderBys
+         */
         public function testGetAttributesForChartSeries()
         {
             $model              = new ReportModelTestItem();

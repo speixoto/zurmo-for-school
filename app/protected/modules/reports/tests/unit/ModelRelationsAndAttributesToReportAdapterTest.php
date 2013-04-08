@@ -854,6 +854,8 @@
             $this->assertEquals($compareData, $attributes['dropDown']);
 
             //Now test when a group by is also selected on the related ReportModelTestItem2
+            //Should return as phone, since the getAttributesForOrderBys is called from the
+            //@see ReportRelationsAndAttributesToTreeAdapter
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
             $groupBy->attributeIndexOrDerivedType = 'hasOne___phone';
             $model              = new ReportModelTestItem2();
@@ -862,7 +864,7 @@
             $attributes = $adapter->getAttributesForOrderBys($report->getGroupBys(), array(), new ReportModelTestItem(), 'hasOne');
             $this->assertEquals(1, count($attributes));
             $compareData        = array('label' => 'Phone');
-            $this->assertEquals($compareData, $attributes['hasOne___phone']);
+            $this->assertEquals($compareData, $attributes['phone']);
 
             //Now test a third group by on the base model ReportModelTestItem
             $groupBy            = new GroupByForReportForm('ReportsTestModule', 'ReportModelTestItem', $report->getType());
@@ -919,7 +921,7 @@
 
             //This should not add because we are at the wrong point in the chain
             $displayAttribute   = new DisplayAttributeForReportForm('ReportsTestModule', 'ReportModelTestItem',
-                Report::TYPE_SUMMATION);
+                                  Report::TYPE_SUMMATION);
             $this->assertNull($displayAttribute->label);
             $displayAttribute->attributeIndexOrDerivedType = 'hasOne___createdDateTime__Minimum';
             $report->addDisplayAttribute($displayAttribute);
