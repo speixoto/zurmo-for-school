@@ -121,8 +121,8 @@
                         'order' => 6,
                     ),
                     array(
-                        'label' => "eval:Zurmo::t('ZurmoModule', 'Forums')",
-                        'url' => 'http://zurmo.org/forums/',
+                        'label' => "eval:Zurmo::t('ZurmoModule', 'Need Support?')",
+                        'url' => 'http://www.zurmo.com/needSupport.php',
                         'order' => 9,
                     ),
                     array(
