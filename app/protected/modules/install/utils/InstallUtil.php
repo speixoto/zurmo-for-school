@@ -1047,7 +1047,7 @@
                 {
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Starting to load demo data.'));
                     $messageLogger = new MessageLogger($messageStreamer);
-
+                    $startTime = microtime(true);
                     if (isset($args[9]))
                     {
                         DemoDataUtil::load($messageLogger, intval($args[9]));
@@ -1055,6 +1055,13 @@
                     else
                     {
                         DemoDataUtil::load($messageLogger, 6);
+                    }
+                    $endTime = microtime(true);
+                    $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
+                                          array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+                    if (SHOW_QUERY_DATA)
+                    {
+                        $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
                     }
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Finished loading demo data.'));
                 }
