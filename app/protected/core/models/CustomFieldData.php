@@ -125,5 +125,11 @@
             }
             return $saved;
         }
+
+        protected function afterDelete()
+        {
+            parent::afterDelete();
+            unset(self::$cachedModelsByName[$this->name]);
+        }
     }
 ?>
