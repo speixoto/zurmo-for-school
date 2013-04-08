@@ -90,7 +90,7 @@
                         'editable'    => $portlet->isEditable(),
                         'collapsed'   => $portlet->collapsed,
                         'removable'   => $this->arePortletsRemovable(),
-                        'uniqueClass' => get_class($portlet->getView())
+                        'uniqueClass' => $this->resolveUniqueClass($portlet)
                     );
                 }
             }
@@ -107,6 +107,17 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['JuiPortlets'];
+        }
+
+        protected function resolveUniqueClass(Portlet $portlet)
+        {
+            $content  = null;
+            $content .= get_class($portlet->getView());
+            foreach($portlet->getCssClasses() as $cssClass)
+            {
+                $content .= ' ' . $cssClass;
+            }
+            return $content;
         }
 
         protected function getLayoutType()

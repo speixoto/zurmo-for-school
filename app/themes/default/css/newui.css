@@ -5642,7 +5642,7 @@ body > .ui-autocomplete {
   list-style: none;
 }
 #MenuView {
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   border-bottom: 1px solid #cccccc;
 }
 #MenuView .parent {
@@ -5680,14 +5680,14 @@ body > .ui-autocomplete {
   display: table;
   clear: both;
 }
-#MenuView a {
+#MenuView ul a {
   height: 35px;
   width: 100%;
   display: block;
   float: left;
   position: relative;
 }
-#MenuView a > span {
+#MenuView ul a > span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 12px;
@@ -5710,7 +5710,7 @@ body > .ui-autocomplete {
   /*Conversation button*/
 
 }
-#MenuView a > span > span {
+#MenuView ul a > span > span {
   position: relative;
   top: -2px;
   margin-left: 10px;
@@ -5725,10 +5725,10 @@ body > .ui-autocomplete {
   background-color: none !important;
   padding-top: 1px;
 }
-#MenuView a > span > span.unread #notifications-link.tooltip {
+#MenuView ul a > span > span.unread #notifications-link.tooltip {
   color: #ff0000 !important;
 }
-#MenuView a > span > span.all-read #notifications-link.tooltip {
+#MenuView ul a > span > span.all-read #notifications-link.tooltip {
   color: #7bb730 !important;
 }
 #MenuView li.active > a > span,
@@ -5744,6 +5744,36 @@ body > .ui-autocomplete {
 }
 #MenuView li.active > a > span {
   color: #fff;
+}
+#MenuView.hasNoHiddenItems {
+  padding-bottom: 20px;
+}
+.hidden-nav-item {
+  display: none;
+}
+.toggle-hidden-nav-items {
+  display: block;
+  text-align: center;
+  padding: 5px 0;
+  margin: 0 0 0 0;
+  cursor: pointer;
+  position: relative;
+  top: 5px;
+}
+.toggle-hidden-nav-items:after {
+  content: '\00F7';
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 1;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.toggle-hidden-nav-items.point-up:after {
+  content: '\00F7';
 }
 /*=Recently Viewed*/
 #RecentlyViewedView {
@@ -6211,7 +6241,7 @@ form .view-toolbar-container,
   margin: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
   line-height: 150%;
-  margin: 5px 0;
+  margin: 10px 0;
 }
 .hasDetailsFlyout ul {
   max-width: 50%;

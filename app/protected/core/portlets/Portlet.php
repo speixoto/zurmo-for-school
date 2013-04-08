@@ -205,6 +205,11 @@
             return $this->layoutId . "_" . $this->id;
         }
 
+        public function getCssClasses()
+        {
+            return $this->getView()->getCssClasses();
+        }
+
         public function getTitle()
         {
             return $this->getView()->getTitle();
