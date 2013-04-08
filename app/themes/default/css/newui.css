@@ -27,6 +27,7 @@ a.z-button,
 .default-btn .white-button,
 .default-btn,
 .z-label,
+.hasDetailsFlyout ul,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
@@ -194,7 +195,11 @@ a.ModalGameNotification a,
 .workflow-order-module-selector-container,
 #workflow-order-container,
 .WorkflowRulesOrder,
-.no-workflows-to-order-view {
+.no-workflows-to-order-view,
+.tabs-container,
+.email-template-content,
+.tabs-container > .tab,
+.email-template-content > .tab {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -4995,11 +5000,11 @@ section {
 #shortcuts > ul li {
   line-height: 100%;
 }
-.headerDropDown a,
-#ShortcutsMenu ul a,
-.view-toolbar .parent > ul a,
-.edit-row-menu ul a,
-#shortcuts > ul a {
+.headerDropDown li > a,
+#ShortcutsMenu ul li > a,
+.view-toolbar .parent > ul li > a,
+.edit-row-menu ul li > a,
+#shortcuts > ul li > a {
   color: #666;
   font-size: 11px;
   font-weight: normal;
@@ -5007,11 +5012,11 @@ section {
   padding: 5px 10px 5px 10px;
   margin: 0 2px;
 }
-.headerDropDown a:hover,
-#ShortcutsMenu ul a:hover,
-.view-toolbar .parent > ul a:hover,
-.edit-row-menu ul a:hover,
-#shortcuts > ul a:hover {
+.headerDropDown li > a:hover,
+#ShortcutsMenu ul li > a:hover,
+.view-toolbar .parent > ul li > a:hover,
+.edit-row-menu ul li > a:hover,
+#shortcuts > ul li > a:hover {
   color: #fff !important;
 }
 .headerDropDownSpecial,
@@ -6161,6 +6166,7 @@ form .view-toolbar-container,
 .view-toolbar > a,
 .view-toolbar .parent > a {
   position: relative;
+  border-left: none;
   border-left: 1px solid #bababa;
   text-indent: 0 !important;
   padding-left: 40px;
@@ -6176,6 +6182,9 @@ form .view-toolbar-container,
   position: relative;
   top: 1px;
 }
+.view-toolbar ul:first-child .parent > a {
+  border-left: none;
+}
 .view-toolbar > ul,
 .view-toolbar > a {
   display: inline-block;
@@ -6189,6 +6198,25 @@ form .view-toolbar-container,
 }
 .view-toolbar > a:first-child {
   border-left: none;
+}
+.hasDetailsFlyout .DetailsView > div:not(.view-toolbar-container) {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  line-height: 150%;
+  margin: 5px 0;
+}
+.hasDetailsFlyout ul {
+  max-width: 50%;
+  padding: 10px;
+  line-height: 150%;
 }
 .icon-general:before,
 .icon-edit:before {
@@ -16778,9 +16806,11 @@ a.user-link {
 #series-and-range-areas .buffer {
   padding-left: 22px;
 }
+#MarketingListDetailsView h1,
 #ReportDetailsView h1 {
   margin-bottom: 15px;
 }
+#MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
 }
@@ -16805,6 +16835,7 @@ a.user-link {
   position: relative;
   top: 3px;
 }
+.label-for-marketing-list-widgets,
 .label-for-report-widgets {
   padding-right: 15px;
   margin: 0 !important;
@@ -17976,4 +18007,64 @@ orientation : portrait // orientation: landscape    Target orientation
     padding-bottom: 60px;
   }
   /*closing media query bracket*/
+}
+.tabs-container,
+.email-template-content {
+  position: relative;
+  min-height: 200px;
+  margin: 15px;
+}
+.tabs-container > .tab,
+.email-template-content > .tab {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  width: 100%;
+  min-height: 170px;
+  display: none;
+  line-height: 150%;
+  padding: 10px;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  background: #fefefe;
+}
+.tabs-container > .tab label,
+.email-template-content > .tab label {
+  display: none;
+}
+.tabs-container .tab.active-tab,
+.email-template-content .tab.active-tab {
+  display: block;
+}
+.tabs-nav {
+  border-bottom: 1px solid #dfdfdf;
+}
+.tabs-nav a {
+  display: inline-block;
+  padding: 0 12px;
+  line-height: 26px;
+  margin: 0 5px 0 0;
+  background: url(../images/table-items-header.png) left bottom repeat-x;
+  border: 1px solid #dfdfdf;
+  border-bottom: none;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #666;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.tabs-nav a:hover,
+.tabs-nav a.active-tab {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  text-decoration: none;
+  position: relative;
+  top: 1px;
 }

@@ -259,7 +259,7 @@ footer, header, hgroup, menu, nav, section {
 	li{
 		line-height: 100%;
 	}
-	a{
+	li > a{
 		color:#666;
 		font-size:11px;
 		font-weight:normal;
@@ -267,7 +267,7 @@ footer, header, hgroup, menu, nav, section {
 		padding:5px 10px 5px 10px;
 		margin:0 2px;
 	}
-	a:hover{
+	li > a:hover{
 		color:#fff !important;
 		++.themeBackgroundColor2;
 	}
@@ -1270,6 +1270,7 @@ form,
 	.parent > a{
 		++.view-toolbar-link;
 		position:relative;
+		border-left: none;
 		border-left: 1px solid #bababa;
 		text-indent:0 !important;
 		padding-left:40px;
@@ -1282,6 +1283,9 @@ form,
 		margin-left:10px;
 		position:relative;
 		top:1px;
+	}
+	ul:first-child .parent > a{
+		border-left: none;
 	}
 	> ul, > a{
 		display:inline-block;
@@ -1296,6 +1300,20 @@ form,
 	}
 	> a:first-child{
 		border-left:none;
+	}
+}
+
+.hasDetailsFlyout{
+	.DetailsView > div:not(.view-toolbar-container){
+		.unstyle-panel() !important;
+		line-height: 150%;
+		margin: 5px 0;
+	}
+	ul{
+		max-width: 50%;
+		++.border-box;
+		padding: 10px;
+		line-height: 150%;
 	}
 }
 
@@ -4708,3 +4726,4 @@ div.hasHalfs{
 @import 'reports.less';
 @import 'inbox.less';
 @import 'media-queries.less';
+@import 'email-templates.less';
