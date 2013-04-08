@@ -41,6 +41,7 @@
          * @var array
          */
         private static $cachedModelsByName = array();
+
         /**
          * Given a name, get the custom field data model.  Attempts to retrieve from cache, if it is not available,
          * will attempt to retrieve from persistent storage, cache the model, and return.
@@ -50,7 +51,7 @@
          */
         public static function getByName($name)
         {
-            if(!isset(self::$cachedModelsByName[$name]))
+            if(isset(self::$cachedModelsByName[$name]))
             {
                 return self::$cachedModelsByName[$name];
             }
@@ -71,12 +72,14 @@
                     $customFieldData->serializedData = serialize(array());
                     // An unused custom field data does not present as needing saving.
                     $customFieldData->setNotModified();
-                    return $customFieldData;
                 }
-                $model = self::makeModel($bean);
-                self::$cachedModelsByName[$name] = $model;
-                GeneralCache::cacheEntry('CustomFieldData' . $name, $model);
-                return $model;
+                else
+                {
+                    $customFieldData = self::makeModel($bean);
+                }
+                self::$cachedModelsByName[$name] = $customFieldData;
+                GeneralCache::cacheEntry('CustomFieldData' . $name, $customFieldData);
+                return $customFieldData;
             }
         }
 
@@ -126,10 +129,12 @@
             return $saved;
         }
 
-        protected function afterDelete()
+        protected function unrestrictedDelete()
         {
-            parent::afterDelete();
             unset(self::$cachedModelsByName[$this->name]);
+            GeneralCache::forgetEntry('CustomFieldData' . $this->name);
+            parent::unrestrictedDelete();
+
         }
     }
 ?>
