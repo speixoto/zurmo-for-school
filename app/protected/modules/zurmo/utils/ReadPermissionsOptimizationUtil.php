@@ -106,6 +106,9 @@
             {
                 $subset = 1000;
             }
+            $users  = User::getAll();
+            $groups = Group::getAll();
+            $roles  = Role::getAll();
             for ($i = 0; $i < $modelCount; $i += $subset)
             {
                 //Specifically call RedBeanModel to avoid the use of the security in OwnedSecurableItem since for
@@ -115,7 +118,6 @@
                 {
                     assert('$model instanceof SecurableItem');
                     $securableItemId = $model->getClassId('SecurableItem');
-                    $users = User::getAll();
                     foreach ($users as $user)
                     {
                         list($allowPermissions, $denyPermissions) = $model->getExplicitActualPermissions($user);
@@ -125,7 +127,7 @@
                             self::incrementCount($mungeTableName, $securableItemId, $user);
                         }
                     }
-                    $groups = Group::getAll();
+
                     foreach ($groups as $group)
                     {
                         list($allowPermissions, $denyPermissions) = $model->getExplicitActualPermissions($group);
@@ -147,7 +149,6 @@
                             }
                         }
                     }
-                    $roles = Role::getAll();
                     foreach ($roles as $role)
                     {
                         $count = self::getRoleMungeCount($model, $role);
