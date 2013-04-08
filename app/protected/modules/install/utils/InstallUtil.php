@@ -916,7 +916,18 @@
             $messageLogger = new MessageLogger($messageStreamer);
             Yii::app()->custom->runBeforeInstallationAutoBuildDatabase($messageLogger);
             $messageStreamer->add(Zurmo::t('InstallModule', 'Starting database schema creation.'));
+            $startTime = microtime(true);
+            $messageStreamer->add('debugOn:' . BooleanUtil::boolToString(YII_DEBUG));
+            $messageStreamer->add('phpLevelCaching:' . BooleanUtil::boolToString(PHP_CACHING_ON));
+            $messageStreamer->add('memcacheLevelCaching:' . BooleanUtil::boolToString(MEMCACHE_ON));
             InstallUtil::autoBuildDatabase($messageLogger);
+            $endTime = microtime(true);
+            $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
+                                  array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+            if (SHOW_QUERY_DATA)
+            {
+                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+            }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
             ReadPermissionsOptimizationUtil::rebuild();

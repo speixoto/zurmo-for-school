@@ -93,6 +93,10 @@ EOD;
             $messageStreamer->add(Zurmo::t('Commands', 'Schema update complete.'));
             $messageStreamer->add(Zurmo::t('Commands', 'Total run time: {formattedTime} seconds.',
                                          array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
+            if (SHOW_QUERY_DATA)
+            {
+                $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+            }
         }
     }
 ?>
