@@ -37,12 +37,23 @@
     class CustomFieldData extends RedBeanModel
     {
         /**
+         * Php caching for a single request
+         * @var array
+         */
+        private static $cachedModelsByName = array();
+        /**
          * Given a name, get the custom field data model.  Attempts to retrieve from cache, if it is not available,
          * will attempt to retrieve from persistent storage, cache the model, and return.
          * @param string $name
+         * @return CustomFieldData model
+         * @throws NotFoundException
          */
         public static function getByName($name)
         {
+            if(!isset(self::$cachedModelsByName[$name]))
+            {
+                return self::$cachedModelsByName[$name];
+            }
             try
             {
                 return GeneralCache::getEntry('CustomFieldData' . $name);
@@ -63,6 +74,7 @@
                     return $customFieldData;
                 }
                 $model = self::makeModel($bean);
+                self::$cachedModelsByName[$name] = $model;
                 GeneralCache::cacheEntry('CustomFieldData' . $name, $model);
                 return $model;
             }
@@ -108,6 +120,7 @@
             $saved = parent::save($runValidation, $attributeNames);
             if ($saved)
             {
+                self::$cachedModelsByName[$this->name] = $this;
                 GeneralCache::cacheEntry('CustomFieldData' . $this->name, $this);
             }
             return $saved;
