@@ -88,7 +88,9 @@ EOD;
             $messageStreamer->add(Zurmo::t('Commands', 'Starting schema update process.'));
             $messageLogger = new MessageLogger($messageStreamer);
             InstallUtil::runAutoBuildFromUpdateSchemaCommand($messageLogger);
+            $messageStreamer->add(Zurmo::t('Commands', 'Autobuild complete, rebuilding read permissions.'));
             ReadPermissionsOptimizationUtil::rebuild();
+            $messageStreamer->add(Zurmo::t('Commands', 'Rebuild read permissions complete.'));
             $endTime = microtime(true);
             $messageStreamer->add(Zurmo::t('Commands', 'Schema update complete.'));
             $messageStreamer->add(Zurmo::t('Commands', 'Total run time: {formattedTime} seconds.',
