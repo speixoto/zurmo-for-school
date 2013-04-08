@@ -172,7 +172,7 @@
          */
         public function attributeLabels()
         {
-            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Email Template'),
+            return array('emailTemplateId'          => Zurmo::t('WorkflowsModule', 'Template'),
                          'sendAfterDurationSeconds' => Zurmo::t('WorkflowsModule', 'Send'),
                          'sendFromType'             => Zurmo::t('WorkflowsModule', 'Send From'),
                          'sendFromName'             => Zurmo::t('WorkflowsModule', 'From Name'),

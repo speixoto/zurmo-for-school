@@ -25,24 +25,19 @@
      ********************************************************************************/
 
     /**
-     * Link element to take you to a management area where users can manage the order of workflows for a given module
+     * Extended class to populate the breadcrumbs correctly
      */
-    class WorkflowManageOrderLinkActionElement extends EditLinkActionElement
+    class MarketingListsStickySearchUtil extends StickySearchUtil
     {
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
+        protected static function resolveStickyDetailsAndRelationsBreadCrumbViewClassName()
         {
-            return Zurmo::t('WorkflowsModule', 'Ordering');
+            return 'MarketingStickyDetailsAndRelationsBreadCrumbView';
         }
 
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
+        protected static function resolveBreadcrumbLinks(RedBeanModel $model)
         {
-            return Yii::app()->createUrl('workflows/default/manageOrder/');
+            return array(Zurmo::t('MarketingListsModule', 'Lists') => array('default/list'),
+                         strval($model));
         }
     }
 ?>

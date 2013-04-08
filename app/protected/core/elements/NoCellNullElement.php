@@ -24,20 +24,14 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class MarketingListsActionBarForListView extends ActionBarForSearchAndListView
+    /**
+     * When an element is dynamically to be removed, this will return null so the cell does not get rendered
+     */
+    class NoCellNullElement extends NullElement
     {
-        public static function getDefaultMetadata()
+        public function render()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'CreateLink', 'htmlOptions' => array('class' => 'icon-create')),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return null;
         }
     }
 ?>

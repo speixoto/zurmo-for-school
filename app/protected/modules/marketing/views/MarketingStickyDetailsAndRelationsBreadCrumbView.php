@@ -25,24 +25,34 @@
      ********************************************************************************/
 
     /**
-     * Link element to take you to a management area where users can manage the order of workflows for a given module
+     * View that renders marketing module breadcrumb content
      */
-    class WorkflowManageOrderLinkActionElement extends EditLinkActionElement
+    class MarketingStickyDetailsAndRelationsBreadCrumbView extends StickyDetailsAndRelationsBreadCrumbView
     {
         /**
          * @return string
          */
-        protected function getDefaultLabel()
+        protected function getHomeLinkLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'Ordering');
+            return Zurmo::t('MarketingModule', 'Marketing');
         }
 
         /**
+         * Override to handle the actions for email templates.
          * @return string
          */
-        protected function getDefaultRoute()
+        protected function resolveModuleId()
         {
-            return Yii::app()->createUrl('workflows/default/manageOrder/');
+            return 'emailTemplates';
+        }
+
+        /**
+         * Override to handle the actions for email templates.
+         * @return string
+         */
+        protected function resolveControllerId()
+        {
+            return 'default';
         }
     }
 ?>

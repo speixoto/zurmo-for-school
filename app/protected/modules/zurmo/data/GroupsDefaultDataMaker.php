@@ -57,6 +57,7 @@
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES, Right::ALLOW);
             $everyone->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_DELETE_OPPORTUNITIES, Right::ALLOW);
+            $everyone->setRight('MarketingModule',      MarketingModule::RIGHT_ACCESS_MARKETING, Right::ALLOW);
             $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
             $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);
             $everyone->setRight('MarketingListsModule', MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS, Right::ALLOW);

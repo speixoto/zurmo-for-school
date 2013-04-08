@@ -31,7 +31,7 @@
     {
         protected function getHomeLinkLabel()
         {
-            return Zurmo::t('Default', 'Email Templates');
+            return Zurmo::t('Default', 'Templates');
         }
     }
 ?>

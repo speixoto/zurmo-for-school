@@ -26,6 +26,39 @@
 
     class MarketingListsDefaultController extends ZurmoModuleController
     {
+        const ZERO_MODELS_CHECK_FILTER_PATH =
+            'application.modules.marketingLists.controllers.filters.MarketingListsZeroModelsCheckControllerFilter';
+
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('MarketingListsModule', 'Lists');
+            return array($title);
+        }
+
+        public static function getDetailsAndEditBreadcrumbLinks()
+        {
+            return array(Zurmo::t('MarketingListsModule', 'Lists') => array('default/list'));
+        }
+
+        public function filters()
+        {
+            return array_merge(parent::filters(),
+                array(
+                    array(
+                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
+                        'controller'                    => $this,
+                        'activeActionElementType'       => 'MarketingListsLink',
+                        'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
+                    ),
+                )
+            );
+        }
+
+        public function actionIndex()
+        {
+            $this->actionList();
+        }
+
         // TODO: @Shoaibi: Low: Rewrite unit tests for all models, controllers, utils, adapters, etc
         public function actionList()
         {
@@ -34,7 +67,7 @@
             $marketingList                  = new MarketingList(false);
             $searchForm                     = new MarketingListsSearchForm($marketingList);
             $listAttributesSelector         = new ListAttributesSelector('MarketingListsListView',
-                                                                                        get_class($this->getModule()));
+                                                                                get_class($this->getModule()));
             $searchForm->setListAttributesSelector($listAttributesSelector);
             $dataProvider = $this->resolveSearchDataProvider(
                 $searchForm,
@@ -52,28 +85,26 @@
             }
             else
             {
-                $mixedView = new ActionBarAndListView(
-                                                        $this->getId(),
-                                                        $this->getModule()->getId(),
-                                                        $marketingList,
-                                                        'MarketingLists',
-                                                        $dataProvider,
-                                                        array(),
-                                                        'MarketingListsActionBarForListView'
-                                                    );
-                $view = new MarketingListsPageView(MarketingDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $mixedView));
+                $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
+                             'SecuredActionBarForMarketingSearchAndListView', null, 'MarketingListsLink');
+                $breadcrumbLinks = static::getListBreadcrumbLinks();
+                $view      = new MarketingListsPageView(MarketingDefaultViewUtil::
+                                 makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks,
+                                 'MarketingBreadCrumbView'));
             }
             echo $view->render();
         }
 
         public function actionCreate()
         {
+           $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
+           $breadcrumbLinks[]  = Zurmo::t('MarketingListsModule', 'Create');
            $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost(new MarketingList()),
                                                  Zurmo::t('Default', 'Create Marketing List'));
-            $view = new MarketingListsPageView(ZurmoDefaultViewUtil::
-                                         makeStandardViewForCurrentUser($this, $editView));
+            $view               = new MarketingListsPageView(MarketingDefaultViewUtil::
+                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView,
+                                  $breadcrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 
@@ -83,13 +114,14 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($marketingList);
             AuditEvent::logAuditEvent('ZurmoModule', ZurmoModule::AUDIT_EVENT_ITEM_VIEWED,
                                             array(strval($marketingList), 'MarketingListsModule'), $marketingList);
-            $breadCrumbView             = StickySearchUtil::resolveBreadCrumbViewForDetailsControllerAction($this,
-                                                                            'MarketingListsSearchView', $marketingList);
+            $breadCrumbView             = MarketingListsStickySearchUtil::
+                                          resolveBreadCrumbViewForDetailsControllerAction($this,
+                                          'MarketingListsSearchView', $marketingList);
             $detailsAndRelationsView    = $this->makeDetailsAndRelationsView($marketingList, 'MarketingListsModule',
                                                                                 'MarketingListDetailsAndRelationsView',
                                                                                 Yii::app()->request->getRequestUri(),
                                                                                 $breadCrumbView);
-            $view                       = new MarketingListsPageView(ZurmoDefaultViewUtil::
+            $view                       = new MarketingListsPageView(MarketingDefaultViewUtil::
                                                 makeStandardViewForCurrentUser($this, $detailsAndRelationsView));
             echo $view->render();
         }
@@ -99,11 +131,14 @@
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
+            $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+            $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($marketingList), 25);
             $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($marketingList),
                                                  strval($marketingList));
-            $view     = new MarketingListsPageView(ZurmoDefaultViewUtil::
-                                                  makeStandardViewForCurrentUser($this, $editView));
+            $view               = new MarketingListsPageView(MarketingDefaultViewUtil::
+                                  makeViewWithBreadcrumbsForCurrentUser($this, $editView,
+                                  $breadcrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
 

@@ -47,7 +47,7 @@
             if(RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
                                                         Yii::app()->user->userModel))
             {
-                $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Email Template'),
+                $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Template'),
                                  'url'     => Yii::app()->createUrl('emailTemplates/default/create',
                                               array('type' => EmailTemplate::TYPE_WORKFLOW)));
             }

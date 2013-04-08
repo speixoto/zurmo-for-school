@@ -25,24 +25,36 @@
      ********************************************************************************/
 
     /**
-     * Link element to take you to a management area where users can manage the order of workflows for a given module
+     * Filter used by email template controller for showing if marketing lists exist yet
      */
-    class WorkflowManageOrderLinkActionElement extends EditLinkActionElement
+    class MarketingListsZeroModelsCheckControllerFilter extends ZeroModelsCheckControllerFilter
     {
-        /**
-         * @return string
-         */
-        protected function getDefaultLabel()
+        public $activeActionElementType;
+
+        public $breadcrumbLinks;
+
+        protected function getMessageViewClassName()
         {
-            return Zurmo::t('WorkflowsModule', 'Ordering');
+            return 'MarketingListsZeroModelsYetView';
         }
 
-        /**
-         * @return string
-         */
-        protected function getDefaultRoute()
+        protected function resolveAndRenderView(View $messageView)
         {
-            return Yii::app()->createUrl('workflows/default/manageOrder/');
+            $gridViewId              = 'notUsed';
+            $pageVar                 = 'notUsed';
+            $listModel               = new EmailTemplate();
+            $actionBarView           = new SecuredActionBarForMarketingSearchAndListView(
+                                       'default',
+                                       'marketing',
+                                       $listModel,
+                                       $gridViewId,
+                                       $pageVar,
+                                       false, $this->activeActionElementType);
+            $mixedView               = new ActionBarAndZeroModelsYetView($actionBarView, $messageView);
+            $view                    = new MarketingListsPageView(MarketingDefaultViewUtil::
+                                       makeViewWithBreadcrumbsForCurrentUser(
+                                       $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
+            echo $view->render();
         }
     }
 ?>

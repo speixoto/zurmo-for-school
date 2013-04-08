@@ -35,7 +35,7 @@
          */
         protected function getCreateLinkDisplayLabel()
         {
-            return Zurmo::t('EmailTemplatesModule', 'Create Email Template');
+            return Zurmo::t('EmailTemplatesModule', 'Create Template');
         }
 
         /**

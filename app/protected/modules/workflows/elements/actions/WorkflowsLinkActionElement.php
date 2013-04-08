@@ -42,7 +42,7 @@
          */
         protected function getDefaultRoute()
         {
-            return Yii::app()->createUrl($this->moduleId . '/default/list/');
+            return Yii::app()->createUrl('workflows/default/list/');
         }
     }
 ?>

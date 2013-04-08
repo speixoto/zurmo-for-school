@@ -25,24 +25,28 @@
      ********************************************************************************/
 
     /**
-     * Link element to take you to a management area where users can manage the order of workflows for a given module
+     * Specifically for when showing email templates for workflow
      */
-    class WorkflowManageOrderLinkActionElement extends EditLinkActionElement
+    class MarketingListsZeroModelsYetView extends ZeroModelsYetView
     {
         /**
          * @return string
          */
-        protected function getDefaultLabel()
+        protected function getCreateLinkDisplayLabel()
         {
-            return Zurmo::t('WorkflowsModule', 'Ordering');
+            return Zurmo::t('MarketingListsModule', 'Create List');
         }
 
         /**
          * @return string
          */
-        protected function getDefaultRoute()
+        protected function getMessageContent()
         {
-            return Yii::app()->createUrl('workflows/default/manageOrder/');
+            return Zurmo::t('MarketingListsModule', '<h2>"TODO - marketing list, ' .
+                                                    'you don\'t know what you\'re doing."</h2><i>- W. Edwards Deming</i>' .
+                                                    '</i><div class="large-icon"></div><p>Make life easier and create a ' .
+                                                    'workflow process to automate and streamline your business processes. ' .
+                                                    'Just make sure you know what you\'re doing.</p>');
         }
     }
 ?>

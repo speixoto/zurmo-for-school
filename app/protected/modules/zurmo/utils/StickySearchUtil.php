@@ -87,11 +87,20 @@
             {
                 $stickyLoadUrl = null;
             }
-            return new StickyDetailsAndRelationsBreadCrumbView($controller->getId(),
-                                                               $controller->getModule()->getId(),
-                                                               array(strval($model)),
-                                                               $controller->getModule()->getModuleLabelByTypeAndLanguage('Plural'),
-                                                               $stickyLoadUrl);
+            $className = static::resolveStickyDetailsAndRelationsBreadCrumbViewClassName();
+            return new $className($controller->getId(), $controller->getModule()->getId(),
+                                  static::resolveBreadcrumbLinks($model),
+                                  $controller->getModule()->getModuleLabelByTypeAndLanguage('Plural'), $stickyLoadUrl);
+        }
+
+        protected static function resolveStickyDetailsAndRelationsBreadCrumbViewClassName()
+        {
+            return 'StickyDetailsAndRelationsBreadCrumbView';
+        }
+
+        protected static function resolveBreadcrumbLinks(RedBeanModel $model)
+        {
+            return array(strval($model));
         }
     }
 ?>

@@ -76,6 +76,20 @@
             return $metadata;
         }
 
+        /**
+         * Override to handle security/access resolution on specific elements.
+         */
+        protected function resolveElementInformationDuringFormLayoutRender(& $elementInformation)
+        {
+            parent::resolveElementInformationDuringFormLayoutRender($elementInformation);
+            if($elementInformation['attributeName'] == 'modelClassName' &&
+               $this->model->type == EmailTemplate::TYPE_CONTACT)
+            {
+                $elementInformation['attributeName'] = null;
+                $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
+            }
+        }
+
         protected function renderRightSideFormLayoutForEdit($form)
         {
             return null;
@@ -107,7 +121,17 @@
                         }
                         );
                     ");
-            return $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            $content  = $this->resolveRenderHiddenModelClassNameElement($form);
+            $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
+            return $content;
+        }
+
+        protected function resolveRenderHiddenModelClassNameElement(ZurmoActiveForm $form)
+        {
+            if($this->model->type == EmailTemplate::TYPE_CONTACT)
+            {
+                return $form->hiddenField($this->model, 'modelClassName', array());
+            }
         }
 
         protected function getNewModelTitleLabel()

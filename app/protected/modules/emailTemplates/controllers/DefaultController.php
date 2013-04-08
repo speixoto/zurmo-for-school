@@ -34,19 +34,19 @@
 
         public static function getListBreadcrumbLinks()
         {
-            $title = Zurmo::t('EmailTemplatesModule', 'Email Templates');
+            $title = Zurmo::t('EmailTemplatesModule', 'Templates');
             return array($title);
         }
 
         public static function getDetailsAndEditForWorkflowBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Email Templates') =>
+            return array(Zurmo::t('EmailTemplatesModule', 'Templates') =>
                          array('default/listForWorkflow'));
         }
 
         public static function getDetailsAndEditForMarketingBreadcrumbLinks()
         {
-            return array(Zurmo::t('EmailTemplatesModule', 'Email Templates') =>
+            return array(Zurmo::t('EmailTemplatesModule', 'Templates') =>
             array('default/listForMarketing'));
         }
 
@@ -91,13 +91,13 @@
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);
-                $view = new WorkflowsPageView($mixedView);
+                $view = new EmailTemplatesPageView($mixedView);
             }
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForMarketingSearchAndListView', null, $activeActionElementType);
-                $view      = new MarketingPageView(MarketingDefaultViewUtil::
+                $view      = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                              makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'MarketingBreadCrumbView'));
             }
             echo $view->render();
@@ -117,13 +117,13 @@
             if (isset($_GET['ajax']) && $_GET['ajax'] == 'list-view')
             {
                 $mixedView = $this->makeListView($searchForm, $dataProvider);
-                $view = new WorkflowsPageView($mixedView);
+                $view = new EmailTemplatesPageView($mixedView);
             }
             else
             {
                 $mixedView = $this->makeActionBarSearchAndListView($searchForm, $dataProvider,
                              'SecuredActionBarForWorkflowsSearchAndListView', null, $activeActionElementType);
-                $view      = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
+                $view      = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                              makeViewWithBreadcrumbsForCurrentUser($this, $mixedView, $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
             echo $view->render();
@@ -139,15 +139,16 @@
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
-                $view               = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
+                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
             elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
+                $emailTemplate->modelClassName = 'Contact';
                 $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
-                $view               = new MarketingPageView(MarketingDefaultViewUtil::
+                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'MarketingBreadCrumbView'));
             }
@@ -168,7 +169,7 @@
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
+                $view               = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
@@ -176,7 +177,7 @@
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view               = new MarketingPageView(MarketingDefaultViewUtil::
+                $view               = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'MarketingBreadCrumbView'));
             }
@@ -200,7 +201,7 @@
             {
                 $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view                     = new WorkflowsPageView(WorkflowDefaultAdminViewUtil::
+                $view                     = new EmailTemplatesPageView(WorkflowDefaultAdminViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
                                             $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
@@ -208,7 +209,7 @@
             {
                 $breadcrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
-                $view                     = new MarketingPageView(MarketingDefaultViewUtil::
+                $view                     = new EmailTemplatesPageView(MarketingDefaultViewUtil::
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
                                             $breadcrumbLinks, 'MarketingBreadCrumbView'));
             }
