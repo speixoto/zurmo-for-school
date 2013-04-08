@@ -376,6 +376,17 @@
             return $performanceMessage;
         }
 
+        public static function makeNonHtmlDuplicateCountAndQueryContent()
+        {
+            $content = null;
+            $duplicateData = Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesData();
+            foreach ($duplicateData as $query => $count)
+            {
+                $content .= 'Count: ' . $count . '--Query: ' . $query . "\n";
+            }
+            return $content;
+        }
+
         /**
          * Register into clientScript->scriptFiles any scripts that should load on all pages
          * @see getScriptFilesThatLoadOnAllPages

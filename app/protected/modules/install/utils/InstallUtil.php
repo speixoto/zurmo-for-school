@@ -927,6 +927,7 @@
             if (SHOW_QUERY_DATA)
             {
                 $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
             }
             $messageStreamer->add(Zurmo::t('InstallModule', 'Database schema creation complete.'));
             $messageStreamer->add(Zurmo::t('InstallModule', 'Rebuilding Permissions.'));
