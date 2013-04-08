@@ -81,6 +81,25 @@
             $productTemplate = static::getModelAndCatchNotFoundAndDisplayError('ProductTemplate', intval($id));
 	    if(Yii::app()->request->isAjaxRequest)
 	    {
+		$categoryOutput = array();
+		$productType = $productTemplate->type;
+		$productPriceFrequency = $productTemplate->priceFrequency;
+		$productSellPriceCurrency = $productTemplate->sellPrice->currency->id;
+		$productSellPriceValue = $productTemplate->sellPrice->value;
+		foreach($productTemplate->productCategories as $category)
+		{
+		    //$categoryOutput .= '<li class="token-input-token"><p>' . $category . '</p><span class="token-input-delete-token">×</span></li>';
+
+		    $categoryOutput[] = array( 'id' => $category->id, 'name' => $category->name);
+		}
+		$output = array('categoryOutput' => $categoryOutput,
+				'productType' => $productType,
+				'productPriceFrequency' => $productPriceFrequency,
+				'productSellPriceCurrency' => $productSellPriceCurrency,
+				'productSellPriceValue' => $productSellPriceValue
+				);
+
+		echo json_encode($output);
 		die();
 	    }
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($productTemplate);

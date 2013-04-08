@@ -81,7 +81,7 @@
             return Yii::app()->format->text(Zurmo::t('ProductsModule', 'Categories'));
         }
 
-         public static function getDisplayName()
+        public static function getDisplayName()
         {
             return Zurmo::t('ProductsModule', 'Related ProductsModulePluralLabel',
                        LabelUtil::getTranslationParamsForAllModules());

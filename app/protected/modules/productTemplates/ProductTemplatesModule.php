@@ -75,7 +75,7 @@
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-			'label' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModulePluralLabel', \$translationParams)",
+			'label' => "eval:Zurmo::t('ProductTemplatesModule', 'ProductTemplatesModuleSingularLabel', \$translationParams)",
                         'url'   => array('/productTemplates/default/create'),
                         'right' => self::RIGHT_CREATE_PRODUCT_TEMPLATES,
                     ),

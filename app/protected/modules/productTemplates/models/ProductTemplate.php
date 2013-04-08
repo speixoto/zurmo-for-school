@@ -185,5 +185,22 @@
                 return false;
             }
         }
+
+	protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'products'		  => Zurmo::t('ProductTemplatesModule', 'ProductsModulePluralLabel',  $params, null, $language),
+                    'sellPriceFormula'	  => Zurmo::t('ProductTemplatesModule', 'Sell Price Formula',  $params, null, $language),
+                    'productCategories'   => Zurmo::t('ProductTemplatesModule', 'Product Categories',  $params, null, $language),
+                    'cost'		  => Zurmo::t('ProductTemplatesModule', 'Cost',  $params, null, $language),
+		    'listPrice'		  => Zurmo::t('ProductTemplatesModule', 'List Price',  $params, null, $language),
+		    'sellPrice'		  => Zurmo::t('ProductTemplatesModule', 'Sell Price',  $params, null, $language),
+                    'type'		  => Zurmo::t('ProductTemplatesModule', 'Type',  array(), null, $language),
+                    'status'		  => Zurmo::t('ProductTemplatesModule', 'Status',  array(), null, $language),
+                )
+            );
+        }
     }
 ?>

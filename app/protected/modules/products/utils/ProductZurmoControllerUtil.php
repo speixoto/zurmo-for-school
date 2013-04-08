@@ -45,12 +45,16 @@
         {
             assert('$model instanceof Product');
             $postData = PostUtil::getData();
+//	    print "<pre>";
+//	    print_r($postData);
+//	    print "</pre>";
             if (isset($postData[$this->productCategoryFormName]))
             {
                 $this->peopleAddedAsProductCategories = ProductCategoriesUtil::
                                                                resolveProductHasManyProductCategoriesFromPost($model,
                                                                $postData[$this->productCategoryFormName]);
             }
+	    //exit;
         }
 
         protected function checkProductsMassDeletion()
