@@ -215,7 +215,7 @@
         protected function resolveActiveAttributesFromMassEditPost()
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated, Better to use resolveActiveAttributesFromPostForMassAction directly inside main code with actionId
-            trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
+            // trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
             return static::resolveActiveAttributesFromPostForMassAction('massEdit');
         }
 
@@ -225,7 +225,7 @@
         protected function resolveActiveAttributesFromMassDeletePost()
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated, Better to use resolveActiveAttributesFromPostForMassAction directly inside main code with actionId
-            trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
+            // trigger_error('Deprecated: Recommended to use resolveActiveAttributesFromPostForMassAction.');
             return static::resolveActiveAttributesFromPostForMassAction('massDelete');
         }
 
@@ -236,7 +236,7 @@
             $title)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             $alertMessage          = static::getMassEditAlertMessage(get_class($model));
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
@@ -255,7 +255,7 @@
             $title)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             $moduleName            = $this->getModule()->getPluralCamelCasedName();
             $moduleClassName       = $moduleName . 'Module';
             $title                 = Zurmo::t('Core', 'Mass Delete') . ': ' . $title;
@@ -308,7 +308,7 @@
         protected function getMassEditProgressStartFromGet($getVariableName, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet. Pay close attention to arguments.');
+            // trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet. Pay close attention to arguments.');
             return static::getMassActionProgressStartFromGet($getVariableName . '_page', $pageSize);
         }
 
@@ -318,7 +318,7 @@
         protected function getMassDeleteProgressStartFromGet($getVariableName, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet.  Pay close attention to arguments.');
+            // trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet.  Pay close attention to arguments.');
             return static::getMassActionProgressStartFromGet($getVariableName , '_page', $pageSize);
         }
 
@@ -376,7 +376,7 @@
         protected function getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
+            // trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
             return static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
         }
 
@@ -384,14 +384,14 @@
         protected function getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
+            // trigger_error('Deprecated: Recommended to use getModelsToUpdate.');
             return static::getModelsToUpdate($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
         }
 
         protected static function getMassEditAlertMessage($postVariableName)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated: Recommended to use resolveMassEditAlertMessage.');
+            // trigger_error('Deprecated: Recommended to use resolveMassEditAlertMessage.');
             return static::resolveMassEditAlertMessage($postVariableName);
         }
 

@@ -242,7 +242,7 @@
             )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName = get_class($listModel);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -330,7 +330,7 @@
             $dataProvider = null)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $listModel = new $modelClassName(false);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -368,7 +368,7 @@
             $skipCount)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             assert('$skipCount == null || is_int($skipCount)');
             return new MassEditProgressView(
                 $this->getId(),
@@ -390,7 +390,7 @@
         protected function saveMassEdit($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             Yii::app()->gameHelper->muteScoringModelsOnSave();
             $modelsToSave = $this->getModelsToSave($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToSave as $modelToSave)
@@ -432,7 +432,7 @@
             )
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $modelClassName = get_class($listModel);
             $selectedRecordCount = static::getSelectedRecordCountByResolvingSelectAllFromGet($dataProvider);
@@ -494,7 +494,7 @@
             $dataProvider = null)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             assert('$dataProvider == null || $dataProvider instanceof CDataProvider');
             $listModel = new $modelClassName(false);
 
@@ -534,7 +534,7 @@
             $skipCount)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             assert('$skipCount == null || is_int($skipCount)');
             return new MassDeleteProgressView(
                 $this->getId(),
@@ -553,7 +553,7 @@
         protected function doMassDelete($modelClassName, $postVariableName, $selectedRecordCount, $dataProvider, $page, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
-            trigger_error('Deprecated');
+            // trigger_error('Deprecated');
             Yii::app()->gameHelper->muteScoringModelsOnDelete();
             $modelsToDelete = $this->getModelsToDelete($modelClassName, $dataProvider, $selectedRecordCount, $page, $pageSize);
             foreach ($modelsToDelete as $modelToDelete)
