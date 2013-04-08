@@ -76,14 +76,14 @@
                                                                         );
             return array('label'        => $this->getLabel(),
                          'url'          => null,
-                         'itemOptions'  => null,
+                         'itemOptions'  => array('class' => 'hasDetailsFlyout'),
                          'items'        => array(
-                                                array(
-                                                'label'                 => '',
-                                                'dynamicLabelContent'   => $detailsOverlayView->render(),
-                                                )
-                                            )
-                            );
+                                               array(
+                                                   'label'                 => '',
+                                                   'dynamicLabelContent'   => $detailsOverlayView->render(),
+                                               )
+                                           )
+                         );
         }
     }
 ?>

@@ -2,13 +2,21 @@
 .email-template-content{
     position: relative;
     min-height: 200px;
+	margin: 15px;
+	++.border-box;
     > .tab{
         position: absolute;
-        top:27px;
+        top:28px;
         left: 0;
         width: 100%;
         min-height: 170px;
         display: none;
+	    line-height: 150%;
+	    padding: 10px;
+	    border: 1px solid #dfdfdf;
+	    border-top:none;
+	    ++.border-box;
+	    background: #fefefe;
         label{
             display: none;
         }
@@ -20,8 +28,8 @@
 }
 
 .tabs-nav{
-    margin-bottom: 10px;
-    //border-bottom: 1px solid #dfdfdf;
+    //margin-bottom: 10px;
+    border-bottom: 1px solid #dfdfdf;
     a{
         display: inline-block;
         padding:0 12px;
@@ -40,5 +48,7 @@
     a.active-tab{
         background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
         text-decoration: none;
+		position: relative;
+	    top: 1px;
     }
 }

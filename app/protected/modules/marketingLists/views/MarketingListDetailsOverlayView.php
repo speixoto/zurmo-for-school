@@ -61,9 +61,10 @@
 
         protected function renderMemberStatisticsContent()
         {
-            $memberStats    = $this->renderSubscriberCount();
-            $memberStats    .= $this->renderUnsubscriberCount();  // . $this->renderInvalidEmailsCount();
-            $content        = ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
+            $memberStats  = $this->renderSubscriberCount();
+            $memberStats .= ' / ';
+            $memberStats .= $this->renderUnsubscriberCount();  // . $this->renderInvalidEmailsCount();
+            $content      = ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
             return $content;
 
         }
@@ -86,7 +87,7 @@
             $count              = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, $unsubscribers);
             $messageSuffix      = ($unsubscribers)? 'unsubscribers' : 'subscribers';
             $message            = Zurmo::t('MarketingListsModule', '{count} ' . $messageSuffix, array('{count}' => $count));
-            $content            = ZurmoHtml::tag('div', array('class' => $messageDivClass), $message);
+            $content            = ZurmoHtml::tag('strong', array('class' => $messageDivClass), $message);
             return $content;
         }
 
@@ -94,7 +95,7 @@
         {
             $count          = 0; // TODO: @Shoaibi/@Jason: Low: How do we do this?, Check how many members have !isInvalid Email
             $message        = Zurmo::t('MarketingListsModule', '{count} invalid email address', array('{count}' => $count));
-            $content        = ZurmoHtml::tag('div', array('class' => static::INVALID_EMAIL_STATS_CLASS), $message);
+            $content        = ZurmoHtml::tag('span', array('class' => static::INVALID_EMAIL_STATS_CLASS), $message);
             return $content;
         }
 
