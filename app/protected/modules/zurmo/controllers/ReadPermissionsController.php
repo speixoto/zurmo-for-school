@@ -53,8 +53,12 @@
 
         public function actionRebuildMunge()
         {
-           ReadPermissionsOptimizationUtil::rebuild();
-           echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.');
+            ReadPermissionsOptimizationUtil::rebuild();
+            echo Zurmo::t('ZurmoModule', 'Read permissions rebuild complete.') . "<BR>";
+            if (SHOW_QUERY_DATA)
+            {
+                echo PageView::makeShowQueryDataContent();
+            }
         }
     }
 ?>
