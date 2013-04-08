@@ -1,5 +1,4 @@
 $(window).ready(function(){
-
     //main menu flyouts or mbmenu releacment
     $('.nav:not(.user-menu-item) > .parent').live({
         mouseenter: function() {
@@ -52,35 +51,38 @@ $(window).ready(function(){
         var bufferHeight = 0;
         var recentlyViewedHeight = 0;
 
-        //if login
-        if ( $('#LoginPageView').length > 0 ) {
-            appChromeHeight = 40 + $('#FooterView').outerHeight(true);
-            if ( wrapperDivHeight < viewportHeight  ){
-                bufferHeight = viewportHeight - appChromeHeight;
-                $('#LoginView').height(  bufferHeight   );
-            }
-           //if admin area
-        } else if ( $('.AdministrativeArea').length > 0 ) {
-            appChromeHeight = 80 + $('#FooterView').outerHeight(true);
-            if ( wrapperDivHeight < viewportHeight  ){
-                bufferHeight = viewportHeight - appChromeHeight;
-                $('.AppContainer').height(  bufferHeight   );
-            }
-        //rest of app
-        } else {
-            recentlyViewedHeight = $('#RecentlyViewedView').outerHeight(true);
-            appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
-            if ( wrapperDivHeight < viewportHeight  ){
-                bufferHeight = viewportHeight - appChromeHeight;
-                $('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
-            }
+        if($(window).width() > 960 ){
+        	//console.log('resizing white area');
+        	//if login
+         	if ( $('#LoginPageView').length > 0 ) {
+             	appChromeHeight = 40 + $('#FooterView').outerHeight(true);
+              	if ( wrapperDivHeight < viewportHeight  ){
+                  	bufferHeight = viewportHeight - appChromeHeight;
+                  	$('#LoginView').height(  bufferHeight   );
+              	}
+            //if admin area
+          	} else if ( $('.AdministrativeArea').length > 0 ) {
+              	appChromeHeight = 80 + $('#FooterView').outerHeight(true);
+              	if ( wrapperDivHeight < viewportHeight  ){
+                 	bufferHeight = viewportHeight - appChromeHeight;
+                  	$('.AppContainer').height(  bufferHeight   );
+              	}
+          	//rest of app
+          	} else {
+            	recentlyViewedHeight = $('#RecentlyViewedView').outerHeight(true);
+            	appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
+             	if ( wrapperDivHeight < viewportHeight  ){
+                  	bufferHeight = viewportHeight - appChromeHeight;
+                  	$('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
+              	}
+          	}
         }
     }
 
     $(window).resize(function(){
       resizeWhiteArea();
     });
-    
+
     resizeWhiteArea();
 
     /*Autogrow text areas*/
@@ -141,21 +143,26 @@ $(window).ready(function(){
     };
     resolveSpinner(true, '#stickyListLoadingArea', style, '.loading');
 
+
+
+
 });
 
 /*
  * this function takes care of the save/cancel buttons' position in long forms, ie. edit account.
  */
+var windowTop, diff;
 
 function dockFloatingBar(){
     if ($('.float-bar').find('.disable-float-bar').length == 0) {
-        var windowTop, diff;
         windowTop = $(window).scrollTop();
-        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to tht bottom
+        diff = $(document).height() - $(window).height() - 100; //100px is to dock it before scrolling all the way to the bottom
         if( windowTop > diff ) {
             $('.float-bar .view-toolbar-container').addClass('dock');
         } else {
-            $('.float-bar .view-toolbar-container').removeClass('dock');
+            if( $('.wrapper').height() > $('.AppNavigation').height() ) {
+                $('.float-bar .view-toolbar-container').removeClass('dock');
+            }
         }
     }
 }
@@ -222,11 +229,11 @@ function onAjaxSubmitRelatedListAction(confirmTitle, gridId){
 */
 
 function resolveSpinner(state, domObject, styleObject, spinnerClassName){
-    
+
     if(spinnerClassName === undefined){
         spinnerClassName = '.z-spinner';
     }
-    
+
     if(state === true){
         $( spinnerClassName, domObject).spin({
             lines     : styleObject.lines  || 9,      // The number of lines to draw
@@ -246,6 +253,34 @@ function resolveSpinner(state, domObject, styleObject, spinnerClassName){
         });
     } else {
         $( spinnerClassName, domObject).spin(false);
+    }
+}
+
+function attachLoadingSpinnerForLanguageActivation( id, state, color ){
+    if ( color === 'dark' ){
+        color = '#999';
+    } else {
+        color = '#fff';
+    }
+    if ( state === true ){
+        $( '.z-spinner', id ).spin({
+            lines : 9, // The number of lines to draw
+            length : 2.3, // The length of each line
+            width : 1.7, // The line thickness
+            radius : 3, // The radius of the inner circle
+            rotate : 0, // The rotation offset
+            color : color, // #rgb or #rrggbb
+            speed : 2.5, // Rounds per second
+            trail : 37, // Afterglow percentage
+            shadow : false, // Whether to render a shadow
+            hwaccel : true, // Whether to use hardware acceleration
+            className : 'spinner', // The CSS class to assign to the spinner
+            zIndex : 2e9, // The z-index (defaults to 2000000000)
+            top : 4, // Top position relative to parent in px
+            left : 0 // Left position relative to parent in px
+        });
+    } else {
+        $( '.z-spinner', id ).spin(false);
     }
 }
 
@@ -284,14 +319,16 @@ function makeSmallLoadingSpinner(state, context){
 }
 
 function makeLargeLoadingSpinner(state, context){
-    $(context).append('<span class="big-spinner"></span>');
+    if($(context).find('.big-spinner').length === 0){
+        $(context).append('<span class="big-spinner"></span>');
+    }
     var style = {
         lines  : 10,
-        length : 8,
-        width  : 5,
-        radius : 8,
+        length : 6,
+        width  : 4,
+        radius : 7,
         color  : '#CCCCCC',
-        speed  : 2.5,
+        speed  : 2.6,
         trail  : 37,
         top    : 0,
         left   : 0
@@ -670,15 +707,14 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
             var $this = $(this),
                 minHeight = $this.height(),
                 shadow = $('<div></div>').css({
-                    position:   'absolute',
-                    top: -10000,
-                    left: -10000,
-                    width: $(this).width(),
-                    fontSize: $this.css('fontSize'),
-                    fontFamily: $this.css('fontFamily'),
-                    lineHeight: $this.css('lineHeight'),
-                    resize: 'none'
-                }).addClass('shadow').appendTo(document.body),
+                    position   :   'absolute',
+                    visibility : 'hidden',
+                    width      : $(this).width(),
+                    fontSize   : $this.css('fontSize'),
+                    fontFamily : $this.css('fontFamily'),
+                    lineHeight : $this.css('lineHeight'),
+                    resize     : 'none'
+                }).addClass('shadow').appendTo($(this).parent()),
                 update = function () {
                     var t = this;
                     setTimeout(function () {
@@ -686,21 +722,49 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
                                 .replace(/>/g, '&gt;')
                                 .replace(/&/g, '&amp;')
                                 .replace(/\n/g, '<br/>&nbsp;');
-
                         if ($.trim(val) === '') {
                             val = 'a';
                         }
-
                         shadow.html(val);
-                        $(t).css('height', Math.max(shadow[0].offsetHeight + 15, minHeight));
+                        $(t).height(Math.max(shadow[0].offsetHeight + 15, minHeight));
                     }, 0);
                 };
-
             $this.change(update).keyup(update).keydown(update).focus(update);
             update.apply(this);
         });
-
         return this;
     };
-
 }(jQuery));
+
+
+// query string related functions
+$.extend({
+    getUrlVars: function() {
+        var vars = [], hash;
+        var q = document.URL.split('?')[1];
+        if(q != undefined){
+            q = q.split('&');
+            for(var i = 0; i < q.length; i++){
+                hash = q[i].split('=');
+                vars.push(hash[1]);
+                vars[hash[0]] = hash[1];
+            }
+        }
+        return vars;
+    },
+    getUrlVar: function(name) {
+        return $.getUrlVars()[name];
+    },
+    hasActiveAjaxRequests: function() {
+        return ($.active > 0);
+    }
+});
+
+// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
+function createButtonSetIfNotAlreadyExist(qualifier, classFlag) {
+    classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
+    if ($(qualifier).hasClass(classFlag)) {
+        return false;
+    }
+    $(qualifier).buttonset();
+}

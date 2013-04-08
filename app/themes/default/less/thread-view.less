@@ -5,37 +5,6 @@
     padding:2px;
 }
 
-.icon-missions-created:before,
-.icon-conversations-created:before{
-    content:"w";
-    .view-toolbar-icons();
-    top:-2px;
-}
-
-.icon-conversations-participant:before{
-    content:"b";
-    .view-toolbar-icons();
-    top:0;
-}
-
-.icon-conversations-closed:before{
-    content:"l";
-    .view-toolbar-icons();
-    top:-1px;
-}
-
-.icon-missions-available:before{
-    content:"Q";
-    .view-toolbar-icons();
-    top:-2px;
-}
-
-.icon-missions-taken-but-not-accepted:before{
-    content:"e";
-    .view-toolbar-icons();
-    top:-2px;
-}
-
 .list-row-model-date{
     float: right;
     margin-right:10px;
@@ -47,17 +16,6 @@
     }
     textarea{
         line-height: 130%;
-    }
-    #right-side-edit-view-panel{
-        //top:30px;
-    }
-}
-
-#ConversationsPageView{
-    .items{
-        td{
-            padding-left: 10px;
-        }
     }
 }
 
@@ -84,11 +42,11 @@
             border-bottom: none;
         }
     }
+    .right-side-edit-view-panel{
+        top:40px;
+    }
     .details-table{
         .clearfix();
-    }
-    #right-side-edit-view-panel{
-        top:55px;
     }
 }
 
@@ -609,7 +567,7 @@ a.user-link{
 }
 
 .social-item{
-    border-bottom: 1px solid #fff;
+    border-top: 1px solid #fff;
     padding: 15px 0;
     .wide.form{
         border:none !important;

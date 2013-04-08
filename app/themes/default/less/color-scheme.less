@@ -8,6 +8,17 @@ a:link, a:active, a:visited{
 }
 
 .AppColors(){
+
+    #nav-trigger{
+        border-right: 1px solid darken(@themeColor, 12%);
+        .b-shadow(1px 0 0 0 lighten(@themeColor, 1%));
+        color:lighten(@themeColor, 100%);
+    }
+    #nav-trigger:active{
+        .t-shadow(0 1px 0 lighten(@themeColor, 25%));
+        //#gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
+    }
+    
     .textColor{ color: @textColor; }
     .themeColor{ color: @themeColor; }
     .themeColor2{ color: @themeColor2; }
@@ -18,7 +29,12 @@ a:link, a:active, a:visited{
     .themeBackgroundColor-important{ background-color: @themeColor !important; }
     .themeBackgroundColor2-important{ background-color: @themeColor2 !important; }
     .themeColor-focus{ .b-shadow(0 0 1px 1px @themeColor); }
-
+    
+    .juiportlet-widget-placeholder,
+    .drop-zone{
+        border:2px dashed @themeColor;
+    }
+    
     h1, h2, h3, h4, h5, h6{
         color: @themeColor;
         .t-shadow(  0 1px 0 rgba( 255, 255, 255, 0.8 ) );
@@ -34,8 +50,7 @@ a:link, a:active, a:visited{
     #more-search-linkmodal,
     #more-search-link,
     .search-form-tools,
-    #inline-edit-form > table td > a
-    .latest-activity-toolbar .filter-portlet-model-bar label,
+    #inline-edit-form > table td > a,
     .AppContent.MassEditView .ui-state-highlight p,
     #ModulePermissionsEditAndDetailsView table tr:first-child th,
     .calendar-events-1 span,
@@ -59,18 +74,25 @@ a:link, a:active, a:visited{
     .unread td a,
     a.user-link,
     .SocialItemsListView .show-create-comment,
+    .back-to-inbox-link,
     #AllSocialItemsForPortletView .show-create-comment,
     a.remove:hover .icon:after,
     .juiportlet-widget-head a.edit:hover .icon:after,
-    .latest-activity-toolbar a,
     a.more-panels-link,
     a.simple-link,
+    a.simple-link .z-label,
+    a.simple-select,
     .after-form-details-content a,
     .ui-dialog-title,
     .show-file-upload-box,
     #clear-search-linkmodal,
     .z-action-link,
-    .showAllCommentsLink
+    .showAllCommentsLink,
+    .treeview span:hover
+    .z-action-link,
+    .drop-zone,
+    .missing-chart,
+    a.active-tab
     {
         color: @themeColor;
     }
@@ -79,6 +101,7 @@ a:link, a:active, a:visited{
     .view-toolbar a:hover,
     .view-toolbar a:active,
     .view-toolbar a.active,
+    .view-toolbar a.active span,
     .portlet-toolbar .icon-delete:before,
     .portlet-toolbar .icon-edit:before,
     //.ZeroModelsYetView a span:before,
@@ -128,7 +151,8 @@ a:link, a:active, a:visited{
     .zLink,
     .z-link,
     .lead-conversion-actions a,
-    #clear-search-link
+    #clear-search-link,
+    #show-filters-structure-div-link
     {
         background-color: @themeColor;
     }
@@ -136,7 +160,14 @@ a:link, a:active, a:visited{
     .latest-activity-toolbar label:hover,
     .filter-portlet-model-bar label:hover,
     .latest-activity-toolbar .ui-state-active,
-    .filter-portlet-model-bar .ui-state-active
+    .filter-portlet-model-bar .ui-state-active,
+    #clear-search-link
+    #MashableInboxForm_filteredBy_area label:hover,
+    #MashableInboxForm_optionForModel_area label:hover,
+    #MashableInboxForm_filteredBy_area .ui-state-active,
+    #MashableInboxForm_optionForModel_area .ui-state-active
+    //.latest-activity-toolbar .filter-portlet-model-bar label,
+    
     {
         background-color: @themeColor !important;
     }
@@ -167,7 +198,6 @@ a:link, a:active, a:visited{
     #HeaderView{
         background: darken(@headerBarColor, 10%);
         .b-shadow( ~"inset 0 10px 50px 0 @{headerBarColor}");
-        //#gradient > .vertical( darken(@headerBarColor, 5%), @headerBarColor );
     }
     #HeaderLinksView + div{
         #gradient > .vertical( @themeColorHeader, @themeColorHeader2 );
@@ -239,11 +269,15 @@ a:link, a:active, a:visited{
     .portlet-toolbar a:not(.attachLoading):not(.simple-link):hover .z-label,
     .form-toolbar a:not(.attachLoading):hover .z-label,
     .form-toolbar a:not(.z-button):hover .z-label,
-    .configuration-list li a:hover .z-label{
+    .configuration-list li a:hover .z-label,
+    .white-button:hover .z-label,
+    .white-button:hover .z-label
+    {
         color: @themeColor2 !important;
         #gradient > .vertical( #fefefe, #ededed ) !important;
         .t-shadow( 0px 1px 0 rgba(255, 255, 255, 0.75) ) !important;
     }
+    
     
     .green-button .z-label,
     .dashboard-link .z-label{
@@ -252,6 +286,7 @@ a:link, a:active, a:visited{
         .t-shadow( 0px -1px 0 rgba(0, 0, 0, 0.2) ) !important;
     }
     
+    #LanguagesCollectionView .green-button:hover .z-label,
     .green-button:not(.attachLoading):hover .z-label,
     .dashboard-link:not(.attachLoading):hover .z-label{
         color: darken(@themeColorBtnDefault, 40%) !important;
