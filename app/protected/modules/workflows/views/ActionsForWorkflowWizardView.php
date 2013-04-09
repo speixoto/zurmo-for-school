@@ -115,7 +115,7 @@
          */
         protected static function resolveTypeDataAndLabels()
         {
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Action'));
+            $data = array();
             return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
         }
 
@@ -178,8 +178,10 @@
          */
         protected function renderAttributeSelectorContentAndWrapper()
         {
+            $htmlOptions                   = array();
+            $htmlOptions['empty']          = Zurmo::t('WorkflowsModule', 'Select Action');
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
-                                             static::resolveTypeDataAndLabels());
+                                             static::resolveTypeDataAndLabels(), $htmlOptions);
             $content  = '';
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,

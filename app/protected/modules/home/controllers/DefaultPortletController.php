@@ -38,6 +38,7 @@
     {
         public function actionAddList()
         {
+            Yii::app()->getClientScript()->setToAjaxMode();
             $view = new ModalView($this,
                 new HomeDashboardPortletSelectionView(
                     $this->getId(),
