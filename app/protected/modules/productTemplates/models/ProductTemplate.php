@@ -141,6 +141,7 @@
                     'sellPrice'           => 'CurrencyValue',
                     'type'                => 'ProductTemplateTypeDropDown',
                     'status'              => 'ProductTemplateStatusDropDown',
+		    'priceFrequency'	  => 'ProductTemplatePriceFrequencyDropDown',
                     'sellPriceFormula'	  => 'SellPriceFormulaInformation'
 
                 ),

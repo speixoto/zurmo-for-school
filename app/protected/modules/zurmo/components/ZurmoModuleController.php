@@ -190,7 +190,7 @@
             $data = array();
             if ($totalItems > 0)
             {
-                if ($totalItems <= ExportModule::$asynchronusTreshold)
+                if ($totalItems <= ExportModule::$asynchronusThreshold)
                 {
                     // Output csv file directly to user browser
                     if ($dataProvider)
@@ -228,7 +228,8 @@
                         {
                             $fileName = $exportFileName . ".csv";
                         }
-                        $output = ExportItemToCsvFileUtil::export($data, $fileName, true);
+			//TODO Clarify with Jason, header data is missing here
+                        $output = ExportItemToCsvFileUtil::export($data, array(), $fileName, true);
                     }
                     else
                     {

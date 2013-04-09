@@ -126,14 +126,15 @@
         {
             $productCategory = ProductCategory::GetById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($productCategory);
-            if($productCategory->delete())
+	    $isDeleted = $productCategory->delete();
+            if($isDeleted)
             {
                 $this->redirect(array($this->getId() . '/index'));
             }
             else
             {
-                Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'The product category is associated to product templates in the system hence could not be deleted'));
-                $this->redirect(Zurmo::app()->request->getUrlReferrer());
+		Yii::app()->user->setFlash('notification', Zurmo::t('ProductTemplatesModule', 'The product category is associated to product templates or has child categories in the system hence could not be deleted'));
+		$this->redirect(Zurmo::app()->request->getUrlReferrer());
             }
         }
     }

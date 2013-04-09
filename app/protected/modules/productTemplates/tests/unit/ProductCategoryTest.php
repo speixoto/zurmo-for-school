@@ -88,7 +88,6 @@
          */
         public function testGetLabel()
         {
-            Yii::app()->user->userModel = User::getByUsername('super');
             $productCategories          = ProductCategory::getByName('My Test Category');
             $this->assertEquals(1, count($productCategories));
             $this->assertEquals('Product Category',   $productCategories[0]::getModelLabelByTypeAndLanguage('Singular'));
@@ -171,6 +170,19 @@
            $productCategory            = ProductCategory::getById($id);
            $this->assertEquals(1, count($productCategory->productTemplates));
            $this->assertEquals($productTemplate, $productCategory->productTemplates[0]);
+        }
+
+	public function testChildProductCategories()
+        {
+           $childProductCategory       = new ProductCategory();
+           $childProductCategory->name      = "My Test Category Child";
+	   $existingCats = ProductCategory::getByName('My Test Category');
+	   $childProductCategory->productCategory = $existingCats[0];
+           $this->assertTrue($childProductCategory->save());
+           $id                         = $childProductCategory->id;
+           unset($childProductCategory);
+           $childProductCategory            = ProductCategory::getById($id);
+	   $this->assertEquals("My Test Category Child", $childProductCategory->name);
         }
     }
 ?>

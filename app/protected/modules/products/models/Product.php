@@ -91,7 +91,14 @@
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
             return array_merge(parent::translatedAttributeLabels($language), array(
-                'pricefrequency'     => Zurmo::t('ProductsModule', 'Price Frequency', $params, null, $language),
+                'pricefrequency'    => Zurmo::t('ProductsModule', 'Price Frequency', $params, null, $language),
+		'account'	    => Zurmo::t('AccountsModule', 'Account', array(), null, $language),
+                'contact'	    => Zurmo::t('ContactsModule', 'Contact', array(), null, $language),
+                'opportunity'	    => Zurmo::t('OpportunitiesModule', 'Opportunity', array(), null, $language),
+                'productTemplate'   => Zurmo::t('ProductTemplatesModule', 'Product Template', array(), null, $language),
+		'productCategories' => Zurmo::t('ProductTemplatesModule', 'Product Categories', array(), null, $language),
+		'sellPrice'	    => Zurmo::t('ProductTemplatesModule', 'Sell Price', array(), null, $language),
+		'stage'		    => Zurmo::t('ProductsModule', 'Stage', array(), null, $language)
                 ));
         }
 
@@ -103,7 +110,7 @@
                     'name',
                     'description',
                     'quantity',
-		    'pricefrequency',
+		    'pricefrequency',//In template it is priceFrequency which is not working here due to difference in type of item
                     'sellPrice',
                     'type'
                 ),
@@ -133,6 +140,9 @@
                     'description'    => 'TextArea',
 		    'sellPrice'      => 'CurrencyValue',
 		    'type'           => 'ProductTemplateTypeDropDown',
+		    'pricefrequency' => 'ProductTemplatePriceFrequencyDropDown',
+		    'type'           => 'ProductTemplateTypeDropDown',
+		    'sellPrice'      => 'CurrencyValue',
                 ),
                 'customFields' => array(
                     'stage'    => 'ProductStages',

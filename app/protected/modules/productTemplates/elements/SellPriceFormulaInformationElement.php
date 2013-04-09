@@ -28,6 +28,7 @@
     {
         protected function renderControlNonEditable()
         {
+	    assert('$this->model->{$this->attribute} instanceof SellPriceFormula');
             $sellPriceFormulaModel = $this->model->{$this->attribute};
             $type = $sellPriceFormulaModel->type;
             $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;

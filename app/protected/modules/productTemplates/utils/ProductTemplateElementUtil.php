@@ -162,6 +162,15 @@
             );
         }
 
+	public static function getProductTemplatePriceFrequencyDropdownArray()
+        {
+            return array(
+                ProductTemplate::PRICE_FREQUENCY_ONE_TIME       => Yii::t('Default', 'One Time'),
+                ProductTemplate::PRICE_FREQUENCY_MONTHLY        => Yii::t('Default', 'Monthly'),
+                ProductTemplate::PRICE_FREQUENCY_ANNUALLY       => Yii::t('Default', 'Annually'),
+            );
+        }
+
         public static function getProductTemplateTypeDisplayedGridValue($data, $row)
         {
             $typeDropdownData = self::getProductTemplateTypeDropdownArray();
@@ -187,5 +196,47 @@
                 return null;
             }
         }
+
+	public static function getProductTemplatePriceFrequencyDisplayedGridValue($data, $row)
+        {
+            $frequencyDropdownData = self::getProductTemplatePriceFrequencyDropdownArray();
+	    //The field changes here for product
+	    if($data instanceof ProductTemplate)
+	    {
+		$attribute = 'priceFrequency';
+	    }
+	    elseif($data instanceof Product)
+	    {
+		$attribute = 'pricefrequency';
+	    }
+            if(isset($frequencyDropdownData[$data->$attribute]))
+            {
+                return $frequencyDropdownData[$data->$attribute];
+            }
+            else
+            {
+                return null;
+            }
+        }
+
+	public static function getSellPriceFormulaDisplayedGridValue($data, $row)
+	{
+	    $sellPriceFormulaModel = $data->sellPriceFormula;
+            $type = $sellPriceFormulaModel->type;
+            $discountOrMarkupPercentage = $sellPriceFormulaModel->discountOrMarkupPercentage;
+            $displayedSellPriceFormulaList = SellPriceFormula::getDisplayedSellPriceFormulaArray();
+            $content = '';
+            if($type != null)
+            {
+                $content = $displayedSellPriceFormulaList[$type];
+
+                if($type != SellPriceFormula::TYPE_EDITABLE)
+                {
+                    $content = str_replace('{discount}', $discountOrMarkupPercentage/100, $content);
+                }
+            }
+
+            return $content;
+	}
     }
 ?>

@@ -28,12 +28,16 @@
     {
         public static function createProductByNameForOwner($name, $owner)
         {
+	    $currencies			     = Currency::getAll('id');
+	    $currencyValue                   = new CurrencyValue();
+            $currencyValue->currency         = $currencies[array_rand($currencies)];
             $product                         = new Product();
             $product->name                   = $name;
             $product->owner                  = $owner;
             $product->description            = 'Description';
             $product->quantity               = 2;
             $product->stage->value           = 'Open';
+	    $product->sellPrice		     = $currencyValue;
             $saved                           = $product->save();
             assert('$saved');
             return $product;
