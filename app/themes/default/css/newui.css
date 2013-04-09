@@ -17297,6 +17297,13 @@ a.user-link {
   background-image: linear-gradient(top, #9b59b6, #8e44ad);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
 }
+.last-comment ul,
+.last-comment li {
+  list-style: none;
+}
+.last-comment li {
+  margin-top: 2px;
+}
 @media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
