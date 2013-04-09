@@ -64,11 +64,15 @@
                     {
                         $('#' + elementId).attr('readonly', true);
                         $('#ProductTemplate_' + attribute + '_currency_id').attr('readonly', 'true');
+			$('#ProductTemplate_' + attribute + '_currency_id').addClass('disabled');
+			$('#' + elementId).addClass('disabled');
                     }
                     else
                     {
                         $('#' + elementId).removeAttr('readonly');
                         $('#ProductTemplate_' + attribute + '_currency_id').removeAttr('readonly');
+			$('#ProductTemplate_' + attribute + '_currency_id').removeClass('disabled');
+			$('#' + elementId).removeClass('disabled');
                     }
                 }
             ";
