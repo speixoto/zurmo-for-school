@@ -84,6 +84,22 @@
             $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true && (true || false)'));
             $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('false || (true && true)'));
         }
+        
+        /**
+         * @expectedException InvalidArgumentException
+         */
+        public function testEvaluatePHPStringThrowsException()
+        {
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('hello'));
+        }
+
+        /**
+         * @expectedException FailedAssertionException
+         */
+        public function testEvaluatePHPStringThrowsFailedAssertion()
+        {
+            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('( true || false'));
+        }
 
         /**
          * Example of too much nesting, that would result in an exception

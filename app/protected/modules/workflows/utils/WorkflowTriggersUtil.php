@@ -122,8 +122,16 @@
          */
         public static function evaluatePHPString($phpStringReadyToEvaluate)
         {
-            //todo: add final safety that there is just &&, ||, (, ), and 'true' and 'false.
-            return eval('return (' . $phpStringReadyToEvaluate. ');');
+            assert('substr_count($phpStringReadyToEvaluate, ")") === substr_count($phpStringReadyToEvaluate, "(")');
+            $phpStringReadyToEvaluate = str_replace(
+                    array('false', 'true', ' '),
+                    array('0', '1', ''),
+                    strtolower($phpStringReadyToEvaluate)
+            );
+            if (preg_match('/&{3,}|\|{3,}|[^01&|()]+/', $phpStringReadyToEvaluate)) {
+                throw new InvalidArgumentException();
+            }
+            return (bool) eval('return (' . $phpStringReadyToEvaluate. ');');
         }
 
         /**
