@@ -1058,11 +1058,12 @@
                         DemoDataUtil::load($messageLogger, 6);
                     }
                     $endTime = microtime(true);
-                    $messageStreamer->add(Zurmo::t('InstallModule', 'Total autobuild time: {formattedTime} seconds.',
+                    $messageStreamer->add(Zurmo::t('InstallModule', 'Total demodata build time: {formattedTime} seconds.',
                                           array('{formattedTime}' => number_format(($endTime - $startTime), 3))));
                     if (SHOW_QUERY_DATA)
                     {
                         $messageStreamer->add(PageView::getTotalAndDuplicateQueryCountContent());
+                        $messageStreamer->add(PageView::makeNonHtmlDuplicateCountAndQueryContent());
                     }
                     $messageStreamer->add(Zurmo::t('InstallModule', 'Finished loading demo data.'));
                 }
