@@ -6823,6 +6823,48 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+.icon-mobile:before {
+  content: '\2018';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
+.icon-desktop:before {
+  content: '\2019';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
+.icon-tablet:before {
+  content: '\201D';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -6844,6 +6886,10 @@ form .view-toolbar-container,
 }
 #credit-link span {
   margin-left: 70px;
+}
+.ui-chooser {
+  float: right;
+  display: block;
 }
 /*General table style, tables still need 'cellspacing="0"' in the markup */
 table {
@@ -17413,11 +17459,6 @@ orientation : portrait // orientation: landscape    Target orientation
 
 	http://bennettfeely.com/flexplorer/
 */
-.ui-chooser {
-  padding: 10px;
-  display: block;
-  text-align: center;
-}
 #nav-trigger {
   display: none;
   float: left;
