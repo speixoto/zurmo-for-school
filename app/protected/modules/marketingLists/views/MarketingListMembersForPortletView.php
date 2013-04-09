@@ -121,7 +121,7 @@
 
         public function renderContent()
         {
-            $actionElementBar       = $this->renderActionElementBar(false);
+            $actionElementBar       = '<div class="portlet-view-toolbar view-toolbar">'.$this->renderActionElementBar(false).'</div>';
             $selectContactOrReport  = $this->renderSelectContactOrReportElement();
             $memberSearchAndList    = $this->renderMembersSearchFormAndListContent();
             return ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),
