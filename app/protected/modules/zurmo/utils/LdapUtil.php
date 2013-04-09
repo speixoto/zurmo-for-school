@@ -100,12 +100,12 @@
         */
         public static function resolveBindRegisteredDomain($bindRegisteredDomain, $baseDomain)
         {
-                assert('is_string($bindRegisteredDomain)');
-                assert('is_int($baseDomain)');
-                $baseDomain            = str_replace(',','',$baseDomain);
-                $domainControllers     = explode('dc=',$baseDomain);
-                $bindRegisteredDomain  = $bindRegisteredDomain . '@' . $domainControllers[1] . '.' .
+            assert('is_string($bindRegisteredDomain)');
+            assert('is_string($baseDomain)');
+            $baseDomain            = str_replace(',','',$baseDomain);
+            $domainControllers     = explode('dc=',$baseDomain);
+            $bindRegisteredDomain  = $bindRegisteredDomain . '@' . $domainControllers[1] . '.' .
                                          $domainControllers[2];
-                return $bindRegisteredDomain;
+            return $bindRegisteredDomain;
         }
     }
