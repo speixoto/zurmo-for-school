@@ -259,7 +259,7 @@ footer, header, hgroup, menu, nav, section {
 	li{
 		line-height: 100%;
 	}
-	a{
+	li > a{
 		color:#666;
 		font-size:11px;
 		font-weight:normal;
@@ -267,7 +267,7 @@ footer, header, hgroup, menu, nav, section {
 		padding:5px 10px 5px 10px;
 		margin:0 2px;
 	}
-	a:hover{
+	li > a:hover{
 		color:#fff !important;
 		++.themeBackgroundColor2;
 	}
@@ -816,7 +816,7 @@ body > .ui-autocomplete{
 }
 
 #MenuView{
-	padding:20px 0;
+	padding:20px 0 0 0;
 	border-bottom:1px solid #cccccc;
 }
 
@@ -847,7 +847,7 @@ body > .ui-autocomplete{
 	}
 }
 
-#MenuView a{
+#MenuView ul a{
 	display:block;
 	height:35px;
 	width:100%;
@@ -912,6 +912,34 @@ body > .ui-autocomplete{
 
 #MenuView li.active > a > span{
 	color:#fff;
+}
+
+#MenuView.hasNoHiddenItems{
+	padding-bottom: 20px;
+}
+
+.hidden-nav-item{
+	display: none;
+}
+
+.toggle-hidden-nav-items{
+	display: block;
+	text-align: center;
+	padding: 5px 0;
+	margin: 0 0 0 0;
+	cursor:pointer;
+	position: relative;
+	top: 5px;
+	&:after{
+		content:'\00F7';
+		.symbly(20px);
+		line-height: 1;
+		.t-shadow(0 1px 0 #fff);
+	}
+}
+
+.toggle-hidden-nav-items.point-up:after{
+	content:'\00F7'; //A1
 }
 
 /*=Recently Viewed*/
@@ -1270,6 +1298,7 @@ form,
 	.parent > a{
 		++.view-toolbar-link;
 		position:relative;
+		border-left: none;
 		border-left: 1px solid #bababa;
 		text-indent:0 !important;
 		padding-left:40px;
@@ -1282,6 +1311,9 @@ form,
 		margin-left:10px;
 		position:relative;
 		top:1px;
+	}
+	ul:first-child .parent > a{
+		border-left: none;
 	}
 	> ul, > a{
 		display:inline-block;
@@ -1296,6 +1328,20 @@ form,
 	}
 	> a:first-child{
 		border-left:none;
+	}
+}
+
+.hasDetailsFlyout{
+	.DetailsView > div:not(.view-toolbar-container){
+		.unstyle-panel() !important;
+		line-height: 150%;
+		margin: 10px 0;
+	}
+	ul{
+		max-width: 50%;
+		++.border-box;
+		padding: 10px;
+		line-height: 150%;
 	}
 }
 
@@ -1971,6 +2017,7 @@ a.simple-link{
 
 /*=Popup Modals*/
 .ui-dialog{
+	min-width: 600px;
 	overflow: visible;
 	padding:0 !important;
 	margin:0 !important;
@@ -3179,7 +3226,8 @@ div.wide.form{
 	.smaller();
 	font-style:italic;
 	text-align:center;
-	margin-bottom:10px;
+	padding: 0 10px 10px 10px;
+	++.border-box;
 }
 
 .mapcanvas{
@@ -4707,3 +4755,4 @@ div.hasHalfs{
 @import 'reports.less';
 @import 'inbox.less';
 @import 'media-queries.less';
+@import 'email-templates.less';

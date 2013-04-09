@@ -34,10 +34,9 @@
 .model-tag{
 	display: inline-block;
 	font-weight:400;
-	.smaller();
+	.smaller() !important;
 	float: left;
-	margin-right: 5px;
-	margin-top: 1px;
+	margin:1px 5px 0 0 !important;
 	span{
 		.radius(3px);
 		color:#fff;
@@ -52,5 +51,14 @@
 	}
 	&.notification span{
 		#gradient > .vertical(#9B59B6, #8E44AD ); //purple
+	}
+}
+
+.last-comment{
+	ul, li{
+		list-style: none;
+	}
+	li{
+		margin-top: 2px;
 	}
 }

@@ -27,10 +27,12 @@ a.z-button,
 .default-btn .white-button,
 .default-btn,
 .z-label,
+.hasDetailsFlyout ul,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
 .default-btn a.search-form-tools input[type="submit"],
+.after-form-details-content,
 #progressBar-links a,
 a#progressBar-links a,
 .default-btn #progressBar-links a,
@@ -193,7 +195,11 @@ a.ModalGameNotification a,
 .workflow-order-module-selector-container,
 #workflow-order-container,
 .WorkflowRulesOrder,
-.no-workflows-to-order-view {
+.no-workflows-to-order-view,
+.tabs-container,
+.email-template-content,
+.tabs-container > .tab,
+.email-template-content > .tab {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -4994,11 +5000,11 @@ section {
 #shortcuts > ul li {
   line-height: 100%;
 }
-.headerDropDown a,
-#ShortcutsMenu ul a,
-.view-toolbar .parent > ul a,
-.edit-row-menu ul a,
-#shortcuts > ul a {
+.headerDropDown li > a,
+#ShortcutsMenu ul li > a,
+.view-toolbar .parent > ul li > a,
+.edit-row-menu ul li > a,
+#shortcuts > ul li > a {
   color: #666;
   font-size: 11px;
   font-weight: normal;
@@ -5006,11 +5012,11 @@ section {
   padding: 5px 10px 5px 10px;
   margin: 0 2px;
 }
-.headerDropDown a:hover,
-#ShortcutsMenu ul a:hover,
-.view-toolbar .parent > ul a:hover,
-.edit-row-menu ul a:hover,
-#shortcuts > ul a:hover {
+.headerDropDown li > a:hover,
+#ShortcutsMenu ul li > a:hover,
+.view-toolbar .parent > ul li > a:hover,
+.edit-row-menu ul li > a:hover,
+#shortcuts > ul li > a:hover {
   color: #fff !important;
 }
 .headerDropDownSpecial,
@@ -5636,7 +5642,7 @@ body > .ui-autocomplete {
   list-style: none;
 }
 #MenuView {
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   border-bottom: 1px solid #cccccc;
 }
 #MenuView .parent {
@@ -5674,14 +5680,14 @@ body > .ui-autocomplete {
   display: table;
   clear: both;
 }
-#MenuView a {
+#MenuView ul a {
   height: 35px;
   width: 100%;
   display: block;
   float: left;
   position: relative;
 }
-#MenuView a > span {
+#MenuView ul a > span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 12px;
@@ -5704,7 +5710,7 @@ body > .ui-autocomplete {
   /*Conversation button*/
 
 }
-#MenuView a > span > span {
+#MenuView ul a > span > span {
   position: relative;
   top: -2px;
   margin-left: 10px;
@@ -5719,10 +5725,10 @@ body > .ui-autocomplete {
   background-color: none !important;
   padding-top: 1px;
 }
-#MenuView a > span > span.unread #notifications-link.tooltip {
+#MenuView ul a > span > span.unread #notifications-link.tooltip {
   color: #ff0000 !important;
 }
-#MenuView a > span > span.all-read #notifications-link.tooltip {
+#MenuView ul a > span > span.all-read #notifications-link.tooltip {
   color: #7bb730 !important;
 }
 #MenuView li.active > a > span,
@@ -5738,6 +5744,36 @@ body > .ui-autocomplete {
 }
 #MenuView li.active > a > span {
   color: #fff;
+}
+#MenuView.hasNoHiddenItems {
+  padding-bottom: 20px;
+}
+.hidden-nav-item {
+  display: none;
+}
+.toggle-hidden-nav-items {
+  display: block;
+  text-align: center;
+  padding: 5px 0;
+  margin: 0 0 0 0;
+  cursor: pointer;
+  position: relative;
+  top: 5px;
+}
+.toggle-hidden-nav-items:after {
+  content: '\00F7';
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 1;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.toggle-hidden-nav-items.point-up:after {
+  content: '\00F7';
 }
 /*=Recently Viewed*/
 #RecentlyViewedView {
@@ -6160,6 +6196,7 @@ form .view-toolbar-container,
 .view-toolbar > a,
 .view-toolbar .parent > a {
   position: relative;
+  border-left: none;
   border-left: 1px solid #bababa;
   text-indent: 0 !important;
   padding-left: 40px;
@@ -6175,6 +6212,9 @@ form .view-toolbar-container,
   position: relative;
   top: 1px;
 }
+.view-toolbar ul:first-child .parent > a {
+  border-left: none;
+}
 .view-toolbar > ul,
 .view-toolbar > a {
   display: inline-block;
@@ -6188,6 +6228,25 @@ form .view-toolbar-container,
 }
 .view-toolbar > a:first-child {
   border-left: none;
+}
+.hasDetailsFlyout .DetailsView > div:not(.view-toolbar-container) {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  line-height: 150%;
+  margin: 10px 0;
+}
+.hasDetailsFlyout ul {
+  max-width: 50%;
+  padding: 10px;
+  line-height: 150%;
 }
 .icon-general:before,
 .icon-edit:before {
@@ -7206,6 +7265,7 @@ a.simple-link:before {
 }
 /*=Popup Modals*/
 .ui-dialog {
+  min-width: 600px;
   overflow: visible;
   padding: 0 !important;
   margin: 0 !important;
@@ -8622,7 +8682,7 @@ div.wide.form label.hasCheckBox {
   font-size: 11px;
   font-style: italic;
   text-align: center;
-  margin-bottom: 10px;
+  padding: 0 10px 10px 10px;
 }
 .mapcanvas {
   width: 600px;
@@ -12200,66 +12260,50 @@ table.configuration-list td:last-child a .z-label:before {
   width: 100% !important;
 }
 /*Missions*/
+#MyMissionsForPortletView {
+  /*
+    .filter-portlet-model-bar{
+        border-bottom:1px solid #DFDFDF;
+        //padding:10px 15px 10px 5px;
+        //#gradient > .vertical(#f6f6f6, #ededed);
+        //.b-shadow(inset 0 1px 0 0 #ffffff);
+        label{
+            cursor:pointer;
+            border:none;
+            background:none;
+            font-size:11px !important;
+            padding:3px !important;
+            margin:0 3px;
+            ++.themeColor;
+            span{
+                font-size: 11px;
+            }
+        }
+        label:hover{
+            color:#FFF;
+            .radius(3px) !important;
+            border:none;
+        }
+        input[type="radio"], input[type="checkbox"]{
+            visibility:hidden;
+            display:none;
+        }
+        .ui-state-active{
+            color:#FFF;
+            .radius(3px) !important;
+            border:none;
+        }
+        .ui-button-text{
+            padding:0;
+            margin:0;
+        }
+    }
+    */
+
+}
 #MyMissionsForPortletView > div {
   float: none;
   margin-bottom: 0;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar {
-  border-bottom: 1px solid #DFDFDF;
-  padding: 10px 15px 10px 5px;
-  background-color: #ededed;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
-  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
-  -o-box-shadow: inset 0 1px 0 0 #ffffff;
-  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
-  box-shadow: inset 0 1px 0 0 #ffffff;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar label {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-size: 11px !important;
-  padding: 3px !important;
-  margin: 0 3px;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar label span {
-  font-size: 11px;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar label:hover {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar input[type="radio"],
-#MyMissionsForPortletView .filter-portlet-model-bar input[type="checkbox"] {
-  visibility: hidden;
-  display: none;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar .ui-button-text {
-  padding: 0;
-  margin: 0;
 }
 #MyMissionsForPortletView .items td {
   padding-left: 15px !important;
@@ -15184,13 +15228,13 @@ a.close-ModalGameNotification.simple-link {
 #WelcomeView .social-links {
   margin: 30px -5px 0 0 !important;
 }
-.dashboard-link {
+a.dashboard-link {
   text-decoration: none !important;
   margin-top: 30px;
   margin-left: 0;
   font-size: 14px !important;
 }
-.dashboard-link .z-label {
+a.dashboard-link .z-label {
   line-height: 36px !important;
 }
 #welcome-content {
@@ -15219,6 +15263,7 @@ a.close-ModalGameNotification.simple-link {
   width: 50%;
   float: left;
   font-size: 12px;
+  margin-bottom: 30px;
 }
 .help-section h3 {
   font-size: 16px;
@@ -15953,7 +15998,7 @@ a.user-link {
   padding: 0 !important;
 }
 .social-item {
-  border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
   padding: 15px 0;
 }
 .social-item .wide.form {
@@ -16792,9 +16837,11 @@ a.user-link {
 #series-and-range-areas .buffer {
   padding-left: 22px;
 }
+#MarketingListDetailsView h1,
 #ReportDetailsView h1 {
   margin-bottom: 15px;
 }
+#MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
 }
@@ -16819,6 +16866,7 @@ a.user-link {
   position: relative;
   top: 3px;
 }
+.label-for-marketing-list-widgets,
 .label-for-report-widgets {
   padding-right: 15px;
   margin: 0 !important;
@@ -16871,7 +16919,7 @@ a.user-link {
   margin: 10px 0 0 25%;
 }
 .missing-report:after,
-.Report .large-icon:after {
+.Warning .large-icon:after {
   content: "j";
   font-weight: normal;
   font-size: 250px;
@@ -17199,10 +17247,9 @@ a.user-link {
 .model-tag {
   display: inline-block;
   font-weight: 400;
-  font-size: 11px;
+  font-size: 11px !important;
   float: left;
-  margin-right: 5px;
-  margin-top: 1px;
+  margin: 1px 5px 0 0 !important;
 }
 .model-tag span {
   -webkit-border-radius: 3px;
@@ -17249,6 +17296,13 @@ a.user-link {
   background-image: -o-linear-gradient(top, #9b59b6, #8e44ad);
   background-image: linear-gradient(top, #9b59b6, #8e44ad);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
+}
+.last-comment ul,
+.last-comment li {
+  list-style: none;
+}
+.last-comment li {
+  margin-top: 2px;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {
@@ -17986,6 +18040,70 @@ orientation : portrait // orientation: landscape    Target orientation
   }
   .ui-dialog {
     width: 98%;
+    min-width: 98%;
+  }
+  .ModalGameNotification {
+    padding-bottom: 60px;
   }
   /*closing media query bracket*/
+}
+.tabs-container,
+.email-template-content {
+  position: relative;
+  min-height: 200px;
+  margin: 15px;
+}
+.tabs-container > .tab,
+.email-template-content > .tab {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  width: 100%;
+  min-height: 170px;
+  display: none;
+  line-height: 150%;
+  padding: 10px;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  background: #fefefe;
+}
+.tabs-container > .tab label,
+.email-template-content > .tab label {
+  display: none;
+}
+.tabs-container .tab.active-tab,
+.email-template-content .tab.active-tab {
+  display: block;
+}
+.tabs-nav {
+  border-bottom: 1px solid #dfdfdf;
+}
+.tabs-nav a {
+  display: inline-block;
+  padding: 0 12px;
+  line-height: 26px;
+  margin: 0 5px 0 0;
+  background: url(../images/table-items-header.png) left bottom repeat-x;
+  border: 1px solid #dfdfdf;
+  border-bottom: none;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #666;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.tabs-nav a:hover,
+.tabs-nav a.active-tab {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  text-decoration: none;
+  position: relative;
+  top: 1px;
 }
