@@ -46,9 +46,9 @@
 
         public function render()
         {
-            $deleteElement          = new MarketingListDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId, $this->params);
+            $deleteElement          = new MarketingListDeleteLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
             $deleteElementContent   = $deleteElement->renderMenuItem();
-            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId, $this->params);
+            $editElement            = new EditLinkActionElement($this->controllerId, $this->moduleId, $this->modelId);
             $editElementContent     = $editElement->renderMenuItem();
             // TODO: @Shoaibi/@Jason: Low: securable on these items from the outside coming in?
             $menuItems              = array('label' => $this->getLabel(), 'url' => null,

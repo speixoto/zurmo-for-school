@@ -46,7 +46,7 @@
          * Returns the display name for plural of the model class.
          * @return dynamic label name based on module.
          */
-        protected static function getPluralLabel()
+        protected static function getPluralLabel($language = null)
         {
             return 'Campaigns';
         }
