@@ -84,8 +84,7 @@
 
         protected function renderLabel()
         {
-            $title    = Zurmo::t('ZurmoModule', 'The uploaded image will be resized to 32 pixels height while ' .
-                                                'maintaining the correct aspect ratio on its width.');
+            $title    = Zurmo::t('ZurmoModule', 'Your image will be resized to 32 pixels in height while maintaining the correct aspect ratio in width.');
             $content  = Zurmo::t('ZurmoModule', 'Please select a logo to upload');
             $content .= '<span id="logo-upload-tooltip" class="tooltip"  title="' . $title . '">?</span>';
             $qtip     = new ZurmoTip();

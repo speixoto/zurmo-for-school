@@ -42,7 +42,9 @@
          * Portlet parameters passed in from the portlet.
          * @var array
          */
-        protected  $params;
+        protected $cssClasses = array('no-box');
+
+        protected $params;
 
         protected $controllerId;
 
