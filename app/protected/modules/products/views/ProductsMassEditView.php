@@ -88,6 +88,42 @@
                                         ),
                                     )
                                 ),
+				array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProduct'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+				array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'pricefrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+				array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
+                                            ),
+                                        ),
+                                    )
+                                ),
                                 array('cells' =>
                                     array(
                                         array(
