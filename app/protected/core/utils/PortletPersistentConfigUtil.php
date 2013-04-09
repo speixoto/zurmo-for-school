@@ -49,7 +49,6 @@
         public static function setForCurrentUserByPortletIdAndKey($portletId, $keyName, $value)
         {
             assert('is_int($portletId)');
-            assert('is_string($portletId)');
             assert('is_string($keyName)');
             $moduleName = static::getModuleName();
             $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
@@ -67,7 +66,6 @@
         public static function getForCurrentUserByPortletIdAndKey($portletId, $keyName, $returnBoolean = false)
         {
             assert('is_int($portletId)');
-\            assert('is_string($portletId)');
             assert('is_string($keyName)');
             $moduleName = static::getModuleName();
             $keyName = static::resolveKeyNameByPortletId($portletId, $keyName);
