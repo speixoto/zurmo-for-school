@@ -394,7 +394,7 @@
                 }',
                 'success' => 'js:function(data){
                     //when ajax comes back after choosing something in thedropdown
-                     $("#actionsNextLink").hide();
+                     $("#actionsNextLink").parent().parent().hide();
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
                         '").find(".dynamic-rows").find("ul:first").children().hide();
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
@@ -429,6 +429,7 @@
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
+                    $("#actionsNextLink").parent().parent().show();
                     return false;
                 });
             ';
@@ -480,6 +481,7 @@
                 if ($('#' + $(this).data().row.toString()).hasClass('expanded-row')) {
                     $('#' + $(this).data().row.toString()).siblings().hide();
                 }
+                $('#actionsNextLink').parent().parent().hide();
             });";
             Yii::app()->clientScript->registerScript('registerRowEditScript', $script);
         }
