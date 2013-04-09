@@ -218,8 +218,9 @@
             $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(3, count($productTemplates));
             $products = Product::getByName('Product 1');
-            $productTemplates[0]->products->remove($products[0]);
-            $productTemplates[0]->delete();
+            $this->assertFalse($productTemplates[0]->delete());
+	    $productTemplates[0]->products->remove($products[0]);
+	    $this->assertTrue($productTemplates[0]->delete());
 
             $productTemplates           = ProductTemplate::getAll();
             $this->assertEquals(2, count($productTemplates));
