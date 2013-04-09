@@ -24,49 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EmailRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
+    class EmailRedBeanModelAttributeValueToExportValueAdapter extends TextRedBeanModelAttributeValueToExportValueAdapter
     {
-        public function resolveData(& $data)
-        {
-            if (!$this->model->{$this->attribute} instanceof Email)
-            {
-                $data[] = $this->model->{$this->attribute};
-            }
-            else
-            {
-                assert('$this->model->{$this->attribute} instanceof Email');
-                $email = $this->model->{$this->attribute};
-                if ($email->id > 0)
-                {
-                    $data[] = $email->emailAddress;
-                    $data[] = (bool) $email->isInvalid;
-                    $data[] = (bool) $email->optOut;
-                }
-                else
-                {
-                    $data[] = null;
-                    $data[] = null;
-                    $data[] = null;
-                }
-            }
-        }
-
-        /**
-         * Resolve the header data for the attribute.
-         * @param array $headerData
-         */
-        public function resolveHeaderData(& $headerData)
-        {
-            if (!$this->model->{$this->attribute} instanceof Email)
-            {
-                $headerData[] = $this->model->getAttributeLabel($this->attribute);
-            }
-            else
-            {
-                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Email Address');
-                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid');
-                $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out');
-            }
-        }
     }
 ?>
