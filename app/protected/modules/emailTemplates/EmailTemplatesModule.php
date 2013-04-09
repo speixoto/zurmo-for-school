@@ -38,7 +38,7 @@
     {
         const RIGHT_CREATE_EMAIL_TEMPLATES = 'Create Email Templates';
         const RIGHT_DELETE_EMAIL_TEMPLATES = 'Delete Email Templates';
-        const RIGHT_ACCESS_EMAIL_TEMPLATES = 'Access Email Templates';
+        const RIGHT_ACCESS_EMAIL_TEMPLATES = 'Access Email Templates Tab';
 
         public function getDependencies()
         {
@@ -52,12 +52,12 @@
             return array('EmailTemplate');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
-            $labels                           = array();
-            $labels[self::RIGHT_CREATE_EMAIL_TEMPLATES] = 'Create EmailTemplatesModulePluralLabel';
-            $labels[self::RIGHT_DELETE_EMAIL_TEMPLATES] = 'Delete EmailTemplatesModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_EMAIL_TEMPLATES] = 'Access EmailTemplatesModulePluralLabel';
+            $labels                                     = array();
+            $labels[self::RIGHT_CREATE_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Create Email Templates');
+            $labels[self::RIGHT_DELETE_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Delete Email Templates');
+            $labels[self::RIGHT_ACCESS_EMAIL_TEMPLATES] = Zurmo::t('EmailTemplatesModule', 'Access Email Templates Tab');
             return $labels;
         }
 
@@ -99,7 +99,7 @@
 
         public static function modelsAreNeverGloballySearched()
         {
-            return false;
+            return true;
         }
 
         protected static function getSingularModuleLabel($language)

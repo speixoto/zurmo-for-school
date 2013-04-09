@@ -47,7 +47,7 @@
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
             $form->relation        = 'hasMany2';
             $label = $form->getDisplayLabel();
-            $this->assertEquals('Update Related Workflows Test', $label);
+            $this->assertEquals('Update Related Workflows Tests', $label);
 
             //Test update a derived related model (this is like account's meetings)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
@@ -83,7 +83,7 @@
             $form->relation             ='model5';
             $form->relatedModelRelation = 'WorkflowModelTestItem__workflowItems__Inferred';
             $label = $form->getDisplayLabel();
-            $this->assertEquals('Create Related WorkflowModelTestItem5s WorkflowModelTestItem', $label);
+            $this->assertEquals('Create Related WorkflowModelTestItem5s Workflows Test', $label);
         }
 
         /**

@@ -91,7 +91,7 @@
         {
             Yii::app()->user->userModel = User::getByUsername('super');
             $menu = MenuUtil::getVisibleAndOrderedTabMenuByCurrentUser();
-            $this->assertEquals(7, count($menu));
+            $this->assertEquals(8, count($menu));
             $menu = MenuUtil::getAccessibleModuleTabMenuByUser('AccountsModule', Yii::app()->user->userModel);
             $this->assertEquals(1, count($menu));
             Yii::app()->user->userModel = User::getByUsername('billy');

@@ -83,7 +83,11 @@
                     array('createdDateTime', 'type', 'type' => 'datetime'),
                     array('serializedData',  'required'),
                     array('serializedData',  'type', 'type' => 'string'),
-                )
+                ),
+                'noAudit' => array(
+                    'createdDateTime',
+                    'serializedData',
+                ),
             );
             return $metadata;
         }

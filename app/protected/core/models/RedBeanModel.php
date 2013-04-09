@@ -105,6 +105,7 @@
         private $attributeNameToBeanAndClassName                             = array();
         private $relationNameToRelatedModel                                  = array();
         private $unlinkedRelationNames                                       = array();
+        private $unlinkedOwnedRelatedModelsToRemove                          = array();
         private $validators                                                  = array();
         private $attributeNameToErrors                                       = array();
         private $scenarioName                                                = '';
@@ -484,9 +485,10 @@
                 $this->attributeNameToBeanAndClassName                             = $data[2];
                 $this->validators                                                  = $data[3];
 
-                $this->relationNameToRelatedModel = array();
-                $this->unlinkedRelationNames      = array();
-                $this->attributeNameToErrors      = array();
+                $this->relationNameToRelatedModel         = array();
+                $this->unlinkedRelationNames              = array();
+                $this->unlinkedOwnedRelatedModelsToRemove = array();
+                $this->attributeNameToErrors              = array();
                 $this->scenarioName               = '';
                 $this->modified                   = false;
                 $this->deleted                    = false;
@@ -1366,6 +1368,12 @@
                     {
                         $this->unrestrictedGet($attributeName);
                     }
+                    elseif($value !== null && $owns == RedBeanModel::OWNED &&
+                           !in_array($attributeName, $this->unlinkedRelationNames) &&
+                           !isset($this->relationNameToRelatedModel[$attributeName]))
+                    {
+                        $this->unrestrictedGet($attributeName);
+                    }
                     if (isset($this->relationNameToRelatedModel[$attributeName]) &&
                         $value !== null                                          &&
                         $this->relationNameToRelatedModel[$attributeName]->isSame($value))
@@ -1379,6 +1387,11 @@
                             isset($this->relationNameToRelatedModel[$attributeName]))
                         {
                             $this->unlinkedRelationNames[] = $attributeName;
+                            if($owns == RedBeanModel::OWNED)
+                            {
+                                $this->unlinkedOwnedRelatedModelsToRemove[$attributeName] =
+                                       $this->relationNameToRelatedModel[$attributeName];
+                            }
                         }
                         if ($value === null)
                         {
@@ -1726,7 +1739,7 @@
                         // never actually saved.
                         foreach ($this->unlinkedRelationNames as $key => $relationName)
                         {
-                            $bean                      = $this->attributeNameToBeanAndClassName                [$relationName][0];
+                            $bean                      = $this->attributeNameToBeanAndClassName[$relationName][0];
                             $relationAndOwns           = static::getRelationNameToRelationTypeModelClassNameAndOwnsForModel();
                             $relatedModelClassName     = $relationAndOwns[$relationName][1];
                             $tempRelatedModelClassName = $relatedModelClassName;
@@ -1743,6 +1756,17 @@
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
+                            if($this->{$relationName} !== null &&
+                               isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]))
+                            {
+                                //Remove hasOne owned related models that are no longer needed because they have
+                                //been replaced with another hasOne owned model.
+                                if ($this->unlinkedOwnedRelatedModelsToRemove[$relationName]->id > 0)
+                                {
+                                    $this->unlinkedOwnedRelatedModelsToRemove[$relationName]->unrestrictedDelete();
+                                }
+                                unset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]);
+                            }
                             unset($this->unlinkedRelationNames[$key]);
                         }
                         assert('count($this->unlinkedRelationNames) == 0');

@@ -34,28 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Specifically for when showing email templates for workflow
-     */
-    class MarketingListsZeroModelsYetView extends ZeroModelsYetView
+    class TestOwnedLinkSpecificModel extends Item
     {
-        /**
-         * @return string
-         */
-        protected function getCreateLinkDisplayLabel()
+        public static function getDefaultMetadata()
         {
-            return Zurmo::t('MarketingListsModule', 'Create List');
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name'
+                ),
+                'relations' => array(
+                    'specific'         => array(RedBeanModel::HAS_ONE,   'ExtendsOwnedModel', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'specific'),
+                ),
+                'rules' => array(
+                    array('name',                'type',     'type' => 'string'),
+                )
+            );
+            return $metadata;
+        }
+
+        public static function isTypeDeletable()
+        {
+            return true;
+        }
+
+        public static function getModuleClassName()
+        {
+            return 'TestModule';
         }
 
         /**
-         * @return string
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
          */
-        protected function getMessageContent()
+        protected static function getLabel($language = null)
         {
-            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
-                                                    '</h2><i>- Milan Kundera</i>' .
-                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
-                                                    'important business function, and be the first to create a Marketing List!</p>');
+            return 'TestOwnedLinkSpecificModel';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'TestOwnedLinkSpecificModels';
         }
     }
 ?>

@@ -75,5 +75,15 @@
         {
             return true;
         }
+
+        protected static function getSingularModuleLabel($language)
+        {
+            return 'Workflows Test2';
+        }
+
+        protected static function getPluralModuleLabel($language)
+        {
+            return 'Workflows Test2s';
+        }
     }
 ?>

@@ -123,7 +123,7 @@
                             $('#' + rowData.row.toString() + ' .toggle-me').toggle();
                             $('#' + rowData.row.toString() + ' .edit-dynamic-row-link').toggle();
                             $('#' + rowData.row.toString()).siblings().show();
-                            $('#actionsNextLink').show();
+                            $('#actionsNextLink').parent().parent().show();
                         }
 
                         if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')

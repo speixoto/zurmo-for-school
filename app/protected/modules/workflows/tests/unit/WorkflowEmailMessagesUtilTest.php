@@ -122,11 +122,13 @@
             $this->assertEquals(0, Yii::app()->emailHelper->getQueuedCount());
             $this->assertEquals(0, Yii::app()->emailHelper->getSentCount());
 
-            $emailTemplate          = new EmailTemplate();
-            $emailTemplate->name    = 'the name';
-            $emailTemplate->type    = 2;
-            $emailTemplate->subject = 'subject';
-            $saved                  = $emailTemplate->save();
+            $emailTemplate                 = new EmailTemplate();
+            $emailTemplate->name           = 'the name';
+            $emailTemplate->modelClassName = 'Account';
+            $emailTemplate->textContent    = 'some content';
+            $emailTemplate->type           = 2;
+            $emailTemplate->subject        = 'subject';
+            $saved                         = $emailTemplate->save();
             $this->assertTrue($saved);
             $workflow         = new Workflow();
             $workflow->setId(self::$savedWorkflow->id);

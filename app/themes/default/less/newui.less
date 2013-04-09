@@ -816,7 +816,7 @@ body > .ui-autocomplete{
 }
 
 #MenuView{
-	padding:20px 0;
+	padding:20px 0 0 0;
 	border-bottom:1px solid #cccccc;
 }
 
@@ -847,7 +847,7 @@ body > .ui-autocomplete{
 	}
 }
 
-#MenuView a{
+#MenuView ul a{
 	display:block;
 	height:35px;
 	width:100%;
@@ -912,6 +912,34 @@ body > .ui-autocomplete{
 
 #MenuView li.active > a > span{
 	color:#fff;
+}
+
+#MenuView.hasNoHiddenItems{
+	padding-bottom: 20px;
+}
+
+.hidden-nav-item{
+	display: none;
+}
+
+.toggle-hidden-nav-items{
+	display: block;
+	text-align: center;
+	padding: 5px 0;
+	margin: 0 0 0 0;
+	cursor:pointer;
+	position: relative;
+	top: 5px;
+	&:after{
+		content:'\00F7';
+		.symbly(20px);
+		line-height: 1;
+		.t-shadow(0 1px 0 #fff);
+	}
+}
+
+.toggle-hidden-nav-items.point-up:after{
+	content:'\00F7'; //A1
 }
 
 /*=Recently Viewed*/
@@ -1307,7 +1335,7 @@ form,
 	.DetailsView > div:not(.view-toolbar-container){
 		.unstyle-panel() !important;
 		line-height: 150%;
-		margin: 5px 0;
+		margin: 10px 0;
 	}
 	ul{
 		max-width: 50%;
@@ -1989,6 +2017,7 @@ a.simple-link{
 
 /*=Popup Modals*/
 .ui-dialog{
+	min-width: 600px;
 	overflow: visible;
 	padding:0 !important;
 	margin:0 !important;

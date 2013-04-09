@@ -34,28 +34,35 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Specifically for when showing email templates for workflow
-     */
-    class MarketingListsZeroModelsYetView extends ZeroModelsYetView
+    class EmailAddressInformationRedBeanModelAttributeValueToExportValueAdapter extends RedBeanModelAttributeValueToExportValueAdapter
     {
-        /**
-         * @return string
-         */
-        protected function getCreateLinkDisplayLabel()
+        public function resolveData(& $data)
         {
-            return Zurmo::t('MarketingListsModule', 'Create List');
+            assert('$this->model->{$this->attribute} instanceof Email');
+            $email = $this->model->{$this->attribute};
+            if ($email->id > 0)
+            {
+                $data[] = $email->emailAddress;
+                $data[] = (bool) $email->isInvalid;
+                $data[] = (bool) $email->optOut;
+            }
+            else
+            {
+                $data[] = null;
+                $data[] = null;
+                $data[] = null;
+            }
         }
 
         /**
-         * @return string
+         * Resolve the header data for the attribute.
+         * @param array $headerData
          */
-        protected function getMessageContent()
+        public function resolveHeaderData(& $headerData)
         {
-            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
-                                                    '</h2><i>- Milan Kundera</i>' .
-                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
-                                                    'important business function, and be the first to create a Marketing List!</p>');
+            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Email Address');
+            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Is Invalid');
+            $headerData[] = $this->model->getAttributeLabel($this->attribute) . ' - ' . Zurmo::t('ZurmoModule', 'Opt Out');
         }
     }
 ?>

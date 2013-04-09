@@ -34,28 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Specifically for when showing email templates for workflow
-     */
-    class MarketingListsZeroModelsYetView extends ZeroModelsYetView
+    class OwnedModelTest extends DataProviderBaseTest
     {
-        /**
-         * @return string
-         */
-        protected function getCreateLinkDisplayLabel()
+        public static function setUpBeforeClass()
         {
-            return Zurmo::t('MarketingListsModule', 'Create List');
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
         /**
-         * @return string
+         * When you save an owned model, then swap it for a new one, the old one should be deleted.
+         * Save the model first, then add the owned model, then swap it to properly do the test.
          */
-        protected function getMessageContent()
+        public function testProvidingANewOnedModel()
         {
-            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
-                                                    '</h2><i>- Milan Kundera</i>' .
-                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
-                                                    'important business function, and be the first to create a Marketing List!</p>');
+            $model = new TestOwnedLinkSpecificModel();
+            $model->name = 'my name';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $ownedModel = new ExtendsOwnedModel();
+            $ownedModel->member = 'some member';
+            $model->specific    = $ownedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $ownedModel = new ExtendsOwnedModel();
+            $ownedModel->member = 'some member 2';
+            $model->specific    = $ownedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $modelId = $model->id;
+            $model->forget();
+            $model = TestOwnedLinkSpecificModel::getById($modelId);
+            $ownedModel = new ExtendsOwnedModel();
+            $ownedModel->member = 'some member 3';
+            $model->specific    = $ownedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
         }
     }
 ?>

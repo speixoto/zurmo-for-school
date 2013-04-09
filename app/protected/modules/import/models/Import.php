@@ -63,7 +63,10 @@
                 'rules' => array(
                     array('serializedData',  'required'),
                     array('serializedData',  'type', 'type' => 'string'),
-                )
+                ),
+                'noAudit' => array(
+                    'serializedData',
+                ),
             );
             return $metadata;
         }

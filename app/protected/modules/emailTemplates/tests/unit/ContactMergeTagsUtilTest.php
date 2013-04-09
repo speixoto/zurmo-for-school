@@ -220,7 +220,7 @@
         {
             $content                = 'some subject [[PHONE]] and something else';
             $model                  = new EmailTemplateModelTestItem();
-            $model->string          = 'myPhone';
+            $model->phone           = 'myPhone';
             $contactMergeTagsUtil   = MergeTagsUtilFactory::make(1, null, $content);
             $resolvedContent        = $contactMergeTagsUtil->resolveMergeTags($model, $this->invalidTags);
             $compareContent         = 'some subject myPhone and something else';

@@ -34,28 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Specifically for when showing email templates for workflow
-     */
-    class MarketingListsZeroModelsYetView extends ZeroModelsYetView
+    class ExtendsOwnedModel extends OwnedModel
     {
-        /**
-         * @return string
-         */
-        protected function getCreateLinkDisplayLabel()
+        public static function getDefaultMetadata()
         {
-            return Zurmo::t('MarketingListsModule', 'Create List');
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'member',
+                ),
+                'rules' => array(
+                    array('member',  'type', 'type' => 'string'),
+                ),
+            );
+            return $metadata;
         }
 
-        /**
-         * @return string
-         */
-        protected function getMessageContent()
+        public static function canSaveMetadata()
         {
-            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
-                                                    '</h2><i>- Milan Kundera</i>' .
-                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
-                                                    'important business function, and be the first to create a Marketing List!</p>');
+            return false;
         }
     }
 ?>

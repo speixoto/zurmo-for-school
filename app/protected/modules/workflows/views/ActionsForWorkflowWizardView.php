@@ -115,7 +115,7 @@
          */
         protected static function resolveTypeDataAndLabels()
         {
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Action'));
+            $data = array();
             return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
         }
 
@@ -178,8 +178,10 @@
          */
         protected function renderAttributeSelectorContentAndWrapper()
         {
+            $htmlOptions                   = array();
+            $htmlOptions['empty']          = Zurmo::t('WorkflowsModule', 'Select Action');
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
-                                             static::resolveTypeDataAndLabels());
+                                             static::resolveTypeDataAndLabels(), $htmlOptions);
             $content  = '';
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
@@ -392,7 +394,7 @@
                 }',
                 'success' => 'js:function(data){
                     //when ajax comes back after choosing something in thedropdown
-                     $("#actionsNextLink").hide();
+                     $("#actionsNextLink").parent().parent().hide();
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
                         '").find(".dynamic-rows").find("ul:first").children().hide();
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
@@ -427,6 +429,7 @@
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
+                    $("#actionsNextLink").parent().parent().show();
                     return false;
                 });
             ';
@@ -478,6 +481,7 @@
                 if ($('#' + $(this).data().row.toString()).hasClass('expanded-row')) {
                     $('#' + $(this).data().row.toString()).siblings().hide();
                 }
+                $('#actionsNextLink').parent().parent().hide();
             });";
             Yii::app()->clientScript->registerScript('registerRowEditScript', $script);
         }
