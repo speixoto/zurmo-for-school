@@ -958,18 +958,46 @@
                               )
             begin
                 declare user_id int(11);
+                declare user_role_id int(11);
+                declare parent_role_id int(11);
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         set allow_permissions = 0;
                     end;
 
+                select role_id into user_role_id from _user where permitable_id = _permitable_id;
                 set allow_permissions = 0;
                 select get_permitable_user_id(_permitable_id)
                 into   user_id;
                 if user_id is not null then
+                    call recursive_get_all_descendent_roles(_permitable_id, user_role_id);
                     call recursive_get_securableitem_propagated_allow_permissions_permit(_securableitem_id, _permitable_id, class_name, module_name, allow_permissions);
                 end if;
             end;',
+
+           //Transverse role tree to get all descendent roles
+            '
+            create procedure recursive_get_all_descendent_roles(in _permitable_id int(11), in parent_role_id int(11))
+            begin
+                declare child_role_id int(11);
+                declare no_more_records tinyint default 0;
+                declare child_role_ids cursor for
+                    select id
+                    from   role
+                    where  role_id = parent_role_id;
+                declare continue handler for not found
+                    set no_more_records = 1;
+                CREATE TEMPORARY TABLE IF NOT EXISTS __role_childs(permitable_id int(11), role_id int(11), PRIMARY KEY (permitable_id,role_id), UNIQUE KEY (permitable_id,role_id));
+                open child_role_ids;
+                fetch child_role_ids into child_role_id;
+                while no_more_records = 0 do
+                    INSERT IGNORE INTO __role_childs VALUES (_permitable_id, child_role_id);
+                    call recursive_get_all_descendent_roles(_permitable_id, child_role_id);
+                    fetch child_role_ids into child_role_id;
+                end while;
+                close child_role_ids;
+            end;
+            ',
 
             // Name abbreviated - max is 64. Should end '_for permitable'.
             'create procedure recursive_get_securableitem_propagated_allow_permissions_permit(
@@ -981,25 +1009,20 @@
                               )
             begin
                 declare user_allow_permissions, user_deny_permissions, user_propagated_allow_permissions tinyint;
-                declare user_role_id int(11);
                 declare exit handler for 1054, 1146 # Column, table doesn\'t exist.
                     begin                           # RedBean hasn\'t created it yet.
                         set allow_permissions = 0;
                     end;
 
                 set allow_permissions = 0;
-                select role_id
-                into   user_role_id
-                from   _user
-                where  permitable_id = _permitable_id;
 
                 begin
                     declare sub_role_id int(11);
                     declare no_more_records tinyint default 0;
                     declare sub_role_ids cursor for
-                        select id
-                        from   role
-                        where  role_id = user_role_id;
+                        select role_id
+                        from   __role_childs
+                        where  permitable_id = _permitable_id;
                     declare continue handler for not found
                         begin
                             set no_more_records = 1;
