@@ -53,11 +53,11 @@
          */
         protected function getMessageContent()
         {
-            return Zurmo::t('EmailTemplatesModule', '<h2>"TODO, ' .
-                                               'you don\'t know what you\'re doing."</h2><i>- W. Edwards Deming</i>' .
-                                               '</i><div class="large-icon"></div><p>Make life easier and create a ' .
-                                               'workflow process to automate and streamline your business processes. ' .
-                                               'Just make sure you know what you\'re doing.</p>');
+            return Zurmo::t('EmailTemplatesModule', '<h2>"The printing press is the greatest weapon in ' .
+                                               'the armoury of the modern commander."</h2><i>- T.E. Lawrence</i>' .
+                                               '</i><div class="large-icon"></div><p>Be a modern commander ' .
+                                               'like Lawrence of Arabia and create a great Email Template for others ' .
+                                               'to use.</p>');
         }
     }
 ?>
