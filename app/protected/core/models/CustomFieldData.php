@@ -133,8 +133,7 @@
         {
             unset(self::$cachedModelsByName[$this->name]);
             GeneralCache::forgetEntry('CustomFieldData' . $this->name);
-            parent::unrestrictedDelete();
-
+            return parent::unrestrictedDelete();
         }
     }
 ?>
