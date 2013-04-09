@@ -329,7 +329,7 @@
         {
             // TODO: @Shoaibi/@Jason: Low: Deprecated
             // trigger_error('Deprecated:  Recommended to use getMassActionProgressStartFromGet.  Pay close attention to arguments.');
-            return static::getMassActionProgressStartFromGet($getVariableName , '_page', $pageSize);
+            return static::getMassActionProgressStartFromGet($getVariableName . '_page', $pageSize);
         }
 
         protected function attemptToValidateAjaxFromPost($model, $postVariableName)
