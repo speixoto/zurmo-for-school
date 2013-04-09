@@ -52,11 +52,10 @@
          */
         protected function getMessageContent()
         {
-            return Zurmo::t('MarketingListsModule', '<h2>"TODO - marketing list, ' .
-                                                    'you don\'t know what you\'re doing."</h2><i>- W. Edwards Deming</i>' .
-                                                    '</i><div class="large-icon"></div><p>Make life easier and create a ' .
-                                                    'workflow process to automate and streamline your business processes. ' .
-                                                    'Just make sure you know what you\'re doing.</p>');
+            return Zurmo::t('MarketingListsModule', '<h2>"Business has only two functions - marketing and innovation."' .
+                                                    '</h2><i>- Milan Kundera</i>' .
+                                                    '</i><div class="large-icon"></div><p>Go ahead and perform an ' .
+                                                    'important business function, and be the first to create a Marketing List!</p>');
         }
     }
 ?>
