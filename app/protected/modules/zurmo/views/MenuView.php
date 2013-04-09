@@ -42,11 +42,15 @@
 
         protected $cssClasses;
 
-        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false)
+        protected $showCount;
+
+        public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false, $showCount = 6)
         {
+            assert('is_int($showCount)');
             $this->items = $items;
             $this->useMinimalDynamicLabelMbMenu = $useMinimalDynamicLabelMbMenu;
             $this->cssClasses = $this->resolveMenuClassForNoHiddenItems();
+            $this->showCount  = $showCount;
         }
 
         /**
@@ -72,7 +76,7 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Tabs");
             $cClipWidget->widget($widgetPath, array(
-                'items' => static::resolveForHiddenItems($this->items)
+                'items' => static::resolveForHiddenItems($this->items, $this->showCount)
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Tabs'];
@@ -80,13 +84,14 @@
             return $content;
         }
 
-        protected static function resolveForHiddenItems($items)
+        protected function resolveForHiddenItems($items, $showCount)
         {
             assert('is_array($items)');
+            assert('is_int($showCount)');
             $count = 1;
-            foreach($items as $key => $item)
+            foreach($this->items as $key => $item)
             {
-                if($count > 6)
+                if($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
                 {
                     $items[$key]['itemOptions']['class'] = 'hidden-nav-item';
                 }
@@ -97,7 +102,7 @@
 
         protected function resolveToggleForHiddenItems()
         {
-            if (count($this->items) > 6)
+            if (count($this->items) > $this->showCount)
             {
                 return ZurmoHtml::tag('a', array('class'=>'toggle-hidden-nav-items'), '');
             }
@@ -105,7 +110,7 @@
 
         protected function resolveMenuClassForNoHiddenItems()
         {
-            if (count($this->items) < 6)
+            if (count($this->items) < $this->showCount)
             {
                 return array('hasNoHiddenItems');
             }
