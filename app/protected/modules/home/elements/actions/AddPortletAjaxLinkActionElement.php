@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class AddPortletAjaxLinkActionElement extends AjaxLinkActionElement
+    class AddPortletAjaxLinkActionElement extends DropdownSupportedAjaxLinkActionElement
     {
         public function getActionType()
         {
@@ -52,6 +52,26 @@
             {
                 return $this->params['uniqueLayoutId'];
             }
+        }
+
+        public function getElementValue()
+        {
+            $eventHandlerName = 'addPortletAjaxLinkActionElementHandler';
+            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
+            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($eventHandlerName, "
+                    function ". $eventHandlerName ."()
+                    {
+                        " . ZurmoHtml::ajax($ajaxOptions)."
+                    }
+                ", CClientScript::POS_HEAD); // POS_HEAD so its available when registerDropdownScripts() checks for it.
+            }
+            return $eventHandlerName;
         }
     }
 ?>

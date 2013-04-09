@@ -24,26 +24,11 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class EditDashboardLinkActionElement extends DropdownSupportedLinkActionElement
+    abstract class DropdownSupportedAjaxLinkActionElement extends DropdownSupportedLinkActionElement
     {
-        public function getActionType()
+        public function render()
         {
-            return 'Edit';
-        }
-
-        protected function getDefaultLabel()
-        {
-            return Zurmo::t('HomeModule', 'Edit Dashboard');
-        }
-
-        protected function getDefaultRoute()
-        {
-            return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/editDashboard/', array('id' => $this->modelId));
-        }
-
-        public function getElementValue()
-        {
-            return $this->route;
+            return ZurmoHtml::ajaxlink($this->getLabel(), $this->route, $this->getAjaxOptions(), $this->getHtmlOptions());
         }
     }
 ?>

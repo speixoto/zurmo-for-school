@@ -735,3 +735,9 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
         return this;
     };
 }(jQuery));
+
+function isValidUrl(url)
+{
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return pattern.test(url);
+}
