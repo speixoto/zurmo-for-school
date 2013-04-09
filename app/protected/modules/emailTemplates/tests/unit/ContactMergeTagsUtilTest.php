@@ -174,7 +174,7 @@
          */
         public function testFailsOnInvalidMergeTags()
         {
-            $emailTemplate = EmailTemplateTestHelper::createEmailTemplateByName(
+            $emailTemplate = EmailTemplateTestHelper::fillEmailTemplateByName(
                 EmailTemplate::TYPE_CONTACT, 'Subject 02', 'Contact', 'Name 02',
                 '<b>HTML Content with [[INVALID^TAG]] tags</b>',
                 'Text Content with [[INVALIDTAG]] tags');

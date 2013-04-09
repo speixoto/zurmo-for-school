@@ -42,6 +42,27 @@
             $super = SecurityTestHelper::createSuperAdmin();
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            $freeze = false;
+            if (RedBeanDatabase::isFrozen())
+            {
+                RedBeanDatabase::unfreeze();
+                $freeze = true;
+            }
+            $this->freeze = $freeze;
+        }
+
+        public function teardown()
+        {
+            if ($this->freeze)
+            {
+                RedBeanDatabase::freeze();
+            }
+            parent::teardown();
+        }
+
         public function testGetExportValue()
         {
             $data         = array();
@@ -78,7 +99,7 @@
             $this->assertTrue($model->save());
 
             $data        = array();
-            $adapter     = new EmailRedBeanModelAttributeValueToExportValueAdapter($model, 'secondaryEmail');
+            $adapter     = new EmailAddressInformationRedBeanModelAttributeValueToExportValueAdapter($model, 'secondaryEmail');
             $adapter->resolveHeaderData($data);
             $compareData = array(
                 $model->getAttributeLabel('secondaryEmail') . ' - ' . Zurmo::t('ZurmoModule', 'Email Address'),
