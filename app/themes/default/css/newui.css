@@ -7265,6 +7265,7 @@ a.simple-link:before {
 }
 /*=Popup Modals*/
 .ui-dialog {
+  min-width: 600px;
   overflow: visible;
   padding: 0 !important;
   margin: 0 !important;
@@ -16918,7 +16919,7 @@ a.user-link {
   margin: 10px 0 0 25%;
 }
 .missing-report:after,
-.Report .large-icon:after {
+.Warning .large-icon:after {
   content: "j";
   font-weight: normal;
   font-size: 250px;
@@ -17295,6 +17296,13 @@ a.user-link {
   background-image: -o-linear-gradient(top, #9b59b6, #8e44ad);
   background-image: linear-gradient(top, #9b59b6, #8e44ad);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
+}
+.last-comment ul,
+.last-comment li {
+  list-style: none;
+}
+.last-comment li {
+  margin-top: 2px;
 }
 @media screen and (min-width: 1601px) {
   .AppContainer {
@@ -18032,6 +18040,7 @@ orientation : portrait // orientation: landscape    Target orientation
   }
   .ui-dialog {
     width: 98%;
+    min-width: 98%;
   }
   .ModalGameNotification {
     padding-bottom: 60px;

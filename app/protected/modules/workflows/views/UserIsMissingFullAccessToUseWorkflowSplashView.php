@@ -44,7 +44,7 @@
          */
         protected function getIconName()
         {
-            return 'Report';
+            return 'Warning';
         }
 
         /**
