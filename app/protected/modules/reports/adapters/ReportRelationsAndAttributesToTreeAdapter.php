@@ -114,7 +114,7 @@
             $attributesData          = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
             foreach($attributesData as $attribute => $attributeData)
             {
-                $attributeNode      = array('id'		   => self::makeNodeId($attribute),
+                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
                                             'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;
@@ -162,6 +162,7 @@
             }
             elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
+
                 return $modelToReportAdapter->getAttributesForOrderBys($this->report->getGroupBys(),
                                                                        $this->report->getDisplayAttributes(),
                                                                        $precedingModel, $precedingRelation);

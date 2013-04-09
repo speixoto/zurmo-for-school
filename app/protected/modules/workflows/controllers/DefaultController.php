@@ -391,6 +391,7 @@
                                            ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES);
             $inputPrefixData             = array($wizardFormClassName, ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES,
                                            (int)$rowNumber);
+            $form->setInputPrefixData($inputPrefixData);
             $view                        = new EmailMessageRowForWorkflowComponentView($model, (int)$rowNumber,
                                            $inputPrefixData, $form,
                                            WorkflowToWizardFormAdapter::getFormClassNameByType($type),

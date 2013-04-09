@@ -40,6 +40,10 @@
     class ModelRelationsAndAttributesToSummationReportAdapter extends ModelRelationsAndAttributesToSummableReportAdapter
     {
         /**
+         * Expected to be called from @see ReportRelationsAndAttributesToTreeAdapter. This means the returned attributes
+         * should not carry any previous relation information.  For example, hasOne___phone as an existing groupBy should
+         * return as 'phone' since it would be expected that it would be called on during just the ReportModelTestItem2
+         * branch of the tree.
          * @param array $existingGroupBys
          * @param array $existingDisplayAttributes
          * @param null|RedBeanModel $precedingModel
@@ -90,7 +94,7 @@
                 if($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
-                    $attributes[$groupBy->attributeIndexOrDerivedType] =
+                    $attributes[$resolvedAttribute] =
                         array('label' => $this->model->getAttributeLabel($resolvedAttribute));
                 }
             }

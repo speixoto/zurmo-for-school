@@ -43,6 +43,14 @@ $(window).ready(function(){
         }
     );
 
+    //Main nav toggle hidden items
+    $('.toggle-hidden-nav-items').click(
+        function(){
+            $('.hidden-nav-item').slideToggle(200);
+            $(this).toggleClass('point-up');
+        }
+    );
+
     function resizeWhiteArea(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();

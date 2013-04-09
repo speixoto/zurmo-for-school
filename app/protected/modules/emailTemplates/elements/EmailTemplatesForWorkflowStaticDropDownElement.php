@@ -39,6 +39,11 @@
      */
     class EmailTemplatesForWorkflowStaticDropDownElement extends StaticDropDownFormElement
     {
+        public function getIdForSelectInput()
+        {
+            return $this->getEditableInputId($this->attribute);
+        }
+
         /**
          * @return array
          */

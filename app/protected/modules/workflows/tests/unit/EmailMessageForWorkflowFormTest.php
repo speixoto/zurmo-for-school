@@ -77,5 +77,30 @@
             $errors        = $message->getErrors();
             $this->assertTrue($validated);
         }
+
+        /**
+         * @depends testValidate
+         */
+        public function testMissingEmailTemplateWillNotValidate()
+        {
+            $message = new EmailMessageForWorkflowForm('WorkflowModelTestItem', Workflow::TYPE_ON_SAVE);
+            $message->sendAfterDurationSeconds = 86400;
+            $message->sendFromType             = EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT;
+            $recipients = array(array('type' => WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER,
+                                      'audienceType'     => EmailMessageRecipient::TYPE_TO,
+                                      'dynamicUserType'  => DynamicTriggeredModelUserWorkflowEmailMessageRecipientForm::
+                                      DYNAMIC_USER_TYPE_CREATED_BY_USER));
+            $message->setAttributes(array(EmailMessageForWorkflowForm::EMAIL_MESSAGE_RECIPIENTS => $recipients));
+            $validated = $message->validate();
+            $errors    = $message->getErrors();
+            $this->assertFalse($validated);
+            $compareErrors = array('emailTemplateId'  => array('Template cannot be blank.'));
+            $this->assertEquals($compareErrors, $errors);
+            //Now fill in emailTemplateId and it should pass
+            $message->emailTemplateId = 5;
+            $validated                = $message->validate();
+            $this->assertTrue($validated);
+
+        }
     }
 ?>

@@ -40,10 +40,13 @@
 
         protected $useMinimalDynamicLabelMbMenu;
 
+        protected $cssClasses;
+
         public function __construct(array $items, $useMinimalDynamicLabelMbMenu = false)
         {
             $this->items = $items;
             $this->useMinimalDynamicLabelMbMenu = $useMinimalDynamicLabelMbMenu;
+            $this->cssClasses = $this->resolveMenuClassForNoHiddenItems();
         }
 
         /**
@@ -72,7 +75,9 @@
                 'items' => static::resolveForHiddenItems($this->items)
             ));
             $cClipWidget->endClip();
-            return $cClipWidget->getController()->clips['Tabs'];
+            $content  = $cClipWidget->getController()->clips['Tabs'];
+            $content .= $this->resolveToggleForHiddenItems();
+            return $content;
         }
 
         protected static function resolveForHiddenItems($items)
@@ -88,6 +93,26 @@
                 $count ++;
             }
             return $items;
+        }
+
+        protected function resolveToggleForHiddenItems()
+        {
+            if (count($this->items) > 6)
+            {
+                return ZurmoHtml::tag('a', array('class'=>'toggle-hidden-nav-items'), '');
+            }
+        }
+
+        protected function resolveMenuClassForNoHiddenItems()
+        {
+            if (count($this->items) < 6)
+            {
+                return array('hasNoHiddenItems');
+            }
+            else
+            {
+                return array();
+            }
         }
     }
 ?>

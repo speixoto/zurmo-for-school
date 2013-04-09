@@ -89,7 +89,7 @@
                                     <li>Richard Baldwin  - CRM Processes</li>
                                     <li>Camilo Calderón  - Documentation</li>
                                     <li>Nev Delap        - Infrastructure</li>
-                                    <li>Ramin Farmani    - Farsi Translation</li>
+                                    <li>Sergey Fayngold  - Language Infrastructure</li>
                                     <li>Evan Fazio       - Gamification</li>
                                     <li>Justin Ferguson  - Documentation</li>
                                     <li>Theresa Neil     - User Interface Design</li>
@@ -98,7 +98,6 @@
                                     <li>Hisateru Tanaka  - Japanese Translation</li>
                                     <li>Sacha Telgenhof  - Language Infrastructure</li>
                                     <li>Subtle Patterns  - Background Textures</li>
-                                    <li>Holy Xing        - Chinese Translation</li>
                                 </ul>
                             </div>
                         </div>';

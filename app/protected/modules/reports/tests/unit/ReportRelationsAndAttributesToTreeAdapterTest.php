@@ -96,6 +96,21 @@
             //test both when there is one part and more than one part
         }
 
+        public function testNextedGroupBys()
+        {
+            $report                              = new Report();
+            $report->setType(Report::TYPE_SUMMATION);
+            $report->setModuleClassName('ReportsTestModule');
+            $adapter = new ReportRelationsAndAttributesToTreeAdapter($report, ComponentForReportForm::TYPE_GROUP_BYS);
+            $data    = $adapter->getData(ComponentForReportForm::TYPE_GROUP_BYS . '_hasOne');
+            $this->assertEquals('GroupBys_hasOne___createdByUser__User', $data[0]['id']);
+            $this->assertEquals('GroupBys_hasOne___id', $data[6]['id']);
+            $this->assertEquals('GroupBys_hasOne___name', $data[13]['id']);
+        }
+
+        /**
+         * @depends testNextedGroupBys
+         */
         public function testWhereNestedGroupBysAndGettingDataForOrderBy()
         {
             $report                              = new Report();

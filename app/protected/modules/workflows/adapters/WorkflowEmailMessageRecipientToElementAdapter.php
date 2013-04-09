@@ -124,14 +124,14 @@
             $formType = $this->model->getFormType();
             $params   = array('inputPrefix' => $this->inputPrefixData);
             $content  = null;
-            if($formType == 'DynamicTriggeredModelUser')
+            if($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_USER)
             {
                 $dynamicUserTypeElement   = new DynamicUserTypeForEmailMessageRecipientStaticDropDownElement(
                                             $this->model, 'dynamicUserType', $this->form, $params);
                 $dynamicUserTypeElement->editableTemplate    = '<div class="value-data">{content}{error}</div>';
                 $content .= $dynamicUserTypeElement ->render();
             }
-            elseif($formType == 'DynamicTriggeredModelRelationUser')
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_MODEL_RELATION_USER)
             {
                 $relationElement        = new ModelRelationForEmailMessageRecipientStaticDropDownElement(
                                           $this->model, 'relation', $this->form, $params);
@@ -144,11 +144,11 @@
                 $allRelatedDropdowns   .= $dynamicUserTypeElement ->render();
                 $content .= ZurmoHtml::tag('div', array('class' => 'all-related-field'), $allRelatedDropdowns);
             }
-            elseif($formType == 'DynamictriggeredByUser')
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_DYNAMIC_TRIGGERED_BY_USER)
             {
                 //nothing to render
             }
-            elseif($formType == 'StaticAddress')
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_STATIC_ADDRESS)
             {
                 $toNameElement                      = new TextElement($this->model, 'toName', $this->form, $params);
                 $toNameElement->editableTemplate    = '<div class="value-data"><span>{label}</span>{content}{error}</div>';
@@ -160,19 +160,19 @@
                 $content .= ZurmoHtml::tag('div', array('class' => 'static-address-field'), $toNameAndAddressElements);
 
             }
-            elseif($formType == 'StaticGroup')
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_STATIC_GROUP)
             {
                 $staticGroupElement = new AllGroupsStaticDropDownElement($this->model, 'groupId', $this->form, $params);
                 $staticGroupElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 $content .= $staticGroupElement->render();
             }
-            elseif($formType == 'StaticRole')
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_STATIC_ROLE)
             {
                 $staticRoleElement = new AllRolesStaticDropDownElement($this->model, 'roleId', $this->form, $params);
                 $staticRoleElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 $content .= $staticRoleElement->render();
             }
-            elseif($formType == 'StaticUser')
+            elseif($formType == WorkflowEmailMessageRecipientForm::TYPE_STATIC_USER)
             {
                 $staticUserElement = new UserNameIdElement($this->model, 'userId', $this->form, $params);
                 $staticUserElement->setIdAttributeId('userId');
