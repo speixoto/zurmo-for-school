@@ -36,14 +36,14 @@
 
     class MarketingListsModule extends SecurableModule
     {
-        const RIGHT_CREATE_MARKETING_LISTS = 'Create Lists';
-        const RIGHT_DELETE_MARKETING_LISTS = 'Delete Lists';
-        const RIGHT_ACCESS_MARKETING_LISTS = 'Access Lists';
+        const RIGHT_CREATE_MARKETING_LISTS = 'Create Marketing Lists';
+        const RIGHT_DELETE_MARKETING_LISTS = 'Delete Marketing Lists';
+        const RIGHT_ACCESS_MARKETING_LISTS = 'Access Marketing Lists Tab';
 
         public function getDependencies()
         {
             return array(
-                'activities',
+                'marketing',
             );
         }
 
@@ -52,12 +52,12 @@
             return array('MarketingList', 'MarketingListMember');
         }
 
-        public static function getUntranslatedRightsLabels()
+        public static function getTranslatedRightsLabels()
         {
-            $labels                           = array();
-            $labels[self::RIGHT_CREATE_MARKETING_LISTS] = 'Create ListsModulePluralLabel';
-            $labels[self::RIGHT_DELETE_MARKETING_LISTS] = 'Delete ListsModulePluralLabel';
-            $labels[self::RIGHT_ACCESS_MARKETING_LISTS] = 'Access ListsModulePluralLabel';
+            $labels                                     = array();
+            $labels[self::RIGHT_CREATE_MARKETING_LISTS] = Zurmo::t('MarketingListsModule', 'Create Marketing Lists');
+            $labels[self::RIGHT_DELETE_MARKETING_LISTS] = Zurmo::t('MarketingListsModule', 'Delete Marketing Lists');
+            $labels[self::RIGHT_ACCESS_MARKETING_LISTS] = Zurmo::t('MarketingListsModule', 'Access Marketing Lists Tab');
             return $labels;
         }
 
@@ -84,6 +84,11 @@
         public static function getGlobalSearchFormClassName()
         {
             return 'MarketingListsSearchForm';
+        }
+
+        public static function modelsAreNeverGloballySearched()
+        {
+            return true;
         }
 
         public static function getDefaultMetadata()

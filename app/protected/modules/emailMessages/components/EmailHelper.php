@@ -230,7 +230,10 @@
             $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX_ERROR);
             foreach ($queuedEmailMessages as $emailMessage)
             {
-                $this->sendImmediately($emailMessage);
+                if($emailMessage->sendAttempts < 3)
+                {
+                    $this->sendImmediately($emailMessage);
+                }
             }
             return true;
         }
@@ -278,7 +281,8 @@
         {
             try
             {
-                $acceptedRecipients = $mailer->send();
+                $emailMessage->sendAttempts = $emailMessage->sendAttempts + 1;
+                $acceptedRecipients         = $mailer->send();
                 // Code below is quick fix, we need to think about better solution
                 // Here is related PT story: https://www.pivotaltracker.com/projects/380027#!/stories/45841753
                 //if ($acceptedRecipients != $emailMessage->recipients->count())

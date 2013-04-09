@@ -34,56 +34,54 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class WorkflowsTestModule extends SecurableModule
+    class TestOwnedLinkSpecificModel extends Item
     {
-        const RIGHT_ACCESS_WORKFLOWS_TESTS = 'Access Workflows Test Tab';
-
-        public function getDependencies()
-        {
-            return array(
-            );
-        }
-
         public static function getDefaultMetadata()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'name'
                 ),
-                'designerMenuItems' => array(
+                'relations' => array(
+                    'specific'         => array(RedBeanModel::HAS_ONE,   'ExtendsOwnedModel', RedBeanModel::OWNED,
+                                                RedBeanModel::LINK_TYPE_SPECIFIC, 'specific'),
                 ),
-                'a' => 1,
-                'b' => 2,
-                'c' => 3,
-                //globalSearchAttributeNames is used by A model.
-                'globalSearchAttributeNames' => array('a', 'name')
+                'rules' => array(
+                    array('name',                'type',     'type' => 'string'),
+                )
             );
             return $metadata;
         }
 
-        public static function getPrimaryModelName()
-        {
-            return 'WorkflowModelTestItem';
-        }
-
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'WorkflowModelTestItem';
-        }
-
-        public static function hasPermissions()
+        public static function isTypeDeletable()
         {
             return true;
         }
 
-        protected static function getSingularModuleLabel($language)
+        public static function getModuleClassName()
         {
-            return 'Workflows Test';
+            return 'TestModule';
         }
 
-        protected static function getPluralModuleLabel($language)
+        /**
+         * Returns the display name for the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getLabel($language = null)
         {
-            return 'Workflows Tests';
+            return 'TestOwnedLinkSpecificModel';
+        }
+
+        /**
+         * Returns the display name for plural of the model class.
+         * @param null | string $language
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'TestOwnedLinkSpecificModels';
         }
     }
 ?>

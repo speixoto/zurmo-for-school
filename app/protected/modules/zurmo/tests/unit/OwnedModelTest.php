@@ -34,56 +34,47 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class WorkflowsTestModule extends SecurableModule
+    class OwnedModelTest extends DataProviderBaseTest
     {
-        const RIGHT_ACCESS_WORKFLOWS_TESTS = 'Access Workflows Test Tab';
-
-        public function getDependencies()
+        public static function setUpBeforeClass()
         {
-            return array(
-            );
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        public static function getDefaultMetadata()
+        /**
+         * When you save an owned model, then swap it for a new one, the old one should be deleted.
+         * Save the model first, then add the owned model, then swap it to properly do the test.
+         */
+        public function testProvidingANewOnedModel()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
-                ),
-                'designerMenuItems' => array(
-                ),
-                'a' => 1,
-                'b' => 2,
-                'c' => 3,
-                //globalSearchAttributeNames is used by A model.
-                'globalSearchAttributeNames' => array('a', 'name')
-            );
-            return $metadata;
-        }
-
-        public static function getPrimaryModelName()
-        {
-            return 'WorkflowModelTestItem';
-        }
-
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'WorkflowModelTestItem';
-        }
-
-        public static function hasPermissions()
-        {
-            return true;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return 'Workflows Test';
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return 'Workflows Tests';
+            $model = new TestOwnedLinkSpecificModel();
+            $model->name = 'my name';
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $ownedModel = new ExtendsOwnedModel();
+            $ownedModel->member = 'some member';
+            $model->specific    = $ownedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $ownedModel = new ExtendsOwnedModel();
+            $ownedModel->member = 'some member 2';
+            $model->specific    = $ownedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
+            $modelId = $model->id;
+            $model->forget();
+            $model = TestOwnedLinkSpecificModel::getById($modelId);
+            $ownedModel = new ExtendsOwnedModel();
+            $ownedModel->member = 'some member 3';
+            $model->specific    = $ownedModel;
+            $saved = $model->save();
+            $this->assertTrue($saved);
+            $this->assertEquals(1, count(ExtendsOwnedModel::getAll()));
         }
     }
 ?>

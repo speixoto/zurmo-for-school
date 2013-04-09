@@ -70,35 +70,64 @@
             // This does not include portlet controller actions.
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default');
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/index');
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
         }
 
-        public function testSuperUserListAction()
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
+        public function testSuperUserListForMarketingAction()
         {
-            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/list');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForMarketing');
             $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
             $this->assertTrue   (substr_count($content, '2 result(s)') !== false);
-            $this->assertEquals (substr_count($content, 'Test Name'), 2);
-            $this->assertEquals (substr_count($content, 'Clark Kent'), 2);
-            $this->assertFalse  (strpos($content,       'anyMixedAttributes') !== false);
-            $emailTemplates = EmailTemplate::getAll();
-            $this->assertEquals (2,                     count($emailTemplates));
+            $this->assertEquals (substr_count($content, 'Test Name1'), 1);
+            $this->assertEquals (substr_count($content, 'Clark Kent'), 1);
+            $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_CONTACT);
+            $this->assertEquals (1,                     count($emailTemplates));
         }
 
-        public function testSuperUserCreateAction()
+        /**
+         * @depends testSuperUserListForMarketingAction
+         */
+        public function testSuperUserListForWorkflowAction()
+        {
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/listForWorkflow');
+            $this->assertTrue   (strpos($content,       'Email Templates</title></head>') !== false);
+            $this->assertTrue   (substr_count($content, '2 result(s)') !== false);
+            $this->assertEquals (substr_count($content, 'Test Name'), 1);
+            $this->assertEquals (substr_count($content, 'Clark Kent'), 1);
+            $emailTemplates = EmailTemplate::getByType(EmailTemplate::TYPE_WORKFLOW);
+            $this->assertEquals (1,                     count($emailTemplates));
+        }
+
+        /**
+         * @depends testSuperUserListForWorkflowAction
+         */
+        public function testSuperUserCreateActionForWorkflow()
         {
             // Create a new emailTemplate and test validator.
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_WORKFLOW));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
+        }
+
+        /**
+         * @depends testSuperUserCreateActionForWorkflow
+         */
+        public function testSuperUserCreateActionForMarketing()
+        {
+            // Create a new emailTemplate and test validator.
+            $this->setGetArray(array('type' => EmailTemplate::TYPE_CONTACT));
             $this->setPostArray(array('EmailTemplate' => array(
                 'type'              => EmailTemplate::TYPE_CONTACT,
                 'name'              => 'New Test EmailTemplate',
                 'subject'           => 'New Test Subject')));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
-            $this->assertTrue(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type_value">') !== false);
-            $this->assertTrue(strpos($content, '<option value="1">Workflow</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2" selected="selected">Contact</option>') !== false);
+            $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
             $this->assertTrue(strpos($content, 'Please provide at least one of the contents field.') !== false);
-            $this->assertTrue(strpos($content, 'Model Class Name cannot be blank.') !== false);
+            $this->assertFalse(strpos($content, 'Model Class Name cannot be blank.') !== false);
 
             // Create a new emailTemplate and test merge tags validator.
             $this->setPostArray(array('EmailTemplate' => array(
@@ -111,9 +140,7 @@
                 )));
             $content = $this->runControllerWithNoExceptionsAndGetContent('emailTemplates/default/create');
             $this->assertTrue(strpos($content, 'Create Email Template') !== false);
-            $this->assertTrue(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type_value">') !== false);
-            $this->assertTrue(strpos($content, '<option value="1" selected="selected">Workflow</option>') !== false);
-            $this->assertTrue(strpos($content, '<option value="2">Contact</option>') !== false);
+            $this->assertFalse(strpos($content, '<select name="EmailTemplate[type]" id="EmailTemplate_type">') !== false);
             $this->assertTrue(strpos($content, 'INVALID^TAG') !== false);
             $this->assertTrue(strpos($content, 'INVALIDTAG') !== false);
             $this->assertEquals(2, substr_count($content, 'INVALID^TAG'));
@@ -139,6 +166,9 @@
             $this->assertEquals(3, count($emailTemplates));
         }
 
+        /**
+         * @depends testSuperUserCreateActionForMarketing
+         */
         public function testSuperUserEditAction()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'Test Name');
@@ -178,6 +208,9 @@
             $this->assertEquals('New HTML Content', $emailTemplate->htmlContent);
         }
 
+        /**
+         * @depends testSuperUserEditAction
+         */
         public function testSuperUserDetailsAction()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Name');
@@ -189,13 +222,15 @@
             $this->assertTrue(strpos($content, '<span>Options</span>') !== false);
             $this->assertTrue(strpos($content, 'emailTemplates/default/edit?id=' . $emailTemplateId) !== false);
             $this->assertTrue(strpos($content, 'emailTemplates/default/delete?id=' . $emailTemplateId) !== false);
-            $this->assertTrue(strpos($content, '<th>Type</th><td colspan="1">' . $types[(int)$emailTemplate->type] . '</td>') !== false);
             $this->assertTrue(strpos($content, '<th>Name</th><td colspan="1">'. $emailTemplate->name . '</td>') !== false);
             $this->assertTrue(strpos($content, '<th>Subject</th><td colspan="1">'. $emailTemplate->subject . '</td>') !== false);
             $this->assertTrue(strpos($content, '<div class="tabs-nav"><a class="active-tab" href="#tab1">') !== false);
             $this->assertTrue(strpos($content, '<a href="#tab2">') !== false);
         }
 
+        /**
+         * @depends testSuperUserDetailsAction
+         */
         public function testSuperUserDeleteAction()
         {
             $emailTemplateId = self::getModelIdByModelNameAndName ('EmailTemplate', 'New Name');

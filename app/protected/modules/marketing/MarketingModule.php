@@ -36,7 +36,7 @@
 
     class MarketingModule extends SecurableModule
     {
-        const RIGHT_ACCESS_MARKETING = 'Access Marketing';
+        const RIGHT_ACCESS_MARKETING = 'Access Marketing Tab';
 
         public function getDependencies()
         {
@@ -49,7 +49,7 @@
         public static function getTranslatedRightsLabels()
         {
             $labels                                         = array();
-            $labels[self::RIGHT_ACCESS_MARKETING] = Zurmo::t('MarketingModule', 'Access Marketing');
+            $labels[self::RIGHT_ACCESS_MARKETING] = Zurmo::t('MarketingModule', 'Access Marketing Tab');
             return $labels;
         }
 

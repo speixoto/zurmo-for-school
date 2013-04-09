@@ -34,56 +34,25 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class WorkflowsTestModule extends SecurableModule
+    class ExtendsOwnedModel extends OwnedModel
     {
-        const RIGHT_ACCESS_WORKFLOWS_TESTS = 'Access Workflows Test Tab';
-
-        public function getDependencies()
-        {
-            return array(
-            );
-        }
-
         public static function getDefaultMetadata()
         {
-            $metadata = array();
-            $metadata['global'] = array(
-                'tabMenuItems' => array(
+            $metadata = parent::getDefaultMetadata();
+            $metadata[__CLASS__] = array(
+                'members' => array(
+                    'member',
                 ),
-                'designerMenuItems' => array(
+                'rules' => array(
+                    array('member',  'type', 'type' => 'string'),
                 ),
-                'a' => 1,
-                'b' => 2,
-                'c' => 3,
-                //globalSearchAttributeNames is used by A model.
-                'globalSearchAttributeNames' => array('a', 'name')
             );
             return $metadata;
         }
 
-        public static function getPrimaryModelName()
+        public static function canSaveMetadata()
         {
-            return 'WorkflowModelTestItem';
-        }
-
-        public static function getGlobalSearchFormClassName()
-        {
-            return 'WorkflowModelTestItem';
-        }
-
-        public static function hasPermissions()
-        {
-            return true;
-        }
-
-        protected static function getSingularModuleLabel($language)
-        {
-            return 'Workflows Test';
-        }
-
-        protected static function getPluralModuleLabel($language)
-        {
-            return 'Workflows Tests';
+            return false;
         }
     }
 ?>

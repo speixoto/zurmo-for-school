@@ -491,6 +491,54 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'MarketingModule'  => array(
+                    'RIGHT_ACCESS_MARKETING'   => array(
+                        'displayName' => MarketingModule::RIGHT_ACCESS_MARKETING,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'EmailTemplatesModule'  => array(
+                    'RIGHT_CREATE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_CREATE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_DELETE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_ACCESS_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'MarketingListsModule'  => array(
+                    'RIGHT_CREATE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_CREATE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_DELETE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
             );
             $this->assertEquals($compareData, $data);
             $group->forget();
@@ -935,6 +983,54 @@
                 'SocialItemsModule'  => array(
                     'RIGHT_ACCESS_SOCIAL_ITEMS'   => array(
                         'displayName' => 'Access Social Items',
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'MarketingModule'  => array(
+                    'RIGHT_ACCESS_MARKETING'   => array(
+                        'displayName' => MarketingModule::RIGHT_ACCESS_MARKETING,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'EmailTemplatesModule'  => array(
+                    'RIGHT_CREATE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_CREATE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_DELETE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_ACCESS_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'MarketingListsModule'  => array(
+                    'RIGHT_CREATE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_CREATE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_DELETE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,
@@ -1385,6 +1481,54 @@
                         'effective'   => Right::DENY,
                     ),
                 ),
+                'MarketingModule'  => array(
+                    'RIGHT_ACCESS_MARKETING'   => array(
+                        'displayName' => MarketingModule::RIGHT_ACCESS_MARKETING,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'EmailTemplatesModule'  => array(
+                    'RIGHT_CREATE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_CREATE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_DELETE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_ACCESS_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'MarketingListsModule'  => array(
+                    'RIGHT_CREATE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_CREATE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_DELETE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
             );
             $this->assertEquals($compareData, $form->data);
             $fakePost = array(
@@ -1824,6 +1968,54 @@
                 'SocialItemsModule'  => array(
                     'RIGHT_ACCESS_SOCIAL_ITEMS'   => array(
                         'displayName' => 'Access Social Items',
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'MarketingModule'  => array(
+                    'RIGHT_ACCESS_MARKETING'   => array(
+                        'displayName' => MarketingModule::RIGHT_ACCESS_MARKETING,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'EmailTemplatesModule'  => array(
+                    'RIGHT_CREATE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_CREATE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_DELETE_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_EMAIL_TEMPLATES' => array(
+                        'displayName' => EmailTemplatesModule::RIGHT_ACCESS_EMAIL_TEMPLATES,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                ),
+                'MarketingListsModule'  => array(
+                    'RIGHT_CREATE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_CREATE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_DELETE_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_DELETE_MARKETING_LISTS,
+                        'explicit'    => null,
+                        'inherited'   => null,
+                        'effective'   => Right::DENY,
+                    ),
+                    'RIGHT_ACCESS_MARKETING_LISTS' => array(
+                        'displayName' => MarketingListsModule::RIGHT_ACCESS_MARKETING_LISTS,
                         'explicit'    => null,
                         'inherited'   => null,
                         'effective'   => Right::DENY,

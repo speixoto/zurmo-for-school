@@ -141,7 +141,7 @@
         {
             $marketingList = MarketingList::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($marketingList);
-            $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
+            $breadcrumbLinks    = static::getDetailsAndEditBreadcrumbLinks();
             $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($marketingList), 25);
             $editView = new MarketingListEditView($this->getId(), $this->getModule()->getId(),
                                                  $this->attemptToSaveModelFromPost($marketingList),

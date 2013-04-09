@@ -222,7 +222,7 @@
          * @param $type
          * @return Array of EmailTemplate models
          */
-        public static function getActiveByModuleClassNameAndIsNewModel($type)
+        public static function getByType($type)
         {
             assert('is_int($type)');
             $searchAttributeData = array();
@@ -243,7 +243,7 @@
         {
             assert('is_int($type)');
             $dataAndLabels = array();
-            $emailTemplates = static::getActiveByModuleClassNameAndIsNewModel($type);
+            $emailTemplates = static::getByType($type);
             foreach($emailTemplates as $emailTemplate)
             {
                 $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);

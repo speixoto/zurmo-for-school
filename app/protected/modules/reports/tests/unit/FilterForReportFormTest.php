@@ -104,7 +104,7 @@
             $this->assertEquals('ReportModelTestItem__reportItems__Inferred',
                                                                     $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',              $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Phone',    $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Phone',           $filter->getDisplayLabel());
         }
 
         /**
@@ -141,7 +141,7 @@
             $this->assertEquals('ReportModelTestItem2',        $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                    $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',         $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Drop Down', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Drop Down', $filter->getDisplayLabel());
 
             //test currencyValue
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
@@ -154,7 +154,7 @@
             $this->assertEquals('ReportModelTestItem2',        $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                    $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',         $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Currency Value', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Currency Value', $filter->getDisplayLabel());
 
             //test reportedAsAttribute
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
@@ -167,7 +167,7 @@
             $this->assertEquals('ReportModelTestItem2',                   $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                               $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',                    $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Reported As Attribute', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Reported As Attribute', $filter->getDisplayLabel());
 
             //test the likeContactState
             $filter                              = new FilterForReportForm('ReportsTestModule', 'ReportModelTestItem2',
@@ -180,7 +180,7 @@
             $this->assertEquals('ReportModelTestItem2',                       $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                                   $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',                        $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> A name for a state', $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> A name for a state', $filter->getDisplayLabel());
         }
 
         /**
@@ -199,7 +199,7 @@
             $this->assertEquals('ReportModelTestItem2',                $filter->getPenultimateModelClassName());
             $this->assertEquals('hasMany2',                            $filter->getPenultimateRelation());
             $this->assertEquals('ReportModelTestItem',                 $filter->getResolvedAttributeModelClassName());
-            $this->assertEquals('ReportModelTestItems >> Owner',       $filter->getDisplayLabel());
+            $this->assertEquals('Reports Tests >> Owner',       $filter->getDisplayLabel());
         }
 
         /**
