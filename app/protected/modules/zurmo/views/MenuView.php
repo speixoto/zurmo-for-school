@@ -49,8 +49,8 @@
             assert('is_int($showCount)');
             $this->items = $items;
             $this->useMinimalDynamicLabelMbMenu = $useMinimalDynamicLabelMbMenu;
-            $this->cssClasses = $this->resolveMenuClassForNoHiddenItems();
             $this->showCount  = $showCount;
+            $this->cssClasses = $this->resolveMenuClassForNoHiddenItems();
         }
 
         /**
