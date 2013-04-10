@@ -4878,12 +4878,10 @@ section {
   left: 6px;
 }
 #login-box {
-  float: left;
   width: 500px;
-  margin: -100px auto 0 -250px;
+  margin: 150px auto 0 -250px;
   height: 200px;
   position: relative;
-  top: 40%;
   left: 50%;
 }
 #LoginLogo {
