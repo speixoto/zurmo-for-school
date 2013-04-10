@@ -135,5 +135,10 @@
             GeneralCache::forgetEntry('CustomFieldData' . $this->name);
             return parent::unrestrictedDelete();
         }
+
+        public static function forgetAllPhpCache()
+        {
+            self::$cachedModelsByName = array();
+        }
     }
 ?>
