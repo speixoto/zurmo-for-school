@@ -357,7 +357,7 @@
                 return false;
             }
                         
-            EmailMessageUtil::resolveSanitizeFromImapToUtf8($emailMessage);
+            EmailArchivingUtil::resolveSanitizeFromImapToUtf8($emailMessage);
             $saved = $emailMessage->save();
             try
             {

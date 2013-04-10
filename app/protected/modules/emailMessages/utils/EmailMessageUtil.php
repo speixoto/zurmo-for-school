@@ -246,10 +246,5 @@
            }
            return $textContent;
         }
-
-        public static function resolveSanitizeFromImapToUtf8(EmailMessage $message)
-        {
-            $message->subject = imap_utf8($message->subject);
-        }       
     }
 ?>
