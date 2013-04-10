@@ -34,7 +34,7 @@
 
         const ALL_MENU_TYPE      = 0;
 
-        const MENU_ID            = 'ListViewExportActionMenu';
+        const DROPDOWN_ID        = 'ListViewExportActionMenu';
 
         protected $gridId;
 
@@ -54,7 +54,7 @@
 
         public static function getDropDownId()
         {
-            return static::MENU_ID;
+            return static::DROPDOWN_ID;
         }
 
         public function __construct($controllerId, $moduleId, $modelId, $params = array())
@@ -261,7 +261,7 @@
 
         protected function getMenuId()
         {
-            return static::MENU_ID;
+            return get_class($this);
         }
 
         protected function renderMenuWidget($items)
