@@ -76,7 +76,9 @@
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Tabs");
             $cClipWidget->widget($widgetPath, array(
-                'items' => static::resolveForHiddenItems($this->items, $this->showCount)
+                'items'         => static::resolveForHiddenItems($this->items, $this->showCount),
+                'labelPrefix'   => 'em',
+                'linkPrefix'    => 'span',
             ));
             $cClipWidget->endClip();
             $content  = $cClipWidget->getController()->clips['Tabs'];

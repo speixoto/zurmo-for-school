@@ -1,6 +1,7 @@
 <?php
     class MinimalDynamicLabelMbMenu extends MbMenu
     {
+        // TODO: @Shoaibi: Low: Refactor this and MbMenu
         protected function renderMenuRecursive($items)
         {
             foreach ($items as $item)
@@ -22,7 +23,7 @@
                     }
                     if (!empty($item['label']))
                     {
-                        $resolvedLabelContent = ZurmoHtml::tag('em', array(), '') . ZurmoHtml::tag('span', array(), $item['label']);
+                        $resolvedLabelContent = $this->renderLabelPrefix() . ZurmoHtml::tag('span', array(), $item['label']);
                     }
                     else
                     {
@@ -34,7 +35,7 @@
                     }
                     elseif (isset($item['url']))
                     {
-                        echo ZurmoHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
+                        echo ZurmoHtml::link($this->renderLinkPrefix() . $resolvedLabelContent, $item['url'], $htmlOptions);
                     }
                     else
                     {
