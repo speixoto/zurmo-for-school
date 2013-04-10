@@ -64,7 +64,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue', 'isLink' => true),
+                                                array('attributeName' => 'sellPrice', 'type' => 'SellPriceCurrencyValue', 'isLink' => true),
                                             ),
                                         ),
                                     )

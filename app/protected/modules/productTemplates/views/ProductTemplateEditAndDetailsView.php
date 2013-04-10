@@ -129,7 +129,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
+                                                array('attributeName' => 'sellPrice', 'type' => 'SellPriceCurrencyValue'),
                                             ),
                                         ),
                                     )
