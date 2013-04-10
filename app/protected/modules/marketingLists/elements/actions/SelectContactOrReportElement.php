@@ -32,6 +32,8 @@
 
         const SELECT_CONTACT_OR_REPORT_RADIO_ID     = 'select-contact-or-report-radio';
 
+        const SEARCH_BOX_MAGNIFIER_CLASS            = 'search-without-scope';
+
         public function getActionType()
         {
             return 'Details';
@@ -67,24 +69,28 @@
 
         protected function renderSelectContactOrLeadSearchBox($params)
         {
-            $selectContact = new MarketingListMemberSelectContactOrLeadAutoCompleteElement($this->model,
-                                                                                            'selectContactOrLeadSearchBox',
-                                                                                            $this->form,
-                                                                                            $params);
-            return ZurmoHtml::tag('div', array('id' => static::SELECT_CONTACT_SEARCH_BOX_ID),
-                                                                        $selectContact->render()
-                                                                    );
+            return $this->renderSearchBox($params, true);
         }
 
         protected function renderSelectReportSearchBox($params)
         {
-            $selectReport = new MarketingListMemberSelectReportAutoCompleteElement($this->model,
-                                                                                    'selectReportSearchBox',
-                                                                                    $this->form,
-                                                                                    $params);
-            return ZurmoHtml::tag('div', array('id' => static::SELECT_REPORT_SEARCH_BOX_ID),
-                                                                        $selectReport->render()
-                                                                    );
+            return $this->renderSearchBox($params, false);
+        }
+
+        protected function renderSearchBox($params, $selectContact = true)
+        {
+            $attribute          = ($selectContact) ? 'selectContactOrLeadSearchBox' :  'selectReportSearchBox';
+            $searchBoxDivId     = ($selectContact) ?
+                                                    static::SELECT_CONTACT_SEARCH_BOX_ID :
+                                                    static::SELECT_REPORT_SEARCH_BOX_ID;
+            $elementClassName   = ($selectContact) ?
+                                                    'MarketingListMemberSelectContactOrLeadAutoCompleteElement' :
+                                                    'MarketingListMemberSelectReportAutoCompleteElement';
+            $element            = new $elementClassName($this->model, $attribute, $this->form, $params);
+            $content            = ZurmoHtml::tag('div', array('id' => $searchBoxDivId,
+                                                                'class' => static::SEARCH_BOX_MAGNIFIER_CLASS),
+                                                        $element->render());
+            return $content;
         }
 
         protected function renderSelectContactOrReportRadioButton($params)
