@@ -77,5 +77,10 @@
               //TODO need to clarify with JASON
               return 'Create Product Category';
         }
+
+	public static function getDesignerRulesType()
+	{
+	    return null;
+	}
     }
 ?>

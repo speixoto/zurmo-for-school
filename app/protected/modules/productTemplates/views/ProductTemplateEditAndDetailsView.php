@@ -40,6 +40,9 @@
                     'nonPlaceableAttributeNames' => array(
                         'owner',
                     ),
+		    'derivedAttributeTypes' => array(
+                        'MultipleProductCategoriesForProductTemplate',
+                    ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
                         array(
@@ -66,7 +69,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'categories', 'type' => 'MultipleProductCategoriesForProductTemplate'),
+                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProductTemplate'),
                                             ),
                                         ),
                                     )

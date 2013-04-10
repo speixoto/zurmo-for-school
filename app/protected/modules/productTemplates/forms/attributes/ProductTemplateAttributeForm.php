@@ -24,45 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductCatalogDetailsView extends DetailsView
+    class ProductTemplateAttributeForm extends HasOneModelAttributeForm
     {
-        public static function getDefaultMetadata()
+        public static function getAttributeTypeDisplayName()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type'  => 'EditLink',                 'renderType' => 'Details'),
-                            array('type'  => 'ProductCatalogDeleteLink', 'renderType' => 'Details'),
-                        ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
-                    ),
-                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
-                    'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
+            return Zurmo::t('ProductTemplatesModule', 'ProductTemplate');
         }
 
-        public function getTitle()
+        public static function getAttributeTypeDisplayDescription()
         {
-            return $this->model->name;
+            return Zurmo::t('ProductTemplatesModule', 'A product template field');
+        }
+
+        public function getAttributeTypeName()
+        {
+            return 'Product Template';
         }
     }
 ?>

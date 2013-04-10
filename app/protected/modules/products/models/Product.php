@@ -137,12 +137,14 @@
 		    array('sellPrice',		'required'),
                 ),
                 'elements' => array(
-                    'description'    => 'TextArea',
-		    'sellPrice'      => 'CurrencyValue',
-		    'type'           => 'ProductTemplateTypeDropDown',
+		    'account'	     => 'Account',
+		    'contact'	     => 'Contact',
+		    'description'    => 'TextArea',
+		    'opportunity'    => 'Opportunity',
 		    'pricefrequency' => 'ProductTemplatePriceFrequencyDropDown',
+		    'productTemplate'=> 'ProductTemplate',
+                    'sellPrice'      => 'CurrencyValue',
 		    'type'           => 'ProductTemplateTypeDropDown',
-		    'sellPrice'      => 'CurrencyValue',
                 ),
                 'customFields' => array(
                     'stage'    => 'ProductStages',
