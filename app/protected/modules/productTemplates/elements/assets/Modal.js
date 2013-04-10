@@ -13,10 +13,10 @@ function copyProductTemplateDataForProduct(templateId, url)
                              removeDisabledCss('type_value');
                              toggleCheckboxes('type');
                              $('.token-input-list').removeClass('disabled');
-                             $('#Product_null').removeAttr('disabled');
+                             $('#Product_categories').removeAttr('disabled');
                              $('#ProductCategoriesForm_ProductCategory_ids').removeAttr('disabled');
-                             removeDisabledCss('null');
-                             toggleCheckboxes('null');
+                             removeDisabledCss('categories');
+                             toggleCheckboxes('categories');
                              $('#Product_pricefrequency_value').removeAttr('disabled');
                              removeDisabledCss('pricefrequency_value');
                              toggleCheckboxes('pricefrequency');

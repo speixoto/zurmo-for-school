@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsMassEditView extends MassEditView
+    class ProductTemplatePriceFrequencyDropDownAttributeEditView extends AttributeEditView
     {
         public static function getDefaultMetadata()
         {
@@ -32,12 +32,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'CancelLink'),
-                            array('type' => 'SaveButton'),
+                            array('type'  => 'CancelLink'),
+                            array('type'  => 'SaveButton'),
                         ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'name',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -47,7 +44,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'quantity', 'type' => 'Integer'),
+                                                array('attributeName' => 'null', 'type' => 'AttributeType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'attributeLabels', 'type' => 'AttributeLabel'),
                                             ),
                                         ),
                                     )
@@ -56,7 +62,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'account', 'type' => 'Account'),
+                                                array('attributeName' => 'attributeName', 'type' => 'Text'),
                                             ),
                                         ),
                                     )
@@ -65,7 +71,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'contact', 'type' => 'Contact'),
+                                                array('attributeName' => 'isRequired', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -74,61 +80,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'opportunity', 'type' => 'Opportunity'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'productTemplate', 'type' => 'ProductTemplate'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'categories', 'type' => 'MultipleProductCategoriesForProduct'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'type', 'type' => 'ProductTemplateTypeDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'pricefrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'stage', 'type' => 'DropDown', 'addBlank' => true),
+                                                array('attributeName' => 'isAudited', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )

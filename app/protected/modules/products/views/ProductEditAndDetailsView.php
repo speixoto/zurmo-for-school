@@ -103,7 +103,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProduct'),
+                                                array('attributeName' => 'categories', 'type' => 'MultipleProductCategoriesForProduct'),
                                             ),
                                         ),
                                     )
