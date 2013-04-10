@@ -49,5 +49,17 @@
             assert('$saved');
             return $emailTemplate;
         }
+
+        public static function fillEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        {
+            $emailTemplate = new EmailTemplate();
+            $emailTemplate->type            = $type;
+            $emailTemplate->subject         = $subject;
+            $emailTemplate->modelClassName  = $modelClassName;
+            $emailTemplate->name            = $name;
+            $emailTemplate->htmlContent     = $htmlContent;
+            $emailTemplate->textContent     = $textContent;
+            return $emailTemplate;
+        }
     }
 ?>

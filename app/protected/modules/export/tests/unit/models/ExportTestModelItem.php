@@ -69,7 +69,7 @@
                     'string',
                     'textArea',
                     'url',
-                    'email', // Used for testing EmailAdapter, without CustomFiled
+                    'email',
                 ),
                 'relations' => array(
                     'currency'         => array(RedBeanModel::HAS_ONE,   'Currency'),

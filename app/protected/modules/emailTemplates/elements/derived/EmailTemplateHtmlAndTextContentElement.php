@@ -59,10 +59,8 @@
 
         protected static function renderLabels()
         {
-            $labels = array(
-                            Zurmo::t('EmailTemplatesModule', 'Html Content'),
-                            Zurmo::t('EmailTemplatesModule', 'Text Content'),
-                            );
+            $labels = array(Zurmo::t('EmailTemplatesModule', 'Html Content'),
+                            Zurmo::t('EmailTemplatesModule', 'Text Content'));
             return array_combine(static::getModelAttributeNames(), $labels);
         }
 
@@ -166,6 +164,11 @@
         }
 
         protected function renderLabel()
+        {
+            return null;
+        }
+
+        protected function renderError()
         {
             return null;
         }

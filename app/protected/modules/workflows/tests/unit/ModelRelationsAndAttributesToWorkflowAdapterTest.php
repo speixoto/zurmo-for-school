@@ -274,7 +274,7 @@
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getInferredRelationsData();
             $this->assertEquals(2, count($relations));
-            $compareData        = array('label' => 'Workflows Test');
+            $compareData        = array('label' => 'Workflows Tests');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem__workflowItems__Inferred']);
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
@@ -283,7 +283,7 @@
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData();
             $this->assertEquals(7, count($relations));
-            $compareData        = array('label' => 'Workflows Test');
+            $compareData        = array('label' => 'Workflows Tests');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem__workflowItems__Inferred']);
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
@@ -315,7 +315,7 @@
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, $workflow->getType());
             $relations = $adapter->getSelectableRelationsData($precedingModel, 'model5');
             $this->assertEquals(7, count($relations));
-            $compareData        = array('label' => 'Workflows Test');
+            $compareData        = array('label' => 'Workflows Tests');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem__workflowItems__Inferred']);
             $compareData        = array('label' => 'WorkflowModelTestItem2s');
             $this->assertEquals($compareData, $relations['WorkflowModelTestItem2__workflowItems__Inferred']);
