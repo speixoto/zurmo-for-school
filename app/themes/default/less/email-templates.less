@@ -2,7 +2,8 @@
 .email-template-content{
     position: relative;
     min-height: 200px;
-	margin: 15px;
+	//margin: 15px;
+	margin-bottom: 15px;
 	++.border-box;
     > .tab{
         position: absolute;
@@ -12,7 +13,7 @@
         min-height: 170px;
         display: none;
 	    line-height: 150%;
-	    padding: 10px;
+	    padding:0;
 	    border: 1px solid #dfdfdf;
 	    border-top:none;
 	    ++.border-box;
@@ -20,6 +21,14 @@
         label{
             display: none;
         }
+	    .redactor_box{
+		    border: none !important;
+	    }
+	    textarea{
+		    border: none !important;
+		    .radius(0);
+		    .b-shadow(none) !important;
+	    }
     }
     .tab.active-tab{
         display: block;
