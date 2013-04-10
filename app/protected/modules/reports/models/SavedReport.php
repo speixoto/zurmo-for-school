@@ -154,5 +154,10 @@
             }
             return $contactIds;
         }
+
+        public static function getGamificationRulesType()
+        {
+            return 'ReportGamification';
+        }
     }
 ?>

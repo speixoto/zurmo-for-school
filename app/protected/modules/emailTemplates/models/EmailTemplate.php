@@ -251,6 +251,11 @@
             return $dataAndLabels;
         }
 
+        public static function getGamificationRulesType()
+        {
+            return 'EmailTemplateGamification';
+        }
+
         protected static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();
