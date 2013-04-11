@@ -96,7 +96,7 @@
                         $data[] = null;
                     }
                 }
-            }            
+            }
             return $data;
         }
 

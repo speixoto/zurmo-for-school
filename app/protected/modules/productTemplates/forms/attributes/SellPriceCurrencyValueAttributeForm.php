@@ -24,38 +24,21 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class helps support adding/removing product categories while saving a product template from a post.
-     */
-    class ProductZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
+    class SellPriceCurrencyValueAttributeForm extends AttributeForm
     {
-        protected $productCategoryFormName;
-
-        protected $peopleAddedAsProductCategories;
-
-        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productCategoryFormName)
+        public static function getAttributeTypeDisplayName()
         {
-            assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName)');
-            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
-            $this->productCategoryFormName = $productCategoryFormName;
+            return Zurmo::t('DesignerModule', 'Sell Price Currency Value');
         }
 
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
+        public static function getAttributeTypeDisplayDescription()
         {
-            assert('$model instanceof Product');
-            $postData = PostUtil::getData();
-            if (isset($postData[$this->productCategoryFormName]))
-            {
-                $this->peopleAddedAsProductCategories = ProductCategoriesUtil::
-                                                               resolveProductHasManyProductCategoriesFromPost($model,
-                                                               $postData[$this->productCategoryFormName]);
-            }
+            return Zurmo::t('DesignerModule', 'Sell Price Currency Value');
         }
 
-        protected function checkProductsMassDeletion()
+        public function getAttributeTypeName()
         {
-
+            return 'CurrencyValue';
         }
     }
 ?>

@@ -101,7 +101,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'categories', 'type' => 'MultipleProductCategoriesForProduct'),
+                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProduct'),
                                             ),
                                         ),
                                     )

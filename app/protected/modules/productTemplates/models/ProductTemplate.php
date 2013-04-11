@@ -150,6 +150,7 @@
                 'defaultSortAttribute' => 'name',
                 'noAudit' => array(
                 ),
+		'nonConfigurableAttributes' => array('sellPriceFormula', 'priceFrequency', 'type')
             );
             return $metadata;
         }

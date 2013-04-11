@@ -297,5 +297,15 @@
                 'modifiedDateTime'   => Zurmo::t('ZurmoModule', 'Modified Date Time', array(), null, $language),
             ));
         }
+
+	public static function getNonConfigurableAttributes()
+	{
+	    $metadata = static::getDefaultMetadata();
+	    if(isset($metadata[get_called_class()]['nonConfigurableAttributes']))
+	    {
+		return $metadata[get_called_class()]['nonConfigurableAttributes'];
+	    }
+	    return array();
+	}
     }
 ?>

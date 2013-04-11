@@ -65,7 +65,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'productCategories', 'type' => 'MultipleProductCategoriesForProductTemplate'),
+                                                array('attributeName' => 'null', 'type' => 'MultipleProductCategoriesForProductTemplate'),
                                             ),
                                         ),
                                     )

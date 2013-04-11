@@ -79,25 +79,7 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'productTemplate', 'type' => 'ProductTemplate'),
-                                            ),
-                                        ),
-                                    )
-                                ),
 				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'categories', 'type' => 'MultipleProductCategoriesForProduct'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
@@ -111,15 +93,6 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'pricefrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-				array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
                                             ),
                                         ),
                                     )

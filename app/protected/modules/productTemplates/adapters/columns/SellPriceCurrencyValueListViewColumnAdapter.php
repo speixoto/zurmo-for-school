@@ -24,38 +24,8 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Class helps support adding/removing product categories while saving a product template from a post.
-     */
-    class ProductZurmoControllerUtil extends ModelHasFilesAndRelatedItemsZurmoControllerUtil
+    class SellPriceCurrencyValueListViewColumnAdapter extends CurrencyValueListViewColumnAdapter
     {
-        protected $productCategoryFormName;
-
-        protected $peopleAddedAsProductCategories;
-
-        public function __construct($relatedItemsRelationName, $relatedItemsFormName, $productCategoryFormName)
-        {
-            assert('is_string($relatedItemsRelationName)');
-            assert('is_string($relatedItemsFormName)');
-            parent::__construct($relatedItemsRelationName, $relatedItemsFormName);
-            $this->productCategoryFormName = $productCategoryFormName;
-        }
-
-        protected function afterSetAttributesDuringSave($model, $explicitReadWriteModelPermissions)
-        {
-            assert('$model instanceof Product');
-            $postData = PostUtil::getData();
-            if (isset($postData[$this->productCategoryFormName]))
-            {
-                $this->peopleAddedAsProductCategories = ProductCategoriesUtil::
-                                                               resolveProductHasManyProductCategoriesFromPost($model,
-                                                               $postData[$this->productCategoryFormName]);
-            }
-        }
-
-        protected function checkProductsMassDeletion()
-        {
-
-        }
+        
     }
 ?>
