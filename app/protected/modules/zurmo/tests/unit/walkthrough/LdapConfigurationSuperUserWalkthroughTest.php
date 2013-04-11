@@ -78,7 +78,7 @@
                                       'enabled'               =>
                                       Yii::app()->params['authenticationTestSettings']['ldapSettings']['ldapEnabled'])));
             $this->runControllerWithRedirectExceptionAndGetContent('zurmo/ldap/configurationEditLdap');
-            $this->assertEquals('Ldap Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
+            $this->assertEquals('LDAP Configuration saved successfully.', Yii::app()->user->getFlash('notification'));
 
             //Confirm the setting did in fact change correctly
             $authenticationHelper = new ZurmoAuthenticationHelper;

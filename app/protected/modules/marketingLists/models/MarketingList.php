@@ -113,6 +113,11 @@
             return $metadata;
         }
 
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
+
         public static function getGamificationRulesType()
         {
             return 'MarketingListGamification';

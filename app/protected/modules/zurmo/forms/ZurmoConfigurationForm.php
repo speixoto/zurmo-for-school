@@ -94,7 +94,7 @@
                 'dashboardListPageSize'                 => Zurmo::t('ZurmoModule', 'Dashboard portlet list page size'),
                 'gamificationModalNotificationsEnabled' => Zurmo::t('ZurmoModule', 'Enable game notification popup'),
                 'realtimeUpdatesEnabled'                => Zurmo::t('ZurmoModule', 'Enable real-time updates'),
-                'userIdOfUserToRunWorkflowsAs'          => Zurmo::t('ZurmoModule', 'User to run workflows as'),
+                'userIdOfUserToRunWorkflowsAs'          => Zurmo::t('ZurmoModule', 'Run workflows from'),
             );
         }
     }

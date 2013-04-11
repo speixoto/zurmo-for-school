@@ -407,7 +407,7 @@
             $messagesData = $importDataAnalyzer->getMessagesData();
             $compareData = array(
                 'column_0' => array(
-                    array('message'=> '1 value(s) are too short for this field. These rows will be skipped upon import.', // Not Coding Standard
+                    array('message'=> '1 value(s) are too short for this field. These rows will be skipped during import.', // Not Coding Standard
                           'sanitizerUtilType' => 'MinimumLength', 'moreAvailable' => false),
                     array('message'=> '1 value(s) are too large for this field. These values will be truncated to a length of 64 upon import.', // Not Coding Standard
                           'sanitizerUtilType' => 'Truncate', 'moreAvailable' => false),
@@ -662,7 +662,7 @@
             $dataAnalyzer->runAndMakeMessages($dataProvider, 'column_0');
             $messages = $dataAnalyzer->getMessages();
             $this->assertEquals(1, count($messages));
-            $compareMessage = '2 value(s) are too short for this field. These rows will be skipped upon import.';
+            $compareMessage = '2 value(s) are too short for this field. These rows will be skipped during import.';
             $this->assertEquals($compareMessage, $messages[0]);
 
             //test that a full name has the minimum required last name length. (min 2)

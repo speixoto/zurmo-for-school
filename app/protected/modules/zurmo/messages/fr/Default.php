@@ -319,6 +319,8 @@
             => 'ici',
         'Home'
             => 'Accueil',
+        'Host'
+            => 'Nom d\'hôte',
         'If there is new metadata to load using CustomManagement, use this option.'
             => 'Dans le cas où il y a  de nouvelles métadonnées à charger par CustomManagement, cliquez pour exécuter.',
         'In Progress'
@@ -509,6 +511,8 @@
             => 'Règles sauvegardées.',
         'Popup list page size'
             => 'Nb. d\'éléments de la liste pop-up',
+        'Port'
+            => 'Port', // Same Word Translated
         'Post to Profile'
             => 'Publier',
         'Postal Code'
@@ -639,6 +643,8 @@
             => 'Les champs nuage de tags vous permet d\'associer des mots-clefs avec vos données pour les pouvoir retrouver facilement.',
         'Technology'
             => 'Technologie',
+        'Test Connection'
+            => 'Tester la connexion',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
             => 'Le service de taux de change indique que le code de devise est invalide, bien que zurmo indique que le code est valide.  Le taux n\'a pas pu être mis à jour automatiquement.',
         'The currency rate web service was unavailable. The rate could not be automatically updated.'

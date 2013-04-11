@@ -51,7 +51,7 @@
                 {
                     LdapConfigurationFormAdapter::setConfigurationFromForm($configurationForm);
                     Yii::app()->user->setFlash('notification',
-                        Zurmo::t('ZurmoModule', 'Ldap Configuration saved successfully.')
+                        Zurmo::t('ZurmoModule', 'LDAP Configuration saved successfully.')
                     );
                     $this->redirect(Yii::app()->createUrl('configuration/default/index'));
                 }

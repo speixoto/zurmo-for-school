@@ -77,8 +77,8 @@
 
             $this->assertEquals(0, count(SavedWorkflow::getAll()));
             $content = $this->runControllerWithExitExceptionAndGetContent     ('workflows/default/create');
-            $this->assertFalse(strpos($content, 'On Save Workflow') === false);
-            $this->assertFalse(strpos($content, 'By Time Workflow') === false);
+            $this->assertFalse(strpos($content, 'On-Save Workflow') === false);
+            $this->assertFalse(strpos($content, 'Time-Based Workflow') === false);
 
             $this->setGetArray(array('type' => 'OnSave'));
             $this->resetPostArray();

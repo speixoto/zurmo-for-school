@@ -45,8 +45,7 @@
          */
         protected static function renderTooltipContent()
         {
-            $title       = Zurmo::t('WorkflowsModule', 'Zurmo processes workflow rules.  The workflows must be ' .
-                                             'processed from a super administrative user.');
+            $title       = Zurmo::t('WorkflowsModule', 'Workflows must be processed as a super administrator user.');
             $content     = '<span id="run-workflows-from-user-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));

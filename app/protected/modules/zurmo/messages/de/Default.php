@@ -319,6 +319,8 @@
             => 'hier',
         'Home'
             => 'Startseite',
+        'Host'
+            => 'Hostname',
         'If there is new metadata to load using CustomManagement, use this option.'
             => 'Diese Option verwenden, wenn es neue Metadaten mit CustomManagement zu laden gibt.',
         'In Progress'
@@ -509,6 +511,8 @@
             => 'Richtlinien erfolgreich gespeichert.',
         'Popup list page size'
             => 'Popup-Liste Seitengröße',
+        'Port'
+            => 'Port', // Same Word Translated
         'Post to Profile'
             => 'Teilen auf deinem Profil ',
         'Postal Code'
@@ -639,6 +643,8 @@
             => 'Mit Tag Cloud Felder kann man Datensätze mit Werten  markieren, so man sie leicht später finden kann.',
         'Technology'
             => 'Technologie',
+        'Test Connection'
+            => 'Verbindung prüfen',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
             => 'Der Wechselkurs Web-Service behauptet dass dieser Währung ist ungültig, obwohl zurmo behauptet, es gültig ist. Der Wechselkurs war nicht automatisch aktualisiert.',
         'The currency rate web service was unavailable. The rate could not be automatically updated.'
