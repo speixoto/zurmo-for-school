@@ -74,7 +74,7 @@
 
         protected static function renderTooltipContentForEnableDesktopNotifications()
         {
-            $link        = ZurmoHtml::link(Zurmo::t('UsersModule', 'click here'),
+            $link        = ZurmoHtml::link(Zurmo::t('Core', 'Click Here'),
                                            '',
                                            array('onClick' => 'js:desktopNotifications.requestAutorization(); return false;'));
 

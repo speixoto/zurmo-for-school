@@ -40,6 +40,14 @@
     class OnSaveWorkflowWizardView extends WorkflowWizardView
     {
         /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('WorkflowsModule', 'On-Save');
+        }
+
+        /**
          * @param WizardActiveForm $form
          * @return string
          */

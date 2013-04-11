@@ -72,10 +72,10 @@
         public function attributeLabels()
         {
             return array(
-                'imapHost'                             => Zurmo::t('EmailMessagesModule', 'Host'),
+                'imapHost'                             => Zurmo::t('ZurmoModule', 'Host'),
                 'imapUsername'                         => Zurmo::t('EmailMessagesModule', 'Username'),
                 'imapPassword'                         => Zurmo::t('EmailMessagesModule', 'Password'),
-                'imapPort'                             => Zurmo::t('EmailMessagesModule', 'Port'),
+                'imapPort'                             => Zurmo::t('ZurmoModule', 'Port'),
                 'imapSSL'                              => Zurmo::t('EmailMessagesModule', 'SSL connection'),
                 'imapFolder'                           => Zurmo::t('EmailMessagesModule', 'Folder'),
                 'testImapConnection'                   => Zurmo::t('EmailMessagesModule', 'Test IMAP connection'),

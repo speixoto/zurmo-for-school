@@ -319,6 +319,8 @@
             => 'qui',
         'Home'
             => 'Home', // Same Word Translated
+        'Host'
+            => 'Host', // Same Word Translated
         'If there is new metadata to load using CustomManagement, use this option.'
             => 'Se ci sono nuovi metadati da caricare per CustomManagement, clicca per eseguire.',
         'In Progress'
@@ -509,6 +511,8 @@
             => 'Regole modificate con successo.',
         'Popup list page size'
             => 'Numero degli elementi nella lista popup',
+        'Port'
+            => 'Porta',
         'Post to Profile'
             => 'Pubblica',
         'Postal Code'
@@ -639,6 +643,8 @@
             => 'I campi nuvole di tags permette di associare parole chiave ai records per poter ritrovarle più tardi.',
         'Technology'
             => 'Tecnologia',
+        'Test Connection'
+            => 'Prova di connessione',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
             => 'Il servizio di corsi delle valute indica che questo codice non è valido, anche se zurmo indica che è valido. Il tasso non fu aggiornato.',
         'The currency rate web service was unavailable. The rate could not be automatically updated.'

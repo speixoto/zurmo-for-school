@@ -104,14 +104,5 @@
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->description);
             return $content;
         }
-
-        protected function renderAfterFormLayoutForDetailsContent()
-        {
-            $content                            = parent::renderAfterFormLayoutForDetailsContent();
-            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                                                                                                        $this->getModel(),
-                                                                                                        $content);
-            return $ownedSecurableItemDetailsContent;
-        }
     }
 ?>

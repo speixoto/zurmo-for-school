@@ -144,7 +144,7 @@
 
                 if (!$this->hostInfo)
                 {
-                    $this->addError('hostInfo', Zurmo::t('InstallModule', 'Please enter server ip or url.'));
+                    $this->addError('hostInfo', Zurmo::t('InstallModule', 'Please enter server IP or URL.'));
                     return;
                 }
                 else
