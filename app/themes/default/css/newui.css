@@ -17545,13 +17545,13 @@ a.user-link {
 }
 .ReportResultsComponentForPortletView {
   position: relative;
-  min-height: 90px;
 }
 .ReportResultsComponentForPortletView .big-spinner {
   float: left;
   position: relative;
   left: 50%;
   margin: 30px 0 0 -21px;
+  height: 65px;
 }
 .ReportResultsGridView #report-results-grid-view {
   overflow-x: auto;
