@@ -41,8 +41,6 @@
     {
         protected $useModuleClassNameForItemLabel = true;
 
-        abstract protected function renderSubmitButtonName();
-
         public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes,
                                     $selectedRecordCount, $title, $alertMessage = null,
                                     $moduleClassName = null, $useModuleClassNameForItemLabel = true)
@@ -59,13 +57,6 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'CancelLink'),
-                            array('type' => 'eval:$this->renderSubmitButtonName()',
-                                  'htmlOptions' => array(
-                                                         'params' => array(
-                                                            'selectedRecordCount' => 'eval:$this->getSelectedRecordCount()'),
-
-                                   ),
-                            ),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -114,6 +105,11 @@
             $method     = ($this->useModuleClassNameForItemLabel) ? 'getModuleLabelByTypeAndLanguage' : 'getModelLabelByTypeAndLanguage';
             $label      = $className::$method($type);
             return $label;
+        }
+
+        protected function getSubmitButtonHtmlOptions()
+        {
+            return array('params' => array('selectedRecordCount' => 'eval:$this->getSelectedRecordCount()'));
         }
     }
 ?>

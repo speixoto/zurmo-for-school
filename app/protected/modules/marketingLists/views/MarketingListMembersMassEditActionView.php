@@ -34,27 +34,21 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMembersMassUnsubscribeView extends MarketingListMembersMassEditActionView
+    abstract class MarketingListMembersMassEditActionView extends MassActionRequiringConfirmationView
     {
-        public static function getDefaultMetadata()
+        public static function getDesignerRulesType()
         {
-            $metadata = array(
-                'global' => array(
-                    'toolbar' => array(
-                        'elements' => array(
-                            array('type' => 'MarketingListMembersUnsubscribeButton',
-                                'htmlOptions' => 'eval:$this->getSubmitButtonHtmlOptions()',
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+            return 'MassEditView';
         }
 
-        protected function renderItemOperationType()
+        protected static function getFormId()
         {
-            return 'unsubscription';
+            return 'edit-form';
+        }
+
+        protected function renderItemOperationMessageCategory()
+        {
+            return 'MarketingListsModule';
         }
     }
 ?>
