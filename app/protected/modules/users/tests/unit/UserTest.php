@@ -77,7 +77,7 @@
             // Todo: fix array keys below
             $this->assertTrue(isset($validationErrors['primaryEmail']));
             $this->assertTrue(isset($validationErrors['primaryEmail']['emailAddress']));
-            $this->assertEquals('Email address already exist in system.', $validationErrors['primaryEmail']['emailAddress'][0]);
+            $this->assertEquals('Email address already exists in system.', $validationErrors['primaryEmail']['emailAddress'][0]);
 
             // Try to save user without email address
             $user3 = new User();

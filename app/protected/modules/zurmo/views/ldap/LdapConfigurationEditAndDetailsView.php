@@ -41,7 +41,7 @@
     {
         public function getTitle()
         {
-            return Zurmo::t('ZurmoModule', 'Ldap Configuration');
+            return Zurmo::t('ZurmoModule', 'LDAP Configuration');
         }
 
         public static function getDefaultMetadata()

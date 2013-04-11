@@ -61,7 +61,7 @@
             if ($count > 0)
             {
                 $label   = '{count} value(s) are not valid. ';
-                $label  .= 'Rows that have these values will be skipped upon import.';
+                $label  .= 'Rows that have these values will be skipped during import.';
                 $this->addMessage(Zurmo::t('ContactsModule', $label, array('{count}' => $count)));
             }
         }
