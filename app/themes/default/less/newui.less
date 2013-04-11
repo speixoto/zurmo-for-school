@@ -1,3 +1,37 @@
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
 *{
 	margin:0;
 	padding:0;
@@ -104,34 +138,6 @@ footer, header, hgroup, menu, nav, section {
 	.b-shadow(0 0 12px 5px rgba(153, 153, 153, 0.3)); /*999*/
 	.radius(5px);
 	padding:0;
-	.remember-me{
-		label{
-			margin:0 !important;
-		}
-		.hasCheckBox + label{
-			display:inline-block;
-			position:relative;
-			top:-4px;
-			left:6px;
-		}
-	}
-	#login-box{
-		float:left;
-		width:500px;
-		margin:-100px auto 0 -250px;
-		height:200px;
-		position:relative;
-		top:40%;
-		left:50%;
-	}
-	#LoginLogo{
-		.box-sizing();
-		height:100%;
-		width:50%;
-		padding-right:10px;
-		float:left;
-		background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
-	}
 	.form{
 		width:50%;
 		float:right;
@@ -178,6 +184,36 @@ footer, header, hgroup, menu, nav, section {
 
 #Login{
 	margin-left:0;
+}
+
+.remember-me{
+	label{
+		margin:0 !important;
+	}
+	.hasCheckBox + label{
+		display:inline-block;
+		position:relative;
+		top:-4px;
+		left:6px;
+	}
+}
+
+#login-box{
+	//float:left;
+	width:500px;
+	margin:150px auto 0 -250px;
+	height:200px;
+	position:relative;
+	left:50%;
+}
+
+#LoginLogo{
+	.box-sizing();
+	height:100%;
+	width:50%;
+	padding-right:10px;
+	float:left;
+	background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
 }
 
 .background-1{ background: #fff url(../images/landscape-1.png) left bottom repeat-x; }
@@ -259,7 +295,7 @@ footer, header, hgroup, menu, nav, section {
 	li{
 		line-height: 100%;
 	}
-	a{
+	li > a{
 		color:#666;
 		font-size:11px;
 		font-weight:normal;
@@ -267,7 +303,7 @@ footer, header, hgroup, menu, nav, section {
 		padding:5px 10px 5px 10px;
 		margin:0 2px;
 	}
-	a:hover{
+	li > a:hover{
 		color:#fff !important;
 		++.themeBackgroundColor2;
 	}
@@ -816,7 +852,7 @@ body > .ui-autocomplete{
 }
 
 #MenuView{
-	padding:20px 0;
+	padding:20px 0 0 0;
 	border-bottom:1px solid #cccccc;
 }
 
@@ -847,7 +883,7 @@ body > .ui-autocomplete{
 	}
 }
 
-#MenuView a{
+#MenuView ul a{
 	display:block;
 	height:35px;
 	width:100%;
@@ -912,6 +948,34 @@ body > .ui-autocomplete{
 
 #MenuView li.active > a > span{
 	color:#fff;
+}
+
+#MenuView.hasNoHiddenItems{
+	padding-bottom: 20px;
+}
+
+.hidden-nav-item{
+	display: none;
+}
+
+.toggle-hidden-nav-items{
+	display: block;
+	text-align: center;
+	padding: 5px 0;
+	margin: 0 0 0 0;
+	cursor:pointer;
+	position: relative;
+	top: 5px;
+	&:after{
+		content:'\00F7';
+		.symbly(20px);
+		line-height: 1;
+		.t-shadow(0 1px 0 #fff);
+	}
+}
+
+.toggle-hidden-nav-items.point-up:after{
+	content:'\00A1'; //A1
 }
 
 /*=Recently Viewed*/
@@ -1074,6 +1138,21 @@ body > .ui-autocomplete{
 			content: "V";
 		}
 	}
+	li.type-EmailTemplatesModule{
+		em:before{
+			content:'\00B6';
+		}
+	}
+	li.type-MarketingListsModule{
+		em:before{
+			content: '\0022';
+		}
+	}
+	li.type-WorkflowsModule{
+		em:before{
+			content: '\20AC';
+		}
+	}
 }
 
 /*=Content*/
@@ -1225,7 +1304,8 @@ form,
 	}
 }
 
-.view-toolbar{
+.view-toolbar,
+.portlet-view-toolbar{
 	.smaller();
 	border:1px solid #b7b7b7;
 	border-top-color: #e7e7e7;
@@ -1241,38 +1321,13 @@ form,
 		padding:0;
 		display:inline;
 	}
-}
-
-#ActionBarForGroupsTreeListView,
-#ActionBarSearchAndListView{
-	.view-toolbar{
-		margin-top:0;
-	}
-}
-
-.view-toolbar-link{
-	color:#656565;
-	font-weight:bold;
-	text-shadow:#fff 0 1px 0;
-	padding:0 10px;
-	line-height:30px;
-	display:inline-block;
-	border-left:1px solid #bababa;
-}
-
-.view-toolbar-link:active{
-	color:#656565;
-	box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
-}
-
-.view-toolbar{
 	> a,
 	.parent > a{
 		++.view-toolbar-link;
 		position:relative;
+		border-left: none;
 		border-left: 1px solid #bababa;
 		text-indent:0 !important;
-		padding-left:40px;
 		line-height: 30px;
 		vertical-align:middle;
 	}
@@ -1282,6 +1337,9 @@ form,
 		margin-left:10px;
 		position:relative;
 		top:1px;
+	}
+	ul:first-child .parent > a{
+		border-left: none;
 	}
 	> ul, > a{
 		display:inline-block;
@@ -1296,6 +1354,55 @@ form,
 	}
 	> a:first-child{
 		border-left:none;
+	}
+}
+
+.portlet-view-toolbar{
+	margin-bottom: 0;
+	display: block;
+	float: none;
+	border:none;
+	border-bottom:1px solid #DFDFDF;
+	.radius(0);
+	.b-shadow(none);
+	.parent{
+		position: relative;
+	}
+}
+
+#ActionBarForGroupsTreeListView,
+#ActionBarSearchAndListView{
+	.view-toolbar{
+		margin-top:0;
+	}
+}
+
+.view-toolbar-link{
+	color:#656565;
+	font-weight:bold;
+	text-shadow:#fff 0 1px 0;
+	padding:0 10px 0 40px;
+	line-height:30px;
+	display:inline-block;
+	border-left:1px solid #bababa;
+}
+
+.view-toolbar-link:active{
+	color:#656565;
+	box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #FFF;
+}
+
+.hasDetailsFlyout{
+	.DetailsView > div:not(.view-toolbar-container){
+		.unstyle-panel() !important;
+		line-height: 150%;
+		margin: 10px 0;
+	}
+	ul{
+		max-width: 50%;
+		++.border-box;
+		padding: 10px;
+		line-height: 150%;
 	}
 }
 
@@ -1335,6 +1442,7 @@ form,
 	top:-2px;
 }
 
+#ExportLinkActionElement .parent > a:before,
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before{
 	content: "(";
@@ -1357,7 +1465,7 @@ form,
 	top:-2px;
 }
 
-
+#MassEditLinkActionElement .parent > a:before,
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
 	content: "2";
@@ -1365,9 +1473,22 @@ form,
 	top:-2px;
 }
 
+#MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before{
-	content: "—";
+	content: "—"; //underscore!
 	.view-toolbar-icons(22px);
+	top:-2px;
+}
+
+#MarketingListMembersSubscribeLinkActionElement .parent > a:before{
+	content: "c";
+	.view-toolbar-icons();
+	top:-2px;
+}
+
+#MarketingListMembersUnsubscribeLinkActionElement .parent > a:before{
+	content: "d";
+	.view-toolbar-icons();
 	top:-2px;
 }
 
@@ -1513,7 +1634,7 @@ form,
 
 .icon-by-time-workflow-in-queues:before{
 	content:'\0071';
-	.view-toolbar-icons();
+	.view-toolbar-icons(28px);
 	top:-2px;
 }
 
@@ -1527,6 +1648,36 @@ form,
 	content:'\2039';
 	.view-toolbar-icons(25px);
 	top:-2px;
+}
+
+.icon-marketing-lists:before{
+	content:'\0022';
+	.view-toolbar-icons();
+	top:-1px;
+}
+
+.icon-email-templates:before{
+	content:'\00B6';
+	.view-toolbar-icons(25px);
+	top:-1px;
+}
+
+.icon-mobile:before{
+	content:'\2018';
+	.view-toolbar-icons();
+	top:0;
+}
+
+.icon-desktop:before{
+	content:'\2019';
+	.view-toolbar-icons();
+	top:0;
+}
+
+.icon-tablet:before{
+	content:'\201D';
+	.view-toolbar-icons();
+	top:0;
 }
 
 /*=Footer*/
@@ -1552,6 +1703,11 @@ form,
 	span{
 		margin-left:70px;
 	}
+}
+
+.ui-chooser{
+	float: right;
+	display: block;
 }
 
 /*General table style, tables still need 'cellspacing="0"' in the markup */
@@ -1794,6 +1950,7 @@ td.empty{
 		text-indent: 0;
 		padding: 4px;
 		word-break: normal;
+		min-height: 60px;
 	}
 	select.multiple {
 		padding: 4px 4px 4px 6px;
@@ -1971,6 +2128,7 @@ a.simple-link{
 
 /*=Popup Modals*/
 .ui-dialog{
+	min-width: 600px;
 	overflow: visible;
 	padding:0 !important;
 	margin:0 !important;
@@ -2297,6 +2455,11 @@ div.wide.form{
 	}
 	.EmailMessage .large-icon:after{
 		content:"g";
+		.symbly(325px);
+		line-height: 52%;
+	}
+	.EmailTemplate .large-icon:after{
+		content:'\00B6';
 		.symbly(325px);
 		line-height: 52%;
 	}
@@ -3179,7 +3342,8 @@ div.wide.form{
 	.smaller();
 	font-style:italic;
 	text-align:center;
-	margin-bottom:10px;
+	padding: 0 10px 10px 10px;
+	++.border-box;
 }
 
 .mapcanvas{
@@ -4707,3 +4871,5 @@ div.hasHalfs{
 @import 'reports.less';
 @import 'inbox.less';
 @import 'media-queries.less';
+@import 'email-templates.less';
+@import 'marketing.less';

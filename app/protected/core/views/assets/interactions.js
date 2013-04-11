@@ -43,6 +43,14 @@ $(window).ready(function(){
         }
     );
 
+    //Main nav toggle hidden items
+    $('.toggle-hidden-nav-items').click(
+        function(){
+            $('.hidden-nav-item').slideToggle(200);
+            $(this).toggleClass('point-up');
+        }
+    );
+
     function resizeWhiteArea(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();
@@ -52,20 +60,20 @@ $(window).ready(function(){
         var recentlyViewedHeight = 0;
 
         if($(window).width() > 960 ){
-        	console.log('resizing white area');
+        	//console.log('resizing white area');
         	//if login
          	if ( $('#LoginPageView').length > 0 ) {
              	appChromeHeight = 40 + $('#FooterView').outerHeight(true);
               	if ( wrapperDivHeight < viewportHeight  ){
                   	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('#LoginView').height(  bufferHeight   );
+                  	$('#LoginView').css('min-height',  bufferHeight);
               	}
             //if admin area
           	} else if ( $('.AdministrativeArea').length > 0 ) {
               	appChromeHeight = 80 + $('#FooterView').outerHeight(true);
               	if ( wrapperDivHeight < viewportHeight  ){
                  	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('.AppContainer').height(  bufferHeight   );
+                  	$('.AppContainer').css('min-height',  bufferHeight);
               	}
           	//rest of app
           	} else {
@@ -73,7 +81,7 @@ $(window).ready(function(){
             	appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
              	if ( wrapperDivHeight < viewportHeight  ){
                   	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
+                  	$('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
               	}
           	}
         }
@@ -735,6 +743,38 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
         return this;
     };
 }(jQuery));
+
+// query string related functions
+$.extend({
+    getUrlVars: function() {
+        var vars = [], hash;
+        var q = document.URL.split('?')[1];
+        if(q != undefined){
+            q = q.split('&');
+            for(var i = 0; i < q.length; i++){
+                hash = q[i].split('=');
+                vars.push(hash[1]);
+                vars[hash[0]] = hash[1];
+            }
+        }
+        return vars;
+    },
+    getUrlVar: function(name) {
+        return $.getUrlVars()[name];
+    },
+    hasActiveAjaxRequests: function() {
+        return ($.active > 0);
+    }
+});
+
+// TODO: @Shoaibi: Medium: Ask Nabeel/Sergio on extending buttonset widget to add this functionality before _create
+function createButtonSetIfNotAlreadyExist(qualifier, classFlag) {
+    classFlag = typeof classFlag !== 'undefined' ? classFlag : 'ui-buttonset';
+    if ($(qualifier).hasClass(classFlag)) {
+        return false;
+    }
+    $(qualifier).buttonset();
+}
 
 function isValidUrl(url)
 {

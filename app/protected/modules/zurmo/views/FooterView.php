@@ -49,7 +49,7 @@
             //"Copyright Zurmo Inc. 2013. All rights reserved".
             $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
             $copyrightHtml = 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.';
-            return $userInterfaceTypeSelectorHtml . $copyrightHtml;
+            return $copyrightHtml . $userInterfaceTypeSelectorHtml;
         }
 
         /**
@@ -58,35 +58,35 @@
          */
         protected function renderUserInterfaceTypeSelector()
         {
-            $content = '';
-            $htmlOptions = array('class' => 'ui-chooser');
+            $content = '<div class="ui-chooser">';
             if (!Yii::app()->userInterface->isResolvedToDesktop())
             {
                 if (Yii::app()->userInterface->isDesktop())
                 {
                     if (Yii::app()->userInterface->isResolvedToMobile())
                     {
-                        $content = ZurmoHtml::link(Yii::t('Default', 'Show mobile'),
+                        $content .= ZurmoHtml::link(Yii::t('Default', 'Show mobile'),
                                                    Yii::app()->createUrl('zurmo/default/userInterface',
                                                                          array('userInterface' => UserInterface::MOBILE)),
-                                                   $htmlOptions);
+                                                                         array('class' => 'icon-mobile'));
                     }
                     elseif (Yii::app()->userInterface->isResolvedToTablet())
                     {
-                        $content = ZurmoHtml::link(Yii::t('Default', 'Show tablet'),
+                        $content .= ZurmoHtml::link(Yii::t('Default', 'Show tablet'),
                                                    Yii::app()->createUrl('zurmo/default/userInterface',
                                                                          array('userInterface' => UserInterface::TABLET)),
-                                                   $htmlOptions);
+                                                                         array('class' => 'icon-tablet'));
                     }
                 }
                 else
                 {
-                    $content = ZurmoHtml::link(Yii::t('Default', 'Full Site'),
+                    $content .= ZurmoHtml::link(Yii::t('Default', 'Full Site'),
                                                Yii::app()->createUrl('zurmo/default/userInterface',
                                                                      array('userInterface' => UserInterface::DESKTOP)),
-                                               $htmlOptions);
+                                                                     array('class' => 'icon-desktop'));
                 }
             }
+            $content .= '</div>';
             return $content;
         }
     }
