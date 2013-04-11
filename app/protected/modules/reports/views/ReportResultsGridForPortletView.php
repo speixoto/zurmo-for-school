@@ -42,6 +42,14 @@
         /**
          * @return string
          */
+        public function getTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Results');
+        }
+
+        /**
+         * @return string
+         */
         public function renderContent()
         {
 
