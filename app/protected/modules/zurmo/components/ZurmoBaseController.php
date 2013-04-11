@@ -704,7 +704,8 @@
             }
         }
 
-        protected static function triggerMassAction($modelClassName, $searchForm, $pageView, $title, $searchView = null, $stateMetadataAdapterClassName = null)
+        protected static function triggerMassAction($modelClassName, $searchForm, $pageView, $title, $searchView = null,
+                                                    $stateMetadataAdapterClassName = null, $useModuleClassNameForItemLabel = true)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $actionId               = Yii::app()->getController()->getAction()->getId();
@@ -723,7 +724,7 @@
             }
             else
             {
-                static::massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider);
+                static::massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider, $useModuleClassNameForItemLabel);
             }
         }
 
@@ -739,7 +740,7 @@
                                             );
         }
 
-        protected static function massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider)
+        protected static function massAction($model, $pageSize, $title, $pageView, $actionId, $dataProvider, $useModuleClassNameForItemLabel = true)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $activeAttributes       = static::resolveActiveAttributesFromPostForMassAction($actionId);
@@ -758,7 +759,8 @@
                                                                 $activeAttributes,
                                                                 $selectedRecordCount,
                                                                 $title,
-                                                                $actionId
+                                                                $actionId,
+                                                                $useModuleClassNameForItemLabel
                                                             );
             $view                   = new $pageView(ZurmoDefaultViewUtil::makeStandardViewForCurrentUser(
                                                                         Yii::app()->getController(), $massActionView));
@@ -905,7 +907,8 @@
                                                     $activeAttributes,
                                                     $selectedRecordCount,
                                                     $title,
-                                                    $actionId)
+                                                    $actionId,
+                                                    $useModuleClassNameForItemLabel = true)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
             $moduleName                 = Yii::app()->getController()->getModule()->getPluralCamelCasedName();
@@ -916,7 +919,7 @@
             $view                       = new $massActionViewClassName(Yii::app()->getController()->getId(),
                                                             Yii::app()->getController()->getModule()->getId(),
                                                             $model, $activeAttributes, $selectedRecordCount, $title,
-                                                            $alertMessage, $moduleClassName);
+                                                            $alertMessage, $moduleClassName, $useModuleClassNameForItemLabel);
             return $view;
         }
 

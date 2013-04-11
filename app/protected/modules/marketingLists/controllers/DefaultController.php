@@ -208,12 +208,13 @@
 
         protected static function triggerMarketingListMemberMassAction()
         {
-            static::triggerMassAction(   'MarketingListMember',
+            static::triggerMassAction('MarketingListMember',
                                         'MarketingListMembersSearchForm',
                                         'MarketingListMembersPageView',
                                         MarketingListMember::getModelLabelByTypeAndLanguage('Plural'),
                                         'MarketingListMembersSearchView',
-                                        null);
+                                        null,
+                                        false);
         }
 
         protected static function processModelForMassSubscribe(& $model)

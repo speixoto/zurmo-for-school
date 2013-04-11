@@ -39,7 +39,18 @@
      */
     abstract class MassActionRequiringConfirmationView extends MassActionView
     {
+        protected $useModuleClassNameForItemLabel = true;
+
         abstract protected function renderSubmitButtonName();
+
+        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes,
+                                    $selectedRecordCount, $title, $alertMessage = null,
+                                    $moduleClassName = null, $useModuleClassNameForItemLabel = true)
+        {
+            parent::__construct($controllerId, $moduleId,$model, $activeAttributes, $selectedRecordCount,
+                                $title, $alertMessage, $moduleClassName);
+            $this->useModuleClassNameForItemLabel = $useModuleClassNameForItemLabel;
+        }
 
         public static function getDefaultMetadata()
         {
@@ -98,9 +109,11 @@
 
         protected function renderItemLabel()
         {
-            $type   = ($this->selectedRecordCount > 1)? 'Plural' : 'Singular';
-            $model  = $this->modelClassName;
-            return $model::getModelLabelByTypeAndLanguage($type);
+            $type       = ($this->selectedRecordCount > 1)? 'Plural' : 'Singular';
+            $className  = ($this->useModuleClassNameForItemLabel) ? $this->moduleClassName : $this->modelClassName;
+            $method     = ($this->useModuleClassNameForItemLabel) ? 'getModuleLabelByTypeAndLanguage' : 'getModelLabelByTypeAndLanguage';
+            $label      = $className::$method($type);
+            return $label;
         }
     }
 ?>
