@@ -117,13 +117,27 @@
         }
 
         /**
-         * Public for testing purposes only
+         * Evaluates the string.
          * @param $phpStringReadyToEvaluate
+         * @return bool
+         * @throws InvalidArgumentException
          */
-        public static function evaluatePHPString($phpStringReadyToEvaluate)
+        protected static function evaluatePHPString($phpStringReadyToEvaluate)
         {
-            //todo: add final safety that there is just &&, ||, (, ), and 'true' and 'false.
-            return eval('return (' . $phpStringReadyToEvaluate. ');');
+            if (substr_count($phpStringReadyToEvaluate, ")") !== substr_count($phpStringReadyToEvaluate, "("))
+            {
+                throw new InvalidArgumentException('Uneven amount of opening and closing parentheses.');
+            }
+            $phpStringReadyToEvaluate = str_replace(
+                    array('false', 'true', ' '),
+                    array('0', '1', ''),
+                    strtolower($phpStringReadyToEvaluate)
+            );
+            if (preg_match('/&{3,}|\|{3,}|[^01&|()]+/', $phpStringReadyToEvaluate))
+            {
+                throw new InvalidArgumentException('Only boolean operators allowed.');
+            }
+            return (bool) eval('return (' . $phpStringReadyToEvaluate. ');');
         }
 
         /**

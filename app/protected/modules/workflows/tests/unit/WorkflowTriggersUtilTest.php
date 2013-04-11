@@ -74,15 +74,40 @@
 
         public function testEvaluatePHPString()
         {
-            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true'));
-            $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('false'));
-            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true && true'));
-            $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('true && false'));
-            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true || false'));
-            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true || false || true'));
-            $this->assertFalse(WorkflowTriggersUtil::evaluatePHPString('false || false || false'));
-            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('true && (true || false)'));
-            $this->assertTrue (WorkflowTriggersUtil::evaluatePHPString('false || (true && true)'));
+            $method = new ReflectionMethod('WorkflowTriggersUtil','evaluatePHPString');
+            $method->setAccessible(true);
+
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('true')));
+            $this->assertFalse($method->invokeArgs(new WorkflowTriggersUtil, array('false')));
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('true && true')));
+            $this->assertFalse($method->invokeArgs(new WorkflowTriggersUtil, array('true && false')));
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('true || false')));
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('true || false || true')));
+            $this->assertFalse($method->invokeArgs(new WorkflowTriggersUtil, array('false || false || false')));
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('true && (true || false)')));
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('false || (true && true)')));
+        }
+
+        /**
+         * @expectedException InvalidArgumentException
+         */
+        public function testEvaluatePHPStringThrowsException()
+        {
+            $method = new ReflectionMethod('WorkflowTriggersUtil','evaluatePHPString');
+            $method->setAccessible(true);
+
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('hello')));
+        }
+
+        /**
+         * @expectedException InvalidArgumentException
+         */
+        public function testEvaluatePHPStringThrowsFailedAssertion()
+        {
+            $method = new ReflectionMethod('WorkflowTriggersUtil','evaluatePHPString');
+            $method->setAccessible(true);
+
+            $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('( true || false')));
         }
 
         /**
