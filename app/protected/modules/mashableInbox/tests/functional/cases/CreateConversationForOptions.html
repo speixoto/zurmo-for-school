@@ -33,14 +33,14 @@
 	<td>30000</td>
 </tr>
 <tr>
-	<td>verifyElementPresent</td>
-	<td>id=MashableInboxForm_searchTerm</td>
+	<td>open</td>
+	<td>index.php/conversations/default/create</td>
 	<td></td>
 </tr>
 <tr>
-	<td>type</td>
-	<td>id=MashableInboxForm_searchTerm</td>
-	<td>Test Subject ${randomSuffix}</td>
+	<td>waitForPageToLoad</td>
+	<td></td>
+	<td></td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
@@ -48,8 +48,33 @@
 	<td>30000</td>
 </tr>
 <tr>
+  <td>verifyTextPresent</td>
+  <td>Create Conversation</td>
+  <td></td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=Conversation_subject</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Conversation_subject</td>
+	<td>Test CFOSubject ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=Conversation_description</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=Conversation_description</td>
+	<td>Test Conversation Description</td>
+</tr>
+<tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]/div/span/a</td>
+	<td>link=Save</td>
 	<td></td>
 </tr>
 <tr>
@@ -64,9 +89,10 @@
 </tr>
 <tr>
 	<td>assertTextPresent</td>
-	<td>Test Subject ${randomSuffix}</td>
+	<td>Test CFOSubject ${randomSuffix}</td>
 	<td></td>
 </tr>
+
 <tr>
 	<td>open</td>
 	<td>index.php/mashableInbox/default/list</td>
@@ -84,12 +110,7 @@
 </tr>
 <tr>
 	<td>clickAndWait</td>
-	<td>//div[@id='MashableInboxActionBarForViews']/div/div/a[2]/span</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
+	<td>//div[@id='MashableInboxActionBarForViews']/div/div/a[2]</td>
 	<td></td>
 </tr>
 <tr>
@@ -102,11 +123,6 @@
 	<td>id=MashableInboxForm_optionForModel_0</td>
 	<td></td>
 </tr>
-<!--tr>
-	<td>clickAndWait</td>
-	<td>//div[@id='MashableInboxForm_optionForModel_area']/input[2]</td>
-	<td></td>
-</tr-->
 <tr>
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
@@ -120,7 +136,7 @@
 <tr>
 	<td>type</td>
 	<td>id=MashableInboxForm_searchTerm</td>
-	<td>Test Subject ${randomSuffix}</td>
+	<td>Test CFOSubject ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>waitForCondition</td>
@@ -129,92 +145,17 @@
 </tr>
 <tr>
 	<td>waitForText</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
-	<td>Test Subject ${randomSuffix}</td>
+	<td>//div[@id='ConversationsListView']/div/table/tbody/tr/td[2]/a</td>
+	<td>Test CFOSubject ${randomSuffix}</td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//div[@id='list-view']/table/tbody/tr/td[2]/a</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
+	<td>assertText</td>
+	<td>//div[@id='ConversationsListView']/div/table/tbody/tr/td[2]/a</td>
+	<td>Test CFOSubject ${randomSuffix}</td>
 </tr>
 <tr>
 	<td>verifyElementPresent</td>
-	<td>//div[@id='ConversationDetailsView']/div/div[2]/div/div/div/div[2]/label</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//div[@id='ConversationDetailsView']/div/div[2]/div/div/div/div[2]/label</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>setSpeed</td>
-	<td>0</td>
-	<td></td>
-</tr>
-<tr>
-	<td>open</td>
-	<td>index.php/mashableInbox/default/list?modelClassName=Conversation</td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForPageToLoad</td>
-	<td></td>
-	<td></td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Subject</td>
-	<td></td>
-</tr>
-<tr>
-	<td>click</td>
-	<td>//div[@id='MashableInboxForm_optionForModel_area']/label[3]</td>
-	<td></td>
-</tr>
-<tr>
-	<td>verifyElementPresent</td>
-	<td>id=MashableInboxForm_searchTerm</td>
-	<td></td>
-</tr>
-<tr>
-	<td>type</td>
-	<td>id=MashableInboxForm_searchTerm</td>
-	<td>Test Subject ${randomSuffix}</td>
-</tr>
-<tr>
-	<td>waitForCondition</td>
-	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
-	<td>30000</td>
-</tr>
-<tr>
-	<td>assertTextPresent</td>
-	<td>Test Subject ${randomSuffix}</td>
+	<td>id=list-view-rowSelector_0</td>
 	<td></td>
 </tr>
 <tr>
@@ -226,6 +167,36 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//li[@id='list-view-closeSelected']/a/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>verifyElementPresent</td>
+	<td>id=MashableInboxForm_searchTerm</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=MashableInboxForm_searchTerm</td>
+	<td>Test CFOSubject ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>waitForCondition</td>
+	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+	<td>30000</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>No results found.</td>
+	<td></td>
 </tr>
 </tbody>
 </table>
