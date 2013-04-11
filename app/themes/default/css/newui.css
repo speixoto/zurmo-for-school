@@ -290,6 +290,7 @@ a.ModalGameNotification a,
 .zero-components-view.TimeTrigger,
 #time-trigger-container,
 .time-trigger-attribute-selector-container,
+.dynamic-row-duration,
 .ComponentForWorkflowWizardView .add-email-message-button-container,
 .ComponentForWorkflowWizardView .action-type-selector-container,
 .ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
@@ -999,7 +1000,9 @@ body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
 body.blue #clear-search-link,
-body.blue #show-filters-structure-div-link {
+body.blue #show-filters-structure-div-link,
+body.blue .filters-bar .ui-state-active,
+body.blue .filters-bar label:hover {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1565,7 +1568,9 @@ body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
 body.brown #clear-search-link,
-body.brown #show-filters-structure-div-link {
+body.brown #show-filters-structure-div-link,
+body.brown .filters-bar .ui-state-active,
+body.brown .filters-bar label:hover {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -2131,7 +2136,9 @@ body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
 body.lime #clear-search-link,
-body.lime #show-filters-structure-div-link {
+body.lime #show-filters-structure-div-link,
+body.lime .filters-bar .ui-state-active,
+body.lime .filters-bar label:hover {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2697,7 +2704,9 @@ body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
 body.cherry #clear-search-link,
-body.cherry #show-filters-structure-div-link {
+body.cherry #show-filters-structure-div-link,
+body.cherry .filters-bar .ui-state-active,
+body.cherry .filters-bar label:hover {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -3263,7 +3272,9 @@ body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
 body.turquoise #clear-search-link,
-body.turquoise #show-filters-structure-div-link {
+body.turquoise #show-filters-structure-div-link,
+body.turquoise .filters-bar .ui-state-active,
+body.turquoise .filters-bar label:hover {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3829,7 +3840,9 @@ body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
 body.violet #clear-search-link,
-body.violet #show-filters-structure-div-link {
+body.violet #show-filters-structure-div-link,
+body.violet .filters-bar .ui-state-active,
+body.violet .filters-bar label:hover {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -4395,7 +4408,9 @@ body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
 body.honey #clear-search-link,
-body.honey #show-filters-structure-div-link {
+body.honey #show-filters-structure-div-link,
+body.honey .filters-bar .ui-state-active,
+body.honey .filters-bar label:hover {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -6332,25 +6347,11 @@ form .view-toolbar-container,
 .portlet-view-toolbar > a:first-child {
   border-left: none;
 }
-.portlet-view-toolbar {
-  margin-bottom: 0;
-  display: block;
-  float: none;
-  border: none;
-  border-bottom: 1px solid #DFDFDF;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-}
 .portlet-view-toolbar .parent {
   position: relative;
+}
+.portlet-view-toolbar ul:last-child {
+  border-right: 1px solid #d7d7d7;
 }
 #ActionBarForGroupsTreeListView .view-toolbar,
 #ActionBarSearchAndListView .view-toolbar {
@@ -8855,9 +8856,13 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.beforeToolTip .hasDropDown {
+  margin-right: 30px;
+  width: auto;
+}
 .beforeToolTip + .tooltip {
   float: right;
-  margin: 5px 0 0 -30px !important;
+  margin: 7px 0 0 -30px !important;
   position: relative;
 }
 /*=View AccountView (before editing, portlets and such)*/
@@ -17986,8 +17991,10 @@ a.user-link {
 }
 .dynamic-row-duration {
   float: left;
-  width: 100%;
+  width: 75%;
+  margin-left: 25%;
   margin-top: 10px;
+  padding-left: 15px;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
@@ -19194,4 +19201,12 @@ orientation : portrait // orientation: landscape    Target orientation
 }
 #marketing-list-member-select-contact-or-report-form {
   display: none;
+}
+.marketing-list-member-stats {
+  margin: 5px 0 0 0;
+  font-size: 12px;
+}
+.marketing-list-member-stats strong {
+  display: block;
+  margin-bottom: 3px;
 }
