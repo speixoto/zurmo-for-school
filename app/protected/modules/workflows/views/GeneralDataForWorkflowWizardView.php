@@ -73,7 +73,7 @@
             $leftSideContent   = '<table><colgroup><col class="col-0"><col class="col-1">' .
                                  '</colgroup><tr>' . $element->render() . '</tr>';
             $element           = new TextAreaElement(
-                                 $this->model, 'description', $this->form, array('rows' => 2));
+                                 $this->model, 'description', $this->form, array('rows' => 5));
             $leftSideContent  .= '<tr>' . $element->render() . '</tr>';
             $element           = new TriggerOnStaticDropDownElement(
                                  $this->model, 'triggerOn', $this->form);
