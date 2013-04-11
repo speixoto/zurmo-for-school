@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     class EmailTemplate extends OwnedSecurableItem
@@ -43,8 +53,8 @@
         public static function getTypeDropDownArray()
         {
              return array(
-                 self::TYPE_WORKFLOW     => Zurmo::t('EmailTemplatesModule', 'Workflow'),
-                 self::TYPE_CONTACT      => Zurmo::t('EmailTemplatesModule', 'Contact'),
+                 self::TYPE_WORKFLOW     => Zurmo::t('WorkflowsModule', 'Workflow'),
+                 self::TYPE_CONTACT      => Zurmo::t('ContactsModule',  'Contact'),
              );
         }
 
@@ -74,15 +84,6 @@
             }
         }
 
-        /**
-         * Returns the display name for plural of the model class.
-         * @return dynamic label name based on module.
-         */
-     /*   protected static function getPluralLabel()
-        {
-            return 'EmailTemplatesModulePluralLabel';
-        }
-*/
         public static function canSaveMetadata()
         {
             return true;
@@ -110,9 +111,9 @@
                     array('type',                       'required'),
                     array('type',                       'type',    'type' => 'integer'),
                     array('type',                       'numerical', 'min' => self::TYPE_WORKFLOW,
-                                                                'max' => self::TYPE_CONTACT),
+                                                                     'max' => self::TYPE_CONTACT),
                     array('modelClassName',             'required'),
-                    array('modelClassName',             'type',     'type' => 'string'),
+                    array('modelClassName',             'type',   'type' => 'string'),
                     array('modelClassName',             'length', 'max' => 64),
                     array('modelClassName',             'validateModelExists', 'except' => 'autoBuildDatabase'),
                     array('name',                       'required'),
@@ -128,8 +129,8 @@
                     array('textContent',                'type',    'type' => 'string'),
                     array('htmlContent',                'validateHtmlContentAndTextContent'),
                     array('textContent',                'validateHtmlContentAndTextContent'),
-                    array('htmlContent',                'validateMergeTags'),
-                    array('textContent',                'validateMergeTags'),
+                    array('htmlContent',                'validateMergeTags', 'except' => 'autoBuildDatabase'),
+                    array('textContent',                'validateMergeTags', 'except' => 'autoBuildDatabase'),
                 ),
                 'elements' => array(
                     'htmlContent'                  => 'TextArea',
@@ -141,26 +142,24 @@
 
         public function validateModelExists($attribute, $params)
         {
+            $passedValidation = true;
             if (!empty($this->$attribute))
             {
                 if (@class_exists($this->$attribute))
                 {
-                    if (is_subclass_of($this->$attribute, 'RedBeanModel'))
-                    {
-                    }
-                    else
+                    if (!is_subclass_of($this->$attribute, 'RedBeanModel'))
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name is not a valid Model class.'));
+                        $passedValidation = false;
                     }
                 }
                 else
                 {
                     $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided class name does not exist.'));
+                    $passedValidation = false;
                 }
             }
-            else
-            {
-            }
+            return $passedValidation;
         }
 
         public function validateHtmlContentAndTextContent($attribute, $params)
@@ -168,10 +167,9 @@
             if (empty($this->textContent) && empty($this->htmlContent))
             {
                 $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Please provide at least one of the contents field.'));
+                return false;
             }
-            else
-            {
-            }
+            return true;
         }
 
         public function setToUserDefaultLanguage($attribute, $params)
@@ -187,6 +185,7 @@
 
         public function validateMergeTags($attribute, $params)
         {
+            $passedValidation = true;
             if (!empty($this->$attribute) && @class_exists($this->modelClassName))
             {
                 $model          = new $this->modelClassName(false);
@@ -206,17 +205,71 @@
                                             ': Invalid MergeTag({mergeTag}) used.';
                             $this->addError($attribute, Zurmo::t('EmailTemplatesModule', $errorMessage,
                                                         array('{mergeTag}' => $tag)));
+                            $passedValidation = false;
                         }
                     }
                     else
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
+                        $passedValidation = false;
                     }
                 }
             }
-            else
+            return $passedValidation;
+        }
+
+        /**
+         * @param $type
+         * @return Array of EmailTemplate models
+         */
+        public static function getByType($type)
+        {
+            assert('is_int($type)');
+            $searchAttributeData = array();
+            $searchAttributeData['clauses'] = array(
+                1 => array(
+                    'attributeName'        => 'type',
+                    'operatorType'         => 'equals',
+                    'value'                => $type,
+                ),
+            );
+            $searchAttributeData['structure'] = '1';
+            $joinTablesAdapter                = new RedBeanModelJoinTablesQueryAdapter('EmailTemplate');
+            $where = RedBeanModelDataProvider::makeWhere('EmailTemplate', $searchAttributeData, $joinTablesAdapter);
+            return self::getSubset($joinTablesAdapter, null, null, $where, 'name');
+        }
+
+        public static function getDataAndLabelsByType($type)
+        {
+            assert('is_int($type)');
+            $dataAndLabels = array();
+            $emailTemplates = static::getByType($type);
+            foreach($emailTemplates as $emailTemplate)
             {
+                $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);
             }
+            return $dataAndLabels;
+        }
+
+        public static function getGamificationRulesType()
+        {
+            return 'EmailTemplateGamification';
+        }
+
+        protected static function translatedAttributeLabels($language)
+        {
+            $params = LabelUtil::getTranslationParamsForAllModules();
+            return array_merge(parent::translatedAttributeLabels($language),
+                array(
+                    'modelClassName'  => Zurmo::t('Core',                'Module',   array(), null, $language),
+                    'language'        => Zurmo::t('ZurmoModule',         'Language',   array(), null, $language),
+                    'htmlContent'     => Zurmo::t('EmailMessagesModule', 'Html Content',  array(), null, $language),
+                    'name'            => Zurmo::t('ZurmoModule',         'Name',  array(), null, $language),
+                    'subject'         => Zurmo::t('EmailMessagesModule', 'Subject',  array(), null, $language),
+                    'type'            => Zurmo::t('Core',                'Type',  array(), null, $language),
+                    'textContent'     => Zurmo::t('EmailMessagesModule', 'Text Content',  array(), null, $language),
+                )
+            );
         }
     }
 ?>

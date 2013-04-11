@@ -43,6 +43,14 @@ $(window).ready(function(){
         }
     );
 
+    //Main nav toggle hidden items
+    $('.toggle-hidden-nav-items').click(
+        function(){
+            $('.hidden-nav-item').slideToggle(200);
+            $(this).toggleClass('point-up');
+        }
+    );
+
     function resizeWhiteArea(){
         /*Resizes the app to fill the browser's window case smaller'*/
         var viewportHeight = $(window).height();
@@ -58,14 +66,14 @@ $(window).ready(function(){
              	appChromeHeight = 40 + $('#FooterView').outerHeight(true);
               	if ( wrapperDivHeight < viewportHeight  ){
                   	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('#LoginView').height(  bufferHeight   );
+                  	$('#LoginView').css('min-height',  bufferHeight);
               	}
             //if admin area
           	} else if ( $('.AdministrativeArea').length > 0 ) {
               	appChromeHeight = 80 + $('#FooterView').outerHeight(true);
               	if ( wrapperDivHeight < viewportHeight  ){
                  	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('.AppContainer').height(  bufferHeight   );
+                  	$('.AppContainer').css('min-height',  bufferHeight);
               	}
           	//rest of app
           	} else {
@@ -73,7 +81,7 @@ $(window).ready(function(){
             	appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
              	if ( wrapperDivHeight < viewportHeight  ){
                   	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('#RecentlyViewedView').height( $('#RecentlyViewedView').height() + bufferHeight   );
+                  	$('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
               	}
           	}
         }
@@ -736,7 +744,6 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
     };
 }(jQuery));
 
-
 // query string related functions
 $.extend({
     getUrlVars: function() {
@@ -767,4 +774,10 @@ function createButtonSetIfNotAlreadyExist(qualifier, classFlag) {
         return false;
     }
     $(qualifier).buttonset();
+}
+
+function isValidUrl(url)
+{
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return pattern.test(url);
 }

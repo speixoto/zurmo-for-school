@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -105,7 +115,7 @@
          */
         protected static function resolveTypeDataAndLabels()
         {
-            $data = array('' => Zurmo::t('WorkflowsModule', 'Select Action'));
+            $data = array();
             return array_merge($data, ActionForWorkflowForm::getTypeDataAndLabels());
         }
 
@@ -168,8 +178,10 @@
          */
         protected function renderAttributeSelectorContentAndWrapper()
         {
+            $htmlOptions                   = array();
+            $htmlOptions['empty']          = Zurmo::t('WorkflowsModule', 'Select Action');
             $actionTypeContent             = ZurmoHtml::dropDownList(self::ACTION_TYPE_NAME, null,
-                                             static::resolveTypeDataAndLabels());
+                                             static::resolveTypeDataAndLabels(), $htmlOptions);
             $content  = '';
             $content .= $actionTypeContent;
             $content .= ZurmoHtml::tag('div', array('id'    => self::ACTION_TYPE_RELATION_DIV_ID,
@@ -382,7 +394,7 @@
                 }',
                 'success' => 'js:function(data){
                     //when ajax comes back after choosing something in thedropdown
-                     $("#actionsNextLink").hide();
+                     $("#actionsNextLink").parent().parent().hide();
                     $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_ACTIONS .
                         '").find(".dynamic-rows").find("ul:first").children().hide();
                     $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
@@ -411,12 +423,14 @@
             $script = '
                 $(".remove-dynamic-row-link").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
+                    $(this).parentsUntil("ul").siblings().show();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }
                     rebuildWorkflowActionRowNumbers("' . get_class($this) . '");
+                    $("#actionsNextLink").parent().parent().show();
                     return false;
                 });
             ';
@@ -468,6 +482,7 @@
                 if ($('#' + $(this).data().row.toString()).hasClass('expanded-row')) {
                     $('#' + $(this).data().row.toString()).siblings().hide();
                 }
+                $('#actionsNextLink').parent().parent().hide();
             });";
             Yii::app()->clientScript->registerScript('registerRowEditScript', $script);
         }

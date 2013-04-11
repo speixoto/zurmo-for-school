@@ -27,10 +27,12 @@ a.z-button,
 .default-btn .white-button,
 .default-btn,
 .z-label,
+.hasDetailsFlyout ul,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
 .default-btn a.search-form-tools input[type="submit"],
+.after-form-details-content,
 #progressBar-links a,
 a#progressBar-links a,
 .default-btn #progressBar-links a,
@@ -169,14 +171,35 @@ a.ModalGameNotification a,
 .drop-zone,
 .drop-zone div,
 .dynamic-row,
+.dynamic-sub-row,
 .dynamic-row-label,
+.dynamic-action-attribute-should-set-value,
 .dynamic-row-operator,
+.dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field,
 .value-data,
 .report-runtime-availability,
 .hasDrillDownContent,
 .first-series-and-range-area > div,
-.second-series-and-range-area > div {
+.second-series-and-range-area > div,
+.email-message-recipient-rows,
+.all-related-field,
+.static-address-field,
+.zero-components-view.TimeTrigger,
+#time-trigger-container,
+.time-trigger-attribute-selector-container,
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container,
+.ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .zero-components-view,
+.workflow-order-module-selector-container,
+#workflow-order-container,
+.WorkflowRulesOrder,
+.no-workflows-to-order-view,
+.tabs-container,
+.email-template-content,
+.tabs-container > .tab,
+.email-template-content > .tab {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
@@ -190,7 +213,19 @@ a.ModalGameNotification a,
 .dynamic-row:before,
 .dynamic-row:after,
 .dynamic-row > div:before,
-.dynamic-row > div:after {
+.dynamic-row > div:after,
+.dynamic-sub-row:before,
+.dynamic-sub-row:after,
+.zero-components-view.TimeTrigger:before,
+#time-trigger-container:before,
+.zero-components-view.TimeTrigger:after,
+#time-trigger-container:after,
+.ComponentForWorkflowWizardView .add-email-message-button-container:before,
+.ComponentForWorkflowWizardView .action-type-selector-container:before,
+.ComponentForWorkflowWizardView .add-email-message-button-container:after,
+.ComponentForWorkflowWizardView .action-type-selector-container:after,
+.workflow-order-module-selector-container:before,
+.workflow-order-module-selector-container:after {
   content: "";
   display: table;
 }
@@ -198,14 +233,26 @@ a.ModalGameNotification a,
 .recipient:after,
 #NoUserEmailConfigurationYetView:after,
 .dynamic-row:after,
-.dynamic-row > div:after {
+.dynamic-row > div:after,
+.dynamic-sub-row:after,
+.zero-components-view.TimeTrigger:after,
+#time-trigger-container:after,
+.ComponentForWorkflowWizardView .add-email-message-button-container:after,
+.ComponentForWorkflowWizardView .action-type-selector-container:after,
+.workflow-order-module-selector-container:after {
   clear: both;
 }
 .cf,
 .recipient,
 #NoUserEmailConfigurationYetView,
 .dynamic-row,
-.dynamic-row > div {
+.dynamic-row > div,
+.dynamic-sub-row,
+.zero-components-view.TimeTrigger,
+#time-trigger-container,
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container,
+.workflow-order-module-selector-container {
   zoom: 1;
 }
 .clearfix {
@@ -615,6 +662,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 .z-link,
 #ImportWizardMappingView #sample-column-header a,
 .remove-extra-column-link,
+#show-triggers-structure-div-link,
 #show-filters-structure-div-link {
   padding: 2px 4px;
   -webkit-border-radius: 3px;
@@ -629,6 +677,7 @@ table.configuration-list td:last-child a.loading .z-icon,
 .z-link:hover,
 #ImportWizardMappingView #sample-column-header a:hover,
 .remove-extra-column-link:hover,
+#show-triggers-structure-div-link:hover,
 #show-filters-structure-div-link:hover {
   color: #fff !important;
   text-decoration: underline;
@@ -1056,6 +1105,7 @@ body.blue .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.blue #LanguagesCollectionView .green-button:hover .z-label,
 body.blue .green-button:not(.attachLoading):hover .z-label,
 body.blue .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -1621,6 +1671,7 @@ body.brown .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.brown #LanguagesCollectionView .green-button:hover .z-label,
 body.brown .green-button:not(.attachLoading):hover .z-label,
 body.brown .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -2186,6 +2237,7 @@ body.lime .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.lime #LanguagesCollectionView .green-button:hover .z-label,
 body.lime .green-button:not(.attachLoading):hover .z-label,
 body.lime .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -2751,6 +2803,7 @@ body.cherry .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.cherry #LanguagesCollectionView .green-button:hover .z-label,
 body.cherry .green-button:not(.attachLoading):hover .z-label,
 body.cherry .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -3316,6 +3369,7 @@ body.turquoise .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.turquoise #LanguagesCollectionView .green-button:hover .z-label,
 body.turquoise .green-button:not(.attachLoading):hover .z-label,
 body.turquoise .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -3881,6 +3935,7 @@ body.violet .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.violet #LanguagesCollectionView .green-button:hover .z-label,
 body.violet .green-button:not(.attachLoading):hover .z-label,
 body.violet .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -4446,6 +4501,7 @@ body.honey .dashboard-link .z-label {
   -ms-text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
   text-shadow: 0px -1px 0 rgba(0, 0, 0, 0.2) !important;
 }
+body.honey #LanguagesCollectionView .green-button:hover .z-label,
 body.honey .green-button:not(.attachLoading):hover .z-label,
 body.honey .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
@@ -4763,34 +4819,6 @@ section {
   border-radius: 5px;
   padding: 0;
 }
-#LoginView .remember-me label {
-  margin: 0 !important;
-}
-#LoginView .remember-me .hasCheckBox + label {
-  display: inline-block;
-  position: relative;
-  top: -4px;
-  left: 6px;
-}
-#LoginView #login-box {
-  float: left;
-  width: 500px;
-  margin: -100px auto 0 -250px;
-  height: 200px;
-  position: relative;
-  top: 40%;
-  left: 50%;
-}
-#LoginView #LoginLogo {
-  -moz-box-sizing: border-box;
-  -webkit-box-sizing: border-box;
-  box-sizing: border-box;
-  height: 100%;
-  width: 50%;
-  padding-right: 10px;
-  float: left;
-  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
-}
 #LoginView .form {
   width: 50%;
   float: right;
@@ -4839,6 +4867,32 @@ section {
 }
 #Login {
   margin-left: 0;
+}
+.remember-me label {
+  margin: 0 !important;
+}
+.remember-me .hasCheckBox + label {
+  display: inline-block;
+  position: relative;
+  top: -4px;
+  left: 6px;
+}
+#login-box {
+  width: 500px;
+  margin: 150px auto 0 -250px;
+  height: 200px;
+  position: relative;
+  left: 50%;
+}
+#LoginLogo {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  height: 100%;
+  width: 50%;
+  padding-right: 10px;
+  float: left;
+  background: url(../images/ZurmoLogo.png) 56px 35px no-repeat;
 }
 .background-1 {
   background: #ffffff url(../images/landscape-1.png) left bottom repeat-x;
@@ -4910,6 +4964,7 @@ section {
 .headerDropDown,
 #ShortcutsMenu ul,
 .view-toolbar .parent > ul,
+.portlet-view-toolbar .parent > ul,
 .edit-row-menu ul,
 #shortcuts > ul {
   border: 1px solid #b6b6b6;
@@ -4940,15 +4995,17 @@ section {
 .headerDropDown li,
 #ShortcutsMenu ul li,
 .view-toolbar .parent > ul li,
+.portlet-view-toolbar .parent > ul li,
 .edit-row-menu ul li,
 #shortcuts > ul li {
   line-height: 100%;
 }
-.headerDropDown a,
-#ShortcutsMenu ul a,
-.view-toolbar .parent > ul a,
-.edit-row-menu ul a,
-#shortcuts > ul a {
+.headerDropDown li > a,
+#ShortcutsMenu ul li > a,
+.view-toolbar .parent > ul li > a,
+.portlet-view-toolbar .parent > ul li > a,
+.edit-row-menu ul li > a,
+#shortcuts > ul li > a {
   color: #666;
   font-size: 11px;
   font-weight: normal;
@@ -4956,11 +5013,12 @@ section {
   padding: 5px 10px 5px 10px;
   margin: 0 2px;
 }
-.headerDropDown a:hover,
-#ShortcutsMenu ul a:hover,
-.view-toolbar .parent > ul a:hover,
-.edit-row-menu ul a:hover,
-#shortcuts > ul a:hover {
+.headerDropDown li > a:hover,
+#ShortcutsMenu ul li > a:hover,
+.view-toolbar .parent > ul li > a:hover,
+.portlet-view-toolbar .parent > ul li > a:hover,
+.edit-row-menu ul li > a:hover,
+#shortcuts > ul li > a:hover {
   color: #fff !important;
 }
 .headerDropDownSpecial,
@@ -5586,7 +5644,7 @@ body > .ui-autocomplete {
   list-style: none;
 }
 #MenuView {
-  padding: 20px 0;
+  padding: 20px 0 0 0;
   border-bottom: 1px solid #cccccc;
 }
 #MenuView .parent {
@@ -5624,14 +5682,14 @@ body > .ui-autocomplete {
   display: table;
   clear: both;
 }
-#MenuView a {
+#MenuView ul a {
   height: 35px;
   width: 100%;
   display: block;
   float: left;
   position: relative;
 }
-#MenuView a > span {
+#MenuView ul a > span {
   font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-weight: bold;
   font-size: 12px;
@@ -5654,7 +5712,7 @@ body > .ui-autocomplete {
   /*Conversation button*/
 
 }
-#MenuView a > span > span {
+#MenuView ul a > span > span {
   position: relative;
   top: -2px;
   margin-left: 10px;
@@ -5669,10 +5727,10 @@ body > .ui-autocomplete {
   background-color: none !important;
   padding-top: 1px;
 }
-#MenuView a > span > span.unread #notifications-link.tooltip {
+#MenuView ul a > span > span.unread #notifications-link.tooltip {
   color: #ff0000 !important;
 }
-#MenuView a > span > span.all-read #notifications-link.tooltip {
+#MenuView ul a > span > span.all-read #notifications-link.tooltip {
   color: #7bb730 !important;
 }
 #MenuView li.active > a > span,
@@ -5688,6 +5746,36 @@ body > .ui-autocomplete {
 }
 #MenuView li.active > a > span {
   color: #fff;
+}
+#MenuView.hasNoHiddenItems {
+  padding-bottom: 20px;
+}
+.hidden-nav-item {
+  display: none;
+}
+.toggle-hidden-nav-items {
+  display: block;
+  text-align: center;
+  padding: 5px 0;
+  margin: 0 0 0 0;
+  cursor: pointer;
+  position: relative;
+  top: 5px;
+}
+.toggle-hidden-nav-items:after {
+  content: '\00F7';
+  font-weight: normal;
+  font-size: 20px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 1;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.toggle-hidden-nav-items.point-up:after {
+  content: '\00A1';
 }
 /*=Recently Viewed*/
 #RecentlyViewedView {
@@ -5858,6 +5946,15 @@ body > .ui-autocomplete {
 }
 #RecentlyViewedView li.type-ReportsModule em:before {
   content: "V";
+}
+#RecentlyViewedView li.type-EmailTemplatesModule em:before {
+  content: '\00BF';
+}
+#RecentlyViewedView li.type-MarketingListsModule em:before {
+  content: '\0022';
+}
+#RecentlyViewedView li.type-WorkflowsModule em:before {
+  content: '\20AC';
 }
 /*=Content*/
 .AppContent {
@@ -6065,7 +6162,8 @@ form .view-toolbar-container,
 .juiportlet-widget .view-toolbar-container {
   display: block;
 }
-.view-toolbar {
+.view-toolbar,
+.portlet-view-toolbar {
   font-size: 11px;
   border: 1px solid #b7b7b7;
   border-top-color: #e7e7e7;
@@ -6081,42 +6179,25 @@ form .view-toolbar-container,
   box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
   background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
 }
-.view-toolbar .z-label {
+.view-toolbar .z-label,
+.portlet-view-toolbar .z-label {
   float: none;
   padding: 0;
   display: inline;
 }
-#ActionBarForGroupsTreeListView .view-toolbar,
-#ActionBarSearchAndListView .view-toolbar {
-  margin-top: 0;
-}
-.view-toolbar-link,
 .view-toolbar > a,
-.view-toolbar .parent > a {
-  color: #656565;
-  font-weight: bold;
-  text-shadow: #fff 0 1px 0;
-  padding: 0 10px;
-  line-height: 30px;
-  display: inline-block;
-  border-left: 1px solid #bababa;
-}
-.view-toolbar-link:active,
-.view-toolbar > a:active,
-.view-toolbar .parent > a:active {
-  color: #656565;
-  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
-}
-.view-toolbar > a,
-.view-toolbar .parent > a {
+.portlet-view-toolbar > a,
+.view-toolbar .parent > a,
+.portlet-view-toolbar .parent > a {
   position: relative;
+  border-left: none;
   border-left: 1px solid #bababa;
   text-indent: 0 !important;
-  padding-left: 40px;
   line-height: 30px;
   vertical-align: middle;
 }
-.view-toolbar .parent > a:after {
+.view-toolbar .parent > a:after,
+.portlet-view-toolbar .parent > a:after {
   content: "÷";
   font-weight: normal;
   font-size: 14px;
@@ -6125,19 +6206,92 @@ form .view-toolbar-container,
   position: relative;
   top: 1px;
 }
+.view-toolbar ul:first-child .parent > a,
+.portlet-view-toolbar ul:first-child .parent > a {
+  border-left: none;
+}
 .view-toolbar > ul,
-.view-toolbar > a {
+.portlet-view-toolbar > ul,
+.view-toolbar > a,
+.portlet-view-toolbar > a {
   display: inline-block;
 }
-.view-toolbar ul {
+.view-toolbar ul,
+.portlet-view-toolbar ul {
   list-style: none;
 }
-.view-toolbar .parent > ul {
+.view-toolbar .parent > ul,
+.portlet-view-toolbar .parent > ul {
   margin-top: 0;
   left: auto;
 }
-.view-toolbar > a:first-child {
+.view-toolbar > a:first-child,
+.portlet-view-toolbar > a:first-child {
   border-left: none;
+}
+.portlet-view-toolbar {
+  margin-bottom: 0;
+  display: block;
+  float: none;
+  border: none;
+  border-bottom: 1px solid #DFDFDF;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+}
+.portlet-view-toolbar .parent {
+  position: relative;
+}
+#ActionBarForGroupsTreeListView .view-toolbar,
+#ActionBarSearchAndListView .view-toolbar {
+  margin-top: 0;
+}
+.view-toolbar-link,
+.view-toolbar > a,
+.portlet-view-toolbar > a,
+.view-toolbar .parent > a,
+.portlet-view-toolbar .parent > a {
+  color: #656565;
+  font-weight: bold;
+  text-shadow: #fff 0 1px 0;
+  padding: 0 10px 0 40px;
+  line-height: 30px;
+  display: inline-block;
+  border-left: 1px solid #bababa;
+}
+.view-toolbar-link:active,
+.view-toolbar > a:active,
+.portlet-view-toolbar > a:active,
+.view-toolbar .parent > a:active,
+.portlet-view-toolbar .parent > a:active {
+  color: #656565;
+  box-shadow: inset 0 10px 10px 4px rgba(153, 153, 153, 0.4), 0 1px 0 0 #ffffff;
+}
+.hasDetailsFlyout .DetailsView > div:not(.view-toolbar-container) {
+  border: none;
+  background: none;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  padding: 0;
+  margin: 0;
+  filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
+  line-height: 150%;
+  margin: 10px 0;
+}
+.hasDetailsFlyout ul {
+  max-width: 50%;
+  padding: 10px;
+  line-height: 150%;
 }
 .icon-general:before,
 .icon-edit:before {
@@ -6600,7 +6754,7 @@ form .view-toolbar-container,
 .icon-by-time-workflow-in-queues:before {
   content: '\0071';
   font-weight: normal;
-  font-size: 24px;
+  font-size: 28px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
@@ -6639,6 +6793,76 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+.icon-marketing-lists:before {
+  content: '\0022';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -1px;
+}
+.icon-email-templates:before {
+  content: '\00BF';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+.icon-mobile:before {
+  content: '\2018';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
+.icon-desktop:before {
+  content: '\2019';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
+.icon-tablet:before {
+  content: '\201D';
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: 0;
+}
 /*=Footer*/
 #FooterView {
   margin: 20px 3% 0 3%;
@@ -6660,6 +6884,10 @@ form .view-toolbar-container,
 }
 #credit-link span {
   margin-left: 70px;
+}
+.ui-chooser {
+  float: right;
+  display: block;
 }
 /*General table style, tables still need 'cellspacing="0"' in the markup */
 table {
@@ -7156,6 +7384,7 @@ a.simple-link:before {
 }
 /*=Popup Modals*/
 .ui-dialog {
+  min-width: 600px;
   overflow: visible;
   padding: 0 !important;
   margin: 0 !important;
@@ -7528,6 +7757,14 @@ div.wide.form label.hasCheckBox {
 .zero-components-view .EmailMessage .large-icon:after,
 .splash-view .EmailMessage .large-icon:after {
   content: "g";
+  font-weight: normal;
+  font-size: 325px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
+.zero-components-view .EmailTemplate .large-icon:after,
+.splash-view .EmailTemplate .large-icon:after {
+  content: '\00BF';
   font-weight: normal;
   font-size: 325px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -8572,7 +8809,7 @@ div.wide.form label.hasCheckBox {
   font-size: 11px;
   font-style: italic;
   text-align: center;
-  margin-bottom: 10px;
+  padding: 0 10px 10px 10px;
 }
 .mapcanvas {
   width: 600px;
@@ -11018,6 +11255,9 @@ a.remove .icon:after {
   font-weight: normal !important;
   vertical-align: middle;
 }
+.creation-list .z-label:before {
+  content: "Y" !important;
+}
 table.configuration-list {
   zoom: 1;
 }
@@ -11374,12 +11614,6 @@ table.configuration-list td:last-child a .z-label:before {
   position: relative;
   top: -3px;
 }
-#LanguagesCollectionView tr:last-child td {
-  border-bottom: none !important;
-}
-#LanguagesCollectionView .checkbox-column {
-  padding-left: 15px !important;
-}
 /*Roles*/
 #RolesTreeListView .z-action-link {
   font-size: 12px;
@@ -11439,6 +11673,16 @@ table.configuration-list td:last-child a .z-label:before {
   color: #b38b01;
 }
 /*Languages*/
+#LanguagesCollectionView {
+  padding-bottom: 0 !important;
+}
+#LanguagesCollectionView h1 + div {
+  padding: 15px;
+}
+#LanguagesCollectionView h1 + div a {
+  float: none;
+  margin: 0 !important;
+}
 #LanguagesCollectionView form {
   padding: 0;
 }
@@ -11451,6 +11695,31 @@ table.configuration-list td:last-child a .z-label:before {
 }
 #LanguagesCollectionView form td > label:first-child {
   margin-top: 0 !important;
+}
+#LanguagesCollectionView tr:last-child td {
+  border-bottom: none !important;
+}
+#LanguagesCollectionView .checkbox-column {
+  padding-left: 15px !important;
+}
+#LanguagesCollectionView a {
+  position: relative;
+  float: right;
+  right: 0;
+  top: 0;
+  margin: -6px 0 0 10px;
+}
+#LanguagesCollectionView .configuration-list {
+  border-top: 1px solid #ccc;
+}
+#LanguagesCollectionView .configuration-list li:first-child {
+  border-top: 1px solid #fff;
+}
+#LanguagesCollectionView .z-label {
+  padding: 0 25px;
+}
+#LanguagesCollectionView .z-label:before {
+  display: none !important;
 }
 /*Currency*/
 #currency-collection-form {
@@ -12019,6 +12288,34 @@ table.configuration-list td:last-child a .z-label:before {
 .texture-swatch label {
   top: -6px;
 }
+/*Menu Prefernces*/
+.user-menu-preferences td {
+  padding-left: 0 !important;
+}
+.user-menu-preferences .multiselect-holder {
+  max-width: 100%;
+  margin: 0;
+}
+.user-menu-preferences .multiselect-right {
+  float: none;
+}
+.user-menu-preferences .multiselect-nav {
+  margin-left: 0;
+}
+/*Logo Uplaod*/
+.uploaded-logo-template td.name {
+  padding-top: 10px !important;
+}
+.uploaded-logo {
+  display: inline-block;
+  padding: 5px;
+  margin-right: 5px;
+  line-height: 1;
+  background: url(../images/transparency-grid.gif) left top repeat;
+}
+.uploaded-logo ~ .file-size {
+  vertical-align: top;
+}
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
   padding: 20px;
@@ -12090,66 +12387,50 @@ table.configuration-list td:last-child a .z-label:before {
   width: 100% !important;
 }
 /*Missions*/
+#MyMissionsForPortletView {
+  /*
+    .filter-portlet-model-bar{
+        border-bottom:1px solid #DFDFDF;
+        //padding:10px 15px 10px 5px;
+        //#gradient > .vertical(#f6f6f6, #ededed);
+        //.b-shadow(inset 0 1px 0 0 #ffffff);
+        label{
+            cursor:pointer;
+            border:none;
+            background:none;
+            font-size:11px !important;
+            padding:3px !important;
+            margin:0 3px;
+            ++.themeColor;
+            span{
+                font-size: 11px;
+            }
+        }
+        label:hover{
+            color:#FFF;
+            .radius(3px) !important;
+            border:none;
+        }
+        input[type="radio"], input[type="checkbox"]{
+            visibility:hidden;
+            display:none;
+        }
+        .ui-state-active{
+            color:#FFF;
+            .radius(3px) !important;
+            border:none;
+        }
+        .ui-button-text{
+            padding:0;
+            margin:0;
+        }
+    }
+    */
+
+}
 #MyMissionsForPortletView > div {
   float: none;
   margin-bottom: 0;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar {
-  border-bottom: 1px solid #DFDFDF;
-  padding: 10px 15px 10px 5px;
-  background-color: #ededed;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
-  -webkit-box-shadow: inset 0 1px 0 0 #ffffff;
-  -moz-box-shadow: inset 0 1px 0 0 #ffffff;
-  -o-box-shadow: inset 0 1px 0 0 #ffffff;
-  -ms-box-shadow: inset 0 1px 0 0 #ffffff;
-  box-shadow: inset 0 1px 0 0 #ffffff;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar label {
-  cursor: pointer;
-  border: none;
-  background: none;
-  font-size: 11px !important;
-  padding: 3px !important;
-  margin: 0 3px;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar label span {
-  font-size: 11px;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar label:hover {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar input[type="radio"],
-#MyMissionsForPortletView .filter-portlet-model-bar input[type="checkbox"] {
-  visibility: hidden;
-  display: none;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar .ui-state-active {
-  color: #FFF;
-  -webkit-border-radius: 3px !important;
-  -moz-border-radius: 3px !important;
-  -ms-border-radius: 3px !important;
-  -o-border-radius: 3px !important;
-  border-radius: 3px !important;
-  border: none;
-}
-#MyMissionsForPortletView .filter-portlet-model-bar .ui-button-text {
-  padding: 0;
-  margin: 0;
 }
 #MyMissionsForPortletView .items td {
   padding-left: 15px !important;
@@ -15074,13 +15355,13 @@ a.close-ModalGameNotification.simple-link {
 #WelcomeView .social-links {
   margin: 30px -5px 0 0 !important;
 }
-.dashboard-link {
+a.dashboard-link {
   text-decoration: none !important;
   margin-top: 30px;
   margin-left: 0;
   font-size: 14px !important;
 }
-.dashboard-link .z-label {
+a.dashboard-link .z-label {
   line-height: 36px !important;
 }
 #welcome-content {
@@ -15109,6 +15390,7 @@ a.close-ModalGameNotification.simple-link {
   width: 50%;
   float: left;
   font-size: 12px;
+  margin-bottom: 30px;
 }
 .help-section h3 {
   font-size: 16px;
@@ -15843,7 +16125,7 @@ a.user-link {
   padding: 0 !important;
 }
 .social-item {
-  border-bottom: 1px solid #fff;
+  border-top: 1px solid #fff;
   padding: 15px 0;
 }
 .social-item .wide.form {
@@ -16113,18 +16395,23 @@ a.user-link {
 #ReportsSearchView .search-view-1 td:last-child {
   padding-right: 0;
 }
+.ComponentForWorkflowWizardView .view-toolbar-container,
 .ComponentForReportWizardView .view-toolbar-container {
   margin-top: 30px;
 }
+.ComponentForWorkflowWizardView .treeview ul,
 .ComponentForReportWizardView .treeview ul {
   background: none;
 }
+.ComponentForWorkflowWizardView .treeview li:hover,
 .ComponentForReportWizardView .treeview li:hover {
   cursor: pointer;
 }
+.ComponentForWorkflowWizardView .treeview li:active,
 .ComponentForReportWizardView .treeview li:active {
   cursor: move;
 }
+.ComponentForWorkflowWizardView .treeview .ui-draggable-dragging,
 .ComponentForReportWizardView .treeview .ui-draggable-dragging {
   background: none;
   font-weight: bold;
@@ -16152,14 +16439,17 @@ a.user-link {
   background-image: linear-gradient(top, #f6f6f6, #ededed);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
 }
+.ComponentForWorkflowWizardView .radio-input,
 .ComponentForReportWizardView .radio-input {
   margin-bottom: 10px !important;
 }
+#ModuleForWorkflowWizardView table span,
 #ModuleForReportWizardView table span {
   text-align: left;
   display: block;
   margin-bottom: 20px;
 }
+#ModuleForWorkflowWizardView table td,
 #ModuleForReportWizardView table td {
   padding-left: 0;
 }
@@ -16181,12 +16471,16 @@ a.user-link {
   min-height: 500px;
   max-height: 600px;
   overflow: auto;
-  margin-top: 10px;
+  z-index: 10;
+  -webkit-transition: all 0.5s ease-out;
+  -moz-transition: all 0.5s ease-out;
+  -o-transition: all 0.5s ease-out;
+  -ms-transition: all 0.5s ease-out;
+  transition: all 0.5s ease-out;
 }
 .hasTree .big-spinner {
-  position: relative;
-  left: 50%;
-  margin: 30px 0 0 -21px;
+  margin-left: 45%;
+  margin-top: 30%;
 }
 .dynamic-droppable-area {
   width: 75%;
@@ -16194,8 +16488,9 @@ a.user-link {
   padding-left: 15px;
   margin-top: 10px;
   position: relative;
+  z-index: 5;
 }
-.dynamic-droppable-area .ui-droppable {
+.droppable-dynamic-rows-container.ui-droppable {
   float: left;
   width: 100%;
   z-index: 0;
@@ -16203,11 +16498,15 @@ a.user-link {
   position: relative;
   margin-bottom: 15px;
 }
-.dynamic-droppable-area .ui-droppable.ui-state-active .drop-zone {
+.droppable-dynamic-rows-container.ui-droppable.ui-state-active .drop-zone {
   filter: alpha(opacity=100);
   -khtml-opacity: 1;
   -moz-opacity: 1;
   opacity: 1;
+}
+.droppable-dynamic-rows-container.EmailMessages,
+.droppable-dynamic-rows-container.Actions {
+  min-height: 0;
 }
 .activate-drop-zone {
   -webkit-transition: all 0.75s ease-out;
@@ -16278,7 +16577,12 @@ a.user-link {
   -ms-border-radius: 3px;
   -o-border-radius: 3px;
   border-radius: 3px;
-  padding: 15px 30px 15px 15px;
+  padding: 10px 30px 10px 10px;
+  -webkit-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -moz-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -o-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  -ms-box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
+  box-shadow: inset 0 0 0 1px rgba(204, 204, 204, 0.3) , 1px 1px 1px 0px rgba(153, 153, 153, 0.15);
 }
 .dynamic-row > div {
   position: relative;
@@ -16301,10 +16605,14 @@ a.user-link {
 .dynamic-row label.hasCheckBox {
   margin-left: 0 !important;
 }
+.dynamic-row .edit-dynamic-row-link {
+  margin-left: 0;
+  cursor: pointer;
+}
 .dynamic-row .remove-dynamic-row-link {
   position: absolute;
   right: 10px;
-  top: 15px;
+  top: 10px;
   display: block;
   font-weight: normal;
   font-size: 24px;
@@ -16345,6 +16653,9 @@ a.user-link {
   -moz-opacity: 1;
   opacity: 1;
 }
+.dynamic-row .z-button {
+  margin-left: 0;
+}
 .dynamic-row.clone {
   padding: 15px;
   position: absolute;
@@ -16354,8 +16665,42 @@ a.user-link {
   background-color: #ffffe0;
   border-color: #e6db55;
 }
-.Filters .dynamic-row {
-  padding: 15px 30px;
+.dynamic-sub-row {
+  position: relative;
+  width: 100%;
+  display: block;
+  margin: 0 0 10px 0;
+}
+.dynamic-sub-row .dynamic-action-attribute-should-set-value {
+  padding: 0;
+  width: auto;
+  margin-right: 10px;
+}
+.dynamic-sub-row .dynamic-row-label {
+  width: 25%;
+}
+.dynamic-sub-row .dynamic-action-attribute-type-and-value-wrapper {
+  width: 70%;
+}
+.dynamic-sub-row + h3 {
+  margin-top: 15px;
+}
+.dynamic-action-attribute-type {
+  width: 35%;
+  float: left;
+}
+.dynamic-action-attribute-type > span {
+  line-height: 26px;
+}
+.dynamic-action-attribute-type + .value-data {
+  width: 65%;
+  padding-left: 15px;
+}
+.Filters .dynamic-row,
+.Triggers .dynamic-row,
+.Actions .dynamic-row,
+.EmailMessages .dynamic-row {
+  padding: 10px 30px;
 }
 .sortable .dynamic-row:hover {
   -webkit-border-radius: 0 3px 3px 0;
@@ -16369,16 +16714,21 @@ a.user-link {
   cursor: move;
   background-color: #f5f5f5;
 }
+.sortable .expanded-row .dynamic-row:hover {
+  background-image: none !important;
+}
 .dynamic-row-label {
   float: left;
   line-height: 26px;
   width: 25%;
 }
+.dynamic-action-attribute-should-set-value,
 .dynamic-row-operator {
   float: left;
   width: 20%;
   padding-left: 15px;
 }
+.dynamic-action-attribute-type-and-value-wrapper,
 .dynamic-row-field {
   float: right;
   width: 75%;
@@ -16386,9 +16736,6 @@ a.user-link {
 .value-data {
   float: right;
   width: 80%;
-}
-.first-value-area + .second-value-area {
-  margin-top: 10px;
 }
 .report-runtime-availability {
   min-width: 145px;
@@ -16423,14 +16770,12 @@ a.user-link {
   padding-left: 15px;
   width: 80%;
 }
-.hasFilter .remove-dynamic-row-link {
-  top: 42px;
-}
 .dynamic-and-for-mixed {
   display: inline-block;
   padding: 5px 0;
   font-weight: bold;
 }
+#show-triggers-structure-wrapper,
 #show-filters-structure-wrapper {
   position: relative;
   z-index: 1;
@@ -16438,9 +16783,11 @@ a.user-link {
   float: left;
   margin-top: 15px;
 }
+#show-triggers-structure-wrapper span,
 #show-filters-structure-wrapper span {
   width: 120px;
 }
+#show-triggers-structure-wrapper input,
 #show-filters-structure-wrapper input {
   text-indent: 50px;
 }
@@ -16617,9 +16964,11 @@ a.user-link {
 #series-and-range-areas .buffer {
   padding-left: 22px;
 }
+#MarketingListDetailsView h1,
 #ReportDetailsView h1 {
   margin-bottom: 15px;
 }
+#MarketingListDetailsView .view-toolbar ul:first-child > li > a,
 #ReportDetailsView .view-toolbar ul:first-child > li > a {
   border-left: none;
 }
@@ -16644,6 +16993,7 @@ a.user-link {
   position: relative;
   top: 3px;
 }
+.label-for-marketing-list-widgets,
 .label-for-report-widgets {
   padding-right: 15px;
   margin: 0 !important;
@@ -16670,7 +17020,7 @@ a.user-link {
   border-right: none;
   margin-right: 0;
   width: 100%;
-  textalign: center;
+  text-align: center;
 }
 .zero-components-view h2 {
   padding-top: 10px;
@@ -16680,6 +17030,42 @@ a.user-link {
 }
 .zero-components-view .large-icon:after {
   margin-right: 45px;
+}
+.zero-components-view.Actions,
+.zero-components-view.EmailMessages,
+.zero-components-view.WorkflowRulesOrder,
+.zero-components-view.TimeTrigger {
+  position: relative;
+  top: 0;
+  left: 0;
+  float: none;
+}
+.related-model-selector {
+  float: left;
+  width: 75%;
+  margin: 10px 0 0 25%;
+}
+.missing-report:after,
+.Warning .large-icon:after {
+  content: "j";
+  font-weight: normal;
+  font-size: 250px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
+}
+.SavedReport .large-icon:after {
+  content: "V";
+  font-weight: normal;
+  font-size: 320px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
+}
+.SavedWorkflow .large-icon:after {
+  content: '\20AC';
+  font-weight: normal;
+  font-size: 330px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 55%;
 }
 .FilterIconOrSomethingElse .large-icon:after,
 .ZeroFilters .large-icon:after {
@@ -16703,6 +17089,7 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
+.WorkflowRulesOrder .large-icon:after,
 .ZeroOrderBys .large-icon:after {
   content: '\2039';
   font-weight: normal;
@@ -16717,6 +17104,35 @@ a.user-link {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 30%;
 }
+.ZeroTriggers .large-icon:after {
+  content: '\007E';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroActions .large-icon:after {
+  content: '\00A3';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.ZeroEmailMessages .large-icon:after {
+  content: '\00A5';
+  font-weight: normal;
+  font-size: 235px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
+.NoTimeTrigger .large-icon:after,
+.ZeroTimeTrigger .large-icon:after {
+  content: 'q';
+  font-weight: normal;
+  font-size: 235px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 30%;
+}
 #ReportResultsSQLView {
   padding: 15px;
   font-family: monospace, monaco, sans-serif;
@@ -16725,6 +17141,204 @@ a.user-link {
 }
 #ReportResultsSQLView > div + div {
   margin-top: 15px;
+}
+.Triggers .value-data {
+  padding-right: 0;
+}
+.EmailMessages .col-0 {
+  width: 20% !important;
+}
+.EmailMessages .col-1 {
+  width: 80% !important;
+}
+.EmailMessages .panel {
+  width: 100% !important;
+}
+.email-message-recipient-rows .hasDropDown {
+  float: left;
+  min-width: 20%;
+}
+.email-message-recipient-rows .dynamic-row-label {
+  width: 100%;
+}
+.email-message-recipient-rows .value-data {
+  padding-left: 15px;
+}
+.email-message-recipient-rows .value-data .hasDropDown {
+  width: 100% !important;
+}
+.email-message-recipient-rows .dynamic-sub-row {
+  padding: 0 20px;
+}
+.email-message-recipient-rows .dynamic-sub-row > div {
+  position: relative;
+}
+.email-message-recipient-rows:hover .remove-dynamic-email-message-recipient-row-link {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
+.remove-dynamic-email-message-recipient-row-link {
+  position: absolute;
+  right: 0;
+  top: 26px;
+  display: block;
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  color: #a7a7a7 !important;
+  filter: alpha(opacity=0);
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  -webkit-transition: all 0.2s ease-out;
+  -moz-transition: all 0.2s ease-out;
+  -o-transition: all 0.2s ease-out;
+  -ms-transition: all 0.2s ease-out;
+  transition: all 0.2s ease-out;
+}
+.email-message-recipient-type-selector-container {
+  width: 22%;
+  margin-top: 20px;
+}
+.all-related-field {
+  float: left;
+  width: 80%;
+  padding-left: 15px;
+}
+.all-related-field .value-data {
+  width: 44.5%;
+}
+.all-related-field > span {
+  float: left;
+  line-height: 26px;
+}
+.all-related-field > span + .value-data {
+  float: left;
+}
+.static-address-field {
+  float: left;
+  width: 80%;
+}
+.static-address-field .value-data {
+  width: 50%;
+  float: left;
+}
+.static-address-field .value-data > span {
+  float: left;
+  line-height: 26px;
+  width: 30%;
+}
+.static-address-field .value-data > input {
+  float: left;
+  width: 70%;
+}
+/*By Time Workflow*/
+.zero-components-view.TimeTrigger,
+#time-trigger-container {
+  float: right !important;
+  width: 80% !important;
+  padding-left: 15px;
+}
+.zero-components-view.TimeTrigger .value-data,
+#time-trigger-container .value-data {
+  float: left;
+  width: 55%;
+}
+.zero-components-view.TimeTrigger .first-value-area,
+#time-trigger-container .first-value-area {
+  margin-left: 15px;
+}
+.time-trigger-attribute-selector-container {
+  width: 20%;
+  float: left;
+  min-height: 300px;
+}
+.dynamic-row-duration {
+  float: left;
+  width: 100%;
+  margin-top: 10px;
+}
+/*for actions in WORKFLOWS hide/show sequence*/
+.ComponentForWorkflowWizardView .add-email-message-button-container,
+.ComponentForWorkflowWizardView .action-type-selector-container {
+  width: 20%;
+  float: left !important;
+}
+.ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .zero-components-view {
+  float: left !important;
+}
+.ComponentForWorkflowWizardView .Actions.droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .EmailMessages.droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .TimeTrigger.droppable-dynamic-rows-container,
+.ComponentForWorkflowWizardView .Actions.zero-components-view,
+.ComponentForWorkflowWizardView .EmailMessages.zero-components-view,
+.ComponentForWorkflowWizardView .TimeTrigger.zero-components-view {
+  width: 80% !important;
+  padding-left: 15px;
+}
+.ComponentForWorkflowWizardView .edit-dynamic-row-link {
+  display: none;
+}
+.ComponentForWorkflowWizardView .ui-sortable {
+  min-height: 300px;
+  position: relative;
+}
+.action-type-selector-container > .hasDropDown {
+  float: none;
+  width: 100%;
+}
+.action-type-selector-container .related-model-selector {
+  margin-left: 0;
+  margin-top: 15px;
+  width: 100%;
+  float: none;
+}
+#AddEmailMessageLink {
+  margin-left: 0;
+}
+/*WorkFlow Rules Order*/
+.workflow-order-module-selector-container {
+  width: 20%;
+  float: left !important;
+  min-height: 300px;
+}
+#workflow-order-container,
+.WorkflowRulesOrder,
+.no-workflows-to-order-view {
+  float: right !important;
+  width: 80% !important;
+  padding-left: 15px;
+}
+#workflow-order-container + .float-bar,
+.WorkflowRulesOrder + .float-bar,
+.no-workflows-to-order-view + .float-bar {
+  margin-top: 15px;
+}
+.workflow-order-container,
+.no-workflows-to-order-view {
+  position: relative;
+  top: 0;
+  left: 0;
+  text-align: center;
+}
+.workflow-order-container .large-icon:after,
+.no-workflows-to-order-view .large-icon:after {
+  content: "j";
+  font-weight: normal;
+  font-size: 200px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 60%;
+}
+.workflow-order-container p,
+.no-workflows-to-order-view p {
+  font-size: 16px;
+  line-height: 24px;
+  color: #555;
+  font-weight: bold;
+  margin: 15px 0 0 0;
 }
 #MashableInboxActionBarForViews .view-toolbar ul:first-child > li > a {
   border-left: none;
@@ -16760,10 +17374,9 @@ a.user-link {
 .model-tag {
   display: inline-block;
   font-weight: 400;
-  font-size: 11px;
+  font-size: 11px !important;
   float: left;
-  margin-right: 5px;
-  margin-top: 1px;
+  margin: 1px 5px 0 0 !important;
 }
 .model-tag span {
   -webkit-border-radius: 3px;
@@ -16811,6 +17424,13 @@ a.user-link {
   background-image: linear-gradient(top, #9b59b6, #8e44ad);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#9b59b6', endColorstr='#8e44ad', GradientType=0);
 }
+.last-comment ul,
+.last-comment li {
+  list-style: none;
+}
+.last-comment li {
+  margin-top: 2px;
+}
 @media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
@@ -16837,11 +17457,6 @@ orientation : portrait // orientation: landscape    Target orientation
 
 	http://bennettfeely.com/flexplorer/
 */
-.ui-chooser {
-  padding: 10px;
-  display: block;
-  text-align: center;
-}
 #nav-trigger {
   display: none;
   float: left;
@@ -16855,7 +17470,7 @@ orientation : portrait // orientation: landscape    Target orientation
   font-size: 30px;
   font-family: "ZurmoGamificationSymblyReguRg";
 }
-@media all and (max-width: 2000px) {
+@media all and (max-width: 800px) {
   /*640*/
   html,
   body {
@@ -17547,6 +18162,166 @@ orientation : portrait // orientation: landscape    Target orientation
   }
   .ui-dialog {
     width: 98%;
+    min-width: 98%;
+  }
+  .ModalGameNotification {
+    padding-bottom: 60px;
+  }
+  /*Inbox*/
+  .model-tag {
+    float: none;
+    margin: 0 0 5px 0 !important;
+    position: relative;
+    top: -2px;
   }
   /*closing media query bracket*/
+}
+.tabs-container,
+.email-template-content {
+  position: relative;
+  min-height: 200px;
+  margin-bottom: 15px;
+}
+.tabs-container > .tab,
+.email-template-content > .tab {
+  position: absolute;
+  top: 28px;
+  left: 0;
+  width: 100%;
+  min-height: 170px;
+  display: none;
+  line-height: 150%;
+  padding: 0;
+  border: 1px solid #dfdfdf;
+  border-top: none;
+  background: #fefefe;
+}
+.tabs-container > .tab label,
+.email-template-content > .tab label {
+  display: none;
+}
+.tabs-container > .tab .redactor_box,
+.email-template-content > .tab .redactor_box {
+  border: none !important;
+}
+.tabs-container > .tab textarea,
+.email-template-content > .tab textarea {
+  border: none !important;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none !important;
+  -moz-box-shadow: none !important;
+  -o-box-shadow: none !important;
+  -ms-box-shadow: none !important;
+  box-shadow: none !important;
+}
+.tabs-container .tab.active-tab,
+.email-template-content .tab.active-tab {
+  display: block;
+}
+.tabs-nav {
+  border-bottom: 1px solid #dfdfdf;
+}
+.tabs-nav a {
+  display: inline-block;
+  padding: 0 12px;
+  line-height: 26px;
+  margin: 0 5px 0 0;
+  background: url(../images/table-items-header.png) left bottom repeat-x;
+  border: 1px solid #dfdfdf;
+  border-bottom: none;
+  -webkit-border-radius: 3px 3px 0 0;
+  -moz-border-radius: 3px 3px 0 0;
+  -ms-border-radius: 3px 3px 0 0;
+  -o-border-radius: 3px 3px 0 0;
+  border-radius: 3px 3px 0 0;
+  font-size: 11px;
+  font-weight: 700;
+  color: #666;
+  -webkit-text-shadow: 0 1px 0 #ffffff;
+  -moz-text-shadow: 0 1px 0 #ffffff;
+  -o-text-shadow: 0 1px 0 #ffffff;
+  -ms-text-shadow: 0 1px 0 #ffffff;
+  text-shadow: 0 1px 0 #ffffff;
+}
+.tabs-nav a:hover,
+.tabs-nav a.active-tab {
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  text-decoration: none;
+  position: relative;
+  top: 1px;
+}
+#marketing-list-member-select-contact-or-report-form,
+#marketing-list-member-configuration-form {
+  position: relative;
+  padding: 15px;
+  border-bottom: 1px solid #DFDFDF;
+  background-color: #ededed;
+  background-repeat: repeat-x;
+  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
+  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
+  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
+  background-image: linear-gradient(top, #f6f6f6, #ededed);
+  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  box-shadow: inset 0 1px 0 0 #ffffff;
+  zoom: 1;
+}
+#marketing-list-member-select-contact-or-report-form:before,
+#marketing-list-member-configuration-form:before {
+  content: "";
+  display: table;
+}
+#marketing-list-member-select-contact-or-report-form:after,
+#marketing-list-member-configuration-form:after {
+  content: "";
+  display: table;
+  clear: both;
+}
+#marketing-list-member-select-contact-or-report-form input[type="text"],
+#marketing-list-member-configuration-form input[type="text"] {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  position: relative;
+  left: -3px;
+  width: 219px;
+  float: left;
+  margin: 0 0 0 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  border-left: none;
+  font-style: italic;
+  color: #999;
+  text-indent: 5px;
+  line-height: 25px;
+  height: 25px !important;
+  border: 1px solid #d5d4d4;
+  background: url(../images/search-bar-gradient.png) left top repeat-x;
+}
+#marketing-list-member-select-contact-or-report-form input[type="text"]:focus,
+#marketing-list-member-configuration-form input[type="text"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+.MarketingListMembersListView {
+  margin-bottom: 0;
 }

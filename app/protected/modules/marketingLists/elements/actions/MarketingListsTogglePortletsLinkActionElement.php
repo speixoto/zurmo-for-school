@@ -1,7 +1,7 @@
 <?php
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -20,8 +20,18 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
@@ -47,13 +57,13 @@
             $autorespondersClass = $this->getAutorespondersPortletClass();
             if ($membersClass)
             {
-                $htmlOptions = array('onClick' => 'js:$(".' . $membersClass . '").toggle();');
+                $htmlOptions = array('onClick' => 'js:$(".' . $membersClass . '").parentsUntil("li").parent().toggle();');
                 $label       = ZurmoHtml::label(Zurmo::t('MarketingListsModule', 'Members'), Zurmo::t('MarketingListsModule', 'Members'), array('class' => 'label-for-marketing-list-widgets'));
                 $content    .= ZurmoHtml::checkBox(Zurmo::t('MarketingListsModule', 'Members'), true, $htmlOptions) . $label;
             }
             if($autorespondersClass)
             {
-                $htmlOptions = array('onClick' => 'js:$(".' . $autorespondersClass . '").toggle();');
+                $htmlOptions = array('onClick' => 'js:$(".' . $autorespondersClass . '").parentsUntil("li").parent().toggle();');
                 $label       = ZurmoHtml::label(Zurmo::t('MarketingListsModule', 'Autoresponders'), Zurmo::t('MarketingListsModule', 'Autoresponders'), array('class' => 'label-for-marketing-list-widgets'));
                 $content    .= ZurmoHtml::checkBox(Zurmo::t('MarketingListsModule', 'Autoresponders'), true, $htmlOptions) . $label;
             }

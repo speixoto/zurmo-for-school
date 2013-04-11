@@ -2,7 +2,7 @@
 
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
-     * Zurmo, Inc. Copyright (C) 2012 Zurmo Inc.
+     * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
      *
      * Zurmo is free software; you can redistribute it and/or modify it under
      * the terms of the GNU General Public License version 3 as published by the
@@ -21,20 +21,30 @@
      * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
      * 02110-1301 USA.
      *
-     * You can contact Zurmo, Inc. with a mailing address at 113 McHenry Road Suite 207,
-     * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
+     * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+     * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+     *
+     * The interactive user interfaces in original and modified versions
+     * of this program must display Appropriate Legal Notices, as required under
+     * Section 5 of the GNU General Public License version 3.
+     *
+     * In accordance with Section 7(b) of the GNU General Public License version 3,
+     * these Appropriate Legal Notices must retain the display of the Zurmo
+     * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+     * feasible for technical reasons, the Appropriate Legal Notices must display the words
+     * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
     /**
      * Parent class for all LinkActionElements that may apply to all or selected records.
      */
-    abstract class MassActionLinkActionElement extends LinkActionElement implements SupportsRenderingDropDownInterface
+    abstract class MassActionLinkActionElement extends DropdownSupportedLinkActionElement
     {
-        const SELECTED_MENU_TYPE = 1;
+        const SELECTED_MENU_TYPE                = 1;
 
-        const ALL_MENU_TYPE      = 0;
+        const ALL_MENU_TYPE                     = 0;
 
-        const DROPDOWN_ID        = 'ListViewExportActionMenu';
+        const DROPDOWN_ID            = 'ListViewExportActionMenu';
 
         protected $gridId;
 
@@ -69,9 +79,13 @@
         public function render()
         {
             $this->registerMenuScripts();
-            $menuItems = array('label' => $this->getMenuHeader(), 'url' => null,
-                                'items' => $this->getMenuItems());
-            return $this->renderMenuWidget($menuItems);
+            return $this->renderMenuWidget($this->renderMenuItem());
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label' => $this->getMenuHeader(), 'url' => null,
+                'items' => $this->getMenuItems());
         }
 
         public function getActionNameForCurrentElement()
@@ -146,6 +160,11 @@
             return $this->getMenuItems();
         }
 
+        public function getElementValue()
+        {
+            return null; // because Selected and All Results would have their own and we can't determine that here.
+        }
+
         public function registerDropDownScripts($dropDownId = null, $scriptName = null)
         {
             $dropDownId = ($dropDownId)? $dropDownId : static::getDropDownId();
@@ -159,6 +178,7 @@
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('#" . $dropDownId . "').unbind('change.action').bind('change.action', function()
                         {
+                            // TODO: @Shoaibi/@Jason: High: Heavy dependence on DOM?
                             selectedOption      = $(this).find(':selected');
                             selectedOptionId    = selectedOption.attr('id');
                             if (selectedOptionId)
@@ -174,6 +194,7 @@
                                 {
                                     menuType = " . static::SELECTED_MENU_TYPE . ";
                                 }
+                                $('#" . $dropDownId . "').val('');
                                 massActionLinkActionElementEventHandler(".
                                         "menuType, ".
                                         " '" . $this->gridId. "',".
@@ -181,9 +202,6 @@
                                         " actionName,".
                                         " '" . $this->getPageVarName() ."'".
                                         ");
-                            }
-                            else
-                            {
                             }
                         }
                         );
