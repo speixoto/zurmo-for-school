@@ -52,7 +52,9 @@
          */
         public function render()
         {
+
             $content  = null;
+            return $content; // TODO: @Shoaibi: Low: Just for 1.5 release.
             $membersClass = $this->getMembersPortletClass();
             $autorespondersClass = $this->getAutorespondersPortletClass();
             if ($membersClass)
