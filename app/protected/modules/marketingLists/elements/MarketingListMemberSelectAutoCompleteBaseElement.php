@@ -59,7 +59,7 @@
 
         protected function getHtmlOptions()
         {
-            CMap::mergeArray(parent::getHtmlOptions(), array('onfocus' => '$(this).val("");'));
+            return CMap::mergeArray(parent::getHtmlOptions(), array('onfocus' => '$(this).val("");'));
         }
 
         /**

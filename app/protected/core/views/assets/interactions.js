@@ -744,7 +744,6 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
     };
 }(jQuery));
 
-
 // query string related functions
 $.extend({
     getUrlVars: function() {
@@ -775,4 +774,10 @@ function createButtonSetIfNotAlreadyExist(qualifier, classFlag) {
         return false;
     }
     $(qualifier).buttonset();
+}
+
+function isValidUrl(url)
+{
+    var pattern = /(ftp|http|https):\/\/(\w+:{0,1}\w*@)?(\S+)(:[0-9]+)?(\/|\/([\w#!:.?+=&%@!\-\/]))?/;
+    return pattern.test(url);
 }

@@ -38,11 +38,11 @@
     /**
      * Parent class for all LinkActionElements that may apply to all or selected records.
      */
-    abstract class MassActionLinkActionElement extends LinkActionElement implements SupportsRenderingDropDownInterface
+    abstract class MassActionLinkActionElement extends DropdownSupportedLinkActionElement
     {
-        const SELECTED_MENU_TYPE = 1;
+        const SELECTED_MENU_TYPE                = 1;
 
-        const ALL_MENU_TYPE      = 0;
+        const ALL_MENU_TYPE                     = 0;
 
         const DROPDOWN_ID            = 'ListViewExportActionMenu';
 
@@ -79,9 +79,13 @@
         public function render()
         {
             $this->registerMenuScripts();
-            $menuItems = array('label' => $this->getMenuHeader(), 'url' => null,
-                                'items' => $this->getMenuItems());
-            return $this->renderMenuWidget($menuItems);
+            return $this->renderMenuWidget($this->renderMenuItem());
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label' => $this->getMenuHeader(), 'url' => null,
+                'items' => $this->getMenuItems());
         }
 
         public function getActionNameForCurrentElement()
@@ -156,6 +160,11 @@
             return $this->getMenuItems();
         }
 
+        public function getElementValue()
+        {
+            return null; // because Selected and All Results would have their own and we can't determine that here.
+        }
+
         public function registerDropDownScripts($dropDownId = null, $scriptName = null)
         {
             $dropDownId = ($dropDownId)? $dropDownId : static::getDropDownId();
@@ -169,6 +178,7 @@
                 Yii::app()->clientScript->registerScript($scriptName, "
                         $('#" . $dropDownId . "').unbind('change.action').bind('change.action', function()
                         {
+                            // TODO: @Shoaibi/@Jason: High: Heavy dependence on DOM?
                             selectedOption      = $(this).find(':selected');
                             selectedOptionId    = selectedOption.attr('id');
                             if (selectedOptionId)
@@ -184,6 +194,7 @@
                                 {
                                     menuType = " . static::SELECTED_MENU_TYPE . ";
                                 }
+                                $('#" . $dropDownId . "').val('');
                                 massActionLinkActionElementEventHandler(".
                                         "menuType, ".
                                         " '" . $this->gridId. "',".
@@ -191,9 +202,6 @@
                                         " actionName,".
                                         " '" . $this->getPageVarName() ."'".
                                         ");
-                            }
-                            else
-                            {
                             }
                         }
                         );

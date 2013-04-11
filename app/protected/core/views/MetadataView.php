@@ -116,8 +116,9 @@
             $metadata = $this::getMetadata();
             $content = null;
             $first = true;
+            $dropDownId = null;
             $dropDownItems = array();
-            $dropDownItemHtmlOptions = array('prompt' => Zurmo::t('Core', 'Action'));
+            $dropDownItemHtmlOptions = array('prompt' => Zurmo::t('Core', 'Select Action')); // we need this so we have a default one to select at the end of operation.
             if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)
@@ -145,6 +146,13 @@
                     {
                         $renderedContent = $element->render();
                     }
+                    else
+                    {
+                        if (! $dropDownId)
+                        {
+                            $dropDownId = $elementClassName::getDropdownId();
+                        }
+                    }
                     if (!$first && !empty($renderedContent))
                     {
                        // $content .= '&#160;|&#160;';
@@ -158,7 +166,7 @@
                 $content .= ZurmoHtml::link('', '#', array('class' => 'mobile-actions'));
                 $content .= ZurmoHtml::tag('div', array( 'class' => 'mobile-view-toolbar-container'),
                                 ZurmoHtml::dropDownList(
-                                        MassActionLinkActionElement::getDropdownId(),
+                                        $dropDownId,
                                         '',
                                         $dropDownItems,
                                         $dropDownItemHtmlOptions
@@ -186,11 +194,24 @@
                     $element->registerDropDownScripts();
                 }
                 $items = $element->getOptions();
+                $items = (array_key_exists('label', $items))? array($items) : $items;
                 foreach ($items as $item)
                 {
-                    $value = $element->getActionNameForCurrentElement().'_'.$item['label'];
-                    $dropDownItems[$element->getOptGroup()][$value] = $item['label'];
-                    $dropDownItemHtmlOptions['options'][$value] = $item['itemOptions'];
+                    $value      = $element->getElementValue();
+                    if (!$value)
+                    {
+                        $value      = $element->getActionNameForCurrentElement() . '_' . $item['label'];
+                    }
+                    $optGroup   = $element->getOptGroup();
+                    if ($optGroup)
+                    {
+                        $dropDownItems[$optGroup][$value]   = $item['label'];
+                    }
+                    else
+                    {
+                        $dropDownItems[$value]              = $item['label'];
+                    }
+                    $dropDownItemHtmlOptions['options'][$value] = (isset($item['itemOptions'])) ? $item['itemOptions'] : array();
                 }
                 return false;
             }
