@@ -423,6 +423,7 @@
             $script = '
                 $(".remove-dynamic-row-link").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
+                    $(this).parentsUntil("ul").siblings().show();
                     $(this).parent().parent().remove(); //removes the <li>
                     if(size < 2)
                     {
