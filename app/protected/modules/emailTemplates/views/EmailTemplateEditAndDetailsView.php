@@ -48,7 +48,6 @@
                             array('type'    => 'EmailTemplateDeleteLink'),
                         ),
                     ),
-                   // 'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -82,20 +81,6 @@
 
                             ),
                         ),
-                       /* array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'null',
-                                                    'type' => 'DerivedExplicitReadWriteModelPermissions'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),*/
                     ),
                 ),
             );
@@ -116,11 +101,6 @@
             }
         }
 
-      /*  protected function renderRightSideFormLayoutForEdit($form)
-        {
-            return null;
-        }
-*/
         protected function renderAfterFormLayout($form)
         {
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
