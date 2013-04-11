@@ -35,48 +35,18 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping a view of a report chart
+     * Class defining rules for Workflow gamification behavior.
      */
-    class ReportChartForPortletView extends ReportResultsComponentForPortletView
+    class WorkflowGamificationRules extends GamificationRules
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        public static function getPointTypesAndValuesForCreateModel()
         {
-            return Zurmo::t('ReportsModule', 'Chart');
+            return array(GamePoint::TYPE_COMMUNICATION => 25);
         }
 
-        /**
-         * @return string
-         */
-        public function renderContent()
+        public static function getPointTypesAndValuesForUpdateModel()
         {
-            $content  = $this->renderRefreshLink();
-            $content .= $this->makeChartViewAndRender();
-            return $content;
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function makeChartViewAndRender()
-        {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']) &&
-                $this->params['dataProvider']->getReport()->getChart()->type != null)
-            {
-                $dataProvider = $this->params['dataProvider'];
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = new ReportChartView('default', 'reports', $dataProvider, $this->uniqueLayoutId);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
-            }
+            return array(GamePoint::TYPE_COMMUNICATION => 10);
         }
     }
 ?>

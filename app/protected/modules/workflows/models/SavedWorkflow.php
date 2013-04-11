@@ -190,6 +190,11 @@
             return self::getSubset($joinTablesAdapter, null, null, $where, null);
         }
 
+        public static function getGamificationRulesType()
+        {
+            return 'WorkflowGamification';
+        }
+
         /**
          * @param $isNewModel
          * @return string

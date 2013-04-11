@@ -103,5 +103,10 @@
             );
             return $metadata;
         }
+
+        public static function getGamificationRulesType()
+        {
+            return 'MarketingListGamification';
+        }
     }
 ?>

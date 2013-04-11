@@ -48,32 +48,48 @@
                             array('type'    => 'EmailTemplateDeleteLink'),
                         ),
                     ),
+                    'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_FIRST,
                     'panels' => array(
+                        array(
+                            'rows' => array(
+                                array('cells' =>
+                                array(
+                                    array(
+                                        'elements' => array(
+                                            array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
+                                        ),
+                                    ),
+                                )
+                                ),
+                                array('cells' =>
+                                array(
+                                    array(
+                                        'elements' => array(
+                                            array('attributeName' => 'name', 'type' => 'Text'),
+                                        ),
+                                    ),
+                                )
+                                ),
+                                array('cells' =>
+                                array(
+                                    array(
+                                        'elements' => array(
+                                            array('attributeName' => 'subject', 'type' => 'Text'),
+                                        ),
+                                    ),
+                                )
+                                ),
+
+                            ),
+                        ),
                         array(
                             'rows' => array(
                                 array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text'),
+                                                array('attributeName' => 'null',
+                                                    'type' => 'DerivedExplicitReadWriteModelPermissions'),
                                             ),
                                         ),
                                     )

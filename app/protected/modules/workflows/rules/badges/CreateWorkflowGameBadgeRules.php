@@ -35,48 +35,41 @@
      ********************************************************************************/
 
     /**
-     * Base class used for wrapping a view of a report chart
+     * Class for defining the badge associated with creating a new workflow
      */
-    class ReportChartForPortletView extends ReportResultsComponentForPortletView
+    class CreateWorkflowGameBadgeRules extends GameBadgeRules
     {
-        /**
-         * @return string
-         */
-        public function getTitle()
+        public static $valuesIndexedByGrade = array(
+            1  => 1,
+            2  => 3,
+            3  => 5,
+            4  => 10,
+            5  => 20,
+            6  => 30,
+            7  => 40,
+            8  => 50,
+            9  => 60,
+            10 => 70,
+            11 => 80,
+            12 => 90,
+            13 => 100
+        );
+
+        public static function getPassiveDisplayLabel($value)
         {
-            return Zurmo::t('ReportsModule', 'Chart');
+            return Zurmo::t('WorkflowsModule', '{n} Workflow created|{n} Workflows created',
+                            array($value));
         }
 
-        /**
-         * @return string
-         */
-        public function renderContent()
+        public static function badgeGradeUserShouldHaveByPointsAndScores($userPointsByType, $userScoresByType)
         {
-            $content  = $this->renderRefreshLink();
-            $content .= $this->makeChartViewAndRender();
-            return $content;
-        }
-
-        /**
-         * @return null|string
-         */
-        protected function makeChartViewAndRender()
-        {
-            $dataProvider = null;
-            if(isset($this->params['dataProvider']) &&
-                $this->params['dataProvider']->getReport()->getChart()->type != null)
+            assert('is_array($userPointsByType)');
+            assert('is_array($userScoresByType)');
+            if (isset($userScoresByType['CreateSavedWorkflow']))
             {
-                $dataProvider = $this->params['dataProvider'];
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
-                {
-                    $view      = new ReportChartView('default', 'reports', $dataProvider, $this->uniqueLayoutId);
-                }
-                else
-                {
-                    $view      = new UserCannotRenderReportProperlySplashView();
-                }
-                return $view->render();
+                return static::getBadgeGradeByValue((int)$userScoresByType['CreateSavedWorkflow']->value);
             }
+            return 0;
         }
     }
 ?>

@@ -42,6 +42,14 @@
         /**
          * @return string
          */
+        public function getTitle()
+        {
+            return Zurmo::t('ReportsModule', 'SQL');
+        }
+
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             $content  = $this->renderRefreshLink();

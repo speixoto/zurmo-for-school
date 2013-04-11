@@ -319,5 +319,15 @@
             }
             return $personOrAccount;
         }
+        /**
+         * 
+         * Convert $message->subject from any mime encoded  to UTF8
+         * @param EmailMessage $message
+         */
+        public static function resolveSanitizeFromImapToUtf8(EmailMessage $message)
+        {
+            $message->subject = imap_utf8($message->subject);
+        }       
+        
     }
 ?>

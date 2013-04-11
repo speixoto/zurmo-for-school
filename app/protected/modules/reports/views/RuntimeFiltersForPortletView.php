@@ -42,6 +42,14 @@
         /**
          * @return string
          */
+        public function getTitle()
+        {
+            return Zurmo::t('ReportsModule', 'Filters');
+        }
+
+        /**
+         * @return string
+         */
         public function renderContent()
         {
             OperatorStaticDropDownElement::registerOnLoadAndOnChangeScript();
