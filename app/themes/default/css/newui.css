@@ -8675,9 +8675,6 @@ div.wide.form label.hasCheckBox {
 .right-side-edit-view-panel {
   width: 30%;
   float: right;
-  position: absolute;
-  right: 15px;
-  top: 15px;
 }
 .right-side-edit-view-panel p {
   line-height: 140%;
@@ -15785,7 +15782,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 a.close-ModalGameNotification.simple-link {
   background: none !important;
   margin-right: 10px;
-  margin-left: -5px;
+  margin-left: -35px;
   top: -10px;
   font-size: 11px;
 }
