@@ -162,12 +162,14 @@
                                        false, true, $componentType);
                 $timeTriggerContent  = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'),
                                        ZurmoHtml::tag('ul', array(), $view->render()));
+                $htmlOptions         = array('id' => 'time-trigger-container');
             }
             else
             {
                 $timeTriggerContent = ZurmoHtml::tag('div', array('class' => 'dynamic-rows'), ZurmoHtml::tag('ul', array(), ''));
+                $htmlOptions         = array('id' => 'time-trigger-container', 'style' => 'display:none');
             }
-            return ZurmoHtml::tag('div', array('id' => 'time-trigger-container', 'style' => 'display:none'), $timeTriggerContent);
+            return ZurmoHtml::tag('div', $htmlOptions, $timeTriggerContent);
         }
     }
 ?>
