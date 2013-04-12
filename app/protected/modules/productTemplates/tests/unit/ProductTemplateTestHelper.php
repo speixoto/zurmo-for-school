@@ -38,6 +38,10 @@
             $productTemplate->priceFrequency = 2;
             $productTemplate->cost           = $currencyValue;
             $productTemplate->listPrice      = $currencyValue;
+
+	    $currencyValue                   = new SellPriceCurrencyValue();
+            $currencyValue->value            = 500.54;
+            $currencyValue->currency         = $currencies[0];
             $productTemplate->sellPrice      = $currencyValue;
             $productTemplate->type           = ProductTemplate::TYPE_PRODUCT;
             $productTemplate->status         = ProductTemplate::STATUS_ACTIVE;
