@@ -35,27 +35,21 @@
      ********************************************************************************/
 
     /**
-     * When processing workflows, the user that processes them must be a super administrator to ensure the workflows can
-     * be properly processed.
+     * Display a collection of address fields
+     * Collection includes street1, street2,
+     * city, state, postal code, and country.
      */
-    class UserToRunWorkflowsAsElement extends SuperAdministratorToUseElement
+    class BaseDomainElement extends TextElement
     {
-        /**
-         * @return string
-         */
-        protected static function renderTooltipContent()
-        {
 
-        }
 
         protected function renderLabel()
         {
-            $title       = Zurmo::t('WorkflowsModule', 'Workflows must be processed as a super administrator user.');
+            $title       = Zurmo::t('ZurmoModule', 'Like: dc=server,dc=world for both LDAP and Active Directory');
             $content     = parent::renderLabel();
-            $content    .= '<span id="run-workflows-from-user-tooltip" class="tooltip"  title="' . $title . '">';
-            $content    .= '?</span>';
-            $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
-            $qtip->addQTip("#run-workflows-from-user-tooltip");
+            $content    .= '<span id="ldap-rollup-tooltip" class="tooltip" title="' . $title . '">?</span>';
+            $qtip = new ZurmoTip();
+            $qtip->addQTip("#ldap-rollup-tooltip");
             return $content;
         }
     }

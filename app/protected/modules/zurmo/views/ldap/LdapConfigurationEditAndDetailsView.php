@@ -109,7 +109,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'baseDomain', 'type' => 'Text'),
+                                                array('attributeName' => 'baseDomain', 'type' => 'BaseDomain'),
                                             ),
                                         ),
                                     )

@@ -39,11 +39,12 @@
      */
     class UserToSendNotificationFromElement extends SuperAdministratorToUseElement
     {
-        protected static function renderTooltipContent()
+        protected function renderLabel()
         {
             $title       = Zurmo::t('EmailMessagesModule', 'Zurmo sends out system notifications.  The notifications must appear ' .
-                                             'as coming from a super administrative user.');
-            $content     = '<span id="send-notifications-from-user-tooltip" class="tooltip"  title="' . $title . '">';
+                                                           'as coming from a super administrative user.');
+            $content     = parent::renderLabel();
+            $content    .= '<span id="send-notifications-from-user-tooltip" class="tooltip"  title="' . $title . '">';
             $content    .= '?</span>';
             $qtip = new ZurmoTip(array('options' => array('position' => array('my' => 'bottom right', 'at' => 'top left'))));
             $qtip->addQTip("#send-notifications-from-user-tooltip");
