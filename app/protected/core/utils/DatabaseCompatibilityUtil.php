@@ -696,7 +696,7 @@
         }
 
         /**
-         * Check if database ins in strict mode
+         * Check if database is in strict mode
          * @param string $databaseType
          * @param string $databaseHostname
          * @param string $databaseUsername
@@ -727,7 +727,7 @@
                     }
                     if (isset($row[0]))
                     {
-                        if ($row[0] == '' || strstr($row[0], 'STRICT_TRANS_TABLES') !== false)
+                        if (strstr($row[0], 'STRICT_TRANS_TABLES') !== false)
                         {
                             $isStrict = true;
                         }
