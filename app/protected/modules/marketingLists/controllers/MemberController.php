@@ -41,6 +41,19 @@
             'application.modules.marketingLists.controllers.filters.MarketingListsZeroModelsCheckControllerFilter';
 
         // TODO: @Shoaibi: Critical: Do we need this?
+        public static function getListBreadcrumbLinks()
+        {
+            $title = Zurmo::t('MarketingListsModule', 'Lists');
+            return array($title);
+        }
+
+        // TODO: @Shoaibi: Critical: Do we need this?
+        public static function getDetailsAndEditBreadcrumbLinks()
+        {
+            return array(Zurmo::t('MarketingListsModule', 'Lists') => array('default/list'));
+        }
+
+        // TODO: @Shoaibi: Critical: Do we need this?
         public function filters()
         {
             return array_merge(parent::filters(),
@@ -57,32 +70,32 @@
 
         public function actionMassDelete()
         {
-            static::triggerMarketingListMemberMassAction();
+            $this->triggerMarketingListMemberMassAction();
         }
 
         public function actionMassDeleteProgress()
         {
-            static::triggerMarketingListMemberMassAction();
+            $this->triggerMarketingListMemberMassAction();
         }
 
         public function actionMassSubscribe()
         {
-            static::triggerMarketingListMemberMassAction();
+            $this->triggerMarketingListMemberMassAction();
         }
 
         public function actionMassSubscribeProgress()
         {
-            static::triggerMarketingListMemberMassAction();
+            $this->triggerMarketingListMemberMassAction();
         }
 
         public function actionMassUnsubscribe()
         {
-            static::triggerMarketingListMemberMassAction();
+            $this->triggerMarketingListMemberMassAction();
         }
 
         public function actionMassUnsubscribeProgress()
         {
-            static::triggerMarketingListMemberMassAction();
+            $this->triggerMarketingListMemberMassAction();
         }
 
         protected static function getSearchFormClassName()
@@ -91,9 +104,9 @@
         }
 
 
-        protected static function triggerMarketingListMemberMassAction()
+        protected function triggerMarketingListMemberMassAction()
         {
-            static::triggerMassAction('MarketingListMember',
+            $this->triggerMassAction('MarketingListMember',
                                         static::getSearchFormClassName(),
                                         'MarketingListMembersPageView',
                                         MarketingListMember::getModelLabelByTypeAndLanguage('Plural'),
@@ -138,9 +151,9 @@
             }
         }
 
-        protected static function resolveReturnUrlForMassAction()
+        protected function resolveReturnUrlForMassAction()
         {
-            return Yii::app()->createUrl('/' . Yii::app()->getController()->getModule()->getId() . '/default/details',
+            return $this->createUrl('/' . $this->getModule()->getId() . '/default/details',
                                                             array('id' => intval(Yii::app()->request->getQuery('id'))));
         }
 
