@@ -109,7 +109,7 @@
 
         protected function getSubmitButtonHtmlOptions()
         {
-            return array('params' => array('selectedRecordCount' => 'eval:$this->getSelectedRecordCount()'));
+            return array('params' => array('selectedRecordCount' => $this->getSelectedRecordCount()));
         }
     }
 ?>

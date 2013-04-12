@@ -54,7 +54,7 @@
             return '-deleteMassActionAll';
         }
 
-        protected function getActionName()
+        protected function getActionId()
         {
             return 'massDelete';
         }

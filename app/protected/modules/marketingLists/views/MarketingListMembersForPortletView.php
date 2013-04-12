@@ -96,14 +96,17 @@
                         'elements' => array(
                             array('type'  => 'MarketingListMembersSubscribeLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
+                                'controllerId'      => 'member',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
                             array('type'  => 'MarketingListMembersUnsubscribeLink',
                                 'htmlOptions' => array('class' => 'icon-edit'),
+                                'controllerId'      => 'member',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
                             array('type'            => 'MassDeleteLink',
                                 'htmlOptions'       => array('class' => 'icon-delete'),
+                                'controllerId'      => 'member',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
                         ),
@@ -121,7 +124,7 @@
 
         public function renderContent()
         {
-            $actionElementBar       = '<div class="portlet-view-toolbar view-toolbar">'.$this->renderActionElementBar(false).'</div>';
+            $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'), $this->renderActionElementBar(false));
             $selectContactOrReport  = $this->renderSelectContactOrReportElement();
             $memberSearchAndList    = $this->renderMembersSearchFormAndListContent();
             return ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),

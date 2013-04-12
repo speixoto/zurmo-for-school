@@ -52,7 +52,7 @@
 
         protected $allMenuItemName;
 
-        abstract protected function getActionName();
+        abstract protected function getActionId();
 
         abstract protected function getSelectedMenuNameSuffix();
 
@@ -90,7 +90,7 @@
 
         public function getActionNameForCurrentElement()
         {
-            return $this->getActionName();
+            return $this->getActionId();
         }
 
         public function getActionType()
@@ -198,7 +198,7 @@
                                 massActionLinkActionElementEventHandler(".
                                         "menuType, ".
                                         " '" . $this->gridId. "',".
-                                        " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "',".
+                                        " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "',".
                                         " actionName,".
                                         " '" . $this->getPageVarName() ."'".
                                         ");
@@ -255,8 +255,8 @@
             return "massActionLinkActionElementEventHandler(".
                             $menuType . ",".
                             " '" . $this->gridId. "',".
-                            " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId) . "',".
-                            " '" . $this->getActionName(). "',".
+                            " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "',".
+                            " '" . $this->getActionId(). "',".
                             " '" . $this->getPageVarName() ."'".
                             ")";
         }
@@ -308,12 +308,18 @@
 
         protected function getDefaultRoute()
         {
-            return $this->moduleId . '/' . $this->controllerId . '/' . $this->getActionName() . '/';
+            return $this->moduleId . '/' . $this->getControllerId() . '/' . $this->getActionId() . '/';
         }
 
         protected function getDefaultLabel()
         {
             throw new NotSupportedException;
+        }
+
+        protected function getControllerId()
+        {
+            $controllerId = ArrayUtil::getArrayValue($this->params, 'controllerId');
+            return ($controllerId)? $controllerId : $this->controllerId;
         }
     }
 ?>

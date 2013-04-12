@@ -162,8 +162,8 @@
             return ZurmoHtml::ajax(array(
                     'type' => 'POST',
                     'dataType' => 'json',
-                    'data' => yii::app()->getUrlManager()->createPathInfo($_POST, '=', '&'),
-                    'url'  => yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $this->refreshActionId,
+                    'data' => Yii::app()->getUrlManager()->createPathInfo($_POST, '=', '&'),
+                    'url'  => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/' . $this->refreshActionId,
                         array_merge($_GET, array( get_class($this->model) . '_page' => ($this->page + 1)))
                     ),
                     'success' => 'function(data)

@@ -90,7 +90,7 @@
         public function actionListForMarketing()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                'listPageSize', get_class($this->getModule()));
+                                                            'listPageSize', get_class($this->getModule()));
             $activeActionElementType        = EmailTemplatesForMarketingLinkActionElement::getType();
             $emailTemplate                  = new EmailTemplate(false);
             $searchForm                     = new EmailTemplatesSearchForm($emailTemplate);

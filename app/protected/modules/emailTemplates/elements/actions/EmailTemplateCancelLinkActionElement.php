@@ -53,7 +53,7 @@
         {
             if (!empty($this->modelId))
             {
-                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/list/');
+                return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId);
             }
             else
             {
