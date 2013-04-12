@@ -1,3 +1,37 @@
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * Copyright Zurmo Inc. 2013. All rights reserved.
+ ********************************************************************************/
 * {
   margin: 0;
   padding: 0;
@@ -188,6 +222,7 @@ a.ModalGameNotification a,
 .zero-components-view.TimeTrigger,
 #time-trigger-container,
 .time-trigger-attribute-selector-container,
+.dynamic-row-duration,
 .ComponentForWorkflowWizardView .add-email-message-button-container,
 .ComponentForWorkflowWizardView .action-type-selector-container,
 .ComponentForWorkflowWizardView .droppable-dynamic-rows-container,
@@ -605,6 +640,7 @@ a.ModalGameNotification a:not(.attachLoading) .z-label {
   border-radius: 3px;
   position: relative;
   z-index: 1;
+  white-space: nowrap;
 }
 .z-label-smaller {
   padding: 0 15px;
@@ -896,7 +932,9 @@ body.blue .zLink,
 body.blue .z-link,
 body.blue .lead-conversion-actions a,
 body.blue #clear-search-link,
-body.blue #show-filters-structure-div-link {
+body.blue #show-filters-structure-div-link,
+body.blue .filters-bar .ui-state-active,
+body.blue .filters-bar label:hover {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1462,7 +1500,9 @@ body.brown .zLink,
 body.brown .z-link,
 body.brown .lead-conversion-actions a,
 body.brown #clear-search-link,
-body.brown #show-filters-structure-div-link {
+body.brown #show-filters-structure-div-link,
+body.brown .filters-bar .ui-state-active,
+body.brown .filters-bar label:hover {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -2028,7 +2068,9 @@ body.lime .zLink,
 body.lime .z-link,
 body.lime .lead-conversion-actions a,
 body.lime #clear-search-link,
-body.lime #show-filters-structure-div-link {
+body.lime #show-filters-structure-div-link,
+body.lime .filters-bar .ui-state-active,
+body.lime .filters-bar label:hover {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2594,7 +2636,9 @@ body.cherry .zLink,
 body.cherry .z-link,
 body.cherry .lead-conversion-actions a,
 body.cherry #clear-search-link,
-body.cherry #show-filters-structure-div-link {
+body.cherry #show-filters-structure-div-link,
+body.cherry .filters-bar .ui-state-active,
+body.cherry .filters-bar label:hover {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -3160,7 +3204,9 @@ body.turquoise .zLink,
 body.turquoise .z-link,
 body.turquoise .lead-conversion-actions a,
 body.turquoise #clear-search-link,
-body.turquoise #show-filters-structure-div-link {
+body.turquoise #show-filters-structure-div-link,
+body.turquoise .filters-bar .ui-state-active,
+body.turquoise .filters-bar label:hover {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3726,7 +3772,9 @@ body.violet .zLink,
 body.violet .z-link,
 body.violet .lead-conversion-actions a,
 body.violet #clear-search-link,
-body.violet #show-filters-structure-div-link {
+body.violet #show-filters-structure-div-link,
+body.violet .filters-bar .ui-state-active,
+body.violet .filters-bar label:hover {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -4292,7 +4340,9 @@ body.honey .zLink,
 body.honey .z-link,
 body.honey .lead-conversion-actions a,
 body.honey #clear-search-link,
-body.honey #show-filters-structure-div-link {
+body.honey #show-filters-structure-div-link,
+body.honey .filters-bar .ui-state-active,
+body.honey .filters-bar label:hover {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -5948,7 +5998,7 @@ body > .ui-autocomplete {
   content: "V";
 }
 #RecentlyViewedView li.type-EmailTemplatesModule em:before {
-  content: '\00BF';
+  content: '\00B6';
 }
 #RecentlyViewedView li.type-MarketingListsModule em:before {
   content: '\0022';
@@ -6229,25 +6279,11 @@ form .view-toolbar-container,
 .portlet-view-toolbar > a:first-child {
   border-left: none;
 }
-.portlet-view-toolbar {
-  margin-bottom: 0;
-  display: block;
-  float: none;
-  border: none;
-  border-bottom: 1px solid #DFDFDF;
-  -webkit-border-radius: 0;
-  -moz-border-radius: 0;
-  -ms-border-radius: 0;
-  -o-border-radius: 0;
-  border-radius: 0;
-  -webkit-box-shadow: none;
-  -moz-box-shadow: none;
-  -o-box-shadow: none;
-  -ms-box-shadow: none;
-  box-shadow: none;
-}
 .portlet-view-toolbar .parent {
   position: relative;
+}
+.portlet-view-toolbar ul:last-child {
+  border-right: 1px solid #d7d7d7;
 }
 #ActionBarForGroupsTreeListView .view-toolbar,
 #ActionBarSearchAndListView .view-toolbar {
@@ -6352,6 +6388,7 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+#ExportLinkActionElement .parent > a:before,
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before {
   content: "(";
@@ -6398,6 +6435,7 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+#MassEditLinkActionElement .parent > a:before,
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before {
   content: "2";
@@ -6413,10 +6451,39 @@ form .view-toolbar-container,
   position: relative;
   top: -2px;
 }
+#MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before {
   content: "—";
   font-weight: normal;
   font-size: 22px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#MarketingListMembersSubscribeLinkActionElement .parent > a:before {
+  content: "c";
+  font-weight: normal;
+  font-size: 24px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  padding: 0 0 0 0;
+  margin: 0 6px 0 -30px;
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  vertical-align: middle;
+  position: relative;
+  top: -2px;
+}
+#MarketingListMembersUnsubscribeLinkActionElement .parent > a:before {
+  content: "d";
+  font-weight: normal;
+  font-size: 24px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
@@ -6808,9 +6875,9 @@ form .view-toolbar-container,
   top: -1px;
 }
 .icon-email-templates:before {
-  content: '\00BF';
+  content: '\00B6';
   font-weight: normal;
-  font-size: 24px;
+  font-size: 25px;
   font-family: "ZurmoGamificationSymblyReguRg";
   padding: 0 0 0 0;
   margin: 0 6px 0 -30px;
@@ -6819,7 +6886,7 @@ form .view-toolbar-container,
   box-sizing: border-box;
   vertical-align: middle;
   position: relative;
-  top: -2px;
+  top: -1px;
 }
 .icon-mobile:before {
   content: '\2018';
@@ -7141,6 +7208,7 @@ td.empty {
   text-indent: 0;
   padding: 4px;
   word-break: normal;
+  min-height: 60px;
 }
 .form select.multiple {
   padding: 4px 4px 4px 6px;
@@ -7764,7 +7832,7 @@ div.wide.form label.hasCheckBox {
 }
 .zero-components-view .EmailTemplate .large-icon:after,
 .splash-view .EmailTemplate .large-icon:after {
-  content: '\00BF';
+  content: '\00B6';
   font-weight: normal;
   font-size: 325px;
   font-family: "ZurmoGamificationSymblyReguRg";
@@ -8540,9 +8608,6 @@ div.wide.form label.hasCheckBox {
 .right-side-edit-view-panel {
   width: 30%;
   float: right;
-  position: absolute;
-  right: 15px;
-  top: 15px;
 }
 .right-side-edit-view-panel p {
   line-height: 140%;
@@ -8723,9 +8788,13 @@ div.wide.form label.hasCheckBox {
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
 }
+.beforeToolTip .hasDropDown {
+  margin-right: 30px;
+  width: auto;
+}
 .beforeToolTip + .tooltip {
   float: right;
-  margin: 5px 0 0 -30px !important;
+  margin: 7px 0 0 -30px !important;
   position: relative;
 }
 /*=View AccountView (before editing, portlets and such)*/
@@ -11125,6 +11194,40 @@ a.remove .icon:after {
   position: relative;
   top: -10px;
 }
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
 .back-to-app-menu-item span {
   vertical-align: middle;
 }
@@ -12316,6 +12419,40 @@ table.configuration-list td:last-child a .z-label:before {
 .uploaded-logo ~ .file-size {
   vertical-align: top;
 }
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
 /*Add Portlet*/
 #HomeDashboardPortletSelectionView ul {
   padding: 20px;
@@ -14809,6 +14946,30 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .CreateSocialItem .badge-icon:before {
   content: "u";
 }
+.game-badge-CreateEmailTemplate .badge-icon:before,
+.CreateEmailTemplate .badge-icon:before,
+.game-badge-EditEmailTemplate .badge-icon:before,
+.EditEmailTemplate .badge-icon:before {
+  content: '\00B6';
+}
+.game-badge-CreateMarketingList .badge-icon:before,
+.CreateMarketingList .badge-icon:before,
+.game-badge-EditMarketingList .badge-icon:before,
+.EditMarketingList .badge-icon:before {
+  content: '\0022';
+}
+.game-badge-CreateReport .badge-icon:before,
+.CreateReport .badge-icon:before,
+.game-badge-EditReport .badge-icon:before,
+.EditEmailReport .badge-icon:before {
+  content: "V";
+}
+.game-badge-CreateWorkflow .badge-icon:before,
+.CreateWorkflow .badge-icon:before,
+.game-badge-EditWorkflow .badge-icon:before,
+.EditWorkflow .badge-icon:before {
+  content: '\20AC';
+}
 /*Night Icons*/
 .game-badge-NightOwl .badge-icon:before,
 .NightOwl .badge-icon:before {
@@ -15181,7 +15342,7 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 }
 /*Modals*/
 .ModalGameNotification {
-  padding: 10px 20px 20px 20px;
+  padding: 10px 20px 60px 20px;
   text-align: center;
   -webkit-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
   -moz-box-shadow: inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12);
@@ -15202,41 +15363,19 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   outline: none;
 }
 .ModalGameNotificationParent {
-  position: fixed;
-  display: block;
-  top: 50%;
-  left: 50%;
-  margin: -175px 0 0 -175px;
-  width: 310px;
-  height: 310px;
+  min-width: 310px !important;
+  width: 310px !important;
 }
 a.close-ModalGameNotification.simple-link {
   background: none !important;
   margin-right: 10px;
-  margin-left: -5px;
+  margin-left: -35px;
   top: -10px;
   font-size: 11px;
 }
 /*=User Profile Page*/
 .UserSocialItemsForPortletView {
   margin-right: 20px !important;
-  /*#social-item-inline-edit-form{
-        border: none !important;
-        background: none !important;
-        .b-shadow(none);
-        .panel > table{
-            border-bottom: none !important;
-            padding-bottom: 10px;
-        }
-        .files{
-            border-bottom: none;
-        }
-        .view-toolbar-container{
-            border-top:1px solid #ccc
-        }
-    }
-    */
-
 }
 .UserSocialItemsForPortletView .wide.form {
   border: none;
@@ -16399,6 +16538,11 @@ a.user-link {
 .ComponentForReportWizardView .view-toolbar-container {
   margin-top: 30px;
 }
+.ComponentForWorkflowWizardView h3 + div,
+.ComponentForReportWizardView h3 + div {
+  position: relative;
+  z-index: 15;
+}
 .ComponentForWorkflowWizardView .treeview ul,
 .ComponentForReportWizardView .treeview ul {
   background: none;
@@ -16799,7 +16943,7 @@ a.user-link {
   padding: 0 0 15px 0;
 }
 #RuntimeFiltersForPortletView .value-data {
-  width: 60%;
+  width: 55%;
   padding-left: 15px;
 }
 #RuntimeFiltersForPortletView .dynamic-rows {
@@ -16818,13 +16962,13 @@ a.user-link {
 }
 .ReportResultsComponentForPortletView {
   position: relative;
-  min-height: 90px;
 }
 .ReportResultsComponentForPortletView .big-spinner {
   float: left;
   position: relative;
   left: 50%;
   margin: 30px 0 0 -21px;
+  height: 65px;
 }
 .ReportResultsGridView #report-results-grid-view {
   overflow-x: auto;
@@ -17222,8 +17366,10 @@ a.user-link {
   width: 80%;
 }
 .static-address-field .value-data {
-  width: 50%;
-  float: left;
+  width: 100%;
+}
+.static-address-field .value-data + .value-data {
+  margin-top: 10px;
 }
 .static-address-field .value-data > span {
   float: left;
@@ -17257,8 +17403,10 @@ a.user-link {
 }
 .dynamic-row-duration {
   float: left;
-  width: 100%;
+  width: 75%;
+  margin-left: 25%;
   margin-top: 10px;
+  padding-left: 15px;
 }
 /*for actions in WORKFLOWS hide/show sequence*/
 .ComponentForWorkflowWizardView .add-email-message-button-container,
@@ -17431,6 +17579,40 @@ a.user-link {
 .last-comment li {
   margin-top: 2px;
 }
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
 @media screen and (min-width: 1601px) {
   .AppContainer {
     margin: 0 auto !important;
@@ -18221,6 +18403,8 @@ orientation : portrait // orientation: landscape    Target orientation
 .tabs-container .tab.active-tab,
 .email-template-content .tab.active-tab {
   display: block;
+  position: relative;
+  top: 0;
 }
 .tabs-nav {
   border-bottom: 1px solid #dfdfdf;
@@ -18254,6 +18438,40 @@ orientation : portrait // orientation: landscape    Target orientation
   position: relative;
   top: 1px;
 }
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * "Copyright Zurmo Inc. 2013. All rights reserved".
+ ********************************************************************************/
 #marketing-list-member-select-contact-or-report-form,
 #marketing-list-member-configuration-form {
   position: relative;
@@ -18324,4 +18542,15 @@ orientation : portrait // orientation: landscape    Target orientation
 }
 .MarketingListMembersListView {
   margin-bottom: 0;
+}
+#marketing-list-member-select-contact-or-report-form {
+  display: none;
+}
+.marketing-list-member-stats {
+  margin: 5px 0 0 0;
+  font-size: 12px;
+}
+.marketing-list-member-stats strong {
+  display: block;
+  margin-bottom: 3px;
 }

@@ -53,10 +53,10 @@
         protected function getTypeData()
         {
             $categories = array();
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('WorkflowsModule', 'On Save Workflow'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('WorkflowsModule', 'On-Save Workflow'),
                                                 'route'               => 'workflows/default/create?type=' . Workflow::TYPE_ON_SAVE // Not Coding Standard
                                             );
-            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('WorkflowsModule', 'By Time Workflow'),
+            $categories['clearCache'][] = array('titleLabel'          => Zurmo::t('WorkflowsModule', 'Time-Based Workflow'),
                                                 'route'               => 'workflows/default/create?type=' . Workflow::TYPE_BY_TIME // Not Coding Standard
                                             );
             return $categories;

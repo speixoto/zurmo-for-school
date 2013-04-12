@@ -241,7 +241,7 @@
 
         protected static function renderHelpContent()
         {
-            $clickHereLink = ZurmoHtml::link(Zurmo::t('JobsManagerModule', 'Click Here'), 'http://zurmo.org/wiki/how-to-set-up-job-manager',
+            $clickHereLink = ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), 'http://zurmo.org/wiki/how-to-set-up-job-manager',
                                              array('class' => 'z-link'));
             $content  = '<h3>' . Zurmo::t('JobsManagerModule', 'How to Setup the Jobs to Run Automatically') . '</h3>';
             $content .= '<span class="jobs-help">';

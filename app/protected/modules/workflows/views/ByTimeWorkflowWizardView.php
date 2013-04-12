@@ -40,6 +40,14 @@
     class ByTimeWorkflowWizardView extends WorkflowWizardView
     {
         /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('WorkflowsModule', 'Time-Based');
+        }
+
+        /**
          * @param WizardActiveForm $form
          * @return string
          */

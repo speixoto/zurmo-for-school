@@ -41,8 +41,8 @@
         protected function getDropDownArray()
         {
             return array(
-                ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY => Zurmo::t('UsersModule', 'Active Directory'),
                 ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP        => Zurmo::t('UsersModule', 'OpenLDAP'),
+                ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY => Zurmo::t('UsersModule', 'Active Directory'),
             );
         }
     }

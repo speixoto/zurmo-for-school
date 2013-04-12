@@ -82,16 +82,6 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
-                                                    'type'          => 'UserToRunWorkflowsAs'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
                                                 array('attributeName' => 'subListPageSize', 'type' => 'Integer'),
                                             ),
                                         ),
@@ -120,6 +110,16 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'modalListPageSize', 'type' => 'Integer'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'userIdOfUserToRunWorkflowsAs',
+                                                    'type'          => 'UserToRunWorkflowsAs'),
                                             ),
                                         ),
                                     )

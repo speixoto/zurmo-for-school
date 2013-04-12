@@ -163,7 +163,7 @@
             $message->htmlContent         = $messageContent;
             $url                          = Yii::app()->createAbsoluteUrl('missions/default/details/',
                                                                 array('id' => $missionId));
-            $message->htmlContent        .= '-' . ZurmoHtml::link(Zurmo::t('MissionsModule', 'Click Here'), $url);
+            $message->htmlContent        .= '-' . ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             $rules                        = new MissionStatusChangeNotificationRules();
             $rules->addUser($userToReceiveMessage);
             $rules->setAllowDuplicates(true);
@@ -181,7 +181,7 @@
             assert('$userToReceiveMessage->id > 0');
             $message                      = new NotificationMessage();
             $url                          = Yii::app()->createAbsoluteUrl('missions/default/list/');
-            $message->htmlContent         = ZurmoHtml::link(Zurmo::t('MissionsModule', 'Click Here'), $url);
+            $message->htmlContent         = ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             $rules                        = new MissionUnreadCommentNotificationRules();
             $rules->addUser($userToReceiveMessage);
             NotificationsUtil::submit($message, $rules);

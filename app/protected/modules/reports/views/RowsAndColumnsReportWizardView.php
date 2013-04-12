@@ -40,6 +40,14 @@
     class RowsAndColumnsReportWizardView extends ReportWizardView
     {
         /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('ReportsModule', 'Rows And Columns');
+        }
+
+        /**
          * @param WizardActiveForm $form
          * @return string
          */

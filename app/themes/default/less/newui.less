@@ -30,7 +30,7 @@
  * these Appropriate Legal Notices must retain the display of the Zurmo
  * logo and Zurmo copyright notice. If the display of the logo is not reasonably
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
- * "Copyright Zurmo Inc. 2013. All rights reserved".
+ * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
 *{
 	margin:0;
@@ -149,7 +149,6 @@ footer, header, hgroup, menu, nav, section {
 			border-right:none !important;
 			border-bottom:none !important;
 			.b-shadow(~"none !important");
-		//.no-ie-shadow();
 			.reset-filter();
 			> div{
 				margin-bottom:15px;
@@ -1358,15 +1357,18 @@ form,
 }
 
 .portlet-view-toolbar{
-	margin-bottom: 0;
-	display: block;
-	float: none;
-	border:none;
-	border-bottom:1px solid #DFDFDF;
-	.radius(0);
-	.b-shadow(none);
+	//margin-bottom: 0;
+	//display: block;
+	//float: none;
+	//border:none;
+	//border-bottom:1px solid #DFDFDF;
+	//.radius(0);
+	//.b-shadow(none);
 	.parent{
 		position: relative;
+	}
+	ul:last-child{
+		border-right:1px solid #d7d7d7;
 	}
 }
 
@@ -3060,9 +3062,9 @@ div.wide.form{
 .right-side-edit-view-panel{
 	width:30%;
 	float:right;
-	position:absolute;
-	right:15px;
-	top:15px;
+	//position:absolute;
+	//right:15px;
+	//top:15px;
 	p{
 		line-height: 140%;
 	}
@@ -3245,11 +3247,15 @@ div.wide.form{
 		width:95%;
 		.box-sizing();
 	}
+	.hasDropDown{
+		margin-right: 30px;
+		width: auto;
+	}
 }
 
 .beforeToolTip + .tooltip{
 	float: right;
-	margin:5px 0 0 -30px !important;
+	margin:7px 0 0 -30px !important;
 	position:relative;
 }
 

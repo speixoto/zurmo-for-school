@@ -766,7 +766,7 @@
             if (count($models) > 0 && is_array($models))
             {
                 // Todo: fix form element name below
-                $this->primaryEmail->addError('emailAddress', Zurmo::t('UsersModule', 'Email address already exist in system.'));
+                $this->primaryEmail->addError('emailAddress', Zurmo::t('UsersModule', 'Email address already exists in system.'));
                 return false;
             }
             return true;

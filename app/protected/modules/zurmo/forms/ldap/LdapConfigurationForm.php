@@ -81,7 +81,7 @@
                 'bindRegisteredDomain'                 => Zurmo::t('ZurmoModule', 'Username'),
                 'bindPassword'                         => Zurmo::t('ZurmoModule', 'Password'),
                 'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'.self::renderHelpContent()),
-                'enabled'                              => Zurmo::t('ZurmoModule', 'Turn On Ldap')
+                'enabled'                              => Zurmo::t('ZurmoModule', 'Turn On LDAP')
             );
         }
 
