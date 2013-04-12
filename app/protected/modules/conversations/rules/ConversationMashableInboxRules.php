@@ -65,7 +65,8 @@
             );
         }
 
-        public function getMetadataForMashableInbox() {
+        public function getMetadataForMashableInbox()
+        {
            $searchAttributeData['clauses'] = array(
                 1 => array(
                     'attributeName'        => 'conversationParticipants',

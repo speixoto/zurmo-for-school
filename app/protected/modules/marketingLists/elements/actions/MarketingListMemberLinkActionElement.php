@@ -91,6 +91,7 @@
             {
                 $unlinkConfirmMessage   = CJavaScript::quote(Zurmo::t('MarketingListsModule', 'Are you sure you want to unlink this record?'));
                 $errorMessage           = CJavaScript::quote(Zurmo::t('Core', 'There was an error processing your request'));
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript('marketingListMemberLinkActionElementEventHandler', '
                     $("a.' . static::LINK_ACTION_ELEMENT_CLASS . '").unbind("click.action").bind("click.action", function(event)
                         {
@@ -116,6 +117,7 @@
                         }
                     );
                 ');
+                // End Not Coding Standard
             }
         }
     }

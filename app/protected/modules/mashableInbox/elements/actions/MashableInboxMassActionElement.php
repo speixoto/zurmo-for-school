@@ -176,9 +176,11 @@
 
         private function getScriptForUpdateUnreadCount()
         {
+            // Begin Not Coding Standard
             $script = ZurmoHtml::ajax(array(
                                         "url"       => Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/getUnreadCount'),
-                                        "success"   => "function(data){
+                                        "success"   => "function(data)
+                                                        {
                                                             data  = JSON.parse(data);
                                                             total = 0;
                                                             for (var key in data) {
@@ -189,12 +191,14 @@
                                                             $('span.unread-inbox-count').html(total);
                                                         }",
                 ));
+            // End Not Coding Standard
             return $script;
         }
 
         private function getScriptForAlertNoRecordSelected()
         {
             $gridId = $this->getListViewGridId();
+            // Begin Not Coding Standard
             $script = "
                         if ($('#{$gridId}-selectedIds').val() == '')
                         {
@@ -202,6 +206,7 @@
                             $(this).val('');
                             return false;
                         }";
+            // End Not Coding Standard
             return $script;
         }
     }

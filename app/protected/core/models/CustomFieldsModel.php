@@ -47,7 +47,7 @@
         {
             $memberOrModel = parent::unrestrictedGet($attributeName);
             //todo: imperfect since maybe a dropdown has no values yet. so need some php caching here.
-            if(is_object($memberOrModel) && $memberOrModel instanceof BaseCustomField && !($memberOrModel->data->id > 0) )
+            if (is_object($memberOrModel) && $memberOrModel instanceof BaseCustomField && !($memberOrModel->data->id > 0) )
             {
                 $metadata = $this->getMetadata();
                 foreach ($metadata as $unused => $classMetadata)
@@ -56,7 +56,7 @@
                     {
                         foreach ($classMetadata['customFields'] as $customFieldName => $customFieldDataName)
                         {
-                            if($customFieldName == $attributeName)
+                            if ($customFieldName == $attributeName)
                             {
                                 $customFieldData = CustomFieldData::getByName($customFieldDataName);
                                 $memberOrModel->data = $customFieldData;
@@ -74,7 +74,7 @@
             assert('$bean === null || $bean instanceof RedBean_OODBBean');
             assert('is_bool($setDefaults)');
             parent::constructDerived($bean, $setDefaults);
-            if($setDefaults && $bean === null)
+            if ($setDefaults && $bean === null)
             {
                 $metadata = $this->getMetadata();
                 foreach ($metadata as $unused => $classMetadata)

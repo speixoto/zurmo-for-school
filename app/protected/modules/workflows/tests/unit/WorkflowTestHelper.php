@@ -44,7 +44,7 @@
             $model->lastName = $lastName;
             $model->string   = $string;
             $saved = $model->save();
-            assert($saved); //Not Coding Standard
+            assert($saved); // Not Coding Standard
             return $model;
         }
 
@@ -64,7 +64,7 @@
             $savedWorkflow->serializedData  = serialize($data);
             $savedWorkflow->isActive        = true;
             $saved                          = $savedWorkflow->save();
-            assert($saved); //Not Coding Standard
+            assert($saved); // Not Coding Standard
             return $savedWorkflow;
         }
 
@@ -76,7 +76,7 @@
             $byTimeWorkflowInQueue->processDateTime = '2007-02-02 00:00:00';
             $byTimeWorkflowInQueue->savedWorkflow   = $savedWorkflow;
             $saved = $byTimeWorkflowInQueue->save();
-            assert($saved); //Not Coding Standard
+            assert($saved); // Not Coding Standard
             return $byTimeWorkflowInQueue;
         }
 
@@ -90,7 +90,7 @@
             $workflowMessageInQueue->triggeredByUser = Yii::app()->user->userModel;
             $workflowMessageInQueue->serializedData  = serialize(array('something'));
             $saved = $workflowMessageInQueue->save();
-            assert($saved); //Not Coding Standard
+            assert($saved); // Not Coding Standard
             return $workflowMessageInQueue;
         }
     }

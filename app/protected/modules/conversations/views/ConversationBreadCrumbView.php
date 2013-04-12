@@ -44,7 +44,8 @@
             return Zurmo::t('ConversationsModule', 'Inbox');
         }
 
-        protected function getHomeUrl() {
+        protected function getHomeUrl()
+        {
             return Yii::app()->createUrl('mashableInbox/' . $this->controllerId . '/list');
         }
     }

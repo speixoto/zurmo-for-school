@@ -42,7 +42,7 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions = parent::getEditableHtmlOptions();
-            if(isset($htmlOptions['class']))
+            if (isset($htmlOptions['class']))
             {
                 $htmlOptions['class'] .= ' operatorType';
             }
@@ -119,9 +119,9 @@
                             secondValueArea.find(':input, select').prop('disabled', true);
                         }
                         arr  = " . CJSON::encode(static::getValuesRequiringMultiSelect()) . ";
-                        if(!$(this).hasClass('alwaysMultiple'))
+                        if (!$(this).hasClass('alwaysMultiple'))
                         {
-                            if($.inArray($(this).val(), arr) != -1)
+                            if ($.inArray($(this).val(), arr) != -1)
                             {
                                 var newName = $(this).parent().parent().parent().find('.value-data')
                                               .find('.flexible-drop-down').attr('name') + '[]';
@@ -133,7 +133,7 @@
                             {
                                 var newName = $(this).parent().parent().parent().find('.value-data')
                                               .find('.flexible-drop-down').attr('name');
-                                if(newName != undefined)
+                                if (newName != undefined)
                                 {
                                     $(this).parent().parent().parent().find('.value-data').find('.flexible-drop-down')
                                     .prop('multiple', false).removeClass('multiple').removeClass('ignore-style')

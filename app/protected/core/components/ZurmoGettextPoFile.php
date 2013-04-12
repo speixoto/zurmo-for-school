@@ -156,7 +156,8 @@
                     }
                     elseif (!strncmp('msgctxt', $line, 7))
                     {
-                        if ($context == 'MSGSTR') {
+                        if ($context == 'MSGSTR')
+                        {
                             $this->addMessage($current, $skipEmptyContext);
                             $current = array();
                         }
@@ -181,7 +182,8 @@
                     }
                     elseif (!strncmp('msgstr', $line, 6))
                     {
-                        if (($context != 'MSGID') && ($context != 'MSGCTXT')) {
+                        if (($context != 'MSGID') && ($context != 'MSGCTXT'))
+                        {
                             throw new FailedParseGettextException(
                                 Zurmo::t('Core', 'Failed parsing {fileSource}: "msgstr" is unexpected on line {lineNumber}.',
                                     array(
@@ -228,10 +230,12 @@
                     }
                 }
 
-                if ($context == 'MSGSTR') {
+                if ($context == 'MSGSTR')
+                {
                     $this->addMessage($current, $skipEmptyContext);
                 }
-                elseif ($context != 'COMMENT') {
+                elseif ($context != 'COMMENT')
+                {
                     throw new FailedParseGettextException(Zurmo::t('Core', ''));
                 }
             }
@@ -260,7 +264,8 @@
 
         protected function parseQuotedString($string)
         {
-            if (substr($string, 0, 1) != substr($string, -1, 1)) {
+            if (substr($string, 0, 1) != substr($string, -1, 1))
+            {
                 throw new FailedParseGettextException(
                     Zurmo::t('Core', 'Failed parsing {fileSource}: syntax error on line {lineNumber}',
                         array(

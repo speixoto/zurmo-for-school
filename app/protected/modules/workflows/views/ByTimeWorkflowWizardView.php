@@ -224,6 +224,7 @@
             assert('is_string($formName)');
             $url    =  Yii::app()->createUrl('workflows/default/getAvailableAttributesForTimeTrigger',
                 array_merge($_GET, array('type' => $this->model->type)));
+            // Begin Not Coding Standard
             $script = "
                 $.ajax({
                     url : '" . $url . "',
@@ -240,6 +241,7 @@
                     }
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 

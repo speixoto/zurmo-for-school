@@ -77,7 +77,7 @@
             $super  = User::getByUsername('super');
             $super->primaryEmail = new Email();
             $super->primaryEmail->emailAddress = 'super@zurmo.com';
-            assert($super->save()); //Not Coding Standard
+            assert($super->save()); // Not Coding Standard
             $bobby  = UserTestHelper::createBasicUserWithEmailAddress('bobby');
             $sarah  = UserTestHelper::createBasicUserWithEmailAddress('sarah');
             $jimmy  = UserTestHelper::createBasicUserWithEmailAddress('jimmy');

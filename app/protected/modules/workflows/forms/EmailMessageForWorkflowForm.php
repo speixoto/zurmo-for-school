@@ -319,7 +319,7 @@
          */
         protected function resolveTemporaryKeyByRealKey($key)
         {
-            assert(is_int($key));
+            assert(is_int($key)); // Not Coding Standard
             return $this->_emailMessageRecipientsRealToTemporaryKeyData[$key];
         }
     }
