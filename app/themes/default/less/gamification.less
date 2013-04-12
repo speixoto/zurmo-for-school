@@ -1,37 +1,35 @@
-/*********************************************************************************
- * Zurmo is a customer relationship management program developed by
- * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
- *
- * Zurmo is free software; you can redistribute it and/or modify it under
- * the terms of the GNU General Public License version 3 as published by the
- * Free Software Foundation with the addition of the following permission added
- * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
- * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
- * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
- *
- * Zurmo is distributed in the hope that it will be useful, but WITHOUT
- * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
- * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
- * details.
- *
- * You should have received a copy of the GNU General Public License along with
- * this program; if not, see http://www.gnu.org/licenses or write to the Free
- * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
- * 02110-1301 USA.
- *
- * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
- * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
- *
- * The interactive user interfaces in original and modified versions
- * of this program must display Appropriate Legal Notices, as required under
- * Section 5 of the GNU General Public License version 3.
- *
- * In accordance with Section 7(b) of the GNU General Public License version 3,
- * these Appropriate Legal Notices must retain the display of the Zurmo
- * logo and Zurmo copyright notice. If the display of the logo is not reasonably
- * feasible for technical reasons, the Appropriate Legal Notices must display the words
- * "Copyright Zurmo Inc. 2013. All rights reserved".
- ********************************************************************************/
+// Zurmo is a customer relationship management program developed by
+// Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+//
+// Zurmo is free software; you can redistribute it and/or modify it under
+// the terms of the GNU General Public License version 3 as published by the
+// Free Software Foundation with the addition of the following permission added
+// to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+// IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+// OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+//
+// Zurmo is distributed in the hope that it will be useful, but WITHOUT
+// ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+// FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+// details.
+//
+// You should have received a copy of the GNU General Public License along with
+// this program; if not, see http://www.gnu.org/licenses or write to the Free
+// Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+// 02110-1301 USA.
+//
+// You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+// Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+//
+// The interactive user interfaces in original and modified versions
+// of this program must display Appropriate Legal Notices, as required under
+// Section 5 of the GNU General Public License version 3.
+//
+// In accordance with Section 7(b) of the GNU General Public License version 3,
+// these Appropriate Legal Notices must retain the display of the Zurmo
+// logo and Zurmo copyright notice. If the display of the logo is not reasonably
+// feasible for technical reasons, the Appropriate Legal Notices must display the words
+// "Copyright Zurmo Inc. 2013. All rights reserved".
 #LeaderboardView{
 	.items{
 		td:first-child, th:first-child{
@@ -191,32 +189,32 @@
 	    top:-1px;
 	    border-bottom:1px solid rgba(0, 0,0, 0.1);
 	    .b-shadow(~"inset 0px 2px 1px  rgba(255, 255, 255, 0.5)");
-	    
+
 	    -webkit-border-top-right-radius: 27px;
 	    -webkit-border-top-left-radius: 27px;
 	    -webkit-border-bottom-right-radius: 120px 20px;
 	    -webkit-border-bottom-left-radius: 100px 20px;
-	    
+
 	    -moz-border-top-right-radius: 27px;
 	    -moz-border-top-left-radius: 27px;
 	    -moz-border-bottom-right-radius: 120px 20px;
 	    -moz-border-bottom-left-radius: 100px 20px;
-	    
+
 	    -o-border-top-right-radius: 27px;
 	    -o-border-top-left-radius: 27px;
 	    -o-border-bottom-right-radius: 120px 20px;
 	    -o-border-bottom-left-radius: 100px 20px;
-	    
+
 	    -ms-border-top-right-radius: 27px;
 	    -ms-border-top-left-radius: 27px;
 	    -ms-border-bottom-right-radius: 120px 20px;
 	    -ms-border-bottom-left-radius: 100px 20px;
-	    
+
 	    -khtml-border-top-right-radius: 27px;
 	    -khtml-border-top-left-radius: 27px;
 	    -khtml-border-bottom-right-radius: 120px 20px;
 	    -khtml-border-bottom-left-radius: 100px 20px;
-	    
+
 	    border-top-right-radius: 27px;
 	    border-top-left-radius: 27px;
 	    border-bottom-right-radius: 120px 20px;
@@ -254,7 +252,6 @@
         margin-top:3px;
     }
 }
-
 
 .game-badge-CreateContact,
 .CreateContact{
@@ -400,6 +397,42 @@
 .CreateSocialItem{
 	.badge-icon:before{
 		content: "u";
+	}
+}
+
+.game-badge-CreateEmailTemplate,
+.CreateEmailTemplate,
+.game-badge-EditEmailTemplate,
+.EditEmailTemplate {
+	.badge-icon:before {
+		content: '\00B6';
+	}
+}
+
+.game-badge-CreateMarketingList,
+.CreateMarketingList,
+.game-badge-EditMarketingList,
+.EditMarketingList {
+	.badge-icon:before {
+		content: '\0022';
+	}
+}
+
+.game-badge-CreateReport,
+.CreateReport,
+.game-badge-EditReport,
+.EditEmailReport {
+	.badge-icon:before {
+		content: "V";
+	}
+}
+
+.game-badge-CreateWorkflow,
+.CreateWorkflow,
+.game-badge-EditWorkflow,
+.EditWorkflow {
+	.badge-icon:before {
+		content: '\20AC';
 	}
 }
 
@@ -594,7 +627,7 @@
 	a{
 		++.z-button;
 		&:focus{
-			outline:none;	
+			outline:none;
 		}
 	}
 }
@@ -632,7 +665,7 @@ a.close-ModalGameNotification.simple-link{
 .gravatar-container{
     float: right;
     margin: 15px 15px 15px 0;
-    a{  
+    a{
         display: block;
         float: left;
         position: relative;
