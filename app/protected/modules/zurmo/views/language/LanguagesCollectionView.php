@@ -88,6 +88,7 @@
         protected function registerJavaScript()
         {
             $commonErrorMessage = Zurmo::t('ZurmoModule', 'Unexpected error during the AJAX call');
+            // Begin Not Coding Standard
             $script = <<<EOD
 $(document).on('click', ".action-button", function(event) {
     var _parent = $(this).parent();
@@ -123,6 +124,7 @@ $(document).on('click', ".action-button", function(event) {
     return false;
 });
 EOD;
+            // End Not Coding Standard
             $cs = Yii::app()->getClientScript();
             $cs->registerScript(
                 'my-hello-world-1',

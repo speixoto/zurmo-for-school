@@ -50,7 +50,7 @@
          */
         public static function getMonthName($month)
         {
-            if($month != null)
+            if ($month != null)
             {
                 return Yii::app()->locale->getMonthName((int)$month);
             }

@@ -65,7 +65,7 @@
                 {
                     $htmlOptions['uncheckValue'] = 1;
                 }
-                if($htmlOptions['disabled'] == 'disabled')
+                if ($htmlOptions['disabled'] == 'disabled')
                 {
                     $htmlOptions['labelClass'] = 'disabled';
                 }

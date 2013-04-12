@@ -52,12 +52,12 @@
             $currency = new Currency();
             $currency->code       = 'EUR';
             $currency->rateToBase = 2;
-            assert($currency->save());
+            assert($currency->save()); // Not Coding Standard
 
             $currency = new Currency();
             $currency->code       = 'GBP';
             $currency->rateToBase = 2;
-            assert($currency->save());
+            assert($currency->save()); // Not Coding Standard
         }
 
         public function testSimpleUserImportWhereAllRowsSucceed()

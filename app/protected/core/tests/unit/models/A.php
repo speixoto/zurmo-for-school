@@ -106,7 +106,7 @@
 
         public static function isPrivateStaticIsset()
         {
-            if(!isset(self::$testingIssetAndEmpty[get_called_class()]))
+            if (!isset(self::$testingIssetAndEmpty[get_called_class()]))
             {
                 return false;
             }

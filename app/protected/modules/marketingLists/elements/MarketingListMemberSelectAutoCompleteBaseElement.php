@@ -87,6 +87,7 @@
 
         protected function getWidgetSelectActionJS()
         {
+            // Begin Not Coding Standard
             return 'js: function(event, ui) {
                             var searchBox           = $(this);
                             var listGridViewId      = "' . $this->getListViewGridId() .'";
@@ -135,6 +136,7 @@
                                 }
                             );
                         }';
+            // End Not Coding Standard
         }
 
         protected function registerScripts()

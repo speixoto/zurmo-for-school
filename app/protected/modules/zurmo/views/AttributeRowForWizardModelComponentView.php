@@ -102,7 +102,7 @@
             assert('is_array($inputPrefixData)');
             assert('is_string($attribute)');
             assert('is_bool($hasTrackableStructurePosition)');
-            assert(is_bool($showRemoveLink));
+            assert(is_bool($showRemoveLink)); // Not Coding Standard
             assert('$treeType == null || is_string($treeType)');
             $this->elementAdapter                     = $elementAdapter;
             $this->rowNumber                          = $rowNumber;

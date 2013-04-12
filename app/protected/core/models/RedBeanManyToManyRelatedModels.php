@@ -129,14 +129,14 @@
 
         public function getTableName(RedBean_OODBBean $bean = null)
         {
-            if($bean == null)
+            if ($bean == null)
             {
                 $bean = R::dispense(RedBeanModel::getTableName($this->modelClassName));
             }
             $types = array($this->bean->getMeta("type"), $bean->getMeta("type"));
             sort($types);
             $tableName = implode("_", $types);
-            if($this->linkName != null)
+            if ($this->linkName != null)
             {
                 $tableName = strtolower($this->linkName) . '_' . $tableName;
             }

@@ -129,14 +129,17 @@
         private function renderMashableInboxPageView($mashableInboxForm, $modelClassName)
         {
             $actionViewOptions  = array();
-            if ($modelClassName !== null) {
+            if ($modelClassName !== null)
+            {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel($modelClassName);
                 $listView           = $mashableUtilRules->getListView(
                                                 $mashableInboxForm->optionForModel,
                                                 $mashableInboxForm->filteredBy,
                                                 $mashableInboxForm->searchTerm);
                 $actionViewOptions  = $mashableUtilRules->getActionViewOptions();
-            } else {
+            }
+            else
+            {
                 $listView           = $this->getMashableInboxListView(
                                                 $mashableInboxForm,
                                                 $this->pageSize);
@@ -161,14 +164,17 @@
          */
         private function renderListViewForAjax($mashableInboxForm, $modelClassName)
         {
-            if ($modelClassName !== null) {
+            if ($modelClassName !== null)
+            {
                 $mashableUtilRules  = MashableUtil::createMashableInboxRulesByModel(
                                                       $modelClassName);
                 $listView           = $mashableUtilRules->getListView(
                                                       $mashableInboxForm->optionForModel,
                                                       $mashableInboxForm->filteredBy,
                                                       $mashableInboxForm->searchTerm);
-            } else {
+            }
+            else
+            {
                 $listView           = $this->getMashableInboxListView(
                                                       $mashableInboxForm,
                                                       $this->pageSize);

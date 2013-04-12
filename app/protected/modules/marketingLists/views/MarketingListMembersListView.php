@@ -299,7 +299,7 @@
 
         protected function registerScriptsForDynamicMemberCountUpdate()
         {
-
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript($this->uniquePageId.'_dynamicMemberCountUpdate', '
                 function updateMemberStats(newCount, oldContent, elementClass)
                 {
@@ -331,6 +331,7 @@
                         );
                     });
                 ');
+            // End Not Coding Standard
         }
 
         protected function getModelId()

@@ -81,7 +81,7 @@
         public static function isStacked($type)
         {
             assert('is_string($type)');
-            if(in_array($type, self::getChartTypesRequiringSecondInputs()))
+            if (in_array($type, self::getChartTypesRequiringSecondInputs()))
             {
                 return true;
             }
@@ -93,7 +93,7 @@
         {
             assert('is_string($type)');
             $labels             = self::translatedTypeLabels();
-            if(isset($labels[$type]))
+            if (isset($labels[$type]))
             {
                 return $labels[$type];
             }

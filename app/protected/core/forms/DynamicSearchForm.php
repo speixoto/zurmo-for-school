@@ -80,7 +80,7 @@
         {
             if (count($this->dynamicClauses) > 0)
             {
-                if(null != $errorMessage = SQLOperatorUtil::
+                if (null != $errorMessage = SQLOperatorUtil::
                            resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->$attribute,
                           count($this->dynamicClauses)))
                 {

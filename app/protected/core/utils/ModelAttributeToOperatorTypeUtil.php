@@ -54,7 +54,7 @@
             $data[OperatorRules::TYPE_DOES_NOT_EQUAL] =
                 OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_EQUAL);
             static::resolveIsNullAndIsNotNullOperatorsToInclude($data, $type);
-            if($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
+            if ($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_STRING)
             {
                 $data[OperatorRules::TYPE_STARTS_WITH] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_STARTS_WITH);
@@ -63,7 +63,7 @@
                 $data[OperatorRules::TYPE_CONTAINS] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CONTAINS);
             }
-            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
+            elseif ($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_NUMBER)
             {
                 $data[OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO);
@@ -76,12 +76,12 @@
                 $data[OperatorRules::TYPE_BETWEEN] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BETWEEN);
             }
-            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
+            elseif ($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN)
             {
                 $data[OperatorRules::TYPE_ONE_OF] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_ONE_OF);
             }
-            elseif($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            elseif ($type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
             {
                 return;
             }

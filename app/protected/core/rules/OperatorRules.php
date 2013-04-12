@@ -85,7 +85,7 @@
         {
             assert('is_string($type)');
             $labels             = self::translatedTypeLabels();
-            if(isset($labels[$type]))
+            if (isset($labels[$type]))
             {
                 return $labels[$type];
             }

@@ -120,7 +120,7 @@
             assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
+            if ($adjustForTimeZone)
             {
                 $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }
@@ -134,7 +134,7 @@
             assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
+            if ($adjustForTimeZone)
             {
                 $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }
@@ -148,7 +148,7 @@
             assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
+            if ($adjustForTimeZone)
             {
                 $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }
@@ -162,7 +162,7 @@
             assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
+            if ($adjustForTimeZone)
             {
                 $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }
@@ -176,7 +176,7 @@
             assert('is_bool($adjustForTimeZone)');
             $quote           = DatabaseCompatibilityUtil::getQuote();
             $queryString     = "{$quote}$tableName{$quote}.{$quote}$columnName{$quote}";
-            if($adjustForTimeZone)
+            if ($adjustForTimeZone)
             {
                 $queryString     .= DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }
@@ -401,7 +401,7 @@
         {
             assert('is_string($modelClassName)');
             assert('is_string($tableAliasName)');
-            if(!isset($this->idTableAliasesAndModelClassNames[$tableAliasName]))
+            if (!isset($this->idTableAliasesAndModelClassNames[$tableAliasName]))
             {
                 $this->idTableAliasesAndModelClassNames[$tableAliasName] = $modelClassName;
                 $this->addClause($tableAliasName, 'id', $tableAliasName . 'id');

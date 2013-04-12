@@ -110,13 +110,15 @@
                   position: latlng,
                   map: map
                 });
-                var infowindow = new google.maps.InfoWindow({
+                var infowindow = new google.maps.InfoWindow(
+                {
                  content:  '$marker_text'
                 });
 
-                google.maps.event.addListener(marker, 'click', function() {
+                google.maps.event.addListener(marker, 'click', function()
+                {
                     infowindow.open(map, marker);
-                    });
+                });
 
             }
             function loadGoogleMap()

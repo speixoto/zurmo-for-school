@@ -71,6 +71,7 @@
 
         protected function registerScriptForLogoFileElement($id, $sendAction, $jsonEncodedExistingFiles)
         {
+            // Begin Not Coding Standard
             $javaScript = <<<EOD
 $(function () {
     'use strict';
@@ -138,6 +139,7 @@ $(function () {
 });
 
 EOD;
+            // End Not Coding Standard
             Yii::app()->getClientScript()->registerScript(__CLASS__ . '#' . $id, $javaScript);
         }
 

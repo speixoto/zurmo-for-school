@@ -95,7 +95,8 @@
         protected function registerTabbedContentScripts()
         {
             Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
-                    $('.tabs-nav a').click( function(){
+                    $('.tabs-nav a').click( function()
+                    {
                         //the menu items
                         $('.active-tab', $(this).parent()).removeClass('active-tab');
                         $(this).addClass('active-tab');
@@ -103,7 +104,8 @@
                         var _old = $('.tab.active-tab'); //maybe add context here for tab-container
                         _old.fadeToggle();
                         var _new = $( $(this).attr('href') );
-                        _new.fadeToggle(150, 'linear', function(){
+                        _new.fadeToggle(150, 'linear', function()
+                        {
                                 _old.removeClass('active-tab');
                                 _new.addClass('active-tab');
                         });
