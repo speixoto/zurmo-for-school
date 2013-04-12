@@ -66,7 +66,7 @@
             assert('is_string($operatorType)');
             assert('is_array($where)');
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            if(!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if (!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 $tableAliasName = $this->resolveJoins($onTableAliasName,
                                                       ModelDataProviderUtil::resolveCanUseFromJoins($onTableAliasName));
@@ -192,11 +192,11 @@
         protected function resolveJoinsForRelatedId($onTableAliasName = null)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            if($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() && $onTableAliasName == null)
+            if ($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() && $onTableAliasName == null)
             {
                 return $this->addFromJoinsForAttributeThatIsCastedUp();
             }
-            elseif($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() &&
+            elseif ($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel() &&
                    $onTableAliasName != null)
             {
                 return $this->addLeftJoinsForAttributeThatIsCastedUp($onTableAliasName);
@@ -244,7 +244,7 @@
             assert('is_string($tableAliasName)');
             assert('is_string($columnName)');
             $content  = self::makeColumnNameWithTableAlias($tableAliasName, $columnName);
-            if($this->wherePartColumnModifierType != null)
+            if ($this->wherePartColumnModifierType != null)
             {
                 $content .= $this->resolveTimeZoneAdjustmentForACalculatedDateTimeModifier();
                 $content  = strtolower($this->wherePartColumnModifierType) . '(' . $content . ')';
@@ -269,11 +269,11 @@
         protected function resolveLeftJoinsForARelationAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
-            if($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if ($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
             }
-            //elseif($this->modelAttributeToDataProviderAdapter->isOwnedRelation())
+            //elseif ($this->modelAttributeToDataProviderAdapter->isOwnedRelation())
             //{
             //    return $this->addLeftJoinsForARelationAttribute($onTableAliasName);
             //}
@@ -288,7 +288,7 @@
             $attributeType = ModelAttributeToMixedTypeUtil::getType(
                              $this->modelAttributeToDataProviderAdapter->getModel(),
                              $this->modelAttributeToDataProviderAdapter->getAttribute());
-            if($attributeType == 'DateTime')
+            if ($attributeType == 'DateTime')
             {
                 return DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }

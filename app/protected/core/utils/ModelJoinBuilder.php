@@ -128,7 +128,7 @@
          */
         public function getTableAliasNameForRelatedModel()
         {
-            if(!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if (!$this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 throw new NotSupportedException();
             }
@@ -148,7 +148,7 @@
             $this->tableAliasNameForBaseModel = $onTableAliasName;
             $onTableAliasName                 = $this->resolveJoinsForAttribute($onTableAliasName, $canUseFromJoins);
             $this->resolvedOnTableAliasName   = $onTableAliasName;
-            if($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if ($this->modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 $modelAttributeToDataProviderAdapter = new RedBeanModelAttributeToDataProviderAdapter(
                                                        $this->modelAttributeToDataProviderAdapter->
@@ -185,7 +185,7 @@
          */
         public function resolveOnTableAliasName($onTableAliasName = null)
         {
-            if($onTableAliasName == null)
+            if ($onTableAliasName == null)
             {
                 $onTableAliasName = $this->resolveOnTableAliasNameForDerivedRelationViaCastedUpModel();
             }
@@ -201,19 +201,19 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
+            if ($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
             {
                 return $this->resolveJoinsForDerivedRelationViaCastedUpModel($onTableAliasName, $canUseFromJoins);
             }
-            elseif($this->modelAttributeToDataProviderAdapter->isInferredRelation())
+            elseif ($this->modelAttributeToDataProviderAdapter->isInferredRelation())
             {
                 return $this->resolveJoinsForInferredRelation($onTableAliasName, $canUseFromJoins);
             }
-            elseif($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
+            elseif ($this->modelAttributeToDataProviderAdapter->isAttributeOnDifferentModel())
             {
                 return $this->resolveJoinsForAttributeOnDifferentModel($onTableAliasName, $canUseFromJoins);
             }
-            elseif($this->modelAttributeToDataProviderAdapter->isRelation())
+            elseif ($this->modelAttributeToDataProviderAdapter->isRelation())
             {
                 return $this->resolveJoinsForAttributeOnSameModelThatIsARelation($onTableAliasName);
             }
@@ -239,7 +239,7 @@
             $onTableAliasName        = $this->resolveJoinsForDerivedRelationViaCastedUpModelThatIsManyToMany(
                                        $onTableAliasName);
             //Third cast down if necessary
-            if($this->modelAttributeToDataProviderAdapter->isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName())
+            if ($this->modelAttributeToDataProviderAdapter->isDerivedRelationViaCastedUpModelDifferentThanOpposingModelClassName())
             {
                 $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->
                                                    getOpposingRelationModelClassName();
@@ -262,7 +262,7 @@
             $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
             $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->
                                        getCastedUpModelClassNameForDerivedRelation();
-            if($canUseFromJoins)
+            if ($canUseFromJoins)
             {
                 return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
             }
@@ -311,7 +311,7 @@
             $onTableAliasName        = $this->resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName);
             //Casting down should always be necessary since that is the whole point of using a referred relation
             $opposingRelationModelClassName  = $this->modelAttributeToDataProviderAdapter->getRelationModelClassName();
-            if($opposingRelationModelClassName != 'Item')
+            if ($opposingRelationModelClassName != 'Item')
             {
                 throw new NotImplementedException();
             }
@@ -331,11 +331,11 @@
         {
             $modelClassName          = $this->modelAttributeToDataProviderAdapter->getModelClassName();
             $attributeModelClassName = $this->modelAttributeToDataProviderAdapter->getAttributeModelClassName();
-            if($modelClassName == $attributeModelClassName)
+            if ($modelClassName == $attributeModelClassName)
             {
                 return $onTableAliasName;
             }
-            if($canUseFromJoins)
+            if ($canUseFromJoins)
             {
                 return $this->processFromJoinsForAttributeThatIsCastedUp($modelClassName, $attributeModelClassName);
             }
@@ -352,7 +352,7 @@
         protected function resolveAttributeModelClassNameWithCastingHintForCastingDown($attributeModelClassName)
         {
             assert('is_string($attributeModelClassName)');
-            if($this->modelAttributeToDataProviderAdapter->getCastingHintModelClassNameForAttribute() != null)
+            if ($this->modelAttributeToDataProviderAdapter->getCastingHintModelClassNameForAttribute() != null)
             {
                 return $this->modelAttributeToDataProviderAdapter->getCastingHintModelClassNameForAttribute();
             }
@@ -368,7 +368,7 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            if($this->modelAttributeToDataProviderAdapter->isRelation())
+            if ($this->modelAttributeToDataProviderAdapter->isRelation())
             {
                 return $this->resolveJoinsForAttributeOnDifferentModelThatIsARelation($onTableAliasName, $canUseFromJoins);
             }
@@ -408,7 +408,7 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            if($canUseFromJoins)
+            if ($canUseFromJoins)
             {
                 $onTableAliasName = $this->addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName);
             }
@@ -439,7 +439,7 @@
         {
             assert('is_string($onTableAliasName)');
             assert('is_bool($canUseFromJoins)');
-            if($canUseFromJoins)
+            if ($canUseFromJoins)
             {
                 return $this->addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName);
             }
@@ -456,7 +456,7 @@
         protected function addMixedInOrCastedUpFromJoinsForAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
-            if($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
+            if ($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
             {
                 return $this->addFromJoinsForAttributeThatIsMixedIn($onTableAliasName);
             }
@@ -473,7 +473,7 @@
         protected function addMixedInOrCastedUpLeftJoinsForAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
-            if($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
+            if ($this->modelAttributeToDataProviderAdapter->isAttributeMixedIn())
             {
                 return $this->addLeftJoinsForAttributeThatIsMixedIn($onTableAliasName);
             }
@@ -558,7 +558,7 @@
         protected function addLeftJoinsForARelationAttribute($onTableAliasName)
         {
             assert('is_string($onTableAliasName)');
-            if($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
+            if ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::MANY_MANY)
             {
                 return $this->resolveJoinsForForARelationAttributeThatIsManyToMany($onTableAliasName);
             }
@@ -568,7 +568,7 @@
                 $this->resolveSettingDistinctForARelationAttributeThatIsHasMany();
                 return $onTableAliasName;
             }
-            elseif($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE)
+            elseif ($this->modelAttributeToDataProviderAdapter->getRelationType() == RedBeanModel::HAS_ONE)
             {
                 return $this->resolveJoinsForForARelationAttributeThatIsAHasOne($onTableAliasName);
             }
@@ -675,12 +675,12 @@
             assert('is_string($onTableAliasName)');
             $resolvedCastedDownModelClassName   = $this->resolveAttributeModelClassNameWithCastingHintForCastingDown(
                                                   $castedDownModelClassName);
-            if($modelClassName != $resolvedCastedDownModelClassName)
+            if ($modelClassName != $resolvedCastedDownModelClassName)
             {
                 //If the resolvedCastedDownModelClassName is actually casted up
                 $modelDerivationPathToItem = $this->resolveModelDerivationPathToItemForCastingDown(
                                              $modelClassName, $resolvedCastedDownModelClassName);
-                if(empty($modelDerivationPathToItem))
+                if (empty($modelDerivationPathToItem))
                 {
                     return $this->processLeftJoinsForAttributeThatIsCastedUp($onTableAliasName, $modelClassName,
                            $resolvedCastedDownModelClassName);
@@ -735,14 +735,14 @@
             assert('is_string($modelClassName)');
             assert('is_string($castedDownModelClassName)');
             $modelDerivationPathToItem = RuntimeUtil::getModelDerivationPathToItem($castedDownModelClassName);
-            if($modelClassName == 'Item')
+            if ($modelClassName == 'Item')
             {
                 return $modelDerivationPathToItem;
             }
             foreach($modelDerivationPathToItem as $key => $modelClassNameToCastDown)
             {
                 unset($modelDerivationPathToItem[$key]);
-                if($modelClassName == $modelClassNameToCastDown)
+                if ($modelClassName == $modelClassNameToCastDown)
                 {
                     break;
                 }
@@ -839,7 +839,7 @@
             assert('is_string($onTableAliasName)');
             assert('is_string($modelClassName)');
             assert('is_string($attributeModelClassName)');
-            if($modelClassName == $attributeModelClassName)
+            if ($modelClassName == $attributeModelClassName)
             {
                 return $onTableAliasName;
             }
@@ -905,7 +905,7 @@
          */
         private function resolveOnTableAliasNameForDerivedRelationViaCastedUpModel()
         {
-            if($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
+            if ($this->modelAttributeToDataProviderAdapter->isAttributeDerivedRelationViaCastedUpModel())
             {
                 $onTableAliasName = $this->modelAttributeToDataProviderAdapter->getModelTableName();
             }

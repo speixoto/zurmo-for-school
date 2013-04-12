@@ -163,7 +163,7 @@
                 $purifiedText       = $purifier->purify($text);
                 foreach ($safeCharacters as $specialCharacter => $purifiedCode)
                 {
-                    if(strpos($text, $specialCharacter) !== false)
+                    if (strpos($text, $specialCharacter) !== false)
                     {
                         $purifiedText = str_replace($purifiedCode, $specialCharacter, $purifiedText);
                     }

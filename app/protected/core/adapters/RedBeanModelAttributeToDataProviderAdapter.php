@@ -128,7 +128,7 @@
          */
         public function getResolvedModelClassName()
         {
-            if($this->castingHintStartingModelClassName != null)
+            if ($this->castingHintStartingModelClassName != null)
             {
                 return $this->castingHintStartingModelClassName;
             }
@@ -238,7 +238,7 @@
 
         public function isOwnedRelation()
         {
-            if(!$this->getModel()->isRelation($this->attribute))
+            if (!$this->getModel()->isRelation($this->attribute))
             {
                 return false;
             }
@@ -326,7 +326,7 @@
         public function getRelationTableName()
         {
             $modelClassName = $this->getRelationModelClassName();
-            if($this->canRelationHaveTable())
+            if ($this->canRelationHaveTable())
             {
                 return $modelClassName::getTableName($modelClassName);
             }
@@ -335,7 +335,7 @@
                 while (get_parent_class($modelClassName) != 'RedBeanModel')
                 {
                     $modelClassName = get_parent_class($modelClassName);
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         return $modelClassName::getTableName($modelClassName);
                     }
@@ -351,7 +351,7 @@
         public function getRelationModelClassNameThatCanHaveATable()
         {
             $modelClassName = $this->getRelationModelClassName();
-            if($this->canRelationHaveTable())
+            if ($this->canRelationHaveTable())
             {
                 return $modelClassName;
             }
@@ -360,7 +360,7 @@
                 while (get_parent_class($modelClassName) != 'RedBeanModel')
                 {
                     $modelClassName = get_parent_class($modelClassName);
-                    if($modelClassName::getCanHaveBean())
+                    if ($modelClassName::getCanHaveBean())
                     {
                         return $modelClassName;
                     }
@@ -448,7 +448,7 @@
          */
         public function getManyToManyTableName()
         {
-            if($this->getRelationType() != RedBeanModel::MANY_MANY)
+            if ($this->getRelationType() != RedBeanModel::MANY_MANY)
             {
                 throw new NotSupportedException();
             }
@@ -474,7 +474,7 @@
          */
         public function isAttributeOnDifferentModel()
         {
-            if($this->getAttributeModelClassName() == $this->getModelClassName())
+            if ($this->getAttributeModelClassName() == $this->getModelClassName())
             {
                 return false;
             }
@@ -500,7 +500,7 @@
         public function isAttributeDerivedRelationViaCastedUpModel()
         {
             $modelClassName = $this->modelClassName;
-            if($modelClassName::isADerivedRelationViaCastedUpModel($this->attribute))
+            if ($modelClassName::isADerivedRelationViaCastedUpModel($this->attribute))
             {
                 return true;
             }
@@ -509,7 +509,7 @@
 
         public function getCastedUpModelClassNameForDerivedRelation()
         {
-            if(!$this->isAttributeDerivedRelationViaCastedUpModel())
+            if (!$this->isAttributeDerivedRelationViaCastedUpModel())
             {
                 throw new NotSupportedException();
             }
@@ -528,7 +528,7 @@
             $opposingRelationName   = $modelClassName::getDerivedRelationViaCastedUpModelOpposingRelationName($this->attribute);
             $relationModel          = new $relationModelClassName();
 
-            if($modelClassName::getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
+            if ($modelClassName::getDerivedRelationType($this->attribute) != RedBeanModel::MANY_MANY)
             {
                 throw new NotSupportedException();
             }
@@ -570,7 +570,7 @@
         {
             $opposingRelationModelClassName  = $this->getOpposingRelationModelClassName();
             $derivedRelationModelClassName   = $this->getDerivedRelationViaCastedUpModelClassName();
-            if($opposingRelationModelClassName != $derivedRelationModelClassName)
+            if ($opposingRelationModelClassName != $derivedRelationModelClassName)
             {
                 return true;
             }

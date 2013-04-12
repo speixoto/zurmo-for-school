@@ -138,29 +138,36 @@
         public function getDirections()
         {
             $directions = parent::getDirections();
-            if(empty($directions))
+            if (empty($directions))
             {
-                $attributes=explode($this->separators[0],$this->sortAttribute . $this->sortDescending);
-                foreach($attributes as $attribute)
+                $attributes = explode($this->separators[0], $this->sortAttribute . $this->sortDescending);
+                foreach ($attributes as $attribute)
                 {
-                    if(($pos=strrpos($attribute,$this->separators[1]))!==false)
+                    if (($pos=strrpos($attribute, $this->separators[1])) !== false)
                     {
-                        $descending=substr($attribute,$pos+1)===$this->descTag;
-                        if($descending)
-                            $attribute=substr($attribute,0,$pos);
+                        $descending = substr($attribute, $pos + 1) === $this->descTag;
+                        if ($descending)
+                        {
+                            $attribute = substr($attribute, 0, $pos);
+                        }
                     }
                     else
-                        $descending=false;
-
-                    if(($this->resolveAttribute($attribute))!==false)
                     {
-                        $directions[$attribute]=$descending;
-                        if(!$this->multiSort)
+                        $descending = false;
+                    }
+                    if (($this->resolveAttribute($attribute)) !== false)
+                    {
+                        $directions[$attribute] = $descending;
+                        if (!$this->multiSort)
+                        {
                             return $directions;
+                        }
                     }
                 }
-                if($directions===array() && is_array($this->defaultOrder))
+                if ($directions === array() && is_array($this->defaultOrder))
+                {
                         $directions=$this->defaultOrder;
+                }
             }
 
             return $directions;
@@ -183,8 +190,10 @@
 
         public function setSortDescending($sortDescending)
         {
-            if($sortDescending === true)
+            if ($sortDescending === true)
+            {
                 $this->sortDescending = ".desc";
+            }
         }
     }
 ?>

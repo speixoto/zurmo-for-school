@@ -50,7 +50,7 @@
         protected function checkService()
         {
             $passed = true;
-            if (!DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
+            if (DatabaseCompatibilityUtil::isDatabaseStrictMode('mysql',
                                                                  $this->form->databaseHostname,
                                                                  $this->form->databaseUsername,
                                                                  $this->form->databasePassword,

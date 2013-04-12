@@ -204,7 +204,7 @@
 
         protected function resolveLinkNameForCasing()
         {
-            if($this->linkName != null)
+            if ($this->linkName != null)
             {
                 return strtolower($this->linkName);
             }

@@ -46,7 +46,7 @@
             $super = User::getByUsername('super');
             $super->primaryEmail = new Email();
             $super->primaryEmail->emailAddress = 'super@zurmo.com';
-            assert($super->save()); //Not Coding Standard
+            assert($super->save()); // Not Coding Standard
             $savedWorkflow                  = new SavedWorkflow();
             $savedWorkflow->name            = 'some workflow';
             $savedWorkflow->description     = 'description';

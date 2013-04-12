@@ -456,7 +456,7 @@
          */
         protected function resolveAttributeFromData(Array $attributeAndRelationData)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             return end($attributeAndRelationData);
         }
 
@@ -469,7 +469,7 @@
         protected function resolveAttributeModuleClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
                                                                    $modelClassName)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::

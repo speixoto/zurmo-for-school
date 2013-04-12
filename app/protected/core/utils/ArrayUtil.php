@@ -53,7 +53,7 @@
 
         public static function getArrayValueWithExceptionIfNotFound($array, $element)
         {
-            if(!array_key_exists($element, $array))
+            if (!array_key_exists($element, $array))
             {
                 throw new NotSupportedException($element . " does not exist.");
             }

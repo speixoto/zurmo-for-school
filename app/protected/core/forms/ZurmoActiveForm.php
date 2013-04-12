@@ -107,12 +107,12 @@
                     var alreadyInArray = false;
                     $.each(settings.attributes, function (i)
                     {
-                        if(newId == this.id)
+                        if (newId == this.id)
                         {
                             alreadyInArray = true;
                         }
                     });
-                    if(alreadyInArray == false)
+                    if (alreadyInArray == false)
                     {
                         settings.attributes.push(this);
                     }

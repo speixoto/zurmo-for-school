@@ -92,7 +92,7 @@
 
         protected function resolveSimpleLinkClassHtmlOptions($htmlOptions)
         {
-            if(isset($htmlOptions['class']))
+            if (isset($htmlOptions['class']))
             {
                 $htmlOptions['class'] .= ' simple-link';
             }

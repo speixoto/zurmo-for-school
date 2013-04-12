@@ -64,7 +64,7 @@
             $tableAliasName        = $builder->resolveJoins($onTableAliasName,
                                                             self::resolveCanUseFromJoins($onTableAliasName));
             $shouldConcatenate     = false;
-            if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if ($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 if ($modelAttributeToDataProviderAdapter->relatedAttributesSortUsesTwoAttributes())
                 {
@@ -122,7 +122,7 @@
         public static function resolveCanUseFromJoins($onTableAliasName)
         {
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
-            if($onTableAliasName != null)
+            if ($onTableAliasName != null)
             {
                 return false;
             }
@@ -165,7 +165,7 @@
             assert('is_string($onTableAliasName) || $onTableAliasName == null');
             $builder        = new ModelJoinBuilder($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
             $tableAliasName = $builder->resolveJoins($onTableAliasName, self::resolveCanUseFromJoins($onTableAliasName));
-            if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if ($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 $resolvedGroupByColumnName = $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
             }

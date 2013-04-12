@@ -45,7 +45,7 @@
             $group = Group::getByName('Super Administrators');
             $group->users->add($billy);
             $saved = $group->save();
-            assert($saved); //Not Coding Standard
+            assert($saved); // Not Coding Standard
             UserTestHelper::createBasicUser('sally');
         }
 

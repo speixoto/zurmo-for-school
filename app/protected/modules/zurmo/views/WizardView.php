@@ -240,6 +240,7 @@
             $url    =  Yii::app()->createUrl(static::getControllerId() . '/default/relationsAndAttributesTree',
                        array_merge($_GET, array('type' => $this->model->type,
                                                 'treeType' => $componentViewClassName::getTreeType())));
+            // Begin Not Coding Standard
             $script = "
                 $('#" . $componentViewClassName::getTreeDivId() . "').addClass('loading');
                 makeLargeLoadingSpinner('" . $componentViewClassName::getTreeDivId() . "');
@@ -257,6 +258,7 @@
                     }
                 });
             ";
+            // End Not Coding Standard
             return $script;
         }
 

@@ -447,7 +447,7 @@
          */
         protected function resolveAttributeFromData(Array $attributeAndRelationData)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             return end($attributeAndRelationData);
         }
 
@@ -460,7 +460,7 @@
         protected function resolveAttributeModuleClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
                                                                    $modelClassName)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
@@ -483,7 +483,7 @@
         protected function resolveAttributeModelClassNameFromData(Array $attributeAndRelationData, $moduleClassName,
                                                                   $modelClassName)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
@@ -504,7 +504,7 @@
          */
         protected function resolvePenultimateModelClassNameFromData(Array $attributeAndRelationData, $modelClassName)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             array_pop($attributeAndRelationData);
             foreach($attributeAndRelationData as $relationOrAttribute)
             {
@@ -525,7 +525,7 @@
          */
         protected function resolvePenultimateRelationFromData(Array $attributeAndRelationData)
         {
-            assert(count($attributeAndRelationData) > 0);
+            assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             array_pop($attributeAndRelationData);
             return array_pop($attributeAndRelationData);
         }
@@ -535,7 +535,7 @@
          */
         private function setAttributeAndRelationData($attributeOrRelationAndAttributeData)
         {
-            assert('is_string($attributeOrRelationAndAttributeData) || is_array($attributeOrRelationAndAttributeData)');
+            assert('is_string($attributeOrRelationAndAttributeData) || is_array($attributeOrRelationAndAttributeData)'); // Not Coding Standard
             if(!is_array($attributeOrRelationAndAttributeData))
             {
                 $this->attribute                = $attributeOrRelationAndAttributeData;

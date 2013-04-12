@@ -91,7 +91,7 @@
 
         public static function resolveColumnPrefix($linkName)
         {
-            if($linkName != null)
+            if ($linkName != null)
             {
                 return $linkName .= '_';
             }

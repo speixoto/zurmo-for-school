@@ -372,7 +372,7 @@
 
             $this->pseudoId = self::$nextPseudoId--;
             $this->init();
-            if(!$runConstruction)
+            if (!$runConstruction)
             {
                 return;
             }
@@ -1368,7 +1368,7 @@
                     {
                         $this->unrestrictedGet($attributeName);
                     }
-                    elseif($value !== null && $owns == RedBeanModel::OWNED &&
+                    elseif ($value !== null && $owns == RedBeanModel::OWNED &&
                            !in_array($attributeName, $this->unlinkedRelationNames) &&
                            !isset($this->relationNameToRelatedModel[$attributeName]))
                     {
@@ -1387,7 +1387,7 @@
                             isset($this->relationNameToRelatedModel[$attributeName]))
                         {
                             $this->unlinkedRelationNames[] = $attributeName;
-                            if($owns == RedBeanModel::OWNED)
+                            if ($owns == RedBeanModel::OWNED)
                             {
                                 $this->unlinkedOwnedRelatedModelsToRemove[$attributeName] =
                                        $this->relationNameToRelatedModel[$attributeName];
@@ -1756,7 +1756,7 @@
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
-                            if($this->{$relationName} !== null &&
+                            if ($this->{$relationName} !== null &&
                                isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]))
                             {
                                 //Remove hasOne owned related models that are no longer needed because they have
@@ -2310,7 +2310,7 @@
          */
         protected static function getLabel($language = null)
         {
-            if(null != $moduleClassName = static::getModuleClassName())
+            if (null != $moduleClassName = static::getModuleClassName())
             {
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
             }
@@ -2325,7 +2325,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            if(null != $moduleClassName = static::getModuleClassName())
+            if (null != $moduleClassName = static::getModuleClassName())
             {
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
             }
