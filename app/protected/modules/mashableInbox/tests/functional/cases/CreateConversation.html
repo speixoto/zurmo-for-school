@@ -18,16 +18,6 @@
 	<td></td>
 </tr>
 <tr>
-	<td>setSpeed</td>
-	<td>3000</td>
-	<td></td>
-</tr>
-<tr>
-	<td>storeGlobal</td>
-	<td>javascript{Math.floor(Math.random()*11000)}</td>
-	<td>randomSuffix</td>
-</tr>
-<tr>
 	<td>open</td>
 	<td>index.php/mashableInbox/default/list</td>
 	<td></td>
@@ -84,6 +74,111 @@
 </tr>
 <tr>
 	<td>click</td>
+	<td>link=More Details</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+	<td>assertTextPresent</td>
+	<td>Account</td>
+	<td></td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[@id='ConversationItemForm_Account_SelectLink']/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+    <td>waitForCondition</td>
+    <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+    <td>30000</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=AccountsSearchForm_anyMixedAttributes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=AccountsSearchForm_anyMixedAttributes</td>
+	<td>Test account ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>keyUp</td>
+  <td>AccountsSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='AccountsModalListView']/div/table/tbody/tr/td/a</td>
+	<td>Test account ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='AccountsModalListView']/div/table/tbody/tr/td/a</td>
+	<td></td>
+</tr>
+<tr>
+  <td>waitForValue</td>
+  <td>ConversationItemForm_Account_name</td>
+  <td>Test account ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//a[@id='ConversationItemForm_Opportunity_SelectLink']/span[2]</td>
+	<td></td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+	<td>waitForElementPresent</td>
+	<td>id=OpportunitiesSearchForm_anyMixedAttributes</td>
+	<td></td>
+</tr>
+<tr>
+	<td>type</td>
+	<td>id=OpportunitiesSearchForm_anyMixedAttributes</td>
+	<td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+  <td>keyUp</td>
+  <td>OpportunitiesSearchForm_anyMixedAttributes</td>
+  <td>\10</td>
+</tr>
+<tr>
+  <td>waitForCondition</td>
+  <td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
+  <td>30000</td>
+</tr>
+<tr>
+	<td>waitForText</td>
+	<td>//div[@id='OpportunitiesModalListView']/div/table/tbody/tr/td/a</td>
+	<td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>click</td>
+	<td>//div[@id='OpportunitiesModalListView']/div/table/tbody/tr/td/a</td>
+	<td></td>
+</tr>
+<tr>
+  <td>waitForValue</td>
+  <td>ConversationItemForm_Opportunity_name</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+</tr>
+<tr>
+	<td>clickAndWait</td>
 	<td>link=Save</td>
 	<td></td>
 </tr>
@@ -96,6 +191,11 @@
 	<td>waitForCondition</td>
 	<td>selenium.browserbot.getCurrentWindow().jQuery.active == 0</td>
 	<td>30000</td>
+</tr>
+<tr>
+  <td>assertTextPresent</td>
+  <td>Test Opportunity ${randomSuffix}</td>
+  <td></td>
 </tr>
 <tr>
 	<td>assertTextPresent</td>

@@ -238,7 +238,7 @@
                                      '{ownerName}'           => $conversation->owner,
                                      '{conversationSubject}' => $conversation->subject));
             $content .= "<br/>";
-            $content .= ZurmoHtml::link(Zurmo::t('ConversationsModule', 'Click Here'), $url);
+            $content .= ZurmoHtml::link(Zurmo::t('Core', 'Click Here'), $url);
             return $content;
         }
 

@@ -40,6 +40,14 @@
     class SummationReportWizardView extends ReportWizardView
     {
         /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('ReportsModule', 'Summation');
+        }
+
+        /**
          * @param WizardActiveForm $form
          * @return string
          */

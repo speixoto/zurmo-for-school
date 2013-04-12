@@ -39,7 +39,16 @@
      */
     abstract class MassActionRequiringConfirmationView extends MassActionView
     {
-        abstract protected function renderSubmitButtonName();
+        protected $useModuleClassNameForItemLabel = true;
+
+        public function __construct($controllerId, $moduleId, RedBeanModel $model, $activeAttributes,
+                                    $selectedRecordCount, $title, $alertMessage = null,
+                                    $moduleClassName = null, $useModuleClassNameForItemLabel = true)
+        {
+            parent::__construct($controllerId, $moduleId,$model, $activeAttributes, $selectedRecordCount,
+                                $title, $alertMessage, $moduleClassName);
+            $this->useModuleClassNameForItemLabel = $useModuleClassNameForItemLabel;
+        }
 
         public static function getDefaultMetadata()
         {
@@ -48,13 +57,6 @@
                     'toolbar' => array(
                         'elements' => array(
                             array('type' => 'CancelLink'),
-                            array('type' => 'eval:$this->renderSubmitButtonName()',
-                                  'htmlOptions' => array(
-                                                         'params' => array(
-                                                            'selectedRecordCount' => 'eval:$this->getSelectedRecordCount()'),
-
-                                   ),
-                            ),
                         ),
                     ),
                     'nonPlaceableAttributeNames' => array(
@@ -98,9 +100,16 @@
 
         protected function renderItemLabel()
         {
-            $type   = ($this->selectedRecordCount > 1)? 'Plural' : 'Singular';
-            $model  = $this->modelClassName;
-            return $model::getModelLabelByTypeAndLanguage($type);
+            $type       = ($this->selectedRecordCount > 1)? 'Plural' : 'Singular';
+            $className  = ($this->useModuleClassNameForItemLabel) ? $this->moduleClassName : $this->modelClassName;
+            $method     = ($this->useModuleClassNameForItemLabel) ? 'getModuleLabelByTypeAndLanguage' : 'getModelLabelByTypeAndLanguage';
+            $label      = $className::$method($type);
+            return $label;
+        }
+
+        protected function getSubmitButtonHtmlOptions()
+        {
+            return array('params' => array('selectedRecordCount' => $this->getSelectedRecordCount()));
         }
     }
 ?>

@@ -134,8 +134,8 @@
             $rightSideContent  = ZurmoHtml::tag('div', array(), $element->render());
             $rightSideContent  = ZurmoHtml::tag('div', array('class' => 'buffer'), $rightSideContent);
             $content          .= ZurmoHtml::tag('div', array('id' => 'series-and-range-areas', 'class' => 'right-side-edit-view-panel hidden-element'), $rightSideContent);
-            $content          .= '</div>';
             $content          .= $this->renderChartTipContent();
+            $content          .= '</div>';
             $this->form->clearInputPrefixData();
             $this->registerScripts();
             return $content;

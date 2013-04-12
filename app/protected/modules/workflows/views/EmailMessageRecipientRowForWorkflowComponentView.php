@@ -104,7 +104,7 @@
             $content  = ZurmoHtml::tag('div', array('class' => "dynamic-sub-row dynamic-email-message-recipient-row"), $content);
             if($this->addWrapper)
             {
-                return ZurmoHtml::tag('li', array(), $content);
+                return ZurmoHtml::tag('li', array('class' => 'dynamic-sub-row'), $content);
             }
             return $content;
         }

@@ -44,14 +44,25 @@
             return 'MassDeleteView';
         }
 
+        public static function getDefaultMetadata()
+        {
+            $metadata = array(
+                'global' => array(
+                    'toolbar' => array(
+                        'elements' => array(
+                            array('type' => 'DeleteButton',
+                                  'htmlOptions' => 'eval:$this->getSubmitButtonHtmlOptions()',
+                                  ),
+                        ),
+                    ),
+                ),
+            );
+            return CMap::mergeArray(parent::getDefaultMetadata(), $metadata);
+        }
+
         protected static function getFormId()
         {
             return 'delete-form';
-        }
-
-        protected function renderSubmitButtonName()
-        {
-            return 'DeleteButton';
         }
 
         protected function renderItemOperationType()

@@ -62,7 +62,6 @@
         protected function renderMemberStatisticsContent()
         {
             $memberStats  = $this->renderSubscriberCount();
-            $memberStats .= ' / ';
             $memberStats .= $this->renderUnsubscriberCount();  // . $this->renderInvalidEmailsCount();
             $content      = ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
             return $content;
@@ -103,15 +102,6 @@
         {
             $content = ZurmoHtml::tag('div', array('class' => static::DESCRIPTION_CLASS), $this->model->description);
             return $content;
-        }
-
-        protected function renderAfterFormLayoutForDetailsContent()
-        {
-            $content                            = parent::renderAfterFormLayoutForDetailsContent();
-            $ownedSecurableItemDetailsContent   = OwnedSecurableItemDetailsViewUtil::renderAfterFormLayoutForDetailsContent(
-                                                                                                        $this->getModel(),
-                                                                                                        $content);
-            return $ownedSecurableItemDetailsContent;
         }
     }
 ?>

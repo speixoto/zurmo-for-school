@@ -63,6 +63,10 @@
 
         public $navBarClass        = 'nav-bar';
 
+        public $labelPrefix        = null;
+
+        public $linkPrefix         = null;
+
         /**
          * The javascript needed.
          */
@@ -192,7 +196,7 @@
                 {
                     $htmlOptions = array();
                 }
-                $resolvedLabelContent = '<em></em><span>' . $item['label'] .
+                $resolvedLabelContent = $this->renderLabelPrefix() . '<span>' . $item['label'] .
                                         static::resolveAndGetSpanAndDynamicLabelContent($item) . '</span>';
                 if ((isset($item['ajaxLinkOptions'])))
                 {
@@ -200,7 +204,7 @@
                 }
                 elseif (isset($item['url']))
                 {
-                    echo ZurmoHtml::link('<span></span>' . $resolvedLabelContent, $item['url'], $htmlOptions);
+                    echo ZurmoHtml::link($this->renderLinkPrefix() . $resolvedLabelContent, $item['url'], $htmlOptions);
                 }
                 else
                 {
@@ -286,6 +290,22 @@
                 }
             }
             return array_values($items);
+        }
+
+        protected function renderLabelPrefix()
+        {
+            if ($this->labelPrefix)
+            {
+                return ZurmoHtml::tag($this->labelPrefix, array(), '');
+            }
+        }
+
+        protected function renderLinkPrefix()
+        {
+            if ($this->linkPrefix)
+            {
+                return ZurmoHtml::tag($this->linkPrefix, array(), '');
+            }
         }
 
         /**

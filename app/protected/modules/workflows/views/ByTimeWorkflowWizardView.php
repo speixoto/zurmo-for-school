@@ -40,6 +40,14 @@
     class ByTimeWorkflowWizardView extends WorkflowWizardView
     {
         /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('WorkflowsModule', 'Time-Based');
+        }
+
+        /**
          * @param WizardActiveForm $form
          * @return string
          */
@@ -249,10 +257,13 @@
                                  $("input:radio[name=\"ByTimeWorkflowWizardForm[moduleClassName]\"]:checked").val()',
                 'url'     =>  $url,
                 'beforeSend' => 'js:function(){
+                console.log("sending");
                         //$("#' . $inputDivId . '").html("<span class=\"loading z-spinner\"></span>");
                         //attachLoadingSpinner("' . $inputDivId . '", true, "dark");
                         }',
                 'success' => 'js:function(data){
+                                console.log("receiving");
+
                                 $(".' . TimeTriggerForWorkflowWizardView::getZeroComponentsClassName() . '").hide();
                                 $("#time-trigger-container").show();
                                 $("#' . $inputDivId . ' ul").html(data);
@@ -262,7 +273,8 @@
             {
                 if($('#" . $id . "').val() == '')
                 {
-                    $('#" . $inputDivId . "').html('');
+                    $('#" . $inputDivId . " ul').html('');
+                    $('.". TimeTriggerForWorkflowWizardView::getZeroComponentsClassName() . "').show();
                 }
                 else
                 {

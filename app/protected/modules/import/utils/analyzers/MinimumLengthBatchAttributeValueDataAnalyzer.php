@@ -101,7 +101,7 @@
             if ($invalid > 0)
             {
                 $label   = Zurmo::t('ImportModule', '{count} value(s) are too short for this field. ' .
-                                             'These rows will be skipped upon import.',
+                                             'These rows will be skipped during import.',
                                              array('{count}' => $invalid, '{length}' => $this->minLength));
                 $this->addMessage($label);
             }

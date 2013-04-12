@@ -319,6 +319,8 @@
             => 'aquí',
         'Home'
             => 'Inicio',
+        'Host'
+            => 'Nombre de host',
         'If there is new metadata to load using CustomManagement, use this option.'
             => 'Si hay nuevos metadatos a cargar con CustomManagement, utilice esta opción.',
         'In Progress'
@@ -509,6 +511,8 @@
             => 'Reglas guardado correctamente.',
         'Popup list page size'
             => 'Número de elementos en la lista popup',
+        'Port'
+            => 'Puerto',
         'Post to Profile'
             => 'Publicar en el perfil ',
         'Postal Code'
@@ -639,6 +643,8 @@
             => 'Los campos de Nube de palabras permite asociar palabras clave con sus datos para poder recuperarlos fácilmente.',
         'Technology'
             => 'Tecnología',
+        'Test Connection'
+            => 'Probar conexión',
         'The currency rate web service says this currency code is invalid even though zurmo says it is valid. The rate could not be automatically updated.'
             => 'El servicio web para los tipos de cambio indica que este código de divisa no es válida, aunque zurmo indica que es válida. El tipo de cambio no puede ser actualizado automáticamente',
         'The currency rate web service was unavailable. The rate could not be automatically updated.'

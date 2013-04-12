@@ -54,7 +54,7 @@
             return '-exportActionAll';
         }
 
-        protected function getActionName()
+        protected function getActionId()
         {
             return 'export';
         }

@@ -53,6 +53,15 @@
             return 'EmailMessagesModule';
         }
 
+        /**
+         * Returns the display name for plural of the model class.
+         * @return dynamic label name based on module.
+         */
+        protected static function getPluralLabel($language = null)
+        {
+            return 'Emails';
+        }
+
         public static function canSaveMetadata()
         {
             return false;

@@ -1,3 +1,37 @@
+/*********************************************************************************
+ * Zurmo is a customer relationship management program developed by
+ * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
+ *
+ * Zurmo is free software; you can redistribute it and/or modify it under
+ * the terms of the GNU General Public License version 3 as published by the
+ * Free Software Foundation with the addition of the following permission added
+ * to Section 15 as permitted in Section 7(a): FOR ANY PART OF THE COVERED WORK
+ * IN WHICH THE COPYRIGHT IS OWNED BY ZURMO, ZURMO DISCLAIMS THE WARRANTY
+ * OF NON INFRINGEMENT OF THIRD PARTY RIGHTS.
+ *
+ * Zurmo is distributed in the hope that it will be useful, but WITHOUT
+ * ANY WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+ * FOR A PARTICULAR PURPOSE.  See the GNU General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU General Public License along with
+ * this program; if not, see http://www.gnu.org/licenses or write to the Free
+ * Software Foundation, Inc., 51 Franklin Street, Fifth Floor, Boston, MA
+ * 02110-1301 USA.
+ *
+ * You can contact Zurmo, Inc. with a mailing address at 27 North Wacker Drive
+ * Suite 370 Chicago, IL 60606. or at email address contact@zurmo.com.
+ *
+ * The interactive user interfaces in original and modified versions
+ * of this program must display Appropriate Legal Notices, as required under
+ * Section 5 of the GNU General Public License version 3.
+ *
+ * In accordance with Section 7(b) of the GNU General Public License version 3,
+ * these Appropriate Legal Notices must retain the display of the Zurmo
+ * logo and Zurmo copyright notice. If the display of the logo is not reasonably
+ * feasible for technical reasons, the Appropriate Legal Notices must display the words
+ * Copyright Zurmo Inc. 2013. All rights reserved.
+ ********************************************************************************/
 *{
 	margin:0;
 	padding:0;
@@ -115,7 +149,6 @@ footer, header, hgroup, menu, nav, section {
 			border-right:none !important;
 			border-bottom:none !important;
 			.b-shadow(~"none !important");
-		//.no-ie-shadow();
 			.reset-filter();
 			> div{
 				margin-bottom:15px;
@@ -1106,7 +1139,7 @@ body > .ui-autocomplete{
 	}
 	li.type-EmailTemplatesModule{
 		em:before{
-			content: '\00BF';
+			content:'\00B6';
 		}
 	}
 	li.type-MarketingListsModule{
@@ -1324,15 +1357,18 @@ form,
 }
 
 .portlet-view-toolbar{
-	margin-bottom: 0;
-	display: block;
-	float: none;
-	border:none;
-	border-bottom:1px solid #DFDFDF;
-	.radius(0);
-	.b-shadow(none);
+	//margin-bottom: 0;
+	//display: block;
+	//float: none;
+	//border:none;
+	//border-bottom:1px solid #DFDFDF;
+	//.radius(0);
+	//.b-shadow(none);
 	.parent{
 		position: relative;
+	}
+	ul:last-child{
+		border-right:1px solid #d7d7d7;
 	}
 }
 
@@ -1408,6 +1444,7 @@ form,
 	top:-2px;
 }
 
+#ExportLinkActionElement .parent > a:before,
 #ListViewExportActionMenu .parent > a:before,
 .icon-export:before{
 	content: "(";
@@ -1430,7 +1467,7 @@ form,
 	top:-2px;
 }
 
-
+#MassEditLinkActionElement .parent > a:before,
 #ListViewMassActionMenu .parent > a:before,
 #list-view-massAction:before{
 	content: "2";
@@ -1438,9 +1475,22 @@ form,
 	top:-2px;
 }
 
+#MassDeleteLinkActionElement .parent > a:before,
 #ListViewDeleteMassActionMenu .parent > a:before{
-	content: "—";
+	content: "—"; //underscore!
 	.view-toolbar-icons(22px);
+	top:-2px;
+}
+
+#MarketingListMembersSubscribeLinkActionElement .parent > a:before{
+	content: "c";
+	.view-toolbar-icons();
+	top:-2px;
+}
+
+#MarketingListMembersUnsubscribeLinkActionElement .parent > a:before{
+	content: "d";
+	.view-toolbar-icons();
 	top:-2px;
 }
 
@@ -1609,9 +1659,9 @@ form,
 }
 
 .icon-email-templates:before{
-	content:'\00BF';
-	.view-toolbar-icons();
-	top:-2px;
+	content:'\00B6';
+	.view-toolbar-icons(25px);
+	top:-1px;
 }
 
 .icon-mobile:before{
@@ -1902,6 +1952,7 @@ td.empty{
 		text-indent: 0;
 		padding: 4px;
 		word-break: normal;
+		min-height: 60px;
 	}
 	select.multiple {
 		padding: 4px 4px 4px 6px;
@@ -2410,7 +2461,7 @@ div.wide.form{
 		line-height: 52%;
 	}
 	.EmailTemplate .large-icon:after{
-		content:'\00BF';
+		content:'\00B6';
 		.symbly(325px);
 		line-height: 52%;
 	}
@@ -3011,9 +3062,9 @@ div.wide.form{
 .right-side-edit-view-panel{
 	width:30%;
 	float:right;
-	position:absolute;
-	right:15px;
-	top:15px;
+	//position:absolute;
+	//right:15px;
+	//top:15px;
 	p{
 		line-height: 140%;
 	}
@@ -3196,11 +3247,15 @@ div.wide.form{
 		width:95%;
 		.box-sizing();
 	}
+	.hasDropDown{
+		margin-right: 30px;
+		width: auto;
+	}
 }
 
 .beforeToolTip + .tooltip{
 	float: right;
-	margin:5px 0 0 -30px !important;
+	margin:7px 0 0 -30px !important;
 	position:relative;
 }
 

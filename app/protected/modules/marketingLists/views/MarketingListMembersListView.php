@@ -222,7 +222,7 @@
             $content      = null;
             if ($this->showFilteredBySearchTerm)
             {
-                $element                    = new TextElement($this->configurationForm, // TODO: @Shoaibi/@Jason: Medium: This should be another element with look and feel of search box
+                $element                    = new TextElement($this->configurationForm,
                                                                 'filteredBySearchTerm',
                                                                 $form);
                 $element->editableTemplate  =  ZurmoHtml::tag('div',
@@ -233,10 +233,11 @@
             if ($this->showFilteredBySubscriptionType)
             {
                 $element                    = new MarketingListsSubscriptionTypeFilterRadioElement($this->configurationForm,
-                                                                                        'filteredBySubscriptionType',
-                                                                                        $form);
+                                                                                'filteredBySubscriptionType',
+                                                                                $form);
                 $element->editableTemplate  =  ZurmoHtml::tag('div',
-                                                    array('id' => 'MarketingListMembersConfigurationForm_filteredBySubscriptionType_area'),
+                                                    array('id' => 'MarketingListMembersConfigurationForm_filteredBySubscriptionType_area',
+                                                            'class' => 'filters-bar'),
                                                     '{content}');
                 $content                    .= $element->render();
             }

@@ -40,6 +40,14 @@
     class MatrixReportWizardView extends ReportWizardView
     {
         /**
+         * @return string
+         */
+        public function getTitle()
+        {
+            return parent::getTitle() . ' - ' . Zurmo::t('ReportsModule', 'Matrix');
+        }
+
+        /**
          * @param WizardActiveForm $form
          * @return string
          */

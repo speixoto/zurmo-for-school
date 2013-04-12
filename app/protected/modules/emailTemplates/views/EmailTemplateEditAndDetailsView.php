@@ -52,32 +52,33 @@
                         array(
                             'rows' => array(
                                 array('cells' =>
+                                array(
                                     array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
-                                            ),
+                                        'elements' => array(
+                                            array('attributeName' => 'modelClassName', 'type' => 'EmailTemplateModelClassName'),
                                         ),
-                                    )
+                                    ),
+                                )
                                 ),
                                 array('cells' =>
+                                array(
                                     array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
-                                            ),
+                                        'elements' => array(
+                                            array('attributeName' => 'name', 'type' => 'Text'),
                                         ),
-                                    )
+                                    ),
+                                )
                                 ),
                                 array('cells' =>
+                                array(
                                     array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'subject', 'type' => 'Text'),
-                                            ),
+                                        'elements' => array(
+                                            array('attributeName' => 'subject', 'type' => 'Text'),
                                         ),
-                                    )
+                                    ),
+                                )
                                 ),
+
                             ),
                         ),
                     ),
@@ -98,11 +99,6 @@
                 $elementInformation['attributeName'] = null;
                 $elementInformation['type']          = 'NoCellNull'; // Not Coding Standard
             }
-        }
-
-        protected function renderRightSideFormLayoutForEdit($form)
-        {
-            return null;
         }
 
         protected function renderAfterFormLayout($form)

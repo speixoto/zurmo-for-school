@@ -123,8 +123,6 @@
             => 'Nom expéditeur',
         'from: {senderContent}'
             => 'de: {senderContent}',
-        'Host'
-            => 'Nom d\'hôte',
         'Html Content'
             => 'Contenu HTML',
         'Inbox'
@@ -157,8 +155,6 @@
             => 'Nom',
         'Person Or Account'
             => 'Person Or Account', // Same Word Translated
-        'Port'
-            => 'Port', // Same Word Translated
         'Process Inbound Email Job'
             => 'Job traiter les emails entrants ',
         'Process Outbound Email Job'
@@ -189,8 +185,6 @@
             => 'Sécurité SSL',
         'Successfully connected to IMAP server.'
             => 'Connexion établie avec succès.',
-        'Test Connection'
-            => 'Tester la connexion',
         'Test IMAP connection'
             => 'Tester la connexion IMAP',
         'Test Message Results'

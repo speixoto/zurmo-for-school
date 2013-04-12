@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EditDashboardLinkActionElement extends LinkActionElement
+    class EditDashboardLinkActionElement extends DropdownSupportedLinkActionElement
     {
         public function getActionType()
         {
@@ -49,6 +49,11 @@
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/editDashboard/', array('id' => $this->modelId));
+        }
+
+        public function getElementValue()
+        {
+            return $this->route;
         }
     }
 ?>

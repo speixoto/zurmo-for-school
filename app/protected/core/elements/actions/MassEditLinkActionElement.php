@@ -53,7 +53,7 @@
             return '-massActionAll';
         }
 
-        protected function getActionName()
+        protected function getActionId()
         {
             return 'massEdit';
         }

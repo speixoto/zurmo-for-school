@@ -46,7 +46,7 @@
             return '-massUnsubscribeAll';
         }
 
-        protected function getActionName()
+        protected function getActionId()
         {
             return 'massUnsubscribe';
         }

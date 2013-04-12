@@ -92,5 +92,19 @@
             );
             return $metadata;
         }
+
+        protected function renderRightSideFormLayoutForEdit($form)
+        {
+            assert('$form instanceof ZurmoActiveForm');
+            $content = parent::renderRightSideFormLayoutForEdit($form);
+            $content .= "<h3>".Zurmo::t('ZurmoModule', 'Rights and Permissions') . '</h3><div id="owner-box">';
+            $element  = new UserElement($this->getModel(), 'owner', $form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render().'</div>';
+            $element  = new DerivedExplicitReadWriteModelPermissionsElement($this->getModel(), 'null', $form);
+            $element->editableTemplate = '{label}{content}{error}';
+            $content .= $element->render();
+            return $content;
+        }
     }
 ?>

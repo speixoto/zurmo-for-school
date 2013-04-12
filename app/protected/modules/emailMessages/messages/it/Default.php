@@ -123,8 +123,6 @@
             => 'Nome mittente',
         'from: {senderContent}'
             => 'da: {senderContent}',
-        'Host'
-            => 'Host', // Same Word Translated
         'Html Content'
             => 'Contenuto HTML',
         'Inbox'
@@ -157,8 +155,6 @@
             => 'Persona',
         'Person Or Account'
             => 'Person Or Account', // Same Word Translated
-        'Port'
-            => 'Porta',
         'Process Inbound Email Job'
             => 'Elabora mail in entrata',
         'Process Outbound Email Job'
@@ -189,8 +185,6 @@
             => 'Connessione protetta (SSL)',
         'Successfully connected to IMAP server.'
             => 'Connesso al server IMAP con successo.',
-        'Test Connection'
-            => 'Prova di connessione',
         'Test IMAP connection'
             => 'Prova di connessione IMAP',
         'Test Message Results'
