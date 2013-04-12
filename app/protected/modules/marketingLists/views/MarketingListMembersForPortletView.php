@@ -94,13 +94,17 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
+                            array('type'  => 'MarketingListAddSubscriberLink',
+                                'htmlOptions'       => array('class' => 'icon-edit'),
+                                'pageVarName'       => 'eval:$this->getPageVarName()',
+                                'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
                             array('type'  => 'MarketingListMembersSubscribeLink',
-                                'htmlOptions' => array('class' => 'icon-edit'),
+                                'htmlOptions'       => array('class' => 'icon-edit'),
                                 'controllerId'      => 'member',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
                             array('type'  => 'MarketingListMembersUnsubscribeLink',
-                                'htmlOptions' => array('class' => 'icon-edit'),
+                                'htmlOptions'       => array('class' => 'icon-edit'),
                                 'controllerId'      => 'member',
                                 'pageVarName'       => 'eval:$this->getPageVarName()',
                                 'listViewGridId'    => 'eval:$this->getMarketingListMembersListGridId()'),
@@ -116,7 +120,6 @@
             return $metadata;
         }
 
-        // TODO: @Shoaibi/@Amit: Low: Hide the title bar
         public function getTitle()
         {
             return null;
@@ -124,11 +127,11 @@
 
         public function renderContent()
         {
-            $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'), $this->renderActionElementBar(false));
-            $selectContactOrReport  = $this->renderSelectContactOrReportElement();
+            $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
+                                                                                $this->renderActionElementBar(false));
             $memberSearchAndList    = $this->renderMembersSearchFormAndListContent();
             return ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),
-                                        $actionElementBar . $selectContactOrReport . $memberSearchAndList);
+                                        $actionElementBar . $memberSearchAndList);
         }
 
         public static function canUserConfigure()
@@ -153,28 +156,6 @@
             return 'MarketingListsModule';
         }
 
-        protected function renderSelectContactOrReportElement()
-        {
-            $formName                       = 'marketing-list-member-select-contact-or-report-form';
-            $clipWidget                     = new ClipWidget();
-            list($form, $formStart)         = $clipWidget->renderBeginWidget(
-                                                    'ZurmoActiveForm',
-                                                    array(
-                                                        'id' => $formName,
-                                                    )
-                                                );
-            $content                        = $formStart;
-            $selectContactOrReportElement   = new SelectContactOrReportElement(new MarketingListMemberSelectForm(), null, $form,
-                                                        array(
-                                                                'pageVarName'       => $this->getPageVarName(),
-                                                                'listViewGridId'    => $this->getMarketingListMembersListGridId(),
-                                                                'marketingListId'   => $this->modelId,
-                                                            )
-                                                        );
-            $content                        .= $selectContactOrReportElement->render();
-            $content                        .= $clipWidget->renderEndWidget();
-            return $content;
-        }
 
         /**
          * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly

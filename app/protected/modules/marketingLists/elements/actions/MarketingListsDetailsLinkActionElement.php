@@ -75,7 +75,7 @@
                                                                         $this->params['model']
                                                                         );
             return array('label'        => $this->getLabel(),
-                         'url'          => null,
+                         'url'          => $this->getRoute(),
                          'itemOptions'  => array('class' => 'hasDetailsFlyout'),
                          'items'        => array(
                                                array(

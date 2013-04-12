@@ -36,37 +36,6 @@
 
     class MarketingListsMemberController extends ZurmoModuleController
     {
-        // TODO: @Shoaibi: Critical: Do we need this?
-        const ZERO_MODELS_CHECK_FILTER_PATH =
-            'application.modules.marketingLists.controllers.filters.MarketingListsZeroModelsCheckControllerFilter';
-
-        // TODO: @Shoaibi: Critical: Do we need this?
-        public static function getListBreadcrumbLinks()
-        {
-            $title = Zurmo::t('MarketingListsModule', 'Lists');
-            return array($title);
-        }
-
-        // TODO: @Shoaibi: Critical: Do we need this?
-        public static function getDetailsAndEditBreadcrumbLinks()
-        {
-            return array(Zurmo::t('MarketingListsModule', 'Lists') => array('default/list'));
-        }
-
-        // TODO: @Shoaibi: Critical: Do we need this?
-        public function filters()
-        {
-            return array_merge(parent::filters(),
-                array(
-                    array(
-                        static::ZERO_MODELS_CHECK_FILTER_PATH . ' + list',
-                        'controller'                    => $this,
-                        'activeActionElementType'       => 'MarketingListsLink',
-                        'breadcrumbLinks'               => static::getListBreadcrumbLinks(),
-                    ),
-                )
-            );
-        }
 
         public function actionMassDelete()
         {
