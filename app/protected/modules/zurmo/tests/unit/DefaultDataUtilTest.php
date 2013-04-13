@@ -56,7 +56,7 @@
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
             $customFieldData = CustomFieldData::getByName('Industries');
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
-            $customFieldData = CustomFieldData::getByName('meetingCategories');
+            $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(0, count(unserialize($customFieldData->serializedData)));
             $this->assertEquals(0, count(ContactState::getAll()));
             $this->assertEquals(1, count(Currency::getAll()));
@@ -70,7 +70,7 @@
             $this->assertEquals(4, count(unserialize($customFieldData->serializedData)));
             $customFieldData = CustomFieldData::getByName('Industries');
             $this->assertEquals(9, count(unserialize($customFieldData->serializedData)));
-            $customFieldData = CustomFieldData::getByName('meetingCategories');
+            $customFieldData = CustomFieldData::getByName('MeetingCategories');
             $this->assertEquals(2, count(unserialize($customFieldData->serializedData)));
             $this->assertEquals(6, count(ContactState::getAll()));
             $this->assertEquals(1, count(Currency::getAll()));

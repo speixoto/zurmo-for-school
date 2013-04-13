@@ -356,18 +356,35 @@
 
         public static function makeShowQueryDataContent()
         {
-            $performanceMessage  = 'Total/Duplicate Queries: ' . Yii::app()->performance->getRedBeanQueryLogger()->getQueriesCount();
-            $performanceMessage .= '/'   . Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesCount();
+            $performanceMessage  = static::getTotalAndDuplicateQueryCountContent();
             $duplicateData = Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesData();
             if (count($duplicateData) > 0)
             {
-                $performanceMessage .= '</br></br>Duplicate Queries:</br>';
+                $performanceMessage .= '</br></br>' . 'Duplicate Queries:' . '</br>';
             }
             foreach ($duplicateData as $query => $count)
             {
-                $performanceMessage .= 'Count: ' . $count . '&#160;&#160;&#160;Query: ' . $query . "</br>";
+                $performanceMessage .= 'Count: ' . $count . '&#160;&#160;&#160;Query: ' . $query . '</br>';
             }
             return $performanceMessage;
+        }
+
+        public static function getTotalAndDuplicateQueryCountContent()
+        {
+            $performanceMessage  = 'Total/Duplicate Queries: ' . Yii::app()->performance->getRedBeanQueryLogger()->getQueriesCount();
+            $performanceMessage .= '/'   . Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesCount();
+            return $performanceMessage;
+        }
+
+        public static function makeNonHtmlDuplicateCountAndQueryContent()
+        {
+            $content = null;
+            $duplicateData = Yii::app()->performance->getRedBeanQueryLogger()->getDuplicateQueriesData();
+            foreach ($duplicateData as $query => $count)
+            {
+                $content .= 'Count: ' . $count . '--Query: ' . $query . "\n";
+            }
+            return $content;
         }
 
         /**

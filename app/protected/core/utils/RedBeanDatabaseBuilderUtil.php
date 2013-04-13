@@ -204,7 +204,9 @@
             }
             AuditEvent::$isTableOptimized = false;
             self::deleteAllSampleModelsFromStatePersister();
+            $messageLogger->addInfoMessage("Deleted all sample models from state persister.");
             self::setAutoBuildStateInStatePersister(self::AUTO_BUILD_STATE_VALID);
+            $messageLogger->addInfoMessage("set auto-build state in state persister.");
         }
 
         /**

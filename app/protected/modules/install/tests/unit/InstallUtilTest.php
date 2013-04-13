@@ -582,7 +582,7 @@
             copy($debugConfigFileDist, $debugConfigFile);
             $debugConfiguration = file_get_contents($debugConfigFile);
 
-            $this->assertRegExp('/\$debugOn = true;/', $debugConfiguration);
+            $this->assertRegExp('/\$debugOn = false;/', $debugConfiguration);
             $this->assertRegExp('/\$forceNoFreeze = true;/', $debugConfiguration);
 
             try

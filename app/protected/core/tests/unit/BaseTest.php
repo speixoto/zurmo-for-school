@@ -60,6 +60,7 @@
                                    Yii::app()->db->username,
                                    Yii::app()->db->password);
             assert('RedBeanDatabase::isSetup()'); // Not Coding Standard
+            CustomFieldData::forgetAllPhpCache();
             GeneralCache::forgetAll();
             BeanModelCache::forgetAll();
             if ($freeze)
