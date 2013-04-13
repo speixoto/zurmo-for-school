@@ -458,6 +458,10 @@
             $this->assertTrue($contacts[0]->owner   == $super);
             $this->assertTrue($contacts[0]->account == $account[0]);
             $this->assertTrue($contacts[0]->state   == $startingState);
+            $this->assertEquals('some street',   $contacts[0]->primaryAddress->street1);
+            $this->assertEquals('some street 2', $contacts[0]->secondaryAddress->street1);
+            $this->assertEquals('some street',   $contacts[0]->account->billingAddress->street1);
+            $this->assertEquals('some street 2', $contacts[0]->account->shippingAddress->street1);
             $this->assertEquals('456765421', $contacts[0]->officePhone);
             $contacts = Contact::getAll();
             $this->assertEquals(13, count($contacts));
@@ -481,9 +485,6 @@
             $this->assertTrue($contacts[0]->opportunities[0] == $opportunity);
             $this->assertTrue($contacts[0]->state   == $startingState);
             $this->assertEquals('456765421', $contacts[0]->officePhone);
-            $this->assertEquals('some street',   $contacts[0]->primaryAddress->street1);
-            $this->assertEquals('some street 2', $contacts[0]->secondaryAddress->street1);
-
             $contacts = Contact::getAll();
             $this->assertEquals(14, count($contacts));
 
@@ -618,11 +619,19 @@
          */
         public function testGetAccountAddressesToCopy()
         {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+
             $account       = Account::getByName('superAccount2');
-            $this->setGetArray(array('id' => $account[0]>id));
+            $this->setGetArray(array('id' => $account[0]->id));
             //Run Mass Delete using progress save for page2.
             $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/getAccountAddressesToCopy');
-            echo $content;
+            $compareContent = '{"billingAddress_city":null,"billingAddress_country":null,"billingAddress_invalid":"0","billingAddre'
+                            . 'ss_latitude":null,"billingAddress_longitude":null,"billingAddress_postalCode":null,"billingAddress_street1":'
+                            . '"some street","billingAddress_street2":null,"billingAddress_state":null,"shippingAddress_city":null,"shippin'
+                            . 'gAddress_country":null,"shippingAddress_invalid":"0","shippingAddress_latitude":null,"shippingAddress_longit'
+                            . 'ude":null,"shippingAddress_postalCode":null,"shippingAddress_street1":"some street 2","shippingAddress_stree'
+                            . 't2":null,"shippingAddress_state":null}';
+            $this->assertEquals($compareContent, $content);
         }
     }
 ?>

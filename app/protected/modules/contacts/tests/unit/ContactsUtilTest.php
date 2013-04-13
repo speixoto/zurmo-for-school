@@ -138,8 +138,10 @@
          */
         public function testResolveAddressesFromRelatedAccount()
         {
+            Yii::app()->user->userModel = User::getByUsername('super');
             $contact = new Contact();
             $account = new Account();
+            $account->name                        = 'some name';
             $account->billingAddress->city        = 'some city';
             $account->billingAddress->country     = 'some country';
             $account->billingAddress->postalCode  = 'some postalCode';
@@ -152,6 +154,8 @@
             $account->shippingAddress->state      = 'some2 state';
             $account->shippingAddress->street1    = 'some2 street1';
             $account->shippingAddress->street2    = 'some2 street2';
+            $saved = $account->save();
+            $this->assertTrue($saved);
             $contact->account                     = $account;
             ContactsUtil::resolveAddressesFromRelatedAccount($contact);
             $this->assertEquals('some city',         $contact->primaryAddress->city);
