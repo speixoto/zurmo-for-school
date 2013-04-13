@@ -173,18 +173,6 @@
 
         protected function getExtraRenderForClearSearchLinkScript()
         {
-            $formId      = $this->getSearchFormId();
-            $script = "
-                if($('#{$formId}').find('.anyMixedAttributes-input').val() != '')
-                    $('#clear-search-link{$this->gridIdSuffix}').show();
-                        alert('me');
-                }
-                else
-                {
-                    $('#clear-search-link{$this->gridIdSuffix}').hide();
-                        alert('me');
-                }
-                ";
         }
 
         protected function renderClearingSearchInputContent()
