@@ -230,6 +230,21 @@
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $(this).closest('form').find('.search-view-1').hide();
+                        var empty = true;
+                        $(this).closest('form').find('.search-view-1').find(':input').each(function() {
+                            if($(this).val() != '')
+                            {
+                                empty = false;
+                            }
+                        });
+                        if (!empty)
+                        {
+                            $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                        }
+                        else
+                        {
+                            $('#clear-search-link" . $this->gridIdSuffix . "').hide();
+                        }
                         $('.select-list-attributes-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
@@ -267,10 +282,10 @@
         {
             $script = "
                 $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
-                 $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event)
-                 {
-                     $('#clear-search-link" . $this->gridIdSuffix . "').show();
-                 });
+                $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event)
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                });
             ";
             return $script;
         }
