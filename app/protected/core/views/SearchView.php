@@ -165,11 +165,26 @@
 
         protected function getClearSearchLinkStartingStyle()
         {
-            return "display:none;";
+            if ($this->model->anyMixedAttributes == null)
+            {
+                return "display:none;";
+            }
         }
 
         protected function getExtraRenderForClearSearchLinkScript()
         {
+            $formId      = $this->getSearchFormId();
+            $script = "
+                if($('#{$formId}').find('.anyMixedAttributes-input').val() != '')
+                    $('#clear-search-link{$this->gridIdSuffix}').show();
+                        alert('me');
+                }
+                else
+                {
+                    $('#clear-search-link{$this->gridIdSuffix}').hide();
+                        alert('me');
+                }
+                ";
         }
 
         protected function renderClearingSearchInputContent()
@@ -197,6 +212,7 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function(){
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
+                        $('#clear-search-link" . $this->gridIdSuffix . "').hide();
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
                         $(this).closest('form').submit();
                         $('#" . $this->getClearingSearchInputId() . "').val('');
@@ -261,7 +277,14 @@
          */
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
-            return null;
+            $script = "
+                $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
+                 $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event)
+                 {
+                     $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                 });
+            ";
+            return $script;
         }
 
         /**
