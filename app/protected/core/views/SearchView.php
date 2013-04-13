@@ -230,21 +230,7 @@
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $(this).closest('form').find('.search-view-1').hide();
-                        var empty = true;
-                        $(this).closest('form').find('.search-view-1').find(':input').each(function() {
-                            if($(this).val() != '')
-                            {
-                                empty = false;
-                            }
-                        });
-                        if (!empty)
-                        {
-                            $('#clear-search-link" . $this->gridIdSuffix . "').show();
-                        }
-                        else
-                        {
-                            $('#clear-search-link" . $this->gridIdSuffix . "').hide();
-                        }
+                        " . $this->getHideOrShowClearSearchLinkScript() . "
                         $('.select-list-attributes-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
@@ -257,6 +243,33 @@
                         return false;
                     }
                 );");
+        }
+
+        /**
+         * Override as needed.
+         * @return string the script to show/hide the clear link if depending on if
+         * there is any search condition
+         */
+        protected function getHideOrShowClearSearchLinkScript()
+        {
+            $script = "
+                var empty = $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').val() == '';
+                $(this).closest('form').find('.search-view-1').find(':input').each(function() {
+                    if($(this).val() != '')
+                    {
+                        empty = false;
+                    }
+                });
+                if (!empty)
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                }
+                else
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').hide();
+                }
+            ";
+            return $script;
         }
 
         /**
