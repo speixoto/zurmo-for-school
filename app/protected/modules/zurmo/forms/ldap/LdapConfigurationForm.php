@@ -80,18 +80,9 @@
                 'port'                                 => Zurmo::t('ZurmoModule', 'Port'),
                 'bindRegisteredDomain'                 => Zurmo::t('ZurmoModule', 'Username'),
                 'bindPassword'                         => Zurmo::t('ZurmoModule', 'Password'),
-                'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'.self::renderHelpContent()),
+                'baseDomain'                           => Zurmo::t('ZurmoModule', 'Base Domain'),
                 'enabled'                              => Zurmo::t('ZurmoModule', 'Turn On LDAP')
             );
-        }
-
-        protected static function renderHelpContent()
-        {
-            $title       = Zurmo::t('ZurmoModule', 'Like: dc=server,dc=world for both LDAP and Active Directory');
-            $content     = '<span id="ldap-rollup-tooltip" class="tooltip" title="' . $title . '">?</span>';
-            $qtip = new ZurmoTip();
-            $qtip->addQTip("#ldap-rollup-tooltip");
-            return $content;
         }
     }
 ?>

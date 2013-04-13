@@ -121,8 +121,9 @@
 
         public function actionDeleteViaAjax($id)
         {
-            $socialItem               = SocialItem::getById(intval($id));
-            if ($socialItem->owner->id  != Yii::app()->user->userModel->id &&
+            $socialItem = SocialItem::getById(intval($id));
+            if (!$socialItem->canUserDelete(Yii::app()->user->userModel) &&
+                $socialItem->owner->id  != Yii::app()->user->userModel->id &&
                 $socialItem->toUser->id != Yii::app()->user->userModel->id)
             {
                 $messageView = new AccessFailureAjaxView();

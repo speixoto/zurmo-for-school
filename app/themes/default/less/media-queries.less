@@ -64,7 +64,7 @@ orientation : portrait // orientation: landscape    Target orientation
 	display:none;
 	float: left;
 	text-align:left;
-	padding:0 10px 0 0;
+	padding:0 10px 0 10px;
 	margin-right:15px;
 	line-height: 38px;
 	height:38px;
@@ -229,51 +229,6 @@ orientation : portrait // orientation: landscape    Target orientation
 		top: 10px;
 	}
 
-	/*
-	.view-toolbar{
-		display: -ms-flex;
-		display: -moz-flex;
-		display: -webkit-flex;
-		display: flex;
-		-ms-flex-direction: row;
-		-ms-flex-wrap: wrap;
-		-moz-flex-flow: row wrap;
-		-webkit-flex-flow: row wrap;
-		flex-flow: row wrap;
-		width:100% !important;
-	}
-
-	.view-toolbar .nav,
-	.view-toolbar > a {
-		float:none;
-		-ms-flex: 1 auto;
-		-moz-flex: 1 auto;
-		-webkit-flex: 1 auto;
-		flex: 1 auto;
-	}
-
-
-	.view-toolbar .parent > a,
-	.view-toolbar > a {
-		padding:0 5px;
-		text-align:center;
-	}
-
-	.view-toolbar .parent > a{
-		width:100%;
-	}
-
-	.view-toolbar .parent a:before,
-	.view-toolbar > a:before{
-		display:none;
-	}
-
-	.view-toolbar .parent a:after{
-		margin-left:5px;
-		margin-right:5px;
-	}
-	*/
-
 	.view-toolbar{
 		border: none;
 		.radius(none);
@@ -354,6 +309,11 @@ orientation : portrait // orientation: landscape    Target orientation
 		//.b-shadow(-1px 0 15px 0 #ccc);
 	}
 
+	.AppContent{
+		//transform: translate3d(45px, 0, 0);
+		//-webkit-transform: translate3d(45px, 0, 0);
+	}
+
 	#settings-header-menu{
 		//display: none;
 	}
@@ -361,10 +321,12 @@ orientation : portrait // orientation: landscape    Target orientation
 	.AppNavigation{
 		width: 45px;
 		.unstyle-panel();
-		border:none;
-		position:fixed;
-		padding-top:35px;
+		position:absolute;
+		padding:0 0 0 0;
+		margin: 0;
 		z-index: 0;
+		++.border-box;
+		float:none;
 	}
 
 	.high-z-index{
@@ -372,10 +334,19 @@ orientation : portrait // orientation: landscape    Target orientation
 	}
 
 	#MenuView{
+		++.border-box;
+		padding-top: 50px;
+		padding:50px 9px 0 19px;
+		left: 0;
+		position: fixed;
+		width:auto;
 		#gradient > .vertical(#f6f6f6, #f4f4f4);
 		border-right:1px solid #eee;
 		border-left:1px solid #eee;
 		.radius(0 0 0 5px);
+		> ul{
+			//margin-left: 5px;
+		}
 		> ul > li{
 			.clearfix();
 		}
@@ -391,7 +362,7 @@ orientation : portrait // orientation: landscape    Target orientation
 				background:#FFF;
 				z-index:9999;
 				text-align:center;
-				margin:0 0 0 9px;
+				margin:0 0 0 0;
 				padding:0 0 0 0;
 				font-style:normal;
 				.radius(4px);
@@ -406,7 +377,9 @@ orientation : portrait // orientation: landscape    Target orientation
 				text-indent: -9999px !important;
 			}
 			span{
-				width: 33px;
+				width: 33px !important;
+				display: block;
+				margin-left: -4px;
 			}
 		}
 		#search > a > em:before{
@@ -446,7 +419,7 @@ orientation : portrait // orientation: landscape    Target orientation
 			position: absolute;
 			margin: 0;
 			padding: 10px;
-			left: 43px;
+			left: 35px;
 			top:-7px;
 			width: auto;
 			input{
@@ -570,17 +543,30 @@ orientation : portrait // orientation: landscape    Target orientation
 	}
 
 	.juiportlet-widget.OpportunitiesForContactRelatedListView,
-	 .juiportlet-widget.OpportunitiesForAccountRelatedListView,
-	 .juiportlet-widget.ContactsForOpportunityRelatedListView,
-	 .juiportlet-widget.ContactsForAccountRelatedListView{
-		 h3:before{
-			 //top:4px;
-		 }
-	 }
+	.juiportlet-widget.OpportunitiesForAccountRelatedListView,
+	.juiportlet-widget.ContactsForOpportunityRelatedListView,
+	.juiportlet-widget.ContactsForAccountRelatedListView{
+		h3:before{
+			//top:4px;
+		}
+	}
 
 	.juiportlet-widget{
 		margin-right:0 !important;
 	}
+
+	//List View
+    .search-form-tools,
+    .list-view-items-summary-clone,
+    .button-column{
+	    display: none;
+    }
+    .SearchView{
+	    width: 100%;
+    }
+    #search-form{
+	    width: 100%;
+    }
 
 	/*Edit View*/
 	#modal-edit-form .panel,

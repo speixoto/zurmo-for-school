@@ -115,6 +115,10 @@
         /**
          * @see actionCreateFromRelation. When a new model is instantiated, this method attaches a relation based
          * on the relation information specified.
+         * @param $model
+         * @param $relationAttributeName
+         * @param $relationModelId
+         * @param $relationModuleId
          * @return $model;
          */
         protected function resolveNewModelByRelationInformation(    $model, $relationAttributeName,
