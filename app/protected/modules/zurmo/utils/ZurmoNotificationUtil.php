@@ -112,17 +112,17 @@
         {
             // Begin Not Coding Standard
             $script = "
-                    var conversationsPlacer = $('#MenuView').find('li.last').find('span:last'); //TODO: Make an id for this span
-                    var unreadConversations = conversationsPlacer.text();
+                    var mashableInboxPlacer = $('span.unread-inbox-count'); //TODO: Make an id for this span
+                    var unreadMashableInbox = mashableInboxPlacer.text();
                     var url                 = '" . Yii::app()->createUrl('zurmo/default/getUpdatesForRefresh') . "';
                     function startAutoUpdater()
                     {
-                        if (unreadConversations >= 0 && unreadConversations != '')
+                        if (unreadMashableInbox >= 0 && unreadMashableInbox != '')
                         {
                             $.ajax(
                             {
                                 type: 'GET',
-                                url: url + '?unreadConversations=' + unreadConversations,
+                                url: url + '?unreadMashableInbox=' + unreadMashableInbox,
                                 async: true,
                                 cache: false,
                                 timeout: 15000,
@@ -131,10 +131,10 @@
                                     data = JSON.parse(data);
                                     if (data != null)
                                     {
-                                        if (unreadConversations != data.unreadConversations)
+                                        if (unreadMashableInbox != data.unreadMashableInbox)
                                         {
-                                            unreadConversations = data.unreadConversations;
-                                            conversationsPlacer.html(unreadConversations);
+                                            unreadMashableInbox = data.unreadMashableInbox;
+                                            mashableInboxPlacer.html(unreadMashableInbox);
                                             if (desktopNotifications.isSupported())
                                             {
                                                 desktopNotifications.notify(data.imgUrl,
