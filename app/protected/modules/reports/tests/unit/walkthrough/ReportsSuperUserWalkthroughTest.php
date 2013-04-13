@@ -52,15 +52,22 @@
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
         }
 
+        public function setUp()
+        {
+            parent::setUp();
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+        }
+
         public function testSuperUserAllDefaultControllerActions()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
             $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/list');
             $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
             $this->runControllerWithNoExceptionsAndGetContent      ('reports/default/selectType');
         }
 
+        /**
+         * @depends testSuperUserAllDefaultControllerActions
+         */
         public function testCreateActionForRowsAndColumns()
         {
             $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
@@ -110,92 +117,64 @@
                                         'ajax' => 'edit-form'
                                     ));
             $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/save');
+            echo $content;
+            exit;
             //todo: confirm validated, then continue with save
         }
 
-        public function testCreateActionForSummation()
-        {
-            //todo:
-            //go to create screen, after selecting type
-            //validate true
-            //save
-            //go to details
-            //edit, save
-            //go to details
-            //delete
-        }
-
-        public function testCreateActionForMatrix()
-        {
-            //todo:
-            //go to create screen, after selecting type
-            //validate true
-            //save
-            //go to details
-            //edit, save
-            //go to details
-            //delete
-        }
-
         /*
-        * @depends on testCreateAction()
+        * @depends on testCreateActionForRowsAndColumns
         */
         public function testExportActionForAsynchronous()
         {
-            //todo:
-            return;
           $super                    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-          $savedReport              = SavedReport::getByName('DJTCD');
-          $savedReport              = SavedReport::getById((int)$savedReport->id);
+          $savedReports              = SavedReport::getAll();
+          $this->assertEquals(1, count($savedReports));
+          $savedReport              = $savedReports[0];
           $report                   = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
           $stickySearchKey          = null;
           $dataProvider             = $this->getDataProviderForExport($report,$stickySearchKey,false);
           $totalItems               = intval($dataProvider->calculateTotalItemCount());
-          if($totalItems > ExportModule::$asynchronusThreshold)
-          {
-            $this->setGetArray(array('id' => $savedReport->id));
-            $this->resetPostArray();
-            $content = $this->runControllerWithRedirectExceptionAndGetContent     ('reports/default/export');
-            $this->assertEquals('A large amount of data has been requested for export.  You will receive ' .
-                        'a notification with the download link when the export is complete.', Yii::app()->user->getFlash('notification'));
-          }
-          else
-          {
-            $this->markTestSkipped(Zurmo::t('ZurmoModule', 'Since data is not so huge normal export will work'));
-          }
+          echo 'test' . $totalItems;
+          exit;
         }
 
+        /**
+         * @depends testExportActionForAsynchronous
+         */
         public function testActionRelationsAndAttributesTree()
         {
-            //todo:
-            //actionRelationsAndAttributesTree - for different tree types and different report types
+            //todo: actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
         }
 
+        /**
+         * @depends testActionRelationsAndAttributesTree
+         */
         public function testActionAddAttributeFromTree()
         {
-            //todo:
-            //actionAddAttributeFromTree - all various attribute types
+            //todo: actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $trackableStructurePosition = false, $id = null)
         }
 
-        public function testChartWithTooManyGroupsToRender()
+        /**
+         * @depends testActionAddAttributeFromTree
+         */
+        public function testGetAvailableSeriesAndRangesForChart()
         {
-            //todo: call setMaximumGroupsPerChart(2) and then run a report chart with more than 2. then it should render the chart warning
+            //todo: actionGetAvailableSeriesAndRangesForChart($type, $id = null)
         }
+
+
+        //todo: ApplyRuntimeFilters($id) actionApplyRuntimeFilters($id)
+        //todo: ResetRuntimeFilters($id) actionResetRuntimeFilters($id)
+
+        //todo: actionDelete
+
+        //todo: actionDrillDownDetails($id, $rowId)
+
+        //todo: actionAutoComplete($term, $moduleClassName, $type)
+
 
         //todo: test saving a report and changing owner so you don't have permissions anymore. it should do a flashbar and redirect you to the list view.
-        //todo: test async export
-
-        //todo: test contrller filters are working
-
-        //todo: that the initial query thing works for filtering out modules you don’t have access to always.
-
         //todo: test details view comes up ok when user cant delete or edit report, make sure options button doesn't blow up since it shouldn't display
-
-
-        //todo: in separate test class:
-        //todo: test regular user and elevations for all actions not just on reports right, but on the base module for the report itself.
-
-        //todO: list security elevated and not, also where the user is nobody and can't see any of the modules but has access to reports
-
     }
 ?>

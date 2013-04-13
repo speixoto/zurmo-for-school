@@ -66,21 +66,11 @@
             $content .= ZurmoHtml::tag('h1', array(), $this->renderTitleContent() . 'Workflow Order');
             $content .= '<div class="wide form">';
             $clipWidget = new ClipWidget();
-            list($form, $formStart) = $clipWidget->renderBeginWidget(
-                'ZurmoActiveForm',
-                array(
-                    'id' => static::getFormId(),
-                    'action' => $this->getFormActionUrl(),
-                    'enableAjaxValidation' => true,
-                    'clientOptions' => array(
-                        'validateOnSubmit'  => true,
-                        'validateOnChange'  => false,
-                        'beforeValidate'    => 'js:beforeValidateAction',
-                        'afterValidate'     => 'js:afterValidateAjaxAction',
-                        'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
-                    ),
-                )
-            );
+            list($form, $formStart) = $clipWidget->renderBeginWidget('ZurmoActiveForm',
+                                                                        array(
+                                                                            'id' => static::getFormId(),
+                                                                            'action' => $this->getFormActionUrl(),
+                                                                        ));
             $content .= $formStart;
             $content .= $this->renderNoModuleSelectedContentAndWrapper();
             $content .= $this->renderNoWorkflowsToOrderContentAndWrapper();
@@ -154,12 +144,23 @@
          */
         protected function renderSaveLinkContent()
         {
-            $params                = array();
-            $params['label']       = Zurmo::t('Core', 'Save');
-            $params['htmlOptions'] = array('id'      => 'save-order',
-                                           'onclick' => 'js:$(this).addClass("attachLoadingTarget");');
-            $element               = new SaveButtonActionElement(null, null, null, $params);
-            return $element->render();
+            $aContent                = ZurmoHtml::wrapLink(Zurmo::t('Core', 'Save'));
+            return       ZurmoHtml::ajaxLink($aContent, $this->getFormActionUrl(),
+                array(  'type'       => 'POST',
+                        'dataType'   => 'json',
+                        'data'       => 'js:$("#' . static::getFormId() . '").serialize()',
+                        'complete'   => 'js:function(){detachLoadingOnSubmit("' . static::getFormId() . '");}',
+                        'success'    => 'function(data){$("#FlashMessageBar").jnotifyAddMessage({
+                                         text: data.message, permanent: false, showIcon: true, type: data.type
+                                         });}',
+
+
+
+                ),
+                array('id'       => 'save-order',
+                      'class'    => 'attachLoading z-button',
+                      'onclick'    => 'js:$(this).addClass("loading").addClass("loading-ajax-submit");
+                                                        makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id"));'));
         }
 
         /**
@@ -182,25 +183,6 @@
                 'afterValidate'     => 'js:afterValidateAjaxAction',
                 'afterValidateAjax' => $this->renderConfigSaveAjax(static::getFormId()),
             );
-        }
-
-        /**
-         * @param string $formName
-         * @return string
-         */
-        protected function renderConfigSaveAjax($formName)
-        {
-            assert('is_string($formName)');
-            return ZurmoHtml::ajax(array(
-                'type'       => 'POST',
-                'dataType'   => 'json',
-                'data'       => 'js:$("#' . $formName . '").serialize()',
-                'url'        =>  $this->getFormActionUrl(),
-                'complete'   => 'js:function(){detachLoadingOnSubmit("' . static::getFormId() . '");}',
-                'success'    => 'function(data){$("#FlashMessageBar").jnotifyAddMessage({
-                                 text: data.message, permanent: false, showIcon: true, type: data.type
-                                 });}',
-            ));
         }
 
         protected function renderLoadModuleOrderScriptContent()

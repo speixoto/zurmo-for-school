@@ -91,12 +91,6 @@
             $this->actionList();
         }
 
-        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
-        {
-            $metadata = SavedWorkflowsUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
-                        Workflow::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo());
-        }
-
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(
@@ -342,8 +336,8 @@
         public function actionChangeActionType($moduleClassName, $type)
         {
             $content = ZurmoHtml::dropDownList(ActionsForWorkflowWizardView::ACTION_TYPE_RELATION_NAME,
-                null, ActionsForWorkflowWizardView::resolveTypeRelationDataAndLabels(
-                    $moduleClassName, $moduleClassName::getPrimaryModelName(), $type));
+                        null, ActionsForWorkflowWizardView::resolveTypeRelationDataAndLabels(
+                            $moduleClassName, $moduleClassName::getPrimaryModelName(), $type));
             echo $content;
         }
 
@@ -504,6 +498,12 @@
                 Yii::app()->end(0, false);
             }
             return true;
+        }
+
+        protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
+        {
+            $metadata = SavedWorkflowsUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
+                Workflow::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo());
         }
 
         protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow,

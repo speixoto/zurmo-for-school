@@ -446,6 +446,14 @@
             $this->redirect(array($this->getId() . '/index'));
         }
 
+        public function actionAutoComplete($term, $moduleClassName, $type)
+        {
+            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
+                        'autoCompleteListPageSize', get_class($this->getModule()));
+            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName, $type);
+            echo CJSON::encode($autoCompleteResults);
+        }
+
         protected function resolveCanCurrentUserAccessReports()
         {
             if(!RightsUtil::doesUserHaveAllowByRightName('ReportsModule',
@@ -552,14 +560,6 @@
         {
             $metadata = SavedReportUtil::resolveSearchAttributeDataByModuleClassNames($metadata,
                 Report::getReportableModulesClassNamesCurrentUserHasAccessTo());
-        }
-
-        public function actionAutoComplete($term, $moduleClassName, $type)
-        {
-            $pageSize = Yii::app()->pagination->resolveActiveForCurrentUserByType(
-                                'autoCompleteListPageSize', get_class($this->getModule()));
-            $autoCompleteResults = ReportAutoCompleteUtil::getByPartialName($term, $pageSize, $moduleClassName, $type);
-            echo CJSON::encode($autoCompleteResults);
         }
     }
 ?>
