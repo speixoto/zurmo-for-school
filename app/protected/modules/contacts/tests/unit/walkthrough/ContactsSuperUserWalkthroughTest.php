@@ -434,6 +434,10 @@
             $contacts      = Contact::getAll();
             $this->assertEquals(12, count($contacts));
             $account       = Account::getByName('superAccount2');
+            $account[0]->billingAddress->street1  = 'some street';
+            $account[0]->shippingAddress->street1 = 'some street 2';
+            $saved = $account[0]->save();
+            $this->assertTrue($saved);
             $opportunity   = OpportunityTestHelper::createOpportunityWithAccountByNameForOwner(
                                 'superOpp', $super, $account[0]);
 
@@ -477,6 +481,9 @@
             $this->assertTrue($contacts[0]->opportunities[0] == $opportunity);
             $this->assertTrue($contacts[0]->state   == $startingState);
             $this->assertEquals('456765421', $contacts[0]->officePhone);
+            $this->assertEquals('some street',   $contacts[0]->primaryAddress->street1);
+            $this->assertEquals('some street 2', $contacts[0]->secondaryAddress->street1);
+
             $contacts = Contact::getAll();
             $this->assertEquals(14, count($contacts));
 
@@ -568,6 +575,7 @@
 
          /**
          *Test Bug with mass delete and multiple pages when using select all
+          * @depends testMassDeleteActionsForSelectedIds
          */
         public function testMassDeletePagesProperlyAndRemovesAllSelected()
         {
@@ -603,6 +611,18 @@
             //calculating contact's count
             $contacts = contact::getAll();
             $this->assertEquals(0, count($contacts));
+        }
+
+        /**
+         * @depends testMassDeletePagesProperlyAndRemovesAllSelected
+         */
+        public function testGetAccountAddressesToCopy()
+        {
+            $account       = Account::getByName('superAccount2');
+            $this->setGetArray(array('id' => $account[0]>id));
+            //Run Mass Delete using progress save for page2.
+            $content = $this->runControllerWithNoExceptionsAndGetContent('contacts/default/getAccountAddressesToCopy');
+            echo $content;
         }
     }
 ?>
