@@ -200,6 +200,7 @@
                 $('#clear-search-link" . $this->gridIdSuffix . "').unbind('click.clear');
                 $('#clear-search-link" . $this->gridIdSuffix . "').bind('click.clear', function(){
                         $('#" . $this->getClearingSearchInputId() . "').val('1');
+                        $('#clear-search-link" . $this->gridIdSuffix . "').hide();
                         " . $this->getExtraRenderForClearSearchLinkScript() . "
                         $(this).closest('form').submit();
                         $('#" . $this->getClearingSearchInputId() . "').val('');
@@ -229,6 +230,7 @@
                 $('#" . $this->getSearchFormId() . "').bind('submit', function(event)
                     {
                         $(this).closest('form').find('.search-view-1').hide();
+                        " . $this->getHideOrShowClearSearchLinkScript() . "
                         $('.select-list-attributes-view').hide();
                         $('#" . $this->gridId . $this->gridIdSuffix . "-selectedIds').val(null);
                         $.fn.yiiGridView.update('" . $this->gridId . $this->gridIdSuffix . "',
@@ -241,6 +243,33 @@
                         return false;
                     }
                 );");
+        }
+
+        /**
+         * Override as needed.
+         * @return string the script to show/hide the clear link if depending on if
+         * there is any search condition
+         */
+        protected function getHideOrShowClearSearchLinkScript()
+        {
+            $script = "
+                var empty = $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').val() == '';
+                $(this).closest('form').find('.search-view-1').find(':input').each(function() {
+                    if($(this).val() != '')
+                    {
+                        empty = false;
+                    }
+                });
+                if (!empty)
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                }
+                else
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').hide();
+                }
+            ";
+            return $script;
         }
 
         /**
@@ -264,7 +293,14 @@
          */
         protected function getExtraRenderFormBottomPanelScriptPart()
         {
-            return null;
+            $script = "
+                $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').unbind('input.clear propertychange.clear keyup.clear');
+                $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').bind('input.clear propertychange.clear keyup.clear', function(event)
+                {
+                    $('#clear-search-link" . $this->gridIdSuffix . "').show();
+                });
+            ";
+            return $script;
         }
 
         /**
