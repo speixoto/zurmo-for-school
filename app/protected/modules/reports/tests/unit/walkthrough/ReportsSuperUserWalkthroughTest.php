@@ -175,6 +175,10 @@
          */
         public function testExportActionForAsynchronous()
         {
+            if (RedBeanDatabase::isFrozen())
+            {
+                return;
+            }
             $savedReports = SavedReport::getAll();
             $this->assertEquals(1, count($savedReports));
             $this->setGetArray(array('id' => $savedReports[0]->id));
@@ -261,6 +265,10 @@
         public function testDrillDownDetails()
         {
             $savedReport = SavedReportTestHelper::makeSummationWithDrillDownReport();
+            if (RedBeanDatabase::isFrozen())
+            {
+                return;
+            }
             $this->setGetArray(array('id'                         => $savedReport->id,
                                      'rowId'                      => 2,
                                      'runReport'                  => true,
@@ -276,6 +284,10 @@
          */
         public function testAutoComplete()
         {
+            if (RedBeanDatabase::isFrozen())
+            {
+                return;
+            }
             $this->setGetArray(array('term'            => 'a test',
                                      'moduleClassName' => 'ReportsModule',
                                      'type'            => Report::TYPE_SUMMATION));
