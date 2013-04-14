@@ -253,5 +253,20 @@
             $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/validateDynamicSearch', true);
             $this->assertEmpty($content);
         }
+
+        /**
+         * Test for the desktopNotifications managed by the ZurmoNotificationUtil
+         */
+        public function testDesktopNotifications()
+        {
+            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/about');
+            $this->assertNotContains('startAutoUpdater',$content);
+            ZurmoConfigurationUtil::setByModuleName('ZurmoModule',
+                                                    'realtimeUpdatesEnabled',
+                                                    (boolean) true);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('zurmo/default/about');
+            $this->assertContains('startAutoUpdater',$content);
+        }
     }
 ?>

@@ -35,8 +35,8 @@
      ********************************************************************************/
 
     // Keep this on ALL THE TIME WHEN DEVELOPING. Turn it off in production.
-    // Check it in as true!
-    $debugOn = true;
+    // Check it in as false!
+    $debugOn = false;
 
     // Turn this on to use the application with the database unfrozen. Turn it off in production.
     // Check it in as true!

@@ -41,14 +41,16 @@
     class ReportAutoCompleteUtil
     {
         /**
-         * @return array - Jui AutoComplete ready array
-         *  containing id, value, and label elements.
+         * @param string $partialName
+         * @param int $pageSize
+         * @param string $moduleClassName
+         * @param string $type
+         * @return array Jui AutoComplete ready array containing id, value, and label elements.
          */
         public static function getByPartialName($partialName, $pageSize, $moduleClassName, $type)
         {
             assert('is_string($partialName)');
             assert('is_int($pageSize)');
-            assert('$stateMetadataAdapterClassName == null || is_string($stateMetadataAdapterClassName)');
             $autoCompleteResults  = array();
             $reports                = ReportSearch::getReportsByPartialName($partialName, $pageSize, $moduleClassName, $type);
             foreach ($reports as $report)

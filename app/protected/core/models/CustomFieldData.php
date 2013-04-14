@@ -37,12 +37,24 @@
     class CustomFieldData extends RedBeanModel
     {
         /**
+         * Php caching for a single request
+         * @var array
+         */
+        private static $cachedModelsByName = array();
+
+        /**
          * Given a name, get the custom field data model.  Attempts to retrieve from cache, if it is not available,
          * will attempt to retrieve from persistent storage, cache the model, and return.
          * @param string $name
+         * @return CustomFieldData model
+         * @throws NotFoundException
          */
         public static function getByName($name)
         {
+            if(isset(self::$cachedModelsByName[$name]))
+            {
+                return self::$cachedModelsByName[$name];
+            }
             try
             {
                 return GeneralCache::getEntry('CustomFieldData' . $name);
@@ -60,11 +72,14 @@
                     $customFieldData->serializedData = serialize(array());
                     // An unused custom field data does not present as needing saving.
                     $customFieldData->setNotModified();
-                    return $customFieldData;
                 }
-                $model = self::makeModel($bean);
-                GeneralCache::cacheEntry('CustomFieldData' . $name, $model);
-                return $model;
+                else
+                {
+                    $customFieldData = self::makeModel($bean);
+                }
+                self::$cachedModelsByName[$name] = $customFieldData;
+                GeneralCache::cacheEntry('CustomFieldData' . $name, $customFieldData);
+                return $customFieldData;
             }
         }
 
@@ -108,9 +123,22 @@
             $saved = parent::save($runValidation, $attributeNames);
             if ($saved)
             {
+                self::$cachedModelsByName[$this->name] = $this;
                 GeneralCache::cacheEntry('CustomFieldData' . $this->name, $this);
             }
             return $saved;
+        }
+
+        protected function unrestrictedDelete()
+        {
+            unset(self::$cachedModelsByName[$this->name]);
+            GeneralCache::forgetEntry('CustomFieldData' . $this->name);
+            return parent::unrestrictedDelete();
+        }
+
+        public static function forgetAllPhpCache()
+        {
+            self::$cachedModelsByName = array();
         }
     }
 ?>

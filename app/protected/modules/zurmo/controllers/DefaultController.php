@@ -359,15 +359,15 @@
             }
         }
 
-        public function actionGetUpdatesForRefresh($unreadConversations)
+        public function actionGetUpdatesForRefresh($unreadMashableInbox)
         {
-            $newUnreadConversations = ConversationsUtil::getUnreadCountTabMenuContentForCurrentUser();
-            if ($newUnreadConversations > $unreadConversations)
+            $newUnreadMashableInbox = MashableUtil::getUnreadCountMashableInboxForCurrentUser();
+            if ($newUnreadMashableInbox > $unreadMashableInbox)
             {
-                $data['unreadConversations'] = $newUnreadConversations;
+                $data['unreadMashableInbox'] = $newUnreadMashableInbox;
                 $data['imgUrl']              = Yii::app()->request->hostinfo . Yii::app()->theme->baseUrl . '/images/z-logo-60x60.png';
-                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM (New comment)');
-                $data['message']             = Zurmo::t('ZurmoModule', 'There is an unread conversation.');
+                $data['title']               = Zurmo::t('ZurmoModule', 'ZurmoCRM - Item update');
+                $data['message']             = Zurmo::t('ZurmoModule', 'There is an item with unread changes.');
                 echo CJSON::encode($data);
             }
             else

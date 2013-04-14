@@ -278,6 +278,7 @@
          * has this attribute has being required, regardless of any customziation to that metadata.
          * @param string $attributeName
          * @throws NotSupportedException
+         * @return boolean
          */
         public function isStandardAttributeRequiredByDefault($attributeName)
         {

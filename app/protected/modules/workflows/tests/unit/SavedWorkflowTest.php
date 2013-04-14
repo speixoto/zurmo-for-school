@@ -44,6 +44,7 @@
             $savedWorkflow->moduleClassName = 'WorkflowsTestModule';
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_NEW;
             $savedWorkflow->type            = 'some type';
+            $savedWorkflow->order           = 1;
             $savedWorkflow->serializedData  = serialize(array('something'));
             $savedWorkflow->isActive        = true;
             $saved                          = $savedWorkflow->save();
@@ -71,6 +72,7 @@
             $savedWorkflow->moduleClassName = 'WorkflowsTestModule';
             $savedWorkflow->triggerOn       = Workflow::TRIGGER_ON_EXISTING;
             $savedWorkflow->type            = 'some type';
+            $savedWorkflow->order           = 1;
             $savedWorkflow->serializedData  = serialize(array('something'));
             $savedWorkflow->isActive        = true;
             $saved                          = $savedWorkflow->save();

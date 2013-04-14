@@ -165,8 +165,9 @@
             );
             $searchAttributeData['structure'] = '1 AND 2 AND (3 OR 4)';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedWorkflow');
-            $where = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $where   = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
+            $orderBy = RedBeanModelDataProvider::resolveSortAttributeColumnName('SavedWorkflow', $joinTablesAdapter, 'order');
+            return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
         }
 
         /**
@@ -186,8 +187,9 @@
             );
             $searchAttributeData['structure'] = '1';
             $joinTablesAdapter = new RedBeanModelJoinTablesQueryAdapter('SavedWorkflow');
-            $where = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
-            return self::getSubset($joinTablesAdapter, null, null, $where, null);
+            $where   = RedBeanModelDataProvider::makeWhere('SavedWorkflow', $searchAttributeData, $joinTablesAdapter);
+            $orderBy = RedBeanModelDataProvider::resolveSortAttributeColumnName('SavedWorkflow', $joinTablesAdapter, 'order');
+            return self::getSubset($joinTablesAdapter, null, null, $where, $orderBy);
         }
 
         public static function getGamificationRulesType()
