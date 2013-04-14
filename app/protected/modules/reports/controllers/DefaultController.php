@@ -312,7 +312,7 @@
                 throw new NotSupportedException();
             }
             DataToReportUtil::resolveFilters($postData[$wizardFormClassName], $report);
-            if (isset($_POST['ajax']) && $_POST['ajax'] == 'edit-form')
+            if (isset($postData['ajax']) && $postData['ajax'] == 'edit-form')
             {
                 $adapter          = new ReportToWizardFormAdapter($report);
                 $reportWizardForm = $adapter->makeFormByType();
@@ -339,11 +339,9 @@
 
         public function actionResetRuntimeFilters($id)
         {
-            $postData         = PostUtil::getData();
             $savedReport      = SavedReport::getById((int)$id);
             ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
-            $breadcrumbLinks  = array(strval($savedReport));
             $report           = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             StickyReportUtil::clearDataByKey($report->getId());
         }
@@ -407,7 +405,7 @@
                     if (count($data))
                     {
                         $fileName = $this->getModule()->getName() . ".csv";
-                        $output = ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
+                        ExportItemToCsvFileUtil::export($data, $headerData, $fileName, true);
                     }
                     else
                     {

@@ -52,6 +52,76 @@
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
         }
 
+        public static function makeRowsAndColumnsReportPostData()
+        {
+            return array(
+                'validationScenario' => 'ValidateForDisplayAttributes',
+                'RowsAndColumnsReportWizardForm' => array(
+                    'moduleClassName' => 'ReportsTestModule',
+                    'Filters' => array(
+                        '0' => array(
+                            'structurePosition' => 1,
+                            'attributeIndexOrDerivedType' => 'string',
+                            'operator' => 'isNotNull',
+                            'value' => '',
+                            'availableAtRunTime' => '0')),
+                    'filtersStructure' => '1',
+                    'displayAttributes' => '',
+                    'DisplayAttributes' => array(
+                        '0' => array(
+                            'attributeIndexOrDerivedType' => 'string',
+                            'label' => 'String')),
+
+                    'name' => 'some rows and columns report',
+                    'description' => 'some rows and columns report description',
+                    'currencyConversionType' => '1',
+                    'spotConversionCurrencyCode' => '',
+                    'ownerId' => Yii::app()->user->userModel->id,
+                    'ownerName' => 'Super User',
+                    'explicitReadWriteModelPermissions' => array(
+                        'type' => '',
+                        'nonEveryoneGroup' => '4')),
+                'FiltersRowCounter' => '1',
+                'DisplayAttributesRowCounter' => '1',
+                'OrderBysRowCounter' => '0',
+            );
+        }
+
+        public static function makeSummationReportPostData()
+        {
+            return array(
+                'validationScenario' => 'ValidateForDisplayAttributes',
+                'SummationReportWizardForm' => array(
+                    'moduleClassName' => 'ReportsTestModule',
+                    'Filters' => array(
+                        '0' => array(
+                            'structurePosition' => 1,
+                            'attributeIndexOrDerivedType' => 'string',
+                            'operator' => 'isNotNull',
+                            'value' => '',
+                            'availableAtRunTime' => '0')),
+                    'filtersStructure' => '1',
+                    'displayAttributes' => '',
+                    'DisplayAttributes' => array(
+                        '0' => array(
+                            'attributeIndexOrDerivedType' => 'string',
+                            'label' => 'Name')),
+
+                    'name' => 'some summation report',
+                    'description' => 'some summation report description',
+                    'currencyConversionType' => '1',
+                    'spotConversionCurrencyCode' => '',
+                    'ownerId' => Yii::app()->user->userModel->id,
+                    'ownerName' => 'Super User',
+                    'explicitReadWriteModelPermissions' => array(
+                        'type' => '',
+                        'nonEveryoneGroup' => '4')),
+                'FiltersRowCounter' => '1',
+                'DisplayAttributesRowCounter' => '1',
+                'OrderBysRowCounter' => '0',
+            );
+        }
+
         public function setUp()
         {
             parent::setUp();
@@ -70,8 +140,8 @@
          */
         public function testCreateActionForRowsAndColumns()
         {
-            $super = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-
+            $savedReports = SavedReport::getAll();
+            $this->assertEquals(0, count($savedReports));
             $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/create');
             $this->assertFalse(strpos($content, 'Rows and Columns Report') === false);
             $this->assertFalse(strpos($content, 'Summation Report') === false);
@@ -83,60 +153,34 @@
             $this->assertFalse(strpos($content, 'Accounts') === false);
 
             $this->setGetArray(array('type' => 'RowsAndColumns'));
-            $this->setPostArray(array(
-                                    'validationScenario' => 'ValidateForDisplayAttributes',
-                                    'RowsAndColumnsReportWizardForm' => array(
-                                        'moduleClassName' => 'AccountsModule',
-                                        'Filters' => array(
-                                                        '0' => array(
-                                                               'structurePosition' => 1,
-                                                               'attributeIndexOrDerivedType' => 'name',
-                                                               'operator' => 'isNotNull',
-                                                               'value' => '',
-                                                               'availableAtRunTime' => '0')),
-                                        'filtersStructure' => '1',
-                                        'displayAttributes' => '',
-                                        'DisplayAttributes' => array(
-                                                                '0' => array(
-                                                                        'attributeIndexOrDerivedType' => 'name',
-                                                                        'label' => 'Name')),
-
-                                        'name' => 'DJTCD',
-                                        'description' => 'DJTCD',
-                                        'currencyConversionType' => '1',
-                                        'spotConversionCurrencyCode' => '',
-                                        'ownerId' => Yii::app()->user->userModel->id,
-                                        'ownerName' => 'Super User',
-                                        'explicitReadWriteModelPermissions' => array(
-                                                                               'type' => '',
-                                                                               'nonEveryoneGroup' => '4')),
-                                        'FiltersRowCounter' => '1',
-                                        'DisplayAttributesRowCounter' => '1',
-                                        'OrderBysRowCounter' => '0',
-                                        'save' => 'save',
-                                        'ajax' => 'edit-form'
-                                    ));
-            $content = $this->runControllerWithExitExceptionAndGetContent     ('reports/default/save');
-            echo $content;
-            exit;
-            //todo: confirm validated, then continue with save
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $postData['save'] = 'save';
+            $postData['ajax'] = 'edit-form';
+            $this->setPostArray($postData);
+            $content = $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
+            $this->assertEquals('[]', $content);
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $postData['save'] = 'save';
+            $this->setPostArray($postData);
+            $this->runControllerWithExitExceptionAndGetContent('reports/default/save');
+            $savedReports = SavedReport::getAll();
+            $this->assertEquals(1, count($savedReports));
+            $this->setGetArray(array('id' => $savedReports[0]->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('reports/default/details');
         }
 
-        /*
-        * @depends on testCreateActionForRowsAndColumns
-        */
+        /**
+         * @depends testCreateActionForRowsAndColumns
+         */
         public function testExportActionForAsynchronous()
         {
-          $super                    = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
-          $savedReports              = SavedReport::getAll();
-          $this->assertEquals(1, count($savedReports));
-          $savedReport              = $savedReports[0];
-          $report                   = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
-          $stickySearchKey          = null;
-          $dataProvider             = $this->getDataProviderForExport($report,$stickySearchKey,false);
-          $totalItems               = intval($dataProvider->calculateTotalItemCount());
-          echo 'test' . $totalItems;
-          exit;
+            $savedReports = SavedReport::getAll();
+            $this->assertEquals(1, count($savedReports));
+            $this->setGetArray(array('id' => $savedReports[0]->id));
+            //Test where there is no data to export
+            $this->runControllerWithRedirectExceptionAndGetContent('reports/default/export');
+            //todo: can do more export related tests for better coverage
         }
 
         /**
@@ -144,7 +188,18 @@
          */
         public function testActionRelationsAndAttributesTree()
         {
-            //todo: actionRelationsAndAttributesTree($type, $treeType, $id = null, $nodeId = null)
+            $this->setGetArray(array('type' => 'RowsAndColumns', 'treeType' => ComponentForReportForm::TYPE_FILTERS));
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $this->setPostArray($postData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/relationsAndAttributesTree');
+            $this->assertTrue(strpos($content, '<div class="ReportRelationsAndAttributesTreeView') !== false);
+            //With node id
+            $this->setGetArray(array('type'     => 'RowsAndColumns', 'treeType' => ComponentForReportForm::TYPE_FILTERS,
+                                     'nodeId'   => 'Filters_hasOne'));
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $this->setPostArray($postData);
+            $content = $this->runControllerWithExitExceptionAndGetContent('reports/default/relationsAndAttributesTree');
+            $this->assertTrue(strpos($content, '{"id":"Filters_hasOne___createdByUser__User",') !== false);
         }
 
         /**
@@ -152,7 +207,14 @@
          */
         public function testActionAddAttributeFromTree()
         {
-            //todo: actionAddAttributeFromTree($type, $treeType, $nodeId, $rowNumber, $trackableStructurePosition = false, $id = null)
+            $this->setGetArray(array('type'      => 'RowsAndColumns',
+                                     'treeType'  => ComponentForReportForm::TYPE_FILTERS,
+                                     'nodeId'    => 'Filters_phone',
+                                     'rowNumber' => 4));
+            $postData = static::makeRowsAndColumnsReportPostData();
+            $this->setPostArray($postData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/addAttributeFromTree');
+            $this->assertTrue(strpos($content, '<option value="equals">Equals</option>') !== false);
         }
 
         /**
@@ -160,19 +222,79 @@
          */
         public function testGetAvailableSeriesAndRangesForChart()
         {
-            //todo: actionGetAvailableSeriesAndRangesForChart($type, $id = null)
+            $this->setGetArray(array('type'      => 'Summation'));
+            $postData = static::makeSummationReportPostData();
+            $this->setPostArray($postData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/getAvailableSeriesAndRangesForChart');
+            $this->assertTrue(strpos($content, '{"firstSeriesDataAndLabels":{"":"(None)"},"firstRangeDataAndLabels":') !== false);
         }
 
+        /**
+         * @depends testGetAvailableSeriesAndRangesForChart
+         */
+        public function testApplyAndResetRuntimeFilters()
+        {
+            $savedReports = SavedReport::getAll();
+            $this->assertEquals(1, count($savedReports));
+            $this->setGetArray(array('id' => $savedReports[0]->id));
+            //validate filters, where it doesn't validate, the value is missing
+            $this->setPostArray(array('RowsAndColumnsReportWizardForm' => array('Filters' => array(
+                                       array('attributeIndexOrDerivedType' => 'string',
+                                             'operator'                    => 'equals'))),
+                                      'ajax' => 'edit-form'));
+            $this->runControllerWithExitExceptionAndGetContent('reports/default/applyRuntimeFilters');
+            //apply filters
+            $this->setPostArray(array('RowsAndColumnsReportWizardForm' => array('Filters' => array(
+                                        array('attributeIndexOrDerivedType' => 'string',
+                                              'operator'                    => 'equals',
+                                              'value'                       => 'text')))));
+            $this->runControllerWithNoExceptionsAndGetContent('reports/default/applyRuntimeFilters', true);
+            //Reset filters
+            $this->setGetArray(array('id' => $savedReports[0]->id));
+            $this->resetPostArray();
+            $this->runControllerWithNoExceptionsAndGetContent('reports/default/resetRuntimeFilters', true);
+        }
 
-        //todo: ApplyRuntimeFilters($id) actionApplyRuntimeFilters($id)
-        //todo: ResetRuntimeFilters($id) actionResetRuntimeFilters($id)
+        /**
+         * @depends testApplyAndResetRuntimeFilters
+         */
+        public function testDrillDownDetails()
+        {
+            $savedReport = SavedReportTestHelper::makeSummationWithDrillDownReport();
+            $this->setGetArray(array('id'                         => $savedReport->id,
+                                     'rowId'                      => 2,
+                                     'runReport'                  => true,
+                                     'groupByRowValueowner__User' => Yii::app()->user->userModel->id));
+            $postData = static::makeSummationReportPostData();
+            $this->setPostArray($postData);
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/drillDownDetails');
+            $this->assertTrue(strpos($content, '<th id="report-results-grid-view2_c2">Currency Value</th>') !== false);
+        }
 
-        //todo: actionDelete
+        /**
+         * @depends testDrillDownDetails
+         */
+        public function testAutoComplete()
+        {
+            $this->setGetArray(array('term'            => 'a test',
+                                     'moduleClassName' => 'ReportsModule',
+                                     'type'            => Report::TYPE_SUMMATION));
+            $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/autoComplete');
+            $this->assertEquals('[]', $content);
+        }
 
-        //todo: actionDrillDownDetails($id, $rowId)
-
-        //todo: actionAutoComplete($term, $moduleClassName, $type)
-
+        /**
+         * @depends testAutoComplete
+         */
+        public function testDelete()
+        {
+            $savedReports = SavedReport::getAll();
+            $this->assertEquals(2, count($savedReports));
+            $this->setGetArray(array('id' => $savedReports[0]->id));
+            $this->runControllerWithRedirectExceptionAndGetContent('reports/default/delete');
+            $savedReports = SavedReport::getAll();
+            $this->assertEquals(1, count($savedReports));
+        }
 
         //todo: test saving a report and changing owner so you don't have permissions anymore. it should do a flashbar and redirect you to the list view.
         //todo: test details view comes up ok when user cant delete or edit report, make sure options button doesn't blow up since it shouldn't display
