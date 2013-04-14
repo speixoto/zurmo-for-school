@@ -130,10 +130,29 @@
         {
             $contact = Contact::getById(intval($id));
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($contact);
+            $this->processEdit($contact, $redirectUrl);
+
+        }
+
+        public function actionCopy($id)
+        {
+            $copyToContact  = new Contact();
+            $postVariableName   = get_class($copyToContact);
+            if (!isset($_POST[$postVariableName]))
+            {
+                $contact        = Contact::getById((int)$id);
+                ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($contact);
+                ZurmoCopyModelUtil::copy($contact, $copyToContact);
+            }
+            $this->processEdit($copyToContact);
+        }
+
+        protected function processEdit(Contact $contact, $redirectUrl = null)
+        {
             $view    = new ContactsPageView(ZurmoDefaultViewUtil::
-                                            makeStandardViewForCurrentUser($this,
-                                                $this->makeEditAndDetailsView(
-                                                    $this->attemptToSaveModelFromPost($contact, $redirectUrl), 'Edit')));
+                            makeStandardViewForCurrentUser($this,
+                            $this->makeEditAndDetailsView(
+                                $this->attemptToSaveModelFromPost($contact, $redirectUrl), 'Edit')));
             echo $view->render();
         }
 
