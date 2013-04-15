@@ -51,15 +51,15 @@
                 'pagination' => array(
                     'pageSize' => $pageSize
                 ));
-            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 $dataProvider = new RowsAndColumnsReportDataProvider($report, $config);
             }
-            elseif($report->getType() == Report::TYPE_SUMMATION)
+            elseif ($report->getType() == Report::TYPE_SUMMATION)
             {
                 $dataProvider = new SummationReportDataProvider($report, $config);
             }
-            elseif($report->getType() == Report::TYPE_MATRIX)
+            elseif ($report->getType() == Report::TYPE_MATRIX)
             {
                 $dataProvider = new MatrixReportDataProvider($report);
             }

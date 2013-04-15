@@ -85,7 +85,7 @@
         {
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
-            if($this->isListContentSortable())
+            if ($this->isListContentSortable())
             {
                 $itemsContent            = $this->getSortableListContent($items, static::getTreeType());
             }
@@ -134,7 +134,7 @@
             assert('is_bool($trackableStructurePosition)');
             $items                      = array();
             $wizardFormClassName        = get_class($this->model);
-            foreach($componentData as $component)
+            foreach ($componentData as $component)
             {
                 $nodeIdWithoutTreeType      = $component->attributeIndexOrDerivedType;
                 $inputPrefixData            = WorkflowRelationsAndAttributesToTreeAdapter::
@@ -167,7 +167,7 @@
                 $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
-                    if(size < 2)
+                    if (size < 2)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }
@@ -204,7 +204,7 @@
                        // attachLoadingSpinner("' . $this->form->getId() . '", true, "dark"); - add spinner to block anything else
                     }',
                     'success' => 'js:function(data){
-                    $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                    $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                     $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").parent().find(".dynamic-rows").find("ul:first").append(data);
                     ' . $this->getWorkflowAttributeRowAddOrRemoveExtraScript() . '
                     $(".' . static::getZeroComponentsClassName() . '").hide();

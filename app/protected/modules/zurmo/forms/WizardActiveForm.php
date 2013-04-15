@@ -64,7 +64,7 @@
         protected function resolveId($model, $attribute)
         {
             $id = CHtml::activeId($model, $attribute);
-            if($this->inputPrefixData == null)
+            if ($this->inputPrefixData == null)
             {
                 return $id;
             }

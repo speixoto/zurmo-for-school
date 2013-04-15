@@ -36,7 +36,6 @@
 
     class MashableUtil
     {
-
         /**
          * Create the MashableInboxRules for the model
          * @param type $modelClassName
@@ -205,7 +204,7 @@
                     $string = Zurmo::t('MashableInboxModule', '{hours} hours ago', array('{hours}' => $timeForString['hours']));
                 }
             }
-            else if (($timeForString['days'] == 1))
+            elseif (($timeForString['days'] == 1))
             {
                 $string = Zurmo::t('MashableInboxModule', '{days} day ago', array('{days}' => $timeForString['days']));
             }

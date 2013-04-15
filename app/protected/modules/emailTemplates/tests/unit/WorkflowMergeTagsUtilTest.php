@@ -83,7 +83,6 @@
             $this->invalidTags = array();
         }
 
-
         public function testCanInstantiateWorkflowMergeTags()
         {
             $this->assertTrue($this->contactTextMergeTagsUtil instanceof MergeTagsUtil);

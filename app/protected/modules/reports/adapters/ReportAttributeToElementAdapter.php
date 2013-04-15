@@ -39,7 +39,6 @@
      */
     class ReportAttributeToElementAdapter extends WizardModelAttributeToElementAdapter
     {
-
         /**
          * @var bool
          */
@@ -52,23 +51,23 @@
         public function getContent()
         {
             $this->form->setInputPrefixData($this->inputPrefixData);
-            if($this->treeType == ComponentForReportForm::TYPE_FILTERS)
+            if ($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
                 $content = $this->getContentForFilter();
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 $content = $this->getContentForDisplayAttribute();
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
                 $content = $this->getContentForOrderBy();
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 $content = $this->getContentForGroupBy();
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 $content = $this->getContentForDrillDownDisplayAttribute();
             }
@@ -87,7 +86,7 @@
         protected function getContentForFilter()
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
-            if($this->model->hasAvailableOperatorsType() && count($this->model->getOperatorValuesAndLabels()) > 1)
+            if ($this->model->hasAvailableOperatorsType() && count($this->model->getOperatorValuesAndLabels()) > 1)
             {
                 $operatorElement                    = new OperatorStaticDropDownElement($this->model, 'operator', $this->form, $params);
                 $operatorElement->editableTemplate  = '{content}{error}';
@@ -98,20 +97,20 @@
                 $operatorContent                    = null;
             }
             $valueElementType                       = $this->model->getValueElementType();
-            if($valueElementType != null)
+            if ($valueElementType != null)
             {
                 $valueElementClassName              = $valueElementType . 'Element';
                 $valueElement                       = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement)
+                if ($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedNumberTypesElement)
+                if ($valueElement instanceof MixedNumberTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 }
-                elseif($valueElement instanceof MixedDateTypesElement)
+                elseif ($valueElement instanceof MixedDateTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="dynamic-row-operator">{valueType}</div>' .
                                                       '<div class="value-data has-date-inputs">' .
@@ -139,7 +138,7 @@
             self::resolveDivWrapperForContent($this->model->getDisplayLabel(), $content, 'dynamic-row-label');
             self::resolveDivWrapperForContent($operatorContent,                $content, 'dynamic-row-operator');
             $content                               .= $valueContent;
-            if($this->showAvailableRuntimeFilter)
+            if ($this->showAvailableRuntimeFilter)
             {
                 $runTimeElement                         = new CheckBoxElement($this->model, 'availableAtRunTime',
                                                                     $this->form, $params);
@@ -157,7 +156,7 @@
          */
         protected function renderHiddenOperator()
         {
-            if($this->model->hasAvailableOperatorsType() && count($this->model->getOperatorValuesAndLabels()) == 1)
+            if ($this->model->hasAvailableOperatorsType() && count($this->model->getOperatorValuesAndLabels()) == 1)
             {
                 $hiddenInputName     = Element::resolveInputNamePrefixIntoString(
                     array_merge($this->inputPrefixData, array('operator')));
@@ -176,11 +175,11 @@
          */
         protected function getContentForGroupBy()
         {
-            if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 throw new NotSupportedException();
             }
-            elseif($this->model->getReportType() == Report::TYPE_MATRIX)
+            elseif ($this->model->getReportType() == Report::TYPE_MATRIX)
             {
                 $params                               = array('inputPrefix' => $this->inputPrefixData);
                 $groupByAxisElement                   = new GroupByAxisStaticDropDownElement($this->model, 'axis',
@@ -205,7 +204,7 @@
          */
         protected function getContentForOrderBy()
         {
-            if($this->model->getReportType() == Report::TYPE_MATRIX)
+            if ($this->model->getReportType() == Report::TYPE_MATRIX)
             {
                 throw new NotSupportedException();
             }
@@ -241,7 +240,7 @@
          */
         protected function getContentForDrillDownDisplayAttribute()
         {
-            if($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS ||
+            if ($this->model->getReportType() == Report::TYPE_ROWS_AND_COLUMNS ||
                $this->model->getReportType() == Report::TYPE_MATRIX)
             {
                 throw new NotSupportedException();

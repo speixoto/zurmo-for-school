@@ -151,7 +151,7 @@
          */
         protected function renderTimeTriggerContentAndWrapper()
         {
-            if($this->model->timeTriggerAttribute != null)
+            if ($this->model->timeTriggerAttribute != null)
             {
                 $componentType       = TimeTriggerForWorkflowForm::getType();
                 $inputPrefixData     = array(get_class($this->model), $componentType);

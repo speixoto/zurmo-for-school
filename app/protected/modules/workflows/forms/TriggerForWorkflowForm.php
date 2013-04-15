@@ -130,7 +130,7 @@
          */
         public function setOperator($value)
         {
-            if(!in_array($value, OperatorRules::availableTypes()) && $value != null)
+            if (!in_array($value, OperatorRules::availableTypes()) && $value != null)
             {
                 throw new NotSupportedException();
             }
@@ -171,7 +171,7 @@
          */
         public function validateOperator()
         {
-            if($this->getAvailableOperatorsType() != null && $this->operator == null)
+            if ($this->getAvailableOperatorsType() != null && $this->operator == null)
             {
                 $this->addError('operator', Zurmo::t('WorkflowsModule', 'Operator cannot be blank.'));
                 return  false;
@@ -183,7 +183,7 @@
          */
         public function validateRelationFilter()
         {
-            if($this->relationFilter == self::RELATION_FILTER_ANY)
+            if ($this->relationFilter == self::RELATION_FILTER_ANY)
             {
                 return true;
             }
@@ -197,7 +197,7 @@
          */
         public function validateValue()
         {
-            if((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
+            if ((in_array($this->operator, self::getOperatorsWhereValueIsRequired()) ||
                in_array($this->valueType, self::getValueTypesWhereValueIsRequired()) ||
                ($this->getValueElementType() == 'BooleanForWorkflowStaticDropDown' ||
                $this->getValueElementType()  == 'UserNameId' ||
@@ -208,16 +208,16 @@
             }
             $passedValidation = true;
             $rules            = array();
-            if(!is_array($this->value))
+            if (!is_array($this->value))
             {
                 $this->resolveAndValidateValueData($rules, $passedValidation, 'value');
             }
             else
             {
                 //Assume array has only string values
-                foreach($this->value as $subValue)
+                foreach ($this->value as $subValue)
                 {
-                    if(!is_string($subValue))
+                    if (!is_string($subValue))
                     {
                         $this->addError('value', Zurmo::t('WorkflowsModule', 'Value must be a string.'));
                         $passedValidation = false;
@@ -237,9 +237,9 @@
         {
             $passedValidation = true;
             $rules            = array();
-            if(!is_array($this->secondValue))
+            if (!is_array($this->secondValue))
             {
-                if(in_array($this->operator, self::getOperatorsWhereSecondValueIsRequired()) ||
+                if (in_array($this->operator, self::getOperatorsWhereSecondValueIsRequired()) ||
                    in_array($this->valueType, self::getValueTypesWhereSecondValueIsRequired()))
                 {
                     $rules[] = array('secondValue', 'required');
@@ -258,7 +258,7 @@
          */
         public function validateValueType()
         {
-            if($this->getValueElementType() == 'MixedDateTypesForWorkflow' && $this->valueType == null)
+            if ($this->getValueElementType() == 'MixedDateTypesForWorkflow' && $this->valueType == null)
             {
                 $this->addError('valueType', Zurmo::t('WorkflowsModule', 'Type cannot be blank.'));
                 return false;
@@ -270,7 +270,7 @@
          */
         public function hasAvailableOperatorsType()
         {
-            if($this->getAvailableOperatorsType() != null)
+            if ($this->getAvailableOperatorsType() != null)
             {
                 return true;
             }
@@ -283,32 +283,32 @@
          */
         public function getOperatorValuesAndLabels()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
             $type = $this->getAvailableOperatorsType();
             $data = array();
             ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
-            if($this->resolveShouldAddSpecialOnSaveNonRelatedOperators())
+            if ($this->resolveShouldAddSpecialOnSaveNonRelatedOperators())
             {
                 $data[OperatorRules::TYPE_BECOMES]         = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES);
                 $data[OperatorRules::TYPE_WAS]             = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS);
                 $data[OperatorRules::TYPE_CHANGES]         = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_CHANGES);
                 $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
             }
-            elseif($this->resolveShouldAddSpecialByTimeNonRelatedOperators())
+            elseif ($this->resolveShouldAddSpecialByTimeNonRelatedOperators())
             {
                 $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
             }
-            if($this->resolveShouldAddSpecialOnSaveNonRelatedOperators() &&
+            if ($this->resolveShouldAddSpecialOnSaveNonRelatedOperators() &&
                $type == ModelAttributeToOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN &&
                $this->getValueElementType() != 'StaticMultiSelectDropDownForWorkflow')
             {
                 $data[OperatorRules::TYPE_BECOMES_ONE_OF]  = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_BECOMES_ONE_OF);
                 $data[OperatorRules::TYPE_WAS_ONE_OF]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_WAS_ONE_OF);
             }
-            if($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
+            if ($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
                $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE)
             {
                 $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
@@ -323,7 +323,7 @@
          */
         public function getValueElementType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -338,7 +338,7 @@
          */
         public function getValueEvaluationType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -355,7 +355,7 @@
             $modelClassName       = $this->getResolvedAttributeModelClassName();
             $attribute            = $this->getResolvedAttribute();
             $model                = new $modelClassName();
-            if($model->isAttribute($attribute))
+            if ($model->isAttribute($attribute))
             {
                 $dataAndLabels    = CustomFieldDataUtil::
                                     getDataIndexedByDataAndTranslatedLabelsByLanguage($model->{$attribute}->data, Yii::app()->language);
@@ -383,11 +383,11 @@
          */
         protected function getAvailableOperatorsType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
-            if($this->_availableOperatorsType != null)
+            if ($this->_availableOperatorsType != null)
             {
                 return $this->_availableOperatorsType;
             }
@@ -437,9 +437,9 @@
         private function createValueValidatorsByRules(Array $rules)
         {
             $validators=new CList;
-            foreach($rules as $rule)
+            foreach ($rules as $rule)
             {
-                if(isset($rule[0],$rule[1]))
+                if (isset($rule[0],$rule[1]))
                 {
                     $validators->add(CValidator::createValidator($rule[1],$this,$rule[0],array_slice($rule,2)));
                 }
@@ -465,10 +465,10 @@
                 $modelToWorkflowAdapter->getTriggerRulesByAttribute(
                     $this->getResolvedAttribute(), $ruleAttributeName));
             $validators           = $this->createValueValidatorsByRules($rules);
-            foreach($validators as $validator)
+            foreach ($validators as $validator)
             {
                 $validated = $validator->validate($this);
-                if(!$validated)
+                if (!$validated)
                 {
                     $passedValidation = false;
                 }
@@ -481,7 +481,7 @@
         protected function resolveShouldAddSpecialOnSaveNonRelatedOperators()
         {
             $modelClassName = $this->modelClassName;
-            if(( $this->workflowType == Workflow::TYPE_ON_SAVE &&
+            if (( $this->workflowType == Workflow::TYPE_ON_SAVE &&
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&
@@ -498,7 +498,7 @@
         protected function resolveShouldAddSpecialByTimeNonRelatedOperators()
         {
             $modelClassName = $this->modelClassName;
-            if(( $this->workflowType == Workflow::TYPE_BY_TIME &&
+            if (( $this->workflowType == Workflow::TYPE_BY_TIME &&
                 $this->getAttribute() != null) ||
                 ($this->getAttribute() == null &&
                     $this->getAttributeAndRelationData()) == 2 &&

@@ -52,32 +52,32 @@
             {
 
                 case OperatorRules::TYPE_EQUALS:
-                    if(static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value) &&
                        $this->resolveCurrency($model->{$attribute}->currency))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if(static::sanitize($model->{$attribute}->value) !== static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->{$attribute}->value) !== static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues))
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists('value', $model->{$attribute}->originalAttributeValues))
+                    if (!array_key_exists('value', $model->{$attribute}->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
                         static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value) &&
                         $this->resolveCurrency($model->{$attribute}->currency))
                     {
@@ -85,7 +85,7 @@
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
                         static::sanitize($model->{$attribute}->originalAttributeValues['value']) ===
                         static::sanitize($this->trigger->value)&&
                         $this->resolveCurrency($model->{$attribute}->currency))
@@ -94,35 +94,35 @@
                     }
                     break;
                 case OperatorRules::TYPE_GREATER_THAN:
-                    if(static::sanitize($model->{$attribute}->value) > static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->{$attribute}->value) > static::sanitize($this->trigger->value) &&
                        $this->resolveCurrency($model->{$attribute}->currency))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_LESS_THAN:
-                    if(static::sanitize($model->{$attribute}->value) < static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->{$attribute}->value) < static::sanitize($this->trigger->value) &&
                        $this->resolveCurrency($model->{$attribute}->currency))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO:
-                    if(static::sanitize($model->{$attribute}->value) >= static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->{$attribute}->value) >= static::sanitize($this->trigger->value) &&
                        $this->resolveCurrency($model->{$attribute}->currency))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO:
-                    if(static::sanitize($model->{$attribute}->value) <= static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->{$attribute}->value) <= static::sanitize($this->trigger->value) &&
                        $this->resolveCurrency($model->{$attribute}->currency))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BETWEEN:
-                    if(static::sanitize($model->{$attribute}->value) > static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->{$attribute}->value) > static::sanitize($this->trigger->value) &&
                        static::sanitize($model->{$attribute}->value) < static::sanitize($this->trigger->secondValue) &&
                        $this->resolveCurrency($model->{$attribute}->currency))
                     {
@@ -146,9 +146,9 @@
         {
             assert('is_string($attribute)');
             assert('is_bool($changeRequiredToProcess)');
-            if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) || !$changeRequiredToProcess)
+            if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) || !$changeRequiredToProcess)
             {
-                if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
+                if ($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
                 {
                     return true;
                 }
@@ -172,11 +172,11 @@
          */
         protected  function resolveCurrency(Currency $currency)
         {
-           if($this->trigger->currencyIdForValue == null)
+           if ($this->trigger->currencyIdForValue == null)
            {
                return true;
            }
-           elseif($currency->id == $this->trigger->currencyIdForValue)
+           elseif ($currency->id == $this->trigger->currencyIdForValue)
            {
                return true;
            }

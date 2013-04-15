@@ -70,7 +70,7 @@
         protected static function resolveModelContent(RedBeanModel $model)
         {
             $security = new DetailsActionSecurity(Yii::app()->user->userModel, $model);
-            if($security->canUserPerformAction())
+            if ($security->canUserPerformAction())
             {
                 $params              = array('label' => strval($model), 'wrapLabel' => false);
                 $moduleClassName     = $model->getModuleClassName();

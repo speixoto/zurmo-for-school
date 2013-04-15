@@ -141,7 +141,6 @@
             return $label . $content . $error;
         }
 
-
         /**
          * Renders the attribute from the model.
          * @return The element's content.

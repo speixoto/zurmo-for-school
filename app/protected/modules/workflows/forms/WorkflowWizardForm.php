@@ -160,12 +160,12 @@
         public function validateTimeTrigger()
         {
             $passedValidation = true;
-            if($this->timeTrigger != null)
+            if ($this->timeTrigger != null)
             {
                 $validated = $this->timeTrigger->validate();
-                if(!$validated)
+                if (!$validated)
                 {
-                    foreach($this->timeTrigger->getErrors() as $attribute => $error)
+                    foreach ($this->timeTrigger->getErrors() as $attribute => $error)
                     {
                         $this->addError( ComponentForWorkflowForm::TYPE_TIME_TRIGGER . '_' . $attribute, $error);
                     }
@@ -188,9 +188,9 @@
          */
         public function validateTriggersStructure()
         {
-            if(count($this->triggers) > 0)
+            if (count($this->triggers) > 0)
             {
-                if(null != $errorMessage = PHPOperatorUtil::
+                if (null != $errorMessage = PHPOperatorUtil::
                            resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->triggersStructure,
                            count($this->triggers)))
                 {

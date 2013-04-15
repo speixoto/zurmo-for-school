@@ -100,7 +100,7 @@
             assert('is_string($actionBarViewClassName)');
             assert('is_string($viewPrefixName) || $viewPrefixName == null');
             assert('is_string($activeActionElementType) || $activeActionElementType == null');
-            if($viewPrefixName == null)
+            if ($viewPrefixName == null)
             {
                 $viewPrefixName = $this->getModule()->getPluralCamelCasedName();
             }
@@ -122,7 +122,7 @@
         {
             assert('is_string($listViewClassName) || $listViewClassName == null');
             $listModel           = $searchForm->getModel();
-            if($listViewClassName == null)
+            if ($listViewClassName == null)
             {
                 $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
             }
@@ -184,7 +184,7 @@
                 }
                 if ($stickySearchKey != null && $setSticky)
                 {
-                    if($stickySearchData == null)
+                    if ($stickySearchData == null)
                     {
                         $stickySearchData = array();
                     }
@@ -619,7 +619,7 @@
             {
                 return Zurmo::t('Core', 'Mass Delete');
             }
-            else if (strpos($actionId, 'massEdit') === 0)
+            elseif (strpos($actionId, 'massEdit') === 0)
             {
                 return Zurmo::t('Core', 'Mass Update');
             }
@@ -1055,7 +1055,7 @@
         protected static function processModelForMassDelete(& $model)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            if(!$model->delete(false))
+            if (!$model->delete(false))
             {
                 throw new FailedToDeleteModelException();
             }
@@ -1076,7 +1076,7 @@
             {
                 $model->setAttributes($sanitizedOwnerPostData);
             }
-            if(!$model->save(false))
+            if (!$model->save(false))
             {
                 throw new FailedToSaveModelException();
             }

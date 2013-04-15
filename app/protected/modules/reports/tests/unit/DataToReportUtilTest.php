@@ -199,6 +199,5 @@
             $this->assertEquals('2012-02-24', $sanitizedFilterData[2]['value']);
             $this->assertEquals('2012-02-28', $sanitizedFilterData[2]['secondValue']);
         }
-
     }
 ?>

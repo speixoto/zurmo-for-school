@@ -81,7 +81,7 @@
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
-            if($runReport)
+            if ($runReport)
             {
                 $dataProvider->setRunReport($runReport);
             }

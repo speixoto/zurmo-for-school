@@ -128,7 +128,7 @@
         {
             $activeLanguagesData = $this->getActiveLanguagesData();
 
-            foreach ($activeLanguagesData as $languageCode=>$languageData)
+            foreach ($activeLanguagesData as $languageCode => $languageData)
             {
                 if (array_key_exists('activationDatetime', $languageData))
                 {

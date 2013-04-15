@@ -46,7 +46,7 @@
         protected static function resolveSortColumnName(RedBeanModelAttributeToDataProviderAdapter
                                                         $modelAttributeToDataProviderAdapter)
         {
-            if($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
+            if ($modelAttributeToDataProviderAdapter->hasRelatedAttribute())
             {
                 return $modelAttributeToDataProviderAdapter->getRelatedAttributeColumnName();
             }
@@ -64,7 +64,7 @@
          */
         protected function resolveOrderByString($tableAliasName, $resolvedSortColumnName, $queryStringExtraPart)
         {
-            if($this->modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
+            if ($this->modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                 $this->modelToReportAdapter->isAttributeACalculationOrModifier($this->componentForm->getResolvedAttribute()))
             {
                 return $this->modelToReportAdapter->resolveOrderByStringForCalculationOrModifier(
@@ -116,7 +116,7 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
+            if ($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                 $modelToReportAdapter->isAttributeACalculationOrModifier($attribute))
             {
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);

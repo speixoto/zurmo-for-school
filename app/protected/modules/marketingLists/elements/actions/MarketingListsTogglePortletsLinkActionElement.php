@@ -52,7 +52,6 @@
          */
         public function render()
         {
-
             $content  = null;
             return $content; // TODO: @Shoaibi: Low: Just for 1.5 release.
             $membersClass = $this->getMembersPortletClass();
@@ -63,7 +62,7 @@
                 $label       = ZurmoHtml::label(Zurmo::t('MarketingListsModule', 'Members'), Zurmo::t('MarketingListsModule', 'Members'), array('class' => 'label-for-marketing-list-widgets'));
                 $content    .= ZurmoHtml::checkBox(Zurmo::t('MarketingListsModule', 'Members'), true, $htmlOptions) . $label;
             }
-            if($autorespondersClass)
+            if ($autorespondersClass)
             {
                 $htmlOptions = array('onClick' => 'js:$(".' . $autorespondersClass . '").parentsUntil("li").parent().toggle();');
                 $label       = ZurmoHtml::label(Zurmo::t('MarketingListsModule', 'Autoresponders'), Zurmo::t('MarketingListsModule', 'Autoresponders'), array('class' => 'label-for-marketing-list-widgets'));
@@ -87,7 +86,6 @@
         {
             return null;
         }
-
 
         protected function getMembersPortletClass()
         {

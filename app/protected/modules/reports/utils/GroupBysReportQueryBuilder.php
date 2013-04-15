@@ -46,13 +46,13 @@
         public function makeQueryContent(Array $components)
         {
             $content = null;
-            foreach($components as $groupBy)
+            foreach ($components as $groupBy)
             {
                 $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($groupBy);
                 $itemBuilder          = new GroupByReportItemQueryBuilder($groupBy, $this->joinTablesAdapter,
                                         $modelToReportAdapter, $this->currencyConversionType);
                 $groupByContent       = $itemBuilder->resolveComponentAttributeStringContent();
-                if($content != null)
+                if ($content != null)
                 {
                     $content .= ', ';
                 }

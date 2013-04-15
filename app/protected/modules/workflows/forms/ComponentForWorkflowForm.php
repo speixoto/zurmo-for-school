@@ -224,7 +224,7 @@
          */
         public function getAttributeAndRelationData()
         {
-            if($this->attributeAndRelationData == null)
+            if ($this->attributeAndRelationData == null)
             {
                 return $this->attribute;
             }
@@ -238,7 +238,7 @@
          */
         public function hasRelatedData()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return false;
             }
@@ -252,7 +252,7 @@
          */
         public function getResolvedAttribute()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return $this->attribute;
             }
@@ -265,7 +265,7 @@
          */
         public function getResolvedAttributeModuleClassName()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return $this->moduleClassName;
             }
@@ -279,7 +279,7 @@
          */
         public function getResolvedAttributeModelClassName()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return $this->modelClassName;
             }
@@ -319,7 +319,7 @@
          */
         public function getPenultimateModelClassName()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 throw new NotSupportedException();
             }
@@ -333,7 +333,7 @@
          */
         public function getPenultimateRelation()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 throw new NotSupportedException();
             }
@@ -349,7 +349,7 @@
         {
             $modelClassName       = $this->modelClassName;
             $moduleClassName      = $this->moduleClassName;
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($moduleClassName, $modelClassName, $this->workflowType);
@@ -358,25 +358,25 @@
             else
             {
                 $content = null;
-                foreach($this->attributeAndRelationData as $relationOrAttribute)
+                foreach ($this->attributeAndRelationData as $relationOrAttribute)
                 {
-                    if($content != null)
+                    if ($content != null)
                     {
                         $content .= ' ' . self::DISPLAY_LABEL_RELATION_DIVIDER . ' ';
                     }
 
                     $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                             make($moduleClassName, $modelClassName, $this->workflowType);
-                    if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
+                    if ($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                     {
                         $modelClassName   = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName  = $modelToWorkflowAdapter->getRelationModuleClassName($relationOrAttribute);
                         $typeToUse = 'Plural';
-                        if($modelToWorkflowAdapter->isRelationASingularRelation($relationOrAttribute))
+                        if ($modelToWorkflowAdapter->isRelationASingularRelation($relationOrAttribute))
                         {
                             $typeToUse = 'Singular';
                         }
-                        if($moduleClassName != $modelClassName::getModuleClassName())
+                        if ($moduleClassName != $modelClassName::getModuleClassName())
                         {
                             $content         .= $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse);
                         }
@@ -412,7 +412,7 @@
          */
         public function getDisplayElementType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -427,7 +427,7 @@
         public function isATypeOfCurrencyValue()
         {
             $displayElementType = $this->getDisplayElementType();
-            if($displayElementType == 'CurrencyValue')
+            if ($displayElementType == 'CurrencyValue')
             {
                 return true;
             }
@@ -443,7 +443,7 @@
         protected function resolveAttributeOrRelationAndAttributeDataByIndexType($indexType)
         {
             $attributeOrRelationAndAttributeData    = explode(FormModelUtil::RELATION_DELIMITER, $indexType);
-            if(count($attributeOrRelationAndAttributeData) == 1)
+            if (count($attributeOrRelationAndAttributeData) == 1)
             {
                 $attributeOrRelationAndAttributeData = $attributeOrRelationAndAttributeData[0];
             }
@@ -470,11 +470,11 @@
                                                                    $modelClassName)
         {
             assert(count($attributeAndRelationData) > 0); // Not Coding Standard
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            foreach ($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($moduleClassName, $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
+                if ($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToWorkflowAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
@@ -493,11 +493,11 @@
                                                                   $modelClassName)
         {
             assert('count($attributeAndRelationData) > 0');
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            foreach ($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($moduleClassName, $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
+                if ($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToWorkflowAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
@@ -515,12 +515,12 @@
         {
             assert('count($attributeAndRelationData) > 0');
             array_pop($attributeAndRelationData);
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            foreach ($attributeAndRelationData as $relationOrAttribute)
             {
                 $lastModelClassName = $modelClassName;
                 $modelToWorkflowAdapter = ModelRelationsAndAttributesToWorkflowAdapter::
                                         make($modelClassName::getModuleClassName(), $modelClassName, $this->workflowType);
-                if($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
+                if ($modelToWorkflowAdapter->isUsedAsARelation($relationOrAttribute))
                 {
                     $modelClassName     = $modelToWorkflowAdapter->getRelationModelClassName($relationOrAttribute);
                 }
@@ -556,7 +556,7 @@
         private function setAttributeAndRelationData($attributeOrRelationAndAttributeData)
         {
             assert('is_string($attributeOrRelationAndAttributeData) || is_array($attributeOrRelationAndAttributeData)');
-            if(!is_array($attributeOrRelationAndAttributeData))
+            if (!is_array($attributeOrRelationAndAttributeData))
             {
                 $this->attribute                = $attributeOrRelationAndAttributeData;
                 $this->attributeAndRelationData = null;

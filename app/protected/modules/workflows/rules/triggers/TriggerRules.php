@@ -67,9 +67,9 @@
         {
             assert('is_string($attribute)');
             assert('is_bool($changeRequiredToProcess)');
-            if(array_key_exists($attribute, $model->originalAttributeValues) || !$changeRequiredToProcess)
+            if (array_key_exists($attribute, $model->originalAttributeValues) || !$changeRequiredToProcess)
             {
-                if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
+                if ($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
                 {
                     return true;
                 }

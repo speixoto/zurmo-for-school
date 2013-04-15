@@ -46,13 +46,13 @@
         public function makeQueryContent(Array $components)
         {
             $content = null;
-            foreach($components as $orderBy)
+            foreach ($components as $orderBy)
             {
                 $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($orderBy);
                 $itemBuilder          = new OrderByReportItemQueryBuilder($orderBy, $this->joinTablesAdapter,
                                             $modelToReportAdapter, $this->currencyConversionType);
                 $orderByContent       = $itemBuilder->resolveComponentAttributeStringContent();
-                if($content != null)
+                if ($content != null)
                 {
                     $content .= ', ';
                 }

@@ -92,7 +92,7 @@
                 Yii::app()->user->userModel = $originalUser;
                 return true;
             }
-            catch(MissingASuperAdministratorException $e)
+            catch (MissingASuperAdministratorException $e)
             {
                 //skip running workflow, since no super administrators are available.
                 $this->errorMessage = Zurmo::t('WorkflowsModule', 'Could not process since no super administrators were found');
@@ -116,7 +116,7 @@
          */
         protected function resolveSavedWorkflowIsValid(ByTimeWorkflowInQueue $byTimeWorkflowInQueue)
         {
-            if($byTimeWorkflowInQueue->savedWorkflow->id < 0)
+            if ($byTimeWorkflowInQueue->savedWorkflow->id < 0)
             {
                 throw new NotFoundException();
             }
@@ -130,19 +130,19 @@
         protected function processByTimeWorkflowInQueue(ByTimeWorkflowInQueue $byTimeWorkflowInQueue, RedBeanModel $model)
         {
             $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($byTimeWorkflowInQueue->savedWorkflow);
-            if(!$workflow->getIsActive())
+            if (!$workflow->getIsActive())
             {
                 return;
             }
             $workflow->setTimeTriggerRequireChangeToProcessToFalse();
-            if(WorkflowTriggersUtil::areTriggersTrueOnByTimeWorkflowQueueJob($workflow, $model))
+            if (WorkflowTriggersUtil::areTriggersTrueOnByTimeWorkflowQueueJob($workflow, $model))
             {
                 WorkflowActionsUtil::processOnByTimeWorkflowInQueueJob($workflow, $model, Yii::app()->user->userModel);
                 WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, Yii::app()->user->userModel);
-                if($model->isModified())
+                if ($model->isModified())
                 {
                     $saved = $model->save();
-                    if(!$saved)
+                    if (!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }

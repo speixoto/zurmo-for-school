@@ -39,7 +39,6 @@
      */
     abstract class MashableInboxRules
     {
-
         /**
          * This sets if action button to create a new model should be rendered in the mashableInboxView
          * @var boolean
@@ -263,7 +262,7 @@
             $haveNotReadRelationName = $this->getHaveNotReadRelationName();
             foreach ($model->$haveNotReadRelationName as $existingPersonWhoHaveNotReadLatest)
             {
-                if($existingPersonWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
+                if ($existingPersonWhoHaveNotReadLatest->person->getClassId('Item') == $user->getClassId('Item'))
                 {
                     $this->removePersonWhoHasNotReadLatestToModel(
                                                     $model,

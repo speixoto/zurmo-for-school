@@ -45,7 +45,7 @@
          */
         protected function isReportValidType()
         {
-            if($this->report->getType() != Report::TYPE_ROWS_AND_COLUMNS)
+            if ($this->report->getType() != Report::TYPE_ROWS_AND_COLUMNS)
             {
                 throw new NotSupportedException();
             }

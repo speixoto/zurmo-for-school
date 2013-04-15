@@ -112,7 +112,6 @@
                         return false;
                     });
                 ");
-
         }
 
         protected function renderControlNonEditable()

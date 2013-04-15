@@ -539,7 +539,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
         }
 
         /**
-         * 
+         *
          * Test EmailArchivingUtil::resolveSanitizeFromImapToUtf8 to ensure that email subject is UTF8
          */
         public function testResolveSanitizeMessageSubject()
@@ -547,7 +547,7 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
             $subjectUTF8 = 'Тестовое письмо. Test email';
-            $subjectKOI8R = '=?KOI8-R?Q?=F4=C5=D3=D4=CF=D7=CF=C5_=D0=C9=D3=D8=CD=CF=2E_Te?= =?KOI8-R?Q?st_email?=';
+            $subjectKOI8R = '=?KOI8-R?Q?=F4=C5=D3=D4=CF=D7=CF=C5_=D0=C9=D3=D8=CD=CF=2E_Te?= =?KOI8-R?Q?st_email?='; // Not Coding Standard
             $emailMessage = new EmailMessage();
             $emailMessage->subject = $subjectKOI8R;
             $this->assertEquals($subjectKOI8R,$emailMessage->subject);
@@ -555,6 +555,5 @@ Cc: 'John Wein' <john@example.com>, Peter Smith <peter@example.com>
             $this->assertEquals($subjectUTF8,$emailMessage->subject);
             //$this->assertTrue($emailMessage->save(false));
         }
-        
     }
 ?>

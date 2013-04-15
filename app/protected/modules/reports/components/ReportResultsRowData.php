@@ -110,7 +110,7 @@
          */
         public function __isset($name)
         {
-            if($this->$name !== null)
+            if ($this->$name !== null)
             {
                 return true;
             }
@@ -124,12 +124,12 @@
         public function __get($name)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $name);
-            if(count($parts) == 2 && $parts[1] != null)
+            if (count($parts) == 2 && $parts[1] != null)
             {
                 return $this->resolveValueFromModel($parts[1]);
             }
             //Not using isset, because a null value would not resolve correctly
-            if(array_key_exists($name, $this->selectedColumnNamesAndValues))
+            if (array_key_exists($name, $this->selectedColumnNamesAndValues))
             {
                 return $this->selectedColumnNamesAndValues[$name];
             }
@@ -144,7 +144,7 @@
         public function addModelAndAlias(RedBeanModel $model, $alias)
         {
             assert('is_string($alias)');
-            if(isset($this->modelsByAliases[$alias]))
+            if (isset($this->modelsByAliases[$alias]))
             {
                 throw new NotSupportedException();
             }
@@ -210,7 +210,7 @@
         {
             assert('is_string($attribute)');
             list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
-            if($displayAttributeKey != null)
+            if ($displayAttributeKey != null)
             {
                 return $this->resolveModel($displayAttributeKey);
             }
@@ -227,10 +227,10 @@
         {
             assert('is_string($attribute)');
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
-            if(count($parts) == 2 && $parts[1] != null)
+            if (count($parts) == 2 && $parts[1] != null)
             {
                 list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attribute);
-                if($displayAttributeKey != null && isset($this->displayAttributes[$displayAttributeKey]))
+                if ($displayAttributeKey != null && isset($this->displayAttributes[$displayAttributeKey]))
                 {
                     return $this->displayAttributes[$displayAttributeKey]->getDisplayLabel();
                 }
@@ -240,10 +240,10 @@
                 }
             }
             $parts = explode(DisplayAttributeForReportForm::COLUMN_ALIAS_PREFIX, $attribute);
-            if(count($parts) == 2 && $parts[1] != null)
+            if (count($parts) == 2 && $parts[1] != null)
             {
                 list($notUsed, $displayAttributeKey) = explode(DisplayAttributeForReportForm::COLUMN_ALIAS_PREFIX, $attribute);
-                if($displayAttributeKey != null && isset($this->displayAttributes[$displayAttributeKey]))
+                if ($displayAttributeKey != null && isset($this->displayAttributes[$displayAttributeKey]))
                 {
                     return $this->displayAttributes[$displayAttributeKey]->getDisplayLabel();
                 }
@@ -268,16 +268,16 @@
         public function getDataParamsForDrillDownAjaxCall()
         {
             $dataParams = array();
-            foreach($this->displayAttributes as $key => $displayAttribute)
+            foreach ($this->displayAttributes as $key => $displayAttribute)
             {
-                if($displayAttribute->valueUsedAsDrillDownFilter)
+                if ($displayAttribute->valueUsedAsDrillDownFilter)
                 {
                     $attributeAlias = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
-                    if($this->shouldResolveValueFromModel($attributeAlias))
+                    if ($this->shouldResolveValueFromModel($attributeAlias))
                     {
                         list($notUsed, $displayAttributeKey) = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
                         $model = $this->resolveModel($displayAttributeKey);
-                        if($model == null)
+                        if ($model == null)
                         {
                             $value = null;
                         }
@@ -313,13 +313,13 @@
         public function resolveRawValueByDisplayAttributeKey($displayAttributeKey)
         {
             assert('is_int($displayAttributeKey)');
-            if(null != $model = $this->resolveModel($displayAttributeKey))
+            if (null != $model = $this->resolveModel($displayAttributeKey))
             {
                 return $this->resolveRawValueByModel($this->displayAttributes[$displayAttributeKey], $model);
             }
             //Not using isset, because a null value would not resolve correctly
             $columnAliasName = $this->displayAttributes[$displayAttributeKey]->columnAliasName;
-            if(array_key_exists($columnAliasName, $this->selectedColumnNamesAndValues))
+            if (array_key_exists($columnAliasName, $this->selectedColumnNamesAndValues))
             {
                 return $this->selectedColumnNamesAndValues[$columnAliasName];
             }
@@ -333,7 +333,7 @@
         protected function shouldResolveValueFromModel($attributeAlias)
         {
             $parts = explode(self::ATTRIBUTE_NAME_PREFIX, $attributeAlias);
-            if(count($parts) == 2 && $parts[1] != null)
+            if (count($parts) == 2 && $parts[1] != null)
             {
                 return true;
             }
@@ -347,13 +347,13 @@
          */
         protected function resolveModel($displayAttributeKey)
         {
-            if(!isset($this->displayAttributes[$displayAttributeKey]))
+            if (!isset($this->displayAttributes[$displayAttributeKey]))
             {
                 throw new NotSupportedException();
             }
             $displayAttribute = $this->displayAttributes[$displayAttributeKey];
             $modelAlias       = $displayAttribute->getModelAliasUsingTableAliasName();
-            if(!isset($this->modelsByAliases[$modelAlias]))
+            if (!isset($this->modelsByAliases[$modelAlias]))
             {
                 return null;
             }
@@ -367,14 +367,14 @@
          */
         protected function resolveValueFromModel($displayAttributeKey)
         {
-            if(!isset($this->displayAttributes[$displayAttributeKey]))
+            if (!isset($this->displayAttributes[$displayAttributeKey]))
             {
                 throw new NotSupportedException();
             }
             $displayAttribute = $this->displayAttributes[$displayAttributeKey];
             $modelAlias       = $displayAttribute->getModelAliasUsingTableAliasName();
             $attribute        = $displayAttribute->getResolvedAttributeRealAttributeName();
-            if(!isset($this->modelsByAliases[$modelAlias]))
+            if (!isset($this->modelsByAliases[$modelAlias]))
             {
                 $defaultModelClassName = $displayAttribute->getResolvedAttributeModelClassName();
                 $model = new $defaultModelClassName(false);
@@ -396,12 +396,12 @@
         protected function resolveModelAttributeValueForPenultimateRelation(RedBeanModel $model, $attribute,
                                                                             DisplayAttributeForReportForm $displayAttribute)
         {
-            if($model->isAttribute($attribute))
+            if ($model->isAttribute($attribute))
             {
                 return $model->$attribute;
             }
             $penultimateRelation = $displayAttribute->getPenultimateRelation();
-            if(!$model->isAttribute($penultimateRelation))
+            if (!$model->isAttribute($penultimateRelation))
             {
                 throw new NotSupportedException();
             }
@@ -417,20 +417,20 @@
         {
             $type                 = $displayAttribute->getDisplayElementType();
             $attribute            = $displayAttribute->getResolvedAttribute();
-            if($type == 'CurrencyValue')
+            if ($type == 'CurrencyValue')
             {
                 return $model->{$attribute}->value;
             }
-            elseif($type == 'User')
+            elseif ($type == 'User')
             {
                 $realAttributeName = $displayAttribute->getResolvedAttributeRealAttributeName();
                 return $model->{$realAttributeName}->id;
             }
-            elseif($type == 'DropDown')
+            elseif ($type == 'DropDown')
             {
                 return $model->{$attribute}->value;
             }
-            elseif(null != $rawValueRelatedAttribute = $displayAttribute->getRawValueRelatedAttribute())
+            elseif (null != $rawValueRelatedAttribute = $displayAttribute->getRawValueRelatedAttribute())
             {
                 return $model->{$attribute}->{$rawValueRelatedAttribute};
             }
@@ -447,7 +447,7 @@
          */
         protected function getModelByAlias($alias)
         {
-            if(!isset($this->modelsByAliases[$alias]))
+            if (!isset($this->modelsByAliases[$alias]))
             {
                 throw new NotSupportedException();
             }

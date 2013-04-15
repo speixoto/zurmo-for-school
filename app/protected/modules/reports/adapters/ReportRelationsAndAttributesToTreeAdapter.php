@@ -69,7 +69,7 @@
             $nodeIdPrefix             = self::resolveNodeIdPrefixByNodeId($nodeId);
             $precedingModel           = null;
             $precedingRelation        = null;
-            if($nodeId != 'source')
+            if ($nodeId != 'source')
             {
                 self::resolvePrecedingModelRelationAndAdapterByNodeId($nodeId, $modelToReportAdapter, $precedingModel,
                                                                       $precedingRelation);
@@ -78,7 +78,7 @@
             {
                 $nodeIdPrefix = null;
             }
-            if($nodeIdPrefix == null)
+            if ($nodeIdPrefix == null)
             {
                 $data                       = array();
                 $data[0]                    = array('expanded' => true,
@@ -86,7 +86,7 @@
             }
             $childrenNodeData               = $this->getChildrenNodeData($modelToReportAdapter, $precedingModel,
                                                                          $precedingRelation, $nodeIdPrefix);
-            if(!empty($childrenNodeData) && $nodeIdPrefix == null)
+            if (!empty($childrenNodeData) && $nodeIdPrefix == null)
             {
                 $data[0]['children'] = $childrenNodeData;
             }
@@ -112,7 +112,7 @@
         {
             $childrenNodeData        = array();
             $attributesData          = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
-            foreach($attributesData as $attribute => $attributeData)
+            foreach ($attributesData as $attribute => $attributeData)
             {
                 $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
@@ -125,11 +125,11 @@
                 getSelectableRelationsDataResolvedForUserAccess(
                 Yii::app()->user->userModel,
                 $selectableRelationsData);
-            foreach($resolvedSelectableRelationsData as $relation => $relationData)
+            foreach ($resolvedSelectableRelationsData as $relation => $relationData)
             {
                 $relationModelClassName       = $modelToReportAdapter->getRelationModelClassName($relation);
                 $relationModuleClassName      = $relationModelClassName::getModuleClassName();
-                if($relationModuleClassName == null)
+                if ($relationModuleClassName == null)
                 {
                     throw new NotSupportedException($relationModelClassName);
                 }
@@ -151,27 +151,26 @@
         protected function getAttributesData(ModelRelationsAndAttributesToReportAdapter $modelToReportAdapter,
                                              RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if($this->treeType == ComponentForReportForm::TYPE_FILTERS)
+            if ($this->treeType == ComponentForReportForm::TYPE_FILTERS)
             {
                 return $modelToReportAdapter->getAttributesForFilters($precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 return $modelToReportAdapter->getAttributesForDisplayAttributes($this->report->getGroupBys(),
                                                                                 $precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
-
                 return $modelToReportAdapter->getAttributesForOrderBys($this->report->getGroupBys(),
                                                                        $this->report->getDisplayAttributes(),
                                                                        $precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 return $modelToReportAdapter->getAttributesForGroupBys($precedingModel, $precedingRelation);
             }
-            elseif($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif ($this->treeType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 return $modelToReportAdapter->getForDrillDownAttributes($precedingModel, $precedingRelation);
             }
@@ -204,21 +203,21 @@
                                 $nodeId, & $modelToReportAdapter, & $precedingModel, & $precedingRelation)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            if($nodeId == 'source')
+            if ($nodeId == 'source')
             {
                 return;
             }
             $relations    = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
             $lastRelation = end($relations);
-            foreach($relations as $relation)
+            foreach ($relations as $relation)
             {
                 $relationModelClassName = $modelToReportAdapter->getRelationModelClassName($relation);
                 $precedingRelation      = $relation;
-                if($relation != $lastRelation)
+                if ($relation != $lastRelation)
                 {
                     $precedingModel    = new $relationModelClassName(false);
                 }
-                elseif(count($relations) == 1)
+                elseif (count($relations) == 1)
                 {
                     $precedingModel    = $modelToReportAdapter->getModel();
                 }

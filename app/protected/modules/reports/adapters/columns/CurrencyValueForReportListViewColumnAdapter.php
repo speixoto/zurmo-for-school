@@ -45,18 +45,18 @@
          */
         public function renderGridViewData()
         {
-            if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+            if ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
             {
                 $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;
                 $value .= '->value, $data->' . $this->attribute . '->currency->code)';
             }
-            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+            elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
             {
                 $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;
                 $value .= '->value * $data->' . $this->attribute . '->rateToBase, "' .
                           Yii::app()->currencyHelper->getBaseCode() . '")';
             }
-            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+            elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
             {
                 //Assumes base conversion is done using sql math
                 $value  = 'Yii::app()->numberFormatter->formatCurrency($data->' . $this->attribute;

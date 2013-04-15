@@ -173,7 +173,7 @@
         {
             $inputPrefixData   = $this->inputPrefixData;
             $inputPrefixData[] = ActionForWorkflowForm::ACTION_ATTRIBUTES;
-            if($this->model->isTypeAnUpdateVariant())
+            if ($this->model->isTypeAnUpdateVariant())
             {
                 return $this->resolveAttributeRowsForUpdateTypes($inputPrefixData);
             }
@@ -192,7 +192,7 @@
             assert('is_array($inputPrefixData)');
             $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
                                        self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
-            foreach($this->model->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
+            foreach ($this->model->resolveAllActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
                                    $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
@@ -210,13 +210,13 @@
             assert('is_array($inputPrefixData)');
             $attributeRows     = array(self::REQUIRED_ATTRIBUTES_INDEX     => array(),
                                        self::NON_REQUIRED_ATTRIBUTES_INDEX => array());
-            foreach($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
+            foreach ($this->model->resolveAllRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
                     $this->model->type, array_merge($inputPrefixData, array($attribute)), true);
                 $attributeRows[self::REQUIRED_ATTRIBUTES_INDEX][] = $elementAdapter->getContent();
             }
-            foreach($this->model->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
+            foreach ($this->model->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort() as $attribute => $actionAttributeForm)
             {
                 $elementAdapter  = new WorkflowActionAttributeToElementAdapter($actionAttributeForm, $this->form,
                     $this->model->type, array_merge($inputPrefixData, array($attribute)), false);
@@ -233,20 +233,20 @@
         {
             assert('is_array($attributeRows)');
             $content = null;
-            if(count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0)
+            if (count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0)
             {
                 $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Required Fields'));
             }
-            foreach($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
+            foreach ($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
                 $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-sub-row'), $attributeContent);
             }
-            if(count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0 &&
+            if (count($attributeRows[self::REQUIRED_ATTRIBUTES_INDEX]) > 0 &&
                count($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX]) > 0)
             {
                 $content .= ZurmoHtml::tag('h3', array(), Zurmo::t('WorkflowsModule', 'Other Fields'));
             }
-            foreach($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
+            foreach ($attributeRows[self::NON_REQUIRED_ATTRIBUTES_INDEX] as $attributeContent)
             {
                 $content .= ZurmoHtml::tag('div', array('class' => 'dynamic-sub-row'), $attributeContent);
             }

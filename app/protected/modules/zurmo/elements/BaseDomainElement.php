@@ -45,7 +45,7 @@
 
         protected function renderLabel()
         {
-            $title       = Zurmo::t('ZurmoModule', 'Like: dc=server,dc=world for both LDAP and Active Directory');
+            $title       = Zurmo::t('ZurmoModule', 'Like: dc=server,dc=world for both LDAP and Active Directory'); // Not Coding Standard
             $content     = parent::renderLabel();
             $content    .= '<span id="ldap-rollup-tooltip" class="tooltip" title="' . $title . '">?</span>';
             $qtip = new ZurmoTip();

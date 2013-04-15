@@ -52,13 +52,13 @@
         {
             assert('is_array($data)');
             assert('is_string($type)');
-            if($type == self::AVAILABLE_OPERATORS_TYPE_BOOLEAN)
+            if ($type == self::AVAILABLE_OPERATORS_TYPE_BOOLEAN)
             {
                 $data[OperatorRules::TYPE_EQUALS] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
                 return;
             }
-            if($type == self::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE)
+            if ($type == self::AVAILABLE_OPERATORS_TYPE_CURRENCY_VALUE)
             {
                 $data[OperatorRules::TYPE_EQUALS] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_EQUALS);
@@ -87,7 +87,7 @@
         {
             assert('is_array($data)');
             assert('is_string($type)');
-            if($type != self::AVAILABLE_OPERATORS_TYPE_DROPDOWN && $type != self::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
+            if ($type != self::AVAILABLE_OPERATORS_TYPE_DROPDOWN && $type != self::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
             {
                 $data[OperatorRules::TYPE_IS_NULL] =
                     OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_NULL);

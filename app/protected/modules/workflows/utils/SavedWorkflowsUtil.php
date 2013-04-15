@@ -52,7 +52,7 @@
             $clausesCount = count($searchAttributeData['clauses']);
             $clauseStructure = null;
 
-            if(count($moduleClassNames) == 0)
+            if (count($moduleClassNames) == 0)
             {
                 $searchAttributeData['clauses'][$clausesCount + 1] = array(
                     'attributeName'        => 'moduleClassName',
@@ -97,14 +97,14 @@
          */
         public static function resolveOrder(SavedWorkflow $savedWorkflow)
         {
-            if($savedWorkflow->moduleClassName == null)
+            if ($savedWorkflow->moduleClassName == null)
             {
                 throw new NotSupportedException();
             }
             $q   = DatabaseCompatibilityUtil::getQuote();
             $sql = "select max({$q}order{$q}) maxorder from " . SavedWorkflow::getTableName('SavedWorkflow');
             $sql .= " where moduleclassname = '" . $savedWorkflow->moduleClassName . "'";
-            if($savedWorkflow->id < 0 || array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
+            if ($savedWorkflow->id < 0 || array_key_exists('moduleClassName', $savedWorkflow->originalAttributeValues))
             {
                 $maxOrder             = R::getCell($sql);
                 $savedWorkflow->order = (int)$maxOrder +  1;
@@ -122,17 +122,17 @@
         {
             $savedWorkflows = SavedWorkflow::getActiveByModuleClassNameAndIsNewModel(
                                              $model::getModuleClassName(), $model->isNewModel);
-            foreach($savedWorkflows as $savedWorkflow)
+            foreach ($savedWorkflows as $savedWorkflow)
             {
                 $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
-                if(WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
+                if (WorkflowTriggersUtil::areTriggersTrueBeforeSave($workflow, $model))
                 {
-                    if($workflow->getType() == Workflow::TYPE_BY_TIME)
+                    if ($workflow->getType() == Workflow::TYPE_BY_TIME)
                     {
                         $model->addWorkflowToProcessAfterSave($workflow);
 
                     }
-                    elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+                    elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
                     {
                         WorkflowActionsUtil::processBeforeSave($workflow, $model, $triggeredByUser);
                         $model->addWorkflowToProcessAfterSave($workflow);
@@ -155,13 +155,13 @@
          */
         public static function resolveAfterSaveByModel(Item $model, User $triggeredByUser)
         {
-            foreach($model->getWorkflowsToProcessAfterSave() as $workflow)
+            foreach ($model->getWorkflowsToProcessAfterSave() as $workflow)
             {
-                if($workflow->getType() == Workflow::TYPE_BY_TIME)
+                if ($workflow->getType() == Workflow::TYPE_BY_TIME)
                 {
                     static::processToByTimeWorkflowInQueue($workflow, $model);
                 }
-                elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+                elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
                 {
                     WorkflowActionsUtil::processAfterSave($workflow, $model, $triggeredByUser);
                     WorkflowEmailMessagesUtil::processAfterSave($workflow, $model, $triggeredByUser);
@@ -182,11 +182,11 @@
         {
             $workflow->getTimeTrigger()->durationSeconds;
             $valueEvaluationType = $workflow->getTimeTrigger()->getValueEvaluationType();
-            if($valueEvaluationType == 'Date')
+            if ($valueEvaluationType == 'Date')
             {
                 $timeStamp = static::resolveTimeStampForDateAttributeForProcessDateTime($workflow->getTimeTrigger(), $model);
             }
-            elseif($valueEvaluationType == 'DateTime')
+            elseif ($valueEvaluationType == 'DateTime')
             {
                 $timeStamp = static::resolveTimeStampForDateTimeAttributeForProcessDateTime($workflow->getTimeTrigger(), $model);
             }
@@ -207,7 +207,7 @@
                                                                                      RedBeanModel $model)
         {
             $date = static::resolveModelValueByTimeTrigger($trigger, $model);
-            if(DateTimeUtil::isDateStringNull($date))
+            if (DateTimeUtil::isDateStringNull($date))
             {
                 throw new ValueForProcessDateTimeIsNullException();
             }
@@ -228,7 +228,7 @@
                                                                                          RedBeanModel $model)
         {
             $dateTime = static::resolveModelValueByTimeTrigger($trigger, $model);
-            if(DateTimeUtil::isDateTimeStringNull($dateTime))
+            if (DateTimeUtil::isDateTimeStringNull($dateTime))
             {
                 throw new ValueForProcessDateTimeIsNullException();
             }
@@ -246,14 +246,14 @@
          */
         protected static function resolveModelValueByTimeTrigger(TimeTriggerForWorkflowForm $trigger, RedBeanModel $model)
         {
-            if($trigger->getAttribute() == null)
+            if ($trigger->getAttribute() == null)
             {
                 $attributeAndRelationData = $trigger->getAttributeAndRelationData();
-                if(count($attributeAndRelationData) == 2)
+                if (count($attributeAndRelationData) == 2)
                 {
                     $penultimateRelation = $trigger->getPenultimateRelation();
                     $resolvedAttribute   = $trigger->getResolvedAttributeRealAttributeName();
-                    if($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
+                    if ($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
                     {
                         throw new NotSupportedException();
                     }
@@ -290,12 +290,12 @@
                                          resolveByWorkflowIdAndModel(SavedWorkflow::getById((int)$workflow->getId()), $model);
                 $byTimeWorkflowInQueue->processDateTime = static::resolveProcessDateTimeByWorkflowAndModel($workflow, $model);
                 $saved                 = $byTimeWorkflowInQueue->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }
             }
-            catch(ValueForProcessDateTimeIsNullException $e)
+            catch (ValueForProcessDateTimeIsNullException $e)
             {
                 //For now just log this exception. If this exception is thrown it means a date or dateTime
                 //somehow was set to empty, so we can't properly process this.

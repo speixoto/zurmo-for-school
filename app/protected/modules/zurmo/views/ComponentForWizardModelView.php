@@ -205,7 +205,7 @@
          */
         protected function getViewStyle()
         {
-            if($this->hideView)
+            if ($this->hideView)
             {
                 return ' style="display:none;"';
             }
@@ -235,7 +235,7 @@
          */
         protected function getZeroComponentsContent()
         {
-            if($this->getItemsCount() > 0)
+            if ($this->getItemsCount() > 0)
             {
                 $style = ' style="display:none;"';
             }

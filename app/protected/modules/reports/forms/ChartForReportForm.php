@@ -121,34 +121,34 @@
         public function validateSeriesAndRange()
         {
             $passedValidation = true;
-            if($this->type != null)
+            if ($this->type != null)
             {
-                if($this->firstSeries == null)
+                if ($this->firstSeries == null)
                 {
                     $this->addError('firstSeries', Zurmo::t('ReportsModule', 'First Series cannot be blank.'));
                     $passedValidation = false;
                 }
-                if($this->firstRange == null)
+                if ($this->firstRange == null)
                 {
                     $this->addError('firstRange', Zurmo::t('ReportsModule', 'First Range cannot be blank.'));
                     $passedValidation = false;
                 }
-                if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
+                if (in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondSeries == null)
                 {
                     $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series cannot be blank.'));
                     $passedValidation = false;
                 }
-                if(in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
+                if (in_array($this->type, ChartRules::getChartTypesRequiringSecondInputs()) && $this->secondRange == null)
                 {
                     $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range cannot be blank.'));
                     $passedValidation = false;
                 }
-                if($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
+                if ($this->firstSeries != null && $this->secondSeries != null && $this->firstSeries == $this->secondSeries)
                 {
                     $this->addError('secondSeries', Zurmo::t('ReportsModule', 'Second Series must be unique.'));
                     $passedValidation = false;
                 }
-                if($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
+                if ($this->firstRange != null && $this->secondRange != null && $this->firstRange == $this->secondRange)
                 {
                     $this->addError('secondRange', Zurmo::t('ReportsModule', 'Second Range must be unique.'));
                     $passedValidation = false;
@@ -165,7 +165,7 @@
         {
             $data  = array();
             $types = ChartRules::availableTypes();
-            foreach($types as $type)
+            foreach ($types as $type)
             {
                  $data[$type] = ChartRules::getTranslatedTypeLabel($type);
             }

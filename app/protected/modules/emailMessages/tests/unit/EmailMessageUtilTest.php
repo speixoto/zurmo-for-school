@@ -266,7 +266,6 @@
             $textContent = EmailMessageUtil::resolveTextContent($htmlContent, $textContent);
             $this->assertEquals("\n\n\nA test \n\nmessage.", $textContent);
         }
- 
     }
 ?>
 

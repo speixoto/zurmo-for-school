@@ -204,7 +204,7 @@
         protected static function resolveExtraTriggerOnValueByIsNewModel($isNewModel)
         {
             assert('is_bool($isNewModel)');
-            if($isNewModel)
+            if ($isNewModel)
             {
                 return Workflow::TRIGGER_ON_NEW;
             }

@@ -94,7 +94,6 @@
             }
         }
 
-
         protected function createAndSaveNewMissionForUser(User $owner, $status = Mission::STATUS_AVAILABLE)
         {
             $mission                           = new Mission();

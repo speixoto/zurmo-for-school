@@ -62,7 +62,7 @@
                     try
                     {
                         $modelClassName = $module->getPrimaryModelName();
-                        if($modelClassName != null && $module::canHaveWorkflow() &&
+                        if ($modelClassName != null && $module::canHaveWorkflow() &&
                             is_subclass_of($modelClassName, 'Item') &&
                             !in_array($modelClassName, $observedModels))
                         {
@@ -85,7 +85,7 @@
         public function processWorkflowBeforeSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
+            if ($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
             {
 
                 try
@@ -97,7 +97,7 @@
                     $model->setProcessWorkflowOnSave();
                     Yii::app()->user->userModel = $triggeredByUser;
                 }
-                catch(MissingASuperAdministratorException $e)
+                catch (MissingASuperAdministratorException $e)
                 {
                     //skip running workflow, since no super administrators are available.
                 }
@@ -111,7 +111,7 @@
         public function processWorkflowAfterSave(CEvent $event)
         {
             $model                   = $event->sender;
-            if($model->getScenario() != 'autoBuildDatabase' && $this->depth < 11 && $model->shouldProcessWorkflowOnSave())
+            if ($model->getScenario() != 'autoBuildDatabase' && $this->depth < 11 && $model->shouldProcessWorkflowOnSave())
             {
                 try
                 {
@@ -123,13 +123,13 @@
                     $model->setProcessWorkflowOnSave();
                     Yii::app()->user->userModel = $triggeredByUser;
                 }
-                catch(MissingASuperAdministratorException $e)
+                catch (MissingASuperAdministratorException $e)
                 {
                     //skip running workflow, since no super administrators are available.
                 }
                 $this->depth                = $this->depth - 1;
             }
-            elseif($this->depth > 10)
+            elseif ($this->depth > 10)
             {
                 $message                      = new NotificationMessage();
                 $message->htmlContent         = Zurmo::t('WorkflowsModule', 'The combination of workflow rules setup caused ' .

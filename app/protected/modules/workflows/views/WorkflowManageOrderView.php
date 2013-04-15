@@ -197,7 +197,7 @@
                 'data'     => 'js:\'moduleClassName=\' + $(this).val()',
                 'url'      =>  $url,
                 'success'  => 'js:function(data){
-                                if(data.dataToOrder == "true")
+                                if (data.dataToOrder == "true")
                                 {
                                     $(".no-workflows-to-order-view").hide();
                                     $(".select-module-view").hide();
@@ -215,7 +215,7 @@
             $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {
 
-                if($('#" . $id . "').val() == '')
+                if ($('#" . $id . "').val() == '')
                 {
                     $('.no-workflows-to-order-view').hide();
                     $('.select-module-view').show();

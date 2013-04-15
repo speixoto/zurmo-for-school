@@ -68,7 +68,7 @@
             $content   = '<div class="clearfix">';
             $content  .= '<a href="#" id="nav-trigger" title="Toggle Navigation">&rsaquo;</a>';
             $content  .= '<div id="corp-logo">';
-            if($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
+            if ($logoFileModelId = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
             {
                 $logoFileModel = FileModel::getById($logoFileModelId);
                 $logoFileSrc   = Yii::app()->getAssetManager()->getPublishedUrl(Yii::getPathOfAlias('application.runtime.uploads') .
@@ -76,11 +76,11 @@
             }
             else
             {
-                $logoFileSrc   = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
+                $logoFileSrc   = Yii::app()->baseUrl . '/themes/default/images/Zurmo_logo.png';
             }
             $logoHeight = ZurmoConfigurationFormAdapter::resolveLogoHeight();
             $logoWidth  = ZurmoConfigurationFormAdapter::resolveLogoWidth();
-            $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc.'" alt="Zurmo Logo" /></a>';
+            $content   .= '<a href="' . $homeUrl . '"><img src="' . $logoFileSrc . '" alt="Zurmo Logo" /></a>';
             if ($this->applicationName != null)
             {
                 $content  .= ZurmoHtml::tag('span', array(), $this->applicationName);

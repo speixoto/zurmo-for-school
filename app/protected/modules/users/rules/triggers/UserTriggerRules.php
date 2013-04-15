@@ -45,38 +45,38 @@
             {
 
                 case OperatorRules::TYPE_EQUALS:
-                    if($model->{$attribute}->id === $this->trigger->value)
+                    if ($model->{$attribute}->id === $this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if($model->{$attribute}->id !== $this->trigger->value)
+                    if ($model->{$attribute}->id !== $this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if (array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if (!array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         $model->{$attribute}->id === $this->trigger->value)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         $model->originalAttributeValues[$attribute][1] ===
                         $this->trigger->value)
                     {
@@ -84,13 +84,13 @@
                     }
                     break;
                 case OperatorRules::TYPE_IS_EMPTY:
-                    if(!($model->{$attribute}->id > 0))
+                    if (!($model->{$attribute}->id > 0))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_EMPTY:
-                    if($model->{$attribute}->id > 0)
+                    if ($model->{$attribute}->id > 0)
                     {
                         return true;
                     }

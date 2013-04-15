@@ -50,14 +50,14 @@
                                                  RedBeanModel $model,
                                                  User $triggeredByUser)
         {
-            foreach($workflow->getActions() as $action)
+            foreach ($workflow->getActions() as $action)
             {
                 try
                 {
                     $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser);
                     $helper->processUpdateSelectAction();
                 }
-                catch(Exception $e)
+                catch (Exception $e)
                 {
                     WorkflowUtil::handleProcessingException($e,
                         'application.modules.workflows.utils.WorkflowActionsUtil.processBeforeSave');
@@ -76,14 +76,14 @@
                                                 RedBeanModel $model,
                                                 User $triggeredByUser)
         {
-            foreach($workflow->getActions() as $action)
+            foreach ($workflow->getActions() as $action)
             {
                 try
                 {
                     $helper = new WorkflowActionProcessingHelper($action, $model, $triggeredByUser);
                     $helper->processNonUpdateSelfAction();
                 }
-                catch(Exception $e)
+                catch (Exception $e)
                 {
                     WorkflowUtil::handleProcessingException($e,
                         'application.modules.workflows.utils.WorkflowActionsUtil.processAfterSave');
@@ -103,7 +103,7 @@
                                                                  RedBeanModel $model,
                                                                  User $triggeredByUser)
         {
-            foreach($workflow->getActions() as $action)
+            foreach ($workflow->getActions() as $action)
             {
                 try
                 {
@@ -111,7 +111,7 @@
                     $helper->processUpdateSelectAction();
                     $helper->processNonUpdateSelfAction();
                 }
-                catch(Exception $e)
+                catch (Exception $e)
                 {
                     WorkflowUtil::handleProcessingException($e,
                         'application.modules.workflows.utils.WorkflowActionsUtil.processOnByTimeWorkflowInQueueJob');
@@ -123,19 +123,19 @@
         {
             $savedWorkflows = SavedWorkflow::getAll();
             $workflows      = array();
-            foreach($savedWorkflows as $savedWorkflow)
+            foreach ($savedWorkflows as $savedWorkflow)
             {
                 $workflow        = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($savedWorkflow);
                 $missingRequired = false;
-                foreach($workflow->getActions() as $action)
+                foreach ($workflow->getActions() as $action)
                 {
-                    if(!$action->isTypeAnUpdateVariant() && $action->isMissingRequiredActionAttributes())
+                    if (!$action->isTypeAnUpdateVariant() && $action->isMissingRequiredActionAttributes())
                     {
                         $missingRequired = true;
                         break;
                     }
                 }
-                if($missingRequired)
+                if ($missingRequired)
                 {
                     $workflows[] = $workflow;
                 }

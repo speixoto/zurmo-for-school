@@ -151,7 +151,7 @@
             $modules = Module::getModuleObjects();
             foreach (self::getWorkflowSupportedModulesClassNamesCurrentUserHasAccessTo() as $moduleClassName)
             {
-                if($moduleClassName::getStateMetadataAdapterClassName() != null)
+                if ($moduleClassName::getStateMetadataAdapterClassName() != null)
                 {
                     $workflowRules = WorkflowRules::makeByModuleClassName($moduleClassName);
                     $label         = $workflowRules->getVariableStateModuleLabel(Yii::app()->user->userModel);
@@ -160,7 +160,7 @@
                 {
                     $label = $moduleClassName::getModuleLabelByTypeAndLanguage('Plural');
                 }
-                if($label != null)
+                if ($label != null)
                 {
                     $moduleClassNamesAndLabels[$moduleClassName] = $label;
                 }
@@ -177,7 +177,7 @@
             $modules = Module::getModuleObjects();
             foreach ($modules as $module)
             {
-                if($module::canHaveWorkflow())
+                if ($module::canHaveWorkflow())
                 {
                     if (WorkflowSecurityUtil::canCurrentUserCanAccessModule(get_class($module)))
                     {
@@ -359,7 +359,7 @@
          */
         public function isNew()
         {
-            if($this->id > 0)
+            if ($this->id > 0)
             {
                 return false;
             }

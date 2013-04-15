@@ -49,7 +49,7 @@
          */
         protected function renderResultsGridContent()
         {
-            if($this->dataProvider->calculateTotalGroupingsCount() > MatrixReportDataProvider::$maximumGroupsCount)
+            if ($this->dataProvider->calculateTotalGroupingsCount() > MatrixReportDataProvider::$maximumGroupsCount)
             {
                 return $this->renderMaximumGroupsContent();
             }
@@ -61,7 +61,7 @@
          */
         protected function isDataProviderValid()
         {
-            if(!$this->dataProvider instanceof MatrixReportDataProvider)
+            if (!$this->dataProvider instanceof MatrixReportDataProvider)
             {
                 return false;
             }
@@ -89,7 +89,7 @@
             $columns        = array();
             $attributeKey   = 0;
 
-            foreach($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
+            foreach ($this->dataProvider->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
             {
                 $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                 $attributeName    = MatrixReportDataProvider::resolveHeaderColumnAliasName(
@@ -104,9 +104,9 @@
 
             for ($i = 0; $i < $this->dataProvider->getXAxisGroupByDataValuesCount(); $i++)
             {
-                foreach($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
+                foreach ($this->dataProvider->resolveDisplayAttributes() as $displayAttribute)
                 {
-                    if(!$displayAttribute->queryOnly)
+                    if (!$displayAttribute->queryOnly)
                     {
                         $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                         $attributeName    = MatrixReportDataProvider::resolveColumnAliasName($attributeKey);

@@ -47,7 +47,7 @@
             $sally->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS);
             $sally->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES);
             $sally->setRight('ReportsTestModule',   ReportsTestModule::RIGHT_ACCESS_REPORTS_TESTS);
-            if(!$sally->save())
+            if (!$sally->save())
             {
                 throw new FailedToSaveModelException();
             }
@@ -57,12 +57,12 @@
             $sarah->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS);
             $sarah->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES);
             $sarah->setRight('ReportsTestModule',   ReportsTestModule::RIGHT_ACCESS_REPORTS_TESTS);
-            if(!$sarah->save())
+            if (!$sarah->save())
             {
                 throw new FailedToSaveModelException();
             }
             $nobody = UserTestHelper::createBasicUser('nobody');
-            if(!$nobody->save())
+            if (!$nobody->save())
             {
                 throw new FailedToSaveModelException();
             }

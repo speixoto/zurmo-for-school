@@ -52,63 +52,63 @@
             {
 
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER:
-                    if(static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value))
+                    if (static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BEFORE:
-                    if(static::sanitize($model->$attribute) < static::sanitizeTriggerValue($this->trigger->value))
+                    if (static::sanitize($model->$attribute) < static::sanitizeTriggerValue($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_ON:
-                if(static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
+                if (static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
                 {
                     return true;
                 }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BETWEEN:
-                    if(static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value) &&
+                    if (static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value) &&
                        static::sanitize($model->$attribute) < static::sanitizeTriggerValue($this->trigger->secondValue))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_EMPTY:
-                    if(DateTimeUtil::isDateValueNull($model, $attribute))
+                    if (DateTimeUtil::isDateValueNull($model, $attribute))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_NOT_EMPTY:
-                    if(!DateTimeUtil::isDateValueNull($model, $attribute))
+                    if (!DateTimeUtil::isDateValueNull($model, $attribute))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if (array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if (!array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->$attribute) === static::sanitizeTriggerValue($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->originalAttributeValues[$attribute]) ===
                             static::sanitizeTriggerValue($this->trigger->value))
                     {
@@ -133,7 +133,7 @@
         {
             assert('is_string($attribute)');
             assert('is_bool($changeRequiredToProcess)');
-            if($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
+            if ($this->trigger->valueType != MixedDateTypesSearchFormAttributeMappingRules::TYPE_IS_TIME_FOR)
             {
                 throw new NotSupportedException();
             }

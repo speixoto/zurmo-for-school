@@ -69,9 +69,9 @@
          */
         public function validateValue()
         {
-            if(parent::validateValue())
+            if (parent::validateValue())
             {
-                if($this->type == self::TYPE_STATIC)
+                if ($this->type == self::TYPE_STATIC)
                 {
                     $validator = CValidator::createValidator('TypeValidator', $this, 'value', array('type' => 'datetime'));
                     $validator->validate($this);
@@ -97,17 +97,17 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == static::TYPE_STATIC)
+            if ($this->type == static::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute} = $this->value;
             }
-            elseif($this->type == self::TYPE_DYNAMIC_FROM_TRIGGERED_DATETIME)
+            elseif ($this->type == self::TYPE_DYNAMIC_FROM_TRIGGERED_DATETIME)
             {
                 $adapter->getModel()->{$attribute} = DateTimeUtil::convertTimestampToDbFormatDateTime(time() + $this->value);
             }
-            elseif($this->type == self::TYPE_DYNAMIC_FROM_EXISTING_DATETIME)
+            elseif ($this->type == self::TYPE_DYNAMIC_FROM_EXISTING_DATETIME)
             {
-                if(!DateTimeUtil::isDateTimeStringNull($adapter->getModel()->{$attribute}))
+                if (!DateTimeUtil::isDateTimeStringNull($adapter->getModel()->{$attribute}))
                 {
                     $existingTimeStamp = DateTimeUtil::convertDbFormatDateTimeToTimestamp($adapter->getModel()->{$attribute});
                     $newDateTime       = DateTimeUtil::convertTimestampToDbFormatDateTime($existingTimeStamp + $this->value);
@@ -132,7 +132,7 @@
             $data                                                = array();
             $data[static::TYPE_STATIC]                           = Zurmo::t('WorkflowsModule', 'Specifically On');
             $data[self::TYPE_DYNAMIC_FROM_TRIGGERED_DATETIME]    = Zurmo::t('WorkflowsModule', 'Dynamically From Triggered Date');
-            if(!$isCreatingNewModel)
+            if (!$isCreatingNewModel)
             {
                 $data[self::TYPE_DYNAMIC_FROM_EXISTING_DATETIME] = Zurmo::t('WorkflowsModule', 'Dynamically From Existing Date');
             }

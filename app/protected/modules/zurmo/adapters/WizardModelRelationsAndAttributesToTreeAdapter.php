@@ -111,7 +111,7 @@
             assert('is_string($relation)');
             assert('$nodeIdPrefix == null || is_string($nodeIdPrefix)');
             $content = null;
-            if($nodeIdPrefix != null)
+            if ($nodeIdPrefix != null)
             {
                 $content .= $nodeIdPrefix;
             }
@@ -126,7 +126,7 @@
         protected function resolveNodeIdPrefixByNodeId($nodeId)
         {
             assert('is_string($nodeId)');
-            if($nodeId == 'source')
+            if ($nodeId == 'source')
             {
                 return null;
             }
@@ -141,7 +141,7 @@
         protected function resolveNodeIdByRemovingTreeType($nodeId)
         {
             assert('is_string($nodeId)');
-            if($nodeId == 'source')
+            if ($nodeId == 'source')
             {
                 return $nodeId;
             }

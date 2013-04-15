@@ -98,7 +98,7 @@
         {
             assert('is_string($type)');
             $typesAndLabels = Workflow::getTypeDropDownArray();
-            if(isset($typesAndLabels[$type]))
+            if (isset($typesAndLabels[$type]))
             {
                 return $typesAndLabels[$type];
             }
@@ -112,7 +112,7 @@
         {
             assert('is_string($moduleClassName)');
             $modulesAndLabels = Workflow::getWorkflowSupportedModulesAndLabelsForCurrentUser();
-            if(isset($modulesAndLabels[$moduleClassName]))
+            if (isset($modulesAndLabels[$moduleClassName]))
             {
                 return $modulesAndLabels[$moduleClassName];
             }
@@ -133,7 +133,7 @@
             assert('is_string($workflowType)');
             $modelToWorkflowAdapter             = ModelRelationsAndAttributesToWorkflowAdapter::
                 make($moduleClassName, $modelClassName, $workflowType);
-            if(!$modelToWorkflowAdapter instanceof ModelRelationsAndAttributesToByTimeWorkflowAdapter)
+            if (!$modelToWorkflowAdapter instanceof ModelRelationsAndAttributesToByTimeWorkflowAdapter)
             {
                 throw new NotSupportedException();
             }
@@ -152,7 +152,7 @@
         {
             assert('is_array($attributes)');
             $dataAndLabels = array();
-            foreach($attributes as $attribute => $data)
+            foreach ($attributes as $attribute => $data)
             {
                 $dataAndLabels[$attribute] = $data['label'];
             }
@@ -167,7 +167,7 @@
         {
             assert('is_array($data)');
             assert('is_bool($includeHours)');
-            if($includeHours)
+            if ($includeHours)
             {
                 $data[14400] = Zurmo::t('WorkflowsModule', '{n} hour from now|{n} hours from now', array(4));
                 $data[28800] = Zurmo::t('WorkflowsModule', '{n} hour from now|{n} hours from now', array(8));
@@ -199,7 +199,7 @@
         {
             assert('is_array($data)');
             assert('is_bool($includeHours)');
-            if($includeHours)
+            if ($includeHours)
             {
                 $data[14400] = Zurmo::t('WorkflowsModule', 'for {n} hour|for {n} hours', array(4));
                 $data[28800] = Zurmo::t('WorkflowsModule', 'for {n} hour|for {n} hours', array(8));
@@ -247,7 +247,7 @@
             $data[-259200]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(3));
             $data[-172800]   = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(2));
             $data[-86400]    = Zurmo::t('WorkflowsModule', '{n} day ago|{n} days ago', array(1));
-            if($includeHours)
+            if ($includeHours)
             {
                 $data[-43200] = Zurmo::t('WorkflowsModule', '{n} hour ago|{n} hours ago', array(12));
                 $data[-28800] = Zurmo::t('WorkflowsModule', '{n} hour ago|{n} hours ago', array(8));
@@ -324,7 +324,7 @@
             $relationModelClassName = ModelRelationsAndAttributesToWorkflowAdapter::
                                       getInferredRelationModelClassName($relation);
             $relatedModels          = array();
-            foreach($model->{$realAttributeName} as $item)
+            foreach ($model->{$realAttributeName} as $item)
             {
                 try
                 {
@@ -365,7 +365,7 @@
         {
             assert('is_string($category)');
             $content = 'Exception class: ' . get_class($exception);
-            if($exception->getMessage() != null)
+            if ($exception->getMessage() != null)
             {
                 $content .= ' Thrown with message: ' . $exception->getMessage();
             }

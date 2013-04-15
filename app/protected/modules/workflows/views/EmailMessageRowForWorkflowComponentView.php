@@ -279,7 +279,7 @@
             assert('is_int($rowCount)');
             assert('is_array($recipients)');
             $items = array();
-            foreach($recipients as $recipient)
+            foreach ($recipients as $recipient)
             {
                 $inputPrefixData  = array_merge($this->inputPrefixData, array(
                                     EmailMessageForWorkflowForm::TYPE_EMAIL_MESSAGE_RECIPIENTS, (int)$rowCount));
@@ -300,7 +300,7 @@
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $content .= ZurmoHtml::tag('li', array('class' => 'dynamic-sub-row'), $item['content']);
             }
@@ -333,14 +333,14 @@
             $sendFromAddressId        = TextElement::resolveInputIdPrefixIntoString(
                                         array_merge($inputPrefixData, array('sendFromAddress')));
             Yii::app()->clientScript->registerScript('emailMessageSendFromTypeHelper' . $sendFromTypeSelectId, "
-                if($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
+                if ($('#" . $sendFromTypeSelectId . "').val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT . "')
                 {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().hide();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $sendFromTypeSelectId . "').change( function()
                     {
-                        if($(this).val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM . "')
+                        if ($(this).val() == '" . EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM . "')
                         {
                     $('#" . $sendFromNameId . "').parentsUntil('tr').parent().show();
                     $('#" . $sendFromAddressId . "').parentsUntil('tr').parent().show();

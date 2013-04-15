@@ -85,7 +85,7 @@
         {
             $rowCount                    = 0;
             $items                       = $this->getItemsContent($rowCount);
-            if($this->isListContentSortable())
+            if ($this->isListContentSortable())
             {
                 $itemsContent            = $this->getSortableListContent($items);
             }
@@ -134,7 +134,7 @@
             assert('is_bool($trackableStructurePosition)');
             $items                      = array();
             $wizardFormClassName        = get_class($this->model);
-            foreach($componentData as $component)
+            foreach ($componentData as $component)
             {
                 $nodeIdWithoutTreeType      = $component->attributeIndexOrDerivedType;
                 $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
@@ -161,7 +161,7 @@
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $content .= ZurmoHtml::tag('li', array(), $item['content']);
             }
@@ -206,7 +206,7 @@
                 $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
-                    if(size < 2)
+                    if (size < 2)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").fadeIn(400);
                     }

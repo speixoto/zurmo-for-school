@@ -218,7 +218,7 @@
          */
         public function getAttributeAndRelationData()
         {
-            if($this->attributeAndRelationData == null)
+            if ($this->attributeAndRelationData == null)
             {
                 return $this->attribute;
             }
@@ -232,7 +232,7 @@
          */
         public function hasRelatedData()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return false;
             }
@@ -246,7 +246,7 @@
          */
         public function getResolvedAttribute()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return $this->attribute;
             }
@@ -259,7 +259,7 @@
          */
         public function getResolvedAttributeModuleClassName()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return $this->moduleClassName;
             }
@@ -273,7 +273,7 @@
          */
         public function getResolvedAttributeModelClassName()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 return $this->modelClassName;
             }
@@ -302,7 +302,7 @@
          */
         public function getPenultimateModelClassName()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 throw new NotSupportedException();
             }
@@ -316,7 +316,7 @@
          */
         public function getPenultimateRelation()
         {
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 throw new NotSupportedException();
             }
@@ -332,7 +332,7 @@
         {
             $modelClassName       = $this->modelClassName;
             $moduleClassName      = $this->moduleClassName;
-            if($this->attribute != null)
+            if ($this->attribute != null)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
@@ -343,29 +343,29 @@
                 $content = null;
                 foreach($this->attributeAndRelationData as $relationOrAttribute)
                 {
-                    if($content != null)
+                    if ($content != null)
                     {
                         $content .= ' ' . self::DISPLAY_LABEL_RELATION_DIVIDER . ' ';
                     }
 
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                             make($moduleClassName, $modelClassName, $this->reportType);
-                    if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                    if ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                     {
                         $modelClassName   = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName  = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
-                        if($modelToReportAdapter->isOwnedRelation($relationOrAttribute))
+                        if ($modelToReportAdapter->isOwnedRelation($relationOrAttribute))
                         {
                             $content   .= $modelToReportAdapter->getAttributeLabel($relationOrAttribute);
                         }
                         else
                         {
                             $typeToUse = 'Plural';
-                            if($modelToReportAdapter->isRelationASingularRelation($relationOrAttribute))
+                            if ($modelToReportAdapter->isRelationASingularRelation($relationOrAttribute))
                             {
                                 $typeToUse = 'Singular';
                             }
-                            if($moduleClassName != $modelClassName::getModuleClassName())
+                            if ($moduleClassName != $modelClassName::getModuleClassName())
                             {
                                 $content         .= $moduleClassName::getModuleLabelByTypeAndLanguage($typeToUse);
                             }
@@ -379,7 +379,6 @@
                     {
                         $content   .= $modelToReportAdapter->getAttributeLabel($relationOrAttribute);
                     }
-
                 }
             }
             return $content;
@@ -402,7 +401,7 @@
          */
         public function getDisplayElementType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -417,7 +416,7 @@
         public function isATypeOfCurrencyValue()
         {
             $displayElementType = $this->getDisplayElementType();
-            if($displayElementType == 'CalculatedCurrencyValue' ||
+            if ($displayElementType == 'CalculatedCurrencyValue' ||
                 $displayElementType == 'CurrencyValue')
             {
                 return true;
@@ -434,7 +433,7 @@
         protected function resolveAttributeOrRelationAndAttributeDataByIndexType($indexType)
         {
             $attributeOrRelationAndAttributeData    = explode(FormModelUtil::RELATION_DELIMITER, $indexType);
-            if(count($attributeOrRelationAndAttributeData) == 1)
+            if (count($attributeOrRelationAndAttributeData) == 1)
             {
                 $attributeOrRelationAndAttributeData = $attributeOrRelationAndAttributeData[0];
             }
@@ -465,7 +464,7 @@
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
-                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                if ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
@@ -488,7 +487,7 @@
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
-                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                if ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $moduleClassName   = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);
                     $modelClassName    = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
@@ -511,7 +510,7 @@
                 $lastModelClassName = $modelClassName;
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($modelClassName::getModuleClassName(), $modelClassName, $this->reportType);
-                if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                if ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                 {
                     $modelClassName     = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                 }
@@ -536,7 +535,7 @@
         private function setAttributeAndRelationData($attributeOrRelationAndAttributeData)
         {
             assert('is_string($attributeOrRelationAndAttributeData) || is_array($attributeOrRelationAndAttributeData)'); // Not Coding Standard
-            if(!is_array($attributeOrRelationAndAttributeData))
+            if (!is_array($attributeOrRelationAndAttributeData))
             {
                 $this->attribute                = $attributeOrRelationAndAttributeData;
                 $this->attributeAndRelationData = null;

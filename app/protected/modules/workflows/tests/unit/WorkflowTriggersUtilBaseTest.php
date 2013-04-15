@@ -157,7 +157,7 @@
         public static function saveAndReloadModel(RedBeanModel $model)
         {
             $saved = $model->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

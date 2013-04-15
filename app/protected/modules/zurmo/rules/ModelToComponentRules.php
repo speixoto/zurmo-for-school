@@ -122,9 +122,9 @@
             foreach (array_reverse(RuntimeUtil::getClassHierarchy(
                                    get_class($model), $model::getLastClassInBeanHeirarchy())) as $modelClassName)
             {
-                if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['derivedAttributeTypes']))
+                if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['derivedAttributeTypes']))
                 {
-                    foreach($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
+                    foreach ($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
                     {
 
                         $elementClassName          = $derivedAttributeType . 'Element';
@@ -147,7 +147,7 @@
             assert('is_string($attribute)');
             $modelClassName = $model->getAttributeModelClassName($attribute);
             $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['availableOperatorsTypes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['availableOperatorsTypes']) &&
                isset($attribute, $metadata[$modelClassName]['availableOperatorsTypes'][$attribute]))
             {
                 return $metadata[$modelClassName]['availableOperatorsTypes'][$attribute];

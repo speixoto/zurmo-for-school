@@ -65,7 +65,6 @@
          */
         public $mashableModelClassNamesAndDisplayLabels;
 
-
         public function rules()
         {
             return array(

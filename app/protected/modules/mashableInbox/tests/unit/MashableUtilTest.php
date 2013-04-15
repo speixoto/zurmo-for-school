@@ -264,7 +264,6 @@
             $timeStampLatestUpdate  = DateTimeUtil::convertTimestampToDbFormatDateTime(time() - (10 * 24 * 60 * 60));
             $timeSinceLastestUpdate = MashableUtil::getTimeSinceLatestUpdate($timeStampLatestUpdate);
             $this->assertEquals($timeSinceLastestUpdate, '10 days ago');
-
         }
 
         public function testMergeMetada()
@@ -416,6 +415,5 @@
             $key = MashableUtil::resolveKeyByModuleAndModel('testModule', 'testClassName');
             $this->assertEquals('testModule_testClassName', $key);
         }
-
     }
 ?>

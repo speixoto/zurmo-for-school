@@ -161,7 +161,7 @@ EOD;
             return $content;
         }
 
-        public function renderLanguageRow($languageCode, $languageData=null)
+        public function renderLanguageRow($languageCode, $languageData = null)
         {
 
             if (!$languageData)
@@ -171,7 +171,7 @@ EOD;
 
             $content = ZurmoHtml::openTag(
                 'li',
-                array('id'=>'language-row-' . $languageCode)
+                array('id' => 'language-row-' . $languageCode)
             );
             $content .= ZurmoHtml::tag('h4', array(), $languageData['label']);
             if ($languageData['active'])
@@ -180,7 +180,7 @@ EOD;
                 {
                     $content .= ' - ' . Zurmo::t(
                         'ZurmoModule', 'Last updated on {date}',
-                        array('{date}'=>$languageData['lastUpdateDatetime'])
+                        array('{date}' => $languageData['lastUpdateDatetime'])
                     );
                 }
 
@@ -207,7 +207,7 @@ EOD;
                 $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
-                    array('class'=>'z-label'),
+                    array('class' => 'z-label'),
                     Zurmo::t('ZurmoModule', 'Update')
                 ),
                 '#',
@@ -223,7 +223,7 @@ EOD;
                 $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
-                    array('class'=>'z-label'),
+                    array('class' => 'z-label'),
                     Zurmo::t('ZurmoModule', 'Deactivate')
                 ),
                 '#',
@@ -239,7 +239,7 @@ EOD;
                 $this->renderButtonSpinnerSpans() .
                 ZurmoHtml::tag(
                     'span',
-                    array('class'=>'z-label'),
+                    array('class' => 'z-label'),
                     Zurmo::t('ZurmoModule','Activate')
                 ),
                 '#',
@@ -270,11 +270,11 @@ EOD;
 
         protected function renderButtonSpinnerSpans()
         {
-            return ZurmoHtml::tag('span', array('class'=>'z-spinner'), '') .
-                    ZurmoHtml::tag('span', array('class'=>'z-icon'), '');
+            return ZurmoHtml::tag('span', array('class' => 'z-spinner'), '') .
+                    ZurmoHtml::tag('span', array('class' => 'z-icon'), '');
         }
 
-        protected function getLanguagesList($languageStatus=null)
+        protected function getLanguagesList($languageStatus = null)
         {
             if (is_array($this->languagesList) && !empty($this->languagesList))
             {

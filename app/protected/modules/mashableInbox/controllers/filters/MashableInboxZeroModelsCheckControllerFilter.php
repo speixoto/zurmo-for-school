@@ -41,7 +41,6 @@
      */
     class MashableInboxZeroModelsCheckControllerFilter extends CFilter
     {
-
         public $controller;
 
         protected function preFilter($filterChain)

@@ -47,7 +47,7 @@
         {
             assert('is_string($type)');
             $typesAndLabels = Report::getTypeDropDownArray();
-            if(isset($typesAndLabels[$type]))
+            if (isset($typesAndLabels[$type]))
             {
                 return $typesAndLabels[$type];
             }
@@ -61,7 +61,7 @@
         {
             assert('is_string($moduleClassName)');
             $modulesAndLabels = Report::getReportableModulesAndLabelsForCurrentUser();
-            if(isset($modulesAndLabels[$moduleClassName]))
+            if (isset($modulesAndLabels[$moduleClassName]))
             {
                 return $modulesAndLabels[$moduleClassName];
             }
@@ -74,7 +74,7 @@
         public static function makeDataAndLabelsForSeriesOrRange(Array $attributesData)
         {
             $dataAndLabels = array();
-            foreach($attributesData as $attribute => $data)
+            foreach ($attributesData as $attribute => $data)
             {
                 $dataAndLabels[$attribute] = $data['label'];
             }

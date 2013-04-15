@@ -75,11 +75,11 @@
          */
         public function getStringifiedModelForValue()
         {
-            if($this->stringifiedModelForValue != null)
+            if ($this->stringifiedModelForValue != null)
             {
                 return $this->stringifiedModelForValue;
             }
-            if($this->userId != null)
+            if ($this->userId != null)
             {
                 $user = User::getById((int)$this->userId);
                 $this->stringifiedModelForValue = strval($user);
@@ -108,7 +108,7 @@
             {
                 $user = User::getById((int)$this->userId);
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 return array();
             }

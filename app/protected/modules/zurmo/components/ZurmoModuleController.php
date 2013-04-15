@@ -198,7 +198,7 @@
                     {
                         $dataProvider->getPagination()->setPageSize($totalItems);
                         $modelsToExport = $dataProvider->getData();
-                        if(count($modelsToExport) > 0)
+                        if (count($modelsToExport) > 0)
                         {
                             $modelToExportAdapter  = new ModelToExportAdapter($modelsToExport[0]);
                             $headerData            = $modelToExportAdapter->getHeaderData();
@@ -222,7 +222,7 @@
                             {
                                 $modelToExportAdapter  = new ModelToExportAdapter($model);
                                 $data[] = $modelToExportAdapter->getData();
-                                if(count($headerData) == 0)
+                                if (count($headerData) == 0)
                                 {
                                     $headerData = $modelToExportAdapter->getHeaderData();
                                 }

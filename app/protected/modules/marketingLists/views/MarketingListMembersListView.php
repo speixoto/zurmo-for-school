@@ -267,7 +267,7 @@
             ));
             if ($this->showFilteredBySubscriptionType)
             {
-                Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySubscriptionType', "
+                Yii::app()->clientScript->registerScript($this->uniquePageId . '_filteredBySubscriptionType', "
                     createButtonSetIfNotAlreadyExist('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area');
                     $('#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area').unbind('change.action').bind('change.action', function(event)
                         {
@@ -278,7 +278,7 @@
             }
             if ($this->showFilteredBySearchTerm)
             {
-                Yii::app()->clientScript->registerScript($this->uniquePageId.'_filteredBySearchTerm', "
+                Yii::app()->clientScript->registerScript($this->uniquePageId . '_filteredBySearchTerm', "
                 $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').unbind('change.action').bind('change.action', function(event)
                     {
                         " . $ajaxSubmitScript . "
@@ -286,7 +286,7 @@
                 );
                 $('#MarketingListMembersConfigurationForm_filteredBySearchTerm_area').unbind('keypress.action').bind('keypress.action', function(event)
                     {
-                        if(event.which == 13)
+                        if (event.which == 13)
                         {
                             " . $ajaxSubmitScript . "
                             return false;

@@ -46,16 +46,16 @@
          */
         public static function processAfterSave(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
-            foreach($workflow->getEmailMessages() as $emailMessage)
+            foreach ($workflow->getEmailMessages() as $emailMessage)
             {
                 try
                 {
-                    if($emailMessage->getEmailMessageRecipientFormsCount() > 0)
+                    if ($emailMessage->getEmailMessageRecipientFormsCount() > 0)
                     {
                         self::processEmailMessageAfterSave($workflow, $emailMessage, $model, $triggeredByUser);
                     }
                 }
-                catch(Exception $e)
+                catch (Exception $e)
                 {
                     WorkflowUtil::handleProcessingException($e,
                         'application.modules.workflows.utils.WorkflowEmailMessagesUtil.processAfterSave');
@@ -70,17 +70,17 @@
          */
         public static function processOnWorkflowMessageInQueueJob(Workflow $workflow, RedBeanModel $model, User $triggeredByUser)
         {
-            foreach($workflow->getEmailMessages() as $emailMessage)
+            foreach ($workflow->getEmailMessages() as $emailMessage)
             {
                 try
                 {
-                    if($emailMessage->getEmailMessageRecipientFormsCount() > 0)
+                    if ($emailMessage->getEmailMessageRecipientFormsCount() > 0)
                     {
                         $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredByUser);
                         $helper->process();
                     }
                 }
-                catch(Exception $e)
+                catch (Exception $e)
                 {
                     WorkflowUtil::handleProcessingException($e,
                         'application.modules.workflows.utils.WorkflowEmailMessagesUtil.processOnWorkflowMessageInQueueJob');
@@ -100,7 +100,7 @@
                                                                RedBeanModel $model,
                                                                User $triggeredByUser)
         {
-            if($emailMessage->sendAfterDurationSeconds == 0)
+            if ($emailMessage->sendAfterDurationSeconds == 0)
             {
                 $helper = new WorkflowEmailMessageProcessingHelper($emailMessage, $model, $triggeredByUser);
                 $helper->process();
@@ -118,7 +118,7 @@
                 $workflowMessageInQueue->serializedData  = serialize($emailMessageData);
                 $workflowMessageInQueue->triggeredByUser = $triggeredByUser;
                 $saved                                   = $workflowMessageInQueue->save();
-                if(!$saved)
+                if (!$saved)
                 {
                     throw new FailedToSaveModelException();
                 }

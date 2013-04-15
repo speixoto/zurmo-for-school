@@ -90,7 +90,7 @@
                 Yii::app()->user->userModel = $originalUser;
                 return true;
             }
-            catch(MissingASuperAdministratorException $e)
+            catch (MissingASuperAdministratorException $e)
             {
                 //skip running workflow, since no super administrators are available.
                 $this->errorMessage = Zurmo::t('WorkflowsModule', 'Could not process since no super administrators were found');
@@ -114,7 +114,7 @@
          */
         protected function resolveSavedWorkflowIsValid(WorkflowMessageInQueue $workflowMessageInQueue)
         {
-            if($workflowMessageInQueue->savedWorkflow->id < 0)
+            if ($workflowMessageInQueue->savedWorkflow->id < 0)
             {
                 throw new NotFoundException();
             }
@@ -127,7 +127,7 @@
         protected function processWorkflowMessageInQueue(WorkflowMessageInQueue $workflowMessageInQueue, RedBeanModel $model)
         {
             $workflow = SavedWorkflowToWorkflowAdapter::makeWorkflowBySavedWorkflow($workflowMessageInQueue->savedWorkflow);
-            if(!$workflow->getIsActive())
+            if (!$workflow->getIsActive())
             {
                 return;
             }
@@ -141,7 +141,7 @@
          */
         protected static function resolveTriggeredByUser(WorkflowMessageInQueue $workflowMessageInQueue)
         {
-            if($workflowMessageInQueue->triggeredByUser->id < 0)
+            if ($workflowMessageInQueue->triggeredByUser->id < 0)
             {
                 return Yii::app()->user->userModel;
             }

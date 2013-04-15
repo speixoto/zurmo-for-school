@@ -52,48 +52,48 @@
             {
 
                 case OperatorRules::TYPE_EQUALS:
-                    if(static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if(static::sanitize($model->{$attribute}->value) !== static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->{$attribute}->value) !== static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_ONE_OF:
-                    if(!is_array(static::sanitize($this->trigger->value)))
+                    if (!is_array(static::sanitize($this->trigger->value)))
                     {
                         return false;
                     }
-                    if(in_array(static::sanitize($model->{$attribute}->value), static::sanitize($this->trigger->value)))
+                    if (in_array(static::sanitize($model->{$attribute}->value), static::sanitize($this->trigger->value)))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues))
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists('value', $model->{$attribute}->originalAttributeValues))
+                    if (!array_key_exists('value', $model->{$attribute}->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
                         static::sanitize($model->{$attribute}->value) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
                         static::sanitize($model->{$attribute}->originalAttributeValues['value']) ===
                         static::sanitize($this->trigger->value))
                     {
@@ -101,22 +101,22 @@
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES_ONE_OF:
-                    if(!is_array(static::sanitize($this->trigger->value)))
+                    if (!is_array(static::sanitize($this->trigger->value)))
                     {
                         return false;
                     }
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
                         in_array(static::sanitize($model->{$attribute}->value), static::sanitize($this->trigger->value)))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS_ONE_OF:
-                    if(!is_array(static::sanitize($this->trigger->value)))
+                    if (!is_array(static::sanitize($this->trigger->value)))
                     {
                         return false;
                     }
-                    if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
+                    if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) &&
                         in_array(static::sanitize($model->{$attribute}->originalAttributeValues['value']),
                             static::sanitize($this->trigger->value)))
                     {
@@ -124,13 +124,13 @@
                     }
                     break;
                 case OperatorRules::TYPE_IS_EMPTY:
-                    if(empty($model->{$attribute}->value))
+                    if (empty($model->{$attribute}->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_EMPTY:
-                    if(!empty($model->{$attribute}->value))
+                    if (!empty($model->{$attribute}->value))
                     {
                         return true;
                     }
@@ -152,9 +152,9 @@
         {
             assert('is_string($attribute)');
             assert('is_bool($changeRequiredToProcess)');
-            if(array_key_exists('value', $model->{$attribute}->originalAttributeValues) || !$changeRequiredToProcess)
+            if (array_key_exists('value', $model->{$attribute}->originalAttributeValues) || !$changeRequiredToProcess)
             {
-                if($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
+                if ($this->trigger->getOperator() == OperatorRules::TYPE_DOES_NOT_CHANGE)
                 {
                     return true;
                 }

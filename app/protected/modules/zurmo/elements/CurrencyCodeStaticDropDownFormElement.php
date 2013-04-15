@@ -48,7 +48,7 @@
         {
             $currencyIdsAndCodes = Yii::app()->currencyHelper->getActiveCurrenciesOrSelectedCurrenciesData(null);
             $justCodes = array();
-            foreach($currencyIdsAndCodes as $id => $code)
+            foreach ($currencyIdsAndCodes as $id => $code)
             {
                 $justCodes[$code] = $code;
             }

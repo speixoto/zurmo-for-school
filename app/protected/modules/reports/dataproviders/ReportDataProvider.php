@@ -162,12 +162,12 @@
             $existingFiltersCount = count($filters);
             $structurePosition    = $existingFiltersCount + 1;
             $readStructure        = null;
-            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $attributeOrDerivedAttributeTypes)
+            foreach ($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $attributeOrDerivedAttributeTypes)
             {
                 $structure = null;
-                foreach($attributeOrDerivedAttributeTypes as $attributeOrDerivedAttributeType)
+                foreach ($attributeOrDerivedAttributeTypes as $attributeOrDerivedAttributeType)
                 {
-                    if($structure != null)
+                    if ($structure != null)
                     {
                         $structure .= ' or ';
                     }
@@ -176,18 +176,18 @@
                     $filters[]  = $this->resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix,
                         $attributeOrDerivedAttributeType);
                 }
-                if($structure != null)
+                if ($structure != null)
                 {
-                    if($readStructure != null)
+                    if ($readStructure != null)
                     {
                         $readStructure .= ' and ';
                     }
                     $readStructure .= '(' . $structure . ')';
                 }
             }
-            if($readStructure != null)
+            if ($readStructure != null)
             {
-                if($filtersStructure != null)
+                if ($filtersStructure != null)
                 {
                     $filtersStructure .= ' and (' . $readStructure . ')';
                 }
@@ -211,21 +211,21 @@
             $existingFiltersCount = count($filters);
             $structurePosition    = $existingFiltersCount + 1;
             $readStructure        = null;
-            foreach($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $variableStateData)
+            foreach ($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $variableStateData)
             {
                 $structure = $structurePosition;
                 $structurePosition ++;
                 $filters[]  = $this->resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix,
                     $variableStateData);
-                if($readStructure != null)
+                if ($readStructure != null)
                 {
                     $readStructure .= ' and ';
                 }
                 $readStructure .= $structure;
             }
-            if($readStructure != null)
+            if ($readStructure != null)
             {
-                if($filtersStructure != null)
+                if ($filtersStructure != null)
                 {
                     $filtersStructure .= ' and (' . $readStructure . ')';
                 }
@@ -309,19 +309,18 @@
             $idByOffset   = self::resolveIdByOffset($offset);
             foreach ($rows as $key => $row)
             {
-
                 $reportResultsRowData = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
-                foreach($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
+                foreach ($selectQueryAdapter->getIdTableAliasesAndModelClassNames() as $tableAlias => $modelClassName)
                 {
                     $idColumnName = $selectQueryAdapter->getIdColumNameByTableAlias($tableAlias);
                     $id           = (int)$row[$idColumnName];
-                    if($id != null)
+                    if ($id != null)
                     {
                         $reportResultsRowData->addModelAndAlias($modelClassName::getById($id), $tableAlias);
                     }
                     unset($row[$idColumnName]);
                 }
-                foreach($row as $columnName => $value)
+                foreach ($row as $columnName => $value)
                 {
                     $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
                 }
@@ -338,7 +337,7 @@
         protected static function resolveIdByOffset($offset)
         {
             assert('is_int($offset) || $offset == null');
-            if($offset == null)
+            if ($offset == null)
             {
                 return 0;
             }
@@ -352,7 +351,7 @@
         protected function getRowsData($sql)
         {
             assert('is_string($sql)');
-            if($this->_rowsData == null)
+            if ($this->_rowsData == null)
             {
                 $this->_rowsData = R::getAll($sql);
             }
@@ -410,11 +409,11 @@
             $orderBy                = $this->makeOrderBysContent($joinTablesAdapter);
             $groupBy                = $this->makeGroupBysContentForCount($joinTablesAdapter);
             //Make a fresh selectQueryAdapter that only has a count clause
-            if($selectJustCount)
+            if ($selectJustCount)
             {
                 //Currently this is always expected as false. If it is true, we need to add support for SpecificCountClauses
                 //so we know which table/id the count is on.
-                if($selectQueryAdapter->isDistinct())
+                if ($selectQueryAdapter->isDistinct())
                 {
                     throw new NotSupportedException();
                 }
@@ -491,13 +490,13 @@
             assert('is_string($attributeIndexOrDerivedTypePrefix) || $attributeIndexOrDerivedTypePrefix == null');
             assert('is_string($attributeOrDerivedAttributeType)');
             $moduleClassName = $this->report->getModuleClassName();
-            if($attributeOrDerivedAttributeType == 'ReadOptimization')
+            if ($attributeOrDerivedAttributeType == 'ReadOptimization')
             {
                 $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                        $this->report->getType());
                 $filter->attributeIndexOrDerivedType = $attributeIndexOrDerivedTypePrefix . $attributeOrDerivedAttributeType;
             }
-            elseif($attributeOrDerivedAttributeType == 'owner__User')
+            elseif ($attributeOrDerivedAttributeType == 'owner__User')
             {
                 $filter = new FilterForReportForm($moduleClassName, $moduleClassName::getPrimaryModelName(),
                                                        $this->report->getType());
@@ -579,9 +578,9 @@
          */
         protected function getDisplayAttributeByAttribute($attribute)
         {
-            foreach($this->resolveDisplayAttributes() as $displayAttribute)
+            foreach ($this->resolveDisplayAttributes() as $displayAttribute)
             {
-                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                if ($attribute == $displayAttribute->attributeIndexOrDerivedType)
                 {
                     return $displayAttribute;
                 }
@@ -594,9 +593,9 @@
          */
         protected function getDisplayAttributeKeyByAttribute($attribute)
         {
-            foreach($this->resolveDisplayAttributes() as $key =>  $displayAttribute)
+            foreach ($this->resolveDisplayAttributes() as $key =>  $displayAttribute)
             {
-                if($attribute == $displayAttribute->attributeIndexOrDerivedType)
+                if ($attribute == $displayAttribute->attributeIndexOrDerivedType)
                 {
                     return $key;
                 }

@@ -63,7 +63,7 @@
         public function makeQueryContent(Array $components)
         {
             $whereContent = array();
-            foreach($components as $key => $filter)
+            foreach ($components as $key => $filter)
             {
                 $modelToReportAdapter   = static::makeModelToReportAdapterByComponentForm($filter);
                 $itemBuilder            = new FilterReportItemQueryBuilder($filter, $this->joinTablesAdapter,
@@ -71,7 +71,7 @@
                 $whereContent[$key + 1] = $itemBuilder->resolveComponentAttributeStringContent();
             }
             $content = strtr(strtolower($this->filtersStructure), $whereContent);
-            if(empty($content))
+            if (empty($content))
             {
                 return null;
             }

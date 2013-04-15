@@ -59,7 +59,7 @@
         {
             assert('is_string($columnContent)');
             $resolvedAttribute              = $this->componentForm->getResolvedAttribute();
-            if($this->modelToReportAdapter->isAttributeACalculatedGroupByModifier($resolvedAttribute) &&
+            if ($this->modelToReportAdapter->isAttributeACalculatedGroupByModifier($resolvedAttribute) &&
                $this->modelToReportAdapter->getCalculationOrModifierType($resolvedAttribute))
             {
                 $sqlReadyType              = strtolower($this->modelToReportAdapter->
@@ -77,7 +77,7 @@
         protected function resolveTimeZoneAdjustmentForACalculatedDateTimeModifier($attribute)
         {
             $resolvedAttribute = $this->modelToReportAdapter->resolveRealAttributeName($attribute);
-            if($this->modelToReportAdapter->getRealModelAttributeType($resolvedAttribute) == 'DateTime')
+            if ($this->modelToReportAdapter->getRealModelAttributeType($resolvedAttribute) == 'DateTime')
             {
                 return DatabaseCompatibilityUtil::makeTimeZoneAdjustmentContent();
             }
@@ -93,7 +93,7 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
+            if ($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                 $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
             {
                 $relatedAttribute = static::resolveRelatedAttributeForMakingAdapter($modelToReportAdapter, $attribute);

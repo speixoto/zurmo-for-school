@@ -64,11 +64,11 @@
         protected function makeViewAndRender()
         {
             $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+            if (isset($this->params['dataProvider']))
             {
                 $dataProvider = $this->params['dataProvider'];
 
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
+                if ($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
                 {
                     $view      = ReportResultsGridViewFactory::makeByReportAndDataProvider(
                                  'default', 'reports', $this->params['relationModel'], $dataProvider);

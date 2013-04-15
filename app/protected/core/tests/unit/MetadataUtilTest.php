@@ -46,14 +46,14 @@
             $this->assertEquals('2', $combinedData['b']);
 
             //variables in array, values in array
-            $sum                    = "eval:(int)(\$x+\$y+\$z)";
+            $sum                    = "eval:(int)(\$x + \$y + \$z)";
             $resolveVariableName    = array('x', 'y', 'z');
             $params                 = array(5, 6, 7);
             MetadataUtil::resolveEvaluateSubString($sum, $resolveVariableName, $params);
             $this->assertEquals(18, $sum);
 
             //variables in array, value as default value
-            $product                = "eval:(int)(\$x*\$y)";
+            $product                = "eval:(int)(\$x * \$y)";
             $resolveVariableName    = array('x', 'y');
             $params                 = null;
             $defaultValue           = 5;

@@ -40,7 +40,6 @@
      */
     class MarketingListsSearchDataProviderMetadataAdapter extends SearchDataProviderMetadataAdapter
     {
-
         protected $listId;
 
         /**

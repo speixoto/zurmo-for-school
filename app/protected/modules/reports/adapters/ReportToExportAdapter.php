@@ -52,9 +52,8 @@
         public function getData()
         {
             $data   = array();
-            foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
             {
-
                 $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 $className             = $this->resolveExportClassNameForListViewColumnAdapter($displayAttribute);
                 $params                = array();
@@ -68,9 +67,8 @@
         public function getHeaderData()
         {
             $data   = array();
-            foreach($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->reportResultsRowData->getDisplayAttributes() as $key => $displayAttribute)
             {
-
                 $resolvedAttributeName = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 $className             = $this->resolveExportClassNameForListViewColumnAdapter($displayAttribute);
                 $params                = array();
@@ -84,7 +82,7 @@
         protected function resolveExportClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
             $displayElementType = $displayAttribute->getDisplayElementType();
-            if(@class_exists($displayElementType . 'ForReportToExportValueAdapter'))
+            if (@class_exists($displayElementType . 'ForReportToExportValueAdapter'))
             {
                 return $displayElementType . 'ForReportToExportValueAdapter';
             }
@@ -97,9 +95,8 @@
         protected function resolveParamsForCurrencyTypes(DisplayAttributeForReportForm $displayAttribute, & $params)
         {
             assert('is_array($params)');
-            if($displayAttribute->isATypeOfCurrencyValue())
+            if ($displayAttribute->isATypeOfCurrencyValue())
             {
-
                 $params['currencyValueConversionType'] = $this->report->getCurrencyConversionType();
                 $params['spotConversionCurrencyCode']  = $this->report->getSpotConversionCurrencyCode();
                 $params['fromBaseToSpotRate']          = $this->report->getFromBaseToSpotRate();

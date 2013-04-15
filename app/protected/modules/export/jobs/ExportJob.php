@@ -107,7 +107,7 @@
                             if (ControllerSecurityUtil::doesCurrentUserHavePermissionOnSecurableItem($model, Permission::READ))
                             {
                                 $modelToExportAdapter  = new ModelToExportAdapter($model);
-                                if(count($headerData) == 0)
+                                if (count($headerData) == 0)
                                 {
                                     $headerData        = $modelToExportAdapter->getHeaderData();
                                 }

@@ -81,7 +81,6 @@
          */
         protected static $nonEditableActionType = 'Details';
 
-
         public function setIdAttributeId($idAttributeId)
         {
             assert('is_string($idAttributeId)');
