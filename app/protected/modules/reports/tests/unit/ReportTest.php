@@ -68,7 +68,6 @@
             $filter2->availableAtRunTime           = true;
             $report->addFilter($filter2);
             $this->assertTrue($report->hasRuntimeFilters());
-
         }
 
         public function testGetDisplayAttributeIndex()
@@ -224,7 +223,6 @@
             $this->assertTrue($report->canCurrentUserProperlyRenderResults());
             $report->removeAllGroupBys();
 
-
             //Billy can see an orderBy on Accounts
             $orderBy = new OrderByForReportForm('AccountsModule', 'Account', $report->getType());
             $orderBy->attributeIndexOrDerivedType = 'name';
@@ -238,7 +236,6 @@
             $orderBy->order                       = 'desc';
             $report->addOrderBy($orderBy);
             $this->assertFalse($report->canCurrentUserProperlyRenderResults());
-
 
             //Billy can see a related orderBy on Opportunities
             $report->removeAllOrderBys();

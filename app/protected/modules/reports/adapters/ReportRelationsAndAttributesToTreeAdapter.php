@@ -114,7 +114,7 @@
             $attributesData          = $this->getAttributesData($modelToReportAdapter, $precedingModel, $precedingRelation);
             foreach ($attributesData as $attribute => $attributeData)
             {
-                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
+                $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
                                             'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;

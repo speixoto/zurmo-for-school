@@ -100,7 +100,6 @@
                     $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
                     $resolvedRecipients[] = $recipient;
                 }
-
             }
             return $resolvedRecipients;
         }
@@ -113,7 +112,7 @@
             return array_merge(parent::rules(), array(
                       array('relation',         'type', 'type' =>  'string'),
                       array('relation',         'required'),
-                      array('relationFilter',  	'type', 'type' => 'string'),
+                      array('relationFilter',   'type', 'type' => 'string'),
                       array('relationFilter',   'validateRelationFilter')));
         }
 

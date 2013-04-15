@@ -152,15 +152,15 @@
         {
             return array_merge(parent::rules(), array(
                 array('operator',                    'type', 'type' => 'string'),
-                array('operator',  	 				 'validateOperator'),
-                array('value',  	 				 'safe'),
-                array('value',  	 				 'validateValue'),
-                array('relationFilter',  	 	     'type', 'type' => 'string'),
+                array('operator',                    'validateOperator'),
+                array('value',                       'safe'),
+                array('value',                       'validateValue'),
+                array('relationFilter',              'type', 'type' => 'string'),
                 array('relationFilter',              'validateRelationFilter'),
-                array('secondValue', 				 'safe'),
+                array('secondValue',                 'safe'),
                 array('secondValue',                 'validateSecondValue'),
-                array('currencyIdForValue',  	     'safe'),
-                array('stringifiedModelForValue',  	 'safe'),
+                array('currencyIdForValue',          'safe'),
+                array('stringifiedModelForValue',    'safe'),
                 array('valueType',                   'type', 'type' => 'string'),
                 array('valueType',                   'validateValueType'),
             ));

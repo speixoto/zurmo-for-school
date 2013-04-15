@@ -39,7 +39,6 @@
      */
     class WorkflowActionsUtil
     {
-
         /**
          * Process any workflow actions that are updates to the passed in model.
          * @param Workflow $workflow

@@ -179,7 +179,6 @@
             $this->assertEquals('1', $filtersStructure);
         }
 
-
         /**
          * @expectedException PartialRightsForReportSecurityException
          **/

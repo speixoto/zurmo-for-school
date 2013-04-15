@@ -172,7 +172,7 @@
             foreach ($workflow->getTriggers() as $trigger)
             {
                 $dataToEvaluate[$count + 1] = self::isTriggerTrueByModel($workflow, $trigger, $model);
-                $count ++;
+                $count++;
             }
             $phpStringReadyToEvaluate = WorkflowTriggersUtil::resolveBooleansDataToPHPString(
                                         $structureAsPHPString, $dataToEvaluate);

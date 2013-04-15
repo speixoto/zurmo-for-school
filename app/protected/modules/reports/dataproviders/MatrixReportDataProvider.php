@@ -284,7 +284,7 @@
                             {
                                 $data[$value][$displayAttribute->attributeIndexOrDerivedType] =
                                     static::resolveColumnAliasName($attributeKey);
-                                $attributeKey ++;
+                                $attributeKey++;
                             }
                         }
                     }
@@ -327,7 +327,7 @@
                                                             $row, $displayAttributesThatAreYAxisGroupBys);
                 if ($previousYAxisDisplayAttributesUniqueIndex != $currentYAxisDisplayAttributesUniqueIndex)
                 {
-                    $idByOffset ++;
+                    $idByOffset++;
                     $resultsData[$idByOffset] = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
                     $this->addDefaultColumnNamesAndValuesToReportResultsRowData($resultsData[$idByOffset],
                                                                                 $xAxisGroupByDataValuesCount);
@@ -406,7 +406,7 @@
                             }
                             if ($nextLeadingUniqueIndex == $leadingUniqueIndexData[$displayAttribute->columnAliasName])
                             {
-                                $rowSpan ++;
+                                $rowSpan++;
                             }
                             else
                             {
@@ -431,7 +431,7 @@
             {
                 if (!$displayAttribute->queryOnly)
                 {
-                    $count ++;
+                    $count++;
                 }
             }
             return $count;

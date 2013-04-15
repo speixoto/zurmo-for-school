@@ -188,7 +188,7 @@
                                                           $rowKey);
                 $component->setAttributes($componentFormData);
                 $report->{$addMethodName}($component);
-                $rowKey ++;
+                $rowKey++;
             }
         }
     }

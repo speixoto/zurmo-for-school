@@ -84,7 +84,6 @@
                             $('#ModuleForWorkflowWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
                             $('#TriggersForWorkflowWizardView').show();
-
                         }
                         if (linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {

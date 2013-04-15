@@ -90,7 +90,6 @@
                             $('#ModuleForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
-
                         }
                         if (linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
                         {
@@ -99,7 +98,6 @@
                             $('#FiltersForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
                             $('#GroupBysForReportWizardView').show();
-
                         }
                         if (linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
                         {

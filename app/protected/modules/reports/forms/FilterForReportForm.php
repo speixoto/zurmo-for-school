@@ -192,7 +192,7 @@
             else
             {
                 //Assume array has only string values
-                foreach($this->value as $subValue)
+                foreach ($this->value as $subValue)
                 {
                     if (!is_string($subValue))
                     {
@@ -365,7 +365,7 @@
         private function createValueValidatorsByRules(Array $rules)
         {
             $validators = new CList;
-            foreach($rules as $rule)
+            foreach ($rules as $rule)
             {
                 if (isset($rule[0],$rule[1]))
                 {
@@ -393,7 +393,7 @@
                 $modelToReportAdapter->getFilterRulesByAttribute(
                     $this->getResolvedAttribute(), $ruleAttributeName));
             $validators           = $this->createValueValidatorsByRules($rules);
-            foreach($validators as $validator)
+            foreach ($validators as $validator)
             {
                 $validated = $validator->validate($this);
                 if (!$validated)

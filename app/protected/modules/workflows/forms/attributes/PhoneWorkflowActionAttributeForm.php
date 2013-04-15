@@ -39,7 +39,6 @@
      */
     class PhoneWorkflowActionAttributeForm extends TextWorkflowActionAttributeForm
     {
-
         /**
          * @return string
          */

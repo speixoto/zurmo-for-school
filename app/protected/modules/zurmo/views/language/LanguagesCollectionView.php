@@ -163,7 +163,6 @@ EOD;
 
         public function renderLanguageRow($languageCode, $languageData = null)
         {
-
             if (!$languageData)
             {
                 $languageData = $this->getLanguageDataByLanguageCode($languageCode);

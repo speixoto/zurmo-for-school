@@ -46,7 +46,6 @@
          */
         protected $modelClassName;
 
-
         /**
          * Implement in children classes
          * @throws NotImplementedException
@@ -126,7 +125,6 @@
                 {
                     foreach ($metadata[$modelClassName]['derivedAttributeTypes'] as $derivedAttributeType)
                     {
-
                         $elementClassName          = $derivedAttributeType . 'Element';
                         $derivedAttributeTypesData
                         [$derivedAttributeType]    = array('label'                => $elementClassName::getDisplayName(),

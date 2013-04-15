@@ -149,7 +149,7 @@
                                               (bool)$trackableStructurePosition, true, static::getTreeType());
                 $view->addWrapper           = false;
                 $items[]                    = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }

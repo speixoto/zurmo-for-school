@@ -148,7 +148,6 @@
                 {
                     $element->setHideDelete();
                 }
-
             }
             return true;
         }

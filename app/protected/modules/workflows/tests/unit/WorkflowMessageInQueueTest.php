@@ -77,7 +77,6 @@
             $saved                          = $savedWorkflow->save();
             $this->assertTrue($saved);
 
-
             $workflowMessageInQueue                  = new WorkflowMessageInQueue();
             $workflowMessageInQueue->modelClassName  = get_class($model);
             $workflowMessageInQueue->modelItem       = $model;

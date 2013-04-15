@@ -389,7 +389,6 @@
                     {
                         $content   .= $modelToWorkflowAdapter->getAttributeLabel($relationOrAttribute);
                     }
-
                 }
             }
             return $content;

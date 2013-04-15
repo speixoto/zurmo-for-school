@@ -45,7 +45,6 @@
          */
         public function validateTimeTrigger()
         {
-
             if ($this->timeTriggerAttribute == null)
             {
                 $this->addError('timeTriggerAttribute',

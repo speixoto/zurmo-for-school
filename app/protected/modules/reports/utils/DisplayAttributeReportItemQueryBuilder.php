@@ -306,7 +306,6 @@
             }
         }
 
-
         /**
          * @param $modelToReportAdapter
          * @param string $attribute

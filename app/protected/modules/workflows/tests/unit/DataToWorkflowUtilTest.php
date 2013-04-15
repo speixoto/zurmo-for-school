@@ -75,7 +75,6 @@
                                                       'moduleClassName'   => 'WorkflowsTestModule');
             DataToWorkflowUtil::resolveWorkflowByWizardPostData($workflow, $data, 'OnSaveWorkflowWizardForm');
             $this->assertFalse($workflow->getIsActive());
-
         }
 
         /**

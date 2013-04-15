@@ -198,7 +198,6 @@
             $workflow                  = null;
             $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
 
-
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $model                     =  $workflowToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
@@ -473,7 +472,7 @@
                     {
                         throw new FailedToSaveModelException();
                     }
-                    $order ++;
+                    $order++;
                 }
                 $message = Zurmo::t('WorkflowsModule', 'Order saved successfully.');
                 echo CJSON::encode(array('message' => $message, 'type' => 'message'));

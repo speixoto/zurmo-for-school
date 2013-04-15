@@ -243,7 +243,7 @@
                 $view             = new ActionRowForWorkflowComponentView($action, $rowCount, $inputPrefixData, $this->form);
                 $view->addWrapper = false;
                 $items[]          = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }

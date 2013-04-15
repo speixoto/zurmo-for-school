@@ -78,7 +78,6 @@
             parent::registerScripts();
             $this->registerRemoveEmailMessageScript();
             $this->registerRemoveEmailMessageRecipientScript();
-
         }
 
         /**
@@ -215,7 +214,7 @@
                                         $this->form, get_class($this->model), $rowCounterInputId);
                 $view->addWrapper  = false;
                 $items[]           = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }

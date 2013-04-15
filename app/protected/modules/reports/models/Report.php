@@ -712,7 +712,7 @@
                     $structure .= ' AND ';
                 }
                 $structure .= $newStartingStructurePosition;
-                $newStartingStructurePosition ++;
+                $newStartingStructurePosition++;
             }
             $structure = '(' . $structure . ')';
             if ($this->filtersStructure != null)

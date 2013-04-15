@@ -43,7 +43,6 @@
         {
             switch($this->trigger->getOperator())
             {
-
                 case OperatorRules::TYPE_EQUALS:
                     if ($model->{$attribute}->id === $this->trigger->value)
                     {

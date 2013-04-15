@@ -52,7 +52,6 @@
          */
         public function renderContent()
         {
-
             $content   = $this->renderRefreshLink();
             $content  .= $this->makeViewAndRender();
             return $content;

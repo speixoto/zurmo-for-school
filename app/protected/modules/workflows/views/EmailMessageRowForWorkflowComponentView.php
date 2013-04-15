@@ -288,7 +288,7 @@
                 $view             = new EmailMessageRecipientRowForWorkflowComponentView($adapter, $rowCount, $inputPrefixData);
                 $view->addWrapper = false;
                 $items[]          = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }

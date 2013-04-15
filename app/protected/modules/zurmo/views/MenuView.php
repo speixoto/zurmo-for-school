@@ -97,7 +97,7 @@
                 {
                     $items[$key]['itemOptions']['class'] = 'hidden-nav-item';
                 }
-                $count ++;
+                $count++;
             }
             return $items;
         }

@@ -68,7 +68,6 @@
         public function __construct(WorkflowEmailMessageRecipientForm $model, WizardActiveForm $form,
                                     $emailMessageRecipientType, $inputPrefixData)
         {
-
             assert('is_string($emailMessageRecipientType)');
             assert('is_array($inputPrefixData)');
             $this->model                     = $model;
@@ -158,7 +157,6 @@
                 $toNameAndAddressElements .= $toNameElement->render();
                 $toNameAndAddressElements .= $toAddressElement->render();
                 $content .= ZurmoHtml::tag('div', array('class' => 'static-address-field'), $toNameAndAddressElements);
-
             }
             elseif ($formType == WorkflowEmailMessageRecipientForm::TYPE_STATIC_GROUP)
             {

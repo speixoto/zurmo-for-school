@@ -87,7 +87,6 @@
             $model                   = $event->sender;
             if ($model->getScenario() != 'autoBuildDatabase' && $model->shouldProcessWorkflowOnSave())
             {
-
                 try
                 {
                     $triggeredByUser              = Yii::app()->user->userModel;

@@ -200,7 +200,7 @@
                 {
                     $this->structure  .= ' and ' . $count;
                 }
-                $count ++;
+                $count++;
             }
         }
 

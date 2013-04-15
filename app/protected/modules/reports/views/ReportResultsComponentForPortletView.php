@@ -171,7 +171,7 @@
                     'beforeSend' => 'function ( xhr ) {jQuery("#' . $containerId .
                                     '").html("");makeLargeLoadingSpinner(true, "#' . $containerId . '");}',
                     'update' => '#' . get_class($this)),
-                    array('id'		  => 'refreshPortletLink-' . get_class($this),
+                    array('id'        => 'refreshPortletLink-' . get_class($this),
                           'class'     => 'refreshPortletLink',
                           'style'     => "display:none;",
                           'live'      => true,

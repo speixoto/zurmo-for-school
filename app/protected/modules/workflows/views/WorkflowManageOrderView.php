@@ -153,9 +153,6 @@
                         'success'    => 'function(data){$("#FlashMessageBar").jnotifyAddMessage({
                                          text: data.message, permanent: false, showIcon: true, type: data.type
                                          });}',
-
-
-
                 ),
                 array('id'       => 'save-order',
                       'class'    => 'attachLoading z-button',

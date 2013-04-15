@@ -69,7 +69,6 @@
          */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
-
             try
             {
                 $group = Group::getById((int)$this->groupId);

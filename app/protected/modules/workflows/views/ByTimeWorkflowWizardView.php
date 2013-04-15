@@ -85,7 +85,6 @@
                             $('#ModuleForWorkflowWizardView').hide();
                              " . $this->renderLoadTimeTriggerAttributeScriptContent($formName) . "
                             $('#TimeTriggerForWorkflowWizardView').show();
-
                         }
                         if (linkId == '" . TimeTriggerForWorkflowWizardView::getNextPageLinkId() . "')
                         {

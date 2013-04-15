@@ -119,7 +119,7 @@
                             $column['class'] = 'DataColumn';
                         }
                         array_push($columns, $column);
-                        $attributeKey ++;
+                        $attributeKey++;
                     }
                 }
             }

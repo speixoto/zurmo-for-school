@@ -611,7 +611,6 @@
             }
         }
 
-
         protected static function resolveTitleByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
@@ -776,7 +775,6 @@
             $postModelClassName                         = Yii::app()->request->getPost($modelClassName);
             if (isset($postSelectedRecordCount) || isset($postModelClassName))
             {
-
                 $page                                   = static::resolvePageValueForMassAction($modelClassName);
                 $insufficientPermissionSkipSavingUtil   = static::resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId);
                 $start                                  = ($selectedRecordCount > $pageSize)? 1: $selectedRecordCount;
@@ -838,7 +836,6 @@
             {
                 $doMassActionFunctionName           = 'processModelsForMassEditAction';
                 array_unshift($doMassActionFunctionArguments, $postModelClassName, $model);
-
             }
             $doMassActionFunctionName               = 'static::' . $doMassActionFunctionName;
             return call_user_func_array($doMassActionFunctionName, $doMassActionFunctionArguments);
@@ -1013,7 +1010,6 @@
                 $selectedRecordCount = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
             }
             return $selectedRecordCount;
-
         }
 
         protected static function resolveMassActionAlertMessage($postVariableName, $actionId)
@@ -1024,7 +1020,6 @@
             return (method_exists(get_called_class(), $alertMessageHandler))?
                                                         static::$alertMessageHandler($postVariableName) : null;
         }
-
 
         protected static function resolvePageSizeByMassActionId($actionId)
         {

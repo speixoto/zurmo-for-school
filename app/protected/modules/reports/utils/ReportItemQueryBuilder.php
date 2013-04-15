@@ -209,7 +209,7 @@
                         throw new NotSupportedException('The final element in array must be an attribute, not a relation');
                     }
                 }
-                $count ++;
+                $count++;
             }
             $modelAttributeToDataProviderAdapter->setCastingHintStartingModelClassName($startingModelClassName);
             return $this->resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName);
@@ -250,7 +250,6 @@
             {
                 return static::makeModelAttributeToDataProviderAdapterForDynamicallyDerivedAttribute(
                                $modelToReportAdapter, $attribute);
-
             }
             //Example: CustomField, CurrencyValue, OwnedCustomField, or likeContactState
             elseif ($modelToReportAdapter->relationIsReportedAsAttribute($attribute))

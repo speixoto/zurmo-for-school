@@ -75,7 +75,7 @@
                         $clauseStructure .= ' or ';
                     }
                     $clauseStructure .=  ($clausesCount + 1);
-                    $clausesCount ++;
+                    $clausesCount++;
                 }
             }
 
@@ -87,5 +87,4 @@
             return $searchAttributeData;
         }
     }
-
 ?>

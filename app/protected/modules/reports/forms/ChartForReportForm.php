@@ -86,11 +86,11 @@
         {
             return array_merge(parent::rules(), array(
                 array('type',                    'type', 'type' => 'string'),
-                array('firstSeries',  	 		 'type', 'type' => 'string'),
-                array('firstRange',  	 		 'type', 'type' => 'string'),
-                array('secondSeries',  	 		 'type', 'type' => 'string'),
-                array('secondRange',  	 		 'type', 'type' => 'string'),
-                array('type',             		 'validateSeriesAndRange'),
+                array('firstSeries',             'type', 'type' => 'string'),
+                array('firstRange',              'type', 'type' => 'string'),
+                array('secondSeries',            'type', 'type' => 'string'),
+                array('secondRange',             'type', 'type' => 'string'),
+                array('type',                    'validateSeriesAndRange'),
             ));
         }
 

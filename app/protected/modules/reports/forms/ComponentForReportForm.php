@@ -341,7 +341,7 @@
             else
             {
                 $content = null;
-                foreach($this->attributeAndRelationData as $relationOrAttribute)
+                foreach ($this->attributeAndRelationData as $relationOrAttribute)
                 {
                     if ($content != null)
                     {
@@ -460,7 +460,7 @@
                                                                    $modelClassName)
         {
             assert(count($attributeAndRelationData) > 0); // Not Coding Standard
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            foreach ($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
@@ -483,7 +483,7 @@
                                                                   $modelClassName)
         {
             assert(count($attributeAndRelationData) > 0); // Not Coding Standard
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            foreach ($attributeAndRelationData as $relationOrAttribute)
             {
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                         make($moduleClassName, $modelClassName, $this->reportType);
@@ -505,7 +505,7 @@
         {
             assert(count($attributeAndRelationData) > 0); // Not Coding Standard
             array_pop($attributeAndRelationData);
-            foreach($attributeAndRelationData as $relationOrAttribute)
+            foreach ($attributeAndRelationData as $relationOrAttribute)
             {
                 $lastModelClassName = $modelClassName;
                 $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::

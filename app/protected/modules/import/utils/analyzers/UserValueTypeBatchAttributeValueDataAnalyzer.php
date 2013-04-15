@@ -97,7 +97,7 @@
             }
             if ($value != null && !in_array($compareValue, $this->acceptableValues))
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
             }
         }
 

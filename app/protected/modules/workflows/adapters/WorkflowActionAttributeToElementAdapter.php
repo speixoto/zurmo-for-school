@@ -74,7 +74,6 @@
         public function __construct(WorkflowActionAttributeForm $model, WizardActiveForm $form,
                                     $actionType, $inputPrefixData, $isAttributeRequired)
         {
-
             assert('is_string($actionType)');
             assert('is_array($inputPrefixData)');
             assert('is_bool($isAttributeRequired)');
@@ -173,7 +172,6 @@
          */
         protected function renderTypeContent()
         {
-
             $typeValuesAndLabels = $this->model->getTypeValuesAndLabels($this->isCreatingNewModel(), $this->isAttributeRequired);
             if (count($typeValuesAndLabels) > 1)
             {

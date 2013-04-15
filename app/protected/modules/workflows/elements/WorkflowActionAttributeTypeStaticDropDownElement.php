@@ -89,7 +89,6 @@
 
         protected function renderChangeScript()
         {
-
         }
 
         public static function getValueTypesRequiringFirstInput()

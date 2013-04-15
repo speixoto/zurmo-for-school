@@ -153,7 +153,6 @@
             return $workflow;
         }
 
-
         public static function saveAndReloadModel(RedBeanModel $model)
         {
             $saved = $model->save();

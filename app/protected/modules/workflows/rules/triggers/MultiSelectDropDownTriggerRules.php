@@ -43,7 +43,6 @@
         {
             switch($this->trigger->getOperator())
             {
-
                 case OperatorRules::TYPE_EQUALS:
                     return $this->isSetIdenticalToTriggerValues($model->{$attribute}->values);
                     break;

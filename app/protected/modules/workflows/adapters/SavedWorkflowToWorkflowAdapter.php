@@ -185,7 +185,6 @@
             {
                 foreach ($actionForWorkflowForm->getAttributes() as $attribute => $value)
                 {
-
                     $data[$key][$attribute] = $value;
                 }
                 foreach ($actionForWorkflowForm->getActionAttributes() as $actionAttribute => $workflowActionAttributeForm)
@@ -220,7 +219,7 @@
                                                           $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->{$addMethodName}($component);
-                $rowKey ++;
+                $rowKey++;
             }
         }
 
@@ -240,7 +239,7 @@
                                                             $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->addAction($component);
-                $rowKey ++;
+                $rowKey++;
             }
         }
 
@@ -260,7 +259,7 @@
                                                                   $workflow->getType(), $rowKey);
                 $component->setAttributes($componentFormData);
                 $workflow->addEmailMessage($component);
-                $rowKey ++;
+                $rowKey++;
             }
         }
     }

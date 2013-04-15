@@ -368,7 +368,7 @@
                 {
                     $end = $pageSize * $page;
                 }
-                for ($i = $start; $i < $end; ++$i)
+                for ($i = $start; $i < $end; ++$i) // Not Coding Standard
                 {
                     $modelsToUpdate[] = $modelClassName::getById(intval($IdsToUpdate[$i]));
                 }

@@ -258,7 +258,7 @@
                     $secondSeriesDisplayLabels[$secondSeriesValueCount] = $this->getDisplayAttributeByAttribute(
                                                                           $this->report->getChart()->secondSeries)->
                                                                           resolveValueAsLabelForHeaderCell($secondSeriesDataValue);
-                    $secondSeriesValueCount ++;
+                    $secondSeriesValueCount++;
                 }
             }
             foreach ($resultsData as $data)
@@ -303,7 +303,7 @@
 
         private function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()
         {
-            foreach($this->resolveGroupBys() as $groupBy)
+            foreach ($this->resolveGroupBys() as $groupBy)
             {
                 if (null === $index = $this->report->getDisplayAttributeIndex($groupBy->attributeIndexOrDerivedType))
                 {

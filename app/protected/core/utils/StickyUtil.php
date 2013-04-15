@@ -1,5 +1,4 @@
 <?php
-
     /**
      * Helper for working with sticky items such as sticky search or sticky reports
      * Extend as needed

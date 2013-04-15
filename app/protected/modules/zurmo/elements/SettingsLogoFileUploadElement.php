@@ -57,7 +57,6 @@
 
             $inputNameAndId = $this->getEditableInputId('logo');
 
-
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("logoFileElement");
             $cClipWidget->widget('application.core.widgets.LogoFileUpload', array(

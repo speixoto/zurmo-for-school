@@ -96,7 +96,6 @@
             throw new NotImplementedException();
         }
 
-
         /**
          * @param string $componentType
          * @return string
@@ -228,7 +227,6 @@
             $content  = ZurmoHtml::tag('div', array('id' => static::getTreeDivId(), 'class' => 'hasTree loading'), $spinner);
             return $content;
         }
-
 
         /**
          * @return string

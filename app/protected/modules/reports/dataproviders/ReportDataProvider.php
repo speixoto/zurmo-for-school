@@ -172,7 +172,7 @@
                         $structure .= ' or ';
                     }
                     $structure .= $structurePosition;
-                    $structurePosition ++;
+                    $structurePosition++;
                     $filters[]  = $this->resolveFilterForReadPermissionAttributeIndex($attributeIndexOrDerivedTypePrefix,
                         $attributeOrDerivedAttributeType);
                 }
@@ -214,7 +214,7 @@
             foreach ($attributeIndexes as $attributeIndexOrDerivedTypePrefix => $variableStateData)
             {
                 $structure = $structurePosition;
-                $structurePosition ++;
+                $structurePosition++;
                 $filters[]  = $this->resolveFilterForVariableStateAttributeIndex($attributeIndexOrDerivedTypePrefix,
                     $variableStateData);
                 if ($readStructure != null)
@@ -325,7 +325,7 @@
                     $reportResultsRowData->addSelectedColumnNameAndValue($columnName, $value);
                 }
                 $resultsData[$key] = $reportResultsRowData;
-                $idByOffset ++;
+                $idByOffset++;
             }
             return $resultsData;
         }

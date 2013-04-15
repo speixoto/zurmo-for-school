@@ -86,8 +86,6 @@
             return $content;
         }
 
-
-
         protected function renderGlobalSearchContent()
         {
             if (count($this->moduleNamesAndLabelsAndAll) == 1)

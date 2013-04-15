@@ -50,7 +50,6 @@
             assert('is_string($attribute)');
             switch($this->trigger->valueType)
             {
-
                 case MixedDateTypesSearchFormAttributeMappingRules::TYPE_AFTER:
                     if (static::sanitize($model->$attribute) > static::sanitizeTriggerValue($this->trigger->value))
                     {

@@ -75,7 +75,7 @@
                         $clauseStructure .= ' or ';
                     }
                     $clauseStructure .=  ($clausesCount + 1);
-                    $clausesCount ++;
+                    $clausesCount++;
                 }
             }
 
@@ -130,7 +130,6 @@
                     if ($workflow->getType() == Workflow::TYPE_BY_TIME)
                     {
                         $model->addWorkflowToProcessAfterSave($workflow);
-
                     }
                     elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
                     {
@@ -274,7 +273,6 @@
                 return $model->{$attribute};
             }
         }
-
 
         /**
          * @param Workflow $workflow

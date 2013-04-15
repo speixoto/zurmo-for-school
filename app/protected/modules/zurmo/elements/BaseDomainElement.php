@@ -41,8 +41,6 @@
      */
     class BaseDomainElement extends TextElement
     {
-
-
         protected function renderLabel()
         {
             $title       = Zurmo::t('ZurmoModule', 'Like: dc=server,dc=world for both LDAP and Active Directory'); // Not Coding Standard

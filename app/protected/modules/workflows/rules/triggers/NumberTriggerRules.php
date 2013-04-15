@@ -43,7 +43,6 @@
         {
             switch($this->trigger->getOperator())
             {
-
                 case OperatorRules::TYPE_EQUALS:
                     if (static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
                     {

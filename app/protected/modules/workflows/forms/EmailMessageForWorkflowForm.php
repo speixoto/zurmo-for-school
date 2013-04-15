@@ -220,7 +220,7 @@
                     $form->setAttributes($recipientData);
                     $this->_emailMessageRecipients[] = $form;
                     $this->_emailMessageRecipientsRealToTemporaryKeyData[] = $temporaryKey;
-                    $count ++;
+                    $count++;
                 }
             }
         }

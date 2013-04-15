@@ -131,7 +131,7 @@
                     $view->addWrapper           = false;
                     $items[]                    = array('content' => $view->render());
                 }
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
