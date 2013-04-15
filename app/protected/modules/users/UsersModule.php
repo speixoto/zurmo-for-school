@@ -265,9 +265,9 @@
             return $s;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'UsersDemoDataMaker';
+            return array('UsersDemoDataMaker');
         }
 
         /**

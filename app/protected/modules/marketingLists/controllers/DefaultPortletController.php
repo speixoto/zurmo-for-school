@@ -86,16 +86,16 @@
         protected function addNewSubscribers($marketingListId, $contactIds)
         {
             $subscriberInformation = array('subscribedCount' => 0, 'skippedCount' => 0);
+            $marketingList         = MarketingList::getById($marketingListId);
             foreach ($contactIds as $contactId)
             {
-                if (MarketingListMember::memberAlreadyExists($marketingListId, $contactId))
+                if (MarketingListMember::addNewMember($marketingList, $contactId, false))
                 {
-                    $subscriberInformation['skippedCount']++;
+                    $subscriberInformation['subscribedCount']++;
                 }
                 else
                 {
-                    MarketingListMember::addNewMember($marketingListId, $contactId, false);
-                    $subscriberInformation['subscribedCount']++;
+                    $subscriberInformation['skippedCount']++;
                 }
             }
             return $subscriberInformation;

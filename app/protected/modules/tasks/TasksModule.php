@@ -96,9 +96,9 @@
             return self::RIGHT_DELETE_TASKS;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'TasksDemoDataMaker';
+            return array('TasksDemoDataMaker');
         }
 
         public static function hasPermissions()

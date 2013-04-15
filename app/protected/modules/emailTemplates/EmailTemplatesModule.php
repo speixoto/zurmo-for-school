@@ -102,9 +102,9 @@
             return true;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'EmailTemplatesDemoDataMaker';
+            return array('EmailTemplatesDemoDataMaker');
         }
 
         protected static function getSingularModuleLabel($language)

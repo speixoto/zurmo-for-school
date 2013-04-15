@@ -120,9 +120,9 @@
             return self::RIGHT_DELETE_ROLES;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'RolesDemoDataMaker';
+            return array('RolesDemoDataMaker');
         }
     }
 ?>

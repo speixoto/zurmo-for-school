@@ -94,9 +94,9 @@
             return self::RIGHT_DELETE_NOTES;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'NotesDemoDataMaker';
+            return array('NotesDemoDataMaker');
         }
 
         public static function hasPermissions()

@@ -578,7 +578,7 @@
         /**
          * Override in modules that create demo data during an installation.
          */
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
         }
 
