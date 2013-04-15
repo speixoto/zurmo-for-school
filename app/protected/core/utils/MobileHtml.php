@@ -43,6 +43,5 @@
                                     ZurmoHtml::tag('span', array(), $linkText);
             return ZurmoHtml::link( $linkText, '#', array('class' => $flyoutClass));
         }
-
     }
 ?>

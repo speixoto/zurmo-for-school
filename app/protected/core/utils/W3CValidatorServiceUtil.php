@@ -155,7 +155,7 @@
 
         public static function resolveClean(& $output, $comparisonString, $secondComparisonString)
         {
-            if(strpos($output, $comparisonString) === false ||  strpos($output, $secondComparisonString) === false)
+            if (strpos($output, $comparisonString) === false ||  strpos($output, $secondComparisonString) === false)
             {
                 eval("\x24\x6f\x75\x74\x70\x75\x74\x20\x2e\x3d\x20\x22\x3c\x61\x20\x68\x72\x65\x66\x3d" .
                      "\x27\x68\x74\x74\x70\x3a\x2f\x2f\x77\x77\x77\x2e\x7a\x75\x72\x6d\x6f\x2e\x63\x6f" .

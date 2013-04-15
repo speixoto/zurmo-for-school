@@ -71,13 +71,13 @@
         public function run()
         {
             $workflows = WorkflowActionsUtil::getWorkflowsMissingRequiredActionAttributes();
-            if(count($workflows) > 0)
+            if (count($workflows) > 0)
             {
                 $message                      = new NotificationMessage();
                 $message->htmlContent         = Zurmo::t('WorkflowsModule', 'As a result of a field or fields recently ' .
                                                 'becoming required, at least 1 workflow rule will no longer work properly.');
                 $message->htmlContent        .= "<div><ul>";
-                foreach($workflows as $workflow)
+                foreach ($workflows as $workflow)
                 {
                     $message->htmlContent      .= "<li>";
                     $url                        = Yii::app()->createUrl('workflows/default/details',

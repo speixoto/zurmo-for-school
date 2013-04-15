@@ -96,14 +96,14 @@
                     throw new NoCurrentUserSecurityException();
                 }
             }
-            if($eventName == "Item Viewed")
+            if ($eventName == "Item Viewed")
             {
                 AuditEventsRecentlyViewedUtil::
                         resolveNewRecentlyViewedModel($data[1],
                                                       $model,
                                                       AuditEventsRecentlyViewedUtil::RECENTLY_VIEWED_COUNT + 1);
             }
-            if($eventName == "Item Deleted")
+            if ($eventName == "Item Deleted")
             {
                 $modelClassName = get_class($model);
                 AuditEventsRecentlyViewedUtil::

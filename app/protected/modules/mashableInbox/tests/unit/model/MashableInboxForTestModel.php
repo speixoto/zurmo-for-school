@@ -40,6 +40,5 @@
         {
             return 'MashableInboxForTestsModule';
         }
-
     }
 ?>

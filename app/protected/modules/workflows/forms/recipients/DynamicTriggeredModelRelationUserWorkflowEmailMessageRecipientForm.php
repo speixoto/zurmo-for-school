@@ -78,11 +78,11 @@
         {
             $existingItemIds = array();
             $resolvedRecipients = array();
-            foreach($existingRecipients as $recipient)
+            foreach ($existingRecipients as $recipient)
             {
-                if($recipient->personOrAccount->id > 0)
+                if ($recipient->personOrAccount->id > 0)
                 {
-                    if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                    if (!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
                     {
                         $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
                         $resolvedRecipients[] = $recipient;
@@ -93,14 +93,13 @@
                     }
                 }
             }
-            foreach($newRecipients as $recipient)
+            foreach ($newRecipients as $recipient)
             {
-                if(!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
+                if (!in_array($recipient->personOrAccount->getClassId('Item'), $existingItemIds))
                 {
                     $existingItemIds[]    = $recipient->personOrAccount->getClassId('Item');
                     $resolvedRecipients[] = $recipient;
                 }
-
             }
             return $resolvedRecipients;
         }
@@ -113,7 +112,7 @@
             return array_merge(parent::rules(), array(
                       array('relation',         'type', 'type' =>  'string'),
                       array('relation',         'required'),
-                      array('relationFilter',  	'type', 'type' => 'string'),
+                      array('relationFilter',   'type', 'type' => 'string'),
                       array('relationFilter',   'validateRelationFilter')));
         }
 
@@ -122,7 +121,7 @@
          */
         public function validateRelationFilter()
         {
-            if($this->relationFilter == self::RELATION_FILTER_ALL)
+            if ($this->relationFilter == self::RELATION_FILTER_ALL)
             {
                 return true;
             }
@@ -139,7 +138,7 @@
             $adapter        = ModelRelationsAndAttributesToWorkflowAdapter::make($modelClassName::getModuleClassName(),
                                                                                  $modelClassName, $this->workflowType);
             $valueAndLabels = array();
-            foreach($adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
+            foreach ($adapter->getSelectableRelationsDataForEmailMessageRecipientModelRelation() as $relation => $data)
             {
                 $valueAndLabels[$relation] = $data['label'];
             }
@@ -156,37 +155,37 @@
         {
             $modelClassName = $this->modelClassName;
             $recipients     = array();
-            if($model->isADerivedRelationViaCastedUpModel($this->relation) &&
+            if ($model->isADerivedRelationViaCastedUpModel($this->relation) &&
                 $model->getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
-                foreach(WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
+                foreach (WorkflowUtil::resolveDerivedModels($model, $this->relation) as $resolvedModel)
                 {
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
+            elseif ($modelClassName::getInferredRelationModelClassNamesForRelation(
                 ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
             {
-                foreach(WorkflowUtil::
+                foreach (WorkflowUtil::
                         getInferredModelsByAtrributeAndModel($this->relation, $model) as $resolvedModel)
                 {
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($model->{$this->relation} instanceof RedBeanMutableRelatedModels)
+            elseif ($model->{$this->relation} instanceof RedBeanMutableRelatedModels)
             {
-                if(!$this->relationFilter == self::RELATION_FILTER_ALL)
+                if (!$this->relationFilter == self::RELATION_FILTER_ALL)
                 {
                     throw new NotSupportedException();
                 }
-                foreach($model->{$this->relation} as $resolvedModel)
+                foreach ($model->{$this->relation} as $resolvedModel)
                 {
                     $recipients = self::resolveRecipientsAsUniquePeople($recipients, parent::makeRecipients($resolvedModel, $triggeredByUser));
                 }
             }
-            elseif($modelClassName::isRelationTypeAHasOneVariant($this->relation))
+            elseif ($modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
-                if($model->{$this->relation}->id > 0)
+                if ($model->{$this->relation}->id > 0)
                 {
                     $recipients = parent::makeRecipients($model->{$this->relation}, $triggeredByUser);
                 }
@@ -205,17 +204,17 @@
         protected function resolveModelClassName()
         {
             $modelClassName = $this->modelClassName;
-            if($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
+            if ($modelClassName::isADerivedRelationViaCastedUpModel($this->relation) &&
                $modelClassName::getDerivedRelationType($this->relation) == RedBeanModel::MANY_MANY)
             {
                 return $modelClassName::getDerivedRelationModelClassName($this->relation);
             }
-            elseif($modelClassName::getInferredRelationModelClassNamesForRelation(
+            elseif ($modelClassName::getInferredRelationModelClassNamesForRelation(
                    ModelRelationsAndAttributesToWorkflowAdapter::resolveRealAttributeName($this->relation)) !=  null)
             {
                 return ModelRelationsAndAttributesToWorkflowAdapter::getInferredRelationModelClassName($this->relation);
             }
-            elseif($modelClassName::isRelationTypeAHasManyVariant($this->relation) ||
+            elseif ($modelClassName::isRelationTypeAHasManyVariant($this->relation) ||
                    $modelClassName::isRelationTypeAHasOneVariant($this->relation))
             {
                 return $modelClassName::getRelationModelClassName($this->relation);

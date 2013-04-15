@@ -56,23 +56,23 @@
          */
         protected function getValueTypeDropDownArray()
         {
-            if($this->model instanceof TimeTriggerForWorkflowForm)
+            if ($this->model instanceof TimeTriggerForWorkflowForm)
             {
                 return MixedDateTimeTypesSearchFormAttributeMappingRules::getTimeOnlyValueTypesAndLabels();
             }
             $valueTypesAndLabels = MixedDateTimeTypesSearchFormAttributeMappingRules::getTimeBasedValueTypesAndLabels();
-            if($this->model->getWorkflowType() == Workflow::TYPE_BY_TIME && $this->model->getAttribute() != null)
+            if ($this->model->getWorkflowType() == Workflow::TYPE_BY_TIME && $this->model->getAttribute() != null)
             {
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
             }
-            elseif($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() != null)
+            elseif ($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() != null)
             {
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_WAS_ON]          = Zurmo::t('Core', 'Was On');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_BECOMES_ON]      = Zurmo::t('Core', 'Becomes On');
             }
-            elseif($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() == null)
+            elseif ($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE && $this->model->getAttribute() == null)
             {
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_DOES_NOT_CHANGE] = Zurmo::t('Core', 'Does Not Change');
                 $valueTypesAndLabels[MixedDateTypesSearchFormAttributeMappingRules::TYPE_CHANGES]         = Zurmo::t('Core', 'Changes');
@@ -86,7 +86,7 @@
         protected function getEditableValueTypeHtmlOptions()
         {
             $htmlOptions = parent::getEditableValueTypeHtmlOptions();
-            if($this->model instanceof TimeTriggerForWorkflowForm && isset($htmlOptions['empty']))
+            if ($this->model instanceof TimeTriggerForWorkflowForm && isset($htmlOptions['empty']))
             {
                 unset($htmlOptions['empty']);
             }

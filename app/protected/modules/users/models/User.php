@@ -132,7 +132,6 @@
             return array('Person');
         }
 
-
         protected function linkBeans()
         {
             // Link the beans up the inheritance hierarchy, skipping

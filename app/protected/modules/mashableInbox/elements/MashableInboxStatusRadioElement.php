@@ -36,7 +36,6 @@
 
     class MashableInboxStatusRadioElement extends Element
     {
-
         protected function renderControlEditable()
         {
             $content = $this->form->radioButtonList(

@@ -284,7 +284,6 @@
             $this->increaseClausesCountByOne();
         }
 
-
         public function addClauseWithColumnNameOnlyAndNoEnclosure($columnName, $aliasName = null)
         {
             assert('is_string($columnName)');

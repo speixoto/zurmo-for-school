@@ -43,64 +43,63 @@
         {
             switch($this->trigger->getOperator())
             {
-
                 case OperatorRules::TYPE_EQUALS:
-                    if(static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if(static::sanitize($model->$attribute) !== static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) !== static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NULL:
-                    if($model->$attribute === null)
+                    if ($model->$attribute === null)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_NULL:
-                    if($model->$attribute !== null)
+                    if ($model->$attribute !== null)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_EMPTY:
-                    if(empty($model->$attribute))
+                    if (empty($model->$attribute))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_EMPTY:
-                    if(!empty($model->$attribute))
+                    if (!empty($model->$attribute))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if (array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if (!array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->originalAttributeValues[$attribute]) ===
                             static::sanitize($this->trigger->value))
                     {
@@ -108,31 +107,31 @@
                     }
                     break;
                 case OperatorRules::TYPE_GREATER_THAN:
-                    if(static::sanitize($model->$attribute) > static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) > static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_LESS_THAN:
-                    if(static::sanitize($model->$attribute) < static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) < static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO:
-                    if(static::sanitize($model->$attribute) >= static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) >= static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_LESS_THAN_OR_EQUAL_TO:
-                    if(static::sanitize($model->$attribute) <= static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) <= static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BETWEEN:
-                    if(static::sanitize($model->$attribute) > static::sanitize($this->trigger->value) &&
+                    if (static::sanitize($model->$attribute) > static::sanitize($this->trigger->value) &&
                        static::sanitize($model->$attribute) < static::sanitize($this->trigger->secondValue))
                     {
                         return true;

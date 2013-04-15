@@ -61,7 +61,6 @@
                             'unsubscriberCount' => MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingListId, true)
                                 );
             echo CJSON::encode($countArray);
-
         }
 
         public function actionSubscribeContacts($marketingListId, $id, $type)

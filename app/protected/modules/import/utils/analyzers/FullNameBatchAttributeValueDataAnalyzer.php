@@ -111,11 +111,11 @@
             }
             if (strlen($lastName) > $this->lastNameMaxLength || strlen($firstName) > $this->firstNameMaxLength)
             {
-                $this->messageCountData[static::FULL_NAME_TOO_LONG] ++;
+                $this->messageCountData[static::FULL_NAME_TOO_LONG]++;
             }
             if (strlen($lastName) < $this->lastNameMinLength)
             {
-                $this->messageCountData[static::FULL_NAME_TOO_SHORT] ++;
+                $this->messageCountData[static::FULL_NAME_TOO_SHORT]++;
             }
         }
 

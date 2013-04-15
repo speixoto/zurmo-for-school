@@ -73,12 +73,12 @@
             {
                 $role       = Role::getById((int)$this->roleId);
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 return array();
             }
             $recipients = array();
-            foreach($role->users as $user)
+            foreach ($role->users as $user)
             {
                 if ($user->primaryEmail->emailAddress !== null)
                 {

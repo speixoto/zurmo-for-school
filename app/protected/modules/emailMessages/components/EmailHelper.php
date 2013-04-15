@@ -230,7 +230,7 @@
             $queuedEmailMessages = EmailMessage::getAllByFolderType(EmailFolder::TYPE_OUTBOX_ERROR);
             foreach ($queuedEmailMessages as $emailMessage)
             {
-                if($emailMessage->sendAttempts < 3)
+                if ($emailMessage->sendAttempts < 3)
                 {
                     $this->sendImmediately($emailMessage);
                 }

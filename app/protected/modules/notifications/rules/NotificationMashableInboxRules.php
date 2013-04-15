@@ -36,7 +36,6 @@
 
     class NotificationMashableInboxRules extends MashableInboxRules
     {
-
         public function getUnreadCountForCurrentUser()
         {
             $searchAttributeData = $this->getMetadataFilteredByFilteredBy(MashableInboxForm::FILTERED_BY_UNREAD);
@@ -177,7 +176,6 @@
         {
             assert('$modelId > 0');
             $this->resolveChangeHasReadLatestStatus($modelId, false);
-
         }
 
         private function resolveChangeHasReadLatestStatus($modelId, $newStatus)

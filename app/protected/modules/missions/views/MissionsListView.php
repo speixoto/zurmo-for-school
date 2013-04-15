@@ -36,7 +36,6 @@
 
     class MissionsListView extends SecuredListView
     {
-
         public static function getDefaultMetadata()
         {
             $metadata = array(

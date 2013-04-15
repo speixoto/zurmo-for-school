@@ -201,7 +201,7 @@
 
         protected static function resolveActiveModuleId($controller)
         {
-            if(static::$activeModuleId != null)
+            if (static::$activeModuleId != null)
             {
                 return static::$activeModuleId;
             }

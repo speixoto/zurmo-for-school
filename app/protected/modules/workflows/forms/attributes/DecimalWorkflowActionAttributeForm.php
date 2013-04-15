@@ -62,7 +62,6 @@
          */
         protected function makeTypeValuesAndLabels($isCreatingNewModel, $isRequired)
         {
-
             assert('is_bool($isCreatingNewModel)');
             assert('is_bool($isRequired)');
             $data                           = array();

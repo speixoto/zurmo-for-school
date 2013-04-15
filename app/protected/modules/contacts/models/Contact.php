@@ -160,7 +160,7 @@
          */
         protected static function getLabel($language = null)
         {
-            if(null != $moduleClassName = static::getModuleClassName())
+            if (null != $moduleClassName = static::getModuleClassName())
             {
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Singular', $language);
             }
@@ -175,7 +175,7 @@
          */
         protected static function getPluralLabel($language = null)
         {
-            if(null != $moduleClassName = static::getModuleClassName())
+            if (null != $moduleClassName = static::getModuleClassName())
             {
                 return $moduleClassName::getModuleLabelByTypeAndLanguage('Plural', $language);
             }

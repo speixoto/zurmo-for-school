@@ -36,7 +36,6 @@
 
     class MashableInboxOptionsByModelRadioElement extends Element
     {
-
         private $getArray;
 
         public function __construct($model, $attribute, $form = null, array $params = array(), $getArray = array()) {

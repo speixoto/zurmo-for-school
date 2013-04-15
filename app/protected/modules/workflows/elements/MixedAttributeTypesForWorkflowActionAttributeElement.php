@@ -94,7 +94,7 @@
                 'id'              => $this->getFirstValueEditableInputId(),
                 'name'            => $this->getFirstValueEditableInputName(),
             );
-            if(!$this->shouldDisableSecondValueInputs())
+            if (!$this->shouldDisableSecondValueInputs())
             {
                 $htmlOptions['disabled'] = 'disabled';
             }
@@ -110,7 +110,7 @@
                 'id'     => $this->getSecondValueEditableInputId(),
                 'name'   => $this->getSecondValueEditableInputName(),
             );
-            if($this->shouldDisableSecondValueInputs())
+            if ($this->shouldDisableSecondValueInputs())
             {
                 $htmlOptions['disabled'] = 'disabled';
             }

@@ -237,13 +237,13 @@
             assert('is_int($rowCount)');
             assert('is_array($actions)');
             $items                      = array();
-            foreach($actions as $action)
+            foreach ($actions as $action)
             {
                 $inputPrefixData  = array(get_class($this->model), ComponentForWorkflowForm::TYPE_ACTIONS, (int)$rowCount);
                 $view             = new ActionRowForWorkflowComponentView($action, $rowCount, $inputPrefixData, $this->form);
                 $view->addWrapper = false;
                 $items[]          = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
@@ -276,11 +276,11 @@
                 $('#" . $relatedInputDivId . "').hide();
                 $('.action-type-selector-container').find('#" . $inputDivId . "').html('');
                 $('.action-type-selector-container').find('#" . $relatedInputDivId . "').html('');
-                if($('#" . $id . "').val() == '')
+                if ($('#" . $id . "').val() == '')
                 {
                     //do nothing
                 }
-                else if($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
+                else if ($('#" . $id . "').val() == '" . ActionForWorkflowForm::TYPE_UPDATE_SELF . "')
                 {
                     loadWorkflowAction();
                 }
@@ -317,12 +317,12 @@
             $script = "$('#" . $id . "').live('change', function()
             {
                 $('.action-type-selector-container').find('#" . $inputDivId . "').html('');
-                if($('#" . $id . "').val() == '')
+                if ($('#" . $id . "').val() == '')
                 {
                     $('#" . $inputDivId . "').html('');
                     $('#" . $inputDivId . "').hide();
                 }
-                else if($('#" . self::ACTION_TYPE_NAME . "').val() == '" . ActionForWorkflowForm::TYPE_CREATE_RELATED . "')
+                else if ($('#" . self::ACTION_TYPE_NAME . "').val() == '" . ActionForWorkflowForm::TYPE_CREATE_RELATED . "')
                 {
                     $ajaxSubmitScript
                 }
@@ -341,7 +341,7 @@
             $id     = self::ACTION_TYPE_RELATED_MODEL_RELATION_NAME;
             $script = "$('#" . $id . "').live('change', function()
             {
-                if($('#" . $id . "').val() != '')
+                if ($('#" . $id . "').val() != '')
                 {
                     loadWorkflowAction();
                 }
@@ -378,9 +378,12 @@
                     $.each(actionsList, function(){
                         if ( $(this).hasClass("expanded-row") ){
                             /*alert("please save and validate the open action panel");
-                            try{
+                            try
+                            {
                                 xhr.abort();
-                            } catch(error){
+                            }
+                            catch(error)
+                            {
                                 console.log(error);
                             }
                             $("#' . self::ACTION_TYPE_NAME . '").val("");
@@ -425,7 +428,7 @@
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parentsUntil("ul").siblings().show();
                     $(this).parent().parent().remove(); //removes the <li>
-                    if(size < 2)
+                    if (size < 2)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }

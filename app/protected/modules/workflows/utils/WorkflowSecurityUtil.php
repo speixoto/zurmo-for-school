@@ -46,7 +46,7 @@
         public static function canCurrentUserCanAccessModule($moduleClassName)
         {
             assert('is_string($moduleClassName)');
-            if($moduleClassName::getStateMetadataAdapterClassName() != null)
+            if ($moduleClassName::getStateMetadataAdapterClassName() != null)
             {
                 $workflowRules     = WorkflowRules::makeByModuleClassName($moduleClassName);
                 return $workflowRules->canUserAccessModuleInAVariableState(Yii::app()->user->userModel);

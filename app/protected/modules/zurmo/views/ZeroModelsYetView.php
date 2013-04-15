@@ -60,7 +60,6 @@
 
         protected function renderContent()
         {
-
             $params             = $this->getCreateLinkParams();
             $createLinkElement  = new CreateLinkActionElement($this->controllerId, $this->moduleId, null, $params);
             $content = '<div class="' . $this->getIconName() . '">';

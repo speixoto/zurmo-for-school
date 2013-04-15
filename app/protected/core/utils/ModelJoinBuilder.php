@@ -85,7 +85,7 @@
             assert('is_string($tableAliasName)');
             assert('is_string($columnName)');
             $quote = DatabaseCompatibilityUtil::getQuote();
-            return $quote . $tableAliasName . $quote . '.' . $quote . $columnName. $quote;
+            return $quote . $tableAliasName . $quote . '.' . $quote . $columnName . $quote;
         }
 
         /**
@@ -617,7 +617,6 @@
                         self::resolveForeignKey($relationTableName),
                         $relationJoiningTableAliasName,
                         'id');
-
             }
             else
             {
@@ -691,7 +690,6 @@
                         $resolvedCastedDownModelClassName,
                         $onTableAliasName);
                 }
-
             }
             return $onTableAliasName;
         }
@@ -709,7 +707,7 @@
             assert('is_string($castedDownModelClassName)');
             assert('is_string($onTableAliasName)');
             $modelDerivationPathToItem = $this->resolveModelDerivationPathToItemForCastingDown($modelClassName, $castedDownModelClassName);
-            foreach($modelDerivationPathToItem as $modelClassNameToCastDownTo)
+            foreach ($modelDerivationPathToItem as $modelClassNameToCastDownTo)
             {
                 if ($modelClassNameToCastDownTo::getCanHaveBean())
                 {
@@ -739,7 +737,7 @@
             {
                 return $modelDerivationPathToItem;
             }
-            foreach($modelDerivationPathToItem as $key => $modelClassNameToCastDown)
+            foreach ($modelDerivationPathToItem as $key => $modelClassNameToCastDown)
             {
                 unset($modelDerivationPathToItem[$key]);
                 if ($modelClassName == $modelClassNameToCastDown)

@@ -66,7 +66,7 @@
             $attributeNames = $this->getRealModelAttributeNames();
             $modelClassName = $this->getModelClassName();
             $parts          = explode(FormModelUtil::DELIMITER, $value);
-            if(count($parts) == 3)
+            if (count($parts) == 3)
             {
                 $value          = $parts[0];
                 $rateToBase     = $parts[1];
@@ -74,7 +74,7 @@
                 {
                     $currency   = Currency::getByCode($parts[2]);
                 }
-                catch(NotFoundException $e)
+                catch (NotFoundException $e)
                 {
                     $currency   = null;
                     $importSanitizeResultsUtil->addMessage('Currency Code: ' . $parts[2] . ' is invalid.');

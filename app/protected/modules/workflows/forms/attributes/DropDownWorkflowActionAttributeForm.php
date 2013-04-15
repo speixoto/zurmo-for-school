@@ -59,9 +59,9 @@
          */
         public function validateValue()
         {
-            if(parent::validateValue())
+            if (parent::validateValue())
             {
-                if($this->type == self::TYPE_STATIC)
+                if ($this->type == self::TYPE_STATIC)
                 {
                     $validator = CValidator::createValidator('type', $this, 'value', array('type' => 'string'));
                     $validator->validate($this);
@@ -89,19 +89,19 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == static::TYPE_STATIC)
+            if ($this->type == static::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute}->value = $this->value;
             }
-            elseif($this->type == static::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS)
+            elseif ($this->type == static::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS)
             {
-                if($adapter->getModel()->{$attribute}->value != null)
+                if ($adapter->getModel()->{$attribute}->value != null)
                 {
                     $data = unserialize($adapter->getModel()->{$attribute}->data->serializedData);
-                    if(false !== $key = array_search($adapter->getModel()->{$attribute}->value, $data))
+                    if (false !== $key = array_search($adapter->getModel()->{$attribute}->value, $data))
                     {
                         $newKey = $key + $this->value;
-                        if(isset($data[$newKey]))
+                        if (isset($data[$newKey]))
                         {
                             $adapter->getModel()->{$attribute}->value = $data[$newKey];
                         }
@@ -125,7 +125,7 @@
             assert('is_bool($isRequired)');
             $data                           = array();
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
-            if(!$isCreatingNewModel)
+            if (!$isCreatingNewModel)
             {
                 $data[self::TYPE_DYNAMIC_STEP_FORWARD_OR_BACKWARDS] = Zurmo::t('WorkflowsModule', 'Step Forward or Backward');
             }

@@ -200,7 +200,6 @@
             $this->assertEquals($compareData, $messagesData);
         }
 
-
         /**
          * @depends testImportDataAnalysisResultsForMultiSelectMissingMappingRuleForm
          */

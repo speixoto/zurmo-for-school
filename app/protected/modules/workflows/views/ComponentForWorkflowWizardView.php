@@ -76,7 +76,7 @@
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $content .= ZurmoHtml::tag('li', array(), $item['content']);
             }

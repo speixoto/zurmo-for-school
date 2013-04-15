@@ -49,12 +49,12 @@
         {
             $type                      = $workflow->getType();
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
-            if($type == Workflow::TYPE_ON_SAVE)
+            if ($type == Workflow::TYPE_ON_SAVE)
             {
                 $viewClassName = 'OnSaveWorkflowWizardView';
                 $form          = $workflowToWizardFormAdapter->makeOnSaveWizardForm();
             }
-            elseif($type == Workflow::TYPE_BY_TIME)
+            elseif ($type == Workflow::TYPE_BY_TIME)
             {
                 $viewClassName = 'ByTimeWorkflowWizardView';
                 $form          = $workflowToWizardFormAdapter->makeByTimeWizardForm();

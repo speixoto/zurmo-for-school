@@ -88,7 +88,6 @@
             return false;
         }
 
-
         public static function getTranslatedTypeLabel($type)
         {
             assert('is_string($type)');

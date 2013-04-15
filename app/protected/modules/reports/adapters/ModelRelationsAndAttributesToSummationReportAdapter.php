@@ -56,23 +56,23 @@
                                                  RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
             assert('is_array($existingGroupBys)');
-            if(($precedingModel != null && $precedingRelation == null) ||
+            if (($precedingModel != null && $precedingRelation == null) ||
                ($precedingModel == null && $precedingRelation != null))
             {
                 throw new NotSupportedException();
             }
-            if(empty($existingGroupBys) && empty($existingDisplayAttributes))
+            if (empty($existingGroupBys) && empty($existingDisplayAttributes))
             {
                 return array();
             }
             $attributes = array();
-            foreach($existingGroupBys as $groupBy)
+            foreach ($existingGroupBys as $groupBy)
             {
                 $addAttribute = false;
                 //is there is preceding model/relation info
-                if($precedingModel != null && $precedingRelation != null)
+                if ($precedingModel != null && $precedingRelation != null)
                 {
-                    if($groupBy->hasRelatedData() &&
+                    if ($groupBy->hasRelatedData() &&
                        $groupBy->getPenultimateModelClassName() == get_class($precedingModel) &&
                        $groupBy->getPenultimateRelation() == $precedingRelation &&
                        $groupBy->getResolvedAttributeModelClassName() == get_class($this->model))
@@ -85,29 +85,29 @@
                     //is there is no preceding model/relation info
                     //if the groupBy attribute is part of a related data chain, ignore,
                     //since must be at the wrong spot in the chain.
-                    if(!$groupBy->hasRelatedData() &&
+                    if (!$groupBy->hasRelatedData() &&
                        $groupBy->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
                         $addAttribute = true;
                     }
                 }
-                if($addAttribute)
+                if ($addAttribute)
                 {
                     $resolvedAttribute = $groupBy->getResolvedAttribute();
                     $attributes[$resolvedAttribute] =
                         array('label' => $this->model->getAttributeLabel($resolvedAttribute));
                 }
             }
-            foreach($existingDisplayAttributes as $displayAttribute)
+            foreach ($existingDisplayAttributes as $displayAttribute)
             {
                 $resolvedAttribute    = $displayAttribute->getResolvedAttribute();
-                if($this->isAttributeACalculationOrModifier($resolvedAttribute))
+                if ($this->isAttributeACalculationOrModifier($resolvedAttribute))
                 {
                     //We don't have to check penultimate information like GroupBys, because all display calculations are
                     //valid
                     //if the displayAttribute is part of a related data chain, ignore,
                     //since must be at the wrong spot in the chain.
-                    if(!$displayAttribute->hasRelatedData() &&
+                    if (!$displayAttribute->hasRelatedData() &&
                         $displayAttribute->getResolvedAttributeModelClassName() == get_class($this->model))
                     {
                         $realAttributeName = static::resolveRealAttributeName($resolvedAttribute);
@@ -139,11 +139,11 @@
         public function getAttributesForChartSeries($existingGroupBys = array(), $existingDisplayAttributes = array())
         {
             $attributes = array();
-            foreach($existingDisplayAttributes as $displayAttribute)
+            foreach ($existingDisplayAttributes as $displayAttribute)
             {
-                foreach($existingGroupBys as $groupBy)
+                foreach ($existingGroupBys as $groupBy)
                 {
-                    if($groupBy->attributeIndexOrDerivedType == $displayAttribute->attributeIndexOrDerivedType)
+                    if ($groupBy->attributeIndexOrDerivedType == $displayAttribute->attributeIndexOrDerivedType)
                     {
                         $attributes[$displayAttribute->attributeIndexOrDerivedType] =
                             array('label' => $displayAttribute->getDisplayLabel());
@@ -160,9 +160,9 @@
         public function getAttributesForChartRange ($existingDisplayAttributes = array())
         {
             $attributes = array();
-            foreach($existingDisplayAttributes as $displayAttribute)
+            foreach ($existingDisplayAttributes as $displayAttribute)
             {
-                if(static::
+                if (static::
                    isAttributeIndexOrDerivedTypeADisplayCalculation($displayAttribute->attributeIndexOrDerivedType))
                 {
                     $attributes[$displayAttribute->attributeIndexOrDerivedType] =

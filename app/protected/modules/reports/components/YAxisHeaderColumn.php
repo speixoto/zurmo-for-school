@@ -53,24 +53,24 @@
         {
             $data    = $this->grid->dataProvider->data[$row];
             $options = $this->htmlOptions;
-            if($this->cssClassExpression !== null)
+            if ($this->cssClassExpression !== null)
             {
                 $class = $this->evaluateExpression($this->cssClassExpression,array('row' => $row, 'data' => $data));
-                if(!empty($class))
+                if (!empty($class))
                 {
-                    if(isset($options['class']))
+                    if (isset($options['class']))
                     {
-                        $options['class'].=' '.$class;
+                        $options['class'] .= ' ' . $class;
                     }
                     else
                     {
-                        $options['class']=$class;
+                        $options['class'] = $class;
                     }
                 }
             }
             $rowSpan = $data->getSelectedColumnRowSpan($this->name);
             $options['rowSpan'] = $rowSpan;
-            if($rowSpan > 0)
+            if ($rowSpan > 0)
             {
                 echo ZurmoHtml::openTag('th',$options);
                 $this->renderDataCellContent($row,$data);

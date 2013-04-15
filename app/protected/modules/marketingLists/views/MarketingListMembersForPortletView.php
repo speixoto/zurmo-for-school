@@ -156,7 +156,6 @@
             return 'MarketingListsModule';
         }
 
-
         /**
          * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
          * refresh the portlet content.
@@ -270,7 +269,7 @@
                                                                                             $this->getPortletId(),
                                                                                             $persistentUserConfigItem
                                                                                             );
-                    if(isset($persistentUserConfigItemValue))
+                    if (isset($persistentUserConfigItemValue))
                     {
                         $this->marketingListMembersConfigurationForm->$persistentUserConfigItem = $persistentUserConfigItemValue;
                     }

@@ -46,7 +46,7 @@
         public function validateGroupBys()
         {
             $validated = parent::validateGroupBys();
-            if(count($this->groupBys) == 0)
+            if (count($this->groupBys) == 0)
             {
                 $this->addError( 'groupBys', Zurmo::t('ReportsModule', 'At least one grouping must be selected'));
                 $validated = false;

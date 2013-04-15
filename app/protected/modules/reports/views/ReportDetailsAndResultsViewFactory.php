@@ -59,15 +59,15 @@
                 'relationModel'    => $report,
                 'redirectUrl'      => $redirectUrl
             );
-            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 $viewClassName = 'RowsAndColumnsReportDetailsAndResultsView';
             }
-            elseif($report->getType() == Report::TYPE_SUMMATION)
+            elseif ($report->getType() == Report::TYPE_SUMMATION)
             {
                 $viewClassName = 'SummationReportDetailsAndResultsView';
             }
-            elseif($report->getType() == Report::TYPE_MATRIX)
+            elseif ($report->getType() == Report::TYPE_MATRIX)
             {
                 $viewClassName = 'MatrixReportDetailsAndResultsView';
             }

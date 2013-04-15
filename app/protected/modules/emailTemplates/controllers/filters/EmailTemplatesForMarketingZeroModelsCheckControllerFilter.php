@@ -71,8 +71,5 @@
                 $this->controller, $mixedView, $this->breadcrumbLinks, 'MarketingBreadCrumbView'));
             echo $view->render();
         }
-
-
-
     }
 ?>

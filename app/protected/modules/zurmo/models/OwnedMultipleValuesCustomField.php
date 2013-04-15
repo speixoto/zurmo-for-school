@@ -123,13 +123,13 @@
          */
         public function resolveOriginalCustomFieldValuesDataForNewData()
         {
-            if($this->values->count() != count($this->originalCustomFieldValuesData))
+            if ($this->values->count() != count($this->originalCustomFieldValuesData))
             {
                 return $this->originalCustomFieldValuesData;
             }
-            foreach($this->values as $customFieldValue)
+            foreach ($this->values as $customFieldValue)
             {
-                if(!in_array($customFieldValue->value, $this->originalCustomFieldValuesData))
+                if (!in_array($customFieldValue->value, $this->originalCustomFieldValuesData))
                 {
                     return $this->originalCustomFieldValuesData;
                 }

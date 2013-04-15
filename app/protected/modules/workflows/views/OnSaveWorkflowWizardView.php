@@ -77,16 +77,15 @@
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
 
-                        if(linkId == '" . ModuleForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ModuleForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::TRIGGERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForWorkflowWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'TriggersForWorkflowWizardView') . "
                             $('#TriggersForWorkflowWizardView').show();
-
                         }
-                        if(linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . TriggersForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::ACTIONS_VALIDATION_SCENARIO . "');
@@ -101,14 +100,14 @@
                                 }
                             });
                         }
-                        if(linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ActionsForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 WorkflowWizardForm::EMAIL_MESSAGES_VALIDATION_SCENARIO . "');
                             $('#ActionsForWorkflowWizardView').hide();
                             $('#EmailMessagesForWorkflowWizardView').show();
                         }
-                        if(linkId == '" . EmailMessagesForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . EmailMessagesForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                             WorkflowWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
@@ -125,7 +124,7 @@
                             $('#actionsNextLink').parent().parent().show();
                         }
 
-                        if(linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GeneralDataForWorkflowWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
                         }

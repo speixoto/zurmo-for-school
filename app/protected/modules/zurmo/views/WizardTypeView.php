@@ -69,7 +69,7 @@
             {
                 $content .= '<li>';
                 $content .= '<h4>' . $item['titleLabel'] . '</h4>';
-                if(isset($item['descriptionLabel']))
+                if (isset($item['descriptionLabel']))
                 {
                     $content .= ' - ' . $item['descriptionLabel'];
                 }

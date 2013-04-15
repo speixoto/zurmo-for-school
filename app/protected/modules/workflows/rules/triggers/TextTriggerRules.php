@@ -50,45 +50,44 @@
             assert('is_string($attribute)');
             switch($this->trigger->getOperator())
             {
-
                 case OperatorRules::TYPE_EQUALS:
-                    if(static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_EQUAL:
-                    if(static::sanitize($model->$attribute) !== static::sanitize($this->trigger->value))
+                    if (static::sanitize($model->$attribute) !== static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NULL:
-                    if($model->$attribute === null)
+                    if ($model->$attribute === null)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_NULL:
-                    if($model->$attribute !== null)
+                    if ($model->$attribute !== null)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_EMPTY:
-                    if(empty($model->$attribute))
+                    if (empty($model->$attribute))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_IS_NOT_EMPTY:
-                    if(!empty($model->$attribute))
+                    if (!empty($model->$attribute))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_STARTS_WITH:
-                    if(!strncmp(static::sanitize($model->$attribute),
+                    if (!strncmp(static::sanitize($model->$attribute),
                         static::sanitize($this->trigger->value),
                         strlen(static::sanitize($this->trigger->value))))
                     {
@@ -96,39 +95,39 @@
                     }
                     break;
                 case OperatorRules::TYPE_ENDS_WITH:
-                    if(substr(static::sanitize($model->$attribute), - strlen(static::sanitize($this->trigger->value))) ===
+                    if (substr(static::sanitize($model->$attribute), - strlen(static::sanitize($this->trigger->value))) ===
                         static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CONTAINS:
-                    if((stripos($model->$attribute, $this->trigger->value)) !== false)
+                    if ((stripos($model->$attribute, $this->trigger->value)) !== false)
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_CHANGES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues))
+                    if (array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_DOES_NOT_CHANGE:
-                    if(!array_key_exists($attribute, $model->originalAttributeValues))
+                    if (!array_key_exists($attribute, $model->originalAttributeValues))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_BECOMES:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->$attribute) === static::sanitize($this->trigger->value))
                     {
                         return true;
                     }
                     break;
                 case OperatorRules::TYPE_WAS:
-                    if(array_key_exists($attribute, $model->originalAttributeValues) &&
+                    if (array_key_exists($attribute, $model->originalAttributeValues) &&
                         static::sanitize($model->originalAttributeValues[$attribute]) ===
                             static::sanitize($this->trigger->value))
                     {

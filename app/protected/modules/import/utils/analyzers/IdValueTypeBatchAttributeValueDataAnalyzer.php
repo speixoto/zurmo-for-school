@@ -190,17 +190,17 @@
             }
             if ($found)
             {
-                $this->messageCountData[static::FOUND] ++;
+                $this->messageCountData[static::FOUND]++;
             }
             else
             {
-                $this->messageCountData[static::UNFOUND] ++;
+                $this->messageCountData[static::UNFOUND]++;
             }
             if ($this->type == IdValueTypeMappingRuleForm::EXTERNAL_SYSTEM_ID)
             {
                 if (strlen($value) > $this->externalSystemIdMaxLength)
                 {
-                    $this->messageCountData[static::EXTERNAL_SYSTEM_ID_TOO_LONG] ++;
+                    $this->messageCountData[static::EXTERNAL_SYSTEM_ID_TOO_LONG]++;
                 }
             }
         }

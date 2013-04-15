@@ -52,7 +52,7 @@
             $clausesCount = count($searchAttributeData['clauses']);
             $clauseStructure = null;
 
-            if(count($moduleClassNames) == 0)
+            if (count($moduleClassNames) == 0)
             {
                 $searchAttributeData['clauses'][$clausesCount + 1] = array(
                     'attributeName'        => 'moduleClassName',
@@ -75,7 +75,7 @@
                         $clauseStructure .= ' or ';
                     }
                     $clauseStructure .=  ($clausesCount + 1);
-                    $clausesCount ++;
+                    $clausesCount++;
                 }
             }
 
@@ -87,5 +87,4 @@
             return $searchAttributeData;
         }
     }
-
 ?>

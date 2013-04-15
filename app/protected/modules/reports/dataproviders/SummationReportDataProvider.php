@@ -72,7 +72,7 @@
          */
         public function makeReportDataProviderToAmChartMakerAdapter()
         {
-            if(ChartRules::isStacked($this->report->getChart()->type))
+            if (ChartRules::isStacked($this->report->getChart()->type))
             {
                 return $this->makeStackedReportDataProviderToAmChartMakerAdapter();
             }
@@ -87,17 +87,17 @@
          */
         public function resolveDisplayAttributes()
         {
-            if($this->resolvedDisplayAttributes != null)
+            if ($this->resolvedDisplayAttributes != null)
             {
                 return $this->resolvedDisplayAttributes;
             }
             $this->resolvedDisplayAttributes = array();
-            foreach($this->report->getDisplayAttributes() as $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $displayAttribute)
             {
                 $this->resolvedDisplayAttributes[] = $displayAttribute;
             }
 
-            if(($this->report->getDrillDownDisplayAttributes()) > 0)
+            if (($this->report->getDrillDownDisplayAttributes()) > 0)
             {
                 $this->resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes();
             }
@@ -109,9 +109,9 @@
          */
         public function resolveFirstSeriesLabel()
         {
-            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $key => $displayAttribute)
             {
-                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstSeries)
+                if ($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstSeries)
                 {
                     return $displayAttribute->label;
                 }
@@ -123,9 +123,9 @@
          */
         public function resolveFirstRangeLabel()
         {
-            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $key => $displayAttribute)
             {
-                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstRange)
+                if ($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstRange)
                 {
                     return $displayAttribute->label;
                 }
@@ -138,7 +138,7 @@
          */
         protected function isReportValidType()
         {
-            if($this->report->getType() != Report::TYPE_SUMMATION)
+            if ($this->report->getType() != Report::TYPE_SUMMATION)
             {
                 throw new NotSupportedException();
             }
@@ -157,9 +157,9 @@
          */
         protected function resolveChartFirstSeriesAttributeNameForReportResultsRowData()
         {
-            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $key => $displayAttribute)
             {
-                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstSeries)
+                if ($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstSeries)
                 {
                     return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 }
@@ -171,9 +171,9 @@
          */
         protected function resolveChartFirstRangeAttributeNameForReportResultsRowData()
         {
-            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $key => $displayAttribute)
             {
-                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstRange)
+                if ($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->firstRange)
                 {
                     return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 }
@@ -185,9 +185,9 @@
          */
         protected function resolveChartSecondSeriesAttributeNameForReportResultsRowData()
         {
-            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $key => $displayAttribute)
             {
-                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->secondSeries)
+                if ($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->secondSeries)
                 {
                     return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 }
@@ -199,9 +199,9 @@
          */
         protected function resolveChartSecondRangeAttributeNameForReportResultsRowData()
         {
-            foreach($this->report->getDisplayAttributes() as $key => $displayAttribute)
+            foreach ($this->report->getDisplayAttributes() as $key => $displayAttribute)
             {
-                if($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->secondRange)
+                if ($displayAttribute->attributeIndexOrDerivedType == $this->report->getChart()->secondRange)
                 {
                     return $displayAttribute->resolveAttributeNameForGridViewColumn($key);
                 }
@@ -252,13 +252,13 @@
                                                     $this->getDisplayAttributeByAttribute($this->report->getChart()->firstSeries)->
                                                     resolveValueAsLabelForHeaderCell($firstSeriesDataValue));
                 $secondSeriesDataValue            = $data->resolveRawValueByDisplayAttributeKey($secondSeriesDisplayAttributeKey);
-                if(!isset($secondSeriesValueData[$secondSeriesDataValue]))
+                if (!isset($secondSeriesValueData[$secondSeriesDataValue]))
                 {
                     $secondSeriesValueData[$secondSeriesDataValue]      = $secondSeriesValueCount;
                     $secondSeriesDisplayLabels[$secondSeriesValueCount] = $this->getDisplayAttributeByAttribute(
                                                                           $this->report->getChart()->secondSeries)->
                                                                           resolveValueAsLabelForHeaderCell($secondSeriesDataValue);
-                    $secondSeriesValueCount ++;
+                    $secondSeriesValueCount++;
                 }
             }
             foreach ($resultsData as $data)
@@ -266,7 +266,7 @@
                 $firstSeriesDataValue  = $data->resolveRawValueByDisplayAttributeKey($firstSeriesDisplayAttributeKey);
                 $secondSeriesDataValue = $data->resolveRawValueByDisplayAttributeKey($secondSeriesDisplayAttributeKey);
                 $secondSeriesKey       = $secondSeriesValueData[$secondSeriesDataValue];
-                if(!isset($chartData[$firstSeriesDataValue]
+                if (!isset($chartData[$firstSeriesDataValue]
                           [ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName($secondSeriesKey)]))
                 {
                     $chartData[$firstSeriesDataValue]
@@ -275,22 +275,22 @@
                 $chartData[$firstSeriesDataValue]
                           [ReportDataProviderToAmChartMakerAdapter::resolveFirstSeriesValueName($secondSeriesKey)] +=
                           $data->$firstRangeAttributeName;
-                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName($secondSeriesKey)]))
+                if (!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName($secondSeriesKey)]))
                 {
                     $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveFirstRangeDisplayLabelName($secondSeriesKey)] =
                         $this->getDisplayAttributeByAttribute($this->report->getChart()->firstRange)->label;
                 }
-                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)]))
+                if (!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)]))
                 {
                     $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)] = 0;
                 }
                 $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesValueName($secondSeriesKey)] += $data->$secondRangeAttributeName;
-                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)]))
+                if (!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)]))
                 {
                     $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)] =
                             $secondSeriesDisplayLabels[$secondSeriesKey];
                 }
-                if(!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)]))
+                if (!isset($chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)]))
                 {
                     $chartData[$firstSeriesDataValue][ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($secondSeriesKey)] =
                         $this->getDisplayAttributeByAttribute($this->report->getChart()->secondRange)->label;
@@ -303,9 +303,9 @@
 
         private function resolveGroupBysThatAreNotYetDisplayAttributesAsDisplayAttributes()
         {
-            foreach($this->resolveGroupBys() as $groupBy)
+            foreach ($this->resolveGroupBys() as $groupBy)
             {
-                if(null === $index = $this->report->getDisplayAttributeIndex($groupBy->attributeIndexOrDerivedType))
+                if (null === $index = $this->report->getDisplayAttributeIndex($groupBy->attributeIndexOrDerivedType))
                 {
                     $displayAttribute                              = new DisplayAttributeForReportForm(
                                                                      $groupBy->getModuleClassName(),

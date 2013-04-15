@@ -36,7 +36,6 @@
 
     class NotificationsForUserListView extends ListView
     {
-
         public static function getDefaultMetadata()
         {
             $metadata = array(

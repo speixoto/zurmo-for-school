@@ -431,7 +431,6 @@
             $this->assertEquals($compareData, $relations['modifiedByUser']);
         }
 
-
         /**
          * @depends testGetDerivedRelationsViaCastedUpModelDataWithPrecedingModel
          */
@@ -728,7 +727,6 @@
             $compareData        = array('label' => 'Currency Value -(Avg)');
             $this->assertEquals($compareData, $attributes['currencyValue__Average']);
 
-
             //Add a second groupBy attribute radioDropDown on the same model
             $report             = new Report();
             $report->setType(Report::TYPE_SUMMATION);
@@ -930,7 +928,6 @@
             $this->assertEquals(2, count($attributes));
             $this->assertFalse(isset($attributes['hasOne___createdDateTime__Minimum']));
         }
-
 
         /**
          * @depends testGetAvailableAttributesForSummationOrderBysThatAreDisplayCalculations
@@ -1413,7 +1410,6 @@
             $rules              = new ReportsAlternateStateTestReportRules();
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
             $this->assertEquals('AllContactStatesStaticDropDownForWizardModel', $adapter->getFilterValueElementType('likeContactState'));
-
         }
 
         /**
@@ -1465,7 +1461,6 @@
             $adapter            = new ModelRelationsAndAttributesToReportAdapter($model, $rules, Report::TYPE_ROWS_AND_COLUMNS);
             $this->assertEquals(ModelAttributeToReportOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_DROPDOWN,
                                 $adapter->getAvailableOperatorsType('likeContactState'));
-
         }
     }
 ?>

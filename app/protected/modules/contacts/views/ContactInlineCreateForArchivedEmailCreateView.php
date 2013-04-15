@@ -154,7 +154,7 @@
                                           permanent: false,
                                           showIcon: true,
                                        });
-                    if($('.email-archive-item').length==0)
+                    if ($('.email-archive-item').length==0)
                     {
                         window.location.reload();
                     }

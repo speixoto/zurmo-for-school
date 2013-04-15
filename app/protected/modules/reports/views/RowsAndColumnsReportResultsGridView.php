@@ -44,7 +44,7 @@
          */
         protected function isDataProviderValid()
         {
-            if(!$this->dataProvider instanceof RowsAndColumnsReportDataProvider)
+            if (!$this->dataProvider instanceof RowsAndColumnsReportDataProvider)
             {
                 return false;
             }

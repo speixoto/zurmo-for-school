@@ -99,7 +99,7 @@
             $savedReport = new SavedReport();
             SavedReportToReportAdapter::resolveReportToSavedReport($report, $savedReport);
             $saved       = $savedReport->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

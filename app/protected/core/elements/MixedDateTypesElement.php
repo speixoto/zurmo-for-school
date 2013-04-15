@@ -88,8 +88,8 @@
                     {
                         arr  = " . CJSON::encode($valueTypesRequiringFirstDateInput) . ";
                         arr2 = " . CJSON::encode($valueTypesRequiringSecondDateInput) . ";
-                        firstDateSpanAreaQualifier = '#' + $(this).attr('id') + '".$firstDateSpanAreaSuffix."';
-                        secondDateSpanAreaQualifier = '#' + $(this).attr('id') + '".$secondDateSpanAreaSuffix."';
+                        firstDateSpanAreaQualifier = '#' + $(this).attr('id') + '" . $firstDateSpanAreaSuffix . "';
+                        secondDateSpanAreaQualifier = '#' + $(this).attr('id') + '" . $secondDateSpanAreaSuffix . "';
                         if ($.inArray($(this).val(), arr) != -1)
                         {
                             $(firstDateSpanAreaQualifier).show();

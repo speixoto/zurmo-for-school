@@ -128,11 +128,11 @@
             $where             = RedBeanModelDataProvider::makeWhere('ByTimeWorkflowInQueue', $searchAttributeData,
                                                                      $joinTablesAdapter);
             $models            = self::getSubset($joinTablesAdapter, null, null, $where, null);
-            if(count($models) > 1)
+            if (count($models) > 1)
             {
                 throw new NotSupportedException();
             }
-            elseif(count($models) == 1)
+            elseif (count($models) == 1)
             {
                 return $models[0];
             }

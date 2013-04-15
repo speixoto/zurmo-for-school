@@ -41,7 +41,6 @@
      */
     class WorkflowTriggersUtilForDateTimeTest extends WorkflowTriggersUtilBaseTest
     {
-
         public function testTimeTriggerBeforeSaveEquals()
         {
             $workflow = self::makeOnSaveWorkflowAndTimeTriggerForDateOrDateTime('dateTime', 'Is Time For', null, 500);
