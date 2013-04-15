@@ -35,11 +35,11 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo emailTemplates.
+     * Class that builds demo marketingLists.
      */
-    class EmailTemplatesDemoDataMaker extends DemoDataMaker
+    class MarketingListsDemoDataMaker extends DemoDataMaker
     {
-        protected $ratioToLoad = 3;
+        protected $ratioToLoad = 1;
 
         public static function getDependencies()
         {
@@ -51,44 +51,33 @@
             assert('$demoDataHelper instanceof DemoDataHelper');
             assert('$demoDataHelper->isSetRange("User")');
 
-            $emailTemplates = array();
+            $marketingLists = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $emailTemplate              = new EmailTemplate();
-                $emailTemplate->owner       = $demoDataHelper->getRandomByModelName('User');;
-                $this->populateModel($emailTemplate);
-                $saved                      = $emailTemplate->save(); // TODO: @Shoaibi/@Jason: We will have duplicate email templates, same name, may be same subject, other data may differ.
+                $marketingList              = new MarketingList();
+                $marketingList->owner       = $demoDataHelper->getRandomByModelName('User');
+                $this->populateModel($marketingList);
+                $saved                      = $marketingList->save(); // TODO: @Shoaibi/@Jason: Medium: We will have duplicate marketingLists, same name, different data.
                 assert('$saved');
-                $emailTemplates[]           = $emailTemplate->id;
+                $marketingLists[]           = $marketingList->id;
             }
-            $demoDataHelper->setRangeByModelName('EmailTemplate', $emailTemplates[0], $emailTemplates[count($emailTemplates)-1]);
+            $demoDataHelper->setRangeByModelName('MarketingList', $marketingLists[0], $marketingLists[count($marketingLists)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof EmailTemplate');
+            assert('$model instanceof MarketingList');
             parent::populateModel($model);
-            $randomData                 = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
-                                                                                                    'EmailTemplatesModule',
-                                                                                                    'EmailTemplate');
-            $type                       = RandomDataUtil::getRandomValueFromArray($randomData['type']);
-            $name                       = RandomDataUtil::getRandomValueFromArray($randomData['name']);
-            $subject                    = RandomDataUtil::getRandomValueFromArray($randomData['subject']);
-            $language                   = RandomDataUtil::getRandomValueFromArray($randomData['language']);
-            $htmlContent                = RandomDataUtil::getRandomValueFromArray($randomData['htmlContent']);
-            $textContent                = RandomDataUtil::getRandomValueFromArray($randomData['textContent']);
-            $modelClassName             = 'Contact';
-            if ($type === EmailTemplate::TYPE_WORKFLOW)
-            {
-                $modelClassName         = RandomDataUtil::getRandomValueFromArray($randomData['modelClassName']);
-            }
-            $model->type                = $type;
-            $model->modelClassName      = $modelClassName;
-            $model->name                = $name;
-            $model->subject             = $subject;
-            $model->language            = $language;
-            $model->textContent         = $textContent;
-            $model->htmlContent         = $htmlContent;
+            $randomData         = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
+                                                                                                'MarketingList');
+            $name               = RandomDataUtil::getRandomValueFromArray($randomData['name']);
+            $description        = RandomDataUtil::getRandomValueFromArray($randomData['description']);
+            $fromName           = RandomDataUtil::getRandomValueFromArray($randomData['fromName']);
+            $fromAddress        = RandomDataUtil::getRandomValueFromArray($randomData['fromAddress']);
+            $model->name        = $name;
+            $model->description = $description;
+            $model->fromName    = $fromName;
+            $model->fromAddress = $fromAddress;
         }
     }
 ?>

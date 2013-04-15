@@ -35,60 +35,46 @@
      ********************************************************************************/
 
     /**
-     * Class that builds demo emailTemplates.
+     * Class that builds demo members.
      */
-    class EmailTemplatesDemoDataMaker extends DemoDataMaker
+    class MarketingListMembersDemoDataMaker extends DemoDataMaker
     {
         protected $ratioToLoad = 3;
 
         public static function getDependencies()
         {
-            return array('users');
+            return array('contacts');
         }
 
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("User")');
+            assert('$demoDataHelper->isSetRange("Contact")');
+            assert('$demoDataHelper->isSetRange("MarketingList")');
 
-            $emailTemplates = array();
+            $members = array();
             for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
             {
-                $emailTemplate              = new EmailTemplate();
-                $emailTemplate->owner       = $demoDataHelper->getRandomByModelName('User');;
-                $this->populateModel($emailTemplate);
-                $saved                      = $emailTemplate->save(); // TODO: @Shoaibi/@Jason: We will have duplicate email templates, same name, may be same subject, other data may differ.
+                $member                 = new MarketingListMember();
+                $contact                = $demoDataHelper->getRandomByModelName('Contact');
+                //$member->owner          = $contact->owner;
+                $member->contact        = $contact;
+                $member->marketingList  = $demoDataHelper->getRandomByModelName('MarketingList');
+                $this->populateModel($member);
+                $saved                  = $member->unrestrictedSave(); // TODO: @Shoaibi/@Jason: Medium: We might have duplicate members, if we add a unqiue validator inside MarketingListMember then assert would fail, what then?
                 assert('$saved');
-                $emailTemplates[]           = $emailTemplate->id;
+                $members[]              = $member->id;
             }
-            $demoDataHelper->setRangeByModelName('EmailTemplate', $emailTemplates[0], $emailTemplates[count($emailTemplates)-1]);
+            $demoDataHelper->setRangeByModelName('MarketingListMember', $members[0], $members[count($members)-1]);
         }
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof EmailTemplate');
+            assert('$model instanceof MarketingList');
             parent::populateModel($model);
-            $randomData                 = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames(
-                                                                                                    'EmailTemplatesModule',
-                                                                                                    'EmailTemplate');
-            $type                       = RandomDataUtil::getRandomValueFromArray($randomData['type']);
-            $name                       = RandomDataUtil::getRandomValueFromArray($randomData['name']);
-            $subject                    = RandomDataUtil::getRandomValueFromArray($randomData['subject']);
-            $language                   = RandomDataUtil::getRandomValueFromArray($randomData['language']);
-            $htmlContent                = RandomDataUtil::getRandomValueFromArray($randomData['htmlContent']);
-            $textContent                = RandomDataUtil::getRandomValueFromArray($randomData['textContent']);
-            $modelClassName             = 'Contact';
-            if ($type === EmailTemplate::TYPE_WORKFLOW)
-            {
-                $modelClassName         = RandomDataUtil::getRandomValueFromArray($randomData['modelClassName']);
-            }
-            $model->type                = $type;
-            $model->modelClassName      = $modelClassName;
-            $model->name                = $name;
-            $model->subject             = $subject;
-            $model->language            = $language;
-            $model->textContent         = $textContent;
-            $model->htmlContent         = $htmlContent;
+            $randomData             = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
+                                                                                                'MarketingListMember');
+            $model->unsubscribed    = RandomDataUtil::getRandomValueFromArray($randomData['unsubscribed']);
         }
     }
 ?>

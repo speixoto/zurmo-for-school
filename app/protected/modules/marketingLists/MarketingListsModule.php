@@ -101,5 +101,11 @@
             );
             return $metadata;
         }
+
+        public static function getDemoDataMakerClassName()
+        {
+            return array('MarketingListsDemoDataMaker', 'MarketingListMembersDemoDataMaker');
+        }
+
     }
 ?>
