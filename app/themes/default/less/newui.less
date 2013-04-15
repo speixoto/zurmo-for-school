@@ -32,6 +32,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * Copyright Zurmo Inc. 2013. All rights reserved.
  ********************************************************************************/
+
 *{
 	margin:0;
 	padding:0;
@@ -833,6 +834,19 @@ body > .ui-autocomplete{
 }
 
 /*=Left Sidebar*/
+#nav-trigger{
+	display:none;
+	float: left;
+	text-align:left;
+	padding:0 10px 0 10px;
+	margin-right:15px;
+	line-height: 38px;
+	height:38px;
+	font-size: 24px;
+	font-weight: normal;
+	.symbly(30px);
+}
+
 .AppNavigation{
 	width:170px;
 	float:left;
@@ -1424,6 +1438,7 @@ form,
 	top:-2px;
 }
 
+#MarketingListAddSubscriberLinkActionElement .parent > a:before,
 #MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before{
 	content: "Y";
@@ -2121,7 +2136,7 @@ a.simple-link{
 	font-size: 12px !important;
 }
 
-/*needed for specifity*/
+//needed for specifity
 .portlet-toolbar{
 	a.simple-link{
 		background:none !important;
@@ -2131,6 +2146,7 @@ a.simple-link{
 /*=Popup Modals*/
 .ui-dialog{
 	min-width: 600px;
+	max-width: 50%;
 	overflow: visible;
 	padding:0 !important;
 	margin:0 !important;
@@ -2465,6 +2481,11 @@ div.wide.form{
 		.symbly(325px);
 		line-height: 52%;
 	}
+	.MarketingList .large-icon:after{
+		content: '\0022';
+		.symbly(300px);
+		line-height: 52%;
+	}
 }
 
 #NoUserEmailConfigurationYetView{
@@ -2482,7 +2503,6 @@ div.wide.form{
 
 #search-form{
 	position: relative;
-//padding:10px 0 10px 0;
 	border: 1px solid #DFDFDF;
 	border-bottom:none;
 	#gradient > .vertical(#f6f6f6, #ededed);
@@ -2524,7 +2544,6 @@ div.wide.form{
 }
 
 .cgrid-view{
-/*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
 	position:relative;
 }
 
@@ -2567,7 +2586,6 @@ div.wide.form{
 		margin:0 0 0 0;
 		.radius(0);
 		.b-shadow(none);
-	//.no-ie-shadow();
 		border-left:none;
 		font-style: italic;
 		color: #999;
@@ -2614,7 +2632,6 @@ div.wide.form{
 #more-search-linkmodal,
 #more-search-link{
 	margin-left:0;
-	++.themeColor;
 	&:after{
 		content: "÷";
 		.symbly(14px);
@@ -4876,6 +4893,6 @@ div.hasHalfs{
 @import 'email.less';
 @import 'reports.less';
 @import 'inbox.less';
-@import 'media-queries.less';
 @import 'email-templates.less';
 @import 'marketing.less';
+@import 'media-queries.less';

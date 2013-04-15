@@ -79,7 +79,8 @@
             $this->registerTabbedContentScripts();
             $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
             $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
-            $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink);
+            $tagsGuideLink      = ZurmoHtml::link('Tag Guide', '#', array('class' => 'simple-link'));
+            $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
 
             $plainTextDiv       = ZurmoHtml::tag('div',
                                                 array('id' => 'tab1',
@@ -95,7 +96,7 @@
         protected function registerTabbedContentScripts()
         {
             Yii::app()->clientScript->registerScript('email-templates-tab-switch-handler', "
-                    $('.tabs-nav a').click( function()
+                    $('.tabs-nav a:not(.simple-link)').click( function()
                     {
                         //the menu items
                         $('.active-tab', $(this).parent()).removeClass('active-tab');
