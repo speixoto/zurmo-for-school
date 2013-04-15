@@ -15822,7 +15822,6 @@ a.dashboard-link .z-label {
 #CommentInlineEditForModelView,
 #CommentsForRelatedModelView {
   width: 70%;
-  margin-right: 30%;
   float: left;
   max-width: 600px;
   -moz-box-sizing: border-box;
