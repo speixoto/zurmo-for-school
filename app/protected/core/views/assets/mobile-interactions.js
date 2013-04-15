@@ -32,6 +32,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
+
 $(window).ready( function(){
 	$('#nav-trigger').click(
 		function(e){

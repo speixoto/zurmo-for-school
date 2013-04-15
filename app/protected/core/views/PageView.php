@@ -261,6 +261,10 @@
             else
             {
                 $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/newui.css');
+                if (Yii::app()->userInterface->isMobile())
+                {
+                    $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/mobile.css');
+                }
             }
             if (MINIFY_SCRIPTS)
             {

@@ -32,6 +32,7 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
+
 $(window).ready(function(){
     //main menu flyouts or mbmenu releacment
     $('.nav:not(.user-menu-item) > .parent').live({
@@ -57,11 +58,6 @@ $(window).ready(function(){
             }
         }
     );
-    /*
-    $('body > div').click(function(){
-        $('.nav-open').removeClass('nav-open');
-    });
-    */
 
     //Main nav hover
      $('#MenuView a, #RecentlyViewedView a').hover(
@@ -92,32 +88,28 @@ $(window).ready(function(){
         var appChromeHeight = 0;
         var bufferHeight = 0;
         var recentlyViewedHeight = 0;
-
-        if($(window).width() > 960 ){
-        	//console.log('resizing white area');
-        	//if login
-         	if ( $('#LoginPageView').length > 0 ) {
-             	appChromeHeight = 40 + $('#FooterView').outerHeight(true);
-              	if ( wrapperDivHeight < viewportHeight  ){
-                  	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('#LoginView').css('min-height',  bufferHeight);
-              	}
-            //if admin area
-          	} else if ( $('.AdministrativeArea').length > 0 ) {
-              	appChromeHeight = 80 + $('#FooterView').outerHeight(true);
-              	if ( wrapperDivHeight < viewportHeight  ){
-                 	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('.AppContainer').css('min-height',  bufferHeight);
-              	}
-          	//rest of app
-          	} else {
-            	recentlyViewedHeight = $('#RecentlyViewedView').outerHeight(true);
-            	appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
-             	if ( wrapperDivHeight < viewportHeight  ){
-                  	bufferHeight = viewportHeight - appChromeHeight;
-                  	$('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
-              	}
-          	}
+        //if login
+        if ( $('#LoginPageView').length > 0 ) {
+            appChromeHeight = 40 + $('#FooterView').outerHeight(true);
+            if ( wrapperDivHeight < viewportHeight  ){
+                bufferHeight = viewportHeight - appChromeHeight;
+                $('#LoginView').css('min-height',  bufferHeight);
+            }
+        //if admin area
+        } else if ( $('.AdministrativeArea').length > 0 ) {
+            appChromeHeight = 80 + $('#FooterView').outerHeight(true);
+            if ( wrapperDivHeight < viewportHeight  ){
+                bufferHeight = viewportHeight - appChromeHeight;
+                $('.AppContainer').css('min-height',  bufferHeight);
+            }
+        //rest of app
+        } else {
+            recentlyViewedHeight = $('#RecentlyViewedView').outerHeight(true);
+            appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
+            if ( wrapperDivHeight < viewportHeight  ){
+                bufferHeight = viewportHeight - appChromeHeight;
+                $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+            }
         }
     }
 
@@ -184,10 +176,6 @@ $(window).ready(function(){
         left : 0
     };
     resolveSpinner(true, '#stickyListLoadingArea', style, '.loading');
-
-
-
-
 });
 
 /*

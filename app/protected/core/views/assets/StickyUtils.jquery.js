@@ -32,21 +32,22 @@
  * feasible for technical reasons, the Appropriate Legal Notices must display the words
  * "Copyright Zurmo Inc. 2013. All rights reserved".
  ********************************************************************************/
-    function sticky_relocate(e)
+
+function sticky_relocate(e)
+{
+    if ($('#' + e.data.canvasId).contents().find('.sticky-anchor').length != 0)
     {
-        if ($('#' + e.data.canvasId).contents().find('.sticky-anchor').length != 0)
+        var window_top = $(window).scrollTop();
+        var div_top    = $('#' + e.data.canvasId).contents().find('.sticky-anchor').offset().top;
+        if (window_top > (div_top))
         {
-            var window_top = $(window).scrollTop();
-            var div_top    = $('#' + e.data.canvasId).contents().find('.sticky-anchor').offset().top;
-            if (window_top > (div_top))
-            {
-                $('#' + e.data.canvasId).contents().find('.sticky').addClass('stick');
-                $('#' + e.data.canvasId).contents().find('.sticky').css('top', 0 + 'px');
-            }
-            else
-            {
-                $('#' + e.data.canvasId).contents().find('.sticky').removeClass('stick');
-                $('#' + e.data.canvasId).contents().find('.sticky').css('top', 0 + 'px');
-            }
+            $('#' + e.data.canvasId).contents().find('.sticky').addClass('stick');
+            $('#' + e.data.canvasId).contents().find('.sticky').css('top', 0 + 'px');
+        }
+        else
+        {
+            $('#' + e.data.canvasId).contents().find('.sticky').removeClass('stick');
+            $('#' + e.data.canvasId).contents().find('.sticky').css('top', 0 + 'px');
         }
     }
+}
