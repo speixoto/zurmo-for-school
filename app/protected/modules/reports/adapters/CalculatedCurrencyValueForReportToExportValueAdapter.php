@@ -38,19 +38,19 @@
     {
         public function resolveData(& $data)
         {
-            if($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+            if ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
             {
                 $data[] = Yii::app()->numberFormatter->formatDecimal($this->model->{$this->attribute});
                 $data[] = Zurmo::t('ReportsModule', 'Mixed Currency');
             }
-            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+            elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
             {
                 //Assumes base conversion is done using sql math
                 $data[] = Yii::app()->numberFormatter->formatCurrency($this->model->{$this->attribute},
                                                                       Yii::app()->currencyHelper->getBaseCode());
                 $data[] = Yii::app()->currencyHelper->getBaseCode();
             }
-            elseif($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+            elseif ($this->getCurrencyValueConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
             {
                 //Assumes base conversion is done using sql math
                 $data[] = Yii::app()->numberFormatter->formatCurrency($this->model->{$this->attribute} *

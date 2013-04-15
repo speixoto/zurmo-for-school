@@ -63,11 +63,11 @@
         protected function makeSQLViewAndRender()
         {
             $dataProvider = null;
-            if(isset($this->params['dataProvider']))
+            if (isset($this->params['dataProvider']))
             {
                 $dataProvider = $this->params['dataProvider'];
 
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
+                if ($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
                 {
                     $view      = new ReportResultsSQLView($dataProvider);
                 }

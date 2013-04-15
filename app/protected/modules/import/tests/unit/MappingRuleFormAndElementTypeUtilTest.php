@@ -42,7 +42,6 @@
             SecurityTestHelper::createSuperAdmin();
         }
 
-
         public function setUp()
         {
             parent::setUp();

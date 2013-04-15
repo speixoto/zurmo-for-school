@@ -170,7 +170,7 @@
         private function getCollectionData()
         {
             $searchModel    = new AAASavedDynamicSearchFormTestModel(new AAA(false));
-            $dataCollection	= new SavedSearchAttributesDataCollection($searchModel);
+            $dataCollection = new SavedSearchAttributesDataCollection($searchModel);
             return $dataCollection;
         }
     }

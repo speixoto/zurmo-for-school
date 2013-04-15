@@ -53,13 +53,13 @@
         public function render()
         {
             $content  = null;
-            if($this->hasRuntimeFilters())
+            if ($this->hasRuntimeFilters())
             {
                 $htmlOptions = array('onClick' => 'js:$(".RuntimeFiltersForPortletView").toggle();');
                 $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Filters'), Zurmo::t('ReportsModule', 'Filters'), array('class' => 'label-for-report-widgets'));
                 $content    .= ZurmoHtml::checkBox(Zurmo::t('ReportsModule', 'Filters'), true, $htmlOptions) . $label;
             }
-            if($this->hasChart())
+            if ($this->hasChart())
             {
                 $htmlOptions = array('onClick' => 'js:$(".ReportChartForPortletView").toggle();');
                 $label       = ZurmoHtml::label(Zurmo::t('ReportsModule', 'Chart'), Zurmo::t('ReportsModule', 'Chart'), array('class' => 'label-for-report-widgets'));

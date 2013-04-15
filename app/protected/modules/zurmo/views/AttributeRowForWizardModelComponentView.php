@@ -111,7 +111,7 @@
             $this->hasTrackableStructurePosition      = $hasTrackableStructurePosition;
             $this->showRemoveLink                     = $showRemoveLink;
             $this->treeType                           = $treeType;
-            if($showRemoveLink && $treeType == null)
+            if ($showRemoveLink && $treeType == null)
             {
                 throw new NotSupportedException();
             }
@@ -129,7 +129,7 @@
         {
             $content  = '<div>';
             $resolvedHasFilterOrTriggerClass = null;
-            if($this->hasTrackableStructurePosition)
+            if ($this->hasTrackableStructurePosition)
             {
                 $content .= $this->renderAttributeRowNumberLabel();
                 $content .= $this->renderHiddenStructurePositionInput();
@@ -137,12 +137,12 @@
             }
             $content .= $this->renderAttributeContent();
             $content .= '</div>';
-            if($this->showRemoveLink)
+            if ($this->showRemoveLink)
             {
                 $content .= ZurmoHtml::link('—', '#', array('class' => 'remove-dynamic-row-link ' . $this->treeType));
             }
             $content  =  ZurmoHtml::tag('div', array('class' => "dynamic-row{$resolvedHasFilterOrTriggerClass}"), $content);
-            if($this->addWrapper)
+            if ($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array(), $content);
             }

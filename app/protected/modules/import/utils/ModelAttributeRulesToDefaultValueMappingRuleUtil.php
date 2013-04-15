@@ -72,7 +72,7 @@
                             case 'type':
                                 if ($rule['type'] == 'date' || $rule['type'] == 'datetime')
                                 {
-                                    if($treatDateTimeAsDate)
+                                    if ($treatDateTimeAsDate)
                                     {
                                         $rule['type'] = 'date';
                                     }

@@ -75,8 +75,6 @@
             $account = Account::getById($id);
             $this->assertEquals('Test Account', $account->name);
             $this->assertEquals('1234567890',   $account->officePhone);
-
-
         }
 
         /**

@@ -123,7 +123,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'string',
-                    'operator'					   => 'equals',
+                    'operator'                     => 'equals',
                     'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
                 array(
@@ -133,7 +133,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'currencyValue',
-                    'operator'					   => 'between',
+                    'operator'                     => 'between',
                     'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
                 array(
@@ -143,7 +143,7 @@
                     'stringifiedModelForValue'     => 'someName',
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'owner__User',
-                    'operator'					   => null,
+                    'operator'                     => null,
                     'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),
                 array(
@@ -152,7 +152,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => 'Between',
                     'attributeIndexOrDerivedType'  => 'createdDateTime',
-                    'operator'					   => null,
+                    'operator'                     => null,
                     'currencyIdForValue'           => null,
                     'relationFilter'               => TriggerForWorkflowForm::RELATION_FILTER_ANY
                 ),

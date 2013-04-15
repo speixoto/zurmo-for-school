@@ -369,7 +369,6 @@
         public function __construct($setDefaults = true, RedBean_OODBBean $bean = null, $forceTreatAsCreation = false,
                                     $runConstruction = true)
         {
-
             $this->pseudoId = self::$nextPseudoId--;
             $this->init();
             if (!$runConstruction)
@@ -1223,7 +1222,6 @@
                                 $linkName = self::makeCasedLinkName($relationType, $linkType, $relationLinkName);
                                 if ($bean->id > 0 && !in_array($attributeName, $this->unlinkedRelationNames))
                                 {
-
                                     $linkFieldName = ZurmoRedBeanLinkManager::getLinkField($relatedTableName, $linkName);
 
                                     if ((int)$bean->$linkFieldName > 0)

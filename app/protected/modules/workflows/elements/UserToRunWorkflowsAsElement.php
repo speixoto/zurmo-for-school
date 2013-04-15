@@ -45,7 +45,6 @@
          */
         protected static function renderTooltipContent()
         {
-
         }
 
         protected function renderLabel()

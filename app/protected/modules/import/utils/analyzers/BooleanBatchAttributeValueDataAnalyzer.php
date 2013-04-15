@@ -56,7 +56,7 @@
             $acceptableValuesMapping = BooleanSanitizerUtil::getAcceptableValuesResolvingValues();
             if (!in_array(strtolower($value), $acceptableValues))
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
             }
         }
 

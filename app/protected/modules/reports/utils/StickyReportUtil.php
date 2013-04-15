@@ -45,16 +45,16 @@
          */
         public static function resolveStickyDataToReport(Report $report, array $stickyData)
         {
-            if(!isset($stickyData[ComponentForReportForm::TYPE_FILTERS]))
+            if (!isset($stickyData[ComponentForReportForm::TYPE_FILTERS]))
             {
                 return;
             }
             $filters         = $report->getFilters();
-            foreach($stickyData[ComponentForReportForm::TYPE_FILTERS] as $filterKey => $filterData)
+            foreach ($stickyData[ComponentForReportForm::TYPE_FILTERS] as $filterKey => $filterData)
             {
-                if(isset($filters[$filterKey]))
+                if (isset($filters[$filterKey]))
                 {
-                    if(isset($filterData['operator']) &&
+                    if (isset($filterData['operator']) &&
                        ($filterData['operator'] == OperatorRules::TYPE_IS_NULL ||
                        $filterData['operator'] == OperatorRules::TYPE_IS_NOT_NULL))
                     {

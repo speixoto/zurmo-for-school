@@ -68,7 +68,7 @@
          */
         public function getOperatorValuesAndLabels()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -76,7 +76,7 @@
             $data = array();
             ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
             $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
-            if($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
+            if ($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
                $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
             {
                 $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
@@ -91,7 +91,7 @@
          */
         public function getDurationValuesAndLabels()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
@@ -99,11 +99,11 @@
             $modelToWorkflowAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToWorkflowAdapter();
             $type = $modelToWorkflowAdapter->getDisplayElementType($this->getResolvedAttribute());
             $data = array();
-            if($type == 'DateTime')
+            if ($type == 'DateTime')
             {
                 return $this->makeDurationValuesAndLabels(true, true, true, true);
             }
-            elseif($type == 'Date')
+            elseif ($type == 'Date')
             {
                 return $this->makeDurationValuesAndLabels(true, true, true, false);
             }
@@ -115,7 +115,7 @@
             return $data;
             ModelAttributeToWorkflowOperatorTypeUtil::resolveOperatorsToIncludeByType($data, $type);
             $data[OperatorRules::TYPE_DOES_NOT_CHANGE] = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_DOES_NOT_CHANGE);
-            if($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
+            if ($type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_BOOLEAN &&
                 $type != ModelAttributeToWorkflowOperatorTypeUtil::AVAILABLE_OPERATORS_TYPE_HAS_ONE)
             {
                 $data[OperatorRules::TYPE_IS_EMPTY]      = OperatorRules::getTranslatedTypeLabel(OperatorRules::TYPE_IS_EMPTY);
@@ -142,9 +142,9 @@
             assert('is_bool($isTimeBased)');
             assert('is_bool($includeHours)');
             $data = array();
-            if($includeNegativeDuration)
+            if ($includeNegativeDuration)
             {
-                if($isTimeBased)
+                if ($isTimeBased)
                 {
                     WorkflowUtil::resolveNegativeDurationAsDistanceFromPointData($data, $includeHours);
                 }
@@ -153,9 +153,9 @@
                     throw new NotSupportedException();
                 }
             }
-            if($includePositiveDuration)
+            if ($includePositiveDuration)
             {
-                if($isTimeBased)
+                if ($isTimeBased)
                 {
                     WorkflowUtil::resolvePositiveDurationAsDistanceFromPointData($data, $includeHours);
                 }

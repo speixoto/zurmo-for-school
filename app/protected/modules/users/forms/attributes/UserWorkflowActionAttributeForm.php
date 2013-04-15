@@ -58,9 +58,9 @@
          */
         public function validateValue()
         {
-            if(parent::validateValue())
+            if (parent::validateValue())
             {
-                if($this->type == self::TYPE_STATIC)
+                if ($this->type == self::TYPE_STATIC)
                 {
                     $validator             = CValidator::createValidator('type', $this, 'value', array('type' => 'integer'));
                     $validator->allowEmpty = false;
@@ -69,7 +69,7 @@
                 }
                 else
                 {
-                    if($this->value != null)
+                    if ($this->value != null)
                     {
                         $this->addError('value', Zurmo::t('WorkflowsModule', 'Value cannot be set'));
                         return false;
@@ -82,13 +82,13 @@
 
         public function getStringifiedModelForValue()
         {
-            if($this->value != null)
+            if ($this->value != null)
             {
                 try
                 {
                     return strval(User::getById((int)$this->value));
                 }
-                catch(NotFoundException $e)
+                catch (NotFoundException $e)
                 {
                 }
             }
@@ -103,26 +103,26 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute} = User::getById((int)$this->value);
             }
-            elseif($this->type == self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL)
+            elseif ($this->type == self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL)
             {
-                if($adapter->getTriggeredModel() instanceof OwnedSecurableItem)
+                if ($adapter->getTriggeredModel() instanceof OwnedSecurableItem)
                 {
                     $adapter->getModel()->{$attribute} = $adapter->getTriggeredModel()->owner;
                 }
             }
-            elseif($this->type == self::TYPE_DYNAMIC_CREATED_BY_USER)
+            elseif ($this->type == self::TYPE_DYNAMIC_CREATED_BY_USER)
             {
                 $adapter->getModel()->{$attribute} = $adapter->getTriggeredModel()->createdByUser;
             }
-            elseif($this->type == self::TYPE_DYNAMIC_MODIFIED_BY_USER)
+            elseif ($this->type == self::TYPE_DYNAMIC_MODIFIED_BY_USER)
             {
                 $adapter->getModel()->{$attribute} = $adapter->getTriggeredModel()->modifiedByUser;
             }
-            elseif($this->type == self::TYPE_DYNAMIC_TRIGGERED_BY_USER)
+            elseif ($this->type == self::TYPE_DYNAMIC_TRIGGERED_BY_USER)
             {
                 $adapter->getModel()->{$attribute} = $adapter->getTriggeredByUser();
             }
@@ -138,9 +138,9 @@
             $data[static::TYPE_STATIC] = Zurmo::t('WorkflowsModule', 'As');
             $modelClassName            = $this->modelClassName;
             $modelLabel = $modelClassName::getModelLabelByTypeAndLanguage('SingularLowerCase');
-            if($isCreatingNewModel)
+            if ($isCreatingNewModel)
             {
-                if(is_subclass_of($modelClassName, 'OwnedSecurableItem'))
+                if (is_subclass_of($modelClassName, 'OwnedSecurableItem'))
                 {
                     $data[self::TYPE_DYNAMIC_OWNER_OF_TRIGGERED_MODEL] =
                         Zurmo::t('WorkflowsModule', 'As user who owns triggered {modelLabel}',

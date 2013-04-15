@@ -39,6 +39,5 @@
      */
     class WorkflowMergeTagsUtil extends MergeTagsUtil
     {
-
     }
 ?>

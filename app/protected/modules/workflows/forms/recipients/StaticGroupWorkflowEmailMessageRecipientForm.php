@@ -69,17 +69,16 @@
          */
         public function makeRecipients(RedBeanModel $model, User $triggeredByUser)
         {
-
             try
             {
                 $group = Group::getById((int)$this->groupId);
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 return array();
             }
             $recipients = array();
-            foreach($group->users as $user)
+            foreach ($group->users as $user)
             {
                 if ($user->primaryEmail->emailAddress !== null)
                 {

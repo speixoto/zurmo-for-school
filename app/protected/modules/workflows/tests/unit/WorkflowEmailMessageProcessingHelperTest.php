@@ -68,7 +68,7 @@
             $emailTemplate->htmlContent    = 'html content [[STRING]]';
             $emailTemplate->textContent    = 'text content [[PHONE]]';
             $saved = $emailTemplate->save();
-            if(!$saved)
+            if (!$saved)
             {
                 throw new FailedToSaveModelException();
             }

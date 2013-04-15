@@ -64,7 +64,7 @@
                                     );
                 $detailsContent     .= static::renderElementsContent($elements);
             }
-            $content .= ZurmoHtml::tag('p', array('class' =>'after-form-details-content'), $detailsContent);
+            $content .= ZurmoHtml::tag('p', array('class' => 'after-form-details-content'), $detailsContent);
             return $content;
         }
 
@@ -72,7 +72,7 @@
         {
             $content                = null;
             $elementsCount = count($elements);
-            foreach($elements as $index => $elementDetails)
+            foreach ($elements as $index => $elementDetails)
             {
                 $elementClassName   = $elementDetails['className'];
                 $elementParams      = $elementDetails['parameters'];

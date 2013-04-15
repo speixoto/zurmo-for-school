@@ -34,8 +34,8 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MashableInboxDefaultController extends ZurmoModuleController {
-
+    class MashableInboxDefaultController extends ZurmoModuleController
+    {
         const MASHABLE_INBOX_ZERO_MODELS_CHECK_FILTER_PATH =
               'application.modules.mashableInbox.controllers.filters.MashableInboxZeroModelsCheckControllerFilter';
 
@@ -67,7 +67,6 @@
                     ),
                 )
             );
-
         }
 
         public function actionList($modelClassName = null) {
@@ -76,7 +75,7 @@
                                         'listPageSize', get_class($this->getModule()));
             $getData = GetUtil::getData();
             $mashableInboxForm  = $this->getMashableInboxFormWithDefaultValues($modelClassName, $getData);
-            if(Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
+            if (Yii::app()->request->isAjaxRequest && isset($getData['ajax']))
             {
                 $this->renderListViewForAjax($mashableInboxForm, $modelClassName);
             }
@@ -190,7 +189,7 @@
          */
         private function resolveAjaxMassAction($modelClassName, $mashableInboxForm)
         {
-            if($modelClassName !== null)
+            if ($modelClassName !== null)
             {
                 $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
                 foreach ($selectedIds as $modelId)

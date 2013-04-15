@@ -92,7 +92,7 @@
          */
         public function renderContent()
         {
-            if($this->dataProvider->calculateTotalItemCount() > self::$maximumGroupsPerChart)
+            if ($this->dataProvider->calculateTotalItemCount() > self::$maximumGroupsPerChart)
             {
                 return $this->renderMaximumGroupsContent();
             }
@@ -114,9 +114,9 @@
             $amChart->xAxisName        = $this->dataProvider->resolveFirstSeriesLabel();
             $amChart->yAxisName        = $this->dataProvider->resolveFirstRangeLabel();
             $amChart->yAxisUnitContent = $this->resolveYAxisUnitContent();
-            if($reportDataProviderToAmChartMakerAdapter->isStacked())
+            if ($reportDataProviderToAmChartMakerAdapter->isStacked())
             {
-                for($i = 1; $i < ($reportDataProviderToAmChartMakerAdapter->getSecondSeriesValueCount() + 1); $i++)
+                for ($i = 1; $i < ($reportDataProviderToAmChartMakerAdapter->getSecondSeriesValueCount() + 1); $i++)
                 {
                     $title       = $reportDataProviderToAmChartMakerAdapter->getSecondSeriesDisplayLabelByKey($i);
                     $balloonText = '"[[' . ReportDataProviderToAmChartMakerAdapter::resolveSecondSeriesDisplayLabelName($i) .
@@ -161,18 +161,18 @@
          */
         protected function resolveYAxisUnitContent()
         {
-            if($this->dataProvider->getReport()->getCurrencyConversionType() ==
+            if ($this->dataProvider->getReport()->getCurrencyConversionType() ==
                 Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
             {
                 return null;
             }
-            elseif($this->dataProvider->getReport()->getCurrencyConversionType() ==
+            elseif ($this->dataProvider->getReport()->getCurrencyConversionType() ==
                 Report::CURRENCY_CONVERSION_TYPE_BASE)
             {
                 //Assumes base conversion is done using sql math
                 return Yii::app()->locale->getCurrencySymbol(Yii::app()->currencyHelper->getBaseCode());
             }
-            elseif($this->dataProvider->getReport()->getCurrencyConversionType() ==
+            elseif ($this->dataProvider->getReport()->getCurrencyConversionType() ==
                 Report::CURRENCY_CONVERSION_TYPE_SPOT)
             {
                 //Assumes base conversion is done using sql math

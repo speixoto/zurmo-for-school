@@ -52,11 +52,11 @@
         public static function getFormClassNameByType($type)
         {
             assert('is_string($type)');
-            if($type == Workflow::TYPE_ON_SAVE)
+            if ($type == Workflow::TYPE_ON_SAVE)
             {
                 return 'OnSaveWorkflowWizardForm';
             }
-            elseif($type == Workflow::TYPE_BY_TIME)
+            elseif ($type == Workflow::TYPE_BY_TIME)
             {
                 return 'ByTimeWorkflowWizardForm';
             }
@@ -80,11 +80,11 @@
          */
         public function makeFormByType()
         {
-            if($this->workflow->getType() == Workflow::TYPE_ON_SAVE)
+            if ($this->workflow->getType() == Workflow::TYPE_ON_SAVE)
             {
                 return $this->makeOnSaveWizardForm();
             }
-            elseif($this->workflow->getType() == Workflow::TYPE_BY_TIME)
+            elseif ($this->workflow->getType() == Workflow::TYPE_BY_TIME)
             {
                 return $this->makeByTimeWizardForm();
             }
@@ -128,7 +128,7 @@
             $formModel->type                 = $this->workflow->getType();
             $formModel->triggersStructure    = $this->workflow->getTriggersStructure();
             $formModel->timeTriggerAttribute = $this->workflow->getTimeTriggerAttribute();
-            if($this->workflow->isNew())
+            if ($this->workflow->isNew())
             {
                 $formModel->setIsNew();
             }

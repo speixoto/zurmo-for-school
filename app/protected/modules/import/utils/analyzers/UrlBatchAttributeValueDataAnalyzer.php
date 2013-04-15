@@ -87,13 +87,13 @@
             $validatedUrl = $validator->validateValue($value);
             if ($validatedUrl === false)
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
                 return;
             }
 
             if (strlen($validatedUrl) > $this->maxLength)
             {
-                $this->messageCountData[static::URL_TOO_LONG] ++;
+                $this->messageCountData[static::URL_TOO_LONG]++;
             }
         }
 

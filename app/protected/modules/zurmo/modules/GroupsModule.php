@@ -125,9 +125,9 @@
             return 'GroupsDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'GroupsDemoDataMaker';
+            return array('GroupsDemoDataMaker');
         }
     }
 ?>

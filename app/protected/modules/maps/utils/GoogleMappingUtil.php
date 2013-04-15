@@ -119,13 +119,12 @@
                 {
                     infowindow.open(map, marker);
                 });
-
             }
             function loadGoogleMap()
             {
               var script  = document.createElement('script');
               script.type = 'text/javascript';
-              if('$apiKey' !== null)
+              if ('$apiKey' !== null)
               {
               script.src = 'http://maps.googleapis.com/maps/api/js?key=" . $apiKey . "&sensor=false&callback=plotMap';". // Not Coding Standard
               "document.body.appendChild(script);

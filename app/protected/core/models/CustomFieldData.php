@@ -51,7 +51,7 @@
          */
         public static function getByName($name)
         {
-            if(isset(self::$cachedModelsByName[$name]))
+            if (isset(self::$cachedModelsByName[$name]))
             {
                 return self::$cachedModelsByName[$name];
             }

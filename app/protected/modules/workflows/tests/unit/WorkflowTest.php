@@ -136,7 +136,6 @@
             $emailMessages = $workflow->getEmailMessages();
             $this->assertCount(0,                       $emailMessages);
 
-
             $workflow->removeAllTriggers();
             $triggers = $workflow->getTriggers();
             $this->assertCount(0,                       $triggers);

@@ -108,7 +108,7 @@
                     $baseDomain                = $configurationForm->baseDomain;
                     $testConnectionResults     = LdapUtil::establishConnection($serverType, $host, $port, $bindRegisteredDomain,
                                                                                $bindPassword, $baseDomain);
-                    if($testConnectionResults)
+                    if ($testConnectionResults)
                     {
                        $messageContent = Zurmo::t('ZurmoModule', 'Successfully Connected to Ldap Server') . "\n";
                     }

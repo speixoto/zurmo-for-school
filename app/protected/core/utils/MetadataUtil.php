@@ -126,7 +126,7 @@
         {
             if (is_array($subString))
             {
-                foreach($subString as $subStringNodeKey => $subStringNodeValue)
+                foreach ($subString as $subStringNodeKey => $subStringNodeValue)
                 {
                     self::resolveEvaluateSubString($subString[$subStringNodeKey], $resolveVariableName, $params, $defaultValue);
                 }
@@ -146,10 +146,9 @@
                         {
                             $$variableName = $params[$index];
                         }
-                        else if (!is_array($params) && $params !== null)
+                        elseif (!is_array($params) && $params !== null)
                         {
                             $$variableName = $params;
-
                         }
                         else
                         {

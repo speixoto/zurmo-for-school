@@ -46,15 +46,15 @@
         public function getContent()
         {
             $this->form->setInputPrefixData($this->inputPrefixData);
-            if($this->treeType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
+            if ($this->treeType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
             {
                 $content = $this->getContentForTimeTrigger();
             }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
+            elseif ($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
             {
                 $content = $this->getContentForTrigger();
             }
-            elseif($this->treeType == ComponentForWorkflowForm::TYPE_ACTIONS)
+            elseif ($this->treeType == ComponentForWorkflowForm::TYPE_ACTIONS)
             {
                 $content = $this->getContentForAction();
             }
@@ -73,7 +73,7 @@
          */
         protected function getContentForTimeTrigger()
         {
-            if($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE)
+            if ($this->model->getWorkflowType() == Workflow::TYPE_ON_SAVE)
             {
                 throw new NotSupportedException();
             }
@@ -103,7 +103,7 @@
         {
             $params                                 = array('inputPrefix' => $this->inputPrefixData);
             $valueElementType                       = $this->model->getValueElementType();
-            if($this->model->hasAvailableOperatorsType())
+            if ($this->model->hasAvailableOperatorsType())
             {
                 $operatorElement = $this->resolveOperatorElementForMultiSelectDropDown($valueElementType, $params);
                 $operatorElement->editableTemplate  = '{content}{error}';
@@ -113,20 +113,20 @@
             {
                 $operatorContent                    = null;
             }
-            if($valueElementType != null)
+            if ($valueElementType != null)
             {
                 $valueElementClassName              = $valueElementType . 'Element';
                 $valueElement                       = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement)
+                if ($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedNumberTypesElement)
+                if ($valueElement instanceof MixedNumberTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 }
-                elseif($valueElement instanceof MixedDateTypesElement)
+                elseif ($valueElement instanceof MixedDateTypesElement)
                 {
                     $valueElement->editableTemplate = '<div class="dynamic-row-operator">{valueType}</div>' .
                                                       '<div class="value-data has-date-inputs">' .
@@ -164,7 +164,7 @@
         protected function resolveOperatorElementForMultiSelectDropDown($valueElementType, Array $params)
         {
             assert('is_string($valueElementType)');
-            if($valueElementType == 'StaticMultiSelectDropDownForWorkflow')
+            if ($valueElementType == 'StaticMultiSelectDropDownForWorkflow')
             {
                 return new OperatorStaticMultiSelectDropDownForWorkflowElement($this->model, 'operator', $this->form, $params);
             }

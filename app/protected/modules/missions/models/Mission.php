@@ -223,7 +223,7 @@
                     {
                         if ($missionRules->hasUserReadLatest($this, $person))
                         {
-                            if(!in_array($person, $personsToAddAsHaveNotReadLatest))
+                            if (!in_array($person, $personsToAddAsHaveNotReadLatest))
                             {
                                 $personsToAddAsHaveNotReadLatest[] = $person;
                             }

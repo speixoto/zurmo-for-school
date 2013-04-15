@@ -75,9 +75,9 @@
             return self::RIGHT_ACCESS_SOCIAL_ITEMS;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'SocialItemsDemoDataMaker';
+            return array('SocialItemsDemoDataMaker');
         }
 
         public static function modelsAreNeverGloballySearched()

@@ -36,7 +36,6 @@
 
     class AutoresponderItem extends OwnedModel
     {
-
         public static function getByName($name)
         {
             return self::getByNameOrEquivalent('name', $name);

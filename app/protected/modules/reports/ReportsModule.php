@@ -130,9 +130,9 @@
             return self::RIGHT_DELETE_REPORTS;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'ReportsDemoDataMaker';
+            return array('ReportsDemoDataMaker');
         }
 
         /**

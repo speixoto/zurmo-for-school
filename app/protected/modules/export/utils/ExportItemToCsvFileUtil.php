@@ -54,7 +54,7 @@
 
             if (count($data) > 0)
             {
-                if(count($headerData) > 0)
+                if (count($headerData) > 0)
                 {
                     $output = self::arraytoCsv($headerData, true);
                 }

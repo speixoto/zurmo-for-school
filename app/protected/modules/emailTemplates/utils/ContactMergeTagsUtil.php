@@ -39,6 +39,5 @@
      */
     class ContactMergeTagsUtil extends MergeTagsUtil
     {
-
     }
 ?>

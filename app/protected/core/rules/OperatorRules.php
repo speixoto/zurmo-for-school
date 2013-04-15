@@ -105,8 +105,8 @@
                          OperatorRules::TYPE_LESS_THAN                   => Zurmo::t('Core', 'Less Than'),
                          OperatorRules::TYPE_ONE_OF                      => Zurmo::t('Core', 'One Of'),
                          OperatorRules::TYPE_BETWEEN                     => Zurmo::t('Core', 'Between'),
-                         OperatorRules::TYPE_IS_NULL                     => Zurmo::t('Core', 'Is Null'),
-                         OperatorRules::TYPE_IS_NOT_NULL                 => Zurmo::t('Core', 'Is Not Null'),
+                         OperatorRules::TYPE_IS_NULL                     => Zurmo::t('Core', 'Is Null'), // Not Coding Standard
+                         OperatorRules::TYPE_IS_NOT_NULL                 => Zurmo::t('Core', 'Is Not Null'), // Not Coding Standard
                          OperatorRules::TYPE_BECOMES                     => Zurmo::t('Core', 'Becomes'),
                          OperatorRules::TYPE_WAS                         => Zurmo::t('Core', 'Was'),
                          OperatorRules::TYPE_BECOMES_ONE_OF              => Zurmo::t('Core', 'Becomes One Of'),

@@ -53,12 +53,12 @@
             {
                 foreach ($positionInfo as $position => $portlet)
                 {
-                    if($portlet->viewType == 'RuntimeFiltersForPortlet' &&
+                    if ($portlet->viewType == 'RuntimeFiltersForPortlet' &&
                        !$this->params["relationModel"]->hasRuntimeFilters())
                     {
                         //ignore portlet, since there are no runtime filters
                     }
-                    elseif($portlet->viewType == 'ReportChartForPortlet' && !$this->params['relationModel']->hasChart())
+                    elseif ($portlet->viewType == 'ReportChartForPortlet' && !$this->params['relationModel']->hasChart())
                     {
                         //ignore portlet, since there is not a chart
                     }

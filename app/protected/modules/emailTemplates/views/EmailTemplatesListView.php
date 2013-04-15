@@ -68,5 +68,10 @@
             );
             return $metadata;
         }
+
+        protected function getListActionId()
+        {
+            return Yii::app()->getController()->getAction()->getId();
+        }
     }
 ?>

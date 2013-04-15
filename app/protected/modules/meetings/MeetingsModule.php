@@ -101,9 +101,9 @@
             return 'MeetingsDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'MeetingsDemoDataMaker';
+            return array('MeetingsDemoDataMaker');
         }
 
         public static function hasPermissions()

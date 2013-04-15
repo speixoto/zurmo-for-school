@@ -121,9 +121,9 @@
             return 'AccountsDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'AccountsDemoDataMaker';
+            return array('AccountsDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()

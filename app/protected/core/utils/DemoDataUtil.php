@@ -76,8 +76,12 @@
             {
                 Yii::import('application.modules.' . $module::getDirectoryName() . '.data.*');
             }
-            $demoDataMakerClassName = $module::getDemoDataMakerClassName();
-            if ($demoDataMakerClassName != null && !in_array($module->getName(), static::$loadedModules))
+            $demoDataMakerClassNames = $module::getDemoDataMakerClassNames();
+            if (empty($demoDataMakerClassNames) || !is_array($demoDataMakerClassNames) || in_array($module->getName(), static::$loadedModules))
+            {
+                return;
+            }
+            foreach($demoDataMakerClassNames as $index => $demoDataMakerClassName)
             {
                 $dependencies = $demoDataMakerClassName::getDependencies();
                 foreach ($dependencies as $dependentModuleName)
@@ -95,13 +99,16 @@
                     $dataMaker->setLoadMagnitude($loadMagnitude);
                 }
                 $dataMaker->makeAll($demoDataHelper);
-                static::$loadedModules[] = $module->getName();
-                $messageLogger->addInfoMessage(Zurmo::t('Core', 'Demo data loaded for {module}',
+                if (($index + 1) === count($demoDataMakerClassNames))
+                {
+                    static::$loadedModules[] = $module->getName();
+                    $messageLogger->addInfoMessage(Zurmo::t('Core', 'Demo data loaded for {module}',
                                                         array(
                                                             '{module}' => $module::getModuleLabelByTypeAndLanguage('Plural')
                                                             )
                                                         )
                                                );
+                }
             }
         }
 

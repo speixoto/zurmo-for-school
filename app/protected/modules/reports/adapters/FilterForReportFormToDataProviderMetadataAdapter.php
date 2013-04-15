@@ -83,7 +83,7 @@
             $adaptedMetadata              = array();
             $adaptedMetadata['clauses']   = $this->clauses;
             $adaptedMetadata['structure'] = $this->structure;
-            if(count($adaptedMetadata['clauses']) > 1)
+            if (count($adaptedMetadata['clauses']) > 1)
             {
                 $adaptedMetadata['structure'] = '(' . $adaptedMetadata['structure'] . ')';
             }
@@ -92,7 +92,7 @@
 
         protected function resolveValueForOperator()
         {
-            if($this->filter->getOperator() == OperatorRules::TYPE_IS_NULL ||
+            if ($this->filter->getOperator() == OperatorRules::TYPE_IS_NULL ||
                $this->filter->getOperator() == OperatorRules::TYPE_IS_NOT_NULL)
             {
                 return null;
@@ -104,11 +104,11 @@
         {
             $attribute = $this->filter->getResolvedAttribute();
             //is Dynamically Derived Attributes? __User
-            if($this->modelRelationsAndAttributesToReportAdapter->isDynamicallyDerivedAttribute($attribute))
+            if ($this->modelRelationsAndAttributesToReportAdapter->isDynamicallyDerivedAttribute($attribute))
             {
                 $this->resolveDynamicallyDerivedAttributeClauseAndStructure();
             }
-            elseif($this->modelRelationsAndAttributesToReportAdapter instanceof
+            elseif ($this->modelRelationsAndAttributesToReportAdapter instanceof
                    ModelRelationsAndAttributesToSummableReportAdapter &&
                    $this->modelRelationsAndAttributesToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
             {
@@ -120,7 +120,7 @@
                 $this->structure  = '1';
             }
             //likeContactState, a variation of dropDown, or currencyValue
-            elseif($this->modelRelationsAndAttributesToReportAdapter->relationIsReportedAsAttribute($attribute))
+            elseif ($this->modelRelationsAndAttributesToReportAdapter->relationIsReportedAsAttribute($attribute))
             {
                 $this->resolveRelationReportedAsAttributeClauseAndStructure();
             }
@@ -141,11 +141,11 @@
 
         protected function resolveRelationReportedAsAttributeClauseAndStructure()
         {
-            if($this->filter->getValueElementType() == 'MixedCurrencyValueTypes')
+            if ($this->filter->getValueElementType() == 'MixedCurrencyValueTypes')
             {
                 $this->resolveCurrencyValueAttributeClauseAndStructure();
             }
-            elseif($this->filter->getValueElementType() == 'StaticDropDownForReport')
+            elseif ($this->filter->getValueElementType() == 'StaticDropDownForReport')
             {
                 $this->resolveDropDownVariantAttributeClauseAndStructure();
             }
@@ -158,15 +158,15 @@
 
         protected function resolveNonRelationNonDerivedAttributeClauseAndStructure()
         {
-            if($this->filter->getValueElementType() == 'MixedDateTypesForReport')
+            if ($this->filter->getValueElementType() == 'MixedDateTypesForReport')
             {
                 $this->resolveDateAttributeClauseAndStructure();
             }
-            elseif($this->filter->getValueElementType() == 'MixedNumberTypes')
+            elseif ($this->filter->getValueElementType() == 'MixedNumberTypes')
             {
                 $this->resolveNumericAttributeClauseAndStructure();
             }
-            elseif($this->filter->getValueElementType() == 'BooleanForWizardStaticDropDown')
+            elseif ($this->filter->getValueElementType() == 'BooleanForWizardStaticDropDown')
             {
                 $this->resolveBooleanAttributeClauseAndStructure();
             }
@@ -186,13 +186,13 @@
             $attributesAndRelations  = 'resolveEntireMappingByRules';
             $rulesClassName::resolveAttributesAndRelations('notUsed__notUsed', $attributesAndRelations, $value);
             $count = 1;
-            foreach($attributesAndRelations as $attributeAndRelation)
+            foreach ($attributesAndRelations as $attributeAndRelation)
             {
                 $this->clauses[$count] = array('attributeName' => $this->getRealAttributeName(),
                                                               'operatorType'  => $attributeAndRelation[2],
                                                               'value'         => $this->resolveForValueByRules($rulesClassName,
                                                               $attributeAndRelation, $value));
-                if($this->structure == null)
+                if ($this->structure == null)
                 {
                     $this->structure  = $count;
                 }
@@ -200,7 +200,7 @@
                 {
                     $this->structure  .= ' and ' . $count;
                 }
-                $count ++;
+                $count++;
             }
         }
 
@@ -212,11 +212,11 @@
         {
             $displayElementType = $this->modelRelationsAndAttributesToReportAdapter->getDisplayElementType(
                                   $this->filter->getResolvedAttribute());
-            if($displayElementType == 'Date')
+            if ($displayElementType == 'Date')
             {
                 return 'MixedDateTypesSearchFormAttributeMappingRules';
             }
-            elseif($displayElementType == 'DateTime')
+            elseif ($displayElementType == 'DateTime')
             {
                 return 'MixedDateTimeTypesSearchFormAttributeMappingRules';
             }
@@ -247,7 +247,7 @@
 
         protected function resolveNumericAttributeClauseAndStructure()
         {
-            if($this->filter->getOperator() == OperatorRules::TYPE_BETWEEN)
+            if ($this->filter->getOperator() == OperatorRules::TYPE_BETWEEN)
             {
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'operatorType'         => OperatorRules::TYPE_GREATER_THAN_OR_EQUAL_TO,
@@ -268,7 +268,7 @@
 
         protected function resolveCurrencyValueAttributeClauseAndStructure()
         {
-            if($this->filter->getOperator() == OperatorRules::TYPE_BETWEEN)
+            if ($this->filter->getOperator() == OperatorRules::TYPE_BETWEEN)
             {
                 $this->clauses[1] = array('attributeName'        => $this->getRealAttributeName(),
                                           'relatedAttributeName' => 'value',
@@ -290,7 +290,7 @@
                 $this->structure  = '1';
                 $count            = 2;
             }
-            if($this->filter->currencyIdForValue != null)
+            if ($this->filter->currencyIdForValue != null)
             {
                 $this->clauses[$count] = array('attributeName'   => $this->getRealAttributeName(),
                                                'relatedModelData'     => array(
@@ -307,7 +307,7 @@
             $relationClassName =    $this->modelRelationsAndAttributesToReportAdapter->getModel()->
                                     getRelationModelClassName($this->getRealAttributeName());
 
-            if($relationClassName == 'MultipleValuesCustomField' ||
+            if ($relationClassName == 'MultipleValuesCustomField' ||
                is_subclass_of ($relationClassName, 'MultipleValuesCustomField'))
             {
                 $relatedAttributeName = 'values';

@@ -113,9 +113,9 @@
             $wizardFormClassName        = $this->getWizardFormClassName();
             $treeType                   = ComponentForReportForm::TYPE_FILTERS;
             $trackableStructurePosition = false; //can we set this to false without jacking things up?
-            foreach($this->params["relationModel"]->getFilters() as $filterForReportForm)
+            foreach ($this->params["relationModel"]->getFilters() as $filterForReportForm)
             {
-                if($filterForReportForm->availableAtRunTime)
+                if ($filterForReportForm->availableAtRunTime)
                 {
                     $nodeIdWithoutTreeType      = $filterForReportForm->attributeIndexOrDerivedType;
                     $inputPrefixData            = ReportRelationsAndAttributesToTreeAdapter::
@@ -131,7 +131,7 @@
                     $view->addWrapper           = false;
                     $items[]                    = array('content' => $view->render());
                 }
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
@@ -143,7 +143,7 @@
         protected function getNonSortableListContent(Array $items)
         {
             $content = null;
-            foreach($items as $item)
+            foreach ($items as $item)
             {
                 $content .= ZurmoHtml::tag('li', array(), $item['content']);
             }

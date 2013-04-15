@@ -99,9 +99,9 @@
             return self::RIGHT_DELETE_MISSIONS;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'MissionsDemoDataMaker';
+            return array('MissionsDemoDataMaker');
         }
 
         public static function hasPermissions()

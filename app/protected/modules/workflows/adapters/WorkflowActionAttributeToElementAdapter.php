@@ -74,7 +74,6 @@
         public function __construct(WorkflowActionAttributeForm $model, WizardActiveForm $form,
                                     $actionType, $inputPrefixData, $isAttributeRequired)
         {
-
             assert('is_string($actionType)');
             assert('is_array($inputPrefixData)');
             assert('is_bool($isAttributeRequired)');
@@ -104,12 +103,12 @@
          */
         protected function isCreatingNewModel()
         {
-            if($this->actionType == ActionForWorkflowForm::TYPE_UPDATE_SELF ||
+            if ($this->actionType == ActionForWorkflowForm::TYPE_UPDATE_SELF ||
                $this->actionType == ActionForWorkflowForm::TYPE_UPDATE_RELATED)
             {
                 return false;
             }
-            elseif($this->actionType == ActionForWorkflowForm::TYPE_CREATE ||
+            elseif ($this->actionType == ActionForWorkflowForm::TYPE_CREATE ||
                    $this->actionType == ActionForWorkflowForm::TYPE_CREATE_RELATED)
             {
                 return true;
@@ -140,7 +139,7 @@
             $typeAndValueContent                 = null;
             ZurmoHtml::resolveDivWrapperForContent($typeContent, $typeAndValueContent, 'dynamic-action-attribute-type');
             $typeAndValueContent                .= $valueContent;
-            if($this->model->shouldSetValue)
+            if ($this->model->shouldSetValue)
             {
                 $style = null;
             }
@@ -158,7 +157,7 @@
         protected function renderShouldSetValueContent()
         {
             $params = array('inputPrefix' => $this->inputPrefixData);
-            if($this->isAttributeRequired)
+            if ($this->isAttributeRequired)
             {
                 $params['disabled'] = true;
             }
@@ -173,9 +172,8 @@
          */
         protected function renderTypeContent()
         {
-
             $typeValuesAndLabels = $this->model->getTypeValuesAndLabels($this->isCreatingNewModel(), $this->isAttributeRequired);
-            if(count($typeValuesAndLabels) > 1)
+            if (count($typeValuesAndLabels) > 1)
             {
                 $params                         = array('inputPrefix' => $this->inputPrefixData,
                                                         'typeValuesAndLabels' => $typeValuesAndLabels);
@@ -204,20 +202,20 @@
         {
             $params           = array('inputPrefix' => $this->inputPrefixData);
             $valueElementType = $this->model->getValueElementType();
-            if($valueElementType != null)
+            if ($valueElementType != null)
             {
                 $valueElementClassName = $valueElementType . 'Element';
                 $valueElement          = new $valueElementClassName($this->model, 'value', $this->form, $params);
-                if($valueElement instanceof NameIdElement)
+                if ($valueElement instanceof NameIdElement)
                 {
                     $valueElement->setIdAttributeId('value');
                     $valueElement->setNameAttributeName('stringifiedModelForValue');
                 }
-                if($valueElement instanceof MixedDropDownTypesForWorkflowActionAttributeElement)
+                if ($valueElement instanceof MixedDropDownTypesForWorkflowActionAttributeElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data">{content}{error}</div>';
                 }
-                elseif($valueElement instanceof MixedDateTypesForWorkflowActionAttributeElement ||
+                elseif ($valueElement instanceof MixedDateTypesForWorkflowActionAttributeElement ||
                        $valueElement instanceof MixedDateTimeTypesForWorkflowActionAttributeElement)
                 {
                     $valueElement->editableTemplate = '<div class="value-data has-date-inputs">{content}{error}</div>';

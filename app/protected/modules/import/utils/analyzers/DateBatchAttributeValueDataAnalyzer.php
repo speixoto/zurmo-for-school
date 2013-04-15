@@ -61,7 +61,7 @@
         {
             if ($value != null && !CDateTimeParser::parse($value, $this->exceptedFormat))
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
             }
         }
 

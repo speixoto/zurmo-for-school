@@ -54,7 +54,7 @@
 
         protected function renderPreActionElementBar($form)
         {
-            return  $this->renderFormLayout($form) .$this->renderAfterFormLayout($form);
+            return  $this->renderFormLayout($form) . $this->renderAfterFormLayout($form);
         }
 
         protected function renderOperationHighlight()

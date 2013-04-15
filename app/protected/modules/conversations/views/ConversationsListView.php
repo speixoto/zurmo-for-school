@@ -36,7 +36,6 @@
 
     class ConversationsListView extends SecuredListView
     {
-
         public static function getDefaultMetadata()
         {
             $metadata = array(

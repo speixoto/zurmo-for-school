@@ -82,7 +82,7 @@
             $users = User::getAll();
             foreach ($users as $user)
             {
-                if($user->getClassId('Item') !== $mission->owner->getClassId('Item') &&
+                if ($user->getClassId('Item') !== $mission->owner->getClassId('Item') &&
                            $user->getClassId('Item') !== $mission->takenByUser->getClassId('Item') )
                 {
                     static::markUserHasReadLatest($mission, $user);
@@ -263,12 +263,11 @@
             $peopleToSendNotification = array();
             foreach ($usersToSendNotification as $userToSendNotification)
             {
-
-                if($userToSendNotification->getClassId('Item') != $user->getClassId('Item'))
+                if ($userToSendNotification->getClassId('Item') != $user->getClassId('Item'))
                 {
-                    if($mission->takenByUser->id > 0)
+                    if ($mission->takenByUser->id > 0)
                     {
-                        if($userToSendNotification->getClassId('Item') == $mission->owner->getClassId('Item') ||
+                        if ($userToSendNotification->getClassId('Item') == $mission->owner->getClassId('Item') ||
                            $userToSendNotification->getClassId('Item') == $mission->takenByUser->getClassId('Item') )
                         {
                             $peopleToSendNotification[] = $userToSendNotification;

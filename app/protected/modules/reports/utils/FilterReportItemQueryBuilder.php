@@ -55,7 +55,7 @@
                                                           $realAttributeName)
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
-            if($modelToReportAdapter->isAttributeReadOptimization($realAttributeName))
+            if ($modelToReportAdapter->isAttributeReadOptimization($realAttributeName))
             {
                 $hintAdapter        = new ReadOptimizationDerivedAttributeToDataProviderAdapter(
                                       $modelToReportAdapter->getModelClassName(), null);
@@ -76,7 +76,7 @@
          */
         protected function resolveFinalContent($modelAttributeToDataProviderAdapter, $onTableAliasName = null)
         {
-            if($modelAttributeToDataProviderAdapter instanceof ReadOptimizationDerivedAttributeToDataProviderAdapter)
+            if ($modelAttributeToDataProviderAdapter instanceof ReadOptimizationDerivedAttributeToDataProviderAdapter)
             {
                 $builder        = new ReadOptimizationModelWhereAndJoinBuilder($modelAttributeToDataProviderAdapter, $this->joinTablesAdapter);
                 $clausePosition = 1;
@@ -125,12 +125,12 @@
         {
             assert('$modelToReportAdapter instanceof ModelRelationsAndAttributesToReportAdapter');
             assert('is_string($attribute)');
-            if($modelToReportAdapter->isAttributeReadOptimization($attribute))
+            if ($modelToReportAdapter->isAttributeReadOptimization($attribute))
             {
                 return new ReadOptimizationDerivedAttributeToDataProviderAdapter(
                            $modelToReportAdapter->getModelClassName(), null);
             }
-            if($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
+            if ($modelToReportAdapter instanceof ModelRelationsAndAttributesToSummableReportAdapter &&
                 $modelToReportAdapter->isAttributeACalculatedGroupByModifier($attribute))
             {
                 return new RedBeanModelAttributeToDataProviderAdapter(

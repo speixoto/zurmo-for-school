@@ -303,7 +303,7 @@
         {
             if (isset($this->tableCounts[$tableName]))
             {
-                $this->tableCounts[$tableName] ++;
+                $this->tableCounts[$tableName]++;
             }
             else
             {

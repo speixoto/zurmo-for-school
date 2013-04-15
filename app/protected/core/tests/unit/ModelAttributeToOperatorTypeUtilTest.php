@@ -47,7 +47,6 @@
 
         public function setup()
         {
-
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 

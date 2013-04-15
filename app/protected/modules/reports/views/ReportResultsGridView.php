@@ -167,7 +167,7 @@
          */
         protected function renderContent()
         {
-            if(!$this->isDataProviderValid())
+            if (!$this->isDataProviderValid())
             {
                 throw new NotSupportedException();
             }
@@ -285,7 +285,7 @@
         {
             $columns = array();
 
-            if($this->rowsAreExpandable())
+            if ($this->rowsAreExpandable())
             {
                 $firstColumn = array(
                     'class'               => 'DrillDownColumn',
@@ -296,7 +296,7 @@
             }
             foreach ($this->dataProvider->resolveDisplayAttributes() as $key => $displayAttribute)
             {
-                if(!$displayAttribute->queryOnly)
+                if (!$displayAttribute->queryOnly)
                 {
                     $columnClassName  = $this->resolveColumnClassNameForListViewColumnAdapter($displayAttribute);
                     $attributeName    = $displayAttribute->resolveAttributeNameForGridViewColumn($key);
@@ -321,7 +321,7 @@
         protected function resolveColumnClassNameForListViewColumnAdapter(DisplayAttributeForReportForm $displayAttribute)
         {
             $displayElementType = $displayAttribute->getDisplayElementType();
-            if(@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
+            if (@class_exists($displayElementType . 'ForReportListViewColumnAdapter'))
             {
                 return $displayElementType . 'ForReportListViewColumnAdapter';
             }
@@ -338,11 +338,11 @@
         protected function resolveParamsForColumnElement(DisplayAttributeForReportForm $displayAttribute)
         {
             $params  = array();
-            if($displayAttribute->isALinkableAttribute() == 'name')
+            if ($displayAttribute->isALinkableAttribute() == 'name')
             {
                 $params['isLink'] = true;
             }
-            elseif($displayAttribute->isATypeOfCurrencyValue())
+            elseif ($displayAttribute->isATypeOfCurrencyValue())
             {
                 $params['currencyValueConversionType'] = $this->dataProvider->getReport()->getCurrencyConversionType();
                 $params['spotConversionCurrencyCode']  = $this->dataProvider->getReport()->getSpotConversionCurrencyCode();
@@ -385,7 +385,7 @@
          */
         protected function rowsAreExpandable()
         {
-            if(count($this->dataProvider->getReport()->getDrillDownDisplayAttributes()) > 0)
+            if (count($this->dataProvider->getReport()->getDrillDownDisplayAttributes()) > 0)
             {
                 return true;
             }

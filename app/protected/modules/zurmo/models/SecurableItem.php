@@ -184,7 +184,7 @@
         protected function getAllDescendentRoles($role)
         {
             $descendentRoles = array();
-            if(count($role->roles) > 0)
+            if (count($role->roles) > 0)
             {
                 foreach ($role->roles as $childRole)
                 {

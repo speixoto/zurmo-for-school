@@ -76,25 +76,23 @@
         {
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
-                        if(linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
-
                         }
-                        if(linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
                             $('#DisplayAttributesForReportWizardView').show();
-
                         }
-                        if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
@@ -102,14 +100,14 @@
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
                             $('#OrderBysForReportWizardView').show();
                         }
-                        if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#OrderBysForReportWizardView').hide();
                             $('#GeneralDataForReportWizardView').show();
                         }
-                        if(linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
                         }

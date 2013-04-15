@@ -1,5 +1,4 @@
 <?php
-
     /*********************************************************************************
      * Zurmo is a customer relationship management program developed by
      * Zurmo, Inc. Copyright (C) 2013 Zurmo Inc.
@@ -106,6 +105,7 @@
             }
             else
             {
+                // Begin Not Coding Standard
                 Yii::app()->clientScript->registerScript('massActionLinkActionElementEventHandler', "
                         function massActionLinkActionElementEventHandler(elementType, gridId, baseUrl, actionId, pageVarName)
                         {
@@ -147,6 +147,7 @@
                             return false;
                         }
                 ");
+                // End Not Coding Standard
             }
         }
 
@@ -195,7 +196,7 @@
                                     menuType = " . static::SELECTED_MENU_TYPE . ";
                                 }
                                 $('#" . $dropDownId . "').val('');
-                                massActionLinkActionElementEventHandler(".
+                                massActionLinkActionElementEventHandler(" .
                                         "menuType, ".
                                         " '" . $this->gridId. "',".
                                         " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "',".
@@ -252,7 +253,7 @@
 
         protected function getEventHandlerScriptContentForMenuType($menuType)
         {
-            return "massActionLinkActionElementEventHandler(".
+            return "massActionLinkActionElementEventHandler(" .
                             $menuType . ",".
                             " '" . $this->gridId. "',".
                             " '" . Yii::app()->createUrl($this->moduleId . '/' . $this->getControllerId()) . "',".

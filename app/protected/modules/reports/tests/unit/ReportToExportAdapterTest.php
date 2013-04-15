@@ -239,7 +239,6 @@
             $displayAttribute19->setModelAliasUsingTableAliasName('model1');
             $displayAttribute19->attributeIndexOrDerivedType = 'owner__User';
 
-
             $saved                = $reportModelTestItem->save();
             $this->assertTrue($saved);
             $tempId               = 1;

@@ -130,7 +130,7 @@
 
         public function actionCreate($type = null)
         {
-            if($type == null)
+            if ($type == null)
             {
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
@@ -181,14 +181,14 @@
             $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::
                                                  resolveByPostDataAndModelThenMake($postData[get_class($model)], $savedReport);
             SavedReportToReportAdapter::resolveReportToSavedReport($report, $savedReport);
-            if($savedReport->id > 0)
+            if ($savedReport->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedReport->moduleClassName);
             }
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($savedReport);
-            if($savedReport->save())
+            if ($savedReport->save())
             {
-                if($explicitReadWriteModelPermissions != null)
+                if ($explicitReadWriteModelPermissions != null)
                 {
                     ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($savedReport,
                                                            $explicitReadWriteModelPermissions);
@@ -215,7 +215,7 @@
             $savedReport = null;
             $report      = null;
             $this->resolveSavedReportAndReportByPostData($postData, $savedReport, $report, $type, $id);
-            if($nodeId != null)
+            if ($nodeId != null)
             {
                 $reportToTreeAdapter = new ReportRelationsAndAttributesToTreeAdapter($report, $treeType);
                 echo ZurmoTreeView::saveDataAsJson($reportToTreeAdapter->getData($nodeId));
@@ -274,7 +274,7 @@
             $modelClassName                     = $moduleClassName::getPrimaryModelName();
             $modelToReportAdapter               = ModelRelationsAndAttributesToReportAdapter::
                                                   make($moduleClassName, $modelClassName, $report->getType());
-            if(!$modelToReportAdapter instanceof ModelRelationsAndAttributesToSummationReportAdapter)
+            if (!$modelToReportAdapter instanceof ModelRelationsAndAttributesToSummationReportAdapter)
             {
                 throw new NotSupportedException();
             }
@@ -307,7 +307,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserReadModel($savedReport);
             $report               = SavedReportToReportAdapter::makeReportBySavedReport($savedReport);
             $wizardFormClassName  = ReportToWizardFormAdapter::getFormClassNameByType($report->getType());
-            if(!isset($postData[$wizardFormClassName]))
+            if (!isset($postData[$wizardFormClassName]))
             {
                 throw new NotSupportedException();
             }
@@ -317,7 +317,7 @@
                 $adapter          = new ReportToWizardFormAdapter($report);
                 $reportWizardForm = $adapter->makeFormByType();
                 $reportWizardForm->setScenario(reportWizardForm::FILTERS_VALIDATION_SCENARIO);
-                if(!$reportWizardForm->validate())
+                if (!$reportWizardForm->validate())
                 {
                     $errorData = array();
                     foreach ($reportWizardForm->getErrors() as $attribute => $errors)
@@ -394,7 +394,7 @@
                         foreach ($data1 as $reportResultsRowData)
                         {
                           $reportToExportAdapter  = new ReportToExportAdapter($reportResultsRowData, $report);
-                          if(count($headerData) == 0)
+                          if (count($headerData) == 0)
                           {
                               $headerData = $reportToExportAdapter->getHeaderData();
                           }
@@ -454,7 +454,7 @@
 
         protected function resolveCanCurrentUserAccessReports()
         {
-            if(!RightsUtil::doesUserHaveAllowByRightName('ReportsModule',
+            if (!RightsUtil::doesUserHaveAllowByRightName('ReportsModule',
                                                             ReportsModule::RIGHT_CREATE_REPORTS,
                                                             Yii::app()->user->userModel))
             {
@@ -468,7 +468,7 @@
 
         protected function resolveSavedReportAndReportByPostData(Array $postData, & $savedReport, & $report, $type, $id = null)
         {
-            if($id == null)
+            if ($id == null)
             {
                 $this->resolveCanCurrentUserAccessReports();
                 $savedReport               = new SavedReport();
@@ -506,7 +506,7 @@
 
         protected function actionValidate($postData, ReportWizardForm $model)
         {
-            if(isset($postData['validationScenario']) && $postData['validationScenario'] != null)
+            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
             {
                 $model->setScenario($postData['validationScenario']);
             }
@@ -547,7 +547,7 @@
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
-            if($runReport)
+            if ($runReport)
             {
                 $dataProvider->setRunReport($runReport);
             }

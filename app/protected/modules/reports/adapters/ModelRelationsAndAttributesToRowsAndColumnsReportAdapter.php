@@ -81,10 +81,10 @@
         protected function resolveAttributesForOrderBys(Array $attributes)
         {
             $resolvedAttributes = array();
-            foreach($attributes as $attribute => $data)
+            foreach ($attributes as $attribute => $data)
             {
                 $attributeType = ModelAttributeToMixedTypeUtil::getType($this->model, $attribute);
-                if(!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
+                if (!in_array($attributeType, array('MultiSelectDropDown', 'TagCloud', 'TextArea')))
                 {
                     $resolvedAttributes[$attribute] = $data;
                 }

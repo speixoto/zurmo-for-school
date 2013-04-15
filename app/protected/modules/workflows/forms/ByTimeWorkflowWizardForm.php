@@ -45,8 +45,7 @@
          */
         public function validateTimeTrigger()
         {
-
-            if($this->timeTriggerAttribute == null)
+            if ($this->timeTriggerAttribute == null)
             {
                 $this->addError('timeTriggerAttribute',
                                 Zurmo::t('WorkflowsModule', 'At least one time trigger must be selected'));
@@ -64,7 +63,7 @@
         public function getTimeTriggerAttributeDataAndLabels()
         {
             $dataAndLabels = array();
-            if($this->moduleClassName != null)
+            if ($this->moduleClassName != null)
             {
                 $moduleClassName = $this->moduleClassName;
                 $dataAndLabels   = WorkflowUtil::resolveDataAndLabelsForTimeTriggerAvailableAttributes(

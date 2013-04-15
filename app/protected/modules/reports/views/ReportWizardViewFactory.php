@@ -49,17 +49,17 @@
         {
             $type                      = $report->getType();
             $reportToWizardFormAdapter = new ReportToWizardFormAdapter($report);
-            if($type == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($type == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 $viewClassName = 'RowsAndColumnsReportWizardView';
                 $form          = $reportToWizardFormAdapter->makeRowsAndColumnsWizardForm();
             }
-            elseif($type == Report::TYPE_SUMMATION)
+            elseif ($type == Report::TYPE_SUMMATION)
             {
                 $viewClassName = 'SummationReportWizardView';
                 $form          = $reportToWizardFormAdapter->makeSummationWizardForm();
             }
-            elseif($type == Report::TYPE_MATRIX)
+            elseif ($type == Report::TYPE_MATRIX)
             {
                 $viewClassName = 'MatrixReportWizardView';
                 $form          = $reportToWizardFormAdapter->makeMatrixWizardForm();

@@ -139,7 +139,7 @@
         public function canUserDelete(User $user)
         {
             assert('$user->id > 0');
-            if($this->toUser->isSame($user) || $this->owner->isSame($user) ||
+            if ($this->toUser->isSame($user) || $this->owner->isSame($user) ||
                Group::getByName(Group::SUPER_ADMINISTRATORS_GROUP_NAME)->contains($user))
             {
                 return true;

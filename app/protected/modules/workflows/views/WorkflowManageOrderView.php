@@ -153,9 +153,6 @@
                         'success'    => 'function(data){$("#FlashMessageBar").jnotifyAddMessage({
                                          text: data.message, permanent: false, showIcon: true, type: data.type
                                          });}',
-
-
-
                 ),
                 array('id'       => 'save-order',
                       'class'    => 'attachLoading z-button',
@@ -197,7 +194,7 @@
                 'data'     => 'js:\'moduleClassName=\' + $(this).val()',
                 'url'      =>  $url,
                 'success'  => 'js:function(data){
-                                if(data.dataToOrder == "true")
+                                if (data.dataToOrder == "true")
                                 {
                                     $(".no-workflows-to-order-view").hide();
                                     $(".select-module-view").hide();
@@ -215,7 +212,7 @@
             $script = "$('#" . $id . "').unbind('change'); $('#" . $id . "').bind('change', function()
             {
 
-                if($('#" . $id . "').val() == '')
+                if ($('#" . $id . "').val() == '')
                 {
                     $('.no-workflows-to-order-view').hide();
                     $('.select-module-view').show();
