@@ -79,7 +79,7 @@
             $this->registerTabbedContentScripts();
             $textTabHyperLink   = ZurmoHtml::link($this->renderTextContentAreaLabel(), '#tab1', array('class' => 'active-tab'));
             $htmlTabHyperLink   = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#tab2');
-            $tagsGuideLink      = ZurmoHtml::link($this->renderHtmlContentAreaLabel(), '#', array('class' => 'simple-link'));
+            $tagsGuideLink      = ZurmoHtml::link('Tag Guide', '#', array('class' => 'simple-link'));
             $tabContent         = ZurmoHtml::tag('div', array('class' => 'tabs-nav'), $textTabHyperLink . $htmlTabHyperLink . $tagsGuideLink);
 
             $plainTextDiv       = ZurmoHtml::tag('div',
