@@ -1438,6 +1438,7 @@ form,
 	top:-2px;
 }
 
+#MarketingListAddSubscriberLinkActionElement .parent > a:before,
 #MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before{
 	content: "Y";
@@ -2480,6 +2481,11 @@ div.wide.form{
 		.symbly(325px);
 		line-height: 52%;
 	}
+	.MarketingList .large-icon:after{
+		content: '\0022';
+		.symbly(300px);
+		line-height: 52%;
+	}
 }
 
 #NoUserEmailConfigurationYetView{
@@ -2497,7 +2503,6 @@ div.wide.form{
 
 #search-form{
 	position: relative;
-//padding:10px 0 10px 0;
 	border: 1px solid #DFDFDF;
 	border-bottom:none;
 	#gradient > .vertical(#f6f6f6, #ededed);
@@ -2539,7 +2544,6 @@ div.wide.form{
 }
 
 .cgrid-view{
-/*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
 	position:relative;
 }
 
@@ -2582,7 +2586,6 @@ div.wide.form{
 		margin:0 0 0 0;
 		.radius(0);
 		.b-shadow(none);
-	//.no-ie-shadow();
 		border-left:none;
 		font-style: italic;
 		color: #999;
@@ -2629,7 +2632,6 @@ div.wide.form{
 #more-search-linkmodal,
 #more-search-link{
 	margin-left:0;
-	++.themeColor;
 	&:after{
 		content: "÷";
 		.symbly(14px);

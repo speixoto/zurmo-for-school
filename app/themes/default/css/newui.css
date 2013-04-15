@@ -311,7 +311,6 @@ a.ModalGameNotification a,
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
   background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
@@ -976,7 +975,6 @@ body.blue #HeaderView {
 body.blue #HeaderLinksView + div {
   background-color: #333535;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#464646), to(#333535));
   background-image: -moz-linear-gradient(top, #464646, #333535);
   background-image: -ms-linear-gradient(top, #464646, #333535);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #464646), color-stop(100%, #333535));
@@ -989,7 +987,6 @@ body.blue #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #537b20;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#7cb830), to(#537b20));
   background-image: -moz-linear-gradient(top, #7cb830, #537b20);
   background-image: -ms-linear-gradient(top, #7cb830, #537b20);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #7cb830), color-stop(100%, #537b20));
@@ -1048,7 +1045,6 @@ body.blue .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -1069,7 +1065,6 @@ body.blue .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -1109,7 +1104,6 @@ body.blue .white-button:hover .z-label {
   color: #7cb830 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -1128,7 +1122,6 @@ body.blue .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -1148,7 +1141,6 @@ body.blue .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -1206,7 +1198,6 @@ body.blue #layout-container .ui-widget-header .ui-state-active {
 body.blue .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -1219,7 +1210,6 @@ body.blue .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -1236,7 +1226,6 @@ body.blue .action-take:hover .z-label {
 body.blue .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -1249,7 +1238,6 @@ body.blue .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -1266,7 +1254,6 @@ body.blue .action-complete:hover .z-label {
 body.blue .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -1279,7 +1266,6 @@ body.blue .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -1296,7 +1282,6 @@ body.blue .action-accept:hover .z-label {
 body.blue .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -1309,7 +1294,6 @@ body.blue .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -1544,7 +1528,6 @@ body.brown #HeaderView {
 body.brown #HeaderLinksView + div {
   background-color: #4f4646;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#594f4f), to(#4f4646));
   background-image: -moz-linear-gradient(top, #594f4f, #4f4646);
   background-image: -ms-linear-gradient(top, #594f4f, #4f4646);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #594f4f), color-stop(100%, #4f4646));
@@ -1557,7 +1540,6 @@ body.brown #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #7b6020;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#b88f30), to(#7b6020));
   background-image: -moz-linear-gradient(top, #b88f30, #7b6020);
   background-image: -ms-linear-gradient(top, #b88f30, #7b6020);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #b88f30), color-stop(100%, #7b6020));
@@ -1616,7 +1598,6 @@ body.brown .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -1637,7 +1618,6 @@ body.brown .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -1677,7 +1657,6 @@ body.brown .white-button:hover .z-label {
   color: #b88f30 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -1696,7 +1675,6 @@ body.brown .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -1716,7 +1694,6 @@ body.brown .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -1774,7 +1751,6 @@ body.brown #layout-container .ui-widget-header .ui-state-active {
 body.brown .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -1787,7 +1763,6 @@ body.brown .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -1804,7 +1779,6 @@ body.brown .action-take:hover .z-label {
 body.brown .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -1817,7 +1791,6 @@ body.brown .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -1834,7 +1807,6 @@ body.brown .action-complete:hover .z-label {
 body.brown .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -1847,7 +1819,6 @@ body.brown .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -1864,7 +1835,6 @@ body.brown .action-accept:hover .z-label {
 body.brown .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -1877,7 +1847,6 @@ body.brown .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -2112,7 +2081,6 @@ body.lime #HeaderView {
 body.lime #HeaderLinksView + div {
   background-color: #333535;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#464646), to(#333535));
   background-image: -moz-linear-gradient(top, #464646, #333535);
   background-image: -ms-linear-gradient(top, #464646, #333535);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #464646), color-stop(100%, #333535));
@@ -2125,7 +2093,6 @@ body.lime #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #9db05a;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#bcc98e), to(#9db05a));
   background-image: -moz-linear-gradient(top, #bcc98e, #9db05a);
   background-image: -ms-linear-gradient(top, #bcc98e, #9db05a);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #bcc98e), color-stop(100%, #9db05a));
@@ -2184,7 +2151,6 @@ body.lime .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -2205,7 +2171,6 @@ body.lime .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -2245,7 +2210,6 @@ body.lime .white-button:hover .z-label {
   color: #bcc98e !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -2264,7 +2228,6 @@ body.lime .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -2284,7 +2247,6 @@ body.lime .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -2342,7 +2304,6 @@ body.lime #layout-container .ui-widget-header .ui-state-active {
 body.lime .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -2355,7 +2316,6 @@ body.lime .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -2372,7 +2332,6 @@ body.lime .action-take:hover .z-label {
 body.lime .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -2385,7 +2344,6 @@ body.lime .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -2402,7 +2360,6 @@ body.lime .action-complete:hover .z-label {
 body.lime .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -2415,7 +2372,6 @@ body.lime .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -2432,7 +2388,6 @@ body.lime .action-accept:hover .z-label {
 body.lime .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -2445,7 +2400,6 @@ body.lime .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -2680,7 +2634,6 @@ body.cherry #HeaderView {
 body.cherry #HeaderLinksView + div {
   background-color: #333535;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#464646), to(#333535));
   background-image: -moz-linear-gradient(top, #464646, #333535);
   background-image: -ms-linear-gradient(top, #464646, #333535);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #464646), color-stop(100%, #333535));
@@ -2693,7 +2646,6 @@ body.cherry #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #5a1e27;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#933140), to(#5a1e27));
   background-image: -moz-linear-gradient(top, #933140, #5a1e27);
   background-image: -ms-linear-gradient(top, #933140, #5a1e27);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #933140), color-stop(100%, #5a1e27));
@@ -2752,7 +2704,6 @@ body.cherry .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -2773,7 +2724,6 @@ body.cherry .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -2813,7 +2763,6 @@ body.cherry .white-button:hover .z-label {
   color: #933140 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -2832,7 +2781,6 @@ body.cherry .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -2852,7 +2800,6 @@ body.cherry .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -2910,7 +2857,6 @@ body.cherry #layout-container .ui-widget-header .ui-state-active {
 body.cherry .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -2923,7 +2869,6 @@ body.cherry .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -2940,7 +2885,6 @@ body.cherry .action-take:hover .z-label {
 body.cherry .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -2953,7 +2897,6 @@ body.cherry .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -2970,7 +2913,6 @@ body.cherry .action-complete:hover .z-label {
 body.cherry .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -2983,7 +2925,6 @@ body.cherry .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -3000,7 +2941,6 @@ body.cherry .action-accept:hover .z-label {
 body.cherry .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -3013,7 +2953,6 @@ body.cherry .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -3248,7 +3187,6 @@ body.turquoise #HeaderView {
 body.turquoise #HeaderLinksView + div {
   background-color: #333535;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#464646), to(#333535));
   background-image: -moz-linear-gradient(top, #464646, #333535);
   background-image: -ms-linear-gradient(top, #464646, #333535);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #464646), color-stop(100%, #333535));
@@ -3261,7 +3199,6 @@ body.turquoise #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #2a8c9a;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#44bbcc), to(#2a8c9a));
   background-image: -moz-linear-gradient(top, #44bbcc, #2a8c9a);
   background-image: -ms-linear-gradient(top, #44bbcc, #2a8c9a);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #44bbcc), color-stop(100%, #2a8c9a));
@@ -3320,7 +3257,6 @@ body.turquoise .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -3341,7 +3277,6 @@ body.turquoise .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -3381,7 +3316,6 @@ body.turquoise .white-button:hover .z-label {
   color: #44bbcc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -3400,7 +3334,6 @@ body.turquoise .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -3420,7 +3353,6 @@ body.turquoise .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -3478,7 +3410,6 @@ body.turquoise #layout-container .ui-widget-header .ui-state-active {
 body.turquoise .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -3491,7 +3422,6 @@ body.turquoise .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -3508,7 +3438,6 @@ body.turquoise .action-take:hover .z-label {
 body.turquoise .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -3521,7 +3450,6 @@ body.turquoise .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -3538,7 +3466,6 @@ body.turquoise .action-complete:hover .z-label {
 body.turquoise .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -3551,7 +3478,6 @@ body.turquoise .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -3568,7 +3494,6 @@ body.turquoise .action-accept:hover .z-label {
 body.turquoise .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -3581,7 +3506,6 @@ body.turquoise .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -3816,7 +3740,6 @@ body.violet #HeaderView {
 body.violet #HeaderLinksView + div {
   background-color: #333535;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#464646), to(#333535));
   background-image: -moz-linear-gradient(top, #464646, #333535);
   background-image: -ms-linear-gradient(top, #464646, #333535);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #464646), color-stop(100%, #333535));
@@ -3829,7 +3752,6 @@ body.violet #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #576fca;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#91a1dc), to(#576fca));
   background-image: -moz-linear-gradient(top, #91a1dc, #576fca);
   background-image: -ms-linear-gradient(top, #91a1dc, #576fca);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #91a1dc), color-stop(100%, #576fca));
@@ -3888,7 +3810,6 @@ body.violet .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -3909,7 +3830,6 @@ body.violet .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -3949,7 +3869,6 @@ body.violet .white-button:hover .z-label {
   color: #91a1dc !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -3968,7 +3887,6 @@ body.violet .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -3988,7 +3906,6 @@ body.violet .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -4046,7 +3963,6 @@ body.violet #layout-container .ui-widget-header .ui-state-active {
 body.violet .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -4059,7 +3975,6 @@ body.violet .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -4076,7 +3991,6 @@ body.violet .action-take:hover .z-label {
 body.violet .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -4089,7 +4003,6 @@ body.violet .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -4106,7 +4019,6 @@ body.violet .action-complete:hover .z-label {
 body.violet .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -4119,7 +4031,6 @@ body.violet .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -4136,7 +4047,6 @@ body.violet .action-accept:hover .z-label {
 body.violet .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -4149,7 +4059,6 @@ body.violet .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -4384,7 +4293,6 @@ body.honey #HeaderView {
 body.honey #HeaderLinksView + div {
   background-color: #582823;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#46201c), to(#582823));
   background-image: -moz-linear-gradient(top, #46201c, #582823);
   background-image: -ms-linear-gradient(top, #46201c, #582823);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #46201c), color-stop(100%, #582823));
@@ -4397,7 +4305,6 @@ body.honey #HeaderLinksView ul ul a:hover {
   color: #fff !important;
   background-color: #77832e;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#abbc42), to(#77832e));
   background-image: -moz-linear-gradient(top, #abbc42, #77832e);
   background-image: -ms-linear-gradient(top, #abbc42, #77832e);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #abbc42), color-stop(100%, #77832e));
@@ -4456,7 +4363,6 @@ body.honey .attachLoading .z-label {
   color: #fff;
   background-color: #799e30;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30));
   background-image: -moz-linear-gradient(top, #97c43d, #799e30);
   background-image: -ms-linear-gradient(top, #97c43d, #799e30);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30));
@@ -4477,7 +4383,6 @@ body.honey .z-button:active .z-label {
   color: #1f290c !important;
   background-color: #5b7724;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724));
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724);
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724));
@@ -4517,7 +4422,6 @@ body.honey .white-button:hover .z-label {
   color: #abbc42 !important;
   background-color: #ededed !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#fefefe), to(#ededed)) !important;
   background-image: -moz-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -ms-linear-gradient(top, #fefefe, #ededed) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #fefefe), color-stop(100%, #ededed)) !important;
@@ -4536,7 +4440,6 @@ body.honey .dashboard-link .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#799e30)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #799e30) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #799e30)) !important;
@@ -4556,7 +4459,6 @@ body.honey .dashboard-link:not(.attachLoading):hover .z-label {
   color: #1f290c !important;
   background-color: #5b7724 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#5b7724)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #5b7724) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #5b7724)) !important;
@@ -4614,7 +4516,6 @@ body.honey #layout-container .ui-widget-header .ui-state-active {
 body.honey .action-take .z-label {
   background-color: #ffad43 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ffad43)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ffad43) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ffad43)) !important;
@@ -4627,7 +4528,6 @@ body.honey .action-take:hover .z-label {
   color: #934100 !important;
   background-color: #ff9710 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffa660), to(#ff9710)) !important;
   background-image: -moz-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -ms-linear-gradient(top, #ffa660, #ff9710) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffa660), color-stop(100%, #ff9710)) !important;
@@ -4644,7 +4544,6 @@ body.honey .action-take:hover .z-label {
 body.honey .action-complete .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -4657,7 +4556,6 @@ body.honey .action-complete:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -4674,7 +4572,6 @@ body.honey .action-complete:hover .z-label {
 body.honey .action-accept .z-label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -4687,7 +4584,6 @@ body.honey .action-accept:hover .z-label {
   color: #1f290c !important;
   background-color: #548022 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#548022)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #548022) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #548022)) !important;
@@ -4704,7 +4600,6 @@ body.honey .action-accept:hover .z-label {
 body.honey .action-reject .z-label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -4717,7 +4612,6 @@ body.honey .action-reject:hover .z-label {
   color: #290c11 !important;
   background-color: #802225 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#802225)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #802225) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #802225)) !important;
@@ -5018,7 +4912,6 @@ section {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
   background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
@@ -5124,7 +5017,6 @@ section {
   border: none;
   background-color: #252525;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
   background-image: -moz-linear-gradient(top, #353535, #252525);
   background-image: -ms-linear-gradient(top, #353535, #252525);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
@@ -5287,7 +5179,6 @@ section {
   border-right: 1px solid #444 !important;
   background-color: #252525;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#353535), to(#252525));
   background-image: -moz-linear-gradient(top, #353535, #252525);
   background-image: -ms-linear-gradient(top, #353535, #252525);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #353535), color-stop(100%, #252525));
@@ -5638,7 +5529,6 @@ body > .ui-autocomplete {
   box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.1), 0px 1px 0 0 rgba(0,0,0,0.08);
   background-color: #c6c6c6;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#e0e0e0), to(#c6c6c6));
   background-image: -moz-linear-gradient(top, #e0e0e0, #c6c6c6);
   background-image: -ms-linear-gradient(top, #e0e0e0, #c6c6c6);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e0e0e0), color-stop(100%, #c6c6c6));
@@ -5678,7 +5568,6 @@ body > .ui-autocomplete {
   float: left;
   background-color: #f4f4f4;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#f4f4f4));
   background-image: -moz-linear-gradient(top, #f6f6f6, #f4f4f4);
   background-image: -ms-linear-gradient(top, #f6f6f6, #f4f4f4);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #f4f4f4));
@@ -5839,7 +5728,6 @@ body > .ui-autocomplete {
 #RecentlyViewedView {
   background-color: #e3e3e3;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#dcdcdc), to(#e3e3e3));
   background-image: -moz-linear-gradient(top, #dcdcdc, #e3e3e3);
   background-image: -ms-linear-gradient(top, #dcdcdc, #e3e3e3);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #dcdcdc), color-stop(100%, #e3e3e3));
@@ -6199,7 +6087,6 @@ body > .ui-autocomplete {
   font-weight: bold !important;
   background-color: #dfdfdf;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#dfdfdf));
   background-image: -moz-linear-gradient(top, #ffffff, #dfdfdf);
   background-image: -ms-linear-gradient(top, #ffffff, #dfdfdf);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #dfdfdf));
@@ -6352,6 +6239,7 @@ form .view-toolbar-container,
   content: "!";
   top: -2px;
 }
+#MarketingListAddSubscriberLinkActionElement .parent > a:before,
 #MashableInboxCreateDropdown .parent > a:before,
 .icon-create:before {
   content: "Y";
@@ -7022,7 +6910,6 @@ td {
 .items tr:hover {
   background-color: #eeeeee;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#efefef), to(#eeeeee));
   background-image: -moz-linear-gradient(top, #efefef, #eeeeee);
   background-image: -ms-linear-gradient(top, #efefef, #eeeeee);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #efefef), color-stop(100%, #eeeeee));
@@ -7037,7 +6924,6 @@ td {
 .items > thead {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
   background-image: -moz-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -ms-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9), color-stop(100%, #f4f4f4));
@@ -7049,7 +6935,6 @@ td {
 .items > thead tr:hover {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
   background-image: -moz-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -ms-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9), color-stop(100%, #f4f4f4));
@@ -7255,7 +7140,6 @@ td.empty {
   background: #ffffff;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5));
@@ -7512,7 +7396,6 @@ a.simple-link:before {
   line-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -7846,6 +7729,14 @@ div.wide.form label.hasCheckBox {
   font-family: "ZurmoGamificationSymblyReguRg";
   line-height: 52%;
 }
+.zero-components-view .MarketingList .large-icon:after,
+.splash-view .MarketingList .large-icon:after {
+  content: '\0022';
+  font-weight: normal;
+  font-size: 300px;
+  font-family: "ZurmoGamificationSymblyReguRg";
+  line-height: 52%;
+}
 #NoUserEmailConfigurationYetView .z-label {
   z-index: auto;
 }
@@ -7865,7 +7756,6 @@ div.wide.form label.hasCheckBox {
   border-bottom: none;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -7915,7 +7805,6 @@ div.wide.form label.hasCheckBox {
   line-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -7985,8 +7874,6 @@ div.wide.form label.hasCheckBox {
   margin-right: 15px;
 }
 .cgrid-view {
-  /*.b-shadow( 0 0 20px 5px rgba(153, 153, 153, 0.12) );*/
-
   position: relative;
 }
 .juiportlet-widget-content .cgrid-view {
@@ -8070,7 +7957,6 @@ div.wide.form label.hasCheckBox {
   position: relative;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
   background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
@@ -8978,7 +8864,6 @@ div.wide.form label.hasCheckBox {
   line-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -9464,7 +9349,6 @@ div.radio-input .hasDropDown {
   border-radius: 3px;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#e8e8e8), to(#f5f5f5));
   background-image: -moz-linear-gradient(top, #e8e8e8, #f5f5f5);
   background-image: -ms-linear-gradient(top, #e8e8e8, #f5f5f5);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #e8e8e8), color-stop(100%, #f5f5f5));
@@ -9934,7 +9818,6 @@ div.hasHalfs .twoThirds {
   padding: 10px 15px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -10168,7 +10051,6 @@ div.hasHalfs .twoThirds {
   line-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -10215,7 +10097,6 @@ div.hasHalfs .twoThirds {
   border-bottom: none;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -10576,7 +10457,6 @@ div.hasHalfs .twoThirds {
   line-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -10854,7 +10734,6 @@ div.hasHalfs .twoThirds {
   line-height: 40px;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -11262,7 +11141,6 @@ a.remove .icon:after {
 #ConfigurationPageView table thead {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
   background-image: -moz-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -ms-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9), color-stop(100%, #f4f4f4));
@@ -11274,7 +11152,6 @@ a.remove .icon:after {
 #ConfigurationPageView table thead tr:hover {
   background-color: #f4f4f4;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f9f9f9), to(#f4f4f4));
   background-image: -moz-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -ms-linear-gradient(top, #f9f9f9, #f4f4f4);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f9f9f9), color-stop(100%, #f4f4f4));
@@ -12027,7 +11904,6 @@ table.configuration-list td:last-child a .z-label:before {
   box-shadow: inset 0 0 0 2px #ffffff;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5));
@@ -12809,7 +12685,6 @@ div.wide.form .errorMessage {
 .upload-actions button.start span {
   background-color: #6fa82d;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d));
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d);
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d));
@@ -12821,7 +12696,6 @@ div.wide.form .errorMessage {
 .upload-actions button.cancel span {
   background-color: #a82d31;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31));
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31);
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31));
@@ -13424,7 +13298,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   padding: 15px !important;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#ffffff), to(#f5f5f5));
   background-image: -moz-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -ms-linear-gradient(top, #ffffff, #f5f5f5);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #ffffff), color-stop(100%, #f5f5f5));
@@ -13471,7 +13344,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border: 1px solid #ccc;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -13491,7 +13363,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   color: #dcdcdc;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#efefef), to(#ededed));
   background-image: -moz-linear-gradient(top, #efefef, #ededed);
   background-image: -ms-linear-gradient(top, #efefef, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #efefef), color-stop(100%, #ededed));
@@ -13557,7 +13428,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border: 1px solid #ccc;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -13735,7 +13605,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   z-index: 15000;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -13817,7 +13686,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border: 1px solid #ccc;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -13999,7 +13867,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
   background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
@@ -14113,7 +13980,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
   text-shadow: rgba(255, 255, 255, 0.8) 0 1px 0;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -14713,7 +14579,6 @@ div.token-input-dropdown ul li.token-input-selected-dropdown-item {
 .badge .gloss {
   background-color: rgba(255, 255, 255, 0.1);
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, right top, from(rgba(255, 255, 255, 0.3)), to(rgba(255, 255, 255, 0.1)));
   background-image: -moz-linear-gradient(left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
   background-image: -ms-linear-gradient(left, rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 0.1));
   background-image: -webkit-gradient(linear, left top, right top, color-stop(0%, rgba(255, 255, 255, 0.3)), color-stop(100%, rgba(255, 255, 255, 0.1)));
@@ -15723,7 +15588,6 @@ a.dashboard-link .z-label {
   border: 1px solid rgba(170, 170, 170, 0.3);
   background-color: #999999;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#777777), to(#999999));
   background-image: -moz-linear-gradient(top, #777777, #999999);
   background-image: -ms-linear-gradient(top, #777777, #999999);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #777777), color-stop(100%, #999999));
@@ -15802,7 +15666,6 @@ a.dashboard-link .z-label {
 .switch-state:first-child input:checked + label {
   background-color: #6fa82d !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#97c43d), to(#6fa82d)) !important;
   background-image: -moz-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -ms-linear-gradient(top, #97c43d, #6fa82d) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #97c43d), color-stop(100%, #6fa82d)) !important;
@@ -15815,7 +15678,6 @@ a.dashboard-link .z-label {
 .switch-state:last-child input:checked + label {
   background-color: #a82d31 !important;
   background-repeat: repeat-x !important;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#c43d53), to(#a82d31)) !important;
   background-image: -moz-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -ms-linear-gradient(top, #c43d53, #a82d31) !important;
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #c43d53), color-stop(100%, #a82d31)) !important;
@@ -16512,7 +16374,6 @@ a.user-link {
   box-shadow: inset 0 1px 0 0 #ffffff;
   background-color: #ededed;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
   background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
@@ -16936,7 +16797,6 @@ a.user-link {
 .ReportResultsGridView #report-results-grid-view > .items .expanded-row th {
   background-color: #333333;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#222222), to(#333333));
   background-image: -moz-linear-gradient(top, #222222, #333333);
   background-image: -ms-linear-gradient(top, #222222, #333333);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #222222), color-stop(100%, #333333));
@@ -16979,7 +16839,6 @@ a.user-link {
   padding: 0 5px 5px 5px !important;
   background-color: #555555;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#333333), to(#555555));
   background-image: -moz-linear-gradient(top, #333333, #555555);
   background-image: -ms-linear-gradient(top, #333333, #555555);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #333333), color-stop(100%, #555555));
@@ -17477,7 +17336,6 @@ a.user-link {
 .model-tag.mission span {
   background-color: #16a085;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#1abc9c), to(#16a085));
   background-image: -moz-linear-gradient(top, #1abc9c, #16a085);
   background-image: -ms-linear-gradient(top, #1abc9c, #16a085);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #1abc9c), color-stop(100%, #16a085));
@@ -17489,7 +17347,6 @@ a.user-link {
 .model-tag.conversation span {
   background-color: #2c3e50;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#34495e), to(#2c3e50));
   background-image: -moz-linear-gradient(top, #34495e, #2c3e50);
   background-image: -ms-linear-gradient(top, #34495e, #2c3e50);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #34495e), color-stop(100%, #2c3e50));
@@ -17501,7 +17358,6 @@ a.user-link {
 .model-tag.notification span {
   background-color: #8e44ad;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#9b59b6), to(#8e44ad));
   background-image: -moz-linear-gradient(top, #9b59b6, #8e44ad);
   background-image: -ms-linear-gradient(top, #9b59b6, #8e44ad);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #9b59b6), color-stop(100%, #8e44ad));
@@ -17597,41 +17453,26 @@ a.user-link {
   position: relative;
   top: 1px;
 }
-#marketing-list-member-select-contact-or-report-form,
 #marketing-list-member-configuration-form {
   position: relative;
   padding: 15px;
   border-bottom: 1px solid #DFDFDF;
-  background-color: #ededed;
-  background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#ededed));
-  background-image: -moz-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #ededed));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: -o-linear-gradient(top, #f6f6f6, #ededed);
-  background-image: linear-gradient(top, #f6f6f6, #ededed);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#ededed', GradientType=0);
   -webkit-box-shadow: none;
   -moz-box-shadow: none;
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
-  box-shadow: inset 0 1px 0 0 #ffffff;
   zoom: 1;
 }
-#marketing-list-member-select-contact-or-report-form:before,
 #marketing-list-member-configuration-form:before {
   content: "";
   display: table;
 }
-#marketing-list-member-select-contact-or-report-form:after,
 #marketing-list-member-configuration-form:after {
   content: "";
   display: table;
   clear: both;
 }
-#marketing-list-member-select-contact-or-report-form input[type="text"],
 #marketing-list-member-configuration-form input[type="text"] {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
@@ -17660,7 +17501,6 @@ a.user-link {
   border: 1px solid #d5d4d4;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
-#marketing-list-member-select-contact-or-report-form input[type="text"]:focus,
 #marketing-list-member-configuration-form input[type="text"]:focus {
   outline: none !important;
   box-shadow: none !important;
@@ -17669,7 +17509,66 @@ a.user-link {
   margin-bottom: 0;
 }
 #marketing-list-member-select-contact-or-report-form {
-  display: none;
+  padding: 15px;
+}
+#marketing-list-member-select-contact-or-report-form input[type="text"] {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  width: 250px;
+  margin: 10px 0 0 0;
+  -webkit-border-radius: 0;
+  -moz-border-radius: 0;
+  -ms-border-radius: 0;
+  -o-border-radius: 0;
+  border-radius: 0;
+  -webkit-box-shadow: none;
+  -moz-box-shadow: none;
+  -o-box-shadow: none;
+  -ms-box-shadow: none;
+  box-shadow: none;
+  font-style: italic;
+  color: #999;
+  text-indent: 5px;
+  line-height: 25px;
+  height: 25px !important;
+  border: 1px solid #d5d4d4;
+  background: url(../images/search-bar-gradient.png) left top repeat-x;
+}
+#marketing-list-member-select-contact-or-report-form input[type="text"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+#marketing-list-member-select-contact-or-report-form input[type="radio"] {
+  margin-right: 5px;
+}
+#marketing-list-member-select-contact-or-report-form label + input[type="radio"] {
+  margin-left: 15px;
+}
+#MarketingListMembersForPortletView {
+  float: left;
+  width: 100%;
+  background: #f6f6f6;
+  /* Old browsers */
+
+  background: -moz-linear-gradient(top, #f6f6f6 0, #ededed 110px, transparent 110px, transparent 100%);
+  /* FF3.6+ */
+
+  background: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(110px, #ededed), color-stop(110px, transparent), color-stop(100%, transparent));
+  /* Chrome,Safari4+ */
+
+  background: -webkit-linear-gradient(top, #f6f6f6 0, #ededed 110px, transparent 110px, transparent 100%);
+  /* Chrome10+,Safari5.1+ */
+
+  background: -o-linear-gradient(top, #f6f6f6 0, #ededed 110px, transparent 110px, transparent 100%);
+  /* Opera 11.10+ */
+
+  background: -ms-linear-gradient(top, #f6f6f6 0, #ededed 110px, transparent 110px, transparent 100%);
+  /* IE10+ */
+
+  background: linear-gradient(to bottom, #f6f6f6 0, #ededed 110px, transparent 110px, transparent 100%);
+  /* W3C */
+
 }
 .marketing-list-member-stats {
   margin: 5px 0 0 0;
@@ -17678,6 +17577,12 @@ a.user-link {
 .marketing-list-member-stats strong {
   display: block;
   margin-bottom: 3px;
+}
+.portlet-with-toolbar .view-toolbar {
+  margin: 10px 0 0 10px;
+}
+.portlet-with-toolbar .view-toolbar .parent > ul {
+  top: auto;
 }
 /*********************************************************************************
  * Zurmo is a customer relationship management program developed by
