@@ -34,44 +34,49 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplatesListView extends SecuredListView
-    {
-        public static function getDefaultMetadata()
-        {
-            $metadata = array(
-                'global' => array(
-                     'panels' => array(
-                        array(
-                            'rows' => array(
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text', 'isLink' => true),
-                                            ),
-                                        ),
-                                    ),
-                                ),
-                                array('cells' =>
-                                    array(
-                                        array(
-                                            'elements' => array(
-                                                array('attributeName' => 'owner', 'type' => 'User'),
-                                            ),
-                                        ),
-                                    )
-                                ),
-                            ),
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        protected function getListActionId()
-        {
-            return Yii::app()->getController()->getAction()->getId();
-        }
-    }
+    /**
+     * Note related array of random seed data parts.
+     */
+    return array(
+        'type'                  => array_keys(EmailTemplate::getTypeDropDownArray()),
+        'modelClassName'        => array(
+            'Contact',
+            'Meeting',
+            'Account',
+            'Note',
+            'Task',
+            'Opportunity',
+        ),
+        'name'                  => array(
+            'Happy Birthday',
+            'Discount',
+            'Downtime Alert',
+            'Sales decrease',
+            'Missions alert',
+            'Inbox Update',
+        ),
+        'subject'               => array(
+            'Happy Birthday',
+            'Special Offer, 10% discount',
+            'Planned Downtime',
+            'Q4 Sales decrease',
+            'Upcoming Missions',
+            'New Inbox Module is live',
+        ),
+        'language'              => array(
+            'en',
+            'es',
+            'it',
+            'fr',
+            'de',
+        ),
+        'htmlContent'           => array( // TODO: @Shoaibi/@Jason: Medium: How do we know if the modelClassName these will get attached to would be relevant?
+            '<strong>[[FIRST^NAME]] [[LAST^NAME]]</strong>',
+            '<em>[[__OWNER__ID]]/[[__OWNER__USERNAME]] [[__OWNER__TIME^ZONE]]</em>',
+        ),
+        'textContent'           => array(
+            '[[FIRST^NAME]] [[LAST^NAME]]',
+            '[[__OWNER__ID]]/[[__OWNER__USERNAME]] [[__OWNER__TIME^ZONE]]',
+        ),
+    );
 ?>

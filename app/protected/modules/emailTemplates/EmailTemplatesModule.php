@@ -102,6 +102,11 @@
             return true;
         }
 
+        public static function getDemoDataMakerClassName()
+        {
+            return 'EmailTemplatesDemoDataMaker';
+        }
+
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('EmailTemplatesModule', 'Email Template', array(), null, $language);
