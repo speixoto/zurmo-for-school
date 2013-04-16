@@ -50,6 +50,7 @@
          */
         public static function copy(RedBeanModel $model, RedBeanModel $copyToModel)
         {
+            $copyToModel->setIsCopied();
             foreach ($model->attributeNames() as $attributeName)
             {
                 $isReadOnly = $model->isAttributeReadOnly($attributeName);
@@ -109,7 +110,7 @@
             $relatedModel                  = new $relatedModelClassName();
             foreach($relatedModel->getAttributeNames() as $relatedAttributeName)
             {
-                if(!$relatedModel->isRelation($attributeName) && !$relatedModel->isAttributeReadOnly($relatedAttributeName))
+                if(!$relatedModel->isRelation($relatedAttributeName) && !$relatedModel->isAttributeReadOnly($relatedAttributeName))
                 {
                     static::copyNonRelation($model->{$attributeName}, $relatedAttributeName, $relatedModel);
                 }
@@ -133,7 +134,7 @@
             {
                 $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($model);
                 ExplicitReadWriteModelPermissionsUtil::
-                    resolveExplicitReadWriteModelPermissions($copyToModel, $explicitReadWriteModelPermissions);
+                resolveExplicitReadWriteModelPermissionsForDisplay($copyToModel, $explicitReadWriteModelPermissions);
             }
         }
     }

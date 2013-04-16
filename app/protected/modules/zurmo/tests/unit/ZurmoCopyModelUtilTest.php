@@ -218,7 +218,7 @@
             $this->assertEquals(2,                          $copyToItem->currencyValue->rateToBase);
             $this->assertEquals('EUR',                      $copyToItem->currencyValue->currency->code);
             $this->assertTrue($copyToItem->owner->isSame(self::$sally));
-            $this->assertEquals(Yii::app()->user->userModel->id, $copyToItem->createdByUser->id);
+            $this->assertTrue($copyToItem->createdByUser->id < 0);
             $this->assertEquals(Yii::app()->user->userModel->id, $copyToItem->modifiedByUser->id);
             $this->assertEquals(0, $copyToItem->hasMany->count());
             $this->assertTrue($copyToItem->hasOne->isSame($testItem2));
