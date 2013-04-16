@@ -24,19 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    /**
-     * Helper class to make DesignerRules objects
-     */
-    class DesignerRulesFactory
+    class ContactListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        public static function createDesignerRulesByView($viewClassName)
+        public function renderGridViewData()
         {
-            assert('$viewClassName !== null');
-            assert('is_string($viewClassName) && $viewClassName != ""');
-            $designerRulesType = $viewClassName::getDesignerRulesType();
-            assert('$designerRulesType !== null');
-	    $designerRulesClassName = $designerRulesType . 'DesignerRules';
-	    return new $designerRulesClassName();
+            if ($this->getIsLink())
+            {
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'contacts'),
+                );
+            }
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
         }
     }
 ?>

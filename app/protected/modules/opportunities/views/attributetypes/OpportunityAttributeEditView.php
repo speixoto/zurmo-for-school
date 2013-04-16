@@ -24,7 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductCategoryEditAndDetailsView extends SecuredEditAndDetailsView
+    class OpportunityAttributeEditView extends AttributeEditView
     {
         public static function getDefaultMetadata()
         {
@@ -32,13 +32,9 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type'  => 'CancelLink',    'renderType' => 'Edit'),
-                            array('type'  => 'SaveButton',    'renderType' => 'Edit'),
-                            array('type'  => 'EditLink',      'renderType' => 'Details'),
+                            array('type'  => 'CancelLink'),
+                            array('type'  => 'SaveButton'),
                         ),
-                    ),
-                    'nonPlaceableAttributeNames' => array(
-                        'owner',
                     ),
                     'panelsDisplayType' => FormLayout::PANELS_DISPLAY_TYPE_ALL,
                     'panels' => array(
@@ -48,7 +44,16 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'name', 'type' => 'Text'),
+                                                array('attributeName' => 'null', 'type' => 'AttributeType'),
+                                            ),
+                                        ),
+                                    ),
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'attributeLabels', 'type' => 'AttributeLabel'),
                                             ),
                                         ),
                                     )
@@ -57,7 +62,25 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'productCategory', 'type' => 'ParentProductCategory'),
+                                                array('attributeName' => 'attributeName', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'isRequired', 'type' => 'CheckBox'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+                                array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'isAudited', 'type' => 'CheckBox'),
                                             ),
                                         ),
                                     )
@@ -69,15 +92,5 @@
             );
             return $metadata;
         }
-
-        protected function getNewModelTitleLabel()
-        {
-	      return Zurmo::t('ProductTemplatesModule', 'Create Product Category',  array());
-        }
-
-	public static function getDesignerRulesType()
-	{
-	    return 'ProductCategoryEditAndDetailView';
-	}
     }
 ?>
