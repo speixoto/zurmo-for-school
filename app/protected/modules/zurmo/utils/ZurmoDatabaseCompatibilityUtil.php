@@ -585,6 +585,8 @@
                 declare allow_permissions, deny_permissions smallint default 0;
                 declare is_super_administrator, is_owner tinyint;
 
+                delete from __role_childs_cache;
+
                 select named_group_contains_permitable(\'Super Administrators\', _permitable_id)
                 into is_super_administrator;
                 if is_super_administrator then
@@ -997,11 +999,11 @@
                     where  role_id = parent_role_id;
                 declare continue handler for not found
                     set no_more_records = 1;
-                CREATE TEMPORARY TABLE IF NOT EXISTS __role_childs(permitable_id int(11), role_id int(11), PRIMARY KEY (permitable_id,role_id), UNIQUE KEY (permitable_id,role_id));
+
                 open child_role_ids;
                 fetch child_role_ids into child_role_id;
                 while no_more_records = 0 do
-                    INSERT IGNORE INTO __role_childs VALUES (_permitable_id, child_role_id);
+                    INSERT IGNORE INTO __role_childs_cache VALUES (_permitable_id, child_role_id);
                     call recursive_get_all_descendent_roles(_permitable_id, child_role_id);
                     fetch child_role_ids into child_role_id;
                 end while;
@@ -1031,7 +1033,7 @@
                     declare no_more_records tinyint default 0;
                     declare sub_role_ids cursor for
                         select role_id
-                        from   __role_childs
+                        from   __role_childs_cache
                         where  permitable_id = _permitable_id;
                     declare continue handler for not found
                         begin
@@ -1613,6 +1615,9 @@
             if (RedBeanDatabase::getDatabaseType() == 'mysql')
             {
                 self::dropStoredFunctionsAndProcedures();
+                R::exec('CREATE TABLE IF NOT EXISTS __role_childs_cache(permitable_id int(11),
+                         role_id int(11), PRIMARY KEY (permitable_id,role_id),
+                         UNIQUE KEY (permitable_id,role_id));');
                 try
                 {
                     foreach (self::$storedFunctions as $sql)

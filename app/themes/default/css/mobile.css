@@ -91,7 +91,6 @@ a.z-button,
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
-  background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
   background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
@@ -604,7 +603,7 @@ a.z-button:not(.attachLoading) .z-label,
     -webkit-transform: translate3d(0, 0, 0);
   }
   #HomePageView .AppContent {
-    padding-right: 10px;
+    padding-right: 10px !important;
   }
   .AppContainer .nav-open {
     transform: translate3d(45px, 0, 0);
@@ -638,7 +637,6 @@ a.z-button:not(.attachLoading) .z-label,
     width: auto;
     background-color: #f4f4f4;
     background-repeat: repeat-x;
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#f6f6f6), to(#f4f4f4));
     background-image: -moz-linear-gradient(top, #f6f6f6, #f4f4f4);
     background-image: -ms-linear-gradient(top, #f6f6f6, #f4f4f4);
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #f4f4f4));
@@ -735,6 +733,15 @@ a.z-button:not(.attachLoading) .z-label,
   #MenuView #recently-viewed > a > em:before {
     content: "{";
   }
+  #MenuView #mashableInbox > a > em:before {
+    content: "g";
+  }
+  #MenuView #marketing > a > em:before {
+    content: '\00B6';
+  }
+  #MenuView #reports > a > em:before {
+    content: "V";
+  }
   #search {
     position: relative;
   }
@@ -773,7 +780,6 @@ a.z-button:not(.attachLoading) .z-label,
     border: 1px solid #b6b6b6;
     background-color: #ebebeb;
     background-repeat: repeat-x;
-    background-image: -khtml-gradient(linear, left top, left bottom, from(#f5f5f5), to(#ebebeb));
     background-image: -moz-linear-gradient(top, #f5f5f5, #ebebeb);
     background-image: -ms-linear-gradient(top, #f5f5f5, #ebebeb);
     background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f5f5f5), color-stop(100%, #ebebeb));
@@ -809,8 +815,6 @@ a.z-button:not(.attachLoading) .z-label,
     height: auto !important;
     float: none !important;
   }
-  #MenuView #shortcuts > ul a span,
-  #MenuView #recently-viewed > ul a span,
   #MenuView #shortcuts > ul a em,
   #MenuView #recently-viewed > ul a em {
     display: none !important;

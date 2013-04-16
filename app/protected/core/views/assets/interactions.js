@@ -108,7 +108,11 @@ $(window).ready(function(){
             appChromeHeight = recentlyViewedHeight + $('#MenuView').outerHeight(true) + $('#HeaderView').outerHeight(true) + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+                if ($('#RecentlyViewedView').length > 0){
+                    $('#RecentlyViewedView').css('min-height', $('#RecentlyViewedView').height() + bufferHeight);
+                } else {
+                    $('.AppContent').css('min-height', $('.AppContainer').height() + 30);
+                }
             }
         }
     }

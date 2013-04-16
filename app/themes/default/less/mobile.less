@@ -271,7 +271,7 @@
 	}
 
 	#HomePageView .AppContent {
-		padding-right: 10px;
+		padding-right: 10px !important;
 	}
 
 	.AppContainer .nav-open{
@@ -377,6 +377,15 @@
 		#recently-viewed > a > em:before{
 			content:  "{";
 		}
+		#mashableInbox > a > em:before{
+			content:  "g";
+		}
+		#marketing > a > em:before{
+			content:  '\00B6';
+		}
+		#reports > a > em:before{
+			content:  "V";
+		}
     }
 
 	#search{
@@ -438,7 +447,7 @@
 				padding: 0 !important;
 				height: auto !important;
 				float: none !important;
-				span, em{
+				em{
 					display: none !important;
 				}
 				em + span{
