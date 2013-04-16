@@ -72,6 +72,7 @@
                 'id'        => $this->getEditableInputId(),
                 'separator' => '',
                 'template'  => '{input}{label}',
+		'value'	    => ProductsConfigurationForm::VIEW_ADD_PRODUCT
             );
             return $htmlOptions;
         }
@@ -86,5 +87,7 @@
 
             return $data;
         }
+
+	
     }
 ?>

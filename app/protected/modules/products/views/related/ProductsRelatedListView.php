@@ -85,12 +85,7 @@
                     ),
                     'rowMenu' => array(
                         'elements' => array(
-                            array('type'                      => 'EditLink'),
-                            array('type'                      => 'CreateEmailMessageFromRelatedListLink',
-                                  'modelClassName'            => 'EmailMessage',
-                                  'routeParameters'           =>
-                                    array('relatedModelClassName'  => 'Product')
-                            ),
+                            array('type'		      => 'EditLink'),
                             array('type'                      => 'RelatedDeleteLink'),
                             array('type'                      => 'RelatedUnlink',
                                   'relationModelClassName'    => 'eval:get_class($this->params["relationModel"])',
@@ -161,7 +156,7 @@
 
         protected function renderConfigurationForm()
         {
-            $formName   = 'latest-activity-configuration-form';
+            $formName   = 'product-configuration-form';
             $clipWidget = new ClipWidget();
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
@@ -195,7 +190,7 @@
                                                                                           'view',
                                                                                           $form);
                 $element->editableTemplate =  '<div id="ProductsConfigurationForm_view_area">{content}</div>';
-                $viewContent      = $element->render();
+                $viewContent		   = $element->render();
                 $innerContent             .= $viewContent;
             }
             if ($innerContent != null)
@@ -211,30 +206,38 @@
         protected function registerConfigurationFormLayoutScripts($form)
         {
             assert('$form instanceof ZurmoActiveForm');
-            $this->uniquePageId = 'list-viewOpportunityDetailsAndRelationsViewRightBottomView_71';
-            $productsConfigurationForm = new ProductsConfigurationForm();
-            $mashableModelClassNamesAndDisplayLabels = LatestActivitiesUtil::getMashableModelDataForCurrentUser(false);
-            $productsConfigurationForm->mashableModelClassNamesAndDisplayLabels =
-                $mashableModelClassNamesAndDisplayLabels;
-            $this->resolveProductsConfigFormFromRequest($productsConfigurationForm);
-            $dataProvider = $this->getDataProvider($this->uniquePageId, $productsConfigurationForm);
-            $this->dataProvider = $dataProvider;
+//            $this->uniquePageId = 'list-viewOpportunityDetailsAndRelationsViewRightBottomView_71';
+//            $productsConfigurationForm = new ProductsConfigurationForm();
+//            $mashableModelClassNamesAndDisplayLabels = LatestActivitiesUtil::getMashableModelDataForCurrentUser(false);
+//            $productsConfigurationForm->mashableModelClassNamesAndDisplayLabels =
+//                $mashableModelClassNamesAndDisplayLabels;
+//            $this->resolveProductsConfigFormFromRequest($productsConfigurationForm);
+//            $dataProvider = $this->getDataProvider($this->uniquePageId, $productsConfigurationForm);
+//            $this->dataProvider = $dataProvider;
+//
+//            $urlScript = 'js:$.param.querystring("' . $this->portletDetailsUrl . '", "' .
+//                         $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
+//            $ajaxSubmitScript = ZurmoHtml::ajax(array(
+//                    'type'       => 'GET',
+//                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
+//                    'url'        =>  $urlScript,
+//                    'update'     => '#' . $this->uniquePageId,
+//                    'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
+//                    'complete'   => 'js:function()
+//                    {
+//                                        $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
+//                    }'
+//            ));
+//            Yii::app()->clientScript->registerScript($this->uniquePageId, "
+//            $('#ProductsConfigurationForm_view_area').change(function()
+//                {
+//                    " . $ajaxSubmitScript . "
+//                }
+//            );
+//            ");
 
-            $urlScript = 'js:$.param.querystring("' . $this->portletDetailsUrl . '", "' .
-                         $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
-            $ajaxSubmitScript = ZurmoHtml::ajax(array(
-                    'type'       => 'GET',
-                    'data'       => 'js:$("#' . $form->getId() . '").serialize()',
-                    'url'        =>  $urlScript,
-                    'update'     => '#' . $this->uniquePageId,
-                    'beforeSend' => 'js:function(){makeSmallLoadingSpinner("' . $this->getGridViewId() . '"); $("#' . $form->getId() . '").parent().children(".cgrid-view").addClass("loading");}',
-                    'complete'   => 'js:function()
-                    {
-                                        $("#' . $form->getId() . '").parent().children(".cgrid-view").removeClass("loading");
-                    }'
-            ));
-            Yii::app()->clientScript->registerScript($this->uniquePageId, "
-            $('#ProductsConfigurationForm_view_area').change(function()
+	    Yii::app()->clientScript->registerScript('addProductPortletAction', "
+            $('#ProductsConfigurationForm_view_2').click(function()
                 {
                     " . $ajaxSubmitScript . "
                 }
@@ -242,34 +245,34 @@
             ");
         }
 
-        protected function resolveProductsConfigFormFromRequest(&$productsConfigurationForm)
-        {
-            $excludeFromRestore = array();
-            if (isset($_GET[get_class($productsConfigurationForm)]))
-            {
-                $productsConfigurationForm->setAttributes($_GET[get_class($productsConfigurationForm)]);
-                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($productsConfigurationForm);
-            }
-            $this->restoreUserSettingsToConfigFrom($productsConfigurationForm, $excludeFromRestore);
-        }
-
-        protected function restoreUserSettingsToConfigFrom(&$productsConfigurationForm, $excludeFromRestore)
-        {
-            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
-            {
-                if (in_array($persistantUserConfigItem, $excludeFromRestore))
-                {
-                    continue;
-                }
-                $persistantUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
-                    $this->params['portletId'],
-                    $persistantUserConfigItem);
-                if(isset($persistantUserConfigItemValue))
-                {
-                    $productsConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
-                }
-            }
-            return $productsConfigurationForm;
-        }
+//        protected function resolveProductsConfigFormFromRequest(&$productsConfigurationForm)
+//        {
+//            $excludeFromRestore = array();
+//            if (isset($_GET[get_class($productsConfigurationForm)]))
+//            {
+//                $productsConfigurationForm->setAttributes($_GET[get_class($productsConfigurationForm)]);
+//                $excludeFromRestore = $this->saveUserSettingsFromConfigForm($productsConfigurationForm);
+//            }
+//            $this->restoreUserSettingsToConfigFrom($productsConfigurationForm, $excludeFromRestore);
+//        }
+//
+//        protected function restoreUserSettingsToConfigFrom(&$productsConfigurationForm, $excludeFromRestore)
+//        {
+//            foreach (static::$persistantUserPortletConfigs as $persistantUserConfigItem)
+//            {
+//                if (in_array($persistantUserConfigItem, $excludeFromRestore))
+//                {
+//                    continue;
+//                }
+//                $persistantUserConfigItemValue = LatestActivitiesUtil::getPersistentConfigForCurrentUserByPortletIdAndKey(
+//                    $this->params['portletId'],
+//                    $persistantUserConfigItem);
+//                if(isset($persistantUserConfigItemValue))
+//                {
+//                    $productsConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
+//                }
+//            }
+//            return $productsConfigurationForm;
+//        }
     }
 ?>
