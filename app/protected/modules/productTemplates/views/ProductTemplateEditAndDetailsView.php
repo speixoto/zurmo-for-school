@@ -92,11 +92,11 @@
                                         ),
                                     )
                                 ),
-                                array('cells' =>
+				array('cells' =>
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'sellPriceFormula', 'type' => 'SellPriceFormulaInformation', 'addBlank' => true),
+                                                array('attributeName' => 'priceFrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
                                             ),
                                         ),
                                     )
@@ -105,7 +105,7 @@
                                     array(
                                         array(
                                             'elements' => array(
-                                                array('attributeName' => 'priceFrequency', 'type' => 'ProductTemplatePriceFrequencyDropDown'),
+                                                array('attributeName' => 'sellPriceFormula', 'type' => 'SellPriceFormulaInformation', 'addBlank' => true),
                                             ),
                                         ),
                                     )
