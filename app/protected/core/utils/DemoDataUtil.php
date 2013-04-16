@@ -76,38 +76,38 @@
             {
                 Yii::import('application.modules.' . $module::getDirectoryName() . '.data.*');
             }
-            $demoDataMakerClassName = $module::getDemoDataMakerClassName(); // TODO: @Shoaibi/@Jason: This should be renamed to ClassNames, all modules should be updated to return array to remove the check below.
-            $demoDataMakerClassNames = (is_array($demoDataMakerClassName))? $demoDataMakerClassName : array($demoDataMakerClassName);
+            $demoDataMakerClassNames = $module::getDemoDataMakerClassNames();
+            if (empty($demoDataMakerClassNames) || !is_array($demoDataMakerClassNames) || in_array($module->getName(), static::$loadedModules))
+            {
+                return;
+            }
             foreach($demoDataMakerClassNames as $index => $demoDataMakerClassName)
             {
-                if ($demoDataMakerClassName != null && !in_array($module->getName(), static::$loadedModules))
+                $dependencies = $demoDataMakerClassName::getDependencies();
+                foreach ($dependencies as $dependentModuleName)
                 {
-                    $dependencies = $demoDataMakerClassName::getDependencies();
-                    foreach ($dependencies as $dependentModuleName)
+                    if (!in_array($dependentModuleName, static::$loadedModules))
                     {
-                        if (!in_array($dependentModuleName, static::$loadedModules))
-                        {
-                            $dependentModule       = Yii::app()->findModule($dependentModuleName);
-                            static::loadByModule($dependentModule, $messageLogger,
-                                                 $demoDataHelper, $loadMagnitude);
-                        }
+                        $dependentModule       = Yii::app()->findModule($dependentModuleName);
+                        static::loadByModule($dependentModule, $messageLogger,
+                                             $demoDataHelper, $loadMagnitude);
                     }
-                    $dataMaker = new $demoDataMakerClassName(get_class($module));
-                    if ($loadMagnitude != null)
-                    {
-                        $dataMaker->setLoadMagnitude($loadMagnitude);
-                    }
-                    $dataMaker->makeAll($demoDataHelper);
-                    if (($index + 1) === count($demoDataMakerClassNames))
-                    {
-                        static::$loadedModules[] = $module->getName();
-                        $messageLogger->addInfoMessage(Zurmo::t('Core', 'Demo data loaded for {module}',
-                                                            array(
-                                                                '{module}' => $module::getModuleLabelByTypeAndLanguage('Plural')
-                                                                )
+                }
+                $dataMaker = new $demoDataMakerClassName(get_class($module));
+                if ($loadMagnitude != null)
+                {
+                    $dataMaker->setLoadMagnitude($loadMagnitude);
+                }
+                $dataMaker->makeAll($demoDataHelper);
+                if (($index + 1) === count($demoDataMakerClassNames))
+                {
+                    static::$loadedModules[] = $module->getName();
+                    $messageLogger->addInfoMessage(Zurmo::t('Core', 'Demo data loaded for {module}',
+                                                        array(
+                                                            '{module}' => $module::getModuleLabelByTypeAndLanguage('Plural')
                                                             )
-                                                   );
-                    }
+                                                        )
+                                               );
                 }
             }
         }

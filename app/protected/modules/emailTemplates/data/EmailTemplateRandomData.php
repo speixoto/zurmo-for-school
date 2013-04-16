@@ -38,7 +38,6 @@
      * Note related array of random seed data parts.
      */
     return array(
-        'type'                  => array_keys(EmailTemplate::getTypeDropDownArray()),
         'modelClassName'        => array(
             'Contact',
             'Meeting',
@@ -70,13 +69,11 @@
             'fr',
             'de',
         ),
-        'htmlContent'           => array( // TODO: @Shoaibi/@Jason: Medium: How do we know if the modelClassName these will get attached to would be relevant?
-            '<strong>[[FIRST^NAME]] [[LAST^NAME]]</strong>',
-            '<em>[[__OWNER__ID]]/[[__OWNER__USERNAME]] [[__OWNER__TIME^ZONE]]</em>',
+        'htmlContent'           => array(
+            'This can be used to put styled content. Any number of HTML tags are allowed with support for merge tags.',
         ),
         'textContent'           => array(
-            '[[FIRST^NAME]] [[LAST^NAME]]',
-            '[[__OWNER__ID]]/[[__OWNER__USERNAME]] [[__OWNER__TIME^ZONE]]',
+            'This can be used to put plain text content. Any number of HTML tags are allowed with support for merge tags.',
         ),
     );
 ?>

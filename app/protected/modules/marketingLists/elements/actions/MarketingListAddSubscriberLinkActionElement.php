@@ -71,7 +71,7 @@
 
         protected function getDefaultLabel()
         {
-            return Zurmo::t('MarketingListsModule', 'Add Subscriber');
+            return Zurmo::t('MarketingListsModule', 'Add Member');
         }
 
         protected function getDefaultRoute()

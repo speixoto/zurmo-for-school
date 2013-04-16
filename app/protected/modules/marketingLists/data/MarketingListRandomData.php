@@ -38,7 +38,7 @@
      * Note related array of random seed data parts.
      */
     return array(
-        'name'        => array(
+        'name'                      => array(
             'Prospects',
             'Sales',
             'Clients',
@@ -56,7 +56,7 @@
             'Mauris ac laoreet dui. Phasellus placerat tincidunt varius.',
             'Sed tempus, eros nec tempor pellentesque, tellus purus euismod urna, pellentesque placerat dui tortor vel nibh.'
         ),
-        'fromName'               => array(
+        'fromName'                  => array(
             'Marketing Team',
             'Sales Team',
             'Development Team',
@@ -69,6 +69,7 @@
             'development@zurmo.com',
             'offers@zurmo.com',
             'support@zurmo.com',
+            'info@zurmo.com',
         ),
     );
 ?>

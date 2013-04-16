@@ -57,12 +57,15 @@
             {
                 $member                 = new MarketingListMember();
                 $contact                = $demoDataHelper->getRandomByModelName('Contact');
-                //$member->owner          = $contact->owner;
+                $marketingList          = $demoDataHelper->getRandomByModelName('MarketingList');
                 $member->contact        = $contact;
-                $member->marketingList  = $demoDataHelper->getRandomByModelName('MarketingList');
                 $this->populateModel($member);
-                $saved                  = $member->unrestrictedSave(); // TODO: @Shoaibi/@Jason: Medium: We might have duplicate members, if we add a unqiue validator inside MarketingListMember then assert would fail, what then?
-                assert('$saved');
+                if (!$marketingList->marketingListMembers->contains($member))
+                {
+                    $marketingList->marketingListMembers->add($member);
+                    $saved = $marketingList->save();
+                    assert('$saved');
+                }
                 $members[]              = $member->id;
             }
             $demoDataHelper->setRangeByModelName('MarketingListMember', $members[0], $members[count($members)-1]);

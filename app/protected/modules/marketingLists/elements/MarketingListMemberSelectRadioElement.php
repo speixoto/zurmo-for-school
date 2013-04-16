@@ -116,8 +116,8 @@
         protected function getArray()
         {
             $data = array(
-                        Zurmo::t('MarketingListsModule', 'Select Contact/Lead'),
-                        Zurmo::t('MarketingListsModule', 'Select Report'),
+                        Zurmo::t('MarketingListsModule', 'From Contacts/Leads'),
+                        Zurmo::t('MarketingListsModule', 'From a Report'),
                     );
             return $data;
         }

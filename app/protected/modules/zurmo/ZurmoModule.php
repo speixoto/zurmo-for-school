@@ -231,9 +231,9 @@
             return $s;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'ZurmoDemoDataMaker';
+            return array('ZurmoDemoDataMaker');
         }
 
         public static function getDefaultDataMakerClassName()

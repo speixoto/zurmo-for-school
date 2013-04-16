@@ -142,9 +142,9 @@
             return self::RIGHT_DELETE_LEADS;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'LeadsDemoDataMaker';
+            return array('LeadsDemoDataMaker');
         }
 
         public static function getStateMetadataAdapterClassName()

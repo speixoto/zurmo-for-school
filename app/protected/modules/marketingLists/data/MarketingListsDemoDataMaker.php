@@ -39,7 +39,9 @@
      */
     class MarketingListsDemoDataMaker extends DemoDataMaker
     {
-        protected $ratioToLoad = 1;
+        protected $index;
+
+        protected $seedData;
 
         public static function getDependencies()
         {
@@ -52,12 +54,12 @@
             assert('$demoDataHelper->isSetRange("User")');
 
             $marketingLists = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            for ($this->index = 0; $this->index < 5; $this->index++)
             {
                 $marketingList              = new MarketingList();
                 $marketingList->owner       = $demoDataHelper->getRandomByModelName('User');
                 $this->populateModel($marketingList);
-                $saved                      = $marketingList->save(); // TODO: @Shoaibi/@Jason: Medium: We will have duplicate marketingLists, same name, different data.
+                $saved                      = $marketingList->save();
                 assert('$saved');
                 $marketingLists[]           = $marketingList->id;
             }
@@ -68,16 +70,15 @@
         {
             assert('$model instanceof MarketingList');
             parent::populateModel($model);
-            $randomData         = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
+            if (empty($this->seedData))
+            {
+                $this->seedData =  ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
                                                                                                 'MarketingList');
-            $name               = RandomDataUtil::getRandomValueFromArray($randomData['name']);
-            $description        = RandomDataUtil::getRandomValueFromArray($randomData['description']);
-            $fromName           = RandomDataUtil::getRandomValueFromArray($randomData['fromName']);
-            $fromAddress        = RandomDataUtil::getRandomValueFromArray($randomData['fromAddress']);
-            $model->name        = $name;
-            $model->description = $description;
-            $model->fromName    = $fromName;
-            $model->fromAddress = $fromAddress;
+            }
+            $model->name        = $this->seedData['name'][$this->index];
+            $model->description = $this->seedData['description'][$this->index];
+            $model->fromName    = $this->seedData['fromName'][$this->index];
+            $model->fromAddress = $this->seedData['fromAddress'][$this->index];
         }
     }
 ?>

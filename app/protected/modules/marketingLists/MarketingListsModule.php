@@ -102,7 +102,7 @@
             return $metadata;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
             return array('MarketingListsDemoDataMaker', 'MarketingListMembersDemoDataMaker');
         }
