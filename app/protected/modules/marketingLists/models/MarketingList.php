@@ -122,5 +122,10 @@
         {
             return 'MarketingListGamification';
         }
+
+        public static function hasPermissions()
+        {
+            return true;
+        }
     }
 ?>
