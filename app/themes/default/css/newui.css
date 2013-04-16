@@ -874,7 +874,6 @@ body.blue a.simple-select,
 body.blue .after-form-details-content a,
 body.blue .ui-dialog-title,
 body.blue .show-file-upload-box,
-body.blue #clear-search-linkmodal,
 body.blue .z-action-link,
 body.blue .showAllCommentsLink,
 body.blue .treeview span:hover .z-action-link,
@@ -932,7 +931,8 @@ body.blue .lead-conversion-actions a,
 body.blue #clear-search-link,
 body.blue #show-filters-structure-div-link,
 body.blue .filters-bar .ui-state-active,
-body.blue .filters-bar label:hover {
+body.blue .filters-bar label:hover,
+body.blue #clear-search-linkmodal {
   background-color: #282a76;
 }
 body.blue .latest-activity-toolbar label:hover,
@@ -1427,7 +1427,6 @@ body.brown a.simple-select,
 body.brown .after-form-details-content a,
 body.brown .ui-dialog-title,
 body.brown .show-file-upload-box,
-body.brown #clear-search-linkmodal,
 body.brown .z-action-link,
 body.brown .showAllCommentsLink,
 body.brown .treeview span:hover .z-action-link,
@@ -1485,7 +1484,8 @@ body.brown .lead-conversion-actions a,
 body.brown #clear-search-link,
 body.brown #show-filters-structure-div-link,
 body.brown .filters-bar .ui-state-active,
-body.brown .filters-bar label:hover {
+body.brown .filters-bar label:hover,
+body.brown #clear-search-linkmodal {
   background-color: #547980;
 }
 body.brown .latest-activity-toolbar label:hover,
@@ -1980,7 +1980,6 @@ body.lime a.simple-select,
 body.lime .after-form-details-content a,
 body.lime .ui-dialog-title,
 body.lime .show-file-upload-box,
-body.lime #clear-search-linkmodal,
 body.lime .z-action-link,
 body.lime .showAllCommentsLink,
 body.lime .treeview span:hover .z-action-link,
@@ -2038,7 +2037,8 @@ body.lime .lead-conversion-actions a,
 body.lime #clear-search-link,
 body.lime #show-filters-structure-div-link,
 body.lime .filters-bar .ui-state-active,
-body.lime .filters-bar label:hover {
+body.lime .filters-bar label:hover,
+body.lime #clear-search-linkmodal {
   background-color: #2b434f;
 }
 body.lime .latest-activity-toolbar label:hover,
@@ -2533,7 +2533,6 @@ body.cherry a.simple-select,
 body.cherry .after-form-details-content a,
 body.cherry .ui-dialog-title,
 body.cherry .show-file-upload-box,
-body.cherry #clear-search-linkmodal,
 body.cherry .z-action-link,
 body.cherry .showAllCommentsLink,
 body.cherry .treeview span:hover .z-action-link,
@@ -2591,7 +2590,8 @@ body.cherry .lead-conversion-actions a,
 body.cherry #clear-search-link,
 body.cherry #show-filters-structure-div-link,
 body.cherry .filters-bar .ui-state-active,
-body.cherry .filters-bar label:hover {
+body.cherry .filters-bar label:hover,
+body.cherry #clear-search-linkmodal {
   background-color: #6c8092;
 }
 body.cherry .latest-activity-toolbar label:hover,
@@ -3086,7 +3086,6 @@ body.turquoise a.simple-select,
 body.turquoise .after-form-details-content a,
 body.turquoise .ui-dialog-title,
 body.turquoise .show-file-upload-box,
-body.turquoise #clear-search-linkmodal,
 body.turquoise .z-action-link,
 body.turquoise .showAllCommentsLink,
 body.turquoise .treeview span:hover .z-action-link,
@@ -3144,7 +3143,8 @@ body.turquoise .lead-conversion-actions a,
 body.turquoise #clear-search-link,
 body.turquoise #show-filters-structure-div-link,
 body.turquoise .filters-bar .ui-state-active,
-body.turquoise .filters-bar label:hover {
+body.turquoise .filters-bar label:hover,
+body.turquoise #clear-search-linkmodal {
   background-color: #447799;
 }
 body.turquoise .latest-activity-toolbar label:hover,
@@ -3639,7 +3639,6 @@ body.violet a.simple-select,
 body.violet .after-form-details-content a,
 body.violet .ui-dialog-title,
 body.violet .show-file-upload-box,
-body.violet #clear-search-linkmodal,
 body.violet .z-action-link,
 body.violet .showAllCommentsLink,
 body.violet .treeview span:hover .z-action-link,
@@ -3697,7 +3696,8 @@ body.violet .lead-conversion-actions a,
 body.violet #clear-search-link,
 body.violet #show-filters-structure-div-link,
 body.violet .filters-bar .ui-state-active,
-body.violet .filters-bar label:hover {
+body.violet .filters-bar label:hover,
+body.violet #clear-search-linkmodal {
   background-color: #4a3970;
 }
 body.violet .latest-activity-toolbar label:hover,
@@ -4192,7 +4192,6 @@ body.honey a.simple-select,
 body.honey .after-form-details-content a,
 body.honey .ui-dialog-title,
 body.honey .show-file-upload-box,
-body.honey #clear-search-linkmodal,
 body.honey .z-action-link,
 body.honey .showAllCommentsLink,
 body.honey .treeview span:hover .z-action-link,
@@ -4250,7 +4249,8 @@ body.honey .lead-conversion-actions a,
 body.honey #clear-search-link,
 body.honey #show-filters-structure-div-link,
 body.honey .filters-bar .ui-state-active,
-body.honey .filters-bar label:hover {
+body.honey .filters-bar label:hover,
+body.honey #clear-search-linkmodal {
   background-color: #46201c;
 }
 body.honey .latest-activity-toolbar label:hover,
@@ -7375,6 +7375,18 @@ a.simple-link:before {
   background: none !important;
 }
 /*=Popup Modals*/
+/*@keyframes growDialog {
+	0%   { scale(0, 0) }
+	100% { scale(1, 1) }
+}
+
+.openingModal{
+	//-webkit-transform: scale(0,0);
+	//-webkit-transition: -webkit-transform 3s ease-out;
+	//transform: translate3d(45px, 0, 0);
+	//-webkit-transform: translate3d(45px, 0, 0);
+}
+*/
 .ui-dialog {
   min-width: 600px;
   max-width: 50%;
@@ -8095,6 +8107,14 @@ div.wide.form label.hasCheckBox {
 }
 #ModalView #clear-search-linkmodal {
   margin-left: 10px;
+  color: #fff;
+  padding: 3px;
+  -webkit-border-radius: 3px;
+  -moz-border-radius: 3px;
+  -ms-border-radius: 3px;
+  -o-border-radius: 3px;
+  border-radius: 3px;
+  font-size: 11px;
 }
 #ModalView .items {
   border: none;

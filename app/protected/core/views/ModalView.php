@@ -115,7 +115,9 @@
                     'modal' : true,
                     'position' : {$position},
                     'dialogClass' : {$class},
-                    'height' : {$heightContent}
+                    'height' : {$heightContent},
+                    'open': function( event, ui )  { jQuery('#{$containerId}').parent().addClass('openingModal'); },
+                    'close': function( event, ui ) { jQuery('#{$containerId}').parent().removeClass('openingModal'); }
                 });
                 return true;
             }";
