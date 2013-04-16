@@ -81,6 +81,7 @@
             $content .= '</p></div>';
             return $content;
         }
+
         /**
          * @return array
          */

@@ -319,6 +319,7 @@
             }
             return $personOrAccount;
         }
+
         /**
          *
          * Convert $message->subject from any mime encoded  to UTF8

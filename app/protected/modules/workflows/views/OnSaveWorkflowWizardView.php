@@ -59,7 +59,7 @@
             $emailMessagesForWorkflowWizardView   = new EmailMessagesForWorkflowWizardView($this->model,     $form, true);
             $generalDataForWorkflowWizardView   = new GeneralDataForWorkflowWizardView($this->model, $form, true);
 
-            $gridView = new GridView(5,1);
+            $gridView = new GridView(5, 1);
             $gridView->setView($moduleForWorkflowWizardView, 0, 0);
             $gridView->setView($triggersForWorkflowWizardView, 1, 0);
             $gridView->setView($actionsForWorkflowWizardView, 2, 0);

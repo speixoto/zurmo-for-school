@@ -40,6 +40,7 @@
     class EmailMessageRecipientRowForWorkflowComponentView extends View
     {
         const REMOVE_LINK_CLASS_NAME = 'remove-dynamic-email-message-recipient-row-link';
+
         /**
          * @var bool
          */

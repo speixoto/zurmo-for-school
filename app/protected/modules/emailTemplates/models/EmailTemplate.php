@@ -256,6 +256,11 @@
             return 'EmailTemplateGamification';
         }
 
+        public static function hasReadPermissionsOptimization()
+        {
+            return true;
+        }
+
         protected static function translatedAttributeLabels($language)
         {
             $params = LabelUtil::getTranslationParamsForAllModules();

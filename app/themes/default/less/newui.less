@@ -1705,9 +1705,8 @@ form,
 
 .xhtml-validation-info,
 .performance-info{
-	float: right;
-	margin-top: -38px;
-	margin-right: 50px;
+	text-align: right;
+	margin:0 3% 15px 3%;
 	font-style: italic;
 }
 
@@ -1725,6 +1724,30 @@ form,
 .ui-chooser{
 	float: right;
 	display: block;
+	span{
+		display: inline-block;
+		text-indent: -9999px;
+		display: none;
+	}
+	a{
+		display: inline-block;
+		margin-left: 10px;
+		width: 22px;
+		height: 22px;
+		text-align: center;
+		cursor: pointer;
+		.opacity(50);
+		&:before{
+			margin: 0;
+			cursor: pointer;
+			font-weight: bold;
+		}
+	}
+	.active{
+		color:#7CB830;
+		.opacity(100);
+		.t-shadow(0 0 15px #7CB830);
+	}
 }
 
 /*General table style, tables still need 'cellspacing="0"' in the markup */

@@ -48,6 +48,7 @@
             parent::setUp();
             Yii::app()->user->userModel = User::getByUsername('super');
         }
+
         public function testResolveMetadataForLanguageLocalization()
         {
             //Test AccountsModulePluralLabel

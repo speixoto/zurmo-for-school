@@ -39,7 +39,7 @@
         public function testResolveEvaluateSubString()
         {
             //variable in string, value as array
-            $combinedData           = "eval:array_combine(array('a','b','c'), \$array2)";
+            $combinedData           = "eval:array_combine(array('a', 'b', 'c'), \$array2)";
             $resolveVariableName    = 'array2';
             $params                 = array('1', '2', '3');
             MetadataUtil::resolveEvaluateSubString($combinedData, $resolveVariableName, $params);
@@ -62,7 +62,7 @@
 
             //combine all in one array of evals
             $evaluateValues      = array(
-                'combinedData'   => "eval:array_combine(array('a','b','c'), \$array2)",
+                'combinedData'   => "eval:array_combine(array('a', 'b', 'c'), \$array2)",
                 'sum'            => "eval:(int)(\$x + \$y + \$z)",
                 'product'        => "eval:(int)(\$default * \$default)",
                 'static'         => "string"

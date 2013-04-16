@@ -49,12 +49,39 @@
             Yii::app()->user->userModel = User::getByUsername('super');
         }
 
+        public function testSavingNewParentAccountSavesCorrectly()
+        {
+            $oldMetadata          = Account::getMetadata();
+            $newMetadata          = $oldMetadata;
+            $newMetadata['Account']['rules'][] = array('type', 'default', 'value' => 'Customer');
+            Account::setMetadata($newMetadata);
+            $account              = new Account();
+            $account->name        = 'Account';
+            $account->type->value = 'Customer';
+            $account->account     = $account;
+            $saved                = $account->save();
+            $this->assertTrue($saved);
+            $account->account = null;
+            $saved = $account->save();
+            $this->assertTrue($saved);
+            $count = R::getCell('select count(*) from account');
+            $this->assertEquals(1, $count);
+            Account::setMetadata($oldMetadata);
+            $this->assertTrue($account->delete());
+        }
+
+        /**
+         * @depends testSavingNewParentAccountSavesCorrectly
+         */
         public function testConfirmAccountNameIdElementStillImplementsCorrectInterfaceFromParent()
         {
             $classToEvaluate        = new ReflectionClass('AccountNameIdElement');
             $this->assertTrue($classToEvaluate->implementsInterface('DerivedElementInterface'));
         }
 
+        /**
+         * @depends testConfirmAccountNameIdElementStillImplementsCorrectInterfaceFromParent
+         */
         public function testCreateAndGetAccountById()
         {
             $user = UserTestHelper::createBasicUser('Steven');
@@ -431,6 +458,9 @@
             $this->assertEquals(array(), $account->getErrors());
         }
 
+        /**
+         * @depends testValidatesWithoutOwnerWhenSpecifyingAttributesToValidate
+         */
         public function testSettingDefaultValueForType()
         {
             $values = array(
@@ -490,6 +520,9 @@
             $this->assertTrue($model->save());
         }
 
+        /**
+         * @depends testSettingDefaultValueForType
+         */
         public function testMemberOfMembersRelation()
         {
             $user = User::getByUsername('billy');
@@ -542,6 +575,7 @@
          * back as 0. But this is how redBean works to stay consistent with all dbs.
          * @see http://groups.google.com/group/redbeanorm/browse_thread/thread/e6a0a9d29838d973/90d12a0146544a0b
          * So for now, we will adjust the phone element in the user interface.
+         * @depends testMemberOfMembersRelation
          */
         public function testOfficePhoneSetsToZeroWhenClearingAndForgetting()
         {
@@ -564,6 +598,9 @@
             $this->assertEquals(null, $account->officePhone);
         }
 
+        /**
+         * @depends testOfficePhoneSetsToZeroWhenClearingAndForgetting
+         */
         public function testGetModelClassNames()
         {
             $modelClassNames = AccountsModule::getModelClassNames();
@@ -572,6 +609,9 @@
             $this->assertEquals('AccountSearch', $modelClassNames[1]);
         }
 
+        /**
+         * @depends testGetModelClassNames
+         */
         public function testCreatingACustomDropDownAfterAnAccountExists()
         {
             $super = User::getByUsername('super');
@@ -629,6 +669,9 @@
             $this->assertEquals($compareData, unserialize($account->testAirPlaneCstm->data->serializedData));
         }
 
+        /**
+         * @depends testCreatingACustomDropDownAfterAnAccountExists
+         */
         public function testWebsiteCanBeSavedWithoutUrlScheme()
         {
             $user                 = User::getByUsername('steven');

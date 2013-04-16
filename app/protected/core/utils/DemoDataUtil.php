@@ -81,7 +81,7 @@
             {
                 return;
             }
-            foreach($demoDataMakerClassNames as $index => $demoDataMakerClassName)
+            foreach ($demoDataMakerClassNames as $index => $demoDataMakerClassName)
             {
                 $dependencies = $demoDataMakerClassName::getDependencies();
                 foreach ($dependencies as $dependentModuleName)

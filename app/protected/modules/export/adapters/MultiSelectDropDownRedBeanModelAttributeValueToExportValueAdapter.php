@@ -47,7 +47,7 @@
                 {
                     if (isset($customFieldValue->value) && $customFieldValue->value != '')
                     {
-                        $valuesString .= $customFieldValue->value . ',';
+                        $valuesString .= $customFieldValue->value . ','; // Not Coding Standard
                     }
                 }
                 if ($valuesString == '')
@@ -56,7 +56,7 @@
                 }
                 else
                 {
-                    $data[] = rtrim($valuesString, ',');
+                    $data[] = rtrim($valuesString, ','); // Not Coding Standard
                 }
             }
             else

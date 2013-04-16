@@ -97,7 +97,7 @@
 
             //Mark conversation and mission as unread
             $selectedIds               = get_class($conversation) . '_' . $conversationId;
-            $selectedIds              .= ',' . get_class($mission) . '_' . $missionId;
+            $selectedIds              .= ',' . get_class($mission) . '_' . $missionId; // Not Coding Standard
             $_SERVER['HTTP_X_REQUESTED_WITH'] = 'XMLHttpRequest';
             $this->setGetArray(
                         array(

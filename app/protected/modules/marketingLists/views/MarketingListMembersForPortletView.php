@@ -134,7 +134,6 @@
                                         $actionElementBar);
             $content .= $memberSearchAndList;
             return $content;
-
         }
 
         public static function canUserConfigure()

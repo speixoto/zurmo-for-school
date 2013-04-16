@@ -103,6 +103,7 @@
 
         protected function renderAfterFormLayout($form)
         {
+            // Begin Not Coding Standard
             Yii::app()->clientScript->registerScript(__CLASS__.'_TypeChangeHandler', "
                         $('#EmailTemplate_type_value').unbind('change.action').bind('change.action', function()
                         {
@@ -127,6 +128,7 @@
                         }
                         );
                     ");
+            // End Not Coding Standard
             $content  = $this->resolveRenderHiddenModelClassNameElement($form);
             $content .= $this->renderHtmlAndTextContentElement($this->model, null, $form);
             return $content;
@@ -155,7 +157,7 @@
         protected function renderHtmlAndTextContentElement($model, $attribute, $form)
         {
             $element = new EmailTemplateHtmlAndTextContentElement($model, $attribute , $form);
-            if (!is_null($form))
+            if ($form !== null)
             {
                 $this->resolveElementDuringFormLayoutRender($element);
             }

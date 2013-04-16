@@ -803,7 +803,7 @@
                     {
                         $view                               = new $pageViewClassName(
                                                                     ZurmoDefaultViewUtil::makeStandardViewForCurrentUser(
-                                                                                                $this,$progressView));
+                                                                                                $this, $progressView));
                         echo $view->render();
                     }
                     else

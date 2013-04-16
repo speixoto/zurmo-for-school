@@ -133,7 +133,7 @@
                     array('0', '1', ''),
                     strtolower($phpStringReadyToEvaluate)
             );
-            if (preg_match('/&{3,}|\|{3,}|[^01&|()]+/', $phpStringReadyToEvaluate))
+            if (preg_match('/&{3,}|\|{3,}|[^01&|()]+/', $phpStringReadyToEvaluate)) // Not Coding Standard
             {
                 throw new InvalidArgumentException('Only boolean operators allowed.');
             }

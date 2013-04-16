@@ -106,6 +106,5 @@
         {
             return array('MarketingListsDemoDataMaker', 'MarketingListMembersDemoDataMaker');
         }
-
     }
 ?>

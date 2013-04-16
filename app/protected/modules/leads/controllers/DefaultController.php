@@ -322,10 +322,16 @@
             }
             elseif (isset($_POST['Account']))
             {
-                $account = LeadsUtil::AttributesToAccountWithNoPostData($contact, $account, $_POST['Account']);
+                $account = LeadsUtil::attributesToAccountWithNoPostData($contact, $account, $_POST['Account']);
                 $account->setAttributes($_POST['Account']);
                 if ($account->save())
                 {
+                    $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($contact);
+                    ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($account, $explicitReadWriteModelPermissions);
+                    if (!$account->save())
+                    {
+                        throw new NotSupportedException();
+                    }
                     $this->actionSaveConvertedContact($contact, $account);
                 }
             }
@@ -338,7 +344,7 @@
             }
             else
             {
-                $account = LeadsUtil::AttributesToAccount($contact, $account);
+                $account = LeadsUtil::attributesToAccount($contact, $account);
             }
             $convertView = new LeadConvertView(
                 $this->getId(),

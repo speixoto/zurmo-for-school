@@ -6833,9 +6833,8 @@ form .view-toolbar-container,
 }
 .xhtml-validation-info,
 .performance-info {
-  float: right;
-  margin-top: -38px;
-  margin-right: 50px;
+  text-align: right;
+  margin: 0 3% 15px 3%;
   font-style: italic;
 }
 #credit-link {
@@ -6851,6 +6850,40 @@ form .view-toolbar-container,
 .ui-chooser {
   float: right;
   display: block;
+}
+.ui-chooser span {
+  display: inline-block;
+  text-indent: -9999px;
+  display: none;
+}
+.ui-chooser a {
+  display: inline-block;
+  margin-left: 10px;
+  width: 22px;
+  height: 22px;
+  text-align: center;
+  cursor: pointer;
+  filter: alpha(opacity=50);
+  -khtml-opacity: 0.5;
+  -moz-opacity: 0.5;
+  opacity: 0.5;
+}
+.ui-chooser a:before {
+  margin: 0;
+  cursor: pointer;
+  font-weight: bold;
+}
+.ui-chooser .active {
+  color: #7CB830;
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+  -webkit-text-shadow: 0 0 15px #7cb830;
+  -moz-text-shadow: 0 0 15px #7cb830;
+  -o-text-shadow: 0 0 15px #7cb830;
+  -ms-text-shadow: 0 0 15px #7cb830;
+  text-shadow: 0 0 15px #7cb830;
 }
 /*General table style, tables still need 'cellspacing="0"' in the markup */
 table {
@@ -15789,7 +15822,6 @@ a.dashboard-link .z-label {
 #CommentInlineEditForModelView,
 #CommentsForRelatedModelView {
   width: 70%;
-  margin-right: 30%;
   float: left;
   max-width: 600px;
   -moz-box-sizing: border-box;

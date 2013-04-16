@@ -74,7 +74,7 @@
 
         public function testEvaluatePHPString()
         {
-            $method = new ReflectionMethod('WorkflowTriggersUtil','evaluatePHPString');
+            $method = new ReflectionMethod('WorkflowTriggersUtil', 'evaluatePHPString');
             $method->setAccessible(true);
 
             $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('true')));
@@ -93,7 +93,7 @@
          */
         public function testEvaluatePHPStringThrowsException()
         {
-            $method = new ReflectionMethod('WorkflowTriggersUtil','evaluatePHPString');
+            $method = new ReflectionMethod('WorkflowTriggersUtil', 'evaluatePHPString');
             $method->setAccessible(true);
 
             $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('hello')));
@@ -104,7 +104,7 @@
          */
         public function testEvaluatePHPStringThrowsFailedAssertion()
         {
-            $method = new ReflectionMethod('WorkflowTriggersUtil','evaluatePHPString');
+            $method = new ReflectionMethod('WorkflowTriggersUtil', 'evaluatePHPString');
             $method->setAccessible(true);
 
             $this->assertTrue ($method->invokeArgs(new WorkflowTriggersUtil, array('( true || false')));

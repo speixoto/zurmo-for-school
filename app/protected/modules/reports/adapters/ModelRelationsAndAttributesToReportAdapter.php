@@ -297,6 +297,7 @@
             $delimiter                       = FormModelUtil::DELIMITER;
             $relationAndInferredData         = explode($delimiter, $relation);
             $derivedRelations                = $this->getDerivedRelationsViaCastedUpModelData();
+
             /**
             if (count($relationAndInferredOrViaData) == 4)
             {
@@ -309,6 +310,7 @@
                 list($modelClassName, $notUsed, $notUsed2) = $relationAndInferredData;
                 return $modelClassName;
             }
+
             /**
             elseif (count($relationAndInferredOrViaData) == 2)
             {

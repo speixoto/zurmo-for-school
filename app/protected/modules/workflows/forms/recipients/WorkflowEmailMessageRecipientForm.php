@@ -97,6 +97,7 @@
         {
             throw new NotImplementedException();
         }
+
         /**
          * @return string - If the class name is DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm,
          * then 'DynamicTriggeredModelRelationUser' will be returned.

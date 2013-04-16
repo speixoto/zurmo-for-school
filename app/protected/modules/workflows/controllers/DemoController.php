@@ -35,6 +35,7 @@
      ********************************************************************************/
 
     Yii::import('application.modules.workflows.controllers.DefaultController', true);
+
     /**
      * Controller for running demo actions that are used for development work.
      */

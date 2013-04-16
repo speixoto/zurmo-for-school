@@ -205,7 +205,7 @@
             unset($contact);
             $contact = Contact::getById($id);
             $account = new Account();
-            $account = LeadsUtil::AttributesToAccount($contact, $account);
+            $account = LeadsUtil::attributesToAccount($contact, $account);
             $this->assertTrue($account->save());
             $id = $account->id;
             unset($account);
@@ -216,7 +216,7 @@
             $this->assertEquals('1222222222',               $account->officeFax);
             $this->assertEquals('http://www.something.com', $account->website);
             $this->assertEquals($industries[1],             $account->industry->value);
-            $this->assertEquals('bobby',                    $account->owner->username);
+            $this->assertEquals('super',                    $account->owner->username);
             $this->assertEquals('129 Noodle Boulevard',     $account->billingAddress->street1);
             $this->assertEquals('Apartment 6000A',          $account->billingAddress->street2);
             $this->assertEquals('Noodleville',              $account->billingAddress->city);
@@ -247,7 +247,7 @@
             $account = new Account();
             $this->assertEmpty($account->name);
             $this->assertEmpty($account->officePhone);
-            $account = LeadsUtil::AttributesToAccountWithNoPostData($contact, $account, $postData);
+            $account = LeadsUtil::attributesToAccountWithNoPostData($contact, $account, $postData);
             $this->assertEquals('1234567890', $account->officePhone);
             $this->assertEquals(null, $account->name);
 
@@ -261,7 +261,7 @@
             $account = new Account();
             $this->assertEmpty($account->name);
             $this->assertEmpty($account->officePhone);
-            $account = LeadsUtil::AttributesToAccountWithNoPostData($contact, $account, $postData);
+            $account = LeadsUtil::attributesToAccountWithNoPostData($contact, $account, $postData);
             $this->assertEquals('1234567890', $account->officePhone);
             $this->assertEquals('ABC Company', $account->name);
         }

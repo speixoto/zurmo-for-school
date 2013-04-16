@@ -49,7 +49,7 @@
          * @param $account Account model
          * @return Account, with mapped attributes from Contact
          */
-        public static function AttributesToAccount(Contact $contact, Account $account)
+        public static function attributesToAccount(Contact $contact, Account $account)
         {
             assert('!empty($contact->id)');
             $metadata = LeadsModule::getMetadata();
@@ -71,13 +71,13 @@
          * properly in the case where a mapped field is cleared to blank
          * in the input field and submitted. Such an event should trigger
          * a form validation error.
-         * @see LeadsUtil::AttributesToAccount
+         * @see LeadsUtil::attributesToAccount
          * @param $contact Contact model
          * @param $account Account model
          * @param $postData array of posted form data
          * @return Account, with mapped attributes from Contact
          */
-        public static function AttributesToAccountWithNoPostData(Contact $contact, Account $account, array $postData)
+        public static function attributesToAccountWithNoPostData(Contact $contact, Account $account, array $postData)
         {
             assert('is_array($postData)');
             assert('!empty($contact->id)');

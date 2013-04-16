@@ -186,7 +186,7 @@
         {
             return array(self::TYPE_ROWS_AND_COLUMNS  => Zurmo::t('ReportsModule', 'Rows and Columns'),
                          self::TYPE_SUMMATION         => Zurmo::t('ReportsModule', 'Summation'),
-                         self::TYPE_MATRIX            => Zurmo::t('ReportsModule', 'Matrix'),);
+                         self::TYPE_MATRIX            => Zurmo::t('ReportsModule', 'Matrix'));
         }
 
         /**
