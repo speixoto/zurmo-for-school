@@ -73,7 +73,6 @@
 
         public function populateModel(& $model)
         {
-            assert('$model instanceof MarketingList');
             parent::populateModel($model);
             $randomData             = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('MarketingListsModule',
                                                                                                 'MarketingListMember');
