@@ -251,7 +251,7 @@
 
         public static function saveSelectedOptionsAsStickyData(MashableInboxForm $mashableInboxForm, $modelClassName)
         {
-            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
             $key = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
             StickyUtil::setDataByKeyAndData($key, $mashableInboxForm->getAttributes(
                                                         array('optionForModel', 'filteredBy', 'searchTerm')));
@@ -259,7 +259,7 @@
 
         public static function restoreSelectedOptionsAsStickyData($modelClassName)
         {
-            assert('strlen($modelClassName) > 0 || is_null($modelClassName)');
+            assert('strlen($modelClassName) > 0 || ($modelClassName === null)');
             $key  = self::resolveKeyByModuleAndModel('MashableInboxModule', $modelClassName);
             $data = StickyUtil::getDataByKey($key);
             $mashableInboxForm = new MashableInboxForm();

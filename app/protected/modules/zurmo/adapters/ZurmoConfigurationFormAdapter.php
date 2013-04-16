@@ -94,7 +94,7 @@
 
         public static function getLogoAttributes(& $form)
         {
-           if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId')))
+           if (null !== ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId'))
            {
                $logoThumbFileId  = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
                $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id'=>$logoThumbFileId));
@@ -130,7 +130,7 @@
                    Yii::app()->user->setState('deleteCustomLogo', null);
                }
            }
-           if (!is_null(Yii::app()->user->getState('logoFileName')))
+           if (null !== Yii::app()->user->getState('logoFileName'))
            {
                $logoFilePath = sys_get_temp_dir() . DIRECTORY_SEPARATOR . Yii::app()->user->getState('logoFileName');
                self::resizeLogoImageFile($logoFilePath, $logoFilePath, null, ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT);

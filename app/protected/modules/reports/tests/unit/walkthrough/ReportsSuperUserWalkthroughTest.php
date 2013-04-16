@@ -203,7 +203,7 @@
             $postData = static::makeRowsAndColumnsReportPostData();
             $this->setPostArray($postData);
             $content = $this->runControllerWithExitExceptionAndGetContent('reports/default/relationsAndAttributesTree');
-            $this->assertTrue(strpos($content, '{"id":"Filters_hasOne___createdByUser__User",') !== false);
+            $this->assertTrue(strpos($content, '{"id":"Filters_hasOne___createdByUser__User",') !== false); // Not Coding Standard
         }
 
         /**
@@ -230,7 +230,7 @@
             $postData = static::makeSummationReportPostData();
             $this->setPostArray($postData);
             $content = $this->runControllerWithNoExceptionsAndGetContent('reports/default/getAvailableSeriesAndRangesForChart');
-            $this->assertTrue(strpos($content, '{"firstSeriesDataAndLabels":{"":"(None)"},"firstRangeDataAndLabels":') !== false);
+            $this->assertTrue(strpos($content, '{"firstSeriesDataAndLabels":{"":"(None)"},"firstRangeDataAndLabels":') !== false); // Not Coding Standard
         }
 
         /**

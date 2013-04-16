@@ -367,13 +367,13 @@
             $validators = new CList;
             foreach ($rules as $rule)
             {
-                if (isset($rule[0],$rule[1]))
+                if (isset($rule[0], $rule[1]))
                 {
                     $validators->add(CValidator::createValidator($rule[1], $this, $rule[0], array_slice($rule, 2)));
                 }
                 else
                 {
-                    throw new CException(Zurmo::t('ReportsModule','{class} has an invalid validation rule. The rule must specify ' .
+                    throw new CException(Zurmo::t('ReportsModule', '{class} has an invalid validation rule. The rule must specify ' .
                         'attributes to be validated and the validator name.' ,
                         array('{class}' => get_class($this))));
                 }

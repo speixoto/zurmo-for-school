@@ -120,7 +120,7 @@
                 $this->getModule()->getId()
             );
             $content .= $view->renderLanguageRow($languageCode);
-            print $content;
+            echo $content;
         }
 
         public function actionUpdate($languageCode)
@@ -171,7 +171,7 @@
                 $this->getModule()->getId()
             );
             $content .= $view->renderLanguageRow($languageCode);
-            print $content;
+            echo $content;
         }
 
         public function actionDeactivate($languageCode)
@@ -222,7 +222,7 @@
                 $this->getModule()->getId()
             );
             $content .= $view->renderLanguageRow($languageCode);
-            print $content;
+            echo $content;
         }
     }
 ?>

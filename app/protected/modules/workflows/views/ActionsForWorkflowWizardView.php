@@ -44,6 +44,7 @@
         const ACTION_TYPE_RELATED_MODEL_RELATION_NAME   = 'actionTypeRelatedRelatedModel';
         const ACTION_TYPE_RELATION_DIV_ID               = 'action-type-related-model-selector';
         const ACTION_TYPE_RELATED_MODEL_RELATION_DIV_ID = 'action-type-related-related-model-selector';
+
         /**
          * @return string
          */

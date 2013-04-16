@@ -45,7 +45,7 @@
                                     $selectedRecordCount, $title, $alertMessage = null,
                                     $moduleClassName = null, $useModuleClassNameForItemLabel = true)
         {
-            parent::__construct($controllerId, $moduleId,$model, $activeAttributes, $selectedRecordCount,
+            parent::__construct($controllerId, $moduleId, $model, $activeAttributes, $selectedRecordCount,
                                 $title, $alertMessage, $moduleClassName);
             $this->useModuleClassNameForItemLabel = $useModuleClassNameForItemLabel;
         }

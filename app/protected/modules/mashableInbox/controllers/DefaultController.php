@@ -191,7 +191,7 @@
         {
             if ($modelClassName !== null)
             {
-                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds); // Not Coding Standard
                 foreach ($selectedIds as $modelId)
                 {
                    $this->resolveMassActionByModel($mashableInboxForm->massAction,
@@ -201,7 +201,7 @@
             }
             else
             {
-                $selectedIds        = explode(',', $mashableInboxForm->selectedIds);
+                $selectedIds        = explode(',', $mashableInboxForm->selectedIds); // Not Coding Standard
                 foreach ($selectedIds as $selectedId)
                 {
                    list($modelClassNameForMassAction, $modelId) = explode("_", $selectedId);

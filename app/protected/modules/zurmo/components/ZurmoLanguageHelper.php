@@ -226,7 +226,7 @@
 
             // Check if the po file exists
             $headers = get_headers($translationUrl);
-            list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
+            list($version, $status_code, $msg) = explode(' ', $headers[0], 3);
             if ($status_code != 200)
             {
                 throw new NotFoundException(Zurmo::t('ZurmoModule', 'Translation not available.'));
@@ -267,7 +267,7 @@
 
             // Check if the po file exists
             $headers = get_headers($translationUrl);
-            list($version,$status_code,$msg) = explode(' ', $headers[0], 3);
+            list($version, $status_code, $msg) = explode(' ', $headers[0], 3);
             if ($status_code != 200)
             {
                 throw new NotFoundException(Zurmo::t('ZurmoModule', 'Translation not available.'));

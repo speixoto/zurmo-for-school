@@ -516,7 +516,7 @@
 
         public function handlePublishLogoAssets($event)
         {
-            if (!is_null(ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId')))
+            if (null !== ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId'))
             {
                 $logoFileModelId        = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoFileModelId');
                 $logoFileModel          = FileModel::getById($logoFileModelId);

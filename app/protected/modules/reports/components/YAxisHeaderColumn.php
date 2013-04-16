@@ -55,7 +55,7 @@
             $options = $this->htmlOptions;
             if ($this->cssClassExpression !== null)
             {
-                $class = $this->evaluateExpression($this->cssClassExpression,array('row' => $row, 'data' => $data));
+                $class = $this->evaluateExpression($this->cssClassExpression, array('row' => $row, 'data' => $data));
                 if (!empty($class))
                 {
                     if (isset($options['class']))
@@ -72,8 +72,8 @@
             $options['rowSpan'] = $rowSpan;
             if ($rowSpan > 0)
             {
-                echo ZurmoHtml::openTag('th',$options);
-                $this->renderDataCellContent($row,$data);
+                echo ZurmoHtml::openTag('th' ,$options);
+                $this->renderDataCellContent($row, $data);
                 echo '</th>';
             }
         }

@@ -48,7 +48,7 @@
         {
             $type = $trigger->getValueEvaluationType();
             $rulesClassName = $type . 'TriggerRules';
-            if (in_array($type, array('Email', 'Phone', 'Text', 'TextArea','Url')))
+            if (in_array($type, array('Email', 'Phone', 'Text', 'TextArea', 'Url')))
             {
                 return new TextTriggerRules($trigger);
             }

@@ -197,10 +197,10 @@
         {
             parent::registerScripts();
             $script = '
-                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop",function(event, ui){
+                $(".droppable-dynamic-rows-container.' . static::getTreeType() . '").live("drop", function(event, ui){
                     ' . $this->getAjaxForDroppedAttribute() . '
                 });
-                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick",function(event){
+                $(".item-to-place", "#' . static::getTreeType() . 'TreeArea").live("dblclick", function(event){
                     ' . $this->getAjaxForDoubleClickedAttribute() . '
                 });
                 $(".remove-dynamic-row-link.' . static::getTreeType() . '").live("click", function(){

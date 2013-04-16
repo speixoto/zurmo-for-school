@@ -71,6 +71,7 @@
                 )
             );
         }
+
         public function __toString()
         {
             try

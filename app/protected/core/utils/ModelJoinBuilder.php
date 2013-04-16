@@ -867,6 +867,7 @@
                 if ($modelClassName::getCanHaveBean())
                 {
                     $castedUpAttributeTableName = $modelClassName::getTableName($modelClassName);
+
                     /**
                     if ($castedDownModelClassName::getCanHaveBean())
                     {

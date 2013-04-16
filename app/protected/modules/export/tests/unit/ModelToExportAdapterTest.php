@@ -161,8 +161,8 @@
                 null,
                 null,
                 null,
-                'Multi 1,Multi 3',
-                'Cloud 2,Cloud 3',
+                'Multi 1,Multi 3', // Not Coding Standard
+                'Cloud 2,Cloud 3', // Not Coding Standard
                 null,
                 null,
                 null,

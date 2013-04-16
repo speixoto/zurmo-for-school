@@ -328,7 +328,7 @@
                 {
                     $explicitReadWriteModelPermissions = ExplicitReadWriteModelPermissionsUtil::makeBySecurableItem($contact);
                     ExplicitReadWriteModelPermissionsUtil::resolveExplicitReadWriteModelPermissions($account, $explicitReadWriteModelPermissions);
-                    if(!$account->save())
+                    if (!$account->save())
                     {
                         throw new NotSupportedException();
                     }

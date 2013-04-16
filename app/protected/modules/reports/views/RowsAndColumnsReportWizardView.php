@@ -59,7 +59,7 @@
             $orderBysForReportWizardView          = new OrderBysForReportWizardView($this->model, $form, true);
             $generalDataForReportWizardView       = new GeneralDataForReportWizardView($this->model, $form, true);
 
-            $gridView = new GridView(5,1);
+            $gridView = new GridView(5, 1);
             $gridView->setView($moduleForReportWizardView, 0, 0);
             $gridView->setView($filtersForReportWizardView, 1, 0);
             $gridView->setView($displayAttributesForReportWizardView, 2, 0);

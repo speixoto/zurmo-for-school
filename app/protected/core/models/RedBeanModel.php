@@ -682,6 +682,7 @@
                         assert('in_array($relationType, array(self::HAS_ONE_BELONGS_TO, self::HAS_MANY_BELONGS_TO, ' .
                                                              'self::HAS_ONE, self::HAS_MANY, self::MANY_MANY))');
                         $this->attributeNameToBeanAndClassName[$relationName] = array($bean, $modelClassName);
+
                         /**
                         $this->relationNameToRelationTypeModelClassNameAndOwns[$relationName] = array($relationType,
                                                                                                 $relationModelClassName,
@@ -1834,7 +1835,7 @@
                                     //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
                                     //this link should not be reactivated, because it will improperly create the bean
                                     //in the database.
-                                    if(!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    if (!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
                                     {
                                         ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
                                     }

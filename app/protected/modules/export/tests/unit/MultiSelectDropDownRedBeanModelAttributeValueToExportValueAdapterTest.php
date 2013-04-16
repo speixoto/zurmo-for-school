@@ -94,7 +94,7 @@
 
             $adapter = new MultiSelectDropDownRedBeanModelAttributeValueToExportValueAdapter($model, 'multiDropDown');
             $adapter->resolveData($data);
-            $compareData = array('Multi 1,Multi 3');
+            $compareData = array('Multi 1,Multi 3'); // Not Coding Standard
             $this->assertEquals($compareData, $data);
             $data = array();
             $adapter->resolveHeaderData($data);

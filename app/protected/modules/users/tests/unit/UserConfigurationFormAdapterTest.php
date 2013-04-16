@@ -122,6 +122,7 @@
             $this->assertEquals(UserConfigurationFormAdapter::resolveAndGetDefaultPermissionSetting($billy), UserConfigurationForm::DEFAULT_PERMISSIONS_SETTING_OWNER);
             $this->assertNull(UserConfigurationFormAdapter::resolveAndGetValue($billy, 'defaultPermissionGroupSetting', false));
         }
+
         public function testEditTabMenuOrderByMakeFormAndSetConfigurationFromForm()
         {
             $sally = User::getByUsername('sally');
