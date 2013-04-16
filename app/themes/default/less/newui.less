@@ -2167,21 +2167,23 @@ a.simple-link{
 }
 
 /*=Popup Modals*/
-/*@keyframes growDialog {
-	0%   { scale(0, 0) }
-	100% { scale(1, 1) }
-}
 
-.openingModal{
-	//-webkit-transform: scale(0,0);
-	//-webkit-transition: -webkit-transform 3s ease-out;
-	//transform: translate3d(45px, 0, 0);
-	//-webkit-transform: translate3d(45px, 0, 0);
+/*
+@-webkit-keyframes growDialog {
+	to { -webkit-transform:scale(1, 1) }
 }
 */
+.openingModal{
+	.opacity(100) !important;
+	//-webkit-transform: scale(0.7) !important;
+	-webkit-animation: growDialog 2s;
+}
+
 .ui-dialog{
-	//-webkit-animation: growDialog 5s once; /* Safari 4+ */
-	//-webkit-animation-fill-mode: forwards;
+	//.opacity(0);
+	//-webkit-transform: scale(0);
+	//-webkit-transform-origin: center !important;
+	//webkit-transition: -webkit-transform .3s ease-in, opacity .3s ease-in;
 
 	min-width: 600px;
 	max-width: 50%;

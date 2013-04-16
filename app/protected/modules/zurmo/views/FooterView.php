@@ -48,7 +48,8 @@
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
             //"Copyright Zurmo Inc. 2013. All rights reserved".
             $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
-            $copyrightHtml = 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.';
+            $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
+                             'Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>';
             return $copyrightHtml . $userInterfaceTypeSelectorHtml;
         }
 
