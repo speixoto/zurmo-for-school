@@ -81,7 +81,6 @@
                     'website'          => 'website',
                     'primaryAddress'   => 'billingAddress',
                     'secondaryAddress' => 'shippingAddress',
-                    'owner'            => 'owner',
                     'officePhone'      => 'officePhone',
                     'officeFax'        => 'officeFax',
                     'companyName'      => 'name',
