@@ -1831,8 +1831,13 @@
                                 {
                                     $relatedModel = $this->relationNameToRelatedModel[$relationName];
                                     $relatedBean  = $relatedModel->getClassBean($relatedModelClassName);
-                                    ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
-
+                                    //Exclude HAS_MANY_BELONGS_TO because if the existing relation is unlinked, then
+                                    //this link should not be reactivated, because it will improperly create the bean
+                                    //in the database.
+                                    if(!($relationType == RedBeanModel::HAS_MANY_BELONGS_TO && $this->{$relationName}->id < 0))
+                                    {
+                                        ZurmoRedBeanLinkManager::link($bean, $relatedBean, $linkName);
+                                    }
                                     if (!RedBeanDatabase::isFrozen())
                                     {
                                         $tableName  = self::getTableName(static::getAttributeModelClassName($relationName));
