@@ -49,15 +49,15 @@
         {
             assert('is_string($controllerId)');
             assert('is_string($moduleId)');
-            if($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 $className = 'RowsAndColumnsReportResultsGridView';
             }
-            elseif($report->getType() == Report::TYPE_SUMMATION)
+            elseif ($report->getType() == Report::TYPE_SUMMATION)
             {
                 $className = 'SummationReportResultsGridView';
             }
-            elseif($report->getType() == Report::TYPE_MATRIX)
+            elseif ($report->getType() == Report::TYPE_MATRIX)
             {
                 $className = 'MatrixReportResultsGridView';
             }

@@ -45,7 +45,7 @@
          */
         public static function resolveAttributeIndexesByComponents(array & $attributeIndexes, Array $componentForms)
         {
-            foreach($componentForms as $componentForm)
+            foreach ($componentForms as $componentForm)
             {
                 $attributeIndexesToResolve = static::resolveAttributeIndexesByComponent($componentForm);
                 static::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
@@ -57,9 +57,9 @@
          */
         public static function resolveIndexesTogether(array & $attributeIndexes, array $attributeIndexesToResolve)
         {
-            foreach($attributeIndexesToResolve as $key => $indexes)
+            foreach ($attributeIndexesToResolve as $key => $indexes)
             {
-                if(!isset($attributeIndexes[$key]))
+                if (!isset($attributeIndexes[$key]))
                 {
                     $attributeIndexes[$key]= $indexes;
                 }
@@ -76,19 +76,19 @@
             $attributeIndexes  = array();
             $modelClassName    = $componentForm->getModelClassName();
             $moduleClassName   = $componentForm->getModuleClassName();
-            if(!$componentForm->hasRelatedData())
+            if (!$componentForm->hasRelatedData())
             {
                 static::resolveAttributeIndexes($modelClassName, $attributeIndexes);
             }
             else
             {
                 $attributeIndexPrefix = null;
-                foreach($componentForm->attributeAndRelationData as $relationOrAttribute)
+                foreach ($componentForm->attributeAndRelationData as $relationOrAttribute)
                 {
                     static::resolveAttributeIndexes($modelClassName, $attributeIndexes, $attributeIndexPrefix);
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                         make($moduleClassName, $modelClassName, $componentForm->getReportType());
-                    if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                    if ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                     {
                         $modelClassName       = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName      = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);

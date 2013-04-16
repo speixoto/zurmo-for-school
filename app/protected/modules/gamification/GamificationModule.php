@@ -64,9 +64,9 @@
             return $metadata;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'GamificationDemoDataMaker';
+            return array('GamificationDemoDataMaker');
         }
     }
 ?>

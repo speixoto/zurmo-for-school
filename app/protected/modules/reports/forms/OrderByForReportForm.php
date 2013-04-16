@@ -70,11 +70,11 @@
          */
         public function validateOrder()
         {
-            if($this->order == null)
+            if ($this->order == null)
             {
                 return false;
             }
-            if($this->order != 'asc' && $this->order != 'desc')
+            if ($this->order != 'asc' && $this->order != 'desc')
             {
                 $this->addError('order', Zurmo::t('ReportsModule', 'Order must be asc or desc.'));
                 return false;
@@ -88,7 +88,7 @@
          */
         public function getOrderValuesAndLabels()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }

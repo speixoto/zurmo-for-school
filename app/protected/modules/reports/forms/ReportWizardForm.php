@@ -143,30 +143,30 @@
         public function rules()
         {
             return array(
-                array('description', 	     'type',               'type' => 'string'),
-                array('name', 			     'type',        	   'type' => 'string'),
-                array('name', 			     'length',   		   'max' => 64),
-                array('name', 			     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('moduleClassName',     'type',     		   'type' => 'string'),
+                array('description',         'type',               'type' => 'string'),
+                array('name',                'type',               'type' => 'string'),
+                array('name',                'length',             'max' => 64),
+                array('name',                'required',           'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('moduleClassName',     'type',               'type' => 'string'),
                 array('moduleClassName',     'length',             'max' => 64),
-                array('moduleClassName',     'required', 		   'on' => self::MODULE_VALIDATION_SCENARIO),
-                array('type', 		         'type',     		   'type' => 'string'),
-                array('type', 			     'length',   		   'max' => 64),
-                array('type', 			     'required'),
-                array('ownerId',   	         'type',     		   'type' => 'integer'),
-                array('ownerId',   		     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('ownerName', 		     'required', 		   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
-                array('filters', 		     'validateFilters',
+                array('moduleClassName',     'required',           'on' => self::MODULE_VALIDATION_SCENARIO),
+                array('type',                'type',               'type' => 'string'),
+                array('type',                'length',             'max' => 64),
+                array('type',                'required'),
+                array('ownerId',             'type',               'type' => 'integer'),
+                array('ownerId',             'required',           'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('ownerName',           'required',           'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
+                array('filters',             'validateFilters',
                                              'on' => self::FILTERS_VALIDATION_SCENARIO),
-                array('filtersStructure', 	 'validateFiltersStructure',
+                array('filtersStructure',    'validateFiltersStructure',
                                              'on' => self::FILTERS_VALIDATION_SCENARIO),
                 array('displayAttributes',   'validateDisplayAttributes',
                                              'on' => self::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
                 array('drillDownAttributes', 'validateDrillDownDisplayAttributes',
                                              'on' => self::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO),
-                array('orderBys', 		     'validateOrderBys',   'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
-                array('groupBys', 		     'validateGroupBys',   'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
-                array('chart', 		         'validateChart',      'on' => self::CHART_VALIDATION_SCENARIO),
+                array('orderBys',            'validateOrderBys',   'on' => self::ORDER_BYS_VALIDATION_SCENARIO),
+                array('groupBys',            'validateGroupBys',   'on' => self::GROUP_BYS_VALIDATION_SCENARIO),
+                array('chart',               'validateChart',      'on' => self::CHART_VALIDATION_SCENARIO),
                 array('currencyConversionType',      'type',       'type' => 'integer'),
                 array('currencyConversionType',      'required',   'on' => self::GENERAL_DATA_VALIDATION_SCENARIO),
                 array('spotConversionCurrencyCode',  'type',       'type' => 'string'),
@@ -214,9 +214,9 @@
          */
         public function validateFiltersStructure()
         {
-            if(count($this->filters) > 0)
+            if (count($this->filters) > 0)
             {
-                if(null != $errorMessage = SQLOperatorUtil::
+                if (null != $errorMessage = SQLOperatorUtil::
                            resolveValidationForATemplateSqlStatementAndReturnErrorMessage($this->filtersStructure,
                            count($this->filters)))
                 {
@@ -239,7 +239,7 @@
         public function validateDisplayAttributes()
         {
             $validated = $this->validateComponent(ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES, 'displayAttributes');
-            if(count($this->displayAttributes) == 0)
+            if (count($this->displayAttributes) == 0)
             {
                 $this->addError( 'displayAttributes', Zurmo::t('ReportsModule', 'At least one display column must be selected'));
                 $validated = false;
@@ -263,9 +263,9 @@
             $validated = $this->validateComponent(ComponentForReportForm::TYPE_GROUP_BYS, 'groupBys');
             $existingGroupByAttributeIndexOrDerivedTypes = array();
             $duplicateGroupByFound                       = false;
-            foreach($this->groupBys as $groupBy)
+            foreach ($this->groupBys as $groupBy)
             {
-                if(in_array($groupBy->attributeIndexOrDerivedType, $existingGroupByAttributeIndexOrDerivedTypes))
+                if (in_array($groupBy->attributeIndexOrDerivedType, $existingGroupByAttributeIndexOrDerivedTypes))
                 {
                     $duplicateGroupByFound = true;
                 }
@@ -274,7 +274,7 @@
                     $existingGroupByAttributeIndexOrDerivedTypes[] = $groupBy->attributeIndexOrDerivedType;
                 }
             }
-            if($duplicateGroupByFound)
+            if ($duplicateGroupByFound)
             {
                 $this->addError( 'groupBys', Zurmo::t('ReportsModule', 'Each grouping must be unique'));
                 $validated = false;
@@ -288,12 +288,12 @@
         public function validateChart()
         {
             $passedValidation = true;
-            if($this->chart != null)
+            if ($this->chart != null)
             {
                 $validated = $this->chart->validate();
-                if(!$validated)
+                if (!$validated)
                 {
-                    foreach($this->chart->getErrors() as $attribute => $error)
+                    foreach ($this->chart->getErrors() as $attribute => $error)
                     {
                         $this->addError( 'ChartForReportForm_' . $attribute, $error);
                     }
@@ -309,7 +309,7 @@
         public function validateSpotConversionCurrencyCode()
         {
             $passedValidation = true;
-            if($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT &&
+            if ($this->currencyConversionType == Report::CURRENCY_CONVERSION_TYPE_SPOT &&
                $this->spotConversionCurrencyCode == null)
             {
                 $this->addError('spotConversionCurrencyCode', Zurmo::t('ReportsModule', 'Spot Currency cannot be blank.'));
@@ -346,11 +346,11 @@
             assert('is_string($componentType)');
             assert('is_string($componentName)');
             $passedValidation = true;
-            foreach($this->{$componentName} as $model)
+            foreach ($this->{$componentName} as $model)
             {
-                if(!$model->validate())
+                if (!$model->validate())
                 {
-                    foreach($model->getErrors() as $attribute => $error)
+                    foreach ($model->getErrors() as $attribute => $error)
                     {
                         $attributePrefix = static::resolveErrorAttributePrefix($componentType, $model->getRowKey());
                         $this->addError( $attributePrefix . $attribute, $error);

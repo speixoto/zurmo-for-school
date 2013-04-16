@@ -58,7 +58,7 @@
             assert('is_bool($isRequired)');
             $data                           = array();
             $data[static::TYPE_STATIC]      = Zurmo::t('WorkflowsModule', 'As');
-            if(!$isRequired)
+            if (!$isRequired)
             {
                 $data[static::TYPE_STATIC_NULL] = Zurmo::t('WorkflowsModule', 'As Empty');
             }

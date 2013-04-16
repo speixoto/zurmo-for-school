@@ -48,13 +48,13 @@
         public function render()
         {
             $items = array();
-            if(RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule', WorkflowsModule::getCreateRight(),
+            if (RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule', WorkflowsModule::getCreateRight(),
                                                         Yii::app()->user->userModel))
             {
                 $items[] = array('label'   => Zurmo::t('WorkflowsModule', 'Create Workflow'),
                                   'url'     => Yii::app()->createUrl('workflows/default/create'));
             }
-            if(RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
+            if (RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
                                                         Yii::app()->user->userModel))
             {
                 $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Template'),

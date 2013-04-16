@@ -70,7 +70,6 @@
             self::$qualifiedState   = $contactStates[0];
             $contactStates          = ContactState::getByName('Customer');
             self::$customerState    = $contactStates[0];
-
         }
 
         public function testTimeTriggerBeforeSaveEquals()

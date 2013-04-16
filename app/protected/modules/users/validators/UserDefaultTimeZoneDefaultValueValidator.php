@@ -45,7 +45,7 @@
             else
             {
                 $value = $model->$attributeName;
-                if($value === null || $value === '')
+                if ($value === null || $value === '')
                 {
                     $model->$attributeName = Yii::app()->timeZoneHelper->getGlobalValue();
                 }

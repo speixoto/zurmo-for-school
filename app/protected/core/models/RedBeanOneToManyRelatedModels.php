@@ -171,7 +171,6 @@
                 }
                 else
                 {
-
                     ZurmoRedBeanLinkManager::link($bean, $this->bean, $this->resolveLinkNameForCasing());
                     if (!RedBeanDatabase::isFrozen())
                     {

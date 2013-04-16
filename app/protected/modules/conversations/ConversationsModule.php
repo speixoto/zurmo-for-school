@@ -98,9 +98,9 @@
             return self::RIGHT_DELETE_CONVERSATIONS;
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'ConversationsDemoDataMaker';
+            return array('ConversationsDemoDataMaker');
         }
 
         public static function hasPermissions()

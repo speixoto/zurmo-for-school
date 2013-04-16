@@ -115,8 +115,8 @@
             unset($account1);
 
             $account2 = Account::getById($accountId2);
-            $this->assertEquals('37.38926',    $account2->billingAddress->latitude);
-            $this->assertEquals('-121.873247', $account2->billingAddress->longitude);
+            $this->assertEquals(round('37.39680',   4), round($account2->billingAddress->latitude,  4));
+            $this->assertEquals(round('-121.87794', 4), round($account2->billingAddress->longitude, 4));
             $this->assertEquals(0,             $account2->billingAddress->invalid);
             unset($account2);
 

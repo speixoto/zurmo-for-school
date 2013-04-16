@@ -60,11 +60,11 @@
                                                                            $bindPassword, $baseDomain);
                 if ($ldapConnection)
                 {
-                    if($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
+                    if ($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
                     {
                         $ldapFilter = '(|(cn=' . $this->username . ')(&(uid=' . $this->username . ')))';
                     }
-                    elseif($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
+                    elseif ($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
                     {
                         $ldapFilter = '(sAMAccountName=' . $this->username . ')';
                     }

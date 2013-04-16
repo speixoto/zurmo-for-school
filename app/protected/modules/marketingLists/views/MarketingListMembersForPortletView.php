@@ -42,7 +42,7 @@
          * Portlet parameters passed in from the portlet.
          * @var array
          */
-        protected $cssClasses = array('no-box');
+        protected $cssClasses = array('portlet-with-toolbar');
 
         protected $params;
 
@@ -130,8 +130,11 @@
             $actionElementBar       = ZurmoHtml::tag('div', array('class' => 'portlet-view-toolbar view-toolbar'),
                                                                                 $this->renderActionElementBar(false));
             $memberSearchAndList    = $this->renderMembersSearchFormAndListContent();
-            return ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),
-                                        $actionElementBar . $memberSearchAndList);
+            $content = ZurmoHtml::tag('div', array('class' => MarketingListDetailsAndRelationsView::MEMBERS_PORTLET_CLASS),
+                                        $actionElementBar);
+            $content .= $memberSearchAndList;
+            return $content;
+
         }
 
         public static function canUserConfigure()
@@ -155,7 +158,6 @@
         {
             return 'MarketingListsModule';
         }
-
 
         /**
          * After a portlet action is completed, the portlet must be refreshed. This is the url to correctly
@@ -270,7 +272,7 @@
                                                                                             $this->getPortletId(),
                                                                                             $persistentUserConfigItem
                                                                                             );
-                    if(isset($persistentUserConfigItemValue))
+                    if (isset($persistentUserConfigItemValue))
                     {
                         $this->marketingListMembersConfigurationForm->$persistentUserConfigItem = $persistentUserConfigItemValue;
                     }

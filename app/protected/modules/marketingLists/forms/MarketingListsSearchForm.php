@@ -36,5 +36,9 @@
 
     class MarketingListsSearchForm extends OwnedSearchForm
     {
+        protected static function getRedBeanModelClassName()
+        {
+            return 'MarketingList';
+        }
     }
 ?>

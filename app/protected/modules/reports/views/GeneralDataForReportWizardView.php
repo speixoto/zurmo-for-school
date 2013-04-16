@@ -126,13 +126,13 @@
                                                   resolveInputIdPrefixIntoString(
                                                   array(get_class($this->model), 'spotConversionCurrencyCode'));
             Yii::app()->clientScript->registerScript('currencyConversionTypeHelper', "
-                if($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
+                if ($('#" . $currencyConversionTypeSelectId . "').val() != " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                 {
                     $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().hide();
                 }
                 $('#" . $currencyConversionTypeSelectId . "').change( function()
                     {
-                        if($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
+                        if ($(this).val() == " . Report::CURRENCY_CONVERSION_TYPE_SPOT . ")
                         {
                             $('#" . $spotConversionCurrencyCodeSelectId . "').parentsUntil('tr').parent().show();
                         }

@@ -113,7 +113,7 @@
         {
             $content  = null;
             $content .= get_class($portlet->getView());
-            foreach($portlet->getCssClasses() as $cssClass)
+            foreach ($portlet->getCssClasses() as $cssClass)
             {
                 $content .= ' ' . $cssClass;
             }

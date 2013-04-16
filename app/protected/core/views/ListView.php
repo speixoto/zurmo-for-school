@@ -211,7 +211,7 @@
                         'nextPageLabel'    => '<span>next</span>',
                         'class'            => 'EndlessListLinkPager',
                         'paginationParams' => GetUtil::getData(),
-                        'route'            => $this->getGridViewActionRoute('list', $this->moduleId),
+                        'route'            => $this->getGridViewActionRoute($this->getListActionId(), $this->moduleId),
                     );
             if (empty($this->gridViewPagerParams))
             {
@@ -433,6 +433,11 @@
                 $moduleId = $this->moduleId;
             }
             return '/' . $moduleId . '/' . $this->controllerId . '/' . $action;
+        }
+
+        protected function getListActionId()
+        {
+            return 'list';
         }
 
         public function getLinkString($attributeString, $attribute)

@@ -41,7 +41,6 @@
      */
     class RedBeanModelMulitpleSameModelRelationsTest extends BaseTest
     {
-
         public function testMultipleHasOnesToTheSameModel()
         {
             $pp1       = new PP();

@@ -789,7 +789,6 @@
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModelButDifferentRelations()
         {
-
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 custom fields attributes with both on a related model, but the links are different

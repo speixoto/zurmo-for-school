@@ -199,7 +199,7 @@
          */
         public function validateValue()
         {
-            if($this->type == self::TYPE_STATIC && empty($this->value) && $this->shouldSetValue)
+            if ($this->type == self::TYPE_STATIC && empty($this->value) && $this->shouldSetValue)
             {
                 $this->addError('value', Zurmo::t('WorkflowsModule', 'Value cannot be blank.'));
                 return false;
@@ -229,11 +229,11 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute} = $this->value;
             }
-            elseif($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
+            elseif ($this->type == WorkflowActionAttributeForm::TYPE_STATIC_NULL)
             {
                 $adapter->getModel()->{$attribute} = null;
             }

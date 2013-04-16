@@ -115,7 +115,7 @@
             $selectQueryAdapter     = new RedBeanModelSelectQueryAdapter();
             $sql                    = $this->makeSqlQueryForFetchingTotalItemCount($selectQueryAdapter);
             $rows                   = R::getAll($sql);
-            if(count($rows) > 0)
+            if (count($rows) > 0)
             {
                 return count($rows) * count($rows[0]);
             }
@@ -127,14 +127,14 @@
          */
         public function resolveDisplayAttributes()
         {
-            if($this->resolvedDisplayAttributes == null)
+            if ($this->resolvedDisplayAttributes == null)
             {
                 $this->resolvedDisplayAttributes = array();
-                foreach($this->report->getDisplayAttributes() as $displayAttribute)
+                foreach ($this->report->getDisplayAttributes() as $displayAttribute)
                 {
                     $this->resolvedDisplayAttributes[] = $displayAttribute;
                 }
-                foreach($this->resolveGroupBys() as $groupBy)
+                foreach ($this->resolveGroupBys() as $groupBy)
                 {
                     $displayAttribute                                 = new DisplayAttributeForReportForm(
                                                                         $groupBy->getModuleClassName(),
@@ -154,21 +154,21 @@
          */
         public function resolveGroupBys()
         {
-            if($this->resolvedGroupBys != null)
+            if ($this->resolvedGroupBys != null)
             {
                 return $this->resolvedGroupBys;
             }
             $this->resolvedGroupBys = array();
-            foreach($this->report->getGroupBys() as $groupBy)
+            foreach ($this->report->getGroupBys() as $groupBy)
             {
-                if($groupBy->axis == 'y')
+                if ($groupBy->axis == 'y')
                 {
                     $this->resolvedGroupBys[] = $groupBy;
                 }
             }
-            foreach($this->report->getGroupBys() as $groupBy)
+            foreach ($this->report->getGroupBys() as $groupBy)
             {
-                if($groupBy->axis == 'x')
+                if ($groupBy->axis == 'x')
                 {
                     $this->resolvedGroupBys[] = $groupBy;
                 }
@@ -182,12 +182,11 @@
         public function getXAxisGroupByDataValuesCount()
         {
             $count = 1;
-            foreach($this->getXAxisGroupByDataValues() as $groupByValues)
+            foreach ($this->getXAxisGroupByDataValues() as $groupByValues)
             {
                 $count = $count * count($groupByValues);
             }
             return $count;
-
         }
 
         /**
@@ -196,7 +195,6 @@
         public function getYAxisGroupByDataValuesCount()
         {
             return count($this->getYAxisGroupByDataValues());
-
         }
 
         /**
@@ -223,10 +221,10 @@
             $headerData    = array('rows' => array());
             $headerData['axisCrossingColumnCount'] = count($this->getYAxisGroupBys());
             $lastSpanCount = $this->getDisplayCalculationsCount();
-            foreach(array_reverse($this->getXAxisGroupByDataValues()) as $attributeIndexOrDerivedType => $groupByValues)
+            foreach (array_reverse($this->getXAxisGroupByDataValues()) as $attributeIndexOrDerivedType => $groupByValues)
             {
                 $xAxisDisplayAttribute = $this->getDisplayAttributeByAttribute($attributeIndexOrDerivedType);
-                foreach($groupByValues as $key => $value)
+                foreach ($groupByValues as $key => $value)
                 {
                     $groupByValues[$key] = $xAxisDisplayAttribute->resolveValueAsLabelForHeaderCell($value);
                 }
@@ -243,11 +241,11 @@
         public function getDisplayAttributesThatAreYAxisGroupBys()
         {
             $displayAttributes = array();
-            foreach($this->resolveDisplayAttributes() as $displayAttribute)
+            foreach ($this->resolveDisplayAttributes() as $displayAttribute)
             {
-                foreach($this->getYAxisGroupBys() as $groupBy)
+                foreach ($this->getYAxisGroupBys() as $groupBy)
                 {
-                    if($displayAttribute->attributeIndexOrDerivedType ==
+                    if ($displayAttribute->attributeIndexOrDerivedType ==
                         $groupBy->attributeIndexOrDerivedType)
                     {
                         $displayAttributes[] = $displayAttribute;
@@ -273,20 +271,20 @@
             assert('is_int($attributeKey)');
             assert('is_int($xAxisGroupBysCount)');
             assert('is_int($startingIndex)');
-            if(isset($indexedXAxisGroupByDataValues[$startingIndex]))
+            if (isset($indexedXAxisGroupByDataValues[$startingIndex]))
             {
-                foreach($indexedXAxisGroupByDataValues[$startingIndex] as $value)
+                foreach ($indexedXAxisGroupByDataValues[$startingIndex] as $value)
                 {
                     $data[$value] = array();
-                    if(($startingIndex + 1) == $xAxisGroupBysCount)
+                    if (($startingIndex + 1) == $xAxisGroupBysCount)
                     {
-                        foreach($this->resolveDisplayAttributes() as $displayAttribute)
+                        foreach ($this->resolveDisplayAttributes() as $displayAttribute)
                         {
-                            if($displayAttribute->queryOnly != true)
+                            if ($displayAttribute->queryOnly != true)
                             {
                                 $data[$value][$displayAttribute->attributeIndexOrDerivedType] =
                                     static::resolveColumnAliasName($attributeKey);
-                                $attributeKey ++;
+                                $attributeKey++;
                             }
                         }
                     }
@@ -327,22 +325,22 @@
             {
                 $currentYAxisDisplayAttributesUniqueIndex = $this->resolveYAxisDisplayAttributesUniqueIndex(
                                                             $row, $displayAttributesThatAreYAxisGroupBys);
-                if($previousYAxisDisplayAttributesUniqueIndex != $currentYAxisDisplayAttributesUniqueIndex)
+                if ($previousYAxisDisplayAttributesUniqueIndex != $currentYAxisDisplayAttributesUniqueIndex)
                 {
-                    $idByOffset ++;
+                    $idByOffset++;
                     $resultsData[$idByOffset] = new ReportResultsRowData($this->resolveDisplayAttributes(), $idByOffset);
                     $this->addDefaultColumnNamesAndValuesToReportResultsRowData($resultsData[$idByOffset],
                                                                                 $xAxisGroupByDataValuesCount);
                 }
                 $tempData = $xAxisGroupingsColumnNamesData;
-                foreach($this->resolveDisplayAttributes() as $displayAttribute)
+                foreach ($this->resolveDisplayAttributes() as $displayAttribute)
                 {
                     $value    = $row[$displayAttribute->columnAliasName];
-                    if($this->isDisplayAttributeAnXAxisGroupBy($displayAttribute))
+                    if ($this->isDisplayAttributeAnXAxisGroupBy($displayAttribute))
                     {
                         $tempData = $tempData[$value];
                     }
-                    elseif($this->isDisplayAttributeAnYAxisGroupBy($displayAttribute))
+                    elseif ($this->isDisplayAttributeAnYAxisGroupBy($displayAttribute))
                     {
                         $resolvedColumnAliasName = static::resolveHeaderColumnAliasName($displayAttribute->columnAliasName);
                         $resultsData[$idByOffset]->addSelectedColumnNameAndValue($resolvedColumnAliasName, $value);
@@ -350,9 +348,9 @@
                     }
                 }
                 //At this point $tempData is at the final level, where the actual display calculations are located
-                foreach($this->resolveDisplayAttributes() as $displayAttribute)
+                foreach ($this->resolveDisplayAttributes() as $displayAttribute)
                 {
-                    if(!$displayAttribute->queryOnly)
+                    if (!$displayAttribute->queryOnly)
                     {
                         $value = $row[$displayAttribute->columnAliasName];
                         $columnAliasName = $tempData[$displayAttribute->attributeIndexOrDerivedType];
@@ -371,21 +369,21 @@
         protected function resolveRowSpansForResultsData(& $resultsData)
         {
             $previousLeadingUniqueIndexData = array();
-            foreach($resultsData as $dataKey => $reportResultsRowData)
+            foreach ($resultsData as $dataKey => $reportResultsRowData)
             {
                 $leadingUniqueIndexData = array();
                 $leadingUniqueIndex     = null;
-                foreach($this->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
+                foreach ($this->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
                 {
                     $attributeName = static::resolveHeaderColumnAliasName($displayAttribute->columnAliasName);
-                    if($leadingUniqueIndex != null)
+                    if ($leadingUniqueIndex != null)
                     {
                         $leadingUniqueIndex .= FormModelUtil::DELIMITER;
                     }
                     $leadingUniqueIndex .= $reportResultsRowData->{$attributeName};
                     $leadingUniqueIndexData[$displayAttribute->columnAliasName] = $leadingUniqueIndex;
                     $rowSpan = 0;
-                    if($dataKey == 0 ||
+                    if ($dataKey == 0 ||
                        $previousLeadingUniqueIndexData[$displayAttribute->columnAliasName] !=
                        $leadingUniqueIndexData[$displayAttribute->columnAliasName])
                     {
@@ -393,22 +391,22 @@
                         for ($i = ($dataKey + 1); $i < count($resultsData); $i++)
                         {
                             $nextLeadingUniqueIndex     = null;
-                            foreach($this->getDisplayAttributesThatAreYAxisGroupBys() as $nextDisplayAttribute)
+                            foreach ($this->getDisplayAttributesThatAreYAxisGroupBys() as $nextDisplayAttribute)
                             {
-                                if($nextLeadingUniqueIndex != null)
+                                if ($nextLeadingUniqueIndex != null)
                                 {
                                     $nextLeadingUniqueIndex .= FormModelUtil::DELIMITER;
                                 }
                                 $nextAttributeName = static::resolveHeaderColumnAliasName($nextDisplayAttribute->columnAliasName);
                                 $nextLeadingUniqueIndex .= $resultsData[$i]->$nextAttributeName;
-                                if($nextDisplayAttribute->attributeIndexOrDerivedType == $displayAttribute->attributeIndexOrDerivedType)
+                                if ($nextDisplayAttribute->attributeIndexOrDerivedType == $displayAttribute->attributeIndexOrDerivedType)
                                 {
                                     break;
                                 }
                             }
-                            if($nextLeadingUniqueIndex == $leadingUniqueIndexData[$displayAttribute->columnAliasName])
+                            if ($nextLeadingUniqueIndex == $leadingUniqueIndexData[$displayAttribute->columnAliasName])
                             {
-                                $rowSpan ++;
+                                $rowSpan++;
                             }
                             else
                             {
@@ -429,11 +427,11 @@
         protected function getDisplayCalculationsCount()
         {
             $count           = 0;
-            foreach($this->resolveDisplayAttributes() as $displayAttribute)
+            foreach ($this->resolveDisplayAttributes() as $displayAttribute)
             {
-                if(!$displayAttribute->queryOnly)
+                if (!$displayAttribute->queryOnly)
                 {
-                    $count ++;
+                    $count++;
                 }
             }
             return $count;
@@ -444,17 +442,17 @@
          */
         protected function getXAxisGroupByDataValues()
         {
-            if($this->xAxisGroupByDataValues == null)
+            if ($this->xAxisGroupByDataValues == null)
             {
                 $this->xAxisGroupByDataValues = array();
                 $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
                 $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);
                 $rows               = $this->getRowsData($sql);
-                foreach($rows as $row)
+                foreach ($rows as $row)
                 {
-                    foreach($this->getDisplayAttributesThatAreXAxisGroupBys() as $displayAttribute)
+                    foreach ($this->getDisplayAttributesThatAreXAxisGroupBys() as $displayAttribute)
                     {
-                        if(!isset($this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]) ||
+                        if (!isset($this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]) ||
                             !in_array($row[$displayAttribute->columnAliasName],
                                 $this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]))
                         {
@@ -465,9 +463,9 @@
                 }
             }
             //Sort for group bys correctly.
-            foreach($this->getDisplayAttributesThatAreXAxisGroupBys() as $displayAttribute)
+            foreach ($this->getDisplayAttributesThatAreXAxisGroupBys() as $displayAttribute)
             {
-                if($displayAttribute->getHeaderSortableType() == DisplayAttributeForReportForm::HEADER_SORTABLE_TYPE_ASORT)
+                if ($displayAttribute->getHeaderSortableType() == DisplayAttributeForReportForm::HEADER_SORTABLE_TYPE_ASORT)
                 {
                     asort($this->xAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]);
                 }
@@ -480,17 +478,17 @@
          */
         protected function getYAxisGroupByDataValues()
         {
-            if($this->yAxisGroupByDataValues == null)
+            if ($this->yAxisGroupByDataValues == null)
             {
                 $this->yAxisGroupByDataValues = array();
                 $selectQueryAdapter = new RedBeanModelSelectQueryAdapter();
                 $sql                = $this->makeSqlQueryForFetchingData($selectQueryAdapter, null, null);
                 $rows               = $this->getRowsData($sql);
-                foreach($rows as $row)
+                foreach ($rows as $row)
                 {
-                    foreach($this->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
+                    foreach ($this->getDisplayAttributesThatAreYAxisGroupBys() as $displayAttribute)
                     {
-                        if(!isset($this->yAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]) ||
+                        if (!isset($this->yAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]) ||
                             in_array($row[$displayAttribute->columnAliasName],
                                      $this->yAxisGroupByDataValues[$displayAttribute->attributeIndexOrDerivedType]))
                         {
@@ -509,7 +507,7 @@
          */
         protected function isReportValidType()
         {
-            if($this->report->getType() != Report::TYPE_MATRIX)
+            if ($this->report->getType() != Report::TYPE_MATRIX)
             {
                 throw new NotSupportedException();
             }
@@ -521,9 +519,9 @@
         protected function getXAxisGroupBys()
         {
             $xAxisGroupBys = array();
-            foreach($this->report->getGroupBys() as $groupBy)
+            foreach ($this->report->getGroupBys() as $groupBy)
             {
-                if($groupBy->axis == 'x')
+                if ($groupBy->axis == 'x')
                 {
                     $xAxisGroupBys[] = $groupBy;
                 }
@@ -537,11 +535,11 @@
         protected function getDisplayAttributesThatAreXAxisGroupBys()
         {
             $displayAttributes = array();
-            foreach($this->resolveDisplayAttributes() as $displayAttribute)
+            foreach ($this->resolveDisplayAttributes() as $displayAttribute)
             {
-                foreach($this->getXAxisGroupBys() as $xAxisGroupBy)
+                foreach ($this->getXAxisGroupBys() as $xAxisGroupBy)
                 {
-                    if($displayAttribute->attributeIndexOrDerivedType ==
+                    if ($displayAttribute->attributeIndexOrDerivedType ==
                         $xAxisGroupBy->attributeIndexOrDerivedType)
                     {
                         $displayAttributes[] = $displayAttribute;
@@ -558,9 +556,9 @@
         protected function getYAxisGroupBys()
         {
             $yAxisGroupBys = array();
-            foreach($this->report->getGroupBys() as $groupBy)
+            foreach ($this->report->getGroupBys() as $groupBy)
             {
-                if($groupBy->axis == 'y')
+                if ($groupBy->axis == 'y')
                 {
                     $yAxisGroupBys[] = $groupBy;
                 }
@@ -574,9 +572,9 @@
          */
         protected function isDisplayAttributeAnXAxisGroupBy($displayAttribute)
         {
-            foreach($this->getXAxisGroupBys() as $groupBy)
+            foreach ($this->getXAxisGroupBys() as $groupBy)
             {
-                if($displayAttribute->attributeIndexOrDerivedType ==
+                if ($displayAttribute->attributeIndexOrDerivedType ==
                     $groupBy->attributeIndexOrDerivedType)
                 {
                     return true;
@@ -591,9 +589,9 @@
          */
         protected function isDisplayAttributeAnYAxisGroupBy($displayAttribute)
         {
-            foreach($this->getYAxisGroupBys() as $groupBy)
+            foreach ($this->getYAxisGroupBys() as $groupBy)
             {
-                if($displayAttribute->attributeIndexOrDerivedType ==
+                if ($displayAttribute->attributeIndexOrDerivedType ==
                     $groupBy->attributeIndexOrDerivedType)
                 {
                     return true;
@@ -624,9 +622,9 @@
         protected function resolveYAxisDisplayAttributesUniqueIndex($rowData, $displayAttributesThatAreYAxisGroupBys)
         {
             $uniqueIndex = null;
-            foreach($displayAttributesThatAreYAxisGroupBys as $displayAttribute)
+            foreach ($displayAttributesThatAreYAxisGroupBys as $displayAttribute)
             {
-                if($uniqueIndex != null)
+                if ($uniqueIndex != null)
                 {
                     $uniqueIndex .= FormModelUtil::DELIMITER;
                 }

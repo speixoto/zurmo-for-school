@@ -68,7 +68,7 @@
             parent::registerScripts();
             $chartTypesRequiringSecondInputs = ChartRules::getChartTypesRequiringSecondInputs();
             $script = '
-                if($(".chart-selector:checked").val() != "")
+                if ($(".chart-selector:checked").val() != "")
                 {
                     $("#series-and-range-areas").detach().insertAfter( $(".chart-selector:checked").parent()).removeClass("hidden-element");
                 }
@@ -81,7 +81,7 @@
                 {
                     $("#series-and-range-areas").detach().insertAfter( $(changedChartObject).parent()  ).removeClass("hidden-element");
                     arr = ' . CJSON::encode($chartTypesRequiringSecondInputs) . ';
-                    if($(changedChartObject).val() == "")
+                    if ($(changedChartObject).val() == "")
                     {
                         $("#series-and-range-areas").addClass("hidden-element")
                         $(".first-series-and-range-area").hide();

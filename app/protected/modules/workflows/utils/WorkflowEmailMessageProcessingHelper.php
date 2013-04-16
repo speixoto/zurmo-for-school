@@ -78,7 +78,7 @@
             $emailMessage->content      = $emailContent;
             $emailMessage->sender       = $this->resolveSender();
             $this->resolveRecipients($emailMessage);
-            if($emailMessage->recipients->count() == 0)
+            if ($emailMessage->recipients->count() == 0)
             {
                 throw new MissingRecipientsForEmailMessageException();
             }
@@ -96,7 +96,7 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->subject);
-            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            if (false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
             {
                 return $emailTemplate->subject;
             }
@@ -112,7 +112,7 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->textContent);
-            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            if (false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
             {
                 return $emailTemplate->textContent;
             }
@@ -128,7 +128,7 @@
         {
             $mergeTagsUtil = MergeTagsUtilFactory::make($emailTemplate->type, $emailTemplate->language,
                                                         $emailTemplate->htmlContent);
-            if(false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
+            if (false === $resolvedContent = $mergeTagsUtil->resolveMergeTags($this->triggeredModel))
             {
                 return $emailTemplate->htmlContent;
             }
@@ -142,13 +142,13 @@
         protected function resolveSender()
         {
             $sender                     = new EmailMessageSender();
-            if($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
+            if ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_DEFAULT)
             {
                 $userToSendMessagesFrom     = Yii::app()->emailHelper->getUserToSendNotificationsAs();
                 $sender->fromAddress        = Yii::app()->emailHelper->resolveFromAddressByUser($userToSendMessagesFrom);
                 $sender->fromName           = strval($userToSendMessagesFrom);
             }
-            elseif($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
+            elseif ($this->emailMessageForm->sendFromType == EmailMessageForWorkflowForm::SEND_FROM_TYPE_CUSTOM)
             {
                 $sender->fromAddress        = $this->emailMessageForm->sendFromAddress;
                 $sender->fromName           = $this->emailMessageForm->sendFromName;
@@ -165,9 +165,9 @@
          */
         protected function resolveRecipients(EmailMessage $emailMessage)
         {
-            foreach($this->emailMessageForm->getEmailMessageRecipients() as $emailMessageRecipient)
+            foreach ($this->emailMessageForm->getEmailMessageRecipients() as $emailMessageRecipient)
             {
-                foreach($emailMessageRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
+                foreach ($emailMessageRecipient->makeRecipients($this->triggeredModel, $this->triggeredByUser) as $recipient)
                 {
                     $emailMessage->recipients->add($recipient);
                 }

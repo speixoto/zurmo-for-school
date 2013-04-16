@@ -155,7 +155,7 @@
 
         public function actionCreate($type = null)
         {
-            if($type == null)
+            if ($type == null)
             {
                 $this->actionSelectType();
                 Yii::app()->end(0, false);
@@ -198,7 +198,6 @@
             $workflow                  = null;
             $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
 
-
             $workflowToWizardFormAdapter = new WorkflowToWizardFormAdapter($workflow);
             $model                     =  $workflowToWizardFormAdapter->makeFormByType();
             if (isset($postData['ajax']) && $postData['ajax'] === 'edit-form')
@@ -207,11 +206,11 @@
             }
             SavedWorkflowToWorkflowAdapter::resolveWorkflowToSavedWorkflow($workflow, $savedWorkflow);
             SavedWorkflowsUtil::resolveOrder($savedWorkflow);
-            if($savedWorkflow->id > 0)
+            if ($savedWorkflow->id > 0)
             {
                 ControllerSecurityUtil::resolveCanCurrentUserAccessModule($savedWorkflow->moduleClassName);
             }
-            if($savedWorkflow->save())
+            if ($savedWorkflow->save())
             {
                 echo CJSON::encode(array('id'             => $savedWorkflow->id,
                                          'redirectToList' => false));
@@ -229,7 +228,7 @@
             $savedWorkflow = null;
             $workflow        = null;
             $this->resolveSavedWorkflowAndWorkflowByPostData($postData, $savedWorkflow, $workflow, $type, $id);
-            if($nodeId != null)
+            if ($nodeId != null)
             {
                 $wizardToTreeAdapter = new WorkflowRelationsAndAttributesToTreeAdapter($workflow, $treeType);
                 echo ZurmoTreeView::saveDataAsJson($wizardToTreeAdapter->getData($nodeId));
@@ -445,7 +444,7 @@
         public function actionLoadOrderByModule($moduleClassName)
         {
             $savedWorkflows = SavedWorkflow::getAllByModuleClassName($moduleClassName);
-            if(count($savedWorkflows) == 0)
+            if (count($savedWorkflows) == 0)
             {
                 echo CJSON::encode(array('dataToOrder' => 'false'));
                 Yii::app()->end(0, false);
@@ -460,20 +459,20 @@
         public function actionSaveOrder()
         {
             $savedWorkflowData = ArrayUtil::getArrayValue(PostUtil::getData(), 'SavedWorkflow');
-            if($savedWorkflowData != null && isset($savedWorkflowData['savedWorkflowIds']) &&
+            if ($savedWorkflowData != null && isset($savedWorkflowData['savedWorkflowIds']) &&
                count($savedWorkflowData['savedWorkflowIds']) > 0)
             {
                 $order = 1;
-                foreach($savedWorkflowData['savedWorkflowIds'] as $savedWorkflowId)
+                foreach ($savedWorkflowData['savedWorkflowIds'] as $savedWorkflowId)
                 {
                     $savedWorkflow        = SavedWorkflow::getById((int)$savedWorkflowId);
                     $savedWorkflow->order = $order;
                     $saved = $savedWorkflow->save();
-                    if(!$saved)
+                    if (!$saved)
                     {
                         throw new FailedToSaveModelException();
                     }
-                    $order ++;
+                    $order++;
                 }
                 $message = Zurmo::t('WorkflowsModule', 'Order saved successfully.');
                 echo CJSON::encode(array('message' => $message, 'type' => 'message'));
@@ -488,7 +487,7 @@
 
         protected function resolveCanCurrentUserAccessWorkflows()
         {
-            if(!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',
+            if (!RightsUtil::doesUserHaveAllowByRightName('WorkflowsModule',
                                                             WorkflowsModule::RIGHT_CREATE_WORKFLOWS,
                                                             Yii::app()->user->userModel))
             {
@@ -509,7 +508,7 @@
         protected function resolveSavedWorkflowAndWorkflowByPostData(Array $postData, & $savedWorkflow, & $workflow,
                                                                      $type, $id = null)
         {
-            if($id == null)
+            if ($id == null)
             {
                 $this->resolveCanCurrentUserAccessWorkflows();
                 $savedWorkflow               = new SavedWorkflow();
@@ -528,7 +527,7 @@
 
         protected function actionValidate($postData, WorkflowWizardForm $model)
         {
-            if(isset($postData['validationScenario']) && $postData['validationScenario'] != null)
+            if (isset($postData['validationScenario']) && $postData['validationScenario'] != null)
             {
                 $model->setScenario($postData['validationScenario']);
             }

@@ -46,7 +46,7 @@
             $sally->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS);
             $sally->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES);
             $sally->setRight('ReportsTestModule',   ReportsTestModule::RIGHT_ACCESS_REPORTS_TESTS);
-            if(!$sally->save())
+            if (!$sally->save())
             {
                 throw new FailedToSaveModelException();
             }
@@ -63,7 +63,7 @@
             ReadPermissionsForReportUtil::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
             $this->assertEquals(serialize(array('anExistingOne' => array('a', 'b'),
                                                 'aNewOne' => array('a', 'b'))), serialize($attributeIndexes));
-            $attributeIndexes          = array('anExistingOne'=> array('a', 'b'));
+            $attributeIndexes          = array('anExistingOne' => array('a', 'b'));
             $attributeIndexesToResolve = array('aNewOne' => array('a', 'b'), 'anExistingOne' => array('a', 'b'));
             ReadPermissionsForReportUtil::resolveIndexesTogether($attributeIndexes, $attributeIndexesToResolve);
             $this->assertEquals(serialize(array('anExistingOne' => array('a', 'b'),

@@ -47,7 +47,7 @@
         public static function canCurrentUserCanAccessModule($moduleClassName)
         {
             assert('is_string($moduleClassName)');
-            if($moduleClassName::getStateMetadataAdapterClassName() != null)
+            if ($moduleClassName::getStateMetadataAdapterClassName() != null)
             {
                 $reportRules     = ReportRules::makeByModuleClassName($moduleClassName);
                 return $reportRules->canUserAccessModuleInAVariableState(Yii::app()->user->userModel);
@@ -64,9 +64,9 @@
          */
         public static function canCurrentUserAccessAllComponents(Array $componentForms)
         {
-            foreach($componentForms as $componentForm)
+            foreach ($componentForms as $componentForm)
             {
-                if(!self::canCurrentUserAccessComponent($componentForm))
+                if (!self::canCurrentUserAccessComponent($componentForm))
                 {
                     return false;
                 }
@@ -85,21 +85,21 @@
         {
             $modelClassName       = $componentForm->getModelClassName();
             $moduleClassName      = $componentForm->getModuleClassName();
-            if(!$componentForm->hasRelatedData())
+            if (!$componentForm->hasRelatedData())
             {
                 return self::canCurrentUserCanAccessModule($moduleClassName);
             }
             else
             {
-                foreach($componentForm->attributeAndRelationData as $relationOrAttribute)
+                foreach ($componentForm->attributeAndRelationData as $relationOrAttribute)
                 {
-                    if(!self::canCurrentUserCanAccessModule($moduleClassName))
+                    if (!self::canCurrentUserCanAccessModule($moduleClassName))
                     {
                         return false;
                     }
                     $modelToReportAdapter = ModelRelationsAndAttributesToReportAdapter::
                                             make($moduleClassName, $modelClassName, $componentForm->getReportType());
-                    if($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
+                    if ($modelToReportAdapter->isReportedOnAsARelation($relationOrAttribute))
                     {
                         $modelClassName       = $modelToReportAdapter->getRelationModelClassName($relationOrAttribute);
                         $moduleClassName      = $modelToReportAdapter->getRelationModuleClassName($relationOrAttribute);

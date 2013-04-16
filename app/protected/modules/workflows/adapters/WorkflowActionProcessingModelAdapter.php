@@ -67,7 +67,7 @@
         {
             $this->model           = $model;
             $this->triggeredByUser = $triggeredByUser;
-            if($triggeredModel == null)
+            if ($triggeredModel == null)
             {
                 $this->triggeredModel = $model;
             }

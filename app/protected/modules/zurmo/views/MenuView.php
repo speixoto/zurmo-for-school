@@ -72,7 +72,7 @@
             {
                 $widgetName = 'MbMenu';
             }
-            $widgetPath = 'application.core.widgets.'.$widgetName;
+            $widgetPath = 'application.core.widgets.' . $widgetName;
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("Tabs");
             $cClipWidget->widget($widgetPath, array(
@@ -91,13 +91,13 @@
             assert('is_array($items)');
             assert('is_int($showCount)');
             $count = 1;
-            foreach($this->items as $key => $item)
+            foreach ($this->items as $key => $item)
             {
-                if($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
+                if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
                 {
                     $items[$key]['itemOptions']['class'] = 'hidden-nav-item';
                 }
-                $count ++;
+                $count++;
             }
             return $items;
         }
@@ -106,7 +106,7 @@
         {
             if (count($this->items) > $this->showCount)
             {
-                return ZurmoHtml::tag('a', array('class'=>'toggle-hidden-nav-items'), '');
+                return ZurmoHtml::tag('a', array('class' => 'toggle-hidden-nav-items'), '');
             }
         }
 

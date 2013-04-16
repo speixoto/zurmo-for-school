@@ -58,7 +58,7 @@
                strtolower($value) != strtolower(UserStatusUtil::ACTIVE) &&
                strtolower($value) == strtolower(UserStatusUtil::INACTIVE))
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
             }
         }
 

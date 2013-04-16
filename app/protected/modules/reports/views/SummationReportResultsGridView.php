@@ -44,7 +44,7 @@
          */
         protected function isDataProviderValid()
         {
-            if(!$this->dataProvider instanceof SummationReportDataProvider)
+            if (!$this->dataProvider instanceof SummationReportDataProvider)
             {
                 return false;
             }

@@ -155,7 +155,6 @@
             ');
         }
 
-
         protected function getModelId()
         {
             $marketingListId = ArrayUtil::getArrayValue($this->params, 'marketingListId');

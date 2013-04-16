@@ -52,15 +52,15 @@
         public static function getFormClassNameByType($type)
         {
             assert('is_string($type)');
-            if($type == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($type == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 return 'RowsAndColumnsReportWizardForm';
             }
-            elseif($type == Report::TYPE_SUMMATION)
+            elseif ($type == Report::TYPE_SUMMATION)
             {
                 return 'SummationReportWizardForm';
             }
-            elseif($type == Report::TYPE_MATRIX)
+            elseif ($type == Report::TYPE_MATRIX)
             {
                 return 'MatrixReportWizardForm';
             }
@@ -84,15 +84,15 @@
          */
         public function makeFormByType()
         {
-            if($this->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
+            if ($this->report->getType() == Report::TYPE_ROWS_AND_COLUMNS)
             {
                 return $this->makeRowsAndColumnsWizardForm();
             }
-            elseif($this->report->getType() == Report::TYPE_SUMMATION)
+            elseif ($this->report->getType() == Report::TYPE_SUMMATION)
             {
                 return $this->makeSummationWizardForm();
             }
-            elseif($this->report->getType() == Report::TYPE_MATRIX)
+            elseif ($this->report->getType() == Report::TYPE_MATRIX)
             {
                 return $this->makeMatrixWizardForm();
             }
@@ -140,7 +140,7 @@
             $formModel->id               = $this->report->getId();
             $formModel->description      = $this->report->getDescription();
             $formModel->moduleClassName  = $this->report->getModuleClassName();
-            if($this->report->getOwner()->id > 0)
+            if ($this->report->getOwner()->id > 0)
             {
                 $formModel->ownerId      = (int)$this->report->getOwner()->id;
                 $formModel->ownerName    = strval($this->report->getOwner());
@@ -152,7 +152,7 @@
             $formModel->currencyConversionType     = $this->report->getCurrencyConversionType();
             $formModel->spotConversionCurrencyCode = $this->report->getSpotConversionCurrencyCode();
 
-            if($this->report->isNew())
+            if ($this->report->isNew())
             {
                 $formModel->setIsNew();
             }

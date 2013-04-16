@@ -97,10 +97,10 @@
         private function getDefaultMassActions()
         {
             $defaultMassOptions  = array(
-                                    'markRead'  => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as read'),
-                                                        'isActionForAll' => false),
-                                    'markUnread'=> array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as unread'),
-                                                        'isActionForAll' => false),
+                                    'markRead'   => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as read'),
+                                                         'isActionForAll' => false),
+                                    'markUnread' => array('label' => Zurmo::t('MashableInboxModule', 'Mark selected as unread'),
+                                                         'isActionForAll' => false),
                     );
             return $defaultMassOptions;
         }
@@ -113,7 +113,6 @@
 
         private function getMenuItems()
         {
-
             $items  = array();
             $script = '';
             foreach ($this->massOptions as $massOption => $massOptionParams)

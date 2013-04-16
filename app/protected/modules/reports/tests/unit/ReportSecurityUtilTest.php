@@ -53,7 +53,6 @@
         {
             $this->assertTrue(ReportSecurityUtil::canCurrentUserCanAccessModule('AccountsModule'));
             $this->assertTrue(ReportSecurityUtil::canCurrentUserCanAccessModule('ContactsModule'));
-
         }
 
         public function testCanCurrentUserAccessAllComponentsWithSuperUser()
@@ -98,7 +97,6 @@
             $filter2->value                       = 'zurmo.com';
             $componentForms[] = $filter2;
             $this->assertFalse(ReportSecurityUtil::canCurrentUserAccessAllComponents($componentForms));
-
 
             //Now add access, and bobby can.
             Yii::app()->user->userModel->setRight('ContactsModule', ContactsModule::RIGHT_ACCESS_CONTACTS);

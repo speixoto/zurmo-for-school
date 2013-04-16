@@ -88,7 +88,7 @@
          */
         protected function renderPreviousPageLinkContent()
         {
-            if($this->model->isNew())
+            if ($this->model->isNew())
             {
                 $label = Zurmo::t('Core', 'Cancel');
             }

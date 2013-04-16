@@ -74,12 +74,12 @@
             $validatedEmail = $validator->validateValue($value);
             if ($validatedEmail === false)
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
                 return;
             }
             if (strlen($validatedEmail) > $this->maxLength)
             {
-                $this->messageCountData[static::EMAIL_TOO_LONG] ++;
+                $this->messageCountData[static::EMAIL_TOO_LONG]++;
             }
         }
 

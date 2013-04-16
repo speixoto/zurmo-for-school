@@ -76,6 +76,18 @@
 
         protected function getExtraRenderForClearSearchLinkScript()
         {
+            return parent::getExtraRenderForClearSearchLinkScript() .
+                    "$(this).closest('form').find('.search-view-1').find('.dynamic-search-row').each(function()
+                    {
+                        $(this).remove();
+                    });
+                    $('#" . $this->getRowCounterInputId() . "').val(0);
+                    $('#" . $this->getStructureInputId() . "').val('');
+                    $(this).closest('form').find('.search-view-1').hide();
+                    $('.select-list-attributes-view').hide();
+                    resolveClearLinkPrefixLabelAndVisibility('" . $this->getSearchFormId() . "');
+                    rebuildDynamicSearchRowNumbersAndStructureInput('" . $this->getSearchFormId() . "');
+            ";
         }
 
         protected function getFormActionUrl()

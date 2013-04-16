@@ -86,7 +86,7 @@
             {
                 if (!preg_match($validator->integerPattern, $value))
                 {
-                    $this->messageCountData[static::INVALID] ++;
+                    $this->messageCountData[static::INVALID]++;
                     return;
                 }
             }
@@ -94,7 +94,7 @@
             {
                 if (!preg_match($validator->numberPattern, $value))
                 {
-                    $this->messageCountData[static::INVALID] ++;
+                    $this->messageCountData[static::INVALID]++;
                     return;
                 }
             }

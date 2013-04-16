@@ -61,7 +61,7 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
+            if ($this->type == WorkflowActionAttributeForm::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute} = ContactState::getById((int)$this->value); //todo: what if it doesn't exist anymore?
             }

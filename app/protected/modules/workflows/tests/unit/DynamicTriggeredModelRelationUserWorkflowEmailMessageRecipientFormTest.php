@@ -202,7 +202,6 @@
             $form->dynamicUserType = DynamicTriggeredModelRelationUserWorkflowEmailMessageRecipientForm::
                                      DYNAMIC_USER_TYPE_OWNER;
 
-
             //Test without any related model
             $recipients = $form->makeRecipients(new WorkflowModelTestItem5(), self::$sarah);
             $this->assertEquals(0, count($recipients));

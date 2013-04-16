@@ -100,7 +100,6 @@
             $message->emailTemplateId = 5;
             $validated                = $message->validate();
             $this->assertTrue($validated);
-
         }
     }
 ?>

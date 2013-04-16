@@ -101,11 +101,11 @@
 
         public function extractMergeTagsPlaceHolders()
         {
-            // Current RE: /((WAS\%)?((\^|__)?([A-Z]))+)/
+            // Current RE: /((WAS\%)?((\^|__)?([A-Z]))+)/ // Not Coding Standard
             $pattern = '/' . preg_quote(static::TAG_PREFIX) .
                 '((WAS' . preg_quote(static::TIME_DELIMITER) . ')?' .
                 '((' . preg_quote(static::CAPITAL_DELIMITER) . '|' .
-                preg_quote(static::PROPERTY_DELIMITER) . ')?' .
+                preg_quote(static::PROPERTY_DELIMITER) . ')?' . // Not Coding Standard
                 '([A-Z]))+)' .
                 preg_quote(static::TAG_SUFFIX) .
                 '/';

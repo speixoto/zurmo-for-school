@@ -111,9 +111,9 @@
         {
             assert('is_string($name)');
             $sortAttribute = SearchUtil::resolveSortAttributeFromGetArray($name);
-            if($sortAttribute == null)
+            if ($sortAttribute == null)
             {
-                if(!empty($this->model->sortAttribute))
+                if (!empty($this->model->sortAttribute))
                 {
                     $sortAttribute = $this->model->sortAttribute;
                 }
@@ -131,9 +131,9 @@
             assert('is_string($name)');
             $sortDescending =  SearchUtil::resolveSortDescendingFromGetArray($name);
 
-            if($sortDescending === false)
+            if ($sortDescending === false)
             {
-                if(!empty($this->model->sortDescending))
+                if (!empty($this->model->sortDescending))
                 {
                     $sortDescending = true;
                 }

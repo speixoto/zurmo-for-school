@@ -83,25 +83,23 @@
         {
             assert('is_string($formName)');
             return     "linkId = $('#" . $formName . "').find('.attachLoadingTarget').attr('id');
-                        if(linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ModuleForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::FILTERS_VALIDATION_SCENARIO . "');
                             $('#ModuleForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'FiltersForReportWizardView') . "
                             $('#FiltersForReportWizardView').show();
-
                         }
-                        if(linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . FiltersForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GROUP_BYS_VALIDATION_SCENARIO . "');
                             $('#FiltersForReportWizardView').hide();
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'GroupBysForReportWizardView') . "
                             $('#GroupBysForReportWizardView').show();
-
                         }
-                        if(linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GroupBysForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
@@ -109,7 +107,7 @@
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DisplayAttributesForReportWizardView') . "
                             $('#DisplayAttributesForReportWizardView').show();
                         }
-                        if(linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . DisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::DRILL_DOWN_DISPLAY_ATTRIBUTES_VALIDATION_SCENARIO . "');
@@ -117,7 +115,7 @@
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'DrillDownDisplayAttributesForReportWizardView') . "
                             $('#DrillDownDisplayAttributesForReportWizardView').show();
                         }
-                        if(linkId == '" . DrillDownDisplayAttributesForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . DrillDownDisplayAttributesForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::ORDER_BYS_VALIDATION_SCENARIO . "');
@@ -125,7 +123,7 @@
                             " . $this->renderTreeViewAjaxScriptContent($formName, 'OrderBysForReportWizardView') . "
                             $('#OrderBysForReportWizardView').show();
                         }
-                        if(linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . OrderBysForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::CHART_VALIDATION_SCENARIO . "');
@@ -133,14 +131,14 @@
                             " . $this->renderLoadChartSeriesAndRangesScriptContent($formName) . "
                             $('#ChartForReportWizardView').show();
                         }
-                        if(linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . ChartForReportWizardView::getNextPageLinkId() . "')
                         {
                             $('#" . static::getValidationScenarioInputId() . "').val('" .
                                 ReportWizardForm::GENERAL_DATA_VALIDATION_SCENARIO . "');
                             $('#ChartForReportWizardView').hide();
                             $('#GeneralDataForReportWizardView').show();
                         }
-                        if(linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
+                        if (linkId == '" . GeneralDataForReportWizardView::getNextPageLinkId() . "')
                         {
                             " . $this->getSaveAjaxString($formName) . "
                         }
@@ -294,7 +292,7 @@
                         var inputIdBeingRemoved = $(this).prev().find('input').first().val();
                         $('#DisplayAttributesForReportWizardView').find('.dynamic-row').each(function()
                             {
-                                if(inputIdBeingRemoved == $(this).find('input').first().val())
+                                if (inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
                                     $(this).parent().remove();
                                 }
@@ -302,7 +300,7 @@
                         );
                         $('#OrderBysForReportWizardView').find('.dynamic-row').each(function()
                             {
-                                if(inputIdBeingRemoved == $(this).find('input').first().val())
+                                if (inputIdBeingRemoved == $(this).find('input').first().val())
                                 {
                                     $(this).parent().remove();
                                 }

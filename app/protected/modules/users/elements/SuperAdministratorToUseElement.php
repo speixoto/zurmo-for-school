@@ -58,7 +58,7 @@
                                 $dropDownArray,
                                 $htmlOptions);
             $toolTipContent = static::renderTooltipContent();
-            if($toolTipContent != null)
+            if ($toolTipContent != null)
             {
                 $content    = ZurmoHtml::tag('div', array('class' => 'beforeToolTip'), $content);
                 $content   .= $toolTipContent;

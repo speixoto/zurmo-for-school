@@ -78,7 +78,7 @@
 
             $content .= '<span class="comment-details"><strong>'. DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay(
                                     $model->createdDateTime, 'long', null) . '</strong>';
-            if($model->canUserDelete(Yii::app()->user->userModel))
+            if ($model->canUserDelete(Yii::app()->user->userModel))
             {
                 $content .= ' · <span class="delete-comment">' . self::renderDeleteLinkContent($model) . '</span></span>';
             }

@@ -47,11 +47,11 @@
          */
         public static function areTriggersTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
-            if($workflow->getType() == Workflow::TYPE_BY_TIME)
+            if ($workflow->getType() == Workflow::TYPE_BY_TIME)
             {
                 return self::resolveByTimeTriggerIsTrueBeforeSave($workflow, $model);
             }
-            elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+            elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
             {
                 return self::resolveTriggersAreTrueBeforeSave($workflow, $model);
             }
@@ -70,9 +70,9 @@
          */
         public static function areTriggersTrueOnByTimeWorkflowQueueJob(Workflow $workflow, RedBeanModel $model)
         {
-            if($workflow->getType() == Workflow::TYPE_BY_TIME)
+            if ($workflow->getType() == Workflow::TYPE_BY_TIME)
             {
-                if(self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
+                if (self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
                 {
                     return self::resolveTriggersAreTrueBeforeSave($workflow, $model);
                 }
@@ -105,9 +105,9 @@
         {
             assert('is_string($structureAsPHPString)');
             $evaluatedString = $structureAsPHPString;
-            foreach($dataToEvaluate as $key => $boolean)
+            foreach ($dataToEvaluate as $key => $boolean)
             {
-                if(!is_bool($boolean))
+                if (!is_bool($boolean))
                 {
                     throw new NotSupportedException();
                 }
@@ -137,7 +137,7 @@
             {
                 throw new InvalidArgumentException('Only boolean operators allowed.');
             }
-            return (bool) eval('return (' . $phpStringReadyToEvaluate. ');');
+            return (bool) eval('return (' . $phpStringReadyToEvaluate . ');');
         }
 
         /**
@@ -148,7 +148,7 @@
          */
         protected static function resolveTimeTriggerIsTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
-            if(count($workflow->getTimeTrigger()) != 1)
+            if (count($workflow->getTimeTrigger()) != 1)
             {
                 throw new NotSupportedException();
             }
@@ -162,17 +162,17 @@
          */
         protected static function resolveTriggersAreTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
-            if(count($workflow->getTriggers()) == 0)
+            if (count($workflow->getTriggers()) == 0)
             {
                 return true;
             }
             $structureAsPHPString = WorkflowTriggersUtil::resolveStructureToPHPString($workflow->getTriggersStructure());
             $dataToEvaluate       = array();
             $count                = 0;
-            foreach($workflow->getTriggers() as $trigger)
+            foreach ($workflow->getTriggers() as $trigger)
             {
                 $dataToEvaluate[$count + 1] = self::isTriggerTrueByModel($workflow, $trigger, $model);
-                $count ++;
+                $count++;
             }
             $phpStringReadyToEvaluate = WorkflowTriggersUtil::resolveBooleansDataToPHPString(
                                         $structureAsPHPString, $dataToEvaluate);
@@ -190,7 +190,7 @@
          */
         protected static function resolveByTimeTriggerIsTrueBeforeSave(Workflow $workflow, RedBeanModel $model)
         {
-            if(self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
+            if (self::resolveTimeTriggerIsTrueBeforeSave($workflow, $model))
             {
                 return self::resolveTriggersAreTrueBeforeSave($workflow, $model);
             }
@@ -206,19 +206,19 @@
          */
         protected static function isTriggerTrueByModel(Workflow $workflow, TriggerForWorkflowForm $trigger, RedBeanModel $model)
         {
-            if($trigger->getAttribute() == null)
+            if ($trigger->getAttribute() == null)
             {
                 $attributeAndRelationData = $trigger->getAttributeAndRelationData();
-                if(count($attributeAndRelationData) == 2)
+                if (count($attributeAndRelationData) == 2)
                 {
                     $penultimateRelation = $trigger->getPenultimateRelation();
                     $resolvedAttribute   = $trigger->getResolvedAttributeRealAttributeName();
-                    if($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
+                    if ($model->$penultimateRelation instanceof RedBeanMutableRelatedModels)
                     {
                         //ManyMany or HasMany
-                        foreach($model->{$penultimateRelation} as $resolvedModel)
+                        foreach ($model->{$penultimateRelation} as $resolvedModel)
                         {
-                            if(self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute) &&
+                            if (self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute) &&
                                $trigger->relationFilter == TriggerForWorkflowForm::RELATION_FILTER_ANY)
                             {
                                 return true;
@@ -232,18 +232,18 @@
                         return self::resolveIsTrueByEvaluationRules($workflow, $trigger, $resolvedModel, $resolvedAttribute);
                     }
                 }
-                elseif(count($attributeAndRelationData) == 3)
+                elseif (count($attributeAndRelationData) == 3)
                 {
                     $firstRelation       = $trigger->getResolvedRealAttributeNameForFirstRelation();
                     $resolvedAttribute   = $trigger->getResolvedAttributeRealAttributeName();
                     $penultimateRelation = $trigger->getResolvedRealAttributeNameForPenultimateRelation();
-                    if($model->{$firstRelation} instanceof RedBeanMutableRelatedModels)
+                    if ($model->{$firstRelation} instanceof RedBeanMutableRelatedModels)
                     {
                         //ManyMany or HasMany
-                        foreach($model->{$firstRelation} as $relatedModel)
+                        foreach ($model->{$firstRelation} as $relatedModel)
                         {
                             $resolvedModel  = $relatedModel->{$penultimateRelation};
-                            if(self::resolveIsTrueByEvaluationRules($workflow, $trigger,
+                            if (self::resolveIsTrueByEvaluationRules($workflow, $trigger,
                                                                     $resolvedModel,
                                                                     $resolvedAttribute) &&
                                 $trigger->relationFilter == TriggerForWorkflowForm::RELATION_FILTER_ANY)
@@ -286,12 +286,12 @@
         {
             assert('is_string($attribute)');
             $triggerRules = TriggerRulesFactory::createTriggerRulesByTrigger($trigger);
-            if($workflow->getType() == Workflow::TYPE_BY_TIME)
+            if ($workflow->getType() == Workflow::TYPE_BY_TIME)
             {
                 return $triggerRules->evaluateTimeTriggerBeforeSave($model, $attribute,
                        $workflow->doesTimeTriggerRequireChangeToProcess());
             }
-            elseif($workflow->getType() == Workflow::TYPE_ON_SAVE)
+            elseif ($workflow->getType() == Workflow::TYPE_ON_SAVE)
             {
                 return $triggerRules->evaluateBeforeSave($model, $attribute);
             }

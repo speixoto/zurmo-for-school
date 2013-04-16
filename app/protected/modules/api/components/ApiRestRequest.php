@@ -165,7 +165,7 @@
             {
                 return  ApiRequest::JSON_FORMAT;
             }
-            elseif(@strpos($_SERVER['HTTP_ACCEPT'], ApiRequest::XML_FORMAT))
+            elseif (@strpos($_SERVER['HTTP_ACCEPT'], ApiRequest::XML_FORMAT))
             {
                 return ApiRequest::XML_FORMAT;
             }

@@ -63,11 +63,11 @@
         protected function makeChartViewAndRender()
         {
             $dataProvider = null;
-            if(isset($this->params['dataProvider']) &&
+            if (isset($this->params['dataProvider']) &&
                 $this->params['dataProvider']->getReport()->getChart()->type != null)
             {
                 $dataProvider = $this->params['dataProvider'];
-                if($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
+                if ($dataProvider->getReport()->canCurrentUserProperlyRenderResults())
                 {
                     $view      = new ReportChartView('default', 'reports', $dataProvider, $this->uniqueLayoutId);
                 }

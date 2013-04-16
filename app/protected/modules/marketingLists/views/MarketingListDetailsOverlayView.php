@@ -65,7 +65,6 @@
             $memberStats .= $this->renderUnsubscriberCount();  // . $this->renderInvalidEmailsCount();
             $content      = ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
             return $content;
-
         }
 
         protected function renderSubscriberCount()

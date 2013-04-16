@@ -54,7 +54,6 @@
             $saved                          = $savedWorkflow->save();
             $this->assertTrue($saved);
 
-
             $byTimeWorkflowInQueue                  = new ByTimeWorkflowInQueue();
             $byTimeWorkflowInQueue->modelClassName  = get_class($model);
             $byTimeWorkflowInQueue->modelItem       = $model;
@@ -89,7 +88,6 @@
             //Test when there should be an existing model.
             $byTimeWorkflowInQueue = ByTimeWorkflowInQueue::resolveByWorkflowIdAndModel($savedWorkflows[0], $models[0]);
             $this->assertTrue($byTimeWorkflowInQueue->id > 0);
-
 
             $savedWorkflow2                  = new SavedWorkflow();
             $savedWorkflow2->name            = 'some workflow2';

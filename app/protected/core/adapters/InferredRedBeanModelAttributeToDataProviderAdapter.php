@@ -60,7 +60,6 @@
             $this->attribute                        = $attribute;
             $this->inferredRelationModelClassName  = $inferredRelationModelClassName;
             $this->inferredRelationModuleClassName = $inferredRelationModuleClassName;
-
         }
 
         public function isInferredRelation()

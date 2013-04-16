@@ -36,7 +36,6 @@
 
     class MarketingListsMemberController extends ZurmoModuleController
     {
-
         public function actionMassDelete()
         {
             $this->triggerMarketingListMemberMassAction();
@@ -71,7 +70,6 @@
         {
             return 'MarketingListMembersSearchForm';
         }
-
 
         protected function triggerMarketingListMemberMassAction()
         {

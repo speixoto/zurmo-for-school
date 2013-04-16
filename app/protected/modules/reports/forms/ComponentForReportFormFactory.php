@@ -55,23 +55,23 @@
             assert('is_string($modelClassName)');
             assert('is_string($type)');
             assert('is_string($componentType)');
-            if($componentType == ComponentForReportForm::TYPE_FILTERS)
+            if ($componentType == ComponentForReportForm::TYPE_FILTERS)
             {
                 return new FilterForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($componentType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
+            elseif ($componentType == ComponentForReportForm::TYPE_DISPLAY_ATTRIBUTES)
             {
                 return new DisplayAttributeForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($componentType == ComponentForReportForm::TYPE_ORDER_BYS)
+            elseif ($componentType == ComponentForReportForm::TYPE_ORDER_BYS)
             {
                 return new OrderByForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($componentType == ComponentForReportForm::TYPE_GROUP_BYS)
+            elseif ($componentType == ComponentForReportForm::TYPE_GROUP_BYS)
             {
                 return new GroupByForReportForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($componentType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
+            elseif ($componentType == ComponentForReportForm::TYPE_DRILL_DOWN_DISPLAY_ATTRIBUTES)
             {
                 return new DrillDownDisplayAttributeForReportForm($moduleClassName, $modelClassName, $type);
             }

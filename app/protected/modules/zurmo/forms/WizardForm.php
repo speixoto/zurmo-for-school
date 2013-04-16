@@ -81,11 +81,11 @@
             assert('is_string($componentType)');
             assert('is_string($componentName)');
             $passedValidation = true;
-            foreach($this->{$componentName} as $model)
+            foreach ($this->{$componentName} as $model)
             {
-                if(!$model->validate())
+                if (!$model->validate())
                 {
-                    foreach($model->getErrors() as $attribute => $errorArray)
+                    foreach ($model->getErrors() as $attribute => $errorArray)
                     {
                         assert('is_array($errorArray)');
                         $attributePrefix = static::resolveErrorAttributePrefix($componentType, $model->getRowKey());

@@ -83,7 +83,7 @@
                    !in_array(strtolower($value), $lowerCaseMissingValuesToMap))
                 {
                     $this->missingDropDownInstructions[DropDownSanitizerUtil::ADD_MISSING_VALUE][] = $value;
-                    $this->messageCountData[static::INVALID] ++;
+                    $this->messageCountData[static::INVALID]++;
                 }
             }
         }

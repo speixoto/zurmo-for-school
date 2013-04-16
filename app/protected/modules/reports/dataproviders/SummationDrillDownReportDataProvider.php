@@ -53,7 +53,7 @@
          */
         protected function isReportValidType()
         {
-            if($this->report->getType() != Report::TYPE_SUMMATION)
+            if ($this->report->getType() != Report::TYPE_SUMMATION)
             {
                 throw new NotSupportedException();
             }

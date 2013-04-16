@@ -51,7 +51,7 @@
                     'relationModuleId' => $this->getModule()->getId(),
                     'relationModel'    => $report,
                     'redirectUrl'      => Yii::app()->request->getRequestUri(),
-                    'dataProvider'	   => $this->getDataProvider($report, $report->getId(), (bool)$runReport),
+                    'dataProvider'     => $this->getDataProvider($report, $report->getId(), (bool)$runReport),
             );
             $portletView = $portlet->getView();
             if (!RightsUtil::canUserAccessModule($portletView::getModuleClassName(), Yii::app()->user->userModel))
@@ -81,7 +81,7 @@
             $pageSize     = Yii::app()->pagination->resolveActiveForCurrentUserByType(
                             'reportResultsListPageSize', get_class($this->getModule()));
             $dataProvider = ReportDataProviderFactory::makeByReport($report, $pageSize);
-            if($runReport)
+            if ($runReport)
             {
                 $dataProvider->setRunReport($runReport);
             }

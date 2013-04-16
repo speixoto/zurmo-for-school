@@ -74,7 +74,6 @@
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
 
-
             //A display attribute that is on an owned model and one on the base model
             $joinTablesAdapter                     = new RedBeanModelJoinTablesQueryAdapter('ReportModelTestItem10');
             $selectQueryAdapter                    = new RedBeanModelSelectQueryAdapter();
@@ -170,7 +169,6 @@
                                                      "{$q}currencyvalue{$q}.{$q}ratetobase{$q}) col0 ";
             $this->assertEquals($compareContent, $content);
         }
-
 
         public function testLikeContactStateWhenRelated()
         {
@@ -413,7 +411,6 @@
             $this->assertEquals(1, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
-
         public function testDisplayCalculationAttributes()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -624,7 +621,6 @@
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
         }
 
-
         public function testASingleDisplayCalculationAttributesThatIsNested()
         {
             $q                                     = DatabaseCompatibilityUtil::getQuote();
@@ -667,7 +663,6 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
-
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasOneRelation()
@@ -967,7 +962,6 @@
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModelButDifferentRelations()
         {
-
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 custom fields attributes with both on a related model, but the links are different
@@ -1169,7 +1163,6 @@
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
         }
-
 
         public function testThreeTestedRelationsWhereTheyBothGoToTheSameModelButAtDifferentNestingPoints()
         {
@@ -1589,7 +1582,6 @@
             $this->assertEquals('account',              $leftTablesAndAliases[4]['tableAliasName']);
             $this->assertEquals('ownedsecurableitem',   $leftTablesAndAliases[4]['onTableAliasName']);
         }
-
 
         public function testDisplayCalculationInferredRelationModelAttributeWithTwoAttributes()
         {

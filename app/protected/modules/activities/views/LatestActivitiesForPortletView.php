@@ -171,7 +171,7 @@
                 $persistantUserConfigItemValue = LatestActivitiesPortletPersistentConfigUtil::getForCurrentUserByPortletIdAndKey(
                                                                                                 $this->params['portletId'],
                                                                                                 $persistantUserConfigItem);
-                if(isset($persistantUserConfigItemValue))
+                if (isset($persistantUserConfigItemValue))
                 {
                     $latestActivitiesConfigurationForm->$persistantUserConfigItem = $persistantUserConfigItemValue;
                 }

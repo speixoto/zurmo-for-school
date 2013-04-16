@@ -47,7 +47,7 @@
         public static function makeUrlForLink($attribute, ReportResultsRowData $data)
         {
             assert('is_string($attribute)');
-            if(null == $model = $data->getModel($attribute))
+            if (null == $model = $data->getModel($attribute))
             {
                 return null;
             }

@@ -364,7 +364,6 @@
                                                          'valueType' => array('Type cannot be blank.'));
             $this->assertEquals($compareErrors, $errors);
 
-
             //check Today
             $filter->valueType                   = 'Today';
             $validated                           = $filter->validate();
@@ -442,7 +441,6 @@
             $compareErrors                       = array('value'     => array('Value must be either 1 or 0.'));
             $this->assertEquals($compareErrors, $errors);
 
-
             $filter->value                       = '1';
             $validated = $filter->validate();
             $this->assertTrue($validated);
@@ -502,8 +500,6 @@
             $validated                           = $filter->validate();
             $this->assertTrue($validated);
         }
-
-
 
         /**
          * Same as testing reportedAsAttribute

@@ -78,7 +78,6 @@
             parent::registerScripts();
             $this->registerRemoveEmailMessageScript();
             $this->registerRemoveEmailMessageRecipientScript();
-
         }
 
         /**
@@ -163,11 +162,11 @@
                         'type'    => 'GET',
                         'data'    => 'js:\'moduleClassName=\' + $("input:radio[name=\"' .
                             $moduleClassNameId . '\"]:checked").val() + ' .
-                            '\'&rowNumber=\' + $(\'#' . $rowCounterInputId. '\').val()',
+                            '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                         'url'     =>  $url,
                         'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
                         'success' => 'js:function(data){
-                        $(\'#' . $rowCounterInputId. '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
                         $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
                             . '").find(".dynamic-rows").find("ul:first").first().append(data);
                         rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
@@ -206,7 +205,7 @@
             assert('is_int($rowCount)');
             assert('is_array($emailMessages)');
             $items                      = array();
-            foreach($emailMessages as $emailMessage)
+            foreach ($emailMessages as $emailMessage)
             {
                 $inputPrefixData   = array(get_class($this->model), ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES, (int)$rowCount);
                 $rowCounterInputId = ComponentForWorkflowWizardView::
@@ -215,7 +214,7 @@
                                         $this->form, get_class($this->model), $rowCounterInputId);
                 $view->addWrapper  = false;
                 $items[]           = array('content' => $view->render());
-                $rowCount ++;
+                $rowCount++;
             }
             return $items;
         }
@@ -226,7 +225,7 @@
                 $(".remove-dynamic-row-link").live("click", function(){
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
-                    if(size < 2)
+                    if (size < 2)
                     {
                         $(".' . static::getZeroComponentsClassName() . '").show();
                     }

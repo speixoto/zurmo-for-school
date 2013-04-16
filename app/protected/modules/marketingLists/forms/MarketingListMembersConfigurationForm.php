@@ -57,7 +57,6 @@
          */
         const FILTER_USER_UNSUBSCRIBERS = 'unsubscribers';
 
-
         /**
          * Whether to filter marketing list member feed by subscription type.
          * Defaults to not filtering on anything
