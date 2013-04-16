@@ -199,19 +199,19 @@
         public function setAttributes($values, $safeOnly = true)
         {
             $recipients = null;
-            if(isset($values[self::EMAIL_MESSAGE_RECIPIENTS]))
+            if (isset($values[self::EMAIL_MESSAGE_RECIPIENTS]))
             {
                 $recipients = $values[self::EMAIL_MESSAGE_RECIPIENTS];
                 unset($values[self::EMAIL_MESSAGE_RECIPIENTS]);
                 $this->_emailMessageRecipients = array();
             }
             parent::setAttributes($values, $safeOnly);
-            if($recipients != null)
+            if ($recipients != null)
             {
                 $count = 0;
-                foreach($recipients as $temporaryKey => $recipientData)
+                foreach ($recipients as $temporaryKey => $recipientData)
                 {
-                    if(!isset($recipientData['type']))
+                    if (!isset($recipientData['type']))
                     {
                         throw new NotSupportedException();
                     }
@@ -220,7 +220,7 @@
                     $form->setAttributes($recipientData);
                     $this->_emailMessageRecipients[] = $form;
                     $this->_emailMessageRecipientsRealToTemporaryKeyData[] = $temporaryKey;
-                    $count ++;
+                    $count++;
                 }
             }
         }
@@ -230,22 +230,22 @@
          */
         public function validateSendFromType()
         {
-            if($this->sendFromType == self::SEND_FROM_TYPE_CUSTOM)
+            if ($this->sendFromType == self::SEND_FROM_TYPE_CUSTOM)
             {
                 $validated = true;
-                if($this->sendFromName == null)
+                if ($this->sendFromName == null)
                 {
                     $this->addError('sendFromName', Zurmo::t('WorkflowsModule', 'From Name cannot be blank.'));
                     $validated = false;
                 }
-                if($this->sendFromAddress == null)
+                if ($this->sendFromAddress == null)
                 {
                     $this->addError('sendFromAddress', Zurmo::t('WorkflowsModule', 'From Email Address cannot be blank.'));
                     $validated = false;
                 }
                 return $validated;
             }
-            elseif($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT)
+            elseif ($this->sendFromType != self::SEND_FROM_TYPE_DEFAULT)
             {
                 $this->addError('type', Zurmo::t('WorkflowsModule', 'Invalid Send From Type'));
             }
@@ -257,7 +257,7 @@
          */
         public function beforeValidate()
         {
-            if(!$this->validateRecipients())
+            if (!$this->validateRecipients())
             {
                 return false;
             }
@@ -270,17 +270,17 @@
         public function validateRecipients()
         {
             $passedValidation = true;
-            if(count($this->_emailMessageRecipients) == 0)
+            if (count($this->_emailMessageRecipients) == 0)
             {
                 $this->addError('recipientsValidation',
                                 Zurmo::t('WorkflowsModule', 'At least one recipient must be added'));
                 return false;
             }
-            foreach($this->_emailMessageRecipients as $key => $workflowEmailMessageRecipientForm)
+            foreach ($this->_emailMessageRecipients as $key => $workflowEmailMessageRecipientForm)
             {
-                if(!$workflowEmailMessageRecipientForm->validate())
+                if (!$workflowEmailMessageRecipientForm->validate())
                 {
-                    foreach($workflowEmailMessageRecipientForm->getErrors() as $attribute => $errorArray)
+                    foreach ($workflowEmailMessageRecipientForm->getErrors() as $attribute => $errorArray)
                     {
                         assert('is_array($errorArray)');
                         $attributePrefix = static::resolveErrorAttributePrefix($this->resolveTemporaryKeyByRealKey($key));

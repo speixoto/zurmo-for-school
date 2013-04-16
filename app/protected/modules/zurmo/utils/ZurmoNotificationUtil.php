@@ -135,6 +135,10 @@
                                         {
                                             unreadMashableInbox = data.unreadMashableInbox;
                                             mashableInboxPlacer.html(unreadMashableInbox);
+                                            if($('#MashableInboxActionBarForViews').length)
+                                            {
+                                                location.reload();
+                                            }
                                             if (desktopNotifications.isSupported())
                                             {
                                                 desktopNotifications.notify(data.imgUrl,

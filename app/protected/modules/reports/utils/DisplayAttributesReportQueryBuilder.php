@@ -64,7 +64,7 @@
         public function makeQueryContent(Array $components)
         {
             $content = null;
-            foreach($components as $displayAttribute)
+            foreach ($components as $displayAttribute)
             {
                 $modelToReportAdapter = static::makeModelToReportAdapterByComponentForm($displayAttribute);
                 $itemBuilder          = new DisplayAttributeReportItemQueryBuilder($displayAttribute, $this->joinTablesAdapter,

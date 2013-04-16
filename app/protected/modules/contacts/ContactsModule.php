@@ -178,9 +178,9 @@
             return 'ContactsDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'ContactsDemoDataMaker';
+            return array('ContactsDemoDataMaker');
         }
 
         public static function getStateMetadataAdapterClassName()

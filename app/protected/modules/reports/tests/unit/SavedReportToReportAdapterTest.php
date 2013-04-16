@@ -139,7 +139,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'string',
-                    'operator'					   => 'equals',
+                    'operator'                     => 'equals',
                 ),
                 array(
                     'availableAtRunTime'           => true,
@@ -149,7 +149,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'currencyValue',
-                    'operator'					   => 'between',
+                    'operator'                     => 'between',
                 ),
                 array(
                     'availableAtRunTime'           => false,
@@ -159,7 +159,7 @@
                     'stringifiedModelForValue'     => 'someName',
                     'valueType'                    => null,
                     'attributeIndexOrDerivedType'  => 'owner__User',
-                    'operator'					   => null,
+                    'operator'                     => null,
                 ),
                 array(
                     'availableAtRunTime'           => true,
@@ -168,7 +168,7 @@
                     'stringifiedModelForValue'     => null,
                     'valueType'                    => 'Between',
                     'attributeIndexOrDerivedType'  => 'createdDateTime',
-                    'operator'					   => null,
+                    'operator'                     => null,
                     'currencyIdForValue'           => null,
                 ),
             ),
@@ -186,7 +186,7 @@
             ),
             'DisplayAttributes' => array(
                 array(
-                    'label'						     => 'someNewLabel',
+                    'label'                          => 'someNewLabel',
                     'attributeIndexOrDerivedType'    => 'phone',
                     'columnAliasName'                => 'col0',
                     'queryOnly'                      => false,
@@ -232,7 +232,7 @@
             $orderBys                   = $report->getOrderBys();
             $displayAttributes          = $report->getDisplayAttributes();
             $drillDownDisplayAttributes = $report->getDrillDownDisplayAttributes();
-            $this->assertEquals    	      ('ReportsTestModule',           $report->getModuleClassName());
+            $this->assertEquals           ('ReportsTestModule',           $report->getModuleClassName());
             $this->assertEquals           ('myFirstReport',               $report->getName());
             $this->assertEquals           ('aDescription',                $report->getDescription());
             $this->assertEquals           (Report::TYPE_ROWS_AND_COLUMNS, $report->getType());

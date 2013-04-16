@@ -72,11 +72,11 @@
             assert('is_string($baseDomain)');
             $ldapConnection = self::makeConnection($host, $port);
             //checking server type
-            if($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
+            if ($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_OPEN_LDAP)
             {
                 $bindRegisteredDomain = 'cn=' . $bindRegisteredDomain . ',' . $baseDomain; // Not Coding Standard
             }
-            elseif($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
+            elseif ($serverType == ZurmoAuthenticationHelper::SERVER_TYPE_ACTIVE_DIRECTORY)
             {
                 $bindRegisteredDomain = self::resolveBindRegisteredDomain($bindRegisteredDomain, $baseDomain);
             }

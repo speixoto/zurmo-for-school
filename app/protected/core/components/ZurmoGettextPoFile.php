@@ -45,7 +45,7 @@
 
         protected $messages = array();
 
-        public function __construct($fileSource=null)
+        public function __construct($fileSource = null)
         {
             if ($fileSource)
             {
@@ -53,7 +53,7 @@
             }
         }
 
-        protected function openFile($fileSource=null)
+        protected function openFile($fileSource = null)
         {
             if (!$fileSource)
             {

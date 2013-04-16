@@ -520,7 +520,6 @@
             return $relationModel->getRelationModelClassName($opposingRelationName);
         }
 
-
         public function getManyToManyTableNameForDerivedRelationViaCastedUpModel()
         {
             $modelClassName         = $this->modelClassName;

@@ -138,9 +138,9 @@
                 $uncheck = '';
             }
 
-            if(isset($htmlOptions['id']))
+            if (isset($htmlOptions['id']))
             {
-                if(isset($htmlOptions['ignoreIdPrefix']) && $htmlOptions['ignoreIdPrefix'])
+                if (isset($htmlOptions['ignoreIdPrefix']) && $htmlOptions['ignoreIdPrefix'])
                 {
                     $hiddenOptions = array('id' => $htmlOptions['id']);
                 }
@@ -148,7 +148,6 @@
                 {
                     $hiddenOptions = array('id' => self::ID_PREFIX . $htmlOptions['id']);
                 }
-
             }
             else
             {
@@ -652,7 +651,7 @@ EOD;
          */
         public static function resolveDivWrapperForContent($innerContent, & $content, $class = null)
         {
-            if($class != null)
+            if ($class != null)
             {
                 $htmlOptions = array('class' => $class);
             }
@@ -660,7 +659,7 @@ EOD;
             {
                 $htmlOptions = array();
             }
-            if($innerContent != null)
+            if ($innerContent != null)
             {
                 $content .= ZurmoHtml::tag('div', $htmlOptions, $innerContent);
             }

@@ -65,19 +65,19 @@
             assert('$user->id > 0');
             $adapterName  = ContactsUtil::resolveContactStateAdapterByModulesUserHasAccessTo('LeadsModule',
                 'ContactsModule', $user);
-            if($adapterName === false)
+            if ($adapterName === false)
             {
                 return null;
             }
-            elseif($adapterName == 'LeadsStateMetadataAdapter')
+            elseif ($adapterName == 'LeadsStateMetadataAdapter')
             {
                 return Zurmo::t('ContactsModule', 'LeadsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            elseif($adapterName == 'ContactsStateMetadataAdapter')
+            elseif ($adapterName == 'ContactsStateMetadataAdapter')
             {
                 return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules());
             }
-            elseif($adapterName === null)
+            elseif ($adapterName === null)
             {
                 return Zurmo::t('ContactsModule', 'ContactsModulePluralLabel and LeadsModulePluralLabel',
                     LabelUtil::getTranslationParamsForAllModules());
@@ -91,7 +91,7 @@
         public static function canUserAccessModuleInAVariableState(User $user)
         {
             assert('$user->id > 0');
-            if(RightsUtil::canUserAccessModule('ContactsModule', $user) ||
+            if (RightsUtil::canUserAccessModule('ContactsModule', $user) ||
                RightsUtil::canUserAccessModule('LeadsModule', $user))
             {
                 return true;

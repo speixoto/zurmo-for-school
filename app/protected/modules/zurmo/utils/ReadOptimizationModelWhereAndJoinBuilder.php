@@ -47,7 +47,6 @@
             parent::__construct($modelAttributeToDataProviderAdapter, $joinTablesAdapter);
         }
 
-
         public function resolveJoinsAndBuildWhere($operatorType, $value, & $clausePosition, & $where,
                                                   $onTableAliasName = null)
         {

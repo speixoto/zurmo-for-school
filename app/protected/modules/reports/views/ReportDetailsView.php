@@ -127,28 +127,27 @@
 
         protected function shouldRenderToolBarElement($element, $elementInformation)
         {
-            if(get_class($element) == 'ReportExportLinkActionElement' &&
+            if (get_class($element) == 'ReportExportLinkActionElement' &&
                ($this->model->getType() == Report::TYPE_MATRIX || !$this->userCanExportReport()))
             {
                 return false;
             }
-            if(get_class($element) == 'ReportOptionsLinkActionElement')
+            if (get_class($element) == 'ReportOptionsLinkActionElement')
             {
                 $userCanEditReport   = $this->userCanEditReport();
                 $userCanDeleteReport = $this->userCanDeleteReport();
-                if(!$userCanEditReport && !$userCanDeleteReport)
+                if (!$userCanEditReport && !$userCanDeleteReport)
                 {
                     return false;
                 }
-                if(!$userCanEditReport)
+                if (!$userCanEditReport)
                 {
                     $element->setHideEdit();
                 }
-                if(!$userCanDeleteReport)
+                if (!$userCanDeleteReport)
                 {
                     $element->setHideDelete();
                 }
-
             }
             return true;
         }

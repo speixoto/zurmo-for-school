@@ -60,7 +60,7 @@
          */
         protected function isDataProviderValid()
         {
-            if(!$this->dataProvider instanceof SummationDrillDownReportDataProvider)
+            if (!$this->dataProvider instanceof SummationDrillDownReportDataProvider)
             {
                 return false;
             }

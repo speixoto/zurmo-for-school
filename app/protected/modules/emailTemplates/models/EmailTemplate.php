@@ -244,7 +244,7 @@
             assert('is_int($type)');
             $dataAndLabels = array();
             $emailTemplates = static::getByType($type);
-            foreach($emailTemplates as $emailTemplate)
+            foreach ($emailTemplates as $emailTemplate)
             {
                 $dataAndLabels[$emailTemplate->id] = strval($emailTemplate);
             }

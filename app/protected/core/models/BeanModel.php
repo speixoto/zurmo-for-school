@@ -562,7 +562,7 @@
                 self::$derivedRelationNameToTypeModelClassNameAndOppposingRelation[get_called_class()]         =
                     $cachedData['derivedRelationNameToTypeModelClassNameAndOppposingRelation'][get_called_class()];
             }
-            catch(NotFoundException $e)
+            catch (NotFoundException $e)
             {
                 self::mapMetadataForAllClassesInHeirarchy();
                 $cachedData = array();
@@ -577,7 +577,6 @@
                 BeanModelCache::cacheEntry(self::CACHE_IDENTIFIER . get_called_class(), $cachedData);
             }
         }
-
 
         /**
          * Maps metadata for the class and all of the classes in the heirarchy up to the BeanModel
@@ -595,7 +594,7 @@
                     self::mapMetadataByModelClassName($modelClassName);
                 }
             }
-            foreach(static::getMixedInModelClassNames() as $modelClassName)
+            foreach (static::getMixedInModelClassNames() as $modelClassName)
             {
                 if ($modelClassName::getCanHaveBean())
                 {
@@ -619,7 +618,6 @@
                 {
                     foreach ($metadata[$modelClassName]['members'] as $memberName)
                     {
-
                         self::$attributeNamesToClassNames[get_called_class()][$memberName] = $modelClassName;
                         self::$attributeNamesNotBelongsToOrManyMany[get_called_class()][]  = $memberName;
                     }

@@ -134,9 +134,9 @@
             return 'OpportunitiesDefaultDataMaker';
         }
 
-        public static function getDemoDataMakerClassName()
+        public static function getDemoDataMakerClassNames()
         {
-            return 'OpportunitiesDemoDataMaker';
+            return array('OpportunitiesDemoDataMaker');
         }
 
         public static function getGlobalSearchFormClassName()

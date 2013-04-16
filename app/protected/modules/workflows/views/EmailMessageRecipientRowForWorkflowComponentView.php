@@ -102,7 +102,7 @@
             $content .= '</div>';
             $content .= ZurmoHtml::link('—', '#', array('class' => self::REMOVE_LINK_CLASS_NAME));
             $content  = ZurmoHtml::tag('div', array('class' => "dynamic-sub-row dynamic-email-message-recipient-row"), $content);
-            if($this->addWrapper)
+            if ($this->addWrapper)
             {
                 return ZurmoHtml::tag('li', array('class' => 'dynamic-sub-row'), $content);
             }

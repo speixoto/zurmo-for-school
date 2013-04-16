@@ -78,7 +78,7 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == static::TYPE_STATIC)
+            if ($this->type == static::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute}->values->removeAll();
                 $value        = new CustomFieldValue();

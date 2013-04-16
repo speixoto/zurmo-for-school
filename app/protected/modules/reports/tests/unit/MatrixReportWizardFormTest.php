@@ -223,6 +223,5 @@
            $this->assertEquals($compareErrors, $errors);
            $this->assertTrue($matrixReportWizardForm->hasErrors());
         }
-
     }
 ?>

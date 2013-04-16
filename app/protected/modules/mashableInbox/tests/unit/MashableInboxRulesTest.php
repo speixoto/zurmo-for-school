@@ -65,6 +65,5 @@
                  ->will($this->returnValue('MashableInboxForTestModel'));
             $this->assertEquals('MashableInboxForTestsZeroModelsYetView', $stub->getZeroModelViewClassName());
         }
-
     }
 ?>

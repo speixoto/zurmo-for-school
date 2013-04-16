@@ -44,7 +44,7 @@
 
         protected function preFilter($filterChain)
         {
-            if(!RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
+            if (!RightsUtil::canUserAccessModule('EmailTemplatesModule', Yii::app()->user->userModel))
             {
                 $messageView        = new UserIsMissingFullAccessToUseWorkflowSplashView();
                 $pageViewClassName  = $this->controller->getModule()->getPluralCamelCasedName() . 'PageView';

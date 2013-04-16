@@ -318,7 +318,6 @@
             $this->assertEquals($compareContent, $content);
             $this->assertEquals(3, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(0, $joinTablesAdapter->getLeftTableJoinCount());
-
         }
 
         public function testTwoNonRelatedNonDerivedCastedUpAttributeWithOneOnAHasOneRelation()
@@ -612,7 +611,6 @@
 
         public function testTwoCustomFieldsWhenBothAreOnTheSameRelatedModelButDifferentRelations()
         {
-
             $q                                     = DatabaseCompatibilityUtil::getQuote();
 
             //2 custom fields attributes with both on a related model, but the links are different
@@ -843,7 +841,6 @@
             $this->assertEquals(0, $joinTablesAdapter->getFromTableJoinCount());
             $this->assertEquals(4, $joinTablesAdapter->getLeftTableJoinCount());
         }
-
 
         public function testThreeTestedRelationsWhereTheyBothGoToTheSameModelButAtDifferentNestingPoints()
         {

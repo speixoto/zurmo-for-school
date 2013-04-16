@@ -52,7 +52,6 @@
         {
             assert('is_array($attributes)');
             assert('is_array($existingGroupBys)');
-
         }
 
         /**

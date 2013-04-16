@@ -118,7 +118,7 @@
         public function attributeNames()
         {
             $attributeNames = parent::attributeNames();
-            if(count($attributeNames) != 6)
+            if (count($attributeNames) != 6)
             {
                 throw new NotSupportedException();
             }
@@ -183,7 +183,7 @@
         {
             assert('is_int($key)');
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            if($modelToReportAdapter->isDisplayAttributeMadeViaSelect($this->getResolvedAttribute()))
+            if ($modelToReportAdapter->isDisplayAttributeMadeViaSelect($this->getResolvedAttribute()))
             {
                 return $this->columnAliasName;
             }
@@ -198,7 +198,7 @@
         public function isALinkableAttribute()
         {
             $resolvedAttribute = $this->getResolvedAttribute();
-            if($resolvedAttribute == 'name' || $resolvedAttribute == 'FullName')
+            if ($resolvedAttribute == 'name' || $resolvedAttribute == 'FullName')
             {
                 return true;
             }
@@ -229,49 +229,49 @@
             $resolvedAttribute    = $this->getResolvedAttribute();
             $displayElementType   = $this->getDisplayElementType();
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            if($modelToReportAdapter->getModel()->isAttribute($resolvedAttribute) &&
+            if ($modelToReportAdapter->getModel()->isAttribute($resolvedAttribute) &&
                $modelToReportAdapter->getModel()->isRelation($resolvedAttribute) &&
                !$modelToReportAdapter->getModel()->isOwnedRelation($resolvedAttribute))
             {
                 $relationModelClassName = $modelToReportAdapter->getModel()->getRelationModelClassName($resolvedAttribute);
                 $relatedModel = $relationModelClassName::getById((int)$value);
-                if($relatedModel->isAttribute('serializedLabels'))
+                if ($relatedModel->isAttribute('serializedLabels'))
                 {
                     $translatedValue     = $relatedModel->resolveTranslatedNameByLanguage(Yii::app()->language);
                 }
             }
-            elseif($displayElementType == 'User')
+            elseif ($displayElementType == 'User')
             {
                 $user            = User::getById((int)$value);
                 $translatedValue = strval($user);
             }
-            elseif($displayElementType == 'DropDown')
+            elseif ($displayElementType == 'DropDown')
             {
                 $customFieldData = CustomFieldDataModelUtil::getDataByModelClassNameAndAttributeName(
                                    $this->getResolvedAttributeModelClassName(), $this->getResolvedAttribute());
                 $dataAndLabels   = CustomFieldDataUtil::getDataIndexedByDataAndTranslatedLabelsByLanguage(
                                    $customFieldData, Yii::app()->language);
-                if(isset($dataAndLabels[$value]))
+                if (isset($dataAndLabels[$value]))
                 {
                     $translatedValue = $dataAndLabels[$value];
                 }
             }
-            elseif($displayElementType == 'CheckBox')
+            elseif ($displayElementType == 'CheckBox')
             {
-                if($value)
+                if ($value)
                 {
                     $translatedValue = Zurmo::t('ReportsModule', 'Yes');
                 }
-                elseif($value == false && $value != '')
+                elseif ($value == false && $value != '')
                 {
                     $translatedValue = Zurmo::t('ReportsModule', 'No');
                 }
             }
-            elseif($displayElementType == 'GroupByModifierMonth')
+            elseif ($displayElementType == 'GroupByModifierMonth')
             {
                 $translatedValue = DateTimeUtil::getMonthName($value);
             }
-            if($translatedValue === null)
+            if ($translatedValue === null)
             {
                 $translatedValue = '';
             }
@@ -286,12 +286,12 @@
          */
         public function getHeaderSortableType()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }
             $modelToReportAdapter = $this->makeResolvedAttributeModelRelationsAndAttributesToReportAdapter();
-            if($modelToReportAdapter->isAttributeACalculatedGroupByModifier($this->getResolvedAttribute()))
+            if ($modelToReportAdapter->isAttributeACalculatedGroupByModifier($this->getResolvedAttribute()))
             {
                 return self::HEADER_SORTABLE_TYPE_ASORT;
             }

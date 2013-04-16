@@ -215,7 +215,7 @@
                                             'url'      =>  $this->getFormActionUrl(),
                                             'dataType' => 'json',
                                             'success'  => 'js:function(data){
-                                                if(data.redirectToList)
+                                                if (data.redirectToList)
                                                 {
                                                     url = "' . $saveRedirectToListUrl . '";
                                                 }

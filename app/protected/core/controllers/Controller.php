@@ -114,7 +114,6 @@
 
         protected function resolveMetadataBeforeMakingDataProvider(& $metadata)
         {
-
         }
 
         protected static function resolveDynamicSearchMetadata($searchModel, $metadata, SearchAttributesDataCollection $dataCollection)
@@ -295,7 +294,6 @@
             }
         }
 
-
         protected static function getMassActionProgressStartFromGet($pageVariableName, $pageSize)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
@@ -313,7 +311,6 @@
                 throw new NotSupportedException();
             }
         }
-
 
         protected function getMassEditProgressStartFromGet($getVariableName, $pageSize)
         {
@@ -371,7 +368,7 @@
                 {
                     $end = $pageSize * $page;
                 }
-                for ($i = $start; $i < $end; ++$i)
+                for ($i = $start; $i < $end; ++$i) // Not Coding Standard
                 {
                     $modelsToUpdate[] = $modelClassName::getById(intval($IdsToUpdate[$i]));
                 }

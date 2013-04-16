@@ -1313,7 +1313,6 @@
             $rules              = new WorkflowsAlternateStateTestWorkflowRules();
             $adapter            = new ModelRelationsAndAttributesToWorkflowAdapter($model, $rules, Workflow::TYPE_ON_SAVE);
             $this->assertEquals('LeadStateStaticDropDownForWorkflow', $adapter->getTriggerValueElementType('likeContactState'));
-
         }
 
         /**

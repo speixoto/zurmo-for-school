@@ -45,7 +45,7 @@
         protected function getEditableHtmlOptions()
         {
             $htmlOptions = parent::getEditableHtmlOptions();
-            if(isset($htmlOptions['class']))
+            if (isset($htmlOptions['class']))
             {
                 $htmlOptions['class'] .= ' alwaysMultiple';
             }

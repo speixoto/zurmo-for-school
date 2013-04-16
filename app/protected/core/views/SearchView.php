@@ -147,12 +147,11 @@
 
         protected function resolveMoreSearchOptionsLinkContent()
         {
-            if($this->showAdvancedSearch)
+            if ($this->showAdvancedSearch)
             {
                 return ZurmoHtml::link(Zurmo::t('Core', 'Advanced'), '#', array('id' => 'more-search-link' . $this->gridIdSuffix));
             }
         }
-
 
         protected function getClearSearchLabelPrefixContent()
         {
@@ -255,7 +254,7 @@
             $script = "
                 var empty = $('#" . $this->getSearchFormId(). "').find('.anyMixedAttributes-input').val() == '';
                 $(this).closest('form').find('.search-view-1').find(':input').each(function() {
-                    if($(this).val() != '')
+                    if ($(this).val() != '')
                     {
                         empty = false;
                     }

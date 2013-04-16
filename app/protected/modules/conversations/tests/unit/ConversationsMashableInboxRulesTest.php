@@ -203,7 +203,6 @@
                                                     ConversationsSearchDataProviderMetadataAdapter::LIST_TYPE_CLOSED);
             $this->assertNotContains($conversation->subject,    $content);
             $this->assertNotContains('result(s)',               $content);
-
         }
 
         public function testSearch()

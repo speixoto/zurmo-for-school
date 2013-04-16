@@ -40,7 +40,7 @@
         {
             $activeLanguages = Yii::app()->languageHelper->getActiveLanguagesData();
             $dropDownArray = array();
-            foreach ($activeLanguages as $languageCode=>$languageData)
+            foreach ($activeLanguages as $languageCode => $languageData)
             {
                 $dropDownArray[$languageCode] = $languageData['label'];
             }

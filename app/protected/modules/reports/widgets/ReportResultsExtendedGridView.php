@@ -53,15 +53,15 @@
 
         public function renderTableHeader()
         {
-            if(!$this->hideHeader)
+            if (!$this->hideHeader)
             {
                 echo "<thead>\n";
-                if($this->leadingHeaders != null)
+                if ($this->leadingHeaders != null)
                 {
                     $this->renderLeadingHeaders();
                 }
                 echo "<tr>\n";
-                foreach($this->columns as $column)
+                foreach ($this->columns as $column)
                 {
                     $column->renderHeaderCell();
                 }
@@ -76,12 +76,12 @@
             $n    = count($data);
             echo "<tbody>\n";
 
-            if($n > 0)
+            if ($n > 0)
             {
-                for($row = 0; $row < $n; ++$row)
+                for ($row = 0; $row < $n; ++$row)
                 {
                     $this->renderTableRow($row);
-                    if($this->expandableRows)
+                    if ($this->expandableRows)
                     {
                         $this->renderExpandableRow($this->dataProvider->data[$row]->getId());
                     }
@@ -116,9 +116,9 @@
                 {
                     echo ZurmoHtml::tag('th', array(), null);
                 }
-                for($k = 0; $k < $previousGroupByValuesCount; $k++)
+                for ($k = 0; $k < $previousGroupByValuesCount; $k++)
                 {
-                    foreach($this->leadingHeaders['rows'][$i]['groupByValues'] as $value)
+                    foreach ($this->leadingHeaders['rows'][$i]['groupByValues'] as $value)
                     {
                         echo ZurmoHtml::tag('th',
                              array('colspan' => $this->leadingHeaders['rows'][$i]['colSpan']), $value);

@@ -87,12 +87,12 @@
                     array('order',               'type',    'type' => 'integer'),
                     array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
-                    array('type',       		 'required'),
-                    array('type',       		 'type',   'type' => 'string'),
-                    array('type',       		 'length', 'max'  => 15),
-                    array('triggerOn',       	 'required'),
-                    array('triggerOn',       	 'type',   'type' => 'string'),
-                    array('triggerOn',       	 'length', 'max'  => 15),
+                    array('type',                'required'),
+                    array('type',                'type',   'type' => 'string'),
+                    array('type',                'length', 'max'  => 15),
+                    array('triggerOn',           'required'),
+                    array('triggerOn',           'type',   'type' => 'string'),
+                    array('triggerOn',           'length', 'max'  => 15),
                 ),
                 'elements' => array(
                     'triggerOn'       => 'TriggerOnStaticDropDown',
@@ -204,7 +204,7 @@
         protected static function resolveExtraTriggerOnValueByIsNewModel($isNewModel)
         {
             assert('is_bool($isNewModel)');
-            if($isNewModel)
+            if ($isNewModel)
             {
                 return Workflow::TRIGGER_ON_NEW;
             }

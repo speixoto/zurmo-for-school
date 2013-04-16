@@ -50,7 +50,6 @@
      */
     class XML2Array
     {
-
         private static $xml = null;
         private static $encoding = 'UTF-8';
 
@@ -76,17 +75,17 @@
         public static function &createArray($input_xml, $ignoreRootNodeName = 'zurmoMessage')
         {
             $xml = self::getXMLRoot();
-            if(is_string($input_xml))
+            if (is_string($input_xml))
             {
               $parsed = $xml->loadXML($input_xml);
-              if(!$parsed)
+              if (!$parsed)
               {
                 throw new Exception('[XML2Array] Error parsing the XML string.');
               }
             }
             else
             {
-              if(get_class($input_xml) != 'DOMDocument')
+              if (get_class($input_xml) != 'DOMDocument')
               {
                 throw new Exception('[XML2Array] The input XML object should be of type: DOMDocument.');
               }
@@ -129,11 +128,11 @@
                     {
                         $child = $node->childNodes->item($i);
                         $v = self::convert($child);
-                        if(isset($child->tagName))
+                        if (isset($child->tagName))
                         {
                             $t = $child->tagName;
                             // assume more nodes of same kind are coming
-                            if(!isset($output[$t]))
+                            if (!isset($output[$t]))
                             {
                                 $output[$t] = array();
                             }
@@ -142,24 +141,24 @@
                         else
                         {
                             //check if it is not an empty text node
-                            if($v !== '')
+                            if ($v !== '')
                             {
                                 $output = $v;
                             }
                         }
                     }
 
-                    if(is_array($output))
+                    if (is_array($output))
                     {
                         // if only one node of its kind, assign it directly instead if array($value);
                         foreach ($output as $t => $v)
                         {
-                            if(is_array($v) && count($v) == 1)
+                            if (is_array($v) && count($v) == 1)
                             {
                                 $output[$t] = $v[0];
                             }
                         }
-                        if(empty($output))
+                        if (empty($output))
                         {
                             //for empty nodes
                             $output = '';
@@ -167,15 +166,15 @@
                     }
 
                     // loop through the attributes and collect them
-                    if($node->attributes->length)
+                    if ($node->attributes->length)
                     {
                         $a = array();
-                        foreach($node->attributes as $attrName => $attrNode)
+                        foreach ($node->attributes as $attrName => $attrNode)
                         {
                             $a[$attrName] = (string) $attrNode->value;
                         }
                         // if its an leaf node, store the value in @value instead of directly storing it.
-                        if(!is_array($output))
+                        if (!is_array($output))
                         {
                             $output = array('@value' => $output);
                         }
@@ -191,7 +190,7 @@
          */
         private static function getXMLRoot()
         {
-            if(empty(self::$xml))
+            if (empty(self::$xml))
             {
                 self::init();
             }

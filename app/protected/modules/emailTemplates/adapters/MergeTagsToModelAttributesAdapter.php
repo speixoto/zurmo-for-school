@@ -45,7 +45,7 @@
         public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en')
         {
             $resolvedMergeTags = array();
-            foreach($mergeTags as $mergeTag)
+            foreach ($mergeTags as $mergeTag)
             {
                 $attributeAccessorString    = static::resolveStringToAttributeAccessor($mergeTag);
                 $timeQualifier              = static::stripTimeDelimiterAndReturnQualifier($attributeAccessorString);
@@ -76,7 +76,7 @@
             if ($timeDelimiterIndex !== false)
             {
                 $timeQualifier  = substr($mergeTag, 0, $timeDelimiterIndex);
-                $mergeTag       = substr($mergeTag, $timeDelimiterIndex+1);
+                $mergeTag       = substr($mergeTag, $timeDelimiterIndex + 1);
                 return $timeQualifier;
             }
             else
@@ -84,7 +84,6 @@
                 return null;
             }
         }
-
 
         protected static function resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier)
         {
@@ -103,7 +102,7 @@
             elseif ($model->isRelation($attributeName))
             {
                 $model = $model->$attributeName;
-                $attributeAccessorString= str_replace('->' . $attributeName, '', $attributeAccessorString);
+                $attributeAccessorString = str_replace('->' . $attributeName, '', $attributeAccessorString);
                 return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
             }
             elseif ($modelAttributeAdapter->isStandardAttribute($attributeName))
@@ -164,6 +163,5 @@
             return preg_replace_callback('/' . preg_quote(MergeTagsUtil::CAPITAL_DELIMITER) . '([a-z])/',
                                                                                     $covertToCamelCaseFunction, $string);
         }
-
     }
 ?>

@@ -66,7 +66,6 @@
             $horizontalGridView = new GridView(1, 1);
             $horizontalGridView->setView($globalSearchAndShortcutsCreateMenuView, 0, 0);
             $this->verticalGridView->setView($horizontalGridView, 1, 0);
-
         }
 
         protected function renderContent()

@@ -48,18 +48,18 @@
             $validated  = parent::validateGroupBys();
             $xAxisFound = false;
             $yAxisFound = false;
-            foreach($this->groupBys as $groupBy)
+            foreach ($this->groupBys as $groupBy)
             {
-                if($groupBy->axis == 'x')
+                if ($groupBy->axis == 'x')
                 {
                     $xAxisFound = true;
                 }
-                if($groupBy->axis == 'y')
+                if ($groupBy->axis == 'y')
                 {
                     $yAxisFound = true;
                 }
             }
-            if(!$xAxisFound || !$yAxisFound)
+            if (!$xAxisFound || !$yAxisFound)
             {
                 $this->addError( 'groupBys',
                                     Zurmo::t('ReportsModule', 'At least one x-axis and one y-axis grouping must be selected'));

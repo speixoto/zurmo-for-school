@@ -54,19 +54,19 @@
             assert('is_string($modelClassName)');
             assert('is_string($type)');
             assert('is_string($componentType)');
-            if($componentType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
+            if ($componentType == ComponentForWorkflowForm::TYPE_TIME_TRIGGER)
             {
                 return new TimeTriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_TRIGGERS)
+            elseif ($componentType == ComponentForWorkflowForm::TYPE_TRIGGERS)
             {
                 return new TriggerForWorkflowForm($moduleClassName, $modelClassName, $type);
             }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_ACTIONS)
+            elseif ($componentType == ComponentForWorkflowForm::TYPE_ACTIONS)
             {
                 return new ActionForWorkflowForm($modelClassName, $type);
             }
-            elseif($componentType == ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)
+            elseif ($componentType == ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES)
             {
                 return new EmailMessageForWorkflowForm($modelClassName, $type);
             }

@@ -82,9 +82,9 @@
                     array('name',                'length', 'max'  => 64),
                     array('serializedData',      'required'),
                     array('serializedData',      'type', 'type' => 'string'),
-                    array('type',       		 'required'),
-                    array('type',       		 'type',   'type' => 'string'),
-                    array('type',       		 'length', 'max'  => 15),
+                    array('type',                'required'),
+                    array('type',                'type',   'type' => 'string'),
+                    array('type',                'length', 'max'  => 15),
                 ),
                 'elements' => array(
                     'type'            => 'ReportTypeStaticDropDown',
@@ -142,7 +142,7 @@
                                                                                         $modelClassName,
                                                                                         $report->getType());
                 $displayAttribute->attributeIndexOrDerivedType  = 'id';
-	            $report->addDisplayAttribute($displayAttribute);
+                $report->addDisplayAttribute($displayAttribute);
                 $attributeName                                  = ReportResultsRowData::resolveAttributeNameByKey(($key + 1));
             }
             $reportDataProvider             = new RowsAndColumnsReportDataProvider($report);

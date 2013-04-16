@@ -145,7 +145,7 @@
             $emailTemplate       = new EmailTemplate();
             $emailTemplate->type = $type;
             $editAndDetailsView  = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate), 'Edit');
-            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = Zurmo::t('EmailTemplatesModule', 'Create');
@@ -153,7 +153,7 @@
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $emailTemplate->modelClassName = 'Contact';
                 $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
@@ -175,7 +175,7 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserWriteModel($emailTemplate);
 
             $editAndDetailsView = $this->makeEditAndDetailsView($this->attemptToSaveModelFromPost($emailTemplate, $redirectUrl), 'Edit');
-            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -183,7 +183,7 @@
                                       makeViewWithBreadcrumbsForCurrentUser($this, $editAndDetailsView,
                                       $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $breadcrumbLinks    = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]  = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -207,7 +207,7 @@
             $detailsView              = new EmailTemplateEditAndDetailsView('Details', $this->getId(),
                                                                             $this->getModule()->getId(), $emailTemplate);
 
-            if($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
+            if ($emailTemplate->type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $breadcrumbLinks          = static::getDetailsAndEditForWorkflowBreadcrumbLinks();
                 $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -215,7 +215,7 @@
                                             makeViewWithBreadcrumbsForCurrentUser($this, $detailsView,
                                             $breadcrumbLinks, 'WorkflowBreadCrumbView'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $breadcrumbLinks          = static::getDetailsAndEditForMarketingBreadcrumbLinks();
                 $breadcrumbLinks[]        = StringUtil::getChoppedStringContent(strval($emailTemplate), 25);
@@ -241,11 +241,11 @@
             ControllerSecurityUtil::resolveAccessCanCurrentUserDeleteModel($emailTemplate);
             $type          = $emailTemplate->type;
             $emailTemplate->delete();
-            if($type == EmailTemplate::TYPE_WORKFLOW)
+            if ($type == EmailTemplate::TYPE_WORKFLOW)
             {
                 $this->redirect(array($this->getId() . '/listForWorkflow'));
             }
-            elseif($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
+            elseif ($emailTemplate->type == EmailTemplate::TYPE_CONTACT)
             {
                 $this->redirect(array($this->getId() . '/listForMarketing'));
             }

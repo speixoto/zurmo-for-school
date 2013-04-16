@@ -70,11 +70,11 @@
          */
         public function validateAxis()
         {
-            if($this->axis == null)
+            if ($this->axis == null)
             {
                 return false;
             }
-            if($this->axis != 'x' && $this->axis != 'y')
+            if ($this->axis != 'x' && $this->axis != 'y')
             {
                 $this->addError('axis', Zurmo::t('ReportsModule', 'Axis must be x or y.'));
                 return false;
@@ -88,7 +88,7 @@
          */
         public function getAxisValuesAndLabels()
         {
-            if($this->attributeIndexOrDerivedType == null)
+            if ($this->attributeIndexOrDerivedType == null)
             {
                 throw new NotSupportedException();
             }

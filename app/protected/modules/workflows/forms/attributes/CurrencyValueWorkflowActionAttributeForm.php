@@ -78,7 +78,7 @@
          */
         public function validateCurrencyId()
         {
-            if($this->currencyId == null && $this->shouldSetValue)
+            if ($this->currencyId == null && $this->shouldSetValue)
             {
                 $this->addError('currencyId', Zurmo::t('WorkflowsModule', 'Currency Id cannot be blank.'));
                 return false;
@@ -95,7 +95,7 @@
         public function resolveValueAndSetToModel(WorkflowActionProcessingModelAdapter $adapter, $attribute)
         {
             assert('is_string($attribute)');
-            if($this->type == static::TYPE_STATIC)
+            if ($this->type == static::TYPE_STATIC)
             {
                 $adapter->getModel()->{$attribute}->value    = $this->value;
                 $adapter->getModel()->{$attribute}->currency = Currency::getById((int)$this->currencyId);

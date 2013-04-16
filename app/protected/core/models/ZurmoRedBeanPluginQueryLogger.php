@@ -91,7 +91,7 @@
                 {
                     if (isset($duplicateData[$log]))
                     {
-                        $duplicateData[$log] ++;
+                        $duplicateData[$log]++;
                     }
                     else
                     {

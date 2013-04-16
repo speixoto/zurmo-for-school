@@ -198,8 +198,6 @@
             $validated                           = $action->validate();
             $this->assertTrue($validated);
 
-
-
             //When the type is update_related, related information is required
             $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
             $action->relationFilter              = 'somethingInvalid';
@@ -214,7 +212,6 @@
             $action->relationFilter              = ActionForWorkflowForm::RELATION_FILTER_ALL;
             $validated                           = $action->validate();
             $this->assertTrue($validated);
-
 
             //When the type is create, related information is required
             $action                              = new ActionForWorkflowForm('WorkflowModelTestItem2', Workflow::TYPE_ON_SAVE);
@@ -286,7 +283,6 @@
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
             $this->assertEquals(2, count($data));
 
-
             //Test update a inferred related model (this is like a meeting's accounts)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem5', Workflow::TYPE_ON_SAVE);
             $form->type            = ActionForWorkflowForm::TYPE_UPDATE_RELATED;
@@ -301,7 +297,6 @@
             $form->relatedModelRelation  = 'model5ViaItem';
             $data = $form->resolveAllNonRequiredActionAttributeFormsAndLabelsAndSort();
             $this->assertEquals(2, count($data));
-
 
             //Test create a related, inferred related model (this is like a meeting's accounts)
             $form = new ActionForWorkflowForm('WorkflowModelTestItem7', Workflow::TYPE_ON_SAVE);

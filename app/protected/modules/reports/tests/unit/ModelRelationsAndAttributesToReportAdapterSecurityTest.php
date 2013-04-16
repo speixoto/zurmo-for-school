@@ -44,7 +44,7 @@
             $sally->setRight('AccountsModule',      AccountsModule::RIGHT_ACCESS_ACCOUNTS);
             $sally->setRight('OpportunitiesModule', OpportunitiesModule::RIGHT_ACCESS_OPPORTUNITIES);
             $sally->setRight('MeetingsModule',      MeetingsModule::RIGHT_ACCESS_MEETINGS);
-            if(!$sally->save())
+            if (!$sally->save())
             {
                 throw new FailedToSaveModelException();
             }

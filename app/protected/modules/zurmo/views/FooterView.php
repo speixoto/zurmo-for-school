@@ -58,34 +58,25 @@
          */
         protected function renderUserInterfaceTypeSelector()
         {
-            $content = '<div class="ui-chooser">';
-            if (!Yii::app()->userInterface->isResolvedToDesktop())
+            if (Yii::app()->userInterface->isResolvedToMobile())
             {
-                if (Yii::app()->userInterface->isDesktop())
-                {
-                    if (Yii::app()->userInterface->isResolvedToMobile())
-                    {
-                        $content .= ZurmoHtml::link(Yii::t('Default', 'Show mobile'),
-                                                   Yii::app()->createUrl('zurmo/default/userInterface',
-                                                                         array('userInterface' => UserInterface::MOBILE)),
-                                                                         array('class' => 'icon-mobile'));
-                    }
-                    elseif (Yii::app()->userInterface->isResolvedToTablet())
-                    {
-                        $content .= ZurmoHtml::link(Yii::t('Default', 'Show tablet'),
-                                                   Yii::app()->createUrl('zurmo/default/userInterface',
-                                                                         array('userInterface' => UserInterface::TABLET)),
-                                                                         array('class' => 'icon-tablet'));
-                    }
-                }
-                else
-                {
-                    $content .= ZurmoHtml::link(Yii::t('Default', 'Full Site'),
-                                               Yii::app()->createUrl('zurmo/default/userInterface',
-                                                                     array('userInterface' => UserInterface::DESKTOP)),
-                                                                     array('class' => 'icon-desktop'));
-                }
+                $mobileActive = ' active'; //todo: class name here for active?
+                $desktopActive = '';
             }
+            else
+            {
+                $mobileActive = '';
+                $desktopActive = ' active'; //todo: class name here for active?
+            }
+            $content  = '<div class="ui-chooser">';
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Zurmo', 'Show Full')),
+                            Yii::app()->createUrl('zurmo/default/userInterface',
+                            array('userInterface' => UserInterface::DESKTOP)),
+                            array('class' => 'icon-desktop' . $desktopActive));
+            $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Default', 'Show Mobile')),
+                            Yii::app()->createUrl('zurmo/default/userInterface',
+                            array('userInterface' => UserInterface::MOBILE)),
+                            array('class' => 'icon-mobile' . $mobileActive));
             $content .= '</div>';
             return $content;
         }

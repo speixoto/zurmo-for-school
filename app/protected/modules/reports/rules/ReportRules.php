@@ -57,13 +57,13 @@
             assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);
             $metadata       = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
             in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
             {
                 return true;
             }
 
-            if(in_array($model->getRelationModelClassName($relation),
+            if (in_array($model->getRelationModelClassName($relation),
                         array('OwnedCustomField',
                               'CustomField',
                               'OwnedMultipleValuesCustomField',
@@ -85,7 +85,7 @@
             assert('is_string($attribute)');
             $modelClassName = $model->getAttributeModelClassName($attribute);
             $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['nonReportable']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['nonReportable']) &&
             in_array($attribute, $metadata[$modelClassName]['nonReportable']))
             {
                 return false;
@@ -103,7 +103,7 @@
             assert('is_string($attribute)');
             $modelClassName = $model->getAttributeModelClassName($attribute);
             $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['filterValueElementTypes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['filterValueElementTypes']) &&
                isset($attribute, $metadata[$modelClassName]['filterValueElementTypes'][$attribute]))
             {
                 return $metadata[$modelClassName]['filterValueElementTypes'][$attribute];
@@ -122,10 +122,10 @@
             assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);
             $metadata       = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
                 in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
             {
-                if(isset($metadata[$modelClassName]['relationsReportedAsAttributesSortAttributes'][$relation]))
+                if (isset($metadata[$modelClassName]['relationsReportedAsAttributesSortAttributes'][$relation]))
                 {
                     return $metadata[$modelClassName]['relationsReportedAsAttributesSortAttributes'][$relation];
                 }
@@ -134,7 +134,7 @@
                     throw new NotSupportedException('Relations that report as attributes must also have a defined sort attribute');
                 }
             }
-            if(in_array($model->getRelationModelClassName($relation),
+            if (in_array($model->getRelationModelClassName($relation),
                 array('OwnedCustomField',
                       'CustomField',
                       'OwnedMultipleValuesCustomField',
@@ -157,10 +157,10 @@
             assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);
             $metadata       = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
                 in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
             {
-                if(isset($metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation]))
+                if (isset($metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation]))
                 {
                     return $metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation];
                 }
@@ -169,7 +169,7 @@
                     return null;
                 }
             }
-            if(in_array($model->getRelationModelClassName($relation),
+            if (in_array($model->getRelationModelClassName($relation),
                 array(  'OwnedCustomField',
                         'CustomField',
                         'OwnedMultipleValuesCustomField',
@@ -191,10 +191,10 @@
             assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);
             $metadata       = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationsReportedAsAttributes']) &&
                 in_array($relation, $metadata[$modelClassName]['relationsReportedAsAttributes']))
             {
-                if(isset($metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation]))
+                if (isset($metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation]))
                 {
                     return $metadata[$modelClassName]['relationsReportedAsAttributesGroupByAttributes'][$relation];
                 }

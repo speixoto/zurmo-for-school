@@ -242,7 +242,7 @@
             $compareHeaderData = $adapter->getHeaderData();
 
             // Using === here would fail as we are not setting all keys part of getData()'s return array
-            if($compareData == array_values($revertedData[0]) && $compareHeaderData == array_keys($revertedData[0]))
+            if ($compareData == array_values($revertedData[0]) && $compareHeaderData == array_keys($revertedData[0]))
             {
                 return true;
             }

@@ -69,7 +69,7 @@
             $nodeIdPrefix             = self::resolveNodeIdPrefixByNodeId($nodeId);
             $precedingModel           = null;
             $precedingRelation        = null;
-            if($nodeId != 'source')
+            if ($nodeId != 'source')
             {
                 self::resolvePrecedingModelRelationAndAdapterByNodeId($nodeId, $modelToWorkflowAdapter, $precedingModel,
                                                                       $precedingRelation);
@@ -78,7 +78,7 @@
             {
                 $nodeIdPrefix = null;
             }
-            if($nodeIdPrefix == null)
+            if ($nodeIdPrefix == null)
             {
                 $data                       = array();
                 $data[0]                    = array('expanded' => true,
@@ -86,7 +86,7 @@
             }
             $childrenNodeData               = $this->getChildrenNodeData($modelToWorkflowAdapter, $precedingModel,
                                                                          $precedingRelation, $nodeIdPrefix);
-            if(!empty($childrenNodeData) && $nodeIdPrefix == null)
+            if (!empty($childrenNodeData) && $nodeIdPrefix == null)
             {
                 $data[0]['children'] = $childrenNodeData;
             }
@@ -112,9 +112,9 @@
         {
             $childrenNodeData        = array();
             $attributesData = $this->getAttributesData($modelToWorkflowAdapter, $precedingModel, $precedingRelation);
-            foreach($attributesData as $attribute => $attributeData)
+            foreach ($attributesData as $attribute => $attributeData)
             {
-                $attributeNode      = array('id'		   => self::makeNodeId($attribute, $nodeIdPrefix),
+                $attributeNode      = array('id'           => self::makeNodeId($attribute, $nodeIdPrefix),
                                             'text'         => $attributeData['label'],
                                             'wrapperClass' => 'item-to-place');
                 $childrenNodeData[] = $attributeNode;
@@ -125,15 +125,15 @@
                                                 getSelectableRelationsDataResolvedForUserAccess(
                                                 Yii::app()->user->userModel,
                                                 $selectableRelationsData);
-            foreach($resolvedSelectableRelationsData as $relation => $relationData)
+            foreach ($resolvedSelectableRelationsData as $relation => $relationData)
             {
                 $relationModelClassName       = $modelToWorkflowAdapter->getRelationModelClassName($relation);
                 $relationModuleClassName      = $relationModelClassName::getModuleClassName();
-                if($relationModuleClassName == null)
+                if ($relationModuleClassName == null)
                 {
                     throw new NotSupportedException($relationModelClassName);
                 }
-                $relationNode= array('id'		    => self::makeNodeId($relation, $nodeIdPrefix),
+                $relationNode= array('id'          => self::makeNodeId($relation, $nodeIdPrefix),
                                      'text'        => $relationData['label'],
                                      'expanded'    => false,
                                      'hasChildren' => true);
@@ -152,7 +152,7 @@
         protected function getAttributesData(ModelRelationsAndAttributesToWorkflowAdapter $modelToWorkflowAdapter,
                                              RedBeanModel $precedingModel = null, $precedingRelation = null)
         {
-            if($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
+            if ($this->treeType == ComponentForWorkflowForm::TYPE_TRIGGERS)
             {
                 return $modelToWorkflowAdapter->getAttributesForTriggers($precedingModel, $precedingRelation);
             }
@@ -185,21 +185,21 @@
                            $nodeId, & $modelToWorkflowAdapter, & $precedingModel, & $precedingRelation)
         {
             assert('$modelToWorkflowAdapter instanceof ModelRelationsAndAttributesToWorkflowAdapter');
-            if($nodeId == 'source')
+            if ($nodeId == 'source')
             {
                 return;
             }
             $relations    = explode(FormModelUtil::RELATION_DELIMITER, $nodeId);
             $lastRelation = end($relations);
-            foreach($relations as $relation)
+            foreach ($relations as $relation)
             {
                 $relationModelClassName = $modelToWorkflowAdapter->getRelationModelClassName($relation);
                 $precedingRelation      = $relation;
-                if($relation != $lastRelation)
+                if ($relation != $lastRelation)
                 {
                     $precedingModel    = new $relationModelClassName(false);
                 }
-                elseif(count($relations) == 1)
+                elseif (count($relations) == 1)
                 {
                     $precedingModel    = $modelToWorkflowAdapter->getModel();
                 }

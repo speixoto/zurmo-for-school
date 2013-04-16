@@ -189,13 +189,12 @@
             }
         }
 
-
         /**
          * Validates that attribute name does not contain reserved character sequences
          */
         public function validateAttributeDoesNotContainReservedCharacters()
         {
-            if(!(strpos($this->attributeName, FormModelUtil::DELIMITER) === false) ||
+            if (!(strpos($this->attributeName, FormModelUtil::DELIMITER) === false) ||
                !(strpos($this->attributeName, FormModelUtil::RELATION_DELIMITER) === false))
             {
                 $this->addError('attributeName',

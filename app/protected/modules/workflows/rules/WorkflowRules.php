@@ -60,13 +60,13 @@
             assert('is_string($relation)');
             $modelClassName = $model->getAttributeModelClassName($relation);
             $metadata       = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationIsUsedAsAttributes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['relationIsUsedAsAttributes']) &&
                 in_array($relation, $metadata[$modelClassName]['relationIsUsedAsAttributes']))
             {
                 return true;
             }
 
-            if(in_array($model->getRelationModelClassName($relation),
+            if (in_array($model->getRelationModelClassName($relation),
                 array('OwnedCustomField',
                     'CustomField',
                     'OwnedMultipleValuesCustomField',
@@ -88,7 +88,7 @@
             assert('is_string($attribute)');
             $modelClassName = $model->getAttributeModelClassName($attribute);
             $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['cannotTrigger']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['cannotTrigger']) &&
                 in_array($attribute, $metadata[$modelClassName]['cannotTrigger']))
             {
                 return false;
@@ -106,7 +106,7 @@
             assert('is_string($attribute)');
             $modelClassName = $model->getAttributeModelClassName($attribute);
             $metadata = static::getMetadata();
-            if(isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['triggerValueElementTypes']) &&
+            if (isset($metadata[$modelClassName]) && isset($metadata[$modelClassName]['triggerValueElementTypes']) &&
                 isset($attribute, $metadata[$modelClassName]['triggerValueElementTypes'][$attribute]))
             {
                 return $metadata[$modelClassName]['triggerValueElementTypes'][$attribute];

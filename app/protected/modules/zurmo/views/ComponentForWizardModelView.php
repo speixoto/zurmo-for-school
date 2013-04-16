@@ -96,7 +96,6 @@
             throw new NotImplementedException();
         }
 
-
         /**
          * @param string $componentType
          * @return string
@@ -205,7 +204,7 @@
          */
         protected function getViewStyle()
         {
-            if($this->hideView)
+            if ($this->hideView)
             {
                 return ' style="display:none;"';
             }
@@ -229,13 +228,12 @@
             return $content;
         }
 
-
         /**
          * @return string
          */
         protected function getZeroComponentsContent()
         {
-            if($this->getItemsCount() > 0)
+            if ($this->getItemsCount() > 0)
             {
                 $style = ' style="display:none;"';
             }

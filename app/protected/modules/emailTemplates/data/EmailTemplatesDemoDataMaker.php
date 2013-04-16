@@ -39,29 +39,31 @@
      */
     class EmailTemplatesDemoDataMaker extends DemoDataMaker
     {
-        protected $ratioToLoad = 2;
+        protected $index;
+
+        protected $seedData;
 
         public static function getDependencies()
         {
-            // TODO: @Shoaibi: Low: What other?
-            return array('contacts');
+            return array('users');
         }
 
         public function makeAll(& $demoDataHelper)
         {
             assert('$demoDataHelper instanceof DemoDataHelper');
-            assert('$demoDataHelper->isSetRange("Contact")');
+            assert('$demoDataHelper->isSetRange("User")');
 
             $emailTemplates = array();
-            for ($i = 0; $i < $this->resolveQuantityToLoad(); $i++)
+            $types          = array_keys(EmailTemplate::getTypeDropDownArray());
+            for ($this->index = 0; $this->index < 6; $this->index++)
             {
                 $emailTemplate              = new EmailTemplate();
-                $contact                    = $demoDataHelper->getRandomByModelName('Contact');
-                $emailTemplate->owner       = $contact->owner;
+                $emailTemplate->type        = $types[$this->index % 2];
+                $emailTemplate->owner       = $demoDataHelper->getRandomByModelName('User');;
                 $this->populateModel($emailTemplate);
-                $saved = $emailTemplate->save();
+                $saved                      = $emailTemplate->save();
                 assert('$saved');
-                $emailTemplates[] = $emailTemplate->id;
+                $emailTemplates[]           = $emailTemplate->id;
             }
             $demoDataHelper->setRangeByModelName('EmailTemplate', $emailTemplates[0], $emailTemplates[count($emailTemplates)-1]);
         }
@@ -70,26 +72,24 @@
         {
             assert('$model instanceof EmailTemplate');
             parent::populateModel($model);
-            $randomData                 = ZurmoRandomDataUtil::
-                                            getRandomDataByModuleAndModelClassNames('EmailTemplatesModule', 'EmailTemplate');
-            $type                       = RandomDataUtil::getRandomValueFromArray($randomData['type']);
-            $name                       = RandomDataUtil::getRandomValueFromArray($randomData['name']);
-            $subject                    = RandomDataUtil::getRandomValueFromArray($randomData['subject']);
-            $language                   = RandomDataUtil::getRandomValueFromArray($randomData['language']);
-            $htmlContent                = RandomDataUtil::getRandomValueFromArray($randomData['htmlContent']);
-            $textContent                = RandomDataUtil::getRandomValueFromArray($randomData['textContent']);
-            $modelClassName             = 'Contact';
-            if ($type === EmailTemplate::TYPE_WORKFLOW)
+            if (empty($this->seedData))
             {
-                $modelClassName         = RandomDataUtil::getRandomValueFromArray($randomData['modelClassName']);
+                $this->seedData = ZurmoRandomDataUtil::getRandomDataByModuleAndModelClassNames('EmailTemplatesModule',
+                                                                                            'EmailTemplate');
             }
-            $model->type                = $type;
+            $modelClassName             = 'Contact';
+            if ($model->type === EmailTemplate::TYPE_WORKFLOW)
+            {
+                $modelClassName         = $this->seedData['modelClassName'][$this->index];
+            }
             $model->modelClassName      = $modelClassName;
-            $model->name                = $name;
-            $model->subject             = $subject;
-            $model->language            = $language;
-            $model->textContent         = $textContent;
-            $model->htmlContent         = $htmlContent;
+            $model->name                = $this->seedData['name'][$this->index];
+            $model->subject             = $this->seedData['subject'][$this->index];
+            $model->language            = (isset($this->seedData['language'][$this->index]))?
+                                                $this->seedData['language'][$this->index] :
+                                                $this->seedData['language'][0];
+            $model->textContent         = $this->seedData['textContent'][0];
+            $model->htmlContent         = $this->seedData['htmlContent'][0];
         }
     }
 ?>

@@ -100,7 +100,7 @@
             assert('is_string($actionBarViewClassName)');
             assert('is_string($viewPrefixName) || $viewPrefixName == null');
             assert('is_string($activeActionElementType) || $activeActionElementType == null');
-            if($viewPrefixName == null)
+            if ($viewPrefixName == null)
             {
                 $viewPrefixName = $this->getModule()->getPluralCamelCasedName();
             }
@@ -122,7 +122,7 @@
         {
             assert('is_string($listViewClassName) || $listViewClassName == null');
             $listModel           = $searchForm->getModel();
-            if($listViewClassName == null)
+            if ($listViewClassName == null)
             {
                 $listViewClassName   = $this->getModule()->getPluralCamelCasedName() . 'ListView';
             }
@@ -184,7 +184,7 @@
                 }
                 if ($stickySearchKey != null && $setSticky)
                 {
-                    if($stickySearchData == null)
+                    if ($stickySearchData == null)
                     {
                         $stickySearchData = array();
                     }
@@ -611,7 +611,6 @@
             }
         }
 
-
         protected static function resolveTitleByMassActionId($actionId)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
@@ -619,7 +618,7 @@
             {
                 return Zurmo::t('Core', 'Mass Delete');
             }
-            else if (strpos($actionId, 'massEdit') === 0)
+            elseif (strpos($actionId, 'massEdit') === 0)
             {
                 return Zurmo::t('Core', 'Mass Update');
             }
@@ -776,7 +775,6 @@
             $postModelClassName                         = Yii::app()->request->getPost($modelClassName);
             if (isset($postSelectedRecordCount) || isset($postModelClassName))
             {
-
                 $page                                   = static::resolvePageValueForMassAction($modelClassName);
                 $insufficientPermissionSkipSavingUtil   = static::resolveInsufficientPermissionSkipSavingUtilByMassActionId($actionId);
                 $start                                  = ($selectedRecordCount > $pageSize)? 1: $selectedRecordCount;
@@ -838,7 +836,6 @@
             {
                 $doMassActionFunctionName           = 'processModelsForMassEditAction';
                 array_unshift($doMassActionFunctionArguments, $postModelClassName, $model);
-
             }
             $doMassActionFunctionName               = 'static::' . $doMassActionFunctionName;
             return call_user_func_array($doMassActionFunctionName, $doMassActionFunctionArguments);
@@ -1013,7 +1010,6 @@
                 $selectedRecordCount = ArrayUtil::getArrayValue($postData, 'selectedRecordCount');
             }
             return $selectedRecordCount;
-
         }
 
         protected static function resolveMassActionAlertMessage($postVariableName, $actionId)
@@ -1024,7 +1020,6 @@
             return (method_exists(get_called_class(), $alertMessageHandler))?
                                                         static::$alertMessageHandler($postVariableName) : null;
         }
-
 
         protected static function resolvePageSizeByMassActionId($actionId)
         {
@@ -1055,7 +1050,7 @@
         protected static function processModelForMassDelete(& $model)
         {
             // TODO: @Shoaibi/@Jason: Low: Candidate for MassActionController
-            if(!$model->delete(false))
+            if (!$model->delete(false))
             {
                 throw new FailedToDeleteModelException();
             }
@@ -1076,7 +1071,7 @@
             {
                 $model->setAttributes($sanitizedOwnerPostData);
             }
-            if(!$model->save(false))
+            if (!$model->save(false))
             {
                 throw new FailedToSaveModelException();
             }

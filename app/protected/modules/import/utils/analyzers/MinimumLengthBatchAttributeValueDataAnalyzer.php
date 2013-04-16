@@ -88,7 +88,7 @@
         {
             if (strlen($value) < $this->minLength)
             {
-                $this->messageCountData[static::INVALID] ++;
+                $this->messageCountData[static::INVALID]++;
             }
         }
 

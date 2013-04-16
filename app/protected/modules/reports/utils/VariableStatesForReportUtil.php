@@ -54,17 +54,17 @@
             assert('is_string($modelClassName)');
             assert('is_string($attributeIndexPrefix) || $attributeIndexPrefix == null');
             $moduleClassName = $modelClassName::getModuleClassName();
-            if(null != $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName())
+            if (null != $stateMetadataAdapterClassName = $moduleClassName::getStateMetadataAdapterClassName())
             {
                 $reportRules  = ReportRules::makeByModuleClassName($moduleClassName);
                 $stateAdapterClassName =  $reportRules->resolveStateAdapterUserHasAccessTo(Yii::app()->user->userModel);
-                if($stateAdapterClassName !== null && $stateAdapterClassName !== false)
+                if ($stateAdapterClassName !== null && $stateAdapterClassName !== false)
                 {
                     $stateAttributeName = $stateAdapterClassName::getStateAttributeName();
                     $stateAdapter       = new $stateAdapterClassName(array('clauses' => array(), 'structure' => ''));
                     $attributeIndexes[$attributeIndexPrefix] = array($stateAttributeName, $stateAdapter->getStateIds());
                 }
-                elseif($stateAdapterClassName === false)
+                elseif ($stateAdapterClassName === false)
                 {
                     throw new PartialRightsForReportSecurityException();
                 }

@@ -185,7 +185,7 @@
          */
         public function getData()
         {
-            if($this->formattedData == null)
+            if ($this->formattedData == null)
             {
                 $this->formattedData = $this->formatData($this->data);
             }
@@ -224,16 +224,15 @@
          */
         protected function formatData($data)
         {
-            if(!$this->isStacked())
+            if (!$this->isStacked())
             {
                 return $data;
             }
-            foreach($this->secondSeriesValueData as $secondSeriesKey)
+            foreach ($this->secondSeriesValueData as $secondSeriesKey)
             {
-
-                foreach($data as $firstSeriesDataKey => $firstSeriesData)
+                foreach ($data as $firstSeriesDataKey => $firstSeriesData)
                 {
-                    if(isset($firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)]) &&
+                    if (isset($firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)]) &&
                         !isset($firstSeriesData[self::resolveFirstSeriesFormattedValueName($secondSeriesKey)]))
                     {
                         $value            = $firstSeriesData[self::resolveFirstSeriesValueName($secondSeriesKey)];
@@ -241,7 +240,7 @@
                         $data[$firstSeriesDataKey][self::resolveFirstSeriesFormattedValueName($secondSeriesKey)] =
                             $this->formatValue($displayAttribute, $value);
                     }
-                    if(isset($firstSeriesData[self::resolveSecondSeriesValueName($secondSeriesKey)]) &&
+                    if (isset($firstSeriesData[self::resolveSecondSeriesValueName($secondSeriesKey)]) &&
                         !isset($firstSeriesData[self::resolveSecondSeriesFormattedValueName($secondSeriesKey)]))
                     {
                         $value            = $firstSeriesData[self::resolveSecondSeriesValueName($secondSeriesKey)];
@@ -263,17 +262,17 @@
          */
         protected function formatValue(DisplayAttributeForReportForm $displayAttribute, $value)
         {
-            if($displayAttribute->isATypeOfCurrencyValue())
+            if ($displayAttribute->isATypeOfCurrencyValue())
             {
-                if($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
+                if ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_ACTUAL)
                 {
                     return Yii::app()->numberFormatter->formatDecimal($value);
                 }
-                elseif($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
+                elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_BASE)
                 {
                     return Yii::app()->numberFormatter->formatCurrency($value, Yii::app()->currencyHelper->getBaseCode());
                 }
-                elseif($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
+                elseif ($this->report->getCurrencyConversionType() == Report::CURRENCY_CONVERSION_TYPE_SPOT)
                 {
                     return Yii::app()->numberFormatter->formatCurrency($value * $this->report->getFromBaseToSpotRate(),
                                                                        $this->report->getSpotConversionCurrencyCode());
@@ -283,19 +282,19 @@
                     throw new NotSupportedException();
                 }
             }
-            elseif($displayAttribute->getDisplayElementType() == 'Decimal')
+            elseif ($displayAttribute->getDisplayElementType() == 'Decimal')
             {
                 return Yii::app()->numberFormatter->formatDecimal($value);
             }
-            elseif($displayAttribute->getDisplayElementType() == 'Integer')
+            elseif ($displayAttribute->getDisplayElementType() == 'Integer')
             {
                 return Yii::app()->numberFormatter->formatDecimal($value);
             }
-            elseif($displayAttribute->getDisplayElementType()  == 'Date')
+            elseif ($displayAttribute->getDisplayElementType()  == 'Date')
             {
                 return DateTimeUtil::resolveValueForDateLocaleFormattedDisplay($value);
             }
-            elseif($displayAttribute->getDisplayElementType() == 'DateTime')
+            elseif ($displayAttribute->getDisplayElementType() == 'DateTime')
             {
                 return DateTimeUtil::convertDbFormattedDateTimeToLocaleFormattedDisplay($value);
             }

@@ -90,7 +90,6 @@
 
         public function testResolveAttributeByNodeId()
         {
-
             //resolveAttributeByNodeId($nodeIdWithoutTreeType)
 
             //test both when there is one part and more than one part

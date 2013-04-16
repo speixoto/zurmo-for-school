@@ -107,7 +107,7 @@
            else
            {
                $logoThumbFilePath = Yii::app()->theme->basePath . DIRECTORY_SEPARATOR . 'images' . DIRECTORY_SEPARATOR . 'Zurmo_logo.png';
-               $logoThumbFileSrc  = Yii::app()->baseUrl.'/themes/default/images/Zurmo_logo.png';
+               $logoThumbFileSrc  = Yii::app()->baseUrl . '/themes/default/images/Zurmo_logo.png';
                $logoFileData      = array('name'              => pathinfo($logoThumbFilePath, PATHINFO_FILENAME),
                                           'type'              => ZurmoFileHelper::getMimeType($logoThumbFilePath),
                                           'size'              => filesize($logoThumbFilePath),
@@ -148,7 +148,7 @@
 
         public static function resolveLogoWidth()
         {
-           if(!($logoWidth = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth')))
+           if (!($logoWidth = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoWidth')))
            {
                $logoWidth = ZurmoConfigurationForm::DEFAULT_LOGO_WIDTH;
            }
@@ -157,7 +157,7 @@
 
         public static function resolveLogoHeight()
         {
-           if(!($logoHeight = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight')))
+           if (!($logoHeight = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoHeight')))
            {
                $logoHeight = ZurmoConfigurationForm::DEFAULT_LOGO_HEIGHT;
            }
