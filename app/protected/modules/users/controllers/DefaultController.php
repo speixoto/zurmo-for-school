@@ -147,8 +147,7 @@
             $detailsAndRelationsView = new UserDetailsAndRelationsView($this->getId(),
                                                                        $this->getModule()->getId(),
                                                                        $params);
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($detailsAndRelationsView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -203,8 +202,7 @@
             {
                 $redirectUrlParams = null;
             }
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this,
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($user, $redirectUrlParams),
                                                     'UserActionBarAndEditView'), $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -221,8 +219,7 @@
             $userPasswordForm = new UserPasswordForm($user);
             $userPasswordForm->setScenario('changePassword');
             $this->attemptToValidateAjaxFromPost($userPasswordForm, 'UserPasswordForm');
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this,
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView(
                                              $this->makeTitleBarAndEditView(
                                                 $this->attemptToSaveModelFromPost($userPasswordForm),
                                                 'UserActionBarAndChangePasswordView'), $breadcrumbLinks, 'UserBreadCrumbView'));
@@ -434,8 +431,7 @@
                 $policiesViewMetadata,
                 $groupMembershipViewData
             );
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($securityDetailsView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -473,8 +469,7 @@
                                     $configurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -508,8 +503,7 @@
                                     $userEmailConfigurationForm
             );
             $titleBarAndEditView->setCssClasses(array('AdministrativeArea'));
-            $view = new UsersPageView(ZurmoDefaultAdminViewUtil::
-                                         makeViewWithBreadcrumbsForCurrentUser($this, $titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
+            $view = new UsersPageView($this->resolveZurmoDefaultOrAdminView($titleBarAndEditView, $breadcrumbLinks, 'UserBreadCrumbView'));
             echo $view->render();
         }
 
@@ -543,6 +537,29 @@
                 );
             }
             echo CJSON::encode($autoCompleteResults);
+        }
+
+        /**
+         * Depending on the user interface, the user views should utilize the admin or regular view.  This especially
+         * important for mobile, since for mobile there are no admin views available yet.
+         * @param $containedView
+         * @param $breadcrumbLinks
+         * @param $breadcrumbViewClassName
+         * @return GridView
+         */
+        protected function resolveZurmoDefaultOrAdminView(View $containedView, $breadcrumbLinks, $breadcrumbViewClassName)
+        {
+            assert('is_array($breadcrumbLinks)');
+            assert('is_string($breadcrumbViewClassName)');
+            if (Yii::app()->userInterface->isResolvedToMobile())
+            {
+                return ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $containedView);
+            }
+            else
+            {
+                return ZurmoDefaultAdminViewUtil::
+                    makeViewWithBreadcrumbsForCurrentUser($this, $containedView, $breadcrumbLinks, $breadcrumbViewClassName);
+            }
         }
     }
 ?>

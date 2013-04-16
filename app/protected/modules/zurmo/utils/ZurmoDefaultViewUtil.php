@@ -144,6 +144,7 @@
         {
             $headerView               = null;
             $settingsMenuItems        = MenuUtil::getOrderedAccessibleHeaderMenuForCurrentUser();
+            $settingsMenuItems        = static::resolveHeaderMenuItemsForMobile($settingsMenuItems);
             $userMenuItems            = static::getAndResolveUserMenuItemsForHeader();
             $applicationName          = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'applicationName');
             if (Yii::app()->userInterface->isMobile())
@@ -167,6 +168,26 @@
                                                             $applicationName);
             }
             return $headerView;
+        }
+
+        protected static function resolveHeaderMenuItemsForMobile(Array $items)
+        {
+            if (Yii::app()->userInterface->isResolvedToMobile())
+            {
+                $resolvedItems = array();
+                foreach($items as $item)
+                {
+                    if(!isset($item['mobile']) || $item['mobile'] == true)
+                    {
+                        $resolvedItems[] = $item;
+                    }
+                }
+            }
+            else
+            {
+                $resolvedItems = $items;
+            }
+            return $resolvedItems;
         }
 
         protected static function getAndResolveUserMenuItemsForHeader()

@@ -34,63 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ImportModule extends SecurableModule
+    /**
+     * Filter used by controllers to ascertain whether
+     * the the user interface is resolved to mobile or not.  If it is then it should not allow the user to continue to
+     * the view because administrative views are not enabled for mobile.
+     */
+    class AdminViewMobileCheckControllerFilter extends CFilter
     {
-        const RIGHT_ACCESS_IMPORT = 'Access Import Tool';
+        public $moduleClassName;
 
-        public static function getTranslatedRightsLabels()
+        public $rightName;
+
+        protected function preFilter($filterChain)
         {
-            $labels                            = array();
-            $labels[self::RIGHT_ACCESS_IMPORT] = Zurmo::t('ImportModule', 'Access Import Tool');
-            return $labels;
+            if (!Yii::app()->userInterface->isResolvedToMobile())
+            {
+                return true;
+            }
+            static::processMobileAccessFailure();
+            Yii::app()->end(0, false);
         }
 
-        public function getDependencies()
+        protected static function processMobileAccessFailure()
         {
-           return array('zurmo');
+            static::renderMobileAccessFailureContent();
         }
 
-        public function getRootModelNames()
+        protected static function renderMobileAccessFailureContent()
         {
-            return array('Import');
-        }
-
-        public static function getDefaultMetadata()
-        {
-            $metadata = array();
-            $metadata['global'] = array(
-                'adminTabMenuItems' => array(
-                    array(
-                        'label' => "eval:Zurmo::t('ImportModule', 'Import')",
-                        'url'   => array('/import/default'),
-                        'right' => self::RIGHT_ACCESS_IMPORT,
-                    ),
-                ),
-                'configureMenuItems' => array(
-                    array(
-                        'category'         => ZurmoModule::ADMINISTRATION_CATEGORY_GENERAL,
-                        'titleLabel'       => "eval:Zurmo::t('ImportModule', 'Import')",
-                        'descriptionLabel' => "eval:Zurmo::t('ImportModule', 'Import data into Zurmo')",
-                        'route'            => '/import/default',
-                        'right'            => self::RIGHT_ACCESS_IMPORT,
-                    ),
-                ),
-                'headerMenuItems' => array(
-                    array(
-                        'label'  => "eval:Zurmo::t('ImportModule', 'Import')",
-                        'url'    => array('/import/default'),
-                        'right'  => self::RIGHT_ACCESS_IMPORT,
-                        'order'  => 2,
-                        'mobile' => false,
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
-        public static function getAccessRight()
-        {
-            return self::RIGHT_ACCESS_IMPORT;
+            $messageView = new AccessFailureView(Zurmo::t('Zurmo', 'This page is not available in mobile mode.'));
+            $view        = new AccessFailurePageView($messageView);
+            echo $view->render();
         }
     }
 ?>

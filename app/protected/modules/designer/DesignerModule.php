@@ -94,6 +94,7 @@
                         'url' => array('/designer/default'),
                         'right' => self::RIGHT_ACCESS_DESIGNER,
                         'order' => 1,
+                        'mobile' => false,
                     ),
                 ),
             );
