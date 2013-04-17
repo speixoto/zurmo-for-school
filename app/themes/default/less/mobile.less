@@ -200,10 +200,21 @@
 		top: 10px;
 	}
 
-	.view-toolbar-container{
-		display: block;
-		clear: both;
+	#AboutView{
+		#rightCol,
+		#leftCol{
+			width: 100%;
+			float: none;
+			padding: 15px 15px 0 15px;
+			> div{
+				float: none;
+			}
+		}
 	}
+
+
+
+
 	.view-toolbar{
 		border: none;
 		.radius(none);
@@ -230,17 +241,24 @@
 	.mobile-view-toolbar-container{
 		.hasDropDown{
 			span.select-arrow{
-				display: none !important;
+				z-index:0;
+				background: none;
+				&:before{
+					content: "n";
+					.symbly(30px);
+					line-height: 26px;
+					margin-left: -1px;
+					background: none;
+				}
 			}
 		}
 
 		select{
-z-index: 99999;
-		}
-		/*
-		.select-arrow{
+			background: transparent;
+			z-index:10;
 			top: 0;
 			left: 0;
+			width: 30px;
 			height: 30px;
 			border:1px solid #b7b7b7;
 			border-top-color: #e7e7e7;
@@ -248,14 +266,7 @@ z-index: 99999;
 			border-right-color:#d7d7d7;
 			border-radius:4px;
 			.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
-			background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-			&:after{
-				content: "n";
-				.symbly(30px);
-				line-height: 28px;
-				margin-left: -1px;
-			}
-		}*/
+		}
 	}
 
 	.AppContainer{
