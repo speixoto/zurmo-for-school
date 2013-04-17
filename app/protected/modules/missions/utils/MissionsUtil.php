@@ -193,7 +193,7 @@
             $peopleToSendNotification = static::resolvePeopleToSendNotificationToOnNewMission($mission);
             foreach ($peopleToSendNotification as $person)
             {
-                if ($person->primaryEmail->emailAddress !== null &&
+                if ($person->primaryEmail->emailAddress != null &&
                     !UserConfigurationFormAdapter::resolveAndGetValue($person, 'turnOffEmailNotifications'))
                 {
                     $recipients[] = $person;

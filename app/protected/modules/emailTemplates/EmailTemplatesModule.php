@@ -107,6 +107,11 @@
             return array('EmailTemplatesDemoDataMaker');
         }
 
+        public static function hasPermissions()
+        {
+            return true;
+        }
+
         protected static function getSingularModuleLabel($language)
         {
             return Zurmo::t('EmailTemplatesModule', 'Email Template', array(), null, $language);

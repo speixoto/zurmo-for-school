@@ -249,6 +249,7 @@
             $theme        = 'themes/' . Yii::app()->theme->name;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
+            $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/keyframes.css');
 
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())
@@ -301,7 +302,7 @@
             return '<head>' .
                    '<meta charset="utf-8">' .
                    '<meta http-equiv="X-UA-Compatible" content="IE=edge" />' . // Not Coding Standard
-                   '<meta name="viewport"  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=0">' . // Not Coding Standard
+                   '<meta name="viewport"  content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no">' . // Not Coding Standard
                    '<meta name="apple-mobile-web-app-capable" content="yes" />' . // Not Coding Standard
                    '<link rel="apple-touch-icon" sizes="144x144" href="/themes/default/images/touch-icon-iphone4.png" />'  . //also add 57px, 72px, 144px // Not Coding Standard
                    $specialCssContent .

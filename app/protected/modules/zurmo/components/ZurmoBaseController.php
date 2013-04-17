@@ -40,6 +40,8 @@
 
         const REQUIRED_ATTRIBUTES_FILTER_PATH = 'application.modules.zurmo.controllers.filters.RequiredAttributesControllerFilter';
 
+        const ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH = 'application.modules.zurmo.controllers.filters.AdminViewMobileCheckControllerFilter';
+
         public function filters()
         {
             $moduleClassName = get_class($this->getModule());

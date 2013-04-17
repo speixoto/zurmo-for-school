@@ -50,6 +50,9 @@
             $moduleClassName = get_class($this->getModule());
             return array(
                 array(
+                    ZurmoBaseController::ADMIN_VIEW_MOBILE_CHECK_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, configurationEditArchiving',
+                ),
+                array(
                     ZurmoBaseController::RIGHTS_FILTER_PATH . ' + configurationEdit, configurationEditOutbound, configurationEditArchiving',
                     'moduleClassName' => $moduleClassName,
                     'rightName'       => EmailMessagesModule::RIGHT_ACCESS_CONFIGURATION,

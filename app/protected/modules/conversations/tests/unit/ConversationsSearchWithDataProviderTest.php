@@ -37,7 +37,7 @@
     /**
      * Tests on conversations specific searches
      */
-    class ConversationsSearchWithDataProviderTest extends ZurmoDataProviderBaseTest
+    class ConversationsSearchWithDataProviderTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

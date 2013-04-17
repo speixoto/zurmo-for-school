@@ -177,10 +177,11 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('UsersModule', 'Users')",
-                        'url' => array('/users/default'),
-                        'right' => self::RIGHT_ACCESS_USERS,
-                        'order' => 4,
+                        'label'  => "eval:Zurmo::t('UsersModule', 'Users')",
+                        'url'    => array('/users/default'),
+                        'right'  => self::RIGHT_ACCESS_USERS,
+                        'order'  => 4,
+                        'mobile' => false,
                     ),
                 ),
                 'userHeaderMenuItems' => array(

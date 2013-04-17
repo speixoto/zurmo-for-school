@@ -48,7 +48,8 @@
             //feasible for technical reasons, the Appropriate Legal Notices must display the words
             //"Copyright Zurmo Inc. 2013. All rights reserved".
             $userInterfaceTypeSelectorHtml = $this->renderUserInterfaceTypeSelector();
-            $copyrightHtml = 'Copyright &#169; Zurmo Inc., 2013. All rights reserved.';
+            $copyrightHtml = '<a href="http://www.zurmo.com" id="credit-link" class="clearfix"><span>' .
+                             'Copyright &#169; Zurmo Inc., 2013. All rights reserved.</span></a>';
             return $copyrightHtml . $userInterfaceTypeSelectorHtml;
         }
 
@@ -58,15 +59,15 @@
          */
         protected function renderUserInterfaceTypeSelector()
         {
-            if (Yii::app()->userInterface->isResolvedToMobile())
+            if (Yii::app()->userInterface->isMobile())
             {
-                $mobileActive = ' active'; //todo: class name here for active?
-                $desktopActive = '';
+                $mobileActive  = ' active';
+                $desktopActive = null;
             }
             else
             {
-                $mobileActive = '';
-                $desktopActive = ' active'; //todo: class name here for active?
+                $mobileActive  = null;
+                $desktopActive = ' active';
             }
             $content  = '<div class="ui-chooser">';
             $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Zurmo', 'Show Full')),

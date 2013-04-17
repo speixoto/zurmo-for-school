@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailArchivingJobTest extends BaseTest
+    class EmailArchivingJobTest extends ZurmoBaseTest
     {
         public static $userMailer;
         public static $userImap;

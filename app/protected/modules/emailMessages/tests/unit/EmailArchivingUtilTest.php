@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailArchivingUtilTest extends BaseTest
+    class EmailArchivingUtilTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

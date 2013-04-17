@@ -37,12 +37,12 @@
     // Separate class for tests because setting cookies gave the "headers already sent" error.
     class UserInterfaceForTesting extends UserInterface
     {
-        public function setDefaultUserInterfaceType()
+        public function resolveDefaultUserInterfaceType()
         {
             $this->defaultUserInterfaceType = static::DESKTOP;
         }
 
-        public function setSelectedUserInterfaceType($userInterfaceType = null)
+        public function resolveSelectedUserInterfaceType($userInterfaceType = null)
         {
             if (!$userInterfaceType)
             {

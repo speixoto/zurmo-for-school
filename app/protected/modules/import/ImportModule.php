@@ -77,10 +77,11 @@
                 ),
                 'headerMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ImportModule', 'Import')",
-                        'url' => array('/import/default'),
-                        'right' => self::RIGHT_ACCESS_IMPORT,
-                        'order' => 2,
+                        'label'  => "eval:Zurmo::t('ImportModule', 'Import')",
+                        'url'    => array('/import/default'),
+                        'right'  => self::RIGHT_ACCESS_IMPORT,
+                        'order'  => 2,
+                        'mobile' => false,
                     ),
                 ),
             );

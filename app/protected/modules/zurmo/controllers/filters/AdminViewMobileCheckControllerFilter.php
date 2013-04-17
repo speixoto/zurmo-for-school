@@ -34,45 +34,37 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListDetailsAndRelationsView extends DetailsAndRelationsView
+    /**
+     * Filter used by controllers to ascertain whether
+     * the the user interface is resolved to mobile or not.  If it is then it should not allow the user to continue to
+     * the view because administrative views are not enabled for mobile.
+     */
+    class AdminViewMobileCheckControllerFilter extends CFilter
     {
-        const MEMBERS_PORTLET_CLASS     = 'marketing-list-members-portlet-container';
+        public $moduleClassName;
 
-        const AUTORESPONDERS_PORTLET_CLASS  = 'marketing-list-autoresponder-portlet-container';
+        public $rightName;
 
-        public static function getDefaultMetadata()
+        protected function preFilter($filterChain)
         {
-            $metadata = array(
-                'global' => array(
-                    'leftTopView' => array(
-                        'viewClassName' => 'MarketingListDetailsView',
-                    ),
-                    'leftBottomView' => array(
-                        'showAsTabbed' => false,
-                        'columns' => array(
-                            array(
-                                'rows' => array(
-                                    array(
-                                        'type' => 'MarketingListMembersForPortlet'
-                                    ),
-                                    /*
-                                     // TODO: @Shoaibi: Medium: Implement AutoResponders portlet
-                                    array(
-                                        'type' => 'MarketingListAutorespondersForPortlet'
-                                    ),
-                                    */
-                                )
-                            )
-                        )
-                    ),
-                )
-            );
-            return $metadata;
+            if (!Yii::app()->userInterface->isMobile())
+            {
+                return true;
+            }
+            static::processMobileAccessFailure();
+            Yii::app()->end(0, false);
         }
 
-        public function isUniqueToAPage()
+        protected static function processMobileAccessFailure()
         {
-            return true;
+            static::renderMobileAccessFailureContent();
+        }
+
+        protected static function renderMobileAccessFailureContent()
+        {
+            $messageView = new AccessFailureView(Zurmo::t('Zurmo', 'This page is not available in mobile mode.'));
+            $view        = new AccessFailurePageView($messageView);
+            echo $view->render();
         }
     }
 ?>
