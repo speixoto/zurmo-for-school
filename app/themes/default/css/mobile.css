@@ -895,6 +895,12 @@ a.z-button:not(.attachLoading) .z-label,
     float: none;
     width: 100%;
   }
+  #modal-edit-form .panel th > label,
+  #edit-form .panel th > label,
+  #delete-form .panel th > label {
+    position: relative;
+    top: 6px;
+  }
   .right-side-edit-view-panel {
     float: none;
     width: 100%;
@@ -907,6 +913,11 @@ a.z-button:not(.attachLoading) .z-label,
   }
   .right-side-edit-view-panel .buffer > div {
     padding: 0;
+  }
+  .hasParallelFields > div {
+    width: 100% !important;
+    display: block;
+    float: none;
   }
   #ModelDetailsSummaryView,
   #CommentInlineEditForModelView,

@@ -6833,9 +6833,10 @@ form .view-toolbar-container,
 }
 .xhtml-validation-info,
 .performance-info {
-  text-align: right;
+  text-align: left;
   margin: 0 3% 15px 3%;
   font-style: italic;
+  font-size: 11px;
 }
 #credit-link {
   background: url(../images/Zurmo.png) left top no-repeat;
