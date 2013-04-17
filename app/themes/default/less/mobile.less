@@ -44,7 +44,7 @@
 @import 'mixins.less';
 @recentlyViewedIconSize : 24px;
 
-@media all and (max-width: 800px) {
+//@media all and (max-width: 800px) {
 	html, body {
 		margin: 0;
 		width: 100%;
@@ -147,6 +147,9 @@
 	#HeaderLinksView + div{
 		height:0;
 	}
+	#HeaderLinksView>div {
+		margin: 0 10px;
+	}
 	#GlobalSearchAndShortcutsCreateMenuView{
 		display:none;
 	}
@@ -160,6 +163,10 @@
 			margin-left:65px;
 		}
 	}
+	.performance-info {
+		margin: 0 10px 10px 10px;
+	}
+
 	.social-links{
 		display: none;
 	}
@@ -211,9 +218,6 @@
 			}
 		}
 	}
-
-
-
 
 	.view-toolbar{
 		border: none;
@@ -327,11 +331,12 @@
 
 	#MenuView{
 		++.border-box;
-		padding-top: 50px;
 		padding:50px 9px 0 19px;
 		left: 0;
 		position: fixed;
+		overflow-y: scroll;
 		width:auto;
+		height: 100%;
 		#gradient > .vertical(#f6f6f6, #f4f4f4);
 		border-right:1px solid #eee;
 		border-left:1px solid #eee;
@@ -408,6 +413,14 @@
 			content:  "V";
 		}
     }
+
+	.toggle-hidden-nav-items{
+		display: none;
+	}
+
+	.hidden-nav-item{
+		display: block;
+	}
 
 	#search{
 		position: relative;
@@ -716,4 +729,4 @@
 	}
 
 //closing media query bracket
-}
+//}
