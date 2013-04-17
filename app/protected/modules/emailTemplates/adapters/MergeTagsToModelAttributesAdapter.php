@@ -42,7 +42,7 @@
     {
         const PROPERTY_NOT_FOUND = "!MERGETAG-TO-ATTR-FAILED";
 
-        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en')
+        public static function resolveMergeTagsArrayToAttributesFromModel(& $mergeTags, $model, & $invalidTags = array(), $language = 'en', $errorOnFirstMissing = false)
         {
             $resolvedMergeTags = array();
             foreach ($mergeTags as $mergeTag)
@@ -52,13 +52,13 @@
                 $resolvedValue              =  static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
                 if ($resolvedValue === static::PROPERTY_NOT_FOUND)
                 {
-                    if (empty($invalidTags))
+                    if ($errorOnFirstMissing)
                     {
-                        $invalidTags[] = $mergeTag;
+                        return false;
                     }
                     else
                     {
-                        return false;
+                        $invalidTags[] = $mergeTag;
                     }
                 }
                 else
@@ -96,18 +96,44 @@
             elseif ($model->$attributeName instanceof CustomField)
             {
                 $value = static::getAttributeValue($model->$attributeName, 'value', $timeQualifier);
-                // TODO: @Shoaibi/@Jason need to apply localizations(Date/time/currency formats, ...) here besides translation
+                // TODO: @Shoaibi/@Jason: Low: need to apply localizations(Date/time/currency formats, ...) here besides translation
                 return (isset($value)) ? Zurmo::t($model::getModuleClassName(), $value, array(), null, $language) : null;
             }
             elseif ($model->isRelation($attributeName))
             {
                 $model = $model->$attributeName;
-                $attributeAccessorString = str_replace('->' . $attributeName, '', $attributeAccessorString);
+                if ($attributeName === $attributeAccessorString) // We have name of relation, don't have a property requested, like $object->owner
+                {
+                    $attributeAccessorString = null;
+                }
+                else
+                {
+                    $attributeAccessorString = str_replace($attributeName . '->', '', $attributeAccessorString);
+                }
+                if (empty($attributeAccessorString))
+                {
+                    // If a user specific a relation merge tag but not a property, we assume he meant "value" property.
+                    if (empty($timeQualifier))
+                    {
+                        return strval($model);
+                    }
+                    else
+                    {
+                        return static::PROPERTY_NOT_FOUND;
+                    }
+                }
                 return static::resolveMergeTagToStandardOrRelatedAttribute($attributeAccessorString, $model, $language, $timeQualifier);
             }
             elseif ($modelAttributeAdapter->isStandardAttribute($attributeName))
             {
-                return static::getAttributeValue($model, $attributeName, $timeQualifier);
+                if ($attributeName === $attributeAccessorString) // we don't have any accessor operator after the attributeName e.g. its the last in list
+                {
+                    return static::getAttributeValue($model, $attributeName, $timeQualifier);
+                }
+                else
+                {
+                    return static::PROPERTY_NOT_FOUND;
+                }
             }
             else
             {
@@ -131,21 +157,25 @@
 
         protected static function getAttributePreviousValue($model, $attributeName)
         {
-            if (isset($model->originalAttributeValues[$attributeName]))
+            if (property_exists($model, 'originalAttributeValues') || $model->isAttribute('originalAttributeValues'))
             {
-                return $model->originalAttributeValues[$attributeName];
-            }
-            else
-            {
-                if (isset($model->$attributeName))
+                if (isset($model->originalAttributeValues[$attributeName]))
                 {
-                    return $model->$attributeName;
+                    return $model->originalAttributeValues[$attributeName];
                 }
                 else
                 {
-                    return null;
+                    if (isset($model->$attributeName))
+                    {
+                        return $model->$attributeName;
+                    }
                 }
             }
+            else
+            {
+                return static::PROPERTY_NOT_FOUND;
+            }
+            return null;
         }
 
         protected static function resolveStringToAttributeAccessor($string)
