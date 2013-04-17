@@ -226,7 +226,8 @@
                                                                 'filteredBySearchTerm',
                                                                 $form);
                 $element->editableTemplate  =  ZurmoHtml::tag('div',
-                                                    array('id' => 'MarketingListMembersConfigurationForm_filteredBySearchTerm_area'),
+                                                    array('id' => 'MarketingListMembersConfigurationForm_filteredBySearchTerm_area',
+                                                          'class' => 'search-without-scope'),
                                                     '{content}');
                 $content                    .= $element->render();
             }
