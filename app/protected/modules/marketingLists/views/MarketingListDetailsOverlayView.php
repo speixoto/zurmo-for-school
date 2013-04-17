@@ -61,31 +61,25 @@
 
         protected function renderMemberStatisticsContent()
         {
-            $memberStats  = $this->renderSubscriberCount();
-            $memberStats .= $this->renderUnsubscriberCount();  // . $this->renderInvalidEmailsCount();
+            $memberStats  = $this->renderSubscribedCountContent();
+            $memberStats .= $this->renderUnsubscribedCountContent();
             $content      = ZurmoHtml::tag('div', array('class' => static::MEMBER_STATS_CLASS), $memberStats);
             return $content;
         }
 
-        protected function renderSubscriberCount()
+        protected function renderSubscribedCountContent()
         {
-            return $this->renderMemberCountMessage(false);
+            $count              = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, false);
+            $message            = Zurmo::t('MarketingListsModule', '{count} Subscribed', array('{count}' => $count));
+            $content            = ZurmoHtml::tag('strong', array('class' => static::SUBSCRIBERS_STATS_CLASS), $message);
+            return $content;
         }
 
-        protected function renderUnsubscriberCount()
+        protected function renderUnsubscribedCountContent()
         {
-            return $this->renderMemberCountMessage(true);
-        }
-
-        protected function renderMemberCountMessage($unsubscribers = false)
-        {
-            $messageDivClass    = ($unsubscribers)?
-                                        static::UNSUBSCRIBERS_STATS_CLASS :
-                                        static::SUBSCRIBERS_STATS_CLASS;
-            $count              = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, $unsubscribers);
-            $messageSuffix      = ($unsubscribers)? 'unsubscribers' : 'subscribers';
-            $message            = Zurmo::t('MarketingListsModule', '{count} ' . $messageSuffix, array('{count}' => $count));
-            $content            = ZurmoHtml::tag('strong', array('class' => $messageDivClass), $message);
+            $count              = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($this->modelId, true);
+            $message            = Zurmo::t('MarketingListsModule', '{count} Unsubscribed', array('{count}' => $count));
+            $content            = ZurmoHtml::tag('strong', array('class' => static::UNSUBSCRIBERS_STATS_CLASS), $message);
             return $content;
         }
 
