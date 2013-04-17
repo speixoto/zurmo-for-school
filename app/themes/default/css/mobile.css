@@ -449,6 +449,10 @@ body > div {
   position: fixed;
   width: 100%;
 }
+#HeaderLinksView {
+  max-width: 100%;
+  margin: 0 auto;
+}
 #HeaderLinksView + div {
   height: 0;
 }
@@ -595,6 +599,15 @@ body > div {
   margin: 0 10px;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
+  max-width: 100%;
+}
+@media screen and (min-width: 1601px) {
+  .AppContainer {
+    margin: 0 10px !important;
+  }
+  #HeaderLinksView > div {
+    margin: 0 !important;
+  }
 }
 .AppContent {
   position: relative;
@@ -643,7 +656,6 @@ body > div {
   padding: 50px 9px 0 19px;
   left: 0;
   position: fixed;
-  overflow-y: scroll;
   width: auto;
   height: 100%;
   background-color: #f4f4f4;
@@ -814,7 +826,7 @@ body > div {
   display: none;
   position: absolute;
   left: 43px !important;
-  top: 0 !important;
+  top: -75px !important;
   padding-top: 3px;
   padding-bottom: 3px;
 }
@@ -828,9 +840,10 @@ body > div {
   font-size: 11px !important;
   display: block;
   margin: 0 2px;
-  padding: 0 !important;
+  padding: 3px 0 !important;
   height: auto !important;
   float: none !important;
+  width: auto !important;
 }
 #MenuView #shortcuts > ul a em,
 #MenuView #recently-viewed > ul a em {
@@ -857,7 +870,9 @@ body > div {
   font-weight: normal !important;
 }
 #MenuView #shortcuts > ul a:hover,
-#MenuView #recently-viewed > ul a:hover {
+#MenuView #recently-viewed > ul a:hover,
+#MenuView #shortcuts > ul a:hover span,
+#MenuView #recently-viewed > ul a:hover span {
   color: #fff !important;
 }
 #RecentlyViewedView {
@@ -878,10 +893,6 @@ body > div {
 #credit-link {
   line-height: 17px;
   font-size: 10px;
-}
-.BreadCrumbView + div > div {
-  float: none;
-  width: 100% !important;
 }
 .breadcrumbs {
   padding-bottom: 10px;
