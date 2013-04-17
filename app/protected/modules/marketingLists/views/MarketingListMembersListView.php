@@ -252,7 +252,7 @@
             }
             assert('$form instanceof ZurmoActiveForm');
             $urlScript = 'js:$.param.querystring("' . $this->portletDetailsUrl . '", "' .
-                $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
+                         $this->dataProvider->getPagination()->pageVar . '=1")'; // Not Coding Standard
             $ajaxSubmitScript = ZurmoHtml::ajax(array(
                 'type'       => 'GET',
                 'data'       => 'js:$("#' . $form->getId() . '").serialize()',

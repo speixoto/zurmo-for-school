@@ -551,7 +551,7 @@
         {
             assert('is_array($breadcrumbLinks)');
             assert('is_string($breadcrumbViewClassName)');
-            if (Yii::app()->userInterface->isResolvedToMobile())
+            if (Yii::app()->userInterface->isMobile())
             {
                 return ZurmoDefaultViewUtil::makeStandardViewForCurrentUser($this, $containedView);
             }

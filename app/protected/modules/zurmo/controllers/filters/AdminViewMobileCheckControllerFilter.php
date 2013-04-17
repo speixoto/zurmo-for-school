@@ -47,7 +47,7 @@
 
         protected function preFilter($filterChain)
         {
-            if (!Yii::app()->userInterface->isResolvedToMobile())
+            if (!Yii::app()->userInterface->isMobile())
             {
                 return true;
             }

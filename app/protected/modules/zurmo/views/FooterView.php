@@ -59,15 +59,15 @@
          */
         protected function renderUserInterfaceTypeSelector()
         {
-            if (Yii::app()->userInterface->isResolvedToMobile())
+            if (Yii::app()->userInterface->isMobile())
             {
-                $mobileActive = ' active'; //todo: class name here for active?
-                $desktopActive = '';
+                $mobileActive  = ' active';
+                $desktopActive = null;
             }
             else
             {
-                $mobileActive = '';
-                $desktopActive = ' active'; //todo: class name here for active?
+                $mobileActive  = null;
+                $desktopActive = ' active';
             }
             $content  = '<div class="ui-chooser">';
             $content .= ZurmoHtml::link(ZurmoHtml::tag('span', array(), Zurmo::t('Zurmo', 'Show Full')),
