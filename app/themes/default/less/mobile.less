@@ -200,6 +200,10 @@
 		top: 10px;
 	}
 
+	.view-toolbar-container{
+		display: block;
+		clear: both;
+	}
 	.view-toolbar{
 		border: none;
 		.radius(none);
@@ -220,14 +224,20 @@
 			float: left;
 			margin: 1px 0 0 10px;
 		}
-		select{
-			width: 25px;
-			height:25px;
-			border: none;
-			margin: 3px 0 0 3px;
-			padding: 0;
-			.b-shadow(none);
+
+	}
+
+	.mobile-view-toolbar-container{
+		.hasDropDown{
+			span.select-arrow{
+				display: none !important;
+			}
 		}
+
+		select{
+z-index: 99999;
+		}
+		/*
 		.select-arrow{
 			top: 0;
 			left: 0;
@@ -245,7 +255,7 @@
 				line-height: 28px;
 				margin-left: -1px;
 			}
-		}
+		}*/
 	}
 
 	.AppContainer{

@@ -507,6 +507,10 @@ a.z-button:not(.attachLoading) .z-label,
   .hide-welcome {
     top: 10px;
   }
+  .view-toolbar-container {
+    display: block;
+    clear: both;
+  }
   .view-toolbar {
     border: none;
     -webkit-border-radius: none;
@@ -540,41 +544,33 @@ a.z-button:not(.attachLoading) .z-label,
     float: left;
     margin: 1px 0 0 10px;
   }
-  .view-toolbar select {
-    width: 25px;
-    height: 25px;
-    border: none;
-    margin: 3px 0 0 3px;
-    padding: 0;
-    -webkit-box-shadow: none;
-    -moz-box-shadow: none;
-    -o-box-shadow: none;
-    -ms-box-shadow: none;
-    box-shadow: none;
+  .mobile-view-toolbar-container {
+    /*
+  		.select-arrow{
+  			top: 0;
+  			left: 0;
+  			height: 30px;
+  			border:1px solid #b7b7b7;
+  			border-top-color: #e7e7e7;
+  			border-left-color:#d7d7d7;
+  			border-right-color:#d7d7d7;
+  			border-radius:4px;
+  			.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
+  			background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  			&:after{
+  				content: "n";
+  				.symbly(30px);
+  				line-height: 28px;
+  				margin-left: -1px;
+  			}
+  		}*/
+  
   }
-  .view-toolbar .select-arrow {
-    top: 0;
-    left: 0;
-    height: 30px;
-    border: 1px solid #b7b7b7;
-    border-top-color: #e7e7e7;
-    border-left-color: #d7d7d7;
-    border-right-color: #d7d7d7;
-    border-radius: 4px;
-    -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-    -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-    -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-    -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-    box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
-    background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+  .mobile-view-toolbar-container .hasDropDown span.select-arrow {
+    display: none !important;
   }
-  .view-toolbar .select-arrow:after {
-    content: "n";
-    font-weight: normal;
-    font-size: 30px;
-    font-family: "ZurmoGamificationSymblyReguRg";
-    line-height: 28px;
-    margin-left: -1px;
+  .mobile-view-toolbar-container select {
+    z-index: 99999;
   }
   .AppContainer {
     min-width: 0 !important;
