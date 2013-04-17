@@ -17651,7 +17651,14 @@ a.user-link {
 #marketing-list-member-select-contact-or-report-form .search-without-scope {
   margin-top: 10px;
   border: 1px solid #d5d4d4;
+  position: relative;
   background: url(../images/search-bar-loopa.png) left top no-repeat;
+}
+#marketing-list-member-select-contact-or-report-form .search-without-scope .z-spinner {
+  top: 2px;
+  right: 0;
+  left: auto;
+  display: block;
 }
 #marketing-list-member-select-contact-or-report-form input[type="text"] {
   -moz-box-sizing: border-box;

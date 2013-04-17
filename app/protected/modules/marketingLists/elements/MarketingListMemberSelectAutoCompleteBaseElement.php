@@ -80,8 +80,12 @@
         protected function getOptions()
         {
             return array(
-                'autoFill' => false,
+                'autoFill'  => false,
                 'select'    => $this->getWidgetSelectActionJS(),
+                'search'    => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(true,  $(this).parent()) }',
+                'open'      => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'close'     => 'js:function(event, ui) { makeOrRemoveTogglableSpinner(false, $(this).parent()) }',
+                'response'  => 'js:function(event, ui) { if (ui.content.length < 1) { makeOrRemoveTogglableSpinner(false, $(this).parent()); } }'
             );
         }
 
