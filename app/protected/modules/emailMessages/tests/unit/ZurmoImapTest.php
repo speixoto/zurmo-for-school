@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class ZurmoImapTest extends BaseTest
+    class ZurmoImapTest extends ZurmoBaseTest
     {
         public static $emailHelperSendEmailThroughTransport;
 
