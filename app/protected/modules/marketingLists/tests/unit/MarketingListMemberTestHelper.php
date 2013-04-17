@@ -34,26 +34,33 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class EmailTemplateTestHelper
+    class MarketingListMemberTestHelper
     {
-        public static function createEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        public static function createMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
         {
-            $emailTemplate                  = static::fillEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent);
-            $saved                          = $emailTemplate->save();
+            $marketingListMember = static::fillMarketingListMember($unsubscribed, $marketingList, $contact);
+            $saved          = $marketingListMember->unrestrictedSave();
             assert('$saved');
-            return $emailTemplate;
+            return $marketingListMember;
         }
 
-        public static function fillEmailTemplateByName($type, $subject, $modelClassName, $name, $htmlContent, $textContent)
+        public static function fillMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
         {
-            $emailTemplate = new EmailTemplate();
-            $emailTemplate->type            = $type;
-            $emailTemplate->subject         = $subject;
-            $emailTemplate->modelClassName  = $modelClassName;
-            $emailTemplate->name            = $name;
-            $emailTemplate->htmlContent     = $htmlContent;
-            $emailTemplate->textContent     = $textContent;
-            return $emailTemplate;
+            if (empty($marketingList))
+            {
+                $marketingLists = MarketingList::getAll();
+                $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
+            }
+            if (empty($contact))
+            {
+                $contacts       = Contact::getAll();
+                $contact        = RandomDataUtil::getRandomValueFromArray($contacts);
+            }
+            $marketingListMember                = new MarketingListMember();
+            $marketingListMember->unsubscribed  = $unsubscribed;
+            $marketingListMember->contact       = $contact;
+            $marketingListMember->marketingList = $marketingList;
+            return $marketingListMember;
         }
     }
 ?>

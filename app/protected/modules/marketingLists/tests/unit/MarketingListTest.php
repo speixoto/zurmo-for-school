@@ -53,12 +53,26 @@
             $marketingList = new MarketingList();
             $marketingList->name        = 'Test Marketing List';
             $marketingList->description = 'Test Description';
+            $marketingList->fromName    = 'Zurmo Sales';
+            $marketingList->fromAddress = 'sales@zurmo.com';
             $this->assertTrue($marketingList->save());
             $id = $marketingList->id;
             unset($marketingList);
             $marketingList = MarketingList::getById($id);
-            $this->assertEquals('Test Marketing List', $marketingList->name);
-            $this->assertEquals('Test Description',   $marketingList->description);
+            $this->assertEquals('Test Marketing List',  $marketingList->name);
+            $this->assertEquals('Test Description',     $marketingList->description);
+            $this->assertEquals('Zurmo Sales',          $marketingList->fromName);
+            $this->assertEquals('sales@zurmo.com',      $marketingList->fromAddress);
+        }
+
+        public function testAtleastNameIsRequired()
+        {
+            $marketingList = new MarketingList();
+            $this->assertFalse($marketingList->save());
+            $errors = $marketingList->getErrors();
+            $this->assertNotEmpty($errors);
+            $this->assertCount(1, $errors);
+            $this->assertEquals(array('name'), array_keys($errors));
         }
 
         /**
@@ -74,12 +88,20 @@
         /**
          * @depends testCreateAndGetMarketingListById
          */
+        public function testGetLabel()
+        {
+            $marketingLists = MarketingList::getByName('Test Marketing List');
+            $this->assertEquals(1, count($marketingLists));
+            $this->assertEquals('Marketing List',  $marketingLists[0]::getModelLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('MarketingListsModulePluralLabel', $marketingLists[0]::getModelLabelByTypeAndLanguage('Plural'));
+        }
+
+        /**
+         * @depends testCreateAndGetMarketingListById
+         */
         public function testDeleteMarketingList()
         {
-            $marketingList = new MarketingList();
-            $marketingList->name        = 'Test Marketing List2';
-            $marketingList->description = 'Test Description2';
-            $this->assertTrue($marketingList->save());
+            MarketingListTestHelper::createMarketingListByName('Test Marketing List2', 'Description');
             $marketingLists = MarketingList::getAll();
             $this->assertEquals(2, count($marketingLists));
             $marketingLists[0]->delete();
