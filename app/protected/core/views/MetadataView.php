@@ -118,7 +118,7 @@
             $first = true;
             $dropDownId = null;
             $dropDownItems = array();
-            $dropDownItemHtmlOptions = array('prompt' => Zurmo::t('Core', 'Select Action')); // we need this so we have a default one to select at the end of operation.
+            $dropDownItemHtmlOptions = array('prompt' => ''); // we need this so we have a default one to select at the end of operation.
             if (isset($metadata['global']['toolbar']) && is_array($metadata['global']['toolbar']['elements']))
             {
                 foreach ($metadata['global']['toolbar']['elements'] as $elementInformation)

@@ -249,6 +249,7 @@
             $theme        = 'themes/' . Yii::app()->theme->name;
             $cs = Yii::app()->getClientScript();
             //$cs->registerMetaTag('UTF-8', null, 'charset'); // Not Coding Standard
+            $cs->registerCssFile(Yii::app()->baseUrl . '/' . $theme . '/css/keyframes.css');
 
             $specialCssContent = null;
             if (!MINIFY_SCRIPTS && Yii::app()->isApplicationInstalled())

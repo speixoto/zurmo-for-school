@@ -2175,17 +2175,14 @@ a.simple-link{
 }
 */
 .openingModal{
-	.opacity(100) !important;
-	//-webkit-transform: scale(0.7) !important;
-	-webkit-animation: growDialog 2s;
+	-o-animation: growDialog 0.25s;
+	-ms-animation: growDialog 0.25s;
+	-moz-animation: growDialog 0.25s;
+	-webkit-animation: growDialog 0.25s;
+	animation: growDialog 0.25s;
 }
 
 .ui-dialog{
-	//.opacity(0);
-	//-webkit-transform: scale(0);
-	//-webkit-transform-origin: center !important;
-	//webkit-transition: -webkit-transform .3s ease-in, opacity .3s ease-in;
-
 	min-width: 600px;
 	max-width: 50%;
 	overflow: visible;

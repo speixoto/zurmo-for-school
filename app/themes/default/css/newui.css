@@ -7382,11 +7382,11 @@ a.simple-link:before {
 }
 */
 .openingModal {
-  filter: alpha(opacity=100) !important;
-  -khtml-opacity: 1 !important;
-  -moz-opacity: 1 !important;
-  opacity: 1 !important;
-  -webkit-animation: growDialog 2s;
+  -o-animation: growDialog 0.25s;
+  -ms-animation: growDialog 0.25s;
+  -moz-animation: growDialog 0.25s;
+  -webkit-animation: growDialog 0.25s;
+  animation: growDialog 0.25s;
 }
 .ui-dialog {
   min-width: 600px;
