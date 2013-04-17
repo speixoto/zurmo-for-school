@@ -34,7 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class OwnedModelTest extends DataProviderBaseTest
+    class OwnedModelTest extends ZurmoBaseTest
     {
         public $freeze = false;
 

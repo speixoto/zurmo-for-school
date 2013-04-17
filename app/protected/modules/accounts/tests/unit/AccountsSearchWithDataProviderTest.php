@@ -37,7 +37,7 @@
     /**
      * Tests on accounts specific search permutations.
      */
-    class AccountsSearchWithDataProviderTest extends ZurmoDataProviderBaseTest
+    class AccountsSearchWithDataProviderTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {

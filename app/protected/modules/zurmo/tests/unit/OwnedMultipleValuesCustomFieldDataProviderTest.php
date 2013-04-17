@@ -37,7 +37,7 @@
     /**
      * For testing the interaction of MultipleValuesOwnedCustomField and the DataProvider
      */
-    class OwnedMultipleValuesCustomFieldDataProviderTest extends ZurmoDataProviderBaseTest
+    class OwnedMultipleValuesCustomFieldDataProviderTest extends ZurmoBaseTest
     {
         public static function setUpBeforeClass()
         {
