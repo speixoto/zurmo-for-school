@@ -172,7 +172,7 @@
 
         protected static function resolveHeaderMenuItemsForMobile(Array $items)
         {
-            if (Yii::app()->userInterface->isResolvedToMobile())
+            if (Yii::app()->userInterface->isMobile())
             {
                 $resolvedItems = array();
                 foreach($items as $item)

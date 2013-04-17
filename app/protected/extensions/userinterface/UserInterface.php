@@ -34,22 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    // Application component that helps to determine are visitors are using mobile, tablet or desktop computer.
+    /**
+     * Application component that helps to determine are visitors are using mobile, tablet or desktop computer.
+     */
     class UserInterface extends CApplicationComponent
     {
         const MOBILE                              = 'Mobile';
+
         const TABLET                              = 'Tablet';
+
         const DESKTOP                             = 'Desktop';
+
         const DEFAULT_USER_INTERFACE_COOKIE_NAME  = "DefaultUserInterfaceType";
+
         const SELECTED_USER_INTERFACE_COOKIE_NAME = "UserInterfaceType";
 
-        protected $defaultUserInterfaceType   = null;
-        protected $selectedUserInterfaceType  = null;
+        protected $defaultUserInterfaceType       = null;
+
+        protected $selectedUserInterfaceType      = null;
 
         public function init()
         {
-            $this->setDefaultUserInterfaceType();
-            $this->setSelectedUserInterfaceType();
+            $this->resolveDefaultUserInterfaceType();
+            $this->resolveSelectedUserInterfaceType();
         }
 
         /**
@@ -71,15 +78,14 @@
         /**
          * Set default interface type, based only on user device
          * User can't change this option.
-         * @param $userInterfaceType
          */
-        public function setDefaultUserInterfaceType()
+        public function resolveDefaultUserInterfaceType()
         {
             if (!isset(Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME]))
             {
-                $userInterfaceType = $this->detectUserInterfaceType();
+                $userInterfaceType              = $this->detectUserInterfaceType();
                 Yii::app()->request->cookies[self::DEFAULT_USER_INTERFACE_COOKIE_NAME] =
-                    new CHttpCookie(self::DEFAULT_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
+                                                  new CHttpCookie(self::DEFAULT_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
                 $this->defaultUserInterfaceType = $userInterfaceType;
             }
             else
@@ -96,17 +102,16 @@
          * Same ideas are implemented tor tablet devices.
          * @param $userInterfaceType
          */
-        public function setSelectedUserInterfaceType($userInterfaceType = null)
+        public function resolveSelectedUserInterfaceType($userInterfaceType = null)
         {
             if (!isset(Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME]) || isset($userInterfaceType))
             {
                 if (!isset($userInterfaceType))
                 {
-                    $userInterfaceType = $this->detectUserInterfaceType();
+                    $userInterfaceType           = $this->detectUserInterfaceType();
                 }
-
                 Yii::app()->request->cookies[self::SELECTED_USER_INTERFACE_COOKIE_NAME] =
-                    new CHttpCookie(self::SELECTED_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
+                                            new CHttpCookie(self::SELECTED_USER_INTERFACE_COOKIE_NAME, $userInterfaceType);
                 $this->selectedUserInterfaceType = $userInterfaceType;
             }
             else
@@ -116,7 +121,8 @@
         }
 
         /**
-         * Does user use mobile
+         * Is user interface a mobile interface. If there is no specifically selected interface then it will default
+         * to the default detected interface.
          * @return bool
          */
         public function isMobile()
@@ -125,7 +131,8 @@
         }
 
         /**
-         * Does user using tablet
+         * Is user interface a tablet interface. If there is no specifically selected interface then it will default
+         * to the default detected interface.
          * @return bool
          */
         public function isTablet()
@@ -134,7 +141,8 @@
         }
 
         /**
-         * Does user use desktop computer
+         * Is user interface a desktop interface. If there is no specifically selected interface then it will default
+         * to the default detected interface.
          * @return bool
          */
         public function isDesktop()
@@ -143,28 +151,28 @@
         }
 
         /**
-         * Does user use mobile
+         * Regardless of selected interface, is the real interface of the user device mobile
          * @return bool
          */
-        public function isResolvedToMobile()
+        public function isRealInterfaceMobile()
         {
             return $this->defaultUserInterfaceType == self::MOBILE;
         }
 
         /**
-         * Does user using tablet
+         * Regardless of selected interface, is the real interface of the user device a tablet
          * @return bool
          */
-        public function isResolvedToTablet()
+        public function isRealInterfaceTablet()
         {
             return $this->defaultUserInterfaceType == self::TABLET;
         }
 
         /**
-         * Does user use desktop computer
+         * Regardless of selected interface, is the real interface of the user device a desktop
          * @return bool
          */
-        public function isResolvedToDesktop()
+        public function isRealInterfaceDesktop()
         {
             return ($this->defaultUserInterfaceType != self::MOBILE && $this->defaultUserInterfaceType != self::TABLET);
         }

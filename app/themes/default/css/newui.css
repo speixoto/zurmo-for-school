@@ -9381,9 +9381,9 @@ div.radio-input .hasDropDown {
   display: block;
   margin-left: 10px;
   width: 13px;
-  height: 13px;
+  padding: 1px;
   text-align: center;
-  vertical-align: middle;
+  line-height: 1;
   color: #666;
   border: 1px solid #fff;
   -webkit-box-shadow: inset 0 0 0 1px #dddddd;
@@ -9396,11 +9396,11 @@ div.radio-input .hasDropDown {
   -o-text-shadow: 0 1px 0 #ffffff;
   -ms-text-shadow: 0 1px 0 #ffffff;
   text-shadow: 0 1px 0 #ffffff;
-  -webkit-border-radius: 3px;
-  -moz-border-radius: 3px;
-  -ms-border-radius: 3px;
-  -o-border-radius: 3px;
-  border-radius: 3px;
+  -webkit-border-radius: 2px;
+  -moz-border-radius: 2px;
+  -ms-border-radius: 2px;
+  -o-border-radius: 2px;
+  border-radius: 2px;
   background-color: #f5f5f5;
   background-repeat: repeat-x;
   background-image: -moz-linear-gradient(top, #e8e8e8, #f5f5f5);
@@ -9418,7 +9418,7 @@ div.radio-input .hasDropDown {
   display: none;
   list-style: none;
   position: absolute;
-  margin-top: 5px;
+  margin-top: 3px;
   margin-left: 11px;
   padding-top: 3px;
   padding-bottom: 3px;
@@ -17567,12 +17567,17 @@ a.user-link {
 #marketing-list-member-select-contact-or-report-form {
   padding: 15px;
 }
+#marketing-list-member-select-contact-or-report-form .search-without-scope {
+  margin-top: 10px;
+  border: 1px solid #d5d4d4;
+  background: url(../images/search-bar-loopa.png) left top no-repeat;
+}
 #marketing-list-member-select-contact-or-report-form input[type="text"] {
   -moz-box-sizing: border-box;
   -webkit-box-sizing: border-box;
   box-sizing: border-box;
-  width: 250px;
-  margin: 10px 0 0 0;
+  width: 300px;
+  margin: 0 0 0 23px;
   -webkit-border-radius: 0;
   -moz-border-radius: 0;
   -ms-border-radius: 0;
@@ -17586,9 +17591,9 @@ a.user-link {
   font-style: italic;
   color: #999;
   text-indent: 5px;
-  line-height: 25px;
-  height: 25px !important;
-  border: 1px solid #d5d4d4;
+  line-height: 23px;
+  height: 23px !important;
+  border: none;
   background: url(../images/search-bar-gradient.png) left top repeat-x;
 }
 #marketing-list-member-select-contact-or-report-form input[type="text"]:focus {
@@ -17627,6 +17632,30 @@ a.user-link {
   /* W3C */
 
 }
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area {
+  margin-right: 15px;
+  float: left;
+  border: 1px solid #d5d4d4;
+  background: url(../images/search-bar-loopa.png) left top no-repeat;
+}
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area input[type="text"] {
+  -moz-box-sizing: border-box;
+  -webkit-box-sizing: border-box;
+  box-sizing: border-box;
+  margin: 0 0 0 23px;
+  text-indent: 5px;
+  line-height: 23px;
+  height: 23px !important;
+  border: none;
+  left: 0;
+}
+#MarketingListMembersConfigurationForm_filteredBySearchTerm_area input[type="text"]:focus {
+  outline: none !important;
+  box-shadow: none !important;
+}
+#MarketingListMembersConfigurationForm_filteredBySubscriptionType_area {
+  margin-left: 15px;
+}
 .marketing-list-member-stats {
   margin: 5px 0 0 0;
   font-size: 12px;
@@ -17636,7 +17665,7 @@ a.user-link {
   margin-bottom: 3px;
 }
 .portlet-with-toolbar .view-toolbar {
-  margin: 10px 0 0 10px;
+  margin: 15px 0 0 15px;
 }
 .portlet-with-toolbar .view-toolbar .parent > ul {
   top: auto;
