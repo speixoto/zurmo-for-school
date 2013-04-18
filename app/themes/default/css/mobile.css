@@ -446,8 +446,8 @@ body > div {
   margin-top: 10px;
 }
 #HeaderView {
-  position: fixed;
   width: 100%;
+  min-width: 0 !important;
 }
 #HeaderLinksView {
   max-width: 100%;
@@ -600,7 +600,7 @@ body > div {
   /* should be 100% but i need to put box-sizing on top level nodes */
 
   margin: 0 10px;
-  overflow-y: scroll;
+  overflow: hidden;
   -webkit-overflow-scrolling: touch;
   max-width: 100%;
 }
@@ -614,8 +614,7 @@ body > div {
 }
 .AppContent {
   position: relative;
-  top: 20px;
-  padding-top: 30px;
+  padding-top: 10px;
   padding-left: 10px;
   padding-right: 10px;
   margin-left: 0;
@@ -638,7 +637,7 @@ body > div {
 #HomePageView .AppContent {
   padding-right: 10px !important;
 }
-.AppContainer .nav-open {
+.AppContent.nav-open {
   -webkit-transform: translate3d(45px, 0, 0);
   -moz-transform: translate3d(45px, 0, 0);
   -ms-transform: translate3d(45px, 0, 0);
@@ -665,8 +664,18 @@ body > div {
 .high-z-index {
   z-index: 10;
 }
+.AppNavigation.nav-open #MenuView {
+  filter: alpha(opacity=100);
+  -khtml-opacity: 1;
+  -moz-opacity: 1;
+  opacity: 1;
+}
 #MenuView {
-  padding: 50px 9px 0 19px;
+  filter: alpha(opacity=0);
+  -khtml-opacity: 0;
+  -moz-opacity: 0;
+  opacity: 0;
+  padding: 10px 9px 0 19px;
   left: 0;
   position: fixed;
   width: auto;
@@ -904,9 +913,6 @@ body > div {
   display: none;
 }
 .SearchView {
-  width: 100%;
-}
-#search-form {
   width: 100%;
 }
 .search-form-tools {
