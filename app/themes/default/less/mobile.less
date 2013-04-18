@@ -144,12 +144,18 @@
 		position:fixed;
 		width:100%;
 	}
-	#HeaderLinksView + div{
-		height:0;
+
+	#HeaderLinksView{
+		max-width: 100%;
+		margin:0 auto;
+		+ div{
+			height:0;
+		}
+		> div {
+			margin: 0 10px;
+		}
 	}
-	#HeaderLinksView>div {
-		margin: 0 10px;
-	}
+
 	#GlobalSearchAndShortcutsCreateMenuView{
 		display:none;
 	}
@@ -170,12 +176,14 @@
 	.social-links{
 		display: none;
 	}
+
 	#MobileWelcomeView{
 		h1{
 			font-size: 30px;
 			text-align: center;
 		}
 	}
+
 	#welcome-gallery{
 		display: block;
 		margin-bottom: 15px;
@@ -189,9 +197,11 @@
 			display: none;
 		}
 	}
+
 	.dashboard-link{
 		margin: 30px 0 0 0 !important;
 	}
+
 	#instructions{
 		padding-bottom: 30px;
 		text-align: center;
@@ -199,10 +209,12 @@
 			padding: 0;
 		}
 	}
+
 	.help-section{
 		width: 100%;
 		float: none;
 	}
+
 	.hide-welcome {
 		top: 10px;
 	}
@@ -239,7 +251,6 @@
 			float: left;
 			margin: 1px 0 0 10px;
 		}
-
 	}
 
 	.mobile-view-toolbar-container{
@@ -256,7 +267,6 @@
 				}
 			}
 		}
-
 		select{
 			background: transparent;
 			z-index:10;
@@ -279,6 +289,16 @@
 		margin:0 10px;
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
+		max-width: 100%;
+	}
+
+	@media screen and (min-width: 1601px) {
+		.AppContainer{
+			margin:0 10px !important;
+		}
+		#HeaderLinksView > div {
+			margin: 0 !important;
+		}
 	}
 
 	.AppContent{
@@ -334,7 +354,6 @@
 		padding:50px 9px 0 19px;
 		left: 0;
 		position: fixed;
-		overflow-y: scroll;
 		width:auto;
 		height: 100%;
 		#gradient > .vertical(#f6f6f6, #f4f4f4);
@@ -467,7 +486,7 @@
 			display:none;
 			position:absolute;
 			left:43px !important;
-			top:0 !important;
+			top:-75px !important;
 			padding-top:3px;
 			padding-bottom:3px;
 			li{
@@ -478,9 +497,10 @@
 				.smaller() !important;
 				display:block;
 				margin:0 2px;
-				padding: 0 !important;
+				padding:3px 0 !important;
 				height: auto !important;
 				float: none !important;
+				width: auto !important;
 				em{
 					display: none !important;
 				}
@@ -499,7 +519,7 @@
 					font-weight:normal !important;
 				}
 			}
-			a:hover{
+			a:hover, a:hover span{
 				color:#fff !important;
 			}
 		}
@@ -534,8 +554,8 @@
 
 	.BreadCrumbView + div{
 		> div{
-			float:none;
-			width:100% !important;
+			//float:none;
+			//width:100% !important;
 		}
 	}
 

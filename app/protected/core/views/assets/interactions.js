@@ -742,6 +742,8 @@ Autogrow textfields from https://github.com/rumpl/jquery.autogrow
                 minHeight = $this.height(),
                 shadow = $('<div></div>').css({
                     position   :   'absolute',
+                    top        : -50000,
+                    left       : -50000,
                     visibility : 'hidden',
                     width      : $(this).width(),
                     fontSize   : $this.css('fontSize'),

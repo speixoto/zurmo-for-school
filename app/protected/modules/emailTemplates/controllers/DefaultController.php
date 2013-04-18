@@ -254,5 +254,13 @@
                 throw new NotSupportedException();
             }
         }
+
+        public function actionMergeTagGuide()
+        {
+            Yii::app()->getClientScript()->setToAjaxMode();
+            $view = new ModalView($this, new MergeTagGuideView());
+            // TODO: @Shoaibi/@Jason: Critical: This appears at an awkward place like AddPortlet.
+            echo $view->render();
+        }
     }
 ?>
