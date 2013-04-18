@@ -146,8 +146,9 @@
 	}
 
 	#HeaderView{
-		position:fixed;
+		//position:fixed;
 		width:100%;
+		min-width:0 !important;
 	}
 
 	#HeaderLinksView{
@@ -316,8 +317,8 @@
 
 	.AppContent{
 		position:relative;
-		top:20px;
-		padding-top:30px;
+		//top:20px;           //add when position fixed for blue bar is possible
+		padding-top:10px;   //add when position fixed for blue bar is possible
 		padding-left:10px;
 		padding-right:10px;
 		margin-left:0;
@@ -372,7 +373,7 @@
 	#MenuView{
 		.opacity(0);
 		++.border-box;
-		padding:50px 9px 0 19px;
+		padding:10px 9px 0 19px; //add padding-top:50px when position fixed for blue bar is possible
 		left: 0;
 		position: fixed;
 		width:auto;
@@ -583,10 +584,6 @@
     }
 
     .SearchView{
-	    width: 100%;
-    }
-
-    #search-form{
 	    width: 100%;
     }
 
