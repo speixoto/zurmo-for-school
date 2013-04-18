@@ -80,6 +80,11 @@
         public static function getRecentlyViewedItemsByUser(User $user, $count)
         {
             assert('is_int($count)');
+            $itemLinkPrefix = null;
+            if (!Yii::app()->userInterface->isMobile())
+            {
+                $itemLinkPrefix = ZurmoHtml::tag('span', array(), '') . ZurmoHtml::tag('em', array(), '');
+            }
             $recentlyViewedItems = array();
             $recentlyViewedData = self::getRecentlyViewedByUser($user, $count);
             if (count($recentlyViewedData) > 0)
@@ -90,8 +95,9 @@
                     $moduleClassName                       = $recentlyViewed[0];
                     $modelId                               = $recentlyViewed[1];
                     $modelName                             = $recentlyViewed[2];
-                    $recentlyViewedItem['link']            = ZurmoHtml::link('<span></span><em></em><span>' . $modelName . '</span>',
-                                self::getRouteByRecentlyViewed($moduleClassName, $modelId));
+                    $recentlyViewedItem['link']            = ZurmoHtml::link(
+                                                                $itemLinkPrefix . ZurmoHtml::tag('span', array(), $modelName),
+                                                                self::getRouteByRecentlyViewed($moduleClassName, $modelId));
                     $recentlyViewedItem['moduleClassName'] = $moduleClassName;
                     $recentlyViewedItems[]                 = $recentlyViewedItem;
                 }
