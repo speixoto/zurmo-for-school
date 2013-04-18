@@ -43,8 +43,8 @@
 
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
-            $marketingList  = MarketingListTestHelper::createMarketingListByName('test marketing List 01');
-            $marketingList  = MarketingListTestHelper::createMarketingListByName('test marketing List 02');
+            MarketingListTestHelper::createMarketingListByName('test marketing List 01');
+            MarketingListTestHelper::createMarketingListByName('test marketing List 02');
 
             //Setup test data owned by the super user.
             $account    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);

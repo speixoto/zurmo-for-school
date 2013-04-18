@@ -40,29 +40,150 @@
         {
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
+            SecurityTestHelper::createUsers();
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+
+            //Setup test data owned by the super user.
+            $account    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
+            $account2   = AccountTestHelper::createAccountByNameForOwner('superAccount2', $super);
+            $contact1   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
+            $contact2   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact2', $super, $account2);
+            $contact3   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact3', $super, $account);
+            $contact4   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact4', $super, $account2);
+            $contact5   = ContactTestHelper::createContactWithAccountByNameForOwner('superContact5', $super, $account);
+
+            $marketingList1 = MarketingListTestHelper::createMarketingListByName('MarketingList1', 'MarketingList Description1');
+            $marketingList2 = MarketingListTestHelper::createMarketingListByName('MarketingList2', 'MarketingList Description2');
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact1);
+            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList1, $contact2);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact3);
+            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList1, $contact4);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList1, $contact5);
+            MarketingListMemberTestHelper::createMarketingListMember(0, $marketingList2, $contact1);
+            MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList2, $contact2);
         }
 
         public function testDelete()
         {
-            $this->markTestIncomplete("Implement");
+            $super                  = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $marketingList          = MarketingListTestHelper::createMarketingListByName('MarketingList3', 'MarketingList Description3');
+            $this->assertNotNull($marketingList);
+            $contact                = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+            $this->assertNotEmpty($contact);
+            $marketingListMember    = MarketingListMemberTestHelper::createMarketingListMember(1, $marketingList, $contact);
+            $this->assertNotNull($marketingListMember);
+            $id                     = $marketingListMember->id;
+            $this->setGetArray(array('id' => $id));
+            $content                = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/delete', true);
+            $this->assertEmpty($content);
+            $memberCount            = MarketingListMember::memberAlreadyExists($marketingList->id, $contact->id);
+            $this->assertEquals(0, $memberCount);
         }
 
         public function testToggleUnsubscribed()
         {
-            $this->markTestIncomplete("Implement");
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList4',
+                                                                                            'MarketingList Description4');
+            $this->assertNotNull($marketingList);
+            $contact                    = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+            $this->assertNotEmpty($contact);
+            $previousUnsubcribedValue   = 1;
+            $marketingListMember        = MarketingListMemberTestHelper::createMarketingListMember($previousUnsubcribedValue,
+                                                                                                    $marketingList,
+                                                                                                    $contact);
+            $marketingListMemberId      = $marketingListMember->id;
+            $this->assertNotNull($marketingListMember);
+            $this->setGetArray(array('id' => $marketingListMemberId));
+            $content                    = $this->runControllerWithNoExceptionsAndGetContent(
+                                                                        'marketingLists/defaultPortlet/toggleUnsubscribed',
+                                                                        true);
+            $this->assertEmpty($content);
+            $marketingListMember        = MarketingListMember::getById($marketingListMemberId);
+            $newUnsubscribedValue       = $marketingListMember->unsubscribed;
+            $this->assertNotEquals($previousUnsubcribedValue, $newUnsubscribedValue);
         }
 
         public function testCountMembers()
         {
-            $this->markTestIncomplete("Implement");
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $marketingLists             = MarketingList::getByName('MarketingList1');
+            $marketingListId            = $marketingLists[0]->id;
+            $subscriberCount            = 3;
+            $unsubscriberCount          = 2;
+            $this->setGetArray(array('marketingListId' => $marketingListId));
+            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/countMembers');
+            $countArray                 = CJson::decode($content);
+            $this->assertNotEmpty($countArray);
+            $this->assertArrayHasKey('subscriberCount', $countArray);
+            $this->assertArrayHasKey('unsubscriberCount', $countArray);
+            $this->assertEquals($subscriberCount, $countArray['subscriberCount']);
+            $this->assertEquals($unsubscriberCount, $countArray['unsubscriberCount']);
+
         }
 
-        public function testSubscribeContacts()
+        public function testSubscribeContactsForContactType()
         {
-            $this->markTestIncomplete("Implement");
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $type                       = 'contact';
+            $account                    = AccountTestHelper::createAccountByNameForOwner('superAccount3', $super);
+            $contact                    = ContactTestHelper::createContactWithAccountByNameForOwner('superContact6',
+                                                                                                    $super,
+                                                                                                    $account);
+            $contactId                  = $contact->id;
+            $marketingList              = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());
+            $marketingListId            = $marketingList->id;
+            $this->setGetArray(array(
+                                   'marketingListId'    => $marketingListId,
+                                    'id'                => $contact->id,
+                                    'type'              => $type,
+                                ));
+            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
+            $contentArray               = CJson::decode($content);
+            $this->assertNotEmpty($contentArray);
+            $this->assertArrayHasKey('type', $contentArray);
+            $this->assertArrayHasKey('message', $contentArray);
+            $this->assertEquals('1 subscribed.', $contentArray['message']);
+            $this->assertEquals('message', $contentArray['type']);
+
+            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
+            $contentArray               = CJson::decode($content);
+            $this->assertNotEmpty($contentArray);
+            $this->assertArrayHasKey('type', $contentArray);
+            $this->assertArrayHasKey('message', $contentArray);
+            $this->assertEquals('0 subscribed. 1 skipped.', $contentArray['message']);
+            $this->assertEquals('message', $contentArray['type']);
         }
 
+        public function testSubscribeContactsForReportType()
+        {
+            // TODO: @Shoaibi: Critical: Waiting for jason to write a
+            $this->markTestIncomplete("@Jason: Waiting for ReportTestHelper for Contact type");
+            $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
+            $type                       = 'report';
+            $report                     = RandomDataUtil::getRandomValueFromArray(SavedReport::getAll());
+            $this->assertNotNull($report);
+            $this->setGetArray(array(
+                                    'marketingListId'    => $marketingListId,
+                                    'id'                => $report->id,
+                                    'type'              => $type,
+                                ));
+            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
+            $contentArray               = CJson::decode($content);
+            $this->assertNotEmpty($contentArray);
+            $this->assertArrayHasKey('type', $contentArray);
+            $this->assertArrayHasKey('message', $contentArray);
+            $this->assertEquals('1 subscribed.', $contentArray['message']);
+            $this->assertEquals('message', $contentArray['type']);
+
+            $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
+            $contentArray               = CJson::decode($content);
+            $this->assertNotEmpty($contentArray);
+            $this->assertArrayHasKey('type', $contentArray);
+            $this->assertArrayHasKey('message', $contentArray);
+            $this->assertEquals('0 subscribed. 1 skipped', $contentArray['message']);
+            $this->assertEquals('message', $contentArray['type']);
+        }
     }
 ?>
