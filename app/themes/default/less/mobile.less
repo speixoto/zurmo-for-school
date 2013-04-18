@@ -299,7 +299,8 @@
 	.AppContainer{
 		min-width:0 !important; /* should be 100% but i need to put box-sizing on top level nodes */
 		margin:0 10px;
-		overflow-y: scroll;
+		//overflow-y: scroll;
+		overflow: hidden;
 		-webkit-overflow-scrolling: touch;
 		max-width: 100%;
 	}
@@ -339,7 +340,7 @@
 		padding-right: 10px !important;
 	}
 
-	.AppContainer .nav-open{
+	.AppContent.nav-open{
 		-webkit-transform: translate3d(45px, 0, 0);
 		-moz-transform: translate3d(45px, 0, 0);
 		-ms-transform: translate3d(45px, 0, 0);
@@ -362,7 +363,14 @@
 		z-index: 10;
 	}
 
+	.AppNavigation.nav-open{
+		#MenuView{
+			.opacity(100);
+		}
+	}
+
 	#MenuView{
+		.opacity(0);
 		++.border-box;
 		padding:50px 9px 0 19px;
 		left: 0;

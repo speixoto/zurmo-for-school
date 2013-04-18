@@ -62,6 +62,7 @@ a.z-button,
 .default-btn,
 .z-label,
 .hasDetailsFlyout ul,
+.stacked-list td div.checkbox-column ~ div,
 .search-form-tools input[type="submit"],
 a.search-form-tools input[type="submit"],
 .default-btn .search-form-tools input[type="submit"],
@@ -7069,8 +7070,8 @@ td {
   padding-left: 0;
 }
 .stacked-list td div.button-column {
+  display: none;
   float: right;
-  display: block;
   margin: 5px 0 0 0;
   line-height: 100%;
 }

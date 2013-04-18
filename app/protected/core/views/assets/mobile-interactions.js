@@ -36,13 +36,15 @@
 $(window).ready( function(){
 	$('#nav-trigger').click(
 		function(e){
-			e.preventDefault();
+            var timeToClass = 0;
             if ( $('.AppContent').hasClass('nav-open') ){
                 $('.AppNavigation').removeClass('high-z-index');
-                $('#MenuView .nav').children().find('> div, > ul').fadeOut(100);
+                timeToClass = 230;
             }
             $('.AppContent').toggleClass('nav-open');
-			return false;
+            setTimeout(function() { $('.AppNavigation').toggleClass('nav-open'); }, timeToClass);
+            e.preventDefault();
+            return false;
 		}
 	);
     $('.mobile-flyout-trigger').click(
