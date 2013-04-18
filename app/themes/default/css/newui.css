@@ -5774,6 +5774,9 @@ body > .ui-autocomplete {
 #MenuView.hasNoHiddenItems {
   padding-bottom: 20px;
 }
+#MenuView.hasNoHiddenItems .toggle-hidden-nav-items {
+  display: none;
+}
 .hidden-nav-item {
   display: none;
 }
@@ -9121,6 +9124,9 @@ div.wide.form label.hasCheckBox {
 .AttributeDetailsView .toolbar-mbmenu {
   top: 8px;
 }
+.clickable-mbmenu.nav-open ul {
+  display: block;
+}
 .DetailsAndRelationsView,
 #AccountDetailsAndRelationsView {
   zoom: 1;
@@ -10989,7 +10995,7 @@ a.remove .icon:after {
 .juiportlet-widget-content .items thead > tr td {
   border-top: none;
 }
-.juiportlet-widget-content table.items tbody tr:last-child td {
+.juiportlet-widget-content table.items tbody tr:last-child > td {
   border-bottom: none;
 }
 /*ICONS..*/

@@ -965,6 +965,9 @@ body > .ui-autocomplete{
 
 #MenuView.hasNoHiddenItems{
 	padding-bottom: 20px;
+	.toggle-hidden-nav-items{
+		display: none;
+	}
 }
 
 .hidden-nav-item{
@@ -3550,6 +3553,14 @@ div.wide.form{
 .AttributeDetailsView{
 	.toolbar-mbmenu{
 		top:8px;
+	}
+}
+
+.clickable-mbmenu{
+	&.nav-open{
+		ul{
+			display: block;
+		}
 	}
 }
 
