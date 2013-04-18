@@ -44,14 +44,15 @@
 @import 'mixins.less';
 @recentlyViewedIconSize : 24px;
 
-//@media all and (max-width: 800px) {
+//@media all and (max-width: 800px) {} not used finally since included when php refreshes teh app and loads mobile version.
+
 	html, body {
 		margin: 0;
 		width: 100%;
 		width: 100%;
 	}
+
 	body{
-		//padding-bottom:160px;
 		height: 100%;
 		> div{
 			height:100%;
@@ -159,16 +160,19 @@
 	#GlobalSearchAndShortcutsCreateMenuView{
 		display:none;
 	}
+
 	#FooterView {
 		margin:10px 10px 5px 10px;
 		padding-bottom: 5px;
 	}
+
 	#credit-link{
 		margin-left:0;
 		span{
 			margin-left:65px;
 		}
 	}
+
 	.performance-info {
 		margin: 0 10px 10px 10px;
 	}
@@ -285,7 +289,6 @@
 
 	.AppContainer{
 		min-width:0 !important; /* should be 100% but i need to put box-sizing on top level nodes */
-		/*background-image:none;*/
 		margin:0 10px;
 		overflow-y: scroll;
 		-webkit-overflow-scrolling: touch;
@@ -310,7 +313,6 @@
 		margin-left:0;
 		.radius(0 0 5px 5px);
 		-webkit-transition: all 0.22s ease-in 0;
-
 		transform: translate3d(0, 0, 0);
 		-webkit-transform: translate3d(0, 0, 0);
 	}
@@ -322,16 +324,6 @@
 	.AppContainer .nav-open{
 		transform: translate3d(45px, 0, 0);
 		-webkit-transform: translate3d(45px, 0, 0);
-		//.b-shadow(-1px 0 15px 0 #ccc);
-	}
-
-	.AppContent{
-		//transform: translate3d(45px, 0, 0);
-		//-webkit-transform: translate3d(45px, 0, 0);
-	}
-
-	#settings-header-menu{
-		//display: none;
 	}
 
 	.AppNavigation{
@@ -462,22 +454,12 @@
 		}
 	}
 
-	#shortcuts{
-		position: relative;
-		> ul{
-			++.headerDropDown;
-			position: absolute;
-			margin: 0;
-			left: 43px;
-			top:-7px;
-			width: auto;
-		}
-	}
-
 	#MenuView #shortcuts,
 	#MenuView #recently-viewed{
 		position: relative;
 		> ul{
+			width: auto;
+			++.headerDropDown;
 			border:1px solid #b6b6b6;
 			#gradient > .vertical( #f5f5f5, #ebebeb );
 			.b-shadow(~"inset 0 0 0 2px #ffffff,  0 0 9px 5px rgba(153, 153, 153, 0.12)");
@@ -487,8 +469,7 @@
 			position:absolute;
 			left:43px !important;
 			top:-75px !important;
-			padding-top:3px;
-			padding-bottom:3px;
+			padding:3px 0 !important;
 			li{
 				line-height: 100%;
 			}
@@ -527,13 +508,6 @@
 
 	#RecentlyViewedView{
 		display: none;
-		h3, ul{
-			//display:none;
-		}
-		ul{
-			max-height:200px;
-			overflow:scroll;
-		}
 	}
 
 	#HomeDashboardView{
@@ -549,22 +523,19 @@
 
 	#credit-link {
 		line-height: 17px;
+		line-height: 17px;
 		font-size: 10px;
 	}
 
-	.BreadCrumbView + div{
+	.DetailsAndRelationsView{
 		> div{
-			//float:none;
-			//width:100% !important;
+			float:none;
+			width:100% !important;
 		}
 	}
 
 	.breadcrumbs{
 		padding-bottom:10px;
-	}
-
-	.BreadCrumbView #StickyListMenu > li > a > span{
-		top:2px;
 	}
 
 	.details-table{
@@ -576,14 +547,17 @@
 	}
 
 	//List View
-    .search-form-tools,
+    #more-search-link,
+    #select-list-attributes-link,
     .list-view-items-summary-clone,
     .button-column{
 	    display: none;
     }
+
     .SearchView{
 	    width: 100%;
     }
+
     #search-form{
 	    width: 100%;
     }
@@ -629,11 +603,13 @@
 		float:none;
 		padding:0 10px;
 	}
+
 	#ConversationDetailsView{
 		.right-side-edit-view-panel{
 			display:none;
 		}
 	}
+
 	.model-details-summary {
 		padding-left: 65px;
 		padding-top: 10px;
@@ -647,6 +623,7 @@
 	#CommentList, .CommentList{
 		margin-left:0;
 	}
+
 	#CommentInlineEditForModelView{
 		padding:0 10px 0 0;
 	}
@@ -682,17 +659,11 @@
 
 	#NoUserEmailConfigurationYetView,
 	#NoGlobalEmailConfigurationYetView,
-	.ZeroModelsYetView{
+	.ZeroModelsYetView,
+	.splash-view{
 		> div{
-		   display: -webkit-box;
-			display: -moz-box;
-			display: box;
-			-webkit-box-orient: vertical;
-			-moz-box-orient: vertical;
-			box-orient: vertical;
-			-webkit-box-align: center;
-			-moz-box-align: center;
-			box-align: center;
+			padding: 0 10%;
+			text-align: center;
 		}
 		h2{
 			font-size:20px;
@@ -707,7 +678,7 @@
 		.large-icon{
 			width: 100%;
 			text-align: center;
-			margin-top: 0;
+			margin-top: 10px;
 			border-right:none;
 			float: none;
 		}
@@ -722,6 +693,7 @@
 		a{
 			margin:15px auto;
 			padding:0;
+			float: none;
 		}
 	}
 
@@ -730,15 +702,16 @@
 		right: 5px;
 		top: 5px;
 	}
+
 	.ui-dialog{
 		width: 98%;
 		min-width: 98%;
 		max-width: 98%;
 	}
+
     .ModalGameNotification{
 	    padding-bottom: 60px;
     }
-
 
     //Inbox
 	.model-tag{
@@ -747,6 +720,3 @@
 		position: relative;
 		top: -2px;
 	}
-
-//closing media query bracket
-//}

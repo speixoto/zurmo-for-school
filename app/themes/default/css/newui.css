@@ -1128,7 +1128,7 @@ body.blue .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.blue .green-button .z-label,
+body.blue a.green-button > .z-label,
 body.blue a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -1692,7 +1692,7 @@ body.brown .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.brown .green-button .z-label,
+body.brown a.green-button > .z-label,
 body.brown a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -2256,7 +2256,7 @@ body.lime .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.lime .green-button .z-label,
+body.lime a.green-button > .z-label,
 body.lime a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -2820,7 +2820,7 @@ body.cherry .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.cherry .green-button .z-label,
+body.cherry a.green-button > .z-label,
 body.cherry a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -3384,7 +3384,7 @@ body.turquoise .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.turquoise .green-button .z-label,
+body.turquoise a.green-button > .z-label,
 body.turquoise a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -3948,7 +3948,7 @@ body.violet .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.violet .green-button .z-label,
+body.violet a.green-button > .z-label,
 body.violet a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -4512,7 +4512,7 @@ body.honey .white-button:hover .z-label {
   -ms-text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
   text-shadow: 0px 1px 0 rgba(255, 255, 255, 0.75) !important;
 }
-body.honey .green-button .z-label,
+body.honey a.green-button > .z-label,
 body.honey a.dashboard-link > .z-label {
   color: #fff !important;
   background-color: #799e30 !important;
@@ -8479,9 +8479,6 @@ div.wide.form label.hasCheckBox {
 .wide.form .col-1 {
   width: 70%;
 }
-.AdministrativeArea .panel {
-  width: 100% !important;
-}
 .attributesContainer {
   padding-bottom: 15px;
   zoom: 1;
@@ -11407,6 +11404,12 @@ table.configuration-list td:last-child a .z-label:before {
 .AdministrativeArea .view-toolbar {
   margin-top: 0;
 }
+.AdministrativeArea .panel {
+  width: 100% !important;
+}
+#EmailTemplateEditAndDetailsView .panel {
+  width: 70% !important;
+}
 #ModulePermissionsEditAndDetailsView table tr:first-child th {
   padding-left: 15px;
   padding-bottom: 10px;
@@ -11859,9 +11862,6 @@ table.configuration-list td:last-child a .z-label:before {
   -ms-box-shadow: none;
   box-shadow: none;
   background: none;
-}
-#CurrencyCreateView #edit-form:after {
-  display: none !important;
 }
 /*Breadcrumbs*/
 .breadcrumbs {
@@ -17589,6 +17589,22 @@ a.user-link {
   text-decoration: none;
   position: relative;
   top: 1px;
+}
+.mergetag-guide-modal {
+  padding: 15px;
+  line-height: 140%;
+}
+.mergetag-guide-modal > div {
+  margin-top: 15px;
+}
+.mergetag-guide-modal h4 {
+  margin-bottom: 5px;
+}
+.mergetag-guide-modal ul {
+  padding-left: 16px;
+}
+.mergetag-guide-modal li {
+  margin-bottom: 4px;
 }
 #marketing-list-member-configuration-form {
   position: relative;

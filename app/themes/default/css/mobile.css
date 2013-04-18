@@ -594,8 +594,6 @@ body > div {
   min-width: 0 !important;
   /* should be 100% but i need to put box-sizing on top level nodes */
 
-  /*background-image:none;*/
-
   margin: 0 10px;
   overflow-y: scroll;
   -webkit-overflow-scrolling: touch;
@@ -790,22 +788,13 @@ body > div {
 #search .global-search-loopa {
   display: none;
 }
-#shortcuts {
-  position: relative;
-}
-#shortcuts > ul {
-  position: absolute;
-  margin: 0;
-  left: 43px;
-  top: -7px;
-  width: auto;
-}
 #MenuView #shortcuts,
 #MenuView #recently-viewed {
   position: relative;
 }
 #MenuView #shortcuts > ul,
 #MenuView #recently-viewed > ul {
+  width: auto;
   border: 1px solid #b6b6b6;
   background-color: #ebebeb;
   background-repeat: repeat-x;
@@ -827,8 +816,7 @@ body > div {
   position: absolute;
   left: 43px !important;
   top: -75px !important;
-  padding-top: 3px;
-  padding-bottom: 3px;
+  padding: 3px 0 !important;
 }
 #MenuView #shortcuts > ul li,
 #MenuView #recently-viewed > ul li {
@@ -878,10 +866,6 @@ body > div {
 #RecentlyViewedView {
   display: none;
 }
-#RecentlyViewedView ul {
-  max-height: 200px;
-  overflow: scroll;
-}
 #HomeDashboardView .juiportlet-column {
   width: 100%;
   float: none;
@@ -894,11 +878,12 @@ body > div {
   line-height: 17px;
   font-size: 10px;
 }
+.DetailsAndRelationsView > div {
+  float: none;
+  width: 100% !important;
+}
 .breadcrumbs {
   padding-bottom: 10px;
-}
-.BreadCrumbView #StickyListMenu > li > a > span {
-  top: 2px;
 }
 .details-table {
   margin-right: 0;
@@ -906,7 +891,8 @@ body > div {
 .juiportlet-widget {
   margin-right: 0 !important;
 }
-.search-form-tools,
+#more-search-link,
+#select-list-attributes-link,
 .list-view-items-summary-clone,
 .button-column {
   display: none;
@@ -1004,20 +990,15 @@ body > div {
 }
 #NoUserEmailConfigurationYetView > div,
 #NoGlobalEmailConfigurationYetView > div,
-.ZeroModelsYetView > div {
-  display: -webkit-box;
-  display: -moz-box;
-  display: box;
-  -webkit-box-orient: vertical;
-  -moz-box-orient: vertical;
-  box-orient: vertical;
-  -webkit-box-align: center;
-  -moz-box-align: center;
-  box-align: center;
+.ZeroModelsYetView > div,
+.splash-view > div {
+  padding: 0 10%;
+  text-align: center;
 }
 #NoUserEmailConfigurationYetView h2,
 #NoGlobalEmailConfigurationYetView h2,
-.ZeroModelsYetView h2 {
+.ZeroModelsYetView h2,
+.splash-view h2 {
   font-size: 20px;
   line-height: 28px;
   padding: 0 0 15px 0;
@@ -1025,22 +1006,25 @@ body > div {
 }
 #NoUserEmailConfigurationYetView i,
 #NoGlobalEmailConfigurationYetView i,
-.ZeroModelsYetView i {
+.ZeroModelsYetView i,
+.splash-view i {
   margin-left: 0;
   text-align: center;
 }
 #NoUserEmailConfigurationYetView .large-icon,
 #NoGlobalEmailConfigurationYetView .large-icon,
-.ZeroModelsYetView .large-icon {
+.ZeroModelsYetView .large-icon,
+.splash-view .large-icon {
   width: 100%;
   text-align: center;
-  margin-top: 0;
+  margin-top: 10px;
   border-right: none;
   float: none;
 }
 #NoUserEmailConfigurationYetView p,
 #NoGlobalEmailConfigurationYetView p,
-.ZeroModelsYetView p {
+.ZeroModelsYetView p,
+.splash-view p {
   width: 100%;
   font-size: 12px;
   line-height: 19px;
@@ -1050,9 +1034,11 @@ body > div {
 }
 #NoUserEmailConfigurationYetView a,
 #NoGlobalEmailConfigurationYetView a,
-.ZeroModelsYetView a {
+.ZeroModelsYetView a,
+.splash-view a {
   margin: 15px auto;
   padding: 0;
+  float: none;
 }
 .ui-dialog .ui-dialog-titlebar-close {
   right: 5px;
