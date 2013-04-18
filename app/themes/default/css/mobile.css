@@ -573,6 +573,11 @@ body > div {
   background: none;
 }
 .mobile-view-toolbar-container select {
+  -ms-appearance: none;
+  -o-appearance: none;
+  -webkit-appearance: none;
+  -moz-appearance: none !important;
+  appearance: none;
   background: transparent;
   z-index: 10;
   top: 0;
@@ -620,15 +625,25 @@ body > div {
   -o-border-radius: 0 0 5px 5px;
   border-radius: 0 0 5px 5px;
   -webkit-transition: all 0.22s ease-in 0;
-  transform: translate3d(0, 0, 0);
+  -moz-transition: all 0.22s ease-in 0;
+  -ms-transition: all 0.22s ease-in 0;
+  -o-transition: all 0.22s ease-in 0;
+  transition: all 0.22s ease-in 0;
   -webkit-transform: translate3d(0, 0, 0);
+  -moz-transform: translate3d(0, 0, 0);
+  -ms-transform: translate3d(0, 0, 0);
+  -o-transform: translate3d(0, 0, 0);
+  transform: translate3d(0, 0, 0);
 }
 #HomePageView .AppContent {
   padding-right: 10px !important;
 }
 .AppContainer .nav-open {
-  transform: translate3d(45px, 0, 0);
   -webkit-transform: translate3d(45px, 0, 0);
+  -moz-transform: translate3d(45px, 0, 0);
+  -ms-transform: translate3d(45px, 0, 0);
+  -o-transform: translate3d(45px, 0, 0);
+  transform: translate3d(45px, 0, 0);
 }
 .AppNavigation {
   width: 45px;
@@ -893,6 +908,10 @@ body > div {
 }
 #search-form {
   width: 100%;
+}
+.search-form-tools {
+  left: auto;
+  right: 10px;
 }
 #modal-edit-form .panel,
 #edit-form .panel,
