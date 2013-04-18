@@ -78,16 +78,18 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', \$translationParams)",
-                        'url'   => array('/opportunities/default'),
-                        'right' => self::RIGHT_ACCESS_OPPORTUNITIES,
+                        'label'  => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModulePluralLabel', \$translationParams)",
+                        'url'    => array('/opportunities/default'),
+                        'right'  => self::RIGHT_ACCESS_OPPORTUNITIES,
+                        'mobile' => true,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModuleSingularLabel', \$translationParams)",
-                        'url'   => array('/opportunities/default/create'),
-                        'right' => self::RIGHT_CREATE_OPPORTUNITIES,
+                        'label'  => "eval:Zurmo::t('OpportunitiesModule', 'OpportunitiesModuleSingularLabel', \$translationParams)",
+                        'url'    => array('/opportunities/default/create'),
+                        'right'  => self::RIGHT_CREATE_OPPORTUNITIES,
+                        'mobile' => true,
                     ),
                 ),
             );
