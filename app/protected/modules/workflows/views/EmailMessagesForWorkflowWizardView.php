@@ -165,12 +165,13 @@
                             '\'&rowNumber=\' + $(\'#' . $rowCounterInputId . '\').val()',
                         'url'     =>  $url,
                         'beforeSend' => 'js:function(){ makeOrRemoveLoadingSpinner(true, "#" + $(this).attr("id")); }',
-                        'success' => 'js:function(data){
-                        $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
-                        $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
-                            . '").find(".dynamic-rows").find("ul:first").first().append(data);
-                        rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
-                        $(".' . static::getZeroComponentsClassName() . '").hide();
+                        'success' => 'js:function(data)
+                        {
+                            $(\'#' . $rowCounterInputId . '\').val(parseInt($(\'#' . $rowCounterInputId . '\').val()) + 1);
+                            $(".droppable-dynamic-rows-container.' . ComponentForWorkflowForm::TYPE_EMAIL_MESSAGES
+                                . '").find(".dynamic-rows").find("ul:first").first().append(data);
+                            rebuildWorkflowEmailMessageRowNumbers("' . get_class($this) . '");
+                            $(".' . static::getZeroComponentsClassName() . '").hide();
                         }',
                     ),
                     array('id' => self::ADD_EMAIL_MESSAGE_LINK_ID,
@@ -222,7 +223,8 @@
         protected function registerRemoveEmailMessageScript()
         {
             $script = '
-                $(".remove-dynamic-row-link").live("click", function(){
+                $(".remove-dynamic-row-link").live("click", function()
+                {
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parent().parent().remove(); //removes the <li>
                     if (size < 2)
@@ -240,7 +242,8 @@
         protected function registerRemoveEmailMessageRecipientScript()
         {
             $script = '
-                $(".' . EmailMessageRecipientRowForWorkflowComponentView::REMOVE_LINK_CLASS_NAME . '").live("click", function(){
+                $(".' . EmailMessageRecipientRowForWorkflowComponentView::REMOVE_LINK_CLASS_NAME . '").live("click", function()
+                {
                     div = $(this).parentsUntil(".' .
                             EmailMessageRowForWorkflowComponentView::RECIPIENTS_CONTAINER_CLASS_NAME . '").parent()
                             .find(".' . EmailMessageRowForWorkflowComponentView::EMAIL_MESSAGE_RECIPIENTS_ROW_CLASS_NAME .

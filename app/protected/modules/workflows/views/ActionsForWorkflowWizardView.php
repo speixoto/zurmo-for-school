@@ -425,7 +425,8 @@
         protected function registerRemoveActionScript()
         {
             $script = '
-                $(".remove-dynamic-row-link").live("click", function(){
+                $(".remove-dynamic-row-link").live("click", function()
+                {
                     size = $(this).parent().parent().parent().find("li").size();
                     $(this).parentsUntil("ul").siblings().show();
                     $(this).parent().parent().remove(); //removes the <li>
@@ -479,11 +480,13 @@
         protected function registerRowEditScript()
         {
             //when clicking the EDIT button on each row
-            $script = "$('.edit-dynamic-row-link').live('click', function(){
+            $script = "$('.edit-dynamic-row-link').live('click', function()
+            {
                 $('#' + $(this).data().row.toString()).toggleClass('expanded-row');
                 $('#' + $(this).data().row.toString() + ' .toggle-me').toggle();
                 $('#' + $(this).data().row.toString() + ' .edit-dynamic-row-link').toggle();
-                if ($('#' + $(this).data().row.toString()).hasClass('expanded-row')) {
+                if ($('#' + $(this).data().row.toString()).hasClass('expanded-row'))
+                {
                     $('#' + $(this).data().row.toString()).siblings().hide();
                 }
                 $('#actionsNextLink').parent().parent().hide();

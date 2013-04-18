@@ -65,7 +65,7 @@
             return $this->view->render();
         }
 
-        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''")
+        public static function getAjaxOptionsForModalLink($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
         {
             assert('is_string($containerId)');
             assert('is_string($title)');
@@ -78,7 +78,7 @@
                     'update'     => '#' . $containerId);
         }
 
-        public static function getAjaxBeforeSendOptionForModalLinkContent($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''")
+        public static function getAjaxBeforeSendOptionForModalLinkContent($title, $containerId = 'modalContainer', $height = 'auto', $width = 600, $position = 'center top+25', $class = "''") // Not Coding Standard
         {
             assert('is_string($containerId)');
             assert('is_string($title)');

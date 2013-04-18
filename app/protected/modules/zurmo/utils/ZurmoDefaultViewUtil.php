@@ -175,9 +175,9 @@
             if (Yii::app()->userInterface->isMobile())
             {
                 $resolvedItems = array();
-                foreach($items as $item)
+                foreach ($items as $item)
                 {
-                    if(!isset($item['mobile']) || $item['mobile'] == true)
+                    if (!isset($item['mobile']) || $item['mobile'] == true)
                     {
                         $resolvedItems[] = $item;
                     }

@@ -94,13 +94,15 @@
         protected function getAjaxOptions()
         {
             return array(
-                    'beforeSend' => 'js:function(){
+                    'beforeSend' => 'js:function()
+                                    {
                                         makeOrRemoveLoadingSpinner(true, "#reset-runtime-filters");
                                         $("#reset-runtime-filters").addClass("attachLoadingTarget");
                                         $("#reset-runtime-filters").addClass("loading");
                                         $("#reset-runtime-filters").addClass("loading-ajax-submit");
                                     } ',
-                    'success'    => 'js:function(){
+                    'success'    => 'js:function()
+                                    {
                                         $("#RuntimeFiltersForPortletView").find(".refreshPortletLink").click();
                                         $("#ReportResultsGridForPortletView").find(".refreshPortletLink").click();
                                         $("#ReportChartForPortletView").find(".refreshPortletLink").click();

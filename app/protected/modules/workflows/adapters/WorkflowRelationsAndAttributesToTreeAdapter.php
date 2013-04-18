@@ -133,10 +133,10 @@
                 {
                     throw new NotSupportedException($relationModelClassName);
                 }
-                $relationNode= array('id'          => self::makeNodeId($relation, $nodeIdPrefix),
-                                     'text'        => $relationData['label'],
-                                     'expanded'    => false,
-                                     'hasChildren' => true);
+                $relationNode = array('id'          => self::makeNodeId($relation, $nodeIdPrefix),
+                                     'text'         => $relationData['label'],
+                                     'expanded'     => false,
+                                     'hasChildren'  => true);
                 $childrenNodeData[]           = $relationNode;
             }
             return $childrenNodeData;
