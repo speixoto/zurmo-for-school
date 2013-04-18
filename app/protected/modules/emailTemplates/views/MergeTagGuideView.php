@@ -57,20 +57,21 @@
             $content        = ZurmoHtml::tag('div', array('id' => 'mergetag-syntax-head'), $content);
             $syntaxContent  = null;
             $syntaxItems    = array();
-            $syntaxItems[]  = "A MergeTag starts with: " . MergeTagsUtil::TAG_PREFIX . " and ends with " .
-                                MergeTagsUtil::TAG_SUFFIX . ".";
-            $syntaxItems[]  = "Between starting and closing tag it can have property names. These names are written in " .
-                                "all caps regardless of actual property name case.";
-            $syntaxItems[]  = "Properties that contain more than one word are named using camel case in the system and" .
-                                " to address that in MergeTag prefix" . MergeTagsUtil::CAPITAL_DELIMITER . " character" .
-                                "before the letter that should be capitalize when converted";
-            $syntaxItems[]  = "To access an indirect property(through a relation) of the model bound to current " .
-                                "template prefix " . MergeTagsUtil::PROPERTY_DELIMITER . " property name.";
-            $syntaxItems[]  = "To access previous value of a property(only supported in workflow type templates) prefix ".
-                                "property name with: WAS" . MergeTagsUtil::TIME_DELIMITER.". If there is no previous" .
-                                " value, current value will be used. If the attached Model does not support storing" .
-                                " previous values an error will be thrown when saving template.";
-
+            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'A MergeTag starts with: {tagPrefix} and ends with {tagSuffix}.',
+                                       array('{tagPrefix}' => MergeTagsUtil::TAG_PREFIX, '{tagSuffix}' => MergeTagsUtil::TAG_SUFFIX));
+            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'Between starting and closing tags it can have field ' .
+                                       'names. These names are written in all caps regardless of actual field name case.');
+            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'Fields that contain more than one word are named ' .
+                                       'using camel case in the system and to address that in merge tags, use the prefix ' .
+                                       '{capitalDelimiter} before the letter that should be capitalize when converted.',
+                                       array('{capitalDelimiter}' => MergeTagsUtil::CAPITAL_DELIMITER));
+            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'To access a related field, use the following prefix: {propertyDelimiter}',
+                                       array('{propertyDelimiter}' => MergeTagsUtil::PROPERTY_DELIMITER));
+            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'To access a previous value of a field (only supported ' .
+                                       'in workflow type templates) prefix the field name with: {wasTag}. ' .
+                                       'If there is no previous value, the current value will be used. If the attached ' .
+                                       'module does not support storing previous values an error will be thrown ' .
+                                       'when saving the template.', array('{wasTag}' => 'WAS' . MergeTagsUtil::TIME_DELIMITER));
             foreach($syntaxItems as $syntaxItem)
             {
                 $syntaxContent .= ZurmoHtml::tag('li', array(), $syntaxItem);
