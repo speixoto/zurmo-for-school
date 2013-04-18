@@ -61,7 +61,7 @@
             $redirectUrlParams = array('/zurmo/' . $this->getId() . '/ConfigurationList');
             $messageBoxContent = Zurmo::t('ZurmoModule', 'Don\'t see a language that you want to load? Help us make Zurmo better by contributing on a translation. Click <a href="{l10nServerDomain}" class="simple-link normal-size" target="_blank">here</a>.',
                 array(
-                    '{l10nServerDomain}'=>ZurmoTranslationServerUtil::getServerDomain()
+                    '{l10nServerDomain}' => ZurmoTranslationServerUtil::getServerDomain()
                 )
             );
             $view = new LanguageTitleBarConfigurationListView(

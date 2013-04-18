@@ -67,7 +67,8 @@
         {
             parent::registerScripts();
             $script = '
-                $(".remove-dynamic-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function(){
+                $(".remove-dynamic-row-link.' . TimeTriggerForWorkflowForm::getType() . '").live("click", function()
+                {
                     $(this).parent().remove();
                     $("#ByTimeWorkflowWizardForm_timeTriggerAttribute").val("");
                     $(".NoTimeTrigger").show();

@@ -138,7 +138,8 @@
             $formClassName          = $this->modelId;
             $onCompleteScript       = $this->getOnCompleteScript();
             $isActionForEachScript  = null;
-            $ajaxSubmitScript       = "$.fn.yiiGridView.update('{$gridId}', {
+            $ajaxSubmitScript       = "$.fn.yiiGridView.update('{$gridId}',
+                                        {
                                             data: $('#{$formName}').serialize(),
                                             complete: {$onCompleteScript}
                                         });";

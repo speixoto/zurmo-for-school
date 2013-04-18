@@ -211,7 +211,6 @@
                     {
                         $this->addError($attribute, Zurmo::t('EmailTemplatesModule', 'Provided content contains few invalid merge tags.'));
                     }
-
                 }
             }
             return $passedValidation;

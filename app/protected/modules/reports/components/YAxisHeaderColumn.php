@@ -72,7 +72,7 @@
             $options['rowSpan'] = $rowSpan;
             if ($rowSpan > 0)
             {
-                echo ZurmoHtml::openTag('th' ,$options);
+                echo ZurmoHtml::openTag('th', $options);
                 $this->renderDataCellContent($row, $data);
                 echo '</th>';
             }

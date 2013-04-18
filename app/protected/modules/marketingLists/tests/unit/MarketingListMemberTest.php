@@ -51,7 +51,6 @@
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact2', $super, $account2);
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact3', $super, $account);
-
         }
 
         public function setUp()

@@ -49,20 +49,24 @@
             $inputId    = $this->getEditableInputId();
             $formName   = $this->form->getId();
             $listViewId = $this->getListViewGridId();
-            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$listViewId}', {
+            $ajaxSubmitScript = "$.fn.yiiGridView.update('{$listViewId}',
+                                {
                                         data: $('#{$formName}').serialize()
                                 });";
             $script = "
-                    $('#{$inputId}').keyup(function(e) {
+                    $('#{$inputId}').keyup(function(e)
+                    {
                         clearTimeout($.data(this, 'timer'));
                         $(this).data('timer', setTimeout(search, 500));
-                        if (e.keyCode == 13) {
+                        if (e.keyCode == 13)
+                        {
                             e.preventDefault();
                             search();
                             return false;
                         }
                     });
-                    function search() {
+                    function search()
+                    {
                         {$ajaxSubmitScript}
                     }
                 ";

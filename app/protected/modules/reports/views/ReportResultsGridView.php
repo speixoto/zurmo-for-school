@@ -356,7 +356,7 @@
          */
         protected function getCGridViewBeforeAjaxUpdate()
         {
-            return 'js:function(id, options) {makeSmallLoadingSpinner(true, "#"+id + " > .list-preloader"); }';
+            return 'js:function(id, options) {makeSmallLoadingSpinner(true, "#"+id + " > .list-preloader"); }'; // Not Coding Standard
         }
 
         /**
