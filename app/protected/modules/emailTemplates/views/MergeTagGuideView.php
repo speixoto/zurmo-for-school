@@ -57,7 +57,7 @@
             $content        = ZurmoHtml::tag('div', array('id' => 'mergetag-syntax-head'), $content);
             $syntaxContent  = null;
             $syntaxItems    = array();
-            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'A MergeTag starts with: {tagPrefix} and ends with {tagSuffix}.',
+            $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'A merge tag starts with: {tagPrefix} and ends with {tagSuffix}.',
                                        array('{tagPrefix}' => MergeTagsUtil::TAG_PREFIX, '{tagSuffix}' => MergeTagsUtil::TAG_SUFFIX));
             $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'Between starting and closing tags it can have field ' .
                                        'names. These names are written in all caps regardless of actual field name case.');
