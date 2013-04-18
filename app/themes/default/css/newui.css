@@ -9265,6 +9265,9 @@ div.wide.form label.hasCheckBox {
 #NoteInlineEditView .form-toolbar {
   border-top: none;
 }
+#NoteInlineEditForPortletView .wide.form {
+  float: none;
+}
 #inline-edit-form {
   padding: 15px 15px 15px 0;
 }
@@ -10974,16 +10977,6 @@ a.remove .icon:after {
   border-bottom: none;
 }
 /*ICONS..*/
-.juiportlet-header-icon {
-  font-weight: normal;
-  font-size: 32px;
-  font-family: "ZurmoGamificationSymblyReguRg";
-  color: #7A7A7A;
-  text-indent: -30px;
-  line-height: 100%;
-  position: absolute;
-  top: 6px;
-}
 .juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before {
   content: "9";
@@ -10996,7 +10989,8 @@ a.remove .icon:after {
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3,
 .juiportlet-widget.ContactsForOpportunityRelatedListView h3,
 .juiportlet-widget.ContactsForAccountRelatedListView h3 {
-  text-indent: 30px;
+  padding-left: 30px;
+  position: relative;
 }
 .juiportlet-widget.OpportunitiesForContactRelatedListView h3:before,
 .juiportlet-widget.OpportunitiesForAccountRelatedListView h3:before,
@@ -11006,10 +11000,10 @@ a.remove .icon:after {
   font-size: 32px;
   font-family: "ZurmoGamificationSymblyReguRg";
   color: #7A7A7A;
-  text-indent: -30px;
   line-height: 100%;
   position: absolute;
   top: 6px;
+  left: 0;
 }
 #ZurmoLogo {
   background: url(../images/ZurmoLogo.png) left top no-repeat;

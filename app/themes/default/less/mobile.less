@@ -318,10 +318,11 @@
 	.AppContent{
 		position:relative;
 		//top:20px;           //add when position fixed for blue bar is possible
-		padding-top:10px;   //add when position fixed for blue bar is possible
+		padding-top:10px;     //add when position fixed for blue bar is possible
 		padding-left:10px;
 		padding-right:10px;
 		margin-left:0;
+		margin-bottom: 0;
 		.radius(0 0 5px 5px);
 
 		-webkit-transition: all 0.22s ease-in 0;
@@ -556,6 +557,7 @@
 		font-size: 10px;
 	}
 
+	//Details View
 	.DetailsAndRelationsView{
 		> div{
 			float:none;
@@ -573,6 +575,26 @@
 
 	.juiportlet-widget{
 		margin-right:0 !important;
+	}
+
+	.latest-activity-toolbar{
+		padding: 10px 5px !important;
+	}
+
+	#filter-latest-activities-link{
+		margin-left: 5px !important;
+	}
+
+	.filter-portlet-model-bar{
+		padding-left:3px;
+		padding-bottom: 10px;
+		height: auto;
+		++.clearfix;
+		label{
+			line-height: 1;
+			float: left;
+			margin: 10px 0 0 2px;
+		}
 	}
 
 	//List View

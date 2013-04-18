@@ -74,14 +74,17 @@ a.z-button,
 .cf {
   zoom: 1;
 }
-.clearfix {
+.clearfix,
+.filter-portlet-model-bar {
   zoom: 1;
 }
-.clearfix:before {
+.clearfix:before,
+.filter-portlet-model-bar:before {
   content: "";
   display: table;
 }
-.clearfix:after {
+.clearfix:after,
+.filter-portlet-model-bar:after {
   content: "";
   display: table;
   clear: both;
@@ -618,6 +621,7 @@ body > div {
   padding-left: 10px;
   padding-right: 10px;
   margin-left: 0;
+  margin-bottom: 0;
   -webkit-border-radius: 0 0 5px 5px;
   -moz-border-radius: 0 0 5px 5px;
   -ms-border-radius: 0 0 5px 5px;
@@ -905,6 +909,22 @@ body > div {
 }
 .juiportlet-widget {
   margin-right: 0 !important;
+}
+.latest-activity-toolbar {
+  padding: 10px 5px !important;
+}
+#filter-latest-activities-link {
+  margin-left: 5px !important;
+}
+.filter-portlet-model-bar {
+  padding-left: 3px;
+  padding-bottom: 10px;
+  height: auto;
+}
+.filter-portlet-model-bar label {
+  line-height: 1;
+  float: left;
+  margin: 10px 0 0 2px;
 }
 #more-search-link,
 #select-list-attributes-link,
