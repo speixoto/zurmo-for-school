@@ -86,8 +86,7 @@
 
         public static function getUnreadCountForCurrentUserByModelClassName($modelClassName)
         {
-            $mashableInboxRules =
-                    static::createMashableInboxRulesByModel($modelClassName);
+            $mashableInboxRules = static::createMashableInboxRulesByModel($modelClassName);
             return (int)$mashableInboxRules->getUnreadCountForCurrentUser();
         }
 
@@ -137,8 +136,7 @@
             $modelClassNamesAndSortAttributes = array();
             foreach ($modelClassNames as $modelClassName)
             {
-                $mashableActivityRules =
-                        static::createMashableInboxRulesByModel($modelClassName);
+                $mashableActivityRules = static::createMashableInboxRulesByModel($modelClassName);
                 $modelClassNamesAndSortAttributes[$modelClassName] =
                         $mashableActivityRules->getMachableInboxOrderByAttributeName();
             }

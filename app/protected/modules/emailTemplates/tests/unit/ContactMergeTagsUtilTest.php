@@ -72,7 +72,7 @@
             $multiDropDownCustomFieldData->name             = 'multiDropDown';
             $multiDropDownCustomFieldData->serializedData   = serialize(array('Ten', 11, 'XII'));
             $saved                                          = $multiDropDownCustomFieldData->save();
-            assert('$saved');
+            assert('$saved'); // Not Coding Standard
 
             $multiDropDownCustomFieldValue1                 = new CustomFieldValue();
             $multiDropDownCustomFieldValue1->value          = 'Ten';
@@ -85,7 +85,7 @@
             $tagCustomFieldData->name                       = 'tagCloud';
             $tagCustomFieldData->serializedData             = serialize(array('Apache', 'PHP'));
             $saved                                          = $tagCustomFieldData->save();
-            assert('$saved');
+            assert('$saved'); // Not Coding Standard
 
             $tagCustomFieldValue1                           = new CustomFieldValue();
             $tagCustomFieldValue1->value                    = 'PHP';
@@ -152,7 +152,7 @@
             $model->tagCloud->values->add($tagCustomFieldValue1);
             $model->tagCloud->values->add($tagCustomFieldValue2);
             $saved                                          = $model->save();
-            assert('$saved');
+            assert('$saved'); // Not Coding Standard
             self::$emailTemplate                            = $model;
             self::$content                                  = '[[STRING]] [[FIRST^NAME]] [[LAST^NAME]] [[PHONE]]';
             self::$compareContent                           = 'abc James Jackson 1122334455';
@@ -329,7 +329,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -346,7 +346,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -363,7 +363,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -380,7 +380,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -397,7 +397,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -414,7 +414,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -431,7 +431,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -448,7 +448,7 @@
             $mergeTagsUtil          = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent        = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -466,7 +466,7 @@
             $mergeTagsUtil              = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent            = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent            = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -483,7 +483,7 @@
             $mergeTagsUtil              = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent            = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent            = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -500,7 +500,7 @@
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -517,7 +517,7 @@
             $mergeTagsUtil                      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                    = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                    = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -534,13 +534,12 @@
             $mergeTagsUtil                      = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                    = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                    = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
             $this->assertEmpty($this->invalidTags);
         }
-
 
         /**
          * @depends testTagCloudMergeTag
@@ -553,7 +552,7 @@
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -571,7 +570,7 @@
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -592,7 +591,7 @@
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -610,7 +609,7 @@
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);
@@ -628,7 +627,7 @@
             $mergeTagsUtil                  = MergeTagsUtilFactory::make(EmailTemplate::TYPE_CONTACT, null, $content);
             $this->assertTrue($mergeTagsUtil instanceof MergeTagsUtil);
             $this->assertTrue($mergeTagsUtil instanceof ContactMergeTagsUtil);
-            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate,$this->invalidTags);
+            $resolvedContent                = $mergeTagsUtil->resolveMergeTags(self::$emailTemplate, $this->invalidTags);
             $this->assertTrue($resolvedContent !== false);
             $this->assertNotEquals($resolvedContent, $content);
             $this->assertEquals($compareContent, $resolvedContent);

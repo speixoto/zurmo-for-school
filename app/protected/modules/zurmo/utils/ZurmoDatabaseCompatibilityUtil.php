@@ -1616,8 +1616,8 @@
             {
                 self::dropStoredFunctionsAndProcedures();
                 R::exec('CREATE TABLE IF NOT EXISTS __role_children_cache(permitable_id int(11),
-                         role_id int(11), PRIMARY KEY (permitable_id,role_id),
-                         UNIQUE KEY (permitable_id,role_id));');
+                         role_id int(11), PRIMARY KEY (permitable_id, role_id),
+                         UNIQUE KEY (permitable_id, role_id));');
                 try
                 {
                     foreach (self::$storedFunctions as $sql)

@@ -217,16 +217,20 @@
         {
             $script = "
                     $('#MashableInboxForm_filteredBy_area').find('label').each(
-                                function(){
-                                    \$(this).click(function(){
+                                function()
+                                {
+                                    \$(this).click(function()
+                                    {
                                         $('#MashableInboxForm_filteredBy_area').find('label').each(function(){\$(this).removeClass('ui-state-active')});
                                         \$(this).addClass('ui-state-active');
                                      })
                                 }
                             );
                     $('#MashableInboxForm_optionForModel_area').find('label').each(
-                                function(){
-                                    \$(this).click(function(){
+                                function()
+                                {
+                                    \$(this).click(function()
+                                    {
                                         $('#MashableInboxForm_optionForModel_area').find('label').each(function(){\$(this).removeClass('ui-state-active')});
                                         \$(this).addClass('ui-state-active');
                                      })

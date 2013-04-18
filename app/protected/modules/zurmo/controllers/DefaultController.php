@@ -396,7 +396,7 @@
                                       'type'            => $uploadedFile->getType(),
                                       'size'            => $uploadedFile->getSize(),
                                       'thumbnail_url'   => Yii::app()->createUrl('zurmo/default/thumbnail/',
-                                                                                 array('filePath'=>$thumbFilePath)));
+                                                                                 array('filePath' => $thumbFilePath)));
             }
             catch (FailedFileUploadException $e)
             {

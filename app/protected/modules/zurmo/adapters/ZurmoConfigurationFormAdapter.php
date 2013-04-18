@@ -97,7 +97,7 @@
            if (null !== ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId'))
            {
                $logoThumbFileId  = ZurmoConfigurationUtil::getByModuleName('ZurmoModule', 'logoThumbFileModelId');
-               $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id'=>$logoThumbFileId));
+               $logoThumbFileSrc = Yii::app()->createUrl('zurmo/default/logo', array('id' => $logoThumbFileId));
                $logoThumbFile    = FileModel::getById($logoThumbFileId);
                $logoFileData     = array('name'              => $logoThumbFile->name,
                                          'type'              => $logoThumbFile->type,
