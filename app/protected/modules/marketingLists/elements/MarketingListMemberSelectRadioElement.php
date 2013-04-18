@@ -55,7 +55,7 @@
         protected function renderControlEditable()
         {
             $this->registerScripts();
-            assert('$this->model instanceof MarketingList');
+            assert('$this->model instanceof MarketingListMemberSelectForm');
             $content = $this->form->radioButtonList(
                                             $this->model,
                                             $this->attribute,

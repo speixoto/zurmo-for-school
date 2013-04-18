@@ -34,32 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    /**
-     * Helper for working with sticky items such as sticky search or sticky reports
-     * Extend as needed
-     */
-    class StickyUtil
+    class MarketingListMemberControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        public static function clearDataByKey($key)
+        public static function setUpBeforeClass()
         {
-            assert('is_string($key) || is_int($key)');
-            Yii::app()->user->setState($key, null);
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        public static function getDataByKey($key)
+        public function testMassSubscribe()
         {
-            assert('is_string($key) || is_int($key)');
-            $stickyData = Yii::app()->user->getState($key);
-            if ($stickyData == null)
-            {
-                return null;
-            }
-            return unserialize($stickyData);
+            $this->markTestIncomplete("@Shoaibi: Implement");
         }
 
-        public static function setDataByKeyAndData($key, array $data)
+        public function testMassUnsubscribe()
         {
-            Yii::app()->user->setState($key, serialize($data));
+            $this->markTestIncomplete("@Shoaibi: Implement");
+        }
+
+        public function testMassDelete()
+        {
+            $this->markTestIncomplete("@Shoaibi: Implement");
         }
     }
 ?>
