@@ -40,10 +40,11 @@
             parent::setUpBeforeClass();
             SecurityTestHelper::createSuperAdmin();
             SecurityTestHelper::createUsers();
-            MarketingListTestHelper::createMarketingListByName('test marketing List 01');
-            MarketingListTestHelper::createMarketingListByName('test marketing List 02');
+
             $super = User::getByUsername('super');
             Yii::app()->user->userModel = $super;
+            $marketingList  = MarketingListTestHelper::createMarketingListByName('test marketing List 01');
+            $marketingList  = MarketingListTestHelper::createMarketingListByName('test marketing List 02');
 
             //Setup test data owned by the super user.
             $account    = AccountTestHelper::createAccountByNameForOwner('superAccount', $super);
@@ -63,13 +64,16 @@
         public function testCreateAndGetMarketingListMemberById()
         {
             $marketingList                      = RandomDataUtil::getRandomValueFromArray(MarketingList::getAll());
+            $this->assertNotNull($marketingList);
             $contact                            = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+            $this->assertNotNull($contact);
             $marketingListMember                = new MarketingListMember();
             $marketingListMember->unsubscribed  = 0;
             $marketingListMember->marketingList = $marketingList;
             $marketingListMember->contact       = $contact;
             $this->assertTrue($marketingListMember->unrestrictedSave());
             $id                                 = $marketingListMember->id;
+            $this->assertTrue($id > 0);
             unset($marketingListMember);
             $marketingListMember                = MarketingListMember::getById($id);
             $this->assertEquals(0,              $marketingListMember->unsubscribed);
@@ -82,10 +86,11 @@
          */
         public function testGetLabel()
         {
-            $marketingListMembers = MarketingListMember::getAll();
-            $this->assertEquals(1, count($marketingListMembers));
-            $this->assertEquals('Marketing List Member',  $marketingListMembers[0]::getModelLabelByTypeAndLanguage('Singular'));
-            $this->assertEquals('Marketing List Members', $marketingListMembers[0]::getModelLabelByTypeAndLanguage('Plural'));
+            $marketingListMember = RandomDataUtil::getRandomValueFromArray(MarketingListMember::getAll());
+            $this->assertNotEmpty($marketingListMember);
+            $this->assertEquals(1, count($marketingListMember));
+            $this->assertEquals('Marketing List Member',  $marketingListMember::getModelLabelByTypeAndLanguage('Singular'));
+            $this->assertEquals('Marketing List Members', $marketingListMember::getModelLabelByTypeAndLanguage('Plural'));
         }
 
         /**
@@ -95,10 +100,61 @@
         {
             MarketingListMemberTestHelper::createMarketingListMember();
             $marketingListMembers = MarketingListMember::getAll();
+            $this->assertNotEmpty($marketingListMembers);
             $this->assertEquals(2, count($marketingListMembers));
             $marketingListMembers[0]->delete();
             $marketingListMembers = MarketingListMember::getAll();
+            $this->assertNotEmpty($marketingListMembers);
             $this->assertEquals(1, count($marketingListMembers));
+        }
+
+        /**
+         * @depends testCreateAndGetMarketingListMemberById
+         */
+        public function testAddNewMemberSkipsDuplicate()
+        {
+            $marketingList                     = MarketingListTestHelper::createMarketingListByName('test marketing List 03');
+            $this->assertNotNull($marketingList);
+            $contact                            = RandomDataUtil::getRandomValueFromArray(Contact::getAll());
+            $this->assertNotNull($contact);
+            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $this->assertTrue($added);
+            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $this->assertFalse($added);
+            $memberCount                        = MarketingListMember::memberAlreadyExists($marketingList->id, $contact->id);
+            $this->assertEquals(1, $memberCount);
+            $marketingList                     = MarketingListTestHelper::createMarketingListByName('test marketing List 04');
+            $this->assertNotNull($marketingList);
+            $added                              = MarketingListMember::addNewMember($marketingList, $contact->id, false, $contact);
+            $this->assertTrue($added);
+        }
+
+        public function testGetCountByMarketingListIdAndUnsubscribed()
+        {
+            $marketingList                      = MarketingListTestHelper::createMarketingListByName('test marketing List 05');
+            $this->assertNotNull($marketingList);
+            $contacts                           = Contact::getAll();
+            $this->assertNotEmpty($contacts);
+            $unsubscribedCount                  = 0;
+            $subscribedCount                    = 0;
+            foreach($contacts as $index => $contact)
+            {
+                $unsubcribed = ($index % 2);
+                $member = MarketingListMemberTestHelper::fillMarketingListMember($unsubcribed, $marketingList, $contacts[0]);
+                $this->assertTrue($member->unrestrictedSave());
+                if ($unsubcribed)
+                {
+                    $unsubscribedCount++;
+                }
+                else
+                {
+                    $subscribedCount++;
+                }
+            }
+            $calculatedSubscribedCount      = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 0);
+            $calculatedUnsubscribedCount    = MarketingListMember::getCountByMarketingListIdAndUnsubscribed($marketingList->id, 1);
+            $this->assertEquals($subscribedCount, $calculatedSubscribedCount);
+            $this->assertEquals($unsubscribedCount, $calculatedUnsubscribedCount);
         }
     }
 ?>

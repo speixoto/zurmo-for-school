@@ -42,7 +42,6 @@
         public static function makeSearchAttributeData($marketingListId, $filterBySubscriptionType, $filterBySearchTerm)
         {
             assert('is_int($marketingListId)');
-            assert('is_string($filterBySubscriptionType)');
             $searchAttributeData            = array();
             $searchAttributeData['clauses'] = array(
                                                     1 => array(

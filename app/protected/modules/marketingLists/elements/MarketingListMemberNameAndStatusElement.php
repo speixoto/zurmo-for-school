@@ -34,33 +34,7 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingListMemberTestHelper
+    class MarketingListMemberNameAndStatusElement extends TextElement
     {
-        public static function createMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
-        {
-            $marketingListMember    = static::fillMarketingListMember($unsubscribed, $marketingList, $contact);
-            $saved                  = $marketingListMember->unrestrictedSave();
-            assert('$saved');
-            return $marketingListMember;
-        }
-
-        public static function fillMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
-        {
-            if (empty($marketingList))
-            {
-                $marketingLists = MarketingList::getAll();
-                $marketingList  = RandomDataUtil::getRandomValueFromArray($marketingLists);
-            }
-            if (empty($contact))
-            {
-                $contacts       = Contact::getAll();
-                $contact        = RandomDataUtil::getRandomValueFromArray($contacts);
-            }
-            $marketingListMember                = new MarketingListMember();
-            $marketingListMember->unsubscribed  = $unsubscribed;
-            $marketingListMember->contact       = $contact;
-            $marketingListMember->marketingList = $marketingList;
-            return $marketingListMember;
-        }
     }
 ?>
