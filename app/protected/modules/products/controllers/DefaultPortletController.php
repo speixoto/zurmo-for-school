@@ -24,16 +24,7 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsConfigurationForm extends CFormModel
+    class ProductsDefaultPortletController extends ZurmoPortletController
     {
-        const VIEW_DETAILS     = 'Details';
-
-        const VIEW_EDIT_MODE   = 'Edit Mode';
-
-        const VIEW_ADD_PRODUCT = 'Add Product';
-
-        public $view = self::VIEW_ADD_PRODUCT;
-
-        public $mashableModelClassNamesAndDisplayLabels;
     }
 ?>

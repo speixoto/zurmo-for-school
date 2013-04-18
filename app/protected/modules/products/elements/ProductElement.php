@@ -24,16 +24,32 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsConfigurationForm extends CFormModel
+    /**
+     * Display the product selection. This is a
+     * combination of a type-ahead input text field
+     * and a selection button which renders a modal list view
+     * to search on product.  Also includes a hidden input for the user
+     * id.
+     */
+    class ProductElement extends ModelElement
     {
-        const VIEW_DETAILS     = 'Details';
+        protected static $moduleId = 'products';
 
-        const VIEW_EDIT_MODE   = 'Edit Mode';
+        /**
+         * Render a hidden input, a text input with an auto-complete
+         * event, and a select button. These three items together
+         * form the Product Editable Element
+         * @return The element's content as a string.
+         */
+        protected function renderControlEditable()
+        {
+            //assert('$this->model->{$this->attribute} instanceof Product');
+            return parent::renderControlEditable();
+        }
 
-        const VIEW_ADD_PRODUCT = 'Add Product';
-
-        public $view = self::VIEW_ADD_PRODUCT;
-
-        public $mashableModelClassNamesAndDisplayLabels;
+	protected function renderLabel()
+	{
+	    return '';
+	}
     }
 ?>

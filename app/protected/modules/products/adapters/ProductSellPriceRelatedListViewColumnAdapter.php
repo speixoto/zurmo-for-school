@@ -24,16 +24,27 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsConfigurationForm extends CFormModel
+    class ProductSellPriceRelatedListViewColumnAdapter extends TextListViewColumnAdapter
     {
-        const VIEW_DETAILS     = 'Details';
-
-        const VIEW_EDIT_MODE   = 'Edit Mode';
-
-        const VIEW_ADD_PRODUCT = 'Add Product';
-
-        public $view = self::VIEW_ADD_PRODUCT;
-
-        public $mashableModelClassNamesAndDisplayLabels;
+        public function renderGridViewData()
+        {
+            if ($this->getIsLink())
+            {
+                return array(
+                    'name' => $this->attribute,
+                    'type' => 'raw',
+                    'value' => $this->view->getRelatedLinkString(
+                               '$data->' . $this->attribute, $this->attribute, 'products'),
+                );
+            }
+            else
+            {
+                return array(
+                    'name'  => $this->attribute,
+                    'value' => 'strval($data->' . $this->attribute . ')',
+                    'type'  => 'raw',
+                );
+            }
+        }
     }
 ?>

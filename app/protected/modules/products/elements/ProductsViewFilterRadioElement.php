@@ -43,7 +43,7 @@
                 $this->getArray(),
                 $this->getEditableHtmlOptions()
             );
-            return Zurmo::t('ProductsModule', 'View') . ':' . $content;
+            return Zurmo::t('ProductsModule', 'View') . ':' . $content . "<br/>" . $this->renderAddProductContent();
         }
 
         protected function renderControlNonEditable()
@@ -57,7 +57,7 @@
          */
         protected function renderLabel()
         {
-            if ($this->form === null)
+	    if ($this->form === null)
             {
                 throw new NotImplementedException();
             }
@@ -88,6 +88,38 @@
             return $data;
         }
 
-	
+	protected function renderAddProductContent()
+	{
+//	    $id          = $this->getEditableInputId('name');
+//	    $htmlOptions = array(
+//                'name'  => $this->getEditableInputName('name'),
+//                'id'    => $id,
+//                'style' => $this->resolveInputDisplayStyle($this->model)
+//            );
+//            $textField   = ZurmoHtml::textField($this->getEditableInputName('name'), '', $htmlOptions);
+//            $error       = $this->form->error($this->model, $this->attribute, array('inputID' => $id));
+//
+//            return $textField . $error;
+	    $productElement = new ProductElement(new Product(), 'opportunity', $this->form, array('inputIdPrefix' => 'product'));
+	    $url = Yii::app()->createUrl("products/default/add");
+	    $content = $productElement->render();
+	    $content .= ZurmoHtml::ajaxLink("Add Product", $url);
+	    return $content;
+        }
+
+	protected function resolveInputDisplayStyle($model)
+        {
+            if($model->view == ProductsConfigurationForm::VIEW_ADD_PRODUCT)
+            {
+                return 'display:block';
+            }
+
+            return 'display:none';
+        }
+
+	protected function getAjaxOptionsForAddProductInPortlet()
+	{
+
+	}
     }
 ?>

@@ -87,7 +87,7 @@
             $htmlOptions = array(
                 'name'  => $this->getEditableInputName($inputNameIdPrefix, $attribute),
                 'id'    => $id,
-                'style' => $this->resolveInputDisplayStyle($model, 'name'),
+                'style' => $this->resolveInputDisplayStyle($model),
                 'onkeyup' => 'calculateSellPriceBySellPriceFormula()'
             );
             //$label       = $form->labelEx  ($model, $attribute, array('for'   => $id));

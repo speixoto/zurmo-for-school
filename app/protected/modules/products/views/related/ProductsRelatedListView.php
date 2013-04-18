@@ -33,7 +33,7 @@
         protected $dataProvider;
 
         /**
-         * Form that has the information for how to display the latest activity view.
+         * Form that has the information for how to display the latest products view.
          * @var object LatestActivitiesConfigurationForm
          */
         protected $configurationForm;
@@ -71,7 +71,7 @@
 
         public static function getDefaultMetadata()
         {
-            $metadata = array(
+	    $metadata = array(
                 'perUser' => array(
                     'title' => "eval:Zurmo::t('ProductsModule', 'ProductsModulePluralLabel', LabelUtil::getTranslationParamsForAllModules())",
                 ),
@@ -97,7 +97,7 @@
                     'derivedAttributeTypes' => array(
                         'FullName',
                     ),
-                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_STACKED,
+                    'gridViewType' => RelatedListView::GRID_VIEW_TYPE_NORMAL,
                     'panels' => array(
                         array(
                             'rows' => array(
@@ -106,6 +106,24 @@
                                         array(
                                             'elements' => array(
                                                 array('attributeName' => 'name', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+				array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'quantity', 'type' => 'Text'),
+                                            ),
+                                        ),
+                                    )
+                                ),
+				array('cells' =>
+                                    array(
+                                        array(
+                                            'elements' => array(
+                                                array('attributeName' => 'sellPrice', 'type' => 'CurrencyValue'),
                                             ),
                                         ),
                                     )
@@ -125,12 +143,18 @@
 
         protected function renderContent()
         {
-            $content  = $this->renderConfigurationForm();
+            //$content  = $this->renderConfigurationForm();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ListView");
             $cClipWidget->widget($this->getGridViewWidgetPath(), $this->getCGridViewParams());
             $cClipWidget->endClip();
+            $content = $this->renderViewToolBar();
             $content .= $cClipWidget->getController()->clips['ListView'] . "\n";
+            if ($this->rowsAreSelectable)
+            {
+                $content .= ZurmoHtml::hiddenField($this->gridId . $this->gridIdSuffix . '-selectedIds', implode(",", $this->selectedIds)) . "\n"; // Not Coding Standard
+            }
+            $content .= $this->renderScripts();
             return $content;
         }
 
@@ -161,7 +185,8 @@
             list($form, $formStart) = $clipWidget->renderBeginWidget(
                 'ZurmoActiveForm',
                 array(
-                    'id' => $formName,
+                    'id'	=> $formName,
+		    //'action'	=> Yii::app()->request->createUrl('')
                 )
             );
             $content  = $formStart;
@@ -189,7 +214,7 @@
                 $element                   = new ProductsViewFilterRadioElement($this->configurationForm,
                                                                                           'view',
                                                                                           $form);
-                $element->editableTemplate =  '<div id="ProductsConfigurationForm_view_area">{content}</div>';
+                $element->editableTemplate = '<div id="ProductsConfigurationForm_view_area">{content}</div>';
                 $viewContent		   = $element->render();
                 $innerContent             .= $viewContent;
             }
@@ -239,9 +264,10 @@
 	    Yii::app()->clientScript->registerScript('addProductPortletAction', "
             $('#ProductsConfigurationForm_view_2').click(function()
                 {
-                    " . $ajaxSubmitScript . "
+                   $('#ProductsConfigurationForm_name').show();
                 }
             );
+
             ");
         }
 

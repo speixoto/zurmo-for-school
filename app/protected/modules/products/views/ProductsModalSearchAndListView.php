@@ -24,16 +24,16 @@
      * Buffalo Grove, IL 60089, USA. or at email address contact@zurmo.com.
      ********************************************************************************/
 
-    class ProductsConfigurationForm extends CFormModel
+    class ProductsModalSearchAndListView extends ModalSearchAndListView
     {
-        const VIEW_DETAILS     = 'Details';
+        public static function getListViewClassName()
+        {
+            return 'ProductsModalListView';
+        }
 
-        const VIEW_EDIT_MODE   = 'Edit Mode';
-
-        const VIEW_ADD_PRODUCT = 'Add Product';
-
-        public $view = self::VIEW_ADD_PRODUCT;
-
-        public $mashableModelClassNamesAndDisplayLabels;
+        public static function getSearchViewClassName()
+        {
+            return 'ProductsModalSearchView';
+        }
     }
 ?>

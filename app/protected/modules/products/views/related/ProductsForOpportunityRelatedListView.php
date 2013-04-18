@@ -26,43 +26,6 @@
 
     class ProductsForOpportunityRelatedListView extends ProductsRelatedListView
     {
-        /**
-         * Override the panels and toolbar metadata.
-         */
-        public static function getDefaultMetadata()
-        {
-            $metadata = parent::getDefaultMetadata();
-            $metadata['global']['toolbar']['elements'][] =
-                                array('type'                 => 'SelectFromRelatedListAjaxLink',
-                                    'portletId'              => 'eval:$this->params["portletId"]',
-                                    'relationAttributeName'  => 'eval:$this->getRelationAttributeName()',
-                                    'relationModelId'        => 'eval:$this->params["relationModel"]->id',
-                                    'relationModuleId'       => 'eval:$this->params["relationModuleId"]',
-                                    'uniqueLayoutId'         => 'eval:$this->uniqueLayoutId',
-				    //TODO: fix this 'eval' of $this->uniqueLayoutId above so that it can properly work being set/get from DB then getting evaluated
-				    //currently it will not work correctly since in the db it would store a static value instead of it still being dynamic
-                                    'ajaxOptions'	     => 'eval:static::resolveAjaxOptionsForSelectList()',
-                                    'htmlOptions'	     => array( 'id' => 'SelectProductsForOpportunityFromRelatedListLink',
-									'live' => false) //This is there are no double bindings
-            );
-            $metadata['global']['panels'] = array(
-                array(
-                    'rows' => array(
-                        array('cells' =>
-                            array(
-                                array(
-                                    'elements' => array(
-                                        array('attributeName' => 'name', 'type' => 'Text', 'isLink' => false),
-                                    ),
-                                ),
-                            )
-                        ),
-                    ),
-                ),
-            );
-            return $metadata;
-        }
-
         protected function getRelationAttributeName()
         {
             return 'opportunity';
@@ -79,6 +42,56 @@
             $title = Zurmo::t('ProductsModule', 'ProductsModuleSingularLabel Search',
                             LabelUtil::getTranslationParamsForAllModules());
             return ModalView::getAjaxOptionsForModalLink($title);
+        }
+
+	/**
+         * Get the meta data and merge with standard CGridView column elements
+         * to create a column array that fits the CGridView columns API
+         */
+         protected function getCGridViewColumns()
+         {
+            $columns = array();
+            if ($this->rowsAreSelectable)
+            {
+                $firstColumn = $this->getCGridViewFirstColumn();
+                array_push($columns, $firstColumn);
+            }
+
+            $metadata = $this->getResolvedMetadata();
+            foreach ($metadata['global']['panels'] as $panel)
+            {
+                foreach ($panel['rows'] as $row)
+                {
+                    foreach ($row['cells'] as $cell)
+                    {
+                        foreach ($cell['elements'] as $columnInformation)
+                        {
+                            $columnClassName = 'Product' . ucfirst($columnInformation['attributeName']) . 'RelatedListViewColumnAdapter';
+                            $columnAdapter  = new $columnClassName($columnInformation['attributeName'], $this, array_slice($columnInformation, 1));
+                            $column = $columnAdapter->renderGridViewData();
+                            if (!isset($column['class']))
+                            {
+                                $column['class'] = 'DataColumn';
+                            }
+                            array_push($columns, $column);
+                        }
+                    }
+                }
+            }
+            $menuColumn = $this->getGridViewMenuColumn();
+            if ($menuColumn == null)
+            {
+                $lastColumn = $this->getCGridViewLastColumn();
+                if (!empty($lastColumn))
+                {
+                    array_push($columns, $lastColumn);
+                }
+            }
+            else
+            {
+                array_push($columns, $menuColumn);
+            }
+            return $columns;
         }
     }
 ?>
