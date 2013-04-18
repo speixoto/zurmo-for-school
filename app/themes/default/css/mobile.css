@@ -656,17 +656,8 @@ body > div {
   position: fixed;
   width: auto;
   height: 100%;
-  background-color: #f4f4f4;
-  background-repeat: repeat-x;
-  background-image: -moz-linear-gradient(top, #f6f6f6, #f4f4f4);
-  background-image: -ms-linear-gradient(top, #f6f6f6, #f4f4f4);
-  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f6f6f6), color-stop(100%, #f4f4f4));
-  background-image: -webkit-linear-gradient(top, #f6f6f6, #f4f4f4);
-  background-image: -o-linear-gradient(top, #f6f6f6, #f4f4f4);
-  background-image: linear-gradient(top, #f6f6f6, #f4f4f4);
-  filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f6f6f6', endColorstr='#f4f4f4', GradientType=0);
-  border-right: 1px solid #eee;
-  border-left: 1px solid #eee;
+  border: none;
+  background: none;
   -webkit-border-radius: 0 0 0 5px;
   -moz-border-radius: 0 0 0 5px;
   -ms-border-radius: 0 0 0 5px;
@@ -927,6 +918,7 @@ body > div {
 }
 .right-side-edit-view-panel .buffer > div {
   padding: 0;
+  background: none;
 }
 .hasParallelFields > div {
   width: 100% !important;
