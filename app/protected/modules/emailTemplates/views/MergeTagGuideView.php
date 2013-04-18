@@ -36,8 +36,6 @@
 
     class MergeTagGuideView extends View
     {
-        // TODO: @Shoaibi/@Jason: Critical: This has to be translated.
-        // TODO: @Shoaibi/@Amit: Critical: Styling
         protected function renderContent()
         {
             $syntaxtContent     = $this->renderSyntaxContent();
