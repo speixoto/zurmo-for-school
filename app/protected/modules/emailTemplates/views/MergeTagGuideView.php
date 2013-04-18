@@ -71,7 +71,7 @@
                                 " value, current value will be used. If the attached Model does not support storing" .
                                 " previous values an error will be thrown when saving template.";
 
-            foreach($syntaxItems as $syntaxItem)
+            foreach ($syntaxItems as $syntaxItem)
             {
                 $syntaxContent .= ZurmoHtml::tag('li', array(), $syntaxItem);
             }
@@ -98,7 +98,7 @@
                                     MergeTagsUtil::TAG_PREFIX . "WAS" . MergeTagsUtil::TIME_DELIMITER . "PRIMARY" .
                                     MergeTagsUtil::CAPITAL_DELIMITER . "EMAIL" . MergeTagsUtil::PROPERTY_DELIMITER .
                                     "EMAIL" . MergeTagsUtil::CAPITAL_DELIMITER . "ADDRESS" . MergeTagsUtil::TAG_SUFFIX;
-            foreach($exampleItems as $exampleItem)
+            foreach ($exampleItems as $exampleItem)
             {
                 $examplesContent .= ZurmoHtml::tag('li', array(), $exampleItem);
             }
