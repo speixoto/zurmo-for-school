@@ -240,25 +240,40 @@
 		}
 	}
 
-	.view-toolbar{
-		border: none;
-		.radius(none);
-		background-image: none;
-		.b-shadow(none);
-		width: 100%;
-		.icon-create{
-			float: left;
+	//inbox and leaderboard toolbar
+	div#LeaderboardView > .view-toolbar-container,
+	div#MashableInboxActionBarForViews > .view-toolbar-container{
+		width:auto;
+		> .view-toolbar{
 			border:1px solid #b7b7b7;
 			border-top-color: #e7e7e7;
-			border-left:1px solid #d7d7d7 !important;
+			border-left-color:#d7d7d7;
 			border-right-color:#d7d7d7;
 			border-radius:4px;
+			float:left;
+			margin:0 0 15px 0;
 			.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
 			background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
-		}
-		.mobile-view-toolbar-container{
-			float: left;
-			margin: 1px 0 0 10px;
+			.unread-count{
+				display: none;
+			}
+			.z-label{
+				display: none;
+			}
+			> a,
+			.parent > a {
+				padding:0 0 0 0;
+				&:before{
+					display: inline-block;
+					margin: 0 5px 0 5px;
+				}
+				&:after{
+					margin-left: 5px;
+				}
+			}
+			.parent > a {
+				padding:0 5px 0 0;
+			}
 		}
 	}
 
@@ -688,6 +703,9 @@
 		padding:0 10px 0 0;
 	}
 
+
+div:not(#LeaderboardView),
+div:not(#MashableInboxActionBarForViews){
 	.toolbar-mbmenu{
 		right:10px;
 		.view-toolbar{
@@ -716,6 +734,7 @@
 			}
 		}
 	}
+}
 
 	#NoUserEmailConfigurationYetView,
 	#NoGlobalEmailConfigurationYetView,
