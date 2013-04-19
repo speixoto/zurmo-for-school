@@ -351,9 +351,11 @@
 	}
 
 	.AppNavigation{
+		left: 10px;
+		top: 45px;
 		width: 45px;
 		.unstyle-panel();
-		position:absolute;
+		position:fixed;
 		padding:0 0 0 0;
 		margin: 0;
 		z-index: 0;
@@ -372,11 +374,15 @@
 	}
 
 	#MenuView{
+		position: static;
+		margin: 0 !important;
+		padding: 0 0 0 10px !important;
+		top: 0 !important;
 		.opacity(0);
 		++.border-box;
-		padding:40px 9px 0 19px; //add padding-top:50px when position fixed for blue bar is possible
+		//padding:40px 9px 0 19px; //add padding-top:50px when position fixed for blue bar is possible
 		left: 0;
-		position: fixed;
+		//position: fixed;
 		width:auto;
 		height: 100%;
 		border: none;
