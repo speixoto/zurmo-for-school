@@ -343,6 +343,10 @@
 
         protected function getClearSearchLabelPrefixContent()
         {
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return parent::getClearSearchLabelPrefixContent();
+            }
             $criteriaCount = count($this->model->dynamicClauses);
             if ($this->model->anyMixedAttributes != null)
             {
@@ -363,6 +367,10 @@
 
         protected function getClearSearchLabelContent()
         {
+            if (Yii::app()->userInterface->isMobile())
+            {
+                return parent::getClearSearchLabelContent();
+            }
             return Zurmo::t('ZurmoModule', 'Criteria Selected <span class="icon-clear">Z</span>');
         }
 

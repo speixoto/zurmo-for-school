@@ -69,9 +69,10 @@
                 'globalSearchAttributeNames' => array(),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ConversationsModule', 'Conversation')",
-                        'url'   => array('/conversations/default/create'),
-                        'right' => self::RIGHT_CREATE_CONVERSATIONS,
+                        'label'  => "eval:Zurmo::t('ConversationsModule', 'Conversation')",
+                        'url'    => array('/conversations/default/create'),
+                        'right'  => self::RIGHT_CREATE_CONVERSATIONS,
+                        'mobile' => true,
                     ),
                 )
             );

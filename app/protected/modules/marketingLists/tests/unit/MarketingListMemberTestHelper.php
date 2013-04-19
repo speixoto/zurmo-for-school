@@ -38,8 +38,8 @@
     {
         public static function createMarketingListMember($unsubscribed = 0, $marketingList = null, $contact = null)
         {
-            $marketingListMember = static::fillMarketingListMember($unsubscribed, $marketingList, $contact);
-            $saved          = $marketingListMember->unrestrictedSave();
+            $marketingListMember    = static::fillMarketingListMember($unsubscribed, $marketingList, $contact);
+            $saved                  = $marketingListMember->unrestrictedSave();
             assert('$saved');
             return $marketingListMember;
         }
