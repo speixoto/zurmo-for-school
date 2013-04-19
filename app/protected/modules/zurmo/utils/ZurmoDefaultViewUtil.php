@@ -259,9 +259,9 @@
         {
             if (Yii::app()->userInterface->isMobile())
             {
-                foreach($items as $key => $item)
+                foreach ($items as $key => $item)
                 {
-                    if(isset($item['mobile']) && $item['mobile'] == false)
+                    if (isset($item['mobile']) && $item['mobile'] == false)
                     {
                         unset($items[$key]);
                     }
@@ -317,11 +317,11 @@
 
         protected static function resolveShortcutsCreateMenuItemsForMobile(& $shortcutsCreateMenuItems)
         {
-            if(!empty($shortcutsCreateMenuItems['items']))
+            if (!empty($shortcutsCreateMenuItems['items']))
             {
-                foreach($shortcutsCreateMenuItems['items'] as $key => $item)
+                foreach ($shortcutsCreateMenuItems['items'] as $key => $item)
                 {
-                    if(isset($item['mobile']) && $item['mobile'] == false)
+                    if (isset($item['mobile']) && $item['mobile'] == false)
                     {
                         unset($shortcutsCreateMenuItems['items'][$key]);
                     }
