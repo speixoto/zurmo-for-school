@@ -146,9 +146,10 @@
             $backupMetadata                           = $metadata;
             $metadata['global']['shortcutsCreateMenuItems'] = array(
                 array(
-                    'label' => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
-                    'url'   => array('/accounts/default/create'),
-                    'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                    'label'  => "eval:Zurmo::t('AccountsModule', 'AccountsModulePluralLabel', \$translationParams)",
+                    'url'    => array('/accounts/default/create'),
+                    'right'  => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                    'mobile' => true,
                 ),
             );
             AccountsModule::setMetadata($metadata);
@@ -158,39 +159,46 @@
                 'url'   => null,
                 'items' => array(
                         array(
-                            'label' => 'Accounts',
-                            'url'   => array('/accounts/default/create'),
-                            'right' => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                            'label'  => 'Accounts',
+                            'url'    => array('/accounts/default/create'),
+                            'right'  => AccountsModule::RIGHT_CREATE_ACCOUNTS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Contact',
-                            'url'   => array('/contacts/default/create'),
-                            'right' => ContactsModule::RIGHT_CREATE_CONTACTS,
+                            'label'  => 'Contact',
+                            'url'    => array('/contacts/default/create'),
+                            'right'  => ContactsModule::RIGHT_CREATE_CONTACTS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Conversation',
-                            'url'   => array('/conversations/default/create'),
-                            'right' => ConversationsModule::RIGHT_CREATE_CONVERSATIONS,
+                            'label'  => 'Conversation',
+                            'url'    => array('/conversations/default/create'),
+                            'right'  => ConversationsModule::RIGHT_CREATE_CONVERSATIONS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Lead',
-                            'url'   => array('/leads/default/create'),
-                            'right' => LeadsModule::RIGHT_CREATE_LEADS,
+                            'label'  => 'Lead',
+                            'url'    => array('/leads/default/create'),
+                            'right'  => LeadsModule::RIGHT_CREATE_LEADS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Mission',
-                            'url'   => array('/missions/default/create'),
-                            'right' => MissionsModule::RIGHT_CREATE_MISSIONS,
+                            'label'  => 'Mission',
+                            'url'    => array('/missions/default/create'),
+                            'right'  => MissionsModule::RIGHT_CREATE_MISSIONS,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Opportunity',
-                            'url'   => array('/opportunities/default/create'),
-                            'right' => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                            'label'  => 'Opportunity',
+                            'url'    => array('/opportunities/default/create'),
+                            'right'  => OpportunitiesModule::RIGHT_CREATE_OPPORTUNITIES,
+                            'mobile' => true,
                         ),
                         array(
-                            'label' => 'Report',
-                            'url'   => array('/reports/default/selectType'),
-                            'right' => ReportsModule::RIGHT_CREATE_REPORTS,
+                            'label'  => 'Report',
+                            'url'    => array('/reports/default/selectType'),
+                            'right'  => ReportsModule::RIGHT_CREATE_REPORTS,
+                            'mobile' => false,
                         ),
                 ),
             );

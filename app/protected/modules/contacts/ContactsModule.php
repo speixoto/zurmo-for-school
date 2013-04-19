@@ -85,13 +85,15 @@
                         'label' => "eval:Zurmo::t('ContactsModule', 'ContactsModulePluralLabel', \$translationParams)",
                         'url'   => array('/contacts/default'),
                         'right' => self::RIGHT_ACCESS_CONTACTS,
+                        'mobile' => true,
                     ),
                 ),
                 'shortcutsCreateMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', \$translationParams)",
-                        'url'   => array('/contacts/default/create'),
-                        'right' => self::RIGHT_CREATE_CONTACTS,
+                        'label'  => "eval:Zurmo::t('ContactsModule', 'ContactsModuleSingularLabel', \$translationParams)",
+                        'url'    => array('/contacts/default/create'),
+                        'right'  => self::RIGHT_CREATE_CONTACTS,
+                        'mobile' => true,
                     ),
                 )
             );

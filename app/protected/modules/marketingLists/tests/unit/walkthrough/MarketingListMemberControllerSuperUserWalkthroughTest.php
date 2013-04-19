@@ -34,48 +34,29 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class MarketingCreateLinkActionElement extends CreateLinkActionElement
+    class MarketingListMemberControllerSuperUserWalkthroughTest extends ZurmoWalkthroughBaseTest
     {
-        /**
-         * Manage security check during render since you have multiple modules to check against
-         * @return null|string
-         */
-        public function getActionType()
+        public static function setUpBeforeClass()
         {
-            return null;
+            parent::setUpBeforeClass();
+            SecurityTestHelper::createSuperAdmin();
+            $super = User::getByUsername('super');
+            Yii::app()->user->userModel = $super;
         }
 
-        public function render()
+        public function testMassSubscribe()
         {
-            $items = array();
-            if (RightsUtil::doesUserHaveAllowByRightName('MarketingListsModule', MarketingListsModule::getCreateRight(),
-                                                        Yii::app()->user->userModel))
-            {
-                $items[] = array('label'   => Zurmo::t('MarketingListsModule', 'Create List'),
-                                  'url'     => Yii::app()->createUrl('marketingLists/default/create'));
-            }
-            if (RightsUtil::doesUserHaveAllowByRightName('EmailTemplatesModule', EmailTemplatesModule::getCreateRight(),
-                                                        Yii::app()->user->userModel))
-            {
-                $items[] = array('label'   => Zurmo::t('EmailTemplatesModule', 'Create Template'),
-                                 'url'     => Yii::app()->createUrl('emailTemplates/default/create',
-                                              array('type' => EmailTemplate::TYPE_CONTACT)));
-            }
-            if (!empty($items))
-            {
-                $menuItems = array( 'label' => $this->getLabel(),
-                                    'url'   => null,
-                                    'items' => $items);
-                $cClipWidget = new CClipWidget();
-                $cClipWidget->beginClip("ActionMenu");
-                $cClipWidget->widget('application.core.widgets.MbMenu', array(
-                    'htmlOptions' => array('id' => 'MashableInboxCreateDropdown'),
-                    'items'       => array($menuItems),
-                ));
-                $cClipWidget->endClip();
-                return $cClipWidget->getController()->clips['ActionMenu'];
-            }
-            return null;
+            $this->markTestIncomplete("@Shoaibi: Implement");
+        }
+
+        public function testMassUnsubscribe()
+        {
+            $this->markTestIncomplete("@Shoaibi: Implement");
+        }
+
+        public function testMassDelete()
+        {
+            $this->markTestIncomplete("@Shoaibi: Implement");
         }
     }
 ?>

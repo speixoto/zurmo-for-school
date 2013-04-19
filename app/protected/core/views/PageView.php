@@ -340,6 +340,10 @@
             {
                 $classContent .= ' ' . $backgroundTexture;
             }
+            if (Yii::app()->userInterface->isMobile())
+            {
+                $classContent .= ' mobile-app';
+            }
             return '<body class="' . $classContent . '">';
         }
 

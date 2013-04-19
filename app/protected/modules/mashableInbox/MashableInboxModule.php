@@ -49,7 +49,8 @@
                     array(
                         'label'               => Zurmo::t('MashableInboxModule', 'Inbox'),
                         'url'                 => array('/mashableInbox/default'),
-                        'dynamicLabelContent' => 'eval:MashableUtil::renderUnreadCountForDynamicLabelContent()'
+                        'dynamicLabelContent' => 'eval:MashableUtil::renderUnreadCountForDynamicLabelContent()',
+                        'mobile'              => true,
                     ),
                 ),
             );

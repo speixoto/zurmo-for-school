@@ -112,7 +112,7 @@
 
         protected function resolveMenuClassForNoHiddenItems()
         {
-            if (count($this->items) < $this->showCount)
+            if ((count($this->items) < $this->showCount) || static::areAllItemsVisible($this->items, $this->showCount))
             {
                 return array('hasNoHiddenItems');
             }
@@ -120,6 +120,20 @@
             {
                 return array();
             }
+        }
+
+        protected static function areAllItemsVisible($items, $showCount)
+        {
+            $count = 1;
+            foreach ($items as $item)
+            {
+                if ($count > $showCount && !ArrayUtil::getArrayValue($item, 'active'))
+                {
+                    return false;
+                }
+                $count++;
+            }
+            return true;
         }
     }
 ?>

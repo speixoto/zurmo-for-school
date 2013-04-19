@@ -69,7 +69,6 @@
             $this->actionList();
         }
 
-        // TODO: @Shoaibi: Low: Rewrite unit tests for all models, controllers, utils, adapters, etc
         public function actionList()
         {
             $pageSize                       = Yii::app()->pagination->resolveActiveForCurrentUserByType(

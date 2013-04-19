@@ -80,6 +80,9 @@
             $everyone->setRight('NotesModule',         NotesModule::RIGHT_ACCESS_NOTES, Right::ALLOW);
             $everyone->setRight('NotesModule',         NotesModule::RIGHT_CREATE_NOTES, Right::ALLOW);
             $everyone->setRight('NotesModule',         NotesModule::RIGHT_DELETE_NOTES, Right::ALLOW);
+            $everyone->setRight('ReportsModule',       ReportsModule::RIGHT_ACCESS_REPORTS, Right::ALLOW);
+            $everyone->setRight('ReportsModule',       ReportsModule::RIGHT_CREATE_REPORTS, Right::ALLOW);
+            $everyone->setRight('ReportsModule',       ReportsModule::RIGHT_DELETE_REPORTS, Right::ALLOW);
             $everyone->setRight('TasksModule',         TasksModule::RIGHT_ACCESS_TASKS, Right::ALLOW);
             $everyone->setRight('TasksModule',         TasksModule::RIGHT_CREATE_TASKS, Right::ALLOW);
             $everyone->setRight('TasksModule',         TasksModule::RIGHT_DELETE_TASKS, Right::ALLOW);

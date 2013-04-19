@@ -36,15 +36,14 @@
 
     class MergeTagGuideView extends View
     {
-        // TODO: @Shoaibi/@Jason: Critical: This has to be translated.
-        // TODO: @Shoaibi/@Amit: Critical: Styling
         protected function renderContent()
         {
             $syntaxtContent     = $this->renderSyntaxContent();
             $examplesContent    = $this->renderExamplesContent();
-            $content            = "MergeTags are a quick way to introduce reader-specific dynamic information into emails.";
-            $content            .= $syntaxtContent;
-            $content            .= $examplesContent;
+            $content            = Zurmo::t('EmailTemplatesModule', 'Merge tags are a quick way to introduce ' .
+                                           'reader-specific dynamic information into emails.');
+            $content           .= $syntaxtContent;
+            $content           .= $examplesContent;
             $content            = ZurmoHtml::tag('div', array('id' => 'mergetag-guide-modal-content',
                                                                 'class' => 'mergetag-guide-modal'),
                                                         $content);
@@ -72,7 +71,7 @@
                                        'If there is no previous value, the current value will be used. If the attached ' .
                                        'module does not support storing previous values an error will be thrown ' .
                                        'when saving the template.', array('{wasTag}' => 'WAS' . MergeTagsUtil::TIME_DELIMITER));
-            foreach($syntaxItems as $syntaxItem)
+            foreach ($syntaxItems as $syntaxItem)
             {
                 $syntaxContent .= ZurmoHtml::tag('li', array(), $syntaxItem);
             }
@@ -89,17 +88,18 @@
             $content            = ZurmoHtml::tag('div', array('id' => 'mergetag-examples-head'), $content);
             $examplesContent    = null;
             $exampleItems       = array();
-            $exampleItems[]     = "Adding a contact's First Name(firstName): " .
-                                    MergeTagsUtil::TAG_PREFIX . "FIRST". MergeTagsUtil::CAPITAL_DELIMITER .
-                                    "NAME" . MergeTagsUtil::TAG_SUFFIX;
-            $exampleItems[]     = "Adding a contact's city(primaryAddress->city): " . MergeTagsUtil::TAG_PREFIX .
-                                    "PRIMARY" . MergeTagsUtil::CAPITAL_DELIMITER . "ADDRESS" .
-                                    MergeTagsUtil::PROPERTY_DELIMITER . "CITY" . MergeTagsUtil::TAG_SUFFIX;
+            $exampleItems[]     = "Adding a contact's First Name (firstName): " .
+                                  $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "FIRST". MergeTagsUtil::CAPITAL_DELIMITER .
+                                  "NAME" . MergeTagsUtil::TAG_SUFFIX);
+            $exampleItems[]     = "Adding a contact's city (primaryAddress->city): " .
+                                  $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX .
+                                  "PRIMARY" . MergeTagsUtil::CAPITAL_DELIMITER . "ADDRESS" .
+                                  MergeTagsUtil::PROPERTY_DELIMITER . "CITY" . MergeTagsUtil::TAG_SUFFIX);
             $exampleItems[]     = "Adding a user's previous primary email address: " .
-                                    MergeTagsUtil::TAG_PREFIX . "WAS" . MergeTagsUtil::TIME_DELIMITER . "PRIMARY" .
-                                    MergeTagsUtil::CAPITAL_DELIMITER . "EMAIL" . MergeTagsUtil::PROPERTY_DELIMITER .
-                                    "EMAIL" . MergeTagsUtil::CAPITAL_DELIMITER . "ADDRESS" . MergeTagsUtil::TAG_SUFFIX;
-            foreach($exampleItems as $exampleItem)
+                                  $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "WAS" . MergeTagsUtil::TIME_DELIMITER . "PRIMARY" .
+                                  MergeTagsUtil::CAPITAL_DELIMITER . "EMAIL" . MergeTagsUtil::PROPERTY_DELIMITER .
+                                  "EMAIL" . MergeTagsUtil::CAPITAL_DELIMITER . "ADDRESS" . MergeTagsUtil::TAG_SUFFIX);
+            foreach ($exampleItems as $exampleItem)
             {
                 $examplesContent .= ZurmoHtml::tag('li', array(), $exampleItem);
             }
@@ -108,6 +108,11 @@
             $content            .= $examplesContent;
             $content            = ZurmoHtml::tag('div', array('id' => 'mergetag-examples'), $content);
             return $content;
+        }
+
+        protected function renderBoldMergeTag($tag)
+        {
+            return ZurmoHtml::tag('strong', array(), $tag);
         }
     }
 ?>

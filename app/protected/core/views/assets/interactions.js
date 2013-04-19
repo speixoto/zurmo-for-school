@@ -35,7 +35,7 @@
 
 $(window).ready(function(){
     //main menu flyouts or mbmenu releacment
-    $('.nav:not(.user-menu-item) > .parent').live({
+    $('.nav:not(.user-menu-item):not(.clickable-mbmenu) > .parent').live({
         mouseenter: function() {
             if ( $(this).find('ul').length > 0 ){
                 $(this).find('ul').stop(true, true).delay(0).fadeIn(100);
@@ -59,8 +59,19 @@ $(window).ready(function(){
         }
     );
 
+    $('.clickable-mbmenu').find('a').click(
+        function(){
+            var parentUl = $(this).parentsUntil('clickable-mbmenu').parent();
+            if ( parentUl.hasClass('nav-open') === false ){
+                parentUl.addClass('nav-open');
+            } else {
+                parentUl.removeClass('nav-open');
+            }
+        }
+    );
+
     //Main nav hover
-     $('#MenuView a, #RecentlyViewedView a').hover(
+     $('#MenuView > ul > li > a, #RecentlyViewedView  > ul > li > a').hover(
         function(){
             $('> span:first-child', this).stop(true, true).fadeTo( 50, 1, 'linear' );
             $('> span:last-child', this).stop(true, true).animate({ color : '#555', color: '#fff' }, 50, 'linear');

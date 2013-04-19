@@ -48,7 +48,10 @@
             $cClipWidget    = new CClipWidget();
             $cClipWidget->beginClip($clipName);
             $cClipWidget->widget('application.core.widgets.MinimalDynamicLabelMbMenu', array(
-                                                                            'htmlOptions'   => array('id' => $clipName),
+                                                                            'htmlOptions'   => array(
+                                                                                'id' => $clipName,
+                                                                                'class' => 'clickable-mbmenu'
+                                                                            ),
                                                                             'items'         => $items,
                                                                         ));
             $cClipWidget->endClip();
