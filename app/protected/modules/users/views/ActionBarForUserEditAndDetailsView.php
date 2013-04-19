@@ -78,18 +78,18 @@
                 'global' => array(
                     'toolbar' => array(
                         'elements' => array(
-                            array('type' => 'DetailsLink',
+                            array('type' => 'UserDetailsLink',
                                 'label' => "eval:Zurmo::t('UsersModule', 'Profile')",
                                 'htmlOptions' => array( 'class' => 'icon-user-details' )
                             ),
-                            array('type' => 'EditLink',
+                            array('type' => 'UserEditLink',
                                 'htmlOptions' => array( 'class' => 'icon-edit' )
                             ),
                             array('type' => 'AuditEventsModalListLink',
-                                'htmlOptions' => array( 'class' => 'icon-audit' )
+                                'htmlOptions' => array( 'class' => 'icon-audit')
                             ),
                             array('type' => 'ChangePasswordLink',
-                                'htmlOptions' => array( 'class' => 'icon-password' )
+                                'htmlOptions' => array( 'class' => 'icon-password')
                             ),
                             array('type' => 'UserConfigurationLink',
                                 'htmlOptions' => array( 'class' => 'icon-user-config' ),
