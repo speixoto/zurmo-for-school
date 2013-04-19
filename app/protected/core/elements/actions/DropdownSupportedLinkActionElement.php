@@ -43,9 +43,19 @@
 
         abstract public function getElementValue();
 
+        public static function useItemUrlAsElementValue()
+        {
+            return false;
+        }
+
         public static function getDropDownId()
         {
             return static::MENU_ID;
+        }
+
+        public static function  shouldRenderAsDropDownWhenRequired()
+        {
+            return true;
         }
 
         public function registerDropDownScripts($dropDownId = null, $scriptName = null)

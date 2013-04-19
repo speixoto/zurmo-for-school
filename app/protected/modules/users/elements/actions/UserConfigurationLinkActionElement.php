@@ -37,8 +37,13 @@
     /**
      * Class to render link user configuration
      */
-    class UserConfigurationLinkActionElement extends LinkActionElement
+    class UserConfigurationLinkActionElement extends DropdownSupportedLinkActionElement
     {
+        public static function useItemUrlAsElementValue()
+        {
+            return true;
+        }
+
         public function getActionType()
         {
             return 'Edit';
@@ -46,16 +51,7 @@
 
         public function render()
         {
-            $menuItems = array('label' => $this->getLabel(),
-                               'url'   => null,
-                               'itemOptions' => array('class' => 'icon-user-config_', 'id' => 'UserViewAccountConfiguration'),
-                               'items' => array(
-                                   array('label'   => Zurmo::t('UsersModule', 'General'),
-                                       'url'     => $this->route . '/configurationEdit?id=' . $this->modelId),
-                                   array('label'   => Zurmo::t('UsersModule', 'Email'),
-                                       'url'     => $this->route . '/emailConfiguration?id=' . $this->modelId),
-                                   array('label'   => Zurmo::t('UsersModule', 'Security Overview'),
-                                       'url'     => $this->route . '/securityDetails?id=' . $this->modelId)));
+            $menuItems   = $this->renderMenuItem();
             $cClipWidget = new CClipWidget();
             $cClipWidget->beginClip("ActionMenu");
             $cClipWidget->widget('application.core.widgets.MbMenu', array(
@@ -63,6 +59,32 @@
             ));
             $cClipWidget->endClip();
             return $cClipWidget->getController()->clips['ActionMenu'];
+        }
+
+        public function renderMenuItem()
+        {
+            return array('label' => $this->getMenuHeader(), 'url' => null,
+                            'itemOptions' => array('class' => 'icon-user-config_', 'id' => 'UserViewAccountConfiguration'),
+                'items' => $this->getMenuItems());
+        }
+
+        protected function getMenuItems()
+        {
+            return array(array('label'   => Zurmo::t('UsersModule', 'General'),
+                               'url'     => $this->route . '/configurationEdit?id=' . $this->modelId,
+                               'itemOptions' => array( 'id'   => 'abc')),
+                         array('label'   => Zurmo::t('UsersModule', 'Email'),
+                               'url'     => $this->route . '/emailConfiguration?id=' . $this->modelId,
+                               'itemOptions' => array( 'id'   => 'def')),
+                         array('label'   => Zurmo::t('UsersModule', 'Security Overview'),
+                               'url'     => $this->route . '/securityDetails?id=' . $this->modelId,
+                               'itemOptions' => array( 'id'   => 'ffff')),
+                         );
+        }
+
+        protected function getMenuHeader()
+        {
+            return $this->getLabel();
         }
 
         protected function getDefaultLabel()
@@ -73,6 +95,26 @@
         protected function getDefaultRoute()
         {
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/');
+        }
+
+        public function getElementValue()
+        {
+            return null;
+        }
+
+        public function getOptGroup()
+        {
+            return $this->getMenuHeader();
+        }
+
+        public function getOptions()
+        {
+            return $this->getMenuItems();
+        }
+
+        public function getActionNameForCurrentElement()
+        {
+            throw new NotImplementedException();
         }
     }
 ?>

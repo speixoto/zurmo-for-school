@@ -34,8 +34,17 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    class DetailsLinkActionElement extends LinkActionElement
+    class DetailsLinkActionElement extends DropdownSupportedLinkActionElement
     {
+        /**
+         * Not all detailsLinks should render as DropDown when called up from mobile. Override if it should.
+         * @return bool
+         */
+        public static function  shouldRenderAsDropDownWhenRequired()
+        {
+            return false;
+        }
+
         public function getActionType()
         {
             return 'Details';
@@ -58,6 +67,11 @@
                 $params = array_merge($params, array('redirectUrl' => $this->getRedirectUrl()));
             }
             return Yii::app()->createUrl($this->moduleId . '/' . $this->controllerId . '/details/', $params);
+        }
+
+        public function getElementValue()
+        {
+            return $this->route;
         }
     }
 ?>
