@@ -679,7 +679,7 @@ body > div {
   -khtml-opacity: 0;
   -moz-opacity: 0;
   opacity: 0;
-  padding: 10px 9px 0 19px;
+  padding: 40px 9px 0 19px;
   left: 0;
   position: fixed;
   width: auto;
@@ -884,6 +884,9 @@ body > div {
 }
 #RecentlyViewedView {
   display: none;
+}
+#HomeDashboardView {
+  padding-right: 0;
 }
 #HomeDashboardView .juiportlet-column {
   width: 100%;

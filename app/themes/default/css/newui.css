@@ -7882,7 +7882,7 @@ div.wide.form label.hasCheckBox {
   width: 100%;
 }
 #search-form {
-  border-color: #dfdfdf;
+  border: 1px solid #dfdfdf;
   border-bottom: none;
   position: relative;
   background-color: #ebebeb;
@@ -7894,6 +7894,13 @@ div.wide.form label.hasCheckBox {
   background-image: -o-linear-gradient(top, #f5f5f5, #ebebeb);
   background-image: linear-gradient(top, #f5f5f5, #ebebeb);
   filter: progid:DXImageTransform.Microsoft.gradient(startColorstr='#f5f5f5', endColorstr='#ebebeb', GradientType=0);
+  -webkit-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 20px 5px rgba(153, 153, 153, 0.12);
+  /*999*/
+
   font-size: 11px;
   float: left;
   width: 100%;
@@ -17807,5 +17814,38 @@ a.user-link {
   .view-toolbar > a:before,
   .view-toolbar .parent > a:before {
     display: none;
+  }
+}
+@media all and (max-width: 800px) {
+  .AppContainer {
+    min-width: 0 !important;
+  }
+  #HeaderView {
+    width: 100%;
+    min-width: 0 !important;
+  }
+  #HomeDashboardView {
+    padding-right: 20px;
+  }
+  #HomeDashboardView .juiportlet-column {
+    width: 100%;
+    float: none;
+  }
+  #HomeDashboardView .juiportlet-widget {
+    min-width: auto;
+    margin-right: 0px;
+  }
+  .DetailsAndRelationsView > div {
+    float: none;
+    width: 100% !important;
+  }
+  .breadcrumbs {
+    padding-bottom: 10px;
+  }
+  .details-table {
+    margin-right: 0;
+  }
+  .juiportlet-widget {
+    margin-right: 0 !important;
   }
 }
