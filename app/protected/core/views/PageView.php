@@ -256,6 +256,11 @@
             {
                 $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="newui" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/less/newui.less"/>';
+                if (Yii::app()->userInterface->isMobile())
+                {
+                    $specialCssContent .= '<link rel="stylesheet/less" type="text/css" id="mobile" href="' .
+                        Yii::app()->baseUrl . '/' . $theme . '/less/mobile.less"/>';
+                }
                 $specialCssContent .= '<!--[if lt IE 9]><link rel="stylesheet/less" type="text/css" href="' .
                                       Yii::app()->baseUrl . '/' . $theme . '/less/ie.less"/><![endif]-->';
             }

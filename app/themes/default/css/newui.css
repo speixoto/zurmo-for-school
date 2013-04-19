@@ -7497,6 +7497,7 @@ a.simple-link:before {
   -o-box-shadow: none;
   -ms-box-shadow: none;
   box-shadow: none;
+  float: none;
 }
 .ui-dialog .wide.form form {
   border: none;
