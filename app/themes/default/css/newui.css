@@ -6144,7 +6144,6 @@ body > .ui-autocomplete {
   border-top: 1px solid #CCC;
 }
 .view-toolbar-container {
-  width: auto;
   display: inline-block;
   width: 100%;
   position: relative;
@@ -17778,7 +17777,7 @@ a.user-link {
     display: none;
   }
 }
-@media all and (max-width: 800px) {
+@media all and (max-width: 900px) {
   .AppContainer {
     min-width: 0 !important;
   }
