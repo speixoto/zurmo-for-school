@@ -15306,6 +15306,9 @@ a.close-ModalGameNotification.simple-link {
 .gravatar-container:hover span {
   display: block;
 }
+.gravatar-container + .panel {
+  float: left;
+}
 #UserChangeAvatarView {
   zoom: 1;
 }
