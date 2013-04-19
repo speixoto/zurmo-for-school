@@ -649,6 +649,8 @@ body > div {
   transform: translate3d(45px, 0, 0);
 }
 .AppNavigation {
+  left: 10px;
+  top: 45px;
   width: 45px;
   border: none;
   background: none;
@@ -659,7 +661,7 @@ body > div {
   box-shadow: none;
   padding: 0;
   filter: progid:DXImageTransform.Microsoft.gradient(enabled = false);
-  position: absolute;
+  position: fixed;
   padding: 0 0 0 0;
   margin: 0;
   z-index: 0;
@@ -675,13 +677,15 @@ body > div {
   opacity: 1;
 }
 #MenuView {
+  position: static;
+  margin: 0 !important;
+  padding: 0 0 0 10px !important;
+  top: 0 !important;
   filter: alpha(opacity=0);
   -khtml-opacity: 0;
   -moz-opacity: 0;
   opacity: 0;
-  padding: 10px 9px 0 19px;
   left: 0;
-  position: fixed;
   width: auto;
   height: 100%;
   border: none;
@@ -884,6 +888,9 @@ body > div {
 }
 #RecentlyViewedView {
   display: none;
+}
+#HomeDashboardView {
+  padding-right: 0;
 }
 #HomeDashboardView .juiportlet-column {
   width: 100%;
