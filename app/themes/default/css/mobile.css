@@ -1164,6 +1164,9 @@ div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
   display: inline-block;
   margin-right: 8px;
 }
+#LeaderboardView .items {
+  margin-bottom: 10px;
+}
 #MashableInboxActionBarForViews .filters-bar {
   position: relative;
   top: -5px;
