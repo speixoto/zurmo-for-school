@@ -34,8 +34,13 @@
      * "Copyright Zurmo Inc. 2013. All rights reserved".
      ********************************************************************************/
 
-    abstract class ModalListLinkActionElement extends LinkActionElement
+    abstract class ModalListLinkActionElement extends DropdownSupportedAjaxLinkActionElement
     {
+        public static function  shouldRenderAsDropDownWhenRequired()
+        {
+            return false;
+        }
+
         public function getActionType()
         {
             return 'Details';
@@ -56,6 +61,7 @@
                 return array('label'           => $this->getLabel(),
                              'url'             => $this->getDefaultRoute(),
                              'linkOptions'     => $this->getHtmlOptions(),
+                             'itemOptions'     => array('id' => get_class($this)),
                              'ajaxLinkOptions' => $this->getAjaxLinkOptions()
                 );
             }

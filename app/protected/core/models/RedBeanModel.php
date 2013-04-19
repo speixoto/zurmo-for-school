@@ -1755,8 +1755,9 @@
                                 $linkName = strtolower(static::getRelationLinkName($relationName));
                             }
                             ZurmoRedBeanLinkManager::breakLink($bean, $relatedTableName, $linkName);
-                            if ($this->{$relationName} !== null &&
-                               isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]))
+                            //Check the $this->{$relationName} second in the if clause to avoid accidentially getting
+                            //a relation to now save. //todo: this needs to be properly handled.
+                            if (isset($this->unlinkedOwnedRelatedModelsToRemove[$relationName]) && $this->{$relationName} !== null)
                             {
                                 //Remove hasOne owned related models that are no longer needed because they have
                                 //been replaced with another hasOne owned model.

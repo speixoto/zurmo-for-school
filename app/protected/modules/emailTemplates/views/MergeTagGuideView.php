@@ -40,9 +40,10 @@
         {
             $syntaxtContent     = $this->renderSyntaxContent();
             $examplesContent    = $this->renderExamplesContent();
-            $content            = "MergeTags are a quick way to introduce reader-specific dynamic information into emails.";
-            $content            .= $syntaxtContent;
-            $content            .= $examplesContent;
+            $content            = Zurmo::t('EmailTemplatesModule', 'Merge tags are a quick way to introduce ' .
+                                           'reader-specific dynamic information into emails.');
+            $content           .= $syntaxtContent;
+            $content           .= $examplesContent;
             $content            = ZurmoHtml::tag('div', array('id' => 'mergetag-guide-modal-content',
                                                                 'class' => 'mergetag-guide-modal'),
                                                         $content);
@@ -55,22 +56,6 @@
             $content        = ZurmoHtml::tag('div', array('id' => 'mergetag-syntax-head'), $content);
             $syntaxContent  = null;
             $syntaxItems    = array();
-<<<<<<< mine
-            $syntaxItems[]  = "A MergeTag starts with: " . $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX) . " and ends with " .
-                $this->renderBoldMergeTag(MergeTagsUtil::TAG_SUFFIX) . ".";
-            $syntaxItems[]  = "Between starting and closing tag it can have property names. These names are written in " .
-                                "all caps regardless of actual property name case.";
-            $syntaxItems[]  = "Properties that contain more than one word are named using camel case in the system and" .
-                                " to address that in MergeTag prefix" . $this->renderBoldMergeTag(MergeTagsUtil::CAPITAL_DELIMITER) . " character" .
-                                " before the letter that should be capitalize when converted";
-            $syntaxItems[]  = "To access an indirect property(through a relation) of the model bound to current " .
-                                " template prefix " . $this->renderBoldMergeTag(MergeTagsUtil::PROPERTY_DELIMITER) . " property name.";
-            $syntaxItems[]  = "To access previous value of a property(only supported in workflow type templates) prefix ".
-                                "property name with: WAS" . $this->renderBoldMergeTag(MergeTagsUtil::TIME_DELIMITER) . ". If there is no previous" .
-                                " value, current value will be used. If the attached Model does not support storing" .
-                                " previous values an error will be thrown when saving template.";
-
-=======
             $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'A merge tag starts with: {tagPrefix} and ends with {tagSuffix}.',
                                        array('{tagPrefix}' => MergeTagsUtil::TAG_PREFIX, '{tagSuffix}' => MergeTagsUtil::TAG_SUFFIX));
             $syntaxItems[]  = Zurmo::t('EmailTemplatesModule', 'Between starting and closing tags it can have field ' .
@@ -86,8 +71,7 @@
                                        'If there is no previous value, the current value will be used. If the attached ' .
                                        'module does not support storing previous values an error will be thrown ' .
                                        'when saving the template.', array('{wasTag}' => 'WAS' . MergeTagsUtil::TIME_DELIMITER));
->>>>>>> theirs
-            foreach($syntaxItems as $syntaxItem)
+            foreach ($syntaxItems as $syntaxItem)
             {
                 $syntaxContent .= ZurmoHtml::tag('li', array(), $syntaxItem);
             }
@@ -115,7 +99,7 @@
                                   $this->renderBoldMergeTag(MergeTagsUtil::TAG_PREFIX . "WAS" . MergeTagsUtil::TIME_DELIMITER . "PRIMARY" .
                                   MergeTagsUtil::CAPITAL_DELIMITER . "EMAIL" . MergeTagsUtil::PROPERTY_DELIMITER .
                                   "EMAIL" . MergeTagsUtil::CAPITAL_DELIMITER . "ADDRESS" . MergeTagsUtil::TAG_SUFFIX);
-            foreach($exampleItems as $exampleItem)
+            foreach ($exampleItems as $exampleItem)
             {
                 $examplesContent .= ZurmoHtml::tag('li', array(), $exampleItem);
             }

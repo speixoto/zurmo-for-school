@@ -74,8 +74,9 @@
                 ),
                 'tabMenuItems' => array(
                     array(
-                        'label' => "eval:Zurmo::t('HomeModule', 'Home')",
-                        'url'   => array('/home/default'),
+                        'label'  => "eval:Zurmo::t('HomeModule', 'Home')",
+                        'url'    => array('/home/default'),
+                        'mobile' => true,
                     ),
                 ),
             );

@@ -52,7 +52,6 @@
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact', $super, $account);
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact2', $super, $account2);
             ContactTestHelper::createContactWithAccountByNameForOwner('superContact3', $super, $account);
-
         }
 
         public function setUp()
@@ -137,7 +136,7 @@
             $this->assertNotEmpty($contacts);
             $unsubscribedCount                  = 0;
             $subscribedCount                    = 0;
-            foreach($contacts as $index => $contact)
+            foreach ($contacts as $index => $contact)
             {
                 $unsubcribed = ($index % 2);
                 $member = MarketingListMemberTestHelper::fillMarketingListMember($unsubcribed, $marketingList, $contacts[0]);

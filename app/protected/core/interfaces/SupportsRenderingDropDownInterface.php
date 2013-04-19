@@ -41,8 +41,20 @@
     interface SupportsRenderingDropDownInterface
     {
         public static function getDropDownId();
+
+        public static function useItemUrlAsElementValue();
+
+        /**
+         * Sometimes even though the element supports rendering as a dropDown, it doesn't mean it should. An example
+         * is the leaderboard. This should continue to render as normal links.
+         * @return boolean
+         */
+        public static function shouldRenderAsDropDownWhenRequired();
+
         public function getOptGroup();
+
         public function getOptions();
+
         public function registerDropDownScripts($dropDownId = null, $scriptName = null);
     }
 ?>

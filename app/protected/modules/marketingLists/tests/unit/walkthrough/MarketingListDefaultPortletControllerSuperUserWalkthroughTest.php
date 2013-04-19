@@ -120,7 +120,6 @@
             $this->assertArrayHasKey('unsubscriberCount', $countArray);
             $this->assertEquals($subscriberCount, $countArray['subscriberCount']);
             $this->assertEquals($unsubscriberCount, $countArray['unsubscriberCount']);
-
         }
 
         public function testSubscribeContactsForContactType()

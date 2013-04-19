@@ -36,6 +36,11 @@
 
     class AuditEventsModalListLinkActionElement extends ModalListLinkActionElement
     {
+        public static function  shouldRenderAsDropDownWhenRequired()
+        {
+            return true;
+        }
+
         protected function getDefaultLabel()
         {
             return Zurmo::t('ZurmoModule', 'Audit Trail');
@@ -49,6 +54,36 @@
         protected function getRouteAction()
         {
             return '/auditEventsModalList/';
+        }
+
+        public function getElementValue()
+        {
+            $eventHandlerName = 'auditEventsModalListLinkActionElementHandler';
+            $ajaxOptions      = CMap::mergeArray($this->getAjaxOptions(), array('url' => $this->route));
+            if (Yii::app()->clientScript->isScriptRegistered($eventHandlerName))
+            {
+                return;
+            }
+            else
+            {
+                Yii::app()->clientScript->registerScript($eventHandlerName, "
+                    function ". $eventHandlerName ."()
+                    {
+                        " . ZurmoHtml::ajax($ajaxOptions)."
+                    }
+                ", CClientScript::POS_HEAD);
+            }
+            return $eventHandlerName;
+        }
+
+        /**
+         * Utilized when auditEventsModalLink is used during mobile select option render
+         * @return array
+         */
+        protected function getAjaxOptions()
+        {
+            $title = Zurmo::t('ZurmoModule', 'Audit Trail');
+            return ModalView::getAjaxOptionsForModalLink($title);
         }
     }
 ?>
