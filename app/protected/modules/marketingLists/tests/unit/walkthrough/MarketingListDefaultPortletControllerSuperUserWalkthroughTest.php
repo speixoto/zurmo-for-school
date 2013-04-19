@@ -157,11 +157,12 @@
 
         public function testSubscribeContactsForReportType()
         {
-            // TODO: @Shoaibi: Critical: Waiting for jason to write a
-            $this->markTestIncomplete("@Jason: Waiting for ReportTestHelper for Contact type");
             $super                      = $this->logoutCurrentUserLoginNewUserAndGetByUsername('super');
             $type                       = 'report';
-            $report                     = RandomDataUtil::getRandomValueFromArray(SavedReport::getAll());
+            $report                     = SavedReportTestHelper::makeSimpleContactRowsAndColumnsReport();
+            $marketingList              = MarketingListTestHelper::createMarketingListByName('MarketingList5', 'MarketingList Description5');
+            $marketingListId            = $marketingList->id;
+            $contactCount               = Contact::getCount();
             $this->assertNotNull($report);
             $this->setGetArray(array(
                                     'marketingListId'    => $marketingListId,
@@ -173,7 +174,7 @@
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('1 subscribed.', $contentArray['message']);
+            $this->assertEquals($contactCount . ' subscribed.', $contentArray['message']);
             $this->assertEquals('message', $contentArray['type']);
 
             $content                    = $this->runControllerWithNoExceptionsAndGetContent('marketingLists/defaultPortlet/subscribeContacts');
@@ -181,7 +182,7 @@
             $this->assertNotEmpty($contentArray);
             $this->assertArrayHasKey('type', $contentArray);
             $this->assertArrayHasKey('message', $contentArray);
-            $this->assertEquals('0 subscribed. 1 skipped', $contentArray['message']);
+            $this->assertEquals('0 subscribed. ' . $contactCount . ' skipped.', $contentArray['message']);
             $this->assertEquals('message', $contentArray['type']);
         }
     }

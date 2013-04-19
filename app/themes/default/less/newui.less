@@ -1377,13 +1377,6 @@ form,
 }
 
 .portlet-view-toolbar{
-	//margin-bottom: 0;
-	//display: block;
-	//float: none;
-	//border:none;
-	//border-bottom:1px solid #DFDFDF;
-	//.radius(0);
-	//.b-shadow(none);
 	.parent{
 		position: relative;
 	}
@@ -2203,6 +2196,7 @@ a.simple-link{
 		margin:0;
 		border:none;
 		.b-shadow(none);
+		float:none;
 		form{
 			border:none;
 			.b-shadow(none);
@@ -2590,9 +2584,9 @@ div.wide.form{
 	background: none !important;
 	.b-shadow(none);
 	.border-box();
-	> div{
+	> div + div{
 		display: inline-block;
-		margin-right: 15px;
+		margin-left: 15px;
 	}
 }
 

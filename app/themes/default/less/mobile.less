@@ -247,6 +247,7 @@
 		.b-shadow(none);
 		width: 100%;
 		.icon-create{
+			margin-right:10px;
 			float: left;
 			border:1px solid #b7b7b7;
 			border-top-color: #e7e7e7;
@@ -258,7 +259,7 @@
 		}
 		.mobile-view-toolbar-container{
 			float: left;
-			margin: 1px 0 0 10px;
+			margin: 1px 0 0 0;
 		}
 	}
 
@@ -688,6 +689,9 @@
 		padding:0 10px 0 0;
 	}
 
+
+div:not(#LeaderboardView),
+div:not(#MashableInboxActionBarForViews){
 	.toolbar-mbmenu{
 		right:10px;
 		.view-toolbar{
@@ -716,6 +720,7 @@
 			}
 		}
 	}
+}
 
 	#NoUserEmailConfigurationYetView,
 	#NoGlobalEmailConfigurationYetView,
@@ -773,10 +778,84 @@
 	    padding-bottom: 60px;
     }
 
-    //Inbox
+	//inbox + leaderboard toolbar
 	.model-tag{
 		float: none;
 		margin: 0 0 5px 0 !important;
 		position: relative;
 		top: -2px;
+	}
+
+	div#MashableInboxActionBarForViews,
+	div#LeaderboardView{
+		.view-toolbar-container{
+			width: auto;
+		}
+	}
+
+	div#LeaderboardView > .view-toolbar-container > .view-toolbar,
+	div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar{
+		border:1px solid #b7b7b7;
+		border-top-color: #e7e7e7;
+		border-left-color:#d7d7d7;
+		border-right-color:#d7d7d7;
+		border-radius:4px;
+		float:left;
+		margin:0 0 15px 0;
+		.b-shadow(0 0 9px 5px rgba(153, 153, 153, 0.12));
+		background:url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+		.unread-count{
+			display: none;
+		}
+		.z-label{
+			display: none;
+		}
+		> a,
+		.parent > a {
+			padding:0 0 0 0;
+			&:before{
+				display: inline-block;
+				margin: 0 5px 0 5px;
+			}
+			&:after{
+				margin-left: 5px;
+			}
+		}
+		.parent > a {
+			padding:0 5px 0 0;
+		}
+	}
+
+	div#LeaderboardView > .view-toolbar-container > .view-toolbar{
+		.z-label{
+			display: inline-block;
+			margin-right: 8px;
+		}
+	}
+
+	#LeaderboardView .items{
+		margin-bottom: 10px;
+	}
+
+	#MashableInboxActionBarForViews{
+		.filters-bar{
+			position: relative;
+			top: -5px;
+			left: 0;
+		}
+	}
+
+	//profile
+	.gravatar-container{
+		float: left;
+		margin: 15px;
+		width: 100%;
+	}
+
+
+	//Flash MSG
+	#FlashMessageView{
+		width: 100%;
+		top: 50px;
+		right: 0;
 	}

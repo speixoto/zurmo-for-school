@@ -115,6 +115,7 @@
             $report->setType           (Report::TYPE_ROWS_AND_COLUMNS);
             $report->setOwner          (Yii::app()->user->userModel);
             $report->setCurrencyConversionType(Report::CURRENCY_CONVERSION_TYPE_BASE);
+            $report->setFiltersStructure('');
 
             $displayAttribute = new DisplayAttributeForReportForm('ContactsModule', 'Contact', $report->getType());
             $displayAttribute->attributeIndexOrDerivedType = 'lastName';

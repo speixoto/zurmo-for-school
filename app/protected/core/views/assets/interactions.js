@@ -111,7 +111,7 @@ $(window).ready(function(){
             appChromeHeight = 80 + $('#FooterView').outerHeight(true);
             if ( wrapperDivHeight < viewportHeight  ){
                 bufferHeight = viewportHeight - appChromeHeight;
-                $('.AppContainer').css('min-height',  bufferHeight);
+                $('.AppContent').css('min-height',  bufferHeight);
             }
         //rest of app
         } else {

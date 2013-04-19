@@ -545,6 +545,7 @@ body > div {
   width: 100%;
 }
 .view-toolbar .icon-create {
+  margin-right: 10px;
   float: left;
   border: 1px solid #b7b7b7;
   border-top-color: #e7e7e7;
@@ -560,7 +561,7 @@ body > div {
 }
 .view-toolbar .mobile-view-toolbar-container {
   float: left;
-  margin: 1px 0 0 10px;
+  margin: 1px 0 0 0;
 }
 .mobile-view-toolbar-container .hasDropDown span.select-arrow {
   z-index: 0;
@@ -1004,19 +1005,23 @@ body > div {
 #CommentInlineEditForModelView {
   padding: 0 10px 0 0;
 }
-.toolbar-mbmenu {
+div:not(#LeaderboardView) .toolbar-mbmenu,
+div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu {
   right: 10px;
 }
-.toolbar-mbmenu .view-toolbar {
+div:not(#LeaderboardView) .toolbar-mbmenu .view-toolbar,
+div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .view-toolbar {
   position: relative;
   clear: both;
 }
-.toolbar-mbmenu .options-menu > li > a {
+div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a,
+div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a {
   text-indent: -9999px;
   width: auto;
   padding: 0;
 }
-.toolbar-mbmenu .options-menu > li > a:after {
+div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a:after,
+div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a:after {
   content: "n";
   font-weight: normal;
   font-size: 24px;
@@ -1025,10 +1030,12 @@ body > div {
   top: -1px;
   margin-left: 10px;
 }
-.toolbar-mbmenu .options-menu > li > a span {
+div:not(#LeaderboardView) .toolbar-mbmenu .options-menu > li > a span,
+div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu > li > a span {
   display: none;
 }
-.toolbar-mbmenu .options-menu ul {
+div:not(#LeaderboardView) .toolbar-mbmenu .options-menu ul,
+div:not(#MashableInboxActionBarForViews) .toolbar-mbmenu .options-menu ul {
   right: 0;
   margin-top: -8px;
 }
@@ -1101,4 +1108,77 @@ body > div {
   margin: 0 0 5px 0 !important;
   position: relative;
   top: -2px;
+}
+div#MashableInboxActionBarForViews .view-toolbar-container,
+div#LeaderboardView .view-toolbar-container {
+  width: auto;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar {
+  border: 1px solid #b7b7b7;
+  border-top-color: #e7e7e7;
+  border-left-color: #d7d7d7;
+  border-right-color: #d7d7d7;
+  border-radius: 4px;
+  float: left;
+  margin: 0 0 15px 0;
+  -webkit-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -moz-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -o-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  -ms-box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  box-shadow: 0 0 9px 5px rgba(153, 153, 153, 0.12);
+  background: url(../images/view-toolbar-gradient.png) left bottom repeat-x;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .unread-count,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .unread-count {
+  display: none;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .z-label {
+  display: none;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar > a,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar > a,
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a {
+  padding: 0 0 0 0;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar > a:before,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar > a:before,
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a:before,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a:before {
+  display: inline-block;
+  margin: 0 5px 0 5px;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar > a:after,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar > a:after,
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a:after,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a:after {
+  margin-left: 5px;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .parent > a,
+div#MashableInboxActionBarForViews > .view-toolbar-container > .view-toolbar .parent > a {
+  padding: 0 5px 0 0;
+}
+div#LeaderboardView > .view-toolbar-container > .view-toolbar .z-label {
+  display: inline-block;
+  margin-right: 8px;
+}
+#LeaderboardView .items {
+  margin-bottom: 10px;
+}
+#MashableInboxActionBarForViews .filters-bar {
+  position: relative;
+  top: -5px;
+  left: 0;
+}
+.gravatar-container {
+  float: left;
+  margin: 15px;
+  width: 100%;
+}
+#FlashMessageView {
+  width: 100%;
+  top: 50px;
+  right: 0;
 }
