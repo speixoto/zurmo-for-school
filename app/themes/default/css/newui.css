@@ -6144,6 +6144,7 @@ body > .ui-autocomplete {
   border-top: 1px solid #CCC;
 }
 .view-toolbar-container {
+  width: auto;
   display: inline-block;
   width: 100%;
   position: relative;
@@ -8011,9 +8012,9 @@ div.wide.form label.hasCheckBox {
   padding: 0;
   margin: 0;
 }
-.filters-bar > div {
+.filters-bar > div + div {
   display: inline-block;
-  margin-right: 15px;
+  margin-left: 15px;
 }
 .cgrid-view {
   position: relative;
