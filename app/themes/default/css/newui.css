@@ -11081,6 +11081,9 @@ a.remove .icon:after {
 #InstallPageView .AppContainer a {
   margin: auto 10px;
 }
+#InstallPageView div.wide.form {
+  float: none;
+}
 #InstallPageView #save {
   color: #fff !important;
   -webkit-text-shadow: none !important;
